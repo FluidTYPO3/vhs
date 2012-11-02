@@ -46,7 +46,6 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	 * Initialize arguments.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
@@ -84,14 +83,14 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 			}
 			$this->tag->setContent($this->renderOptionTags($options));
 		} else {
-			$this->viewHelperVariableContainer->add('Tx_Fed_ViewHelpers_Form_SelectViewHelper', 'options', array());
-			$this->viewHelperVariableContainer->add('Tx_Fed_ViewHelpers_Form_SelectViewHelper', 'value', $this->getValue());
+			$this->viewHelperVariableContainer->add('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'options', array());
+			$this->viewHelperVariableContainer->add('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'value', $this->getValue());
 			$tagContent = $this->renderChildren();
-			$options = $this->viewHelperVariableContainer->get('Tx_Fed_ViewHelpers_Form_SelectViewHelper', 'options');
+			$options = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'options');
 			$this->tag->setContent($tagContent);
-			$this->viewHelperVariableContainer->remove('Tx_Fed_ViewHelpers_Form_SelectViewHelper', 'options');
-			if ($this->viewHelperVariableContainer->exists('Tx_Fed_ViewHelpers_Form_SelectViewHelper', 'value')) {
-				$this->viewHelperVariableContainer->remove('Tx_Fed_ViewHelpers_Form_SelectViewHelper', 'value');
+			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'options');
+			if ($this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'value')) {
+				$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'value');
 			}
 		}
 
@@ -99,9 +98,9 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 
 		$content = '';
 
-		// register field name for token generation.
-		// in case it is a multi-select, we need to register the field name
-		// as often as there are elements in the box
+			// register field name for token generation.
+			// in case it is a multi-select, we need to register the field name
+			// as often as there are elements in the box
 		if ($this->arguments['multiple'] !== FALSE && $this->arguments['multiple'] !== '') {
 			$content .= $this->renderHiddenFieldForEmptyValue();
 			for ($i=0; $i<count($options); $i++) {
@@ -126,7 +125,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 
 		foreach ($options as $value => $label) {
 			$isSelected = $this->isSelected($value);
-			$output.= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+			$output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
 		}
 		return $output;
 	}
@@ -134,7 +133,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	/**
 	 * Render the option tags.
 	 *
-	 * @return array an associative array of options, key will be the value of the option tag
+	 * @return array
 	 */
 	protected function getOptions() {
 		if (!is_array($this->arguments['options']) && !($this->arguments['options'] instanceof Traversable)) {
@@ -151,7 +150,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 						if (method_exists($key, '__toString')) {
 							$key = (string)$key;
 						} else {
-							throw new Tx_Fluid_Core_ViewHelper_Exception('Identifying value for object of class "' . get_class($value) . '" was an object.' , 1247827428);
+							throw new Tx_Fluid_Core_ViewHelper_Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
 						}
 					}
 				} elseif ($this->persistenceManager->getBackend()->getIdentifierByObject($value) !== NULL) {
@@ -159,7 +158,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 				} elseif (method_exists($value, '__toString')) {
 					$key = (string)$value;
 				} else {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('No identifying value for object of class "' . get_class($value) . '" found.' , 1247826696);
+					throw new Tx_Fluid_Core_ViewHelper_Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
 				}
 
 				if ($this->hasArgument('optionLabelField')) {
