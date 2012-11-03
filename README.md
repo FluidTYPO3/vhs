@@ -49,7 +49,7 @@ be to create a highly customized "Format/KilobyteSizeViewHelper" or similar.
 ViewHelpers for which this makes special sense are the formatting and math ViewHelpers. These
 work well when applied in sequences such as the above or cases such as this:
 
-	{text -> v:format.trim() -> f:format.markdown()}
+	{text -> v:format.trim() -> v:format.markdown()}
 
 Naturally, the tag-based usage is supported the same way as the above but with one caveat
 which one should always be aware of; that Fluid will render whitespace characters between
