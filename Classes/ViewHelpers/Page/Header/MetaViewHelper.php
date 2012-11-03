@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
-class Tx_Fed_ViewHelpers_Page_Head_MetaViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class Tx_Vhs_ViewHelpers_Page_Header_MetaViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
 	 * @var	string

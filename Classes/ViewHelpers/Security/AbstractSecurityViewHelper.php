@@ -26,11 +26,11 @@
 /**
  * Base class: Security ViewHelpers
  *
- * @author Claus Due, Wildside A/S
+ * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
- * @subpackage ViewHelpers/Auth
+ * @subpackage ViewHelpers\Security
  */
-abstract class Tx_Fed_ViewHelpers_Auth_AbstractAuthViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
 
 	/**
 	 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository

@@ -27,8 +27,8 @@
  * Condition ViewHelper. Renders the then-child if Iterator/array
  * haystack contains needle value.
  *
- * @author Claus Due, Wildside A/S
- * @package Fed
+ * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
 class Tx_Vhs_ViewHelpers_Iterator_ContainsViewHelper extends Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper {
