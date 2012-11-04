@@ -36,11 +36,24 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 * Get the variable in $name.
 	 *
 	 * @param string $name
-	 * @return void
+	 * @return mixed
 	 */
 	public function render($name) {
-		if ($this->templateVariableContainer->exists($name) === TRUE) {
-			return $this->templateVariableContainer->get($name);
+		if (strpos($name, '.') === FALSE) {
+			if ($this->templateVariableContainer->exists($name) === TRUE) {
+				return $this->templateVariableContainer->get($name);
+			}
+		} else {
+			$segments = explode('.', $name);
+			$templateVariableRootName = array_shift($segments);
+			if ($this->templateVariableContainer->exists($templateVariableRootName)) {
+				$templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
+				try {
+					return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
+				} catch (Exception $e) {
+					return NULL;
+				}
+			}
 		}
 		return NULL;
 	}
