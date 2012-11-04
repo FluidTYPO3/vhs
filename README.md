@@ -8,7 +8,7 @@ TYPO3 extension VHS: Fluid ViewHelpers
 
 ![ViewHelpers](http://twitpic.com/show/full/ba3mnc.png)
 
-	__Checkmarked ViewHelpers are currently finished, others are still in progress.__
+*Checkmarked ViewHelpers are currently finished, others are still in progress.*
 
 # Installation
 
@@ -38,7 +38,7 @@ the order of the original QueryResult.
 
 Multiple chained syntax is also possible:
 
-	<a href="file.zip" title="{bytes->v:math.division(b: 1024)->v:math.round() -> f:format.number()} KB">file</a>
+	<a href="file.zip" title="{bytes->v:math.division(b: 1024)->v:math.round()->f:format.number()} KB">file</a>
 
 Which will first take variable {bytes} and divide by 1024 to get a float KB size. Then round
 that off to a whole integer and finally use f:format.number to ensure a localized display of
