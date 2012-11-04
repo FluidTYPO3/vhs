@@ -6,7 +6,7 @@ TYPO3 extension VHS: Fluid ViewHelpers
 
 # Overview
 
-![ViewHelpers](http://twitpic.com/show/full/b9zwv6.png)
+![ViewHelpers](http://twitpic.com/show/full/ba3mnc.png)
 
 	__Checkmarked ViewHelpers are currently finished, others are still in progress.__
 
