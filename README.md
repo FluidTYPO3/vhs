@@ -8,7 +8,9 @@ TYPO3 extension VHS: Fluid ViewHelpers
 
 ![ViewHelpers](http://twitpic.com/show/full/ba3mnc.png)
 
-*Checkmarked ViewHelpers are currently finished, others are still in progress.*
+*Checkmarked ViewHelpers are currently finished, others are still in progress. ViewHelpers
+marked with a question mark icon are condition ViewHelpers which mean they support usage of
+f:then and f:else as child tags - and the "then" and "else" arguments, just like f:if does.*
 
 # Installation
 
