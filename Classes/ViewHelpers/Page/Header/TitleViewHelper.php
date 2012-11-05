@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
-class Tx_Vhs_ViewHelpers_Page_Head_TitleViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Arguments initialization
