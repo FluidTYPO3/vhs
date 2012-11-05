@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Fluid_ViewHelpers_Page_AbstractMenuViewHelper {
+class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper {
 
 	/**
 	 * Render method
