@@ -32,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ImplodeViewHelper extends Tx_Fluid_ViewHelpers_ExplodeViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_ImplodeViewHelper extends Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper {
 
 	/**
 	 * Initialize
