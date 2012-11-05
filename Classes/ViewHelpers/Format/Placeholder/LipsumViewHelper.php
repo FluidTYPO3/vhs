@@ -26,8 +26,7 @@
 /**
  * Lipsum ViewHelper
  *
- * Renders Lorem Ipsum text according to either TS settings
- * or provided arguments.
+ * Renders Lorem Ipsum text according to provided arguments.
  *
  * @author Claus Due, Wildside A/S
  * @package Vhs
