@@ -1,0 +1,102 @@
+<?php
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+/**
+ * Base class for all rendering ViewHelpers.
+ *
+ * If errors occur they can be graciously ignored and
+ * replaced by a small error message or the error itself.
+ *
+ * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @package Vhs
+ * @subpackage ViewHelpers\Render
+ */
+abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+
+	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * Initialize arguments
+	 *
+	 * @return void
+	 */
+	public function initializeArguments() {
+		$this->registerArgument('namespaces', 'array', 'Optional additional/overridden namespaces, array("ns" => "Tx_MyExt_ViewHelpers")', FALSE, array());
+		$this->registerArgument('onError', 'string', 'Optional error message to display if error occur while rendering. If NULL, lets the error Exception pass trough (and break rendering)', FALSE, NULL);
+		$this->registerArgument('graceful', 'boolean', 'If forced to FALSE, errors are not caught but rather "transmitted" as every other error would be', FALSE, FALSE);
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getPreparedNamespaces() {
+		$namespaces = array();
+		foreach ((array) $this->arguments['namespaces'] as $namespaceIdentifier => $namespace) {
+			$addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . ')';
+			array_push($namespaces, $addedOverriddenNamespace);
+		}
+		return $namespaces;
+	}
+
+	/**
+	 * @return Tx_Fluid_View_StandaloneView
+	 */
+	protected function getPreparedClonedView() {
+		/** @var $view Tx_Fluid_View_StandaloneView */
+		$view = $this->objectManager->create('Tx_Fluid_View_StandaloneView');
+		$view->setControllerContext($this->controllerContext);
+		$view->setRenderingContext($this->renderingContext);
+		$view->setFormat($this->controllerContext->getRequest()->getFormat());
+		return $view;
+	}
+
+	/**
+	 * @param Tx_Extbase_MVC_View_ViewInterface $view
+	 * @return string
+	 */
+	protected function renderPreparedClonedView(Tx_Extbase_MVC_View_ViewInterface $view) {
+		try {
+			$content = $view->render();
+		} catch (Exception $error) {
+			if (!$this->arguments['graceful']) {
+				throw $error;
+			}
+			$content = $error->getMessage() . ' (' . $error->getCode() . ')';
+		}
+		return $content;
+	}
+
+}
