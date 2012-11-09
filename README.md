@@ -6,7 +6,7 @@ TYPO3 extension VHS: Fluid ViewHelpers
 
 # Overview
 
-![ViewHelpers](http://twitpic.com/show/full/bbs35y.png)
+![ViewHelpers](http://twitpic.com/show/full/bbs5pa.png)
 
 *Checkmarked ViewHelpers are currently finished, others are still in progress. ViewHelpers
 marked with a question mark icon are condition ViewHelpers which mean they support usage of
@@ -23,7 +23,7 @@ To use the ViewHelpers in your Fluid templates simply add the namespace:
 
 ```xml
 {namespace v=Tx_Vhs_ViewHelpers}
-´´´
+```
 
 Using the namespace name "v" is not required but it is recommended. It's a single character
 like the "f" namespace but is visually easy to distinguish from "f".
@@ -37,7 +37,7 @@ Special care was taken to allow compact notations such as this:
 <f:for each="{myQueryResult -> v:iterator.sort(sortBy: 'name')}" as="record">
 	...
 </f:for>
-´´´
+```
 
 In the above case the sorted QueryResult is used only in the specific loop, preserving
 the order of the original QueryResult.
@@ -46,7 +46,7 @@ Multiple chained syntax is also possible:
 
 ```xml
 <a href="file.zip" title="{bytes->v:math.division(b: 1024)->v:math.round()->f:format.number()} KB">file</a>
-´´´
+```
 
 Which will first take variable {bytes} and divide by 1024 to get a float KB size. Then round
 that off to a whole integer and finally use f:format.number to ensure a localized display of
@@ -59,7 +59,7 @@ work well when applied in sequences such as the above or cases such as this:
 
 ```xml
 {text -> v:format.trim() -> v:format.markdown()}
-´´´
+```
 
 Naturally, the tag-based usage is supported the same way as the above but with one caveat
 which one should always be aware of; that Fluid will render whitespace characters between
