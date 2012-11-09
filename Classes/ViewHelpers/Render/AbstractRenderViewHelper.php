@@ -77,9 +77,10 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends Tx_Flu
 	protected function getPreparedClonedView() {
 		/** @var $view Tx_Fluid_View_StandaloneView */
 		$view = $this->objectManager->create('Tx_Fluid_View_StandaloneView');
-		$view->setControllerContext($this->controllerContext);
 		$view->setRenderingContext($this->renderingContext);
+		$view->setControllerContext($this->controllerContext);
 		$view->setFormat($this->controllerContext->getRequest()->getFormat());
+		$view->initializeView();
 		return $view;
 	}
 

@@ -44,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Render_InlineViewHelper extends Tx_Vhs_ViewHelpers_Rend
 	 * using additional (or overridden) namespaces if so
 	 * desired.
 	 *
-	 * @param $content
+	 * @param string $content
 	 * @return string
 	 */
 	public function render($content = NULL) {
