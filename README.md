@@ -45,7 +45,7 @@ the order of the original QueryResult.
 Multiple chained syntax is also possible:
 
 ```xml
-<a href="file.zip" title="{bytes->v:math.division(b: 1024)->v:math.round()->f:format.number()} KB">file</a>
+{bytes->v:math.division(b: 1024)->v:math.round()->f:format.number()} KB
 ```
 
 Which will first take variable {bytes} and divide by 1024 to get a float KB size. Then round
