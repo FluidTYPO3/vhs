@@ -136,7 +136,7 @@ Contains ViewHelpers to access, check or otherwise process media (images, files 
 
 Contains many ViewHelpers to render various parts of a page - from menus, breadcrumbs, content
 and header data. Contains a few nifty ViewHelpers to render specific content elements or place
-content elements (or <script> tags) in the page footer by leveraging the PageRender.
+content elements (or script tags) in the page footer by leveraging the PageRender.
 
 ## Render
 
