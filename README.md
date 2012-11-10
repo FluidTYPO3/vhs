@@ -6,11 +6,11 @@ TYPO3 extension VHS: Fluid ViewHelpers
 
 # Overview
 
-![ViewHelpers](http://twitpic.com/show/full/bc014s.png)
+![ViewHelpers](http://twitpic.com/show/full/bc3v08.png)
 
-*Checkmarked ViewHelpers are currently finished, others are still in progress. ViewHelpers
-marked with a question mark icon are condition ViewHelpers which mean they support usage of
-f:then and f:else as child tags - and the "then" and "else" arguments, just like f:if does.*
+*Grayed ViewHelpers are still incomplete, blue ViewHelpers are condition ViewHelpers which
+mean they support usage of f:then and f:else as child tags - and the "then" and "else"
+arguments, just like f:if does.*
 
 # Installation
 
