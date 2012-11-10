@@ -140,11 +140,8 @@ content elements (or script tags) in the page footer by leveraging the PageRende
 
 ## Render
 
-This group contains ViewHelpers which can render Fluid templates and Extbase Requests, letting
-you process Fluid stored in fx a DB record inline in the template (which would usually just
-output the fluid braces and tags) or render another file inline in your template. The special
-Request rendering ViewHelper will let you "render" an entire Request (just like when rendering
-an Extbase plugin's content element)
+This group contains rendering logic ViewHelpers - which can render other Fluid templates with
+custom variables, render Fluid saved in DB records, render sub-requests and implement caching.
 
 ## Security
 
