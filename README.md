@@ -4,7 +4,7 @@ TYPO3 extension VHS: Fluid ViewHelpers
 	Collection of general purpose ViewHelpers usable in the Fluid templating engine
 	that's bundled with the TYPO3 CMS.
 
-# Overview
+## Overview
 
 ![ViewHelpers](http://twitpic.com/show/full/bc3v08.png)
 
@@ -12,12 +12,12 @@ TYPO3 extension VHS: Fluid ViewHelpers
 mean they support usage of f:then and f:else as child tags - and the "then" and "else"
 arguments, just like f:if does.*
 
-# Installation
+## Installation
 
 Download and install as TYPO3 extension. That's it. There are no configuration options
 apart from the arguments which each ViewHelper accepts.
 
-# Usage
+## Usage
 
 To use the ViewHelpers in your Fluid templates simply add the namespace:
 
@@ -28,7 +28,7 @@ To use the ViewHelpers in your Fluid templates simply add the namespace:
 Using the namespace name "v" is not required but it is recommended. It's a single character
 like the "f" namespace but is visually easy to distinguish from "f".
 
-## A note about chaining inline syntax
+### A note about chaining inline syntax
 
 Many of the VHS ViewHelpers make particular sense when used with their inline syntax.
 Special care was taken to allow compact notations such as this:
@@ -74,9 +74,9 @@ misinterpreted when used as numeric values.
 It is highly recommended to use the inline annotation when your return values have a specific
 type before being output. Which is exactly the case when working with the v:math.* ViewHelpers.
 
-# ViewHelper Group descriptions
+## ViewHelper Group descriptions
 
-## Condition
+### Condition
 
 These ViewHelpers all use the AbstractConditionViewHelper base and supports the exact same usage
 as f:if - which means that any ViewHelper in the Condition sub-scope as well as any ViewHelper
@@ -93,26 +93,26 @@ in the overview graphic which is marked with a question mark, supports usage suc
 <div class="{v:condition.frontend(then: 'fe-class')}">...</div>
 ```
 
-## Extension
+### Extension
 
 This group of ViewHelpers lets you query different aspects of a TYPO3 extension, such as wether
 or not the extension is loaded (in which case you might want to make additional output) and
 fetching paths for the extension such as the site-relative path to the extension directory or
 an absolute path to the Resources folder of the extension.
 
-## Form
+### Form
 
 This group is very small and currently provides just one ViewHelper-based feature: a form
 select element which will let you manually render the <option> and <optgroup> tags and still
 generate a valid form token to satisfy TYPO3 security.
 
-## Format
+### Format
 
 As you would expect, this group contains various output formatting ViewHelpers such as Plaintext,
 Tidy and Trim. Also contains formatters for URL parameters and a few Placeholder generators
 which can output placeholder content useful when prototyping.
 
-## Iterator
+### Iterator
 
 This group contains a range of ViewHelpers designed to work with Iterators (including arrays).
 To name a few: sorting, conditions for existence of needle in haystack, next/previous conditions
@@ -120,7 +120,7 @@ which in addition also provides the next/previous object as a template varialbe 
 tag's content including f:else/f:then children, custom loop (not foreach'ing an array but for'ing
 until an upper limit) and implode/explode processors.
 
-## Math
+### Math
 
 Contains all Math calculators, all of which support chained syntax and many of which are capable
 of operating on single values as well as array inputs. Has calculators which can process a set
@@ -128,32 +128,32 @@ of numbers to calculate percentage of each number or of one number out of the se
 useful when rendering statistical overviews (can alleviate the Controller hugely by using
 chained syntax in the template for many consequetive calculations).
 
-## Media
+### Media
 
 Contains ViewHelpers to access, check or otherwise process media (images, files etc.)
 
-## Page
+### Page
 
 Contains many ViewHelpers to render various parts of a page - from menus, breadcrumbs, content
 and header data. Contains a few nifty ViewHelpers to render specific content elements or place
 content elements (or script tags) in the page footer by leveraging the PageRender.
 
-## Render
+### Render
 
 This group contains rendering logic ViewHelpers - which can render other Fluid templates with
 custom variables, render Fluid saved in DB records, render sub-requests and implement caching.
 
-## Security
+### Security
 
 Contains ViewHelpers to check for user login and/or group membership of users in both FE and BE
 contexts. The Allow and Deny ViewHelpers are Condition ViewHelpers.
 
-## Var
+### Var
 
 Contains VieWHelpers to modify, read, output and check variables used in the template.
 
 
-# ViewHelper argument reference
+## ViewHelper argument reference
 
 Can be found online at:
 
