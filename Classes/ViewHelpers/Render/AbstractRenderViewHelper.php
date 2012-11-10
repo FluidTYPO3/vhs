@@ -54,7 +54,6 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends Tx_Flu
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('namespaces', 'array', 'Optional additional/overridden namespaces, array("ns" => "Tx_MyExt_ViewHelpers")', FALSE, array());
 		$this->registerArgument('onError', 'string', 'Optional error message to display if error occur while rendering. If NULL, lets the error Exception pass trough (and break rendering)', FALSE, NULL);
 		$this->registerArgument('graceful', 'boolean', 'If forced to FALSE, errors are not caught but rather "transmitted" as every other error would be', FALSE, FALSE);
 	}
@@ -75,8 +74,7 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends Tx_Flu
 	 * @return Tx_Fluid_View_StandaloneView
 	 */
 	protected function getPreparedClonedView() {
-		/** @var $view Tx_Fluid_View_StandaloneView */
-		$view = $this->objectManager->create('Tx_Fluid_View_StandaloneView');
+		$view = $this->getPreparedView();
 		$view->setControllerContext(clone $this->controllerContext);
 		$view->setFormat($this->controllerContext->getRequest()->getFormat());
 		$view->assignMultiple($this->templateVariableContainer->getAll());
@@ -84,10 +82,19 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends Tx_Flu
 	}
 
 	/**
+	 * @return Tx_Fluid_View_StandaloneView
+	 */
+	protected function getPreparedView() {
+		/** @var $view Tx_Fluid_View_StandaloneView */
+		$view = $this->objectManager->create('Tx_Fluid_View_StandaloneView');
+		return $view;
+	}
+
+	/**
 	 * @param Tx_Extbase_MVC_View_ViewInterface $view
 	 * @return string
 	 */
-	protected function renderPreparedClonedView(Tx_Extbase_MVC_View_ViewInterface $view) {
+	protected function renderView(Tx_Extbase_MVC_View_ViewInterface $view) {
 		try {
 			$content = $view->render();
 		} catch (Exception $error) {

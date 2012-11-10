@@ -40,6 +40,16 @@
 class Tx_Vhs_ViewHelpers_Render_InlineViewHelper extends Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper {
 
 	/**
+	 * Initialize arguments
+	 *
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('namespaces', 'array', 'Optional additional/overridden namespaces, array("ns" => "Tx_MyExt_ViewHelpers")', FALSE, array());
+	}
+
+	/**
 	 * Renders an outside string as if it were Fluid code,
 	 * using additional (or overridden) namespaces if so
 	 * desired.
@@ -58,7 +68,7 @@ class Tx_Vhs_ViewHelpers_Render_InlineViewHelper extends Tx_Vhs_ViewHelpers_Rend
 		}
 		$view = $this->getPreparedClonedView();
 		$view->setTemplateSource($namespaceHeader . $content);
-		return $this->renderPreparedClonedView($view);
+		return $this->renderView($view);
 	}
 
 }
