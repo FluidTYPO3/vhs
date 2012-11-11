@@ -53,8 +53,30 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_QueryResult) {
 			/** @var $haystack Tx_Extbase_Persistence_QueryResult */
 			$asArray = $haystack->toArray();
+		} elseif (is_string($haystack)) {
+			$asArray = str_split($haystack);
 		}
-		return $asArray[$index];
+		return isset($asArray[$index]) ? $asArray[$index] : FALSE;
+	}
+
+	/**
+	 * @param mixed $haystack
+	 * @param mixed $needle
+	 * @return boolean
+	 */
+	protected function assertHaystackHasNeedle($haystack, $needle) {
+		if (is_array($haystack)) {
+			return (boolean) $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
+		} elseif ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
+			return (boolean) $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+		} elseif ($haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+			return (boolean) $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+		} elseif ($haystack instanceof Tx_Extbase_Persistence_QueryResult) {
+			return (boolean) $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
+		} elseif (is_string($haystack)) {
+			return strpos($haystack, $needle) !== FALSE;
+		}
+		return FALSE;
 	}
 
 	/**
@@ -67,7 +89,7 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
 			$needle = $needle->getUid();
 		}
-		foreach ($haystack as $index=>$candidate) {
+		foreach ($haystack as $index => $candidate) {
 			/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
 			if ($candidate->getUid() == $needle) {
 				return $index;
@@ -106,14 +128,14 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 			return array_search($needle, $haystack);
 		} else {
 			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
-			foreach ($haystack as $index=>$straw) {
+			foreach ($haystack as $index => $straw) {
 				/** @var $straw Tx_Extbase_DomainObject_DomainObjectInterface */
 				if ($straw->getUid() == $needle->getUid()) {
 					return $index;
 				}
 			}
-			return FALSE;
 		}
+		return FALSE;
 	}
 
 	/**
