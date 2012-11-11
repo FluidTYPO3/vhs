@@ -14,9 +14,9 @@ arguments, just like f:if does.*
 
 ## Wiki
 
-	Examples, tips and tricks can be found in the Wiki: https://github.com/NamelessCoder/vhs/wiki
+A quick explanation can be read in this README.
 
-	A quick explanation can be read in this README.
+Examples, tips and tricks can be found in the Wiki: https://github.com/NamelessCoder/vhs/wiki
 
 ## Installation
 
