@@ -51,7 +51,7 @@ class Tx_Vhs_ViewHelpers_Math_DivisionViewHelper extends Tx_Vhs_ViewHelpers_Math
 			throw new Exception('Required argument "a" was not supplied', 1237823699);
 		}
 		if ($b === NULL) {
-			throw new Exception('Required argument "a" was not supplied', 1237823699);
+			throw new Exception('Required argument "b" was not supplied', 1237823699);
 		}
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		$bIsIterable = $this->assertIsArrayOrIterator($b);
