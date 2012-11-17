@@ -47,7 +47,7 @@ class Tx_Vhs_ViewHelpers_Condition_BrowserViewHelperTest extends Tx_Extbase_Test
 	 */
 	public function renderWithBrowserAsStringReturnsRenderedThenChildIfBrowserMatches() {
 		$browser = 'safari';
-		$this->fixture->userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17';
+		$this->fixture->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17');
 		$this->fixture->expects($this->once())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
 
 		$this->assertSame(
@@ -61,7 +61,7 @@ class Tx_Vhs_ViewHelpers_Condition_BrowserViewHelperTest extends Tx_Extbase_Test
 	 */
 	public function renderWithBrowserAsStringReturnsRenderedElseChildIfBrowserDoesNotMatch() {
 		$browser = 'chrome';
-		$this->fixture->userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17';
+		$this->fixture->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17');
 		$this->fixture->expects($this->once())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
 
 		$this->assertSame(

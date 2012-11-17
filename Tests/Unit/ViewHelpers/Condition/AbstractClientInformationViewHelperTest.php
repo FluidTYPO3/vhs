@@ -37,6 +37,7 @@ class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelperTest exten
 	public function setUp() {
 		// Uses an actual implementation of this abstract class to test the methods
 		$this->fixture = new Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper();
+		//$this->fixture = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper', array('hasArgument'));
 	}
 
 	public function tearDown() {
@@ -48,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelperTest exten
 	 */
 	public function getUserAgentReturnsString() {
 		$userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17';
-		$this->fixture->userAgent = $userAgent;
+		$this->fixture->setUserAgent($userAgent);
 
 		$this->assertSame(
 			$userAgent,
@@ -60,7 +61,7 @@ class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelperTest exten
 	 * @test
 	 */
 	public function getBrowsersReturnsArray() {
-		$this->fixture->userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17';
+		$this->fixture->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17');
 
 		$this->assertSame(
 			array(
@@ -75,7 +76,7 @@ class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelperTest exten
 	 * @test
 	 */
 	public function getSystemsReturnsArray() {
-		$this->fixture->userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17';
+		$this->fixture->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17');
 
 		$this->assertSame(
 			array('mac'),

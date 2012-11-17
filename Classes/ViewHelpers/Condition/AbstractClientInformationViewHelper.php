@@ -38,7 +38,18 @@ abstract class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper 
 	/**
 	 * @var string
 	 */
-	private $userAgent = '';
+	protected $userAgent = '';
+
+	/**
+	 * Set the user-agent
+	 *
+	 * @param string $userAgent
+	 * @return Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper
+	 */
+	public function setUserAgent($userAgent) {
+		$this->userAgent = $userAgent;
+		return $this;
+	}
 
 	/**
 	 * Return the user-agent
@@ -48,7 +59,7 @@ abstract class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper 
 	public function getUserAgent() {
 		$userAgent = '';
 
-		if ($this->userAgent) {
+		if ($this->userAgent !== '') {
 			$userAgent = $this->userAgent;
 		} else {
 			$userAgent = t3lib_div::getIndpEnv('HTTP_USER_AGENT');
