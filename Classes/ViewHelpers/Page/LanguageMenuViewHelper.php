@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers/Page
  */
-class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
 	 * @var array
