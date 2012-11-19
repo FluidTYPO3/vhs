@@ -24,17 +24,29 @@
  * ************************************************************* */
 
 /**
- * Alias of Tx_Vhs_ViewHelpers_Page_FooterViewHelper for
- * backwards compatibility.
- *
- * Will be removed in 2.0
- *
- * ViewHelper used to place header blocks in document footer
+ * ViewHelper used to place header blocks in document header
  *
  * @package Vhs
  * @subpackage ViewHelpers\Page
- * @deprecated
  */
-class Tx_Vhs_ViewHelpers_Page_Content_FooterViewHelper extends Tx_Vhs_ViewHelpers_Page_FooterViewHelper {
+class Tx_Vhs_ViewHelpers_Page_HeaderViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractRelocationViewHelper {
+
+	/**
+	 * Render method
+	 *
+	 * @return void
+	 */
+	public function render() {
+		if (TYPO3_MODE == 'BE') {
+			return;
+		}
+		$content = $this->getContent();
+		$name = $this->getName();
+		$overwrite = $this->getOverwrite();
+		if (isset($GLOBALS['TSFE']->additionalHeaderData[$name]) === TRUE && !$overwrite) {
+			return;
+		}
+		$GLOBALS['TSFE']->additionalHeaderData[$name] = $content;
+	}
 
 }
