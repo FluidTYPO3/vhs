@@ -39,11 +39,14 @@ class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 *
 	 * {value -> vhs:format.plaintext() -> vhs:var.set(name: 'myVariable')}
 	 *
-	 * @param mixed $value
 	 * @param string $name
+	 * @param mixed $value
 	 * @return void
 	 */
-	public function render($value, $name) {
+	public function render($name, $value = NULL) {
+		if ($value === NULL) {
+			$value = $this->renderChildren();
+		}
 		if ($this->templateVariableContainer->exists($name) === TRUE) {
 			$this->templateVariableContainer->remove($name);
 		}
