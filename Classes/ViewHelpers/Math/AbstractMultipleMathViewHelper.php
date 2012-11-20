@@ -33,4 +33,61 @@
  */
 abstract class Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper {
 
+	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('b', 'mixed', 'Second number or Iterator/Traversable/Array for calculation', TRUE);
+	}
+
+	/**
+	 * @return mixed
+	 * @throw Exception
+	 */
+	public function render() {
+		$a = $this->getInlineArgument();
+		$b = $this->arguments['b'];
+		return $this->calculate($a, $b);
+	}
+
+	/**
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return mixed
+	 * @throws Exception
+	 */
+	protected function calculate($a, $b) {
+		if ($b === NULL) {
+			throw new Exception('Required argument "b" was not supplied', 1237823699);
+		}
+		$aIsIterable = $this->assertIsArrayOrIterator($a);
+		$bIsIterable = $this->assertIsArrayOrIterator($b);
+		if ($aIsIterable === TRUE) {
+			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
+			$bCanBeAccessed = $this->assertSupportsArrayAccess($b);
+			if ($aCanBeAccessed === FALSE || $bCanBeAccessed === FALSE) {
+				throw new Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
+			}
+			foreach ($a as $index => $value) {
+				$bSideValue = ($bIsIterable === TRUE ? $b[$index] : $b);
+				$a[$index] = $this->calculateAction($a, $bSideValue);
+			}
+			return $a;
+		} elseif ($bIsIterable === TRUE) {
+			// condition matched if $a is not iterable but $b is.
+			throw new Exception('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator', 1351890876);
+		}
+		return $this->calculateAction($a, $b);
+	}
+
+	/**
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return mixed
+	 */
+	protected function calculateAction($a, $b) {
+		return $a + $b;
+	}
+
 }

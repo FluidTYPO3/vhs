@@ -34,6 +34,13 @@
 abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		$this->registerArgument('a', 'mixed', 'First number for calculation', FALSE, NULL, TRUE);
+	}
+
+	/**
 	 * @param mixed $subject
 	 * @return boolean
 	 */
@@ -47,6 +54,71 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 	 */
 	protected function assertSupportsArrayAccess($subject) {
 		return (is_array($subject) === TRUE || ($subject instanceof Iterator === TRUE && $subject instanceof ArrayAccess === TRUE));
+	}
+
+	/**
+	 * @param array|Traversable $traversable
+	 * @return array
+	 */
+	protected function convertTraversableToArray($traversable) {
+		if ($this->assertIsArrayOrIterator($traversable) === FALSE) {
+			throw new Exception('Attempt to convert non-traversable object to array', 1353442738);
+		}
+		$array = array();
+		foreach ($traversable as $key => $value) {
+			$array[$key] = $value;
+		}
+		return $array;
+	}
+
+	/**
+	 * @return mixed
+	 * @throw Exception
+	 */
+	public function render() {
+		$a = $this->getInlineArgument();
+		return $this->calculate($a);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	protected function getInlineArgument() {
+		$a = $this->renderChildren();
+		if (isset($this->arguments['a']) === TRUE) {
+			$a = $this->arguments['a'];
+		}
+		if ($a === NULL) {
+			throw new Exception('Required argument "a" was not supplied', 1237823699);
+		}
+		return $a;
+	}
+
+	/**
+	 * @param mixed $a
+	 * @return mixed
+	 */
+	protected function calculate($a) {
+		$aIsIterable = $this->assertIsArrayOrIterator($a);
+		if ($aIsIterable === TRUE) {
+			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
+			if ($aCanBeAccessed === FALSE) {
+				throw new Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
+			}
+			foreach ($a as $index => $value) {
+				$a[$index] = $this->calculateAction($a);
+			}
+			return $a;
+		}
+		return $this->calculateAction($a);
+	}
+
+	/**
+	 * @param mixed $a
+	 * @return mixed
+	 */
+	protected function calculateAction($a) {
+		return $a;
 	}
 
 }

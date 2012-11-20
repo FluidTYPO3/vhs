@@ -37,30 +37,19 @@
 class Tx_Vhs_ViewHelpers_Math_RoundViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper {
 
 	/**
-	 * @param mixed $a
-	 * @param integer $decimals
-	 * @return mixed
-	 * @throw Exception
+	 * @return void
 	 */
-	public function render($a = NULL, $decimals = 0) {
-		if ($a === NULL) {
-			$a = $this->renderChildren();
-		}
-		if ($a === NULL) {
-			throw new Exception('Required argument "a" was not supplied', 1237823699);
-		}
-		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if ($aIsIterable === TRUE) {
-			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
-			if ($aCanBeAccessed === FALSE) {
-				throw new Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
-			}
-			foreach ($a as $index => $value) {
-				$a[$index] = round($value, $decimals);
-			}
-			return $a;
-		}
-		return round($a, $decimals);
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('decimals', 'integer', 'Number of decimals', FALSE, 0);
+	}
+
+	/**
+	 * @param mixed $a
+	 * @return integer
+	 */
+	protected function calculateAction($a) {
+		return round($a, $this->arguments['decimals']);
 	}
 
 }

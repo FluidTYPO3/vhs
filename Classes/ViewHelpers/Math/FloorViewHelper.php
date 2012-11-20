@@ -38,27 +38,9 @@ class Tx_Vhs_ViewHelpers_Math_FloorViewHelper extends Tx_Vhs_ViewHelpers_Math_Ab
 
 	/**
 	 * @param mixed $a
-	 * @return mixed
-	 * @throw Exception
+	 * @return integer
 	 */
-	public function render($a = NULL) {
-		if ($a === NULL) {
-			$a = $this->renderChildren();
-		}
-		if ($a === NULL) {
-			throw new Exception('Required argument "a" was not supplied', 1237823699);
-		}
-		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if ($aIsIterable === TRUE) {
-			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
-			if ($aCanBeAccessed === FALSE) {
-				throw new Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
-			}
-			foreach ($a as $index => $value) {
-				$a[$index] = floor($value);
-			}
-			return $a;
-		}
+	protected function calculateAction($a) {
 		return floor($a);
 	}
 
