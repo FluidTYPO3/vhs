@@ -36,7 +36,7 @@
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
- * @subpackage ViewHelpers
+ * @subpackage ViewHelpers\Math
  */
 class Tx_Vhs_ViewHelpers_Math_AverageViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper {
 
