@@ -26,17 +26,13 @@
 /**
  * Returns the website URL
  *
+ * Alias of v:site.url
+ *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Page
+ * @deprecated Will be removed in 2.0
  */
-class Tx_Vhs_ViewHelpers_Page_SiteUrlViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Page_SiteUrlViewHelper extends Tx_Vhs_ViewHelpers_Site_UrlViewHelper {
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$url = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-		return $url;
-	}
 }
