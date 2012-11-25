@@ -46,7 +46,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 	public function initializeArguments() {
 		$this->registerArgument('as', 'string', 'Which variable to update in the TemplateVariableContainer. If left out, returns sorted data instead of updating the varialbe (i.e. reference or copy)');
 		$this->registerArgument('sortBy', 'string', 'Which property/field to sort by - leave out for numeric sorting based on indexes(keys)');
-		$this->registerArgument('order', 'string', 'ASC or DESC', FALSE, 'ASC');
+		$this->registerArgument('order', 'string', 'ASC, DESC, RAND or SHUFFLE. RAND preserves keys, SHUFFLE does not - but SHUFFLE is faster', FALSE, 'ASC');
 		$this->registerArgument('sortFlags', 'string', 'Constant name from PHP for SORT_FLAGS: SORT_REGULAR, SORT_STRING, SORT_NUMERIC, SORT_NATURAL, SORT_LOCALE_STRING or SORT_FLAG_CASE', FALSE, 'SORT_REGULAR');
 	}
 
@@ -67,14 +67,6 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 				// (which is where inline arguments are taken from) is
 				// expected to contain the rendering rather than the variable.
 			$subject = $this->renderChildren();
-		} elseif ($subject === NULL) {
-			$priorities = array('array', 'objectStorage', 'queryResult');
-			foreach ($priorities as $argumentName) {
-				if ($this->arguments[$argumentName]) {
-					$subject = $this->arguments[$argumentName];
-					break;
-				}
-			}
 		}
 		$sorted = NULL;
 		if (is_array($subject) === TRUE) {
@@ -84,10 +76,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 				$sorted = $this->sortObjectStorage($subject);
 			} elseif ($subject instanceof Iterator) {
 				/** @var Iterator $subject */
-				$array = array();
-				foreach ($subject as $index => $item) {
-					$array[$index] = $item;
-				}
+				$array = iterator_to_array($subject, TRUE);
 				$sorted = $this->sortArray($array);
 			} elseif ($subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
 				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
@@ -129,6 +118,16 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 		}
 		if ($this->arguments['order'] === 'ASC') {
 			ksort($sorted, constant($this->arguments['sortFlags']));
+		} elseif ($this->arguments['order'] === 'RAND') {
+			$sortedKeys = array_keys($sorted);
+			shuffle($sortedKeys);
+			$backup = $sorted;
+			$sorted = array();
+			foreach ($sortedKeys as $sortedKey) {
+				$sorted[$sortedKey] = $backup[$sortedKey];
+			}
+		} elseif ($this->arguments['order'] === 'SHUFFLE') {
+			shuffle($sorted);
 		} else {
 			krsort($sorted, constant($this->arguments['sortFlags']));
 		}
@@ -161,6 +160,16 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 		}
 		if ($this->arguments['order'] === 'ASC') {
 			ksort($sorted, constant($this->arguments['sortFlags']));
+		} elseif ($this->arguments['order'] === 'RAND') {
+			$sortedKeys = array_keys($sorted);
+			shuffle($sortedKeys);
+			$backup = $sorted;
+			$sorted = array();
+			foreach ($sortedKeys as $sortedKey) {
+				$sorted[$sortedKey] = $backup[$sortedKey];
+			}
+		} elseif ($this->arguments['order'] === 'SHUFFLE') {
+			shuffle($sorted);
 		} else {
 			krsort($sorted, constant($this->arguments['sortFlags']));
 		}
