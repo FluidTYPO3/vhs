@@ -73,18 +73,20 @@ class Tx_Vhs_ViewHelpers_Form_RequiredViewHelper extends Tx_Fluid_Core_ViewHelpe
 	public function render($property, $validatorName = 'NotEmpty', Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
 		if ($object === NULL) {
 			$object = $this->getFormObject();
+			$className = get_class($object);
 		}
 		if (strpos($property, '.') !== FALSE) {
 			$pathSegments = explode('.', $property);
-			$property = array_pop($pathSegments);
-			$pathToProperty = implode('.', $pathSegments);
-			if (strpos($pathToProperty, '.') === FALSE) {
-				$object = Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $pathToProperty);
-			} else {
-				$object = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($pathToProperty, $object);
+			foreach ($pathSegments as $property) {
+				$annotations = $this->ownReflectionService->getPropertyTagValues($className, $property, 'var');
+				$possibleClassName = array_pop($annotations);
+				if (strpos($possibleClassName, '<') !== FALSE) {
+					$className = array_pop(explode('<', trim($possibleClassName, '>')));
+				} elseif (class_exists($possibleClassName) === TRUE) {
+					$className = $possibleClassName;
+				}
 			}
 		}
-		$className = get_class($object);
 		$annotations = $this->ownReflectionService->getPropertyTagValues($className, $property, 'validate');
 		if (in_array('NotEmpty', $annotations) === TRUE) {
 			return $this->renderThenChild();
