@@ -78,6 +78,9 @@ class Tx_Vhs_ViewHelpers_Form_RequiredViewHelper extends Tx_Fluid_Core_ViewHelpe
 		if (strpos($property, '.') !== FALSE) {
 			$pathSegments = explode('.', $property);
 			foreach ($pathSegments as $property) {
+				if (ctype_digit($property)) {
+					continue;
+				}
 				$annotations = $this->ownReflectionService->getPropertyTagValues($className, $property, 'var');
 				$possibleClassName = array_pop($annotations);
 				if (strpos($possibleClassName, '<') !== FALSE) {
