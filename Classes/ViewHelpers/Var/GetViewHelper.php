@@ -45,13 +45,33 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 			}
 		} else {
 			$segments = explode('.', $name);
-			$templateVariableRootName = array_shift($segments);
+			$templateVariableRootName = $lastSegment = array_shift($segments);
 			if ($this->templateVariableContainer->exists($templateVariableRootName)) {
 				$templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
 				try {
-					return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
+					$value = $templateVariableRoot;
+					foreach ($segments as $segment) {
+						if (ctype_digit($segment)) {
+							$segment = intval($segment);
+							$index = 0;
+								// Note: this loop approach is not a stupid solution. If you doubt this,
+								// attempt to feth a number at a numeric index from ObjectStorage ;)
+							foreach ($value as $possibleValue) {
+								if ($index === $segment) {
+									$value = $possibleValue;
+									break;
+								}
+								++ $index;
+							}
+							continue;
+						}
+						$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $segment);
+						$lastSegment = $segment;
+					}
+					return $value;
 				} catch (Exception $e) {
 					return NULL;
+					throw $e;
 				}
 			}
 		}
