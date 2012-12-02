@@ -103,7 +103,8 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 			// as often as there are elements in the box
 		if ($this->arguments['multiple'] !== FALSE && $this->arguments['multiple'] !== '') {
 			$content .= $this->renderHiddenFieldForEmptyValue();
-			for ($i=0; $i<count($options); $i++) {
+			$length = count($options);
+			for ($i = 0; $i < $length; $i++) {
 				$this->registerFieldNameForFormTokenGeneration($name);
 			}
 		} else {
@@ -167,7 +168,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 						if (method_exists($value, '__toString')) {
 							$value = (string)$value;
 						} else {
-							throw new Tx_Fluid_Core_ViewHelper_Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.' , 1247827553);
+							throw new Tx_Fluid_Core_ViewHelper_Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
 						}
 					}
 				} elseif (method_exists($value, '__toString')) {

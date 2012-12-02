@@ -60,12 +60,12 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 		$this->registerUniversalTagAttributes();
 		$this->registerArgument('tagName', 'string', 'Tag name to use for enclosing container, list and flags (not finished) only', FALSE, 'ul');
 		$this->registerArgument('tagNameChildren', 'string', 'Tag name to use for child nodes surrounding links, list and flags only', FALSE, 'li');
-		$this->registerArgument('defaultIsoFlag','string', 'ISO code of the default flag', FALSE, 'gb');
-		$this->registerArgument('defaultLanguageLabel','string', 'Label for the default language', FALSE, 'English');
-		$this->registerArgument('order','mixed', 'Orders the languageIds after this list', FALSE, '');
+		$this->registerArgument('defaultIsoFlag', 'string', 'ISO code of the default flag', FALSE, 'gb');
+		$this->registerArgument('defaultLanguageLabel', 'string', 'Label for the default language', FALSE, 'English');
+		$this->registerArgument('order', 'mixed', 'Orders the languageIds after this list', FALSE, '');
 		$this->registerArgument('labelOverwrite', 'mixed', 'Overrides language labels', FALSE, '');
-		$this->registerArgument('hideNotTranslated','boolean', 'Hides languageIDs which are not translated', FALSE, FALSE);
-		$this->registerArgument('layout','string', 'How to render links when using autorendering. Possible selections: name,flag - use fx "name" or "flag,name" or "name,flag"', FALSE, 'flag,name');
+		$this->registerArgument('hideNotTranslated', 'boolean', 'Hides languageIDs which are not translated', FALSE, FALSE);
+		$this->registerArgument('layout', 'string', 'How to render links when using autorendering. Possible selections: name,flag - use fx "name" or "flag,name" or "name,flag"', FALSE, 'flag,name');
 		$this->registerArgument('useCHash', 'boolean', 'Use cHash for typolink', FALSE, TRUE);
 		$this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', FALSE, 'typo3/sysext/t3skin/images/flags/');
 		$this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', FALSE, 'png');

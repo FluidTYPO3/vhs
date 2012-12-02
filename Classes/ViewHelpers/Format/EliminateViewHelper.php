@@ -44,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends Tx_Fluid_Core_ViewHe
 		$this->registerArgument('caseSensitive', 'boolean', 'Wether or not to perform case sensitive replacement', FALSE, TRUE);
 		$this->registerArgument('characters', 'mixed', "Characters to remove. Array or string, i.e. {0: 'a', 1: 'b', 2: 'c'} or 'abc' to remove all occurrences of a, b and c");
 		$this->registerArgument('strings', 'mixed', "Strings to remove. Array or CSV, i.e. {0: 'foo', 1: 'bar'} or 'foo,bar' to remove all occorrences of foo and bar. If your strings overlap then place the longest match first");
-		$this->registerArgument('whitespace', 'boolean', "Eliminate ALL whitespace characters", FALSE, FALSE);
+		$this->registerArgument('whitespace', 'boolean', 'Eliminate ALL whitespace characters', FALSE, FALSE);
 		$this->registerArgument('tabs', 'boolean', 'Eliminate only tab whitespaces', FALSE, FALSE);
 		$this->registerArgument('unixBreaks', 'boolean', 'Eliminate only UNIX line breaks', FALSE, FALSE);
 		$this->registerArgument('windowsBreaks', 'boolean', 'Eliminates only Windows carriage returns', FALSE, FALSE);

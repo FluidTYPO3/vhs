@@ -57,7 +57,7 @@ class Tx_Vhs_ViewHelpers_Page_Content_RenderViewHelper extends Tx_Vhs_ViewHelper
 			$html = $this->renderChildren();
 			$this->templateVariableContainer->remove($this->arguments['as']);
 		} else {
-			$html = "";
+			$html = '';
 			foreach ($content as $contentRecord) {
 				$html .= $contentRecord . LF;
 			}
