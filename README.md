@@ -138,11 +138,21 @@ chained syntax in the template for many consequetive calculations).
 
 Contains ViewHelpers to access, check or otherwise process media (images, files etc.)
 
+### Once
+
+ViewHelpers which will only render their child content once, limited by various conditions such
+as once per session, per cookie lifetime, per template context etc.
+
 ### Page
 
 Contains many ViewHelpers to render various parts of a page - from menus, breadcrumbs, content
 and header data. Contains a few nifty ViewHelpers to render specific content elements or place
 content elements (or script tags) in the page footer by leveraging the PageRender.
+
+### Random
+
+Contains ViewHelpers to randomly create and select various types of content - generate random
+numbers and strings, select random content and similar randomized purposes.
 
 ### Render
 
@@ -154,10 +164,13 @@ custom variables, render Fluid saved in DB records, render sub-requests and impl
 Contains ViewHelpers to check for user login and/or group membership of users in both FE and BE
 contexts. The Allow and Deny ViewHelpers are Condition ViewHelpers.
 
+### Site
+
+Contains ViewHelpers to interact with Site values such as site name and site url.
+
 ### Var
 
 Contains VieWHelpers to modify, read, output and check variables used in the template.
-
 
 ## ViewHelper argument reference
 
