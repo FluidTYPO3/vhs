@@ -183,7 +183,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 	 * @return array
 	 */
 	protected function getMenuItemEntry($page, $rootLine) {
-		$getLL = t3lib_div::_GP('L');
+		$getLL = $GLOBALS['TSFE']->sys_language_uid;
 		$pageUid = $page['uid'];
 		$doktype = $page['doktype'];
 		if ($getLL){
