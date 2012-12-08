@@ -80,7 +80,7 @@ class Tx_Vhs_ViewHelpers_Form_Select_OptionViewHelper extends Tx_Fluid_ViewHelpe
 			$this->tag->removeAttribute('selected');
 		}
 		$this->tag->setContent($tagContent);
-		if ($this->arguments['value']) {
+		if (isset($this->arguments['value'])) {
 			$this->tag->addAttribute('value', $this->arguments['value']);
 		}
 		return $this->tag->render();
