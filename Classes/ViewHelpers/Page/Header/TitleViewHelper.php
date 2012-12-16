@@ -39,13 +39,14 @@ class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends Tx_Fluid_Core_ViewH
 	 */
 	public function initializeArguments() {
 		$this->registerArgument('title', 'string', 'Title tag content');
+		$this->registerArgument('whitespaceString', 'string', 'String used to replace groups of white space characters, one replacement inserted per group', FALSE, ' ');
 	}
 
 	/**
 	 * Render method
 	 *
 	 * @return void
-	*/
+	 */
 	public function render() {
 		if (TYPO3_MODE == 'BE') {
 			return;
@@ -55,6 +56,7 @@ class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends Tx_Fluid_Core_ViewH
 		} else {
 			$title = $this->renderChildren();
 		}
+		$title = trim(preg_replace( '/\s+/', $this->arguments['whitespaceString'], $title), $this->arguments['whitespaceString']);
 		$GLOBALS['TSFE']->getPageRenderer()->setTitle($title);
 	}
 
