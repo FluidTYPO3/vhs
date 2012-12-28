@@ -51,10 +51,6 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 	protected $escapingInterceptorEnabled = FALSE;
 
 	/**
-	 * @var Tx_Colab_Service_MarkdownService
-	 */
-	protected $markdownService;
-	/**
 	 * @var string
 	 */
 	protected $markdownExecutablePath;
