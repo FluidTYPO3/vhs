@@ -62,10 +62,11 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 	/**
 	 * @param string $text
 	 * @param boolean $trim
+	 * @param boolean $htmlentities
 	 * @param string $markdownExecutablePath
 	 * @return string
 	 */
-	public function render($text = NULL, $trim = TRUE, $markdownExecutablePath = NULL) {
+	public function render($text = NULL, $trim = TRUE, $htmlentities = FALSE, $markdownExecutablePath = NULL) {
 		if ($markdownExecutablePath !== NULL) {
 			$this->markdownExecutablePath = $markdownExecutablePath;
 		} else {
@@ -80,6 +81,9 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 		}
 		if ($trim) {
 			$text = trim($text);
+		}
+		if ($htmlentities) {
+			$text = htmlentities($text);
 		}
 		$transformed = $this->transform($text);
 		return $transformed;
