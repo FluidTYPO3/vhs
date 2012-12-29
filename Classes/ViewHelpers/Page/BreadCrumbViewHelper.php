@@ -58,12 +58,12 @@ class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Pa
 		if (strlen(trim($content)) === 0) {
 			$content = $this->autoRender($rootLine);
 			if (strlen(trim($content)) === 0) {
-				$output = '';
+				$content = '';
 			} else {
 				$this->tag->setTagName($this->arguments['tagName']);
 				$this->tag->setContent($content);
 				$this->tag->forceClosingTag(TRUE);
-				$output = $this->tag->render();
+				$content = $this->tag->render();
 			}
 		}
 		if (count($backups) > 0) {
