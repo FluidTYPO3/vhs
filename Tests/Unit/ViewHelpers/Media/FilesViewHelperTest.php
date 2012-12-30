@@ -46,7 +46,7 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelperTest extends Tx_Extbase_Tests_Unit
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 
 		$this->assertEquals(array(), $viewHelper->render());
-	} 
+	}
 
 	/**
 	 * @test
@@ -54,7 +54,7 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelperTest extends Tx_Extbase_Tests_Unit
 	public function returnsEmptyArrayWhenPathIsInaccessible() {
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_FilesViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist'));
-		
+
 		$this->assertEquals(array(), $viewHelper->render());
 	}
 
@@ -64,8 +64,10 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelperTest extends Tx_Extbase_Tests_Unit
 	public function returnsPopulatedArrayOfAllFoundFiles() {
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_FilesViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
-		
-		$this->assertCount(3, $viewHelper->render());
+		$actualFiles = glob($this->fixturesPath . '/*');
+		$actualFilesCount = count($actualFiles);
+
+		$this->assertCount($actualFilesCount, $viewHelper->render());
 	}
 
 	/**
@@ -75,8 +77,10 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelperTest extends Tx_Extbase_Tests_Unit
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_FilesViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
 		$viewHelper->setArguments(array('extensionList' => 'txt'));
-		
-		$this->assertCount(1, $viewHelper->render());
+		$actualFiles = glob($this->fixturesPath . '/*.txt');
+		$actualFilesCount = count($actualFiles);
+
+		$this->assertCount($actualFilesCount, $viewHelper->render());
 	}
 
 }
