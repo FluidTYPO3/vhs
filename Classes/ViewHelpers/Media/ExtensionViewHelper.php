@@ -24,13 +24,13 @@
  * ************************************************************* */
 
 /**
- * Returns an array of files found in the provided path
+ * Returns the extension of the provided file
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -39,34 +39,34 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('path', 'string', 'Path to the folder containing the files to be listed.', TRUE);
-		$this->registerArgument('extensionList', 'string', 'A comma seperated list of file extensions to pick up.', FALSE, '');
-		$this->registerArgument('prependPath', 'boolean', 'If set to TRUE the path will be prepended to file names.', FALSE, FALSE);
-		$this->registerArgument('order', 'string', 'If set to "mtime" sorts files by modification time or alphabetically otherwise.', FALSE, '');
-		$this->registerArgument('excludePattern', 'string', 'A comma seperated list of filenames to exclude, no wildcards.', FALSE, '');
+		$this->registerArgument('file', 'string', 'Path to the file to determine extension for.', TRUE);
 	}
 
 	/**
-	 * @return array
+	 * @return string
 	 */
 	public function render() {
-		$path = $this->arguments['path'];
 
-		if ($path === NULL) {
-			$path = $this->renderChildren();
-			if ($path === NULL) {
-				return array();
+		$file = $this->arguments['file'];
+
+		if ($file === NULL) {
+			$file = $this->renderChildren();
+
+			if ($file === NULL) {
+				return '';
 			}
 		}
 
-		$extensionList  = $this->arguments['extensionList'];
-		$prependPath    = $this->arguments['prependPath'];
-		$order          = $this->arguments['order'];
-		$excludePattern = $this->arguments['excludePattern'];
+		$parts = explode('.', basename($file));
 
-		$files = t3lib_div::getFilesInDir($path, $extensionList, $prependPath, $order, $excludePattern);
+		// file has no extension
+		if (count($parts) == 1) {
+			return '';
+		}
 
-		return $files;
+		$extension = strtolower(array_pop($parts));
+
+		return $extension;
 	}
 
 }
