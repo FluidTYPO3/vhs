@@ -58,6 +58,10 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 
 		$file = t3lib_div::getFileAbsFileName($path);
 
+		if (!file_exists($file) || is_dir($file)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);            
+		}
+
 		$info = getimagesize($file);
 
 		return array(
