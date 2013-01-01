@@ -32,41 +32,41 @@
  */
 class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments() {
-        $this->registerArgument('path', 'string', 'Path to the file to determine size for.', TRUE);
-    }
+	/**
+	 * Initialize arguments.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function initializeArguments() {
+		$this->registerArgument('path', 'string', 'Path to the file to determine size for.', TRUE);
+	}
 
-    /**
-     * @return int
-     */
-    public function render() {
+	/**
+	 * @return int
+	 */
+	public function render() {
 
-        $path = $this->arguments['path'];
+		$path = $this->arguments['path'];
 
-        if ($path === NULL) {
-            $path = $this->renderChildren();
-            if ($path === NULL) {
-                return 0;
-            }
-        }
+		if ($path === NULL) {
+			$path = $this->renderChildren();
+			if ($path === NULL) {
+				return 0;
+			}
+		}
 
-        if (!file_exists($path) || is_dir($path)) {
-            throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $path . '". File does not exist or is a directory.', 1356953963);            
-        }
+		if (!file_exists($path) || is_dir($path)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $path . '". File does not exist or is a directory.', 1356953963);            
+		}
 
-        $size = filesize($path);
+		$size = filesize($path);
 
-        if ($size === FALSE) {
-            throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $path . '".', 1356954032);
-        }
+		if ($size === FALSE) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $path . '".', 1356954032);
+		}
 
-        return $size;
-    }
+		return $size;
+	}
 
 }
