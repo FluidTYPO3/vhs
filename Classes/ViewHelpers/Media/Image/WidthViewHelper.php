@@ -24,51 +24,22 @@
  * ************************************************************* */
 
 /**
- * Returns the extension of the provided file
+ * Returns the width of the provided image file in pixels
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Media
+ * @subpackage ViewHelpers\Media\Image
  */
-class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Media_Image_WidthViewHelper extends Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper {
 
 	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('file', 'string', 'Path to the file to determine extension for.', TRUE);
-	}
-
-	/**
-	 * @return string
+	 * @return int
 	 */
 	public function render() {
 
-		$filePath = $this->arguments['file'];
+		$info = $this->getInfo();
 
-		if ($filePath === NULL) {
-			$filePath = $this->renderChildren();
-
-			if ($filePath === NULL) {
-				return '';
-			}
-		}
-
-		$file = t3lib_div::getFileAbsFileName($filePath);
-
-		$parts = explode('.', basename($file));
-
-		// file has no extension
-		if (count($parts) == 1) {
-			return '';
-		}
-
-		$extension = strtolower(array_pop($parts));
-
-		return $extension;
+		return isset($info['width']) ? $info['width'] : 0;
 	}
 
 }

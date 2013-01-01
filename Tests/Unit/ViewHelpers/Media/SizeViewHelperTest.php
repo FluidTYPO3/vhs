@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Extbase_Tests_Unit_
 	protected $fixturesPath;
 
 	public function setUp() {
-		$this->fixturesPath = __DIR__ . '/../../../Fixtures/Files';
+		$this->fixturesPath = 'EXT:vhs/Tests/Fixtures/Files';
 	}
 
 	/**

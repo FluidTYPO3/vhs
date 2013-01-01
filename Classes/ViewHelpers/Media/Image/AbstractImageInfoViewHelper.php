@@ -24,13 +24,13 @@
  * ************************************************************* */
 
 /**
- * Returns the extension of the provided file
+ * Base class: Media\Image view helpers
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Media
+ * @subpackage ViewHelpers\Media\Image
  */
-class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -39,36 +39,36 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends Tx_Fluid_Core_ViewHel
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('file', 'string', 'Path to the file to determine extension for.', TRUE);
+		$this->registerArgument('path', 'string', 'Path to the image file to determine info for.', TRUE);
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function render() {
+	public function getInfo() {
 
-		$filePath = $this->arguments['file'];
+		$path = $this->arguments['path'];
 
-		if ($filePath === NULL) {
-			$filePath = $this->renderChildren();
-
-			if ($filePath === NULL) {
-				return '';
+		if ($path === NULL) {
+			$path = $this->renderChildren();
+			if ($path === NULL) {
+				return array();
 			}
 		}
 
-		$file = t3lib_div::getFileAbsFileName($filePath);
+		$file = t3lib_div::getFileAbsFileName($path);
 
-		$parts = explode('.', basename($file));
-
-		// file has no extension
-		if (count($parts) == 1) {
-			return '';
+		if (!file_exists($file) || is_dir($file)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);            
 		}
 
-		$extension = strtolower(array_pop($parts));
+		$info = getimagesize($file);
 
-		return $extension;
+		return array(
+			'width'  => $info[0],
+			'height' => $info[1],
+			'type'   => $info['mime'],
+		);
 	}
 
 }
