@@ -56,7 +56,9 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 			}
 		}
 
-		$info = getimagesize($path);
+		$file = t3lib_div::getFileAbsFileName($path);
+
+		$info = getimagesize($file);
 
 		return array(
 			'width'  => $info[0],

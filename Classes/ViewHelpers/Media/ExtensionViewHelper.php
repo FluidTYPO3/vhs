@@ -47,15 +47,17 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends Tx_Fluid_Core_ViewHel
 	 */
 	public function render() {
 
-		$file = $this->arguments['file'];
+		$filePath = $this->arguments['file'];
 
-		if ($file === NULL) {
-			$file = $this->renderChildren();
+		if ($filePath === NULL) {
+			$filePath = $this->renderChildren();
 
-			if ($file === NULL) {
+			if ($filePath === NULL) {
 				return '';
 			}
 		}
+
+		$file = t3lib_div::getFileAbsFileName($filePath);
 
 		$parts = explode('.', basename($file));
 
