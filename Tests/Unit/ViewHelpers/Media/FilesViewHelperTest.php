@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelperTest extends Tx_Extbase_Tests_Unit
 	protected $fixturesPath;
 
 	public function setUp() {
-		$this->fixturesPath = __DIR__ . '/../../../Fixtures/Files';
+		$this->fixturesPath = dirname(__FILE__) . '/../../../Fixtures/Files';
 	}
 
 	/**

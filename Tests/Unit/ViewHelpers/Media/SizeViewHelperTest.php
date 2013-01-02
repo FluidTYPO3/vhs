@@ -44,6 +44,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Extbase_Tests_Unit_
 	public function returnsZeroForEmptyArguments() {
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
+
 		$this->assertEquals(0, $viewHelper->render());
 	}
 
@@ -53,6 +54,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Extbase_Tests_Unit_
 	public function returnsFileSizeAsInteger() {
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
+
 		$this->assertEquals(7094, $size = $viewHelper->render());
 	}
 
@@ -62,6 +64,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Extbase_Tests_Unit_
 	public function throwsExceptionWhenFileNotFound() {
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
+
 		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
 		$size = $viewHelper->render();
 	}
@@ -72,6 +75,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Extbase_Tests_Unit_
 	public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory() {
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
+		
 		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
 		$size = $viewHelper->render();
 	}
