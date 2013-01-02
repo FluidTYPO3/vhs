@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelperTest extends Tx_Extbase_Tests_
 	protected $fixturesPath;
 
 	public function setUp() {
-		$this->fixturesPath = __DIR__ . '/../../../Fixtures/Files';
+		$this->fixturesPath = 'EXT:vhs/Tests/Fixtures/Files';
 	}
 
 	/**
@@ -50,7 +50,7 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelperTest extends Tx_Extbase_Tests_
 	/**
 	 * @test
 	 */
-	public function returnsExtensionForAbsolutePath() {
+	public function returnsExpectedExtensionForProvidedPath() {
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/foo.txt'));
 		$this->assertEquals('txt', $viewHelper->render());
