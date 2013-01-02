@@ -24,7 +24,26 @@
  ***************************************************************/
 
 /**
- * Condition: Is context Backend?
+ * ### Condition: Is context Backend?
+ *
+ * A condition ViewHelper which renders the `then` child if
+ * current context being rendered is BE.
+ *
+ * ### Examples
+ *
+ *     <!-- simple usage, content becomes then-child -->
+ *     <v:condition.backend>
+ *         Hooray for BE contexts!
+ *     </v:condition.backend>
+ *     <!-- extended use combined with f:then and f:else -->
+ *     <v:condition.backend>
+ *         <f:then>
+ *            Hooray for BE contexts!
+ *         </f:then>
+ *         <f:else>
+ *            Maybe FE, maybe CLI.
+ *         </f:else>
+ *     </v:condition.backend>
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

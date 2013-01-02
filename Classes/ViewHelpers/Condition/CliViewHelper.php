@@ -24,7 +24,26 @@
  ***************************************************************/
 
 /**
- * Condition: Is context CLI?
+ * ### Condition: Is context CLI?
+ *
+ * A condition ViewHelper which renders the `then` child if
+ * current context being rendered is CLI.
+ *
+ * ### Examples
+ *
+ *     <!-- simple usage, content becomes then-child -->
+ *     <v:condition.cli>
+ *         Hooray for CLI contexts!
+ *     </v:condition.cli>
+ *     <!-- extended use combined with f:then and f:else -->
+ *     <v:condition.cli>
+ *         <f:then>
+ *            Hooray for CLI contexts!
+ *         </f:then>
+ *         <f:else>
+ *            Maybe BE, maybe FE.
+ *         </f:else>
+ *     </v:condition.cli>
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

@@ -24,7 +24,16 @@
  ***************************************************************/
 
 /**
- * Condition: Current system matches the given?
+ * ### Condition: Client's System
+ *
+ * A condition ViewHelper which renders the `then` child if client's
+ * operating system matches the `system` argument.
+ *
+ * ### Example
+ *
+ *     <v:condition.system system="mac">
+ *         Thank you for using Mac!
+ *     </v:condition.system>
  *
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs

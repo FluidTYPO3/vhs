@@ -24,21 +24,23 @@
  ***************************************************************/
 
 /**
- * Condition
+ * ### Condition ViewHelper
  *
  * Extended condition ViewHelper. Works slightly different from
- * f:if by not rendering the child tag content if the "then"
+ * `f:if` by not rendering the child tag content if the "then"
  * condition is encountered - allowing this usage:
  *
- * <v:condition>
- * 	<v:condition.extend>
- * 		({a} == {b} && {c} != NULL) OR {a} == NULL
- * 	</v:condition.extend>
- *  This text is completely ignored; only text in f:then is echoed
- * 	<f:then>
- * 		Output if TRUE
- * 	</f:then>
- * </f:condition>
+ * ### Example
+ *
+ *     <v:condition>
+ *         <v:condition.extend>
+ *             ({a} == {b} && {c} != NULL) OR {a} == NULL
+ *         </v:condition.extend>
+ *         This text is completely ignored; only text in f:then is echoed
+ *         <f:then>
+ * 	          Output if TRUE
+ * 	       </f:then>
+ *     </f:condition>
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

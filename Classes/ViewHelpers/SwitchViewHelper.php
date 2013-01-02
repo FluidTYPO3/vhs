@@ -24,9 +24,20 @@
  ***************************************************************/
 
 /**
- * Switch ViewHelper
+ * ### Switch ViewHelper
  *
- * Fluid implementation of PHP's switch($value) construct
+ * Fluid implementation of PHP's switch($value) construct.
+ *
+ * ### Example
+ *
+ *     <v:switch value="{variable}">
+ *         <v:case case="someValue" break="TRUE">
+ *             <!-- do whatever, if {variable} == 'someValue' -->
+ *         </v:case>
+ *         <v:case case="default">
+ *             <!-- the case "default" is a reserved keyword which acts as the default case. -->
+ *         </v:case>
+ *     </v:switch>
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

@@ -24,9 +24,19 @@
  ***************************************************************/
 
 /**
- * Call ViewHelper
+ * ### Call ViewHelper
  *
- * Calls a method on an existing object
+ * Calls a method on an existing object. Usable as inline or tag.
+ *
+ * ### Examples
+ *
+ *     <!-- inline, useful as argument, for example in f:for -->
+ *     {object -> v:call(method: 'toArray')}
+ *     <!-- tag, useful to quickly output simple values -->
+ *     <v:call object="{object}" method="unconventionalGetter" />
+ *     <v:call method="unconventionalGetter">{object}</v:call>
+ *     <!-- arguments for the method -->
+ *     <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

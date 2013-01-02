@@ -24,11 +24,23 @@
  ***************************************************************/
 
 /**
- * Condition: Extended
+ * ### Condition: Extended
  *
  * Uses advanced ChildNodeAccessor approach to enable
  * very complex conditions supporting AND/OR and parenthesis
  * syntax elements as well as array and object comparison.
+ *
+ * ### Example
+ *
+ *     <v:condition>
+ *         <v:condition.extend>
+ *             ({a} == {b} && {c} != NULL) OR {a} == NULL
+ *         </v:condition.extend>
+ *         This text is completely ignored; only text in f:then is echoed
+ *         <f:then>
+ * 	          Output if TRUE
+ * 	       </f:then>
+ *     </f:condition>
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

@@ -24,7 +24,30 @@
  ***************************************************************/
 
 /**
- * Condition: Current browser matches the given?
+ * ### Condition: Client's Browser
+ *
+ * Condition ViewHelper which renders the `then` child if client's
+ * browser matches the `browser` argument
+ *
+ * ### Examples
+ *
+ *     <!-- simple usage, content becomes then-child -->
+ *     <v:condition.browser browser="chrome">
+ *         Thank you for using Google Chrome!
+ *     </v:condition.browser>
+ *     <!-- display a nice warning if not using Chrome -->
+ *     <v:condition.browser browser="chrome">
+ *         <f:else>
+ *             <div class="alert alert-info">
+ *                 <h2 class="alert-header">Please download Google Chrome</h2>
+ *                 <p>
+ *                     The particular system you are accessing uses features which
+ *                     only work in Google Chrome. For the best experience, download
+ *                     Chrome here:
+ *                     <a href="http://chrome.google.com/">http://chrome.google.com/</a>
+ *                 </p>
+ *         </f:else>
+ *     </v:condition.browser>
  *
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
