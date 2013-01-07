@@ -185,7 +185,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 	protected function getMenuItemEntry($page, $rootLine) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
 		$pageUid = $page['uid'];
-		if ($this->arguments['useShortcutData']) {
+		if ($this->arguments['useShortcutData'] && $page['doktype'] == constant('t3lib_pageSelect::DOKTYPE_SHORTCUT')) {
 				// first, ensure the complete data array is present based on the shortcut page's data
 			$page = $this->pageSelect->getPage($pageUid);
 			switch ($page['shortcut_mode']) {
@@ -215,7 +215,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 					break;
 				case 0:
 				default:
-					$page = $page = $this->pageSelect->getPage($page['shortcut']);
+					$page = $this->pageSelect->getPage($page['shortcut']);
+					$pageUid = $page['uid'];
 			}
 		}
 		$doktype = $page['doktype'];
