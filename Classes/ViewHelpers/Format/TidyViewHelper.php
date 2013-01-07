@@ -46,8 +46,9 @@ class Tx_Vhs_ViewHelpers_Format_TidyViewHelper extends Tx_Fluid_Core_ViewHelper_
 		if (class_exists('tidy') === FALSE) {
 			throw new Exception('TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.', 1352059753);
 		}
-		$tidy = new tidy();
-		return $tidy->repairString($content);
+		$tidy = tidy_parse_string($content);
+		$tidy->cleanRepair();
+		return (string) $tidy;
 	}
 
 }
