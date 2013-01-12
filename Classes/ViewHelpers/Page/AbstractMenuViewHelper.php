@@ -245,7 +245,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['title'] = $title;
-		$page['doktype'] = $doktype;
+		$page['doktype'] = (integer) $doktype;
 		return $page;
 	}
 
