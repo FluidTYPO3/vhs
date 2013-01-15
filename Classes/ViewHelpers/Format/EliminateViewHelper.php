@@ -158,7 +158,7 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @return string
 	 */
 	protected function eliminateUnixBreaks($content) {
-		$content = str_replcace("\n", '', $content);
+		$content = str_replace("\n", '', $content);
 		return $content;
 	}
 
