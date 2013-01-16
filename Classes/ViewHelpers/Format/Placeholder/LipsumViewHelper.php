@@ -74,7 +74,7 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 	 */
 	public function render($lipsum = NULL) {
 		if (strlen($lipsum) === 0) {
-			$this->getDefaultLoremIpsum();
+			$lipsum = $this->getDefaultLoremIpsum();
 		}
 		if (strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\./]/i', $lipsum)) {
 				// argument is most likely a file reference.
@@ -89,16 +89,16 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 		}
 		$lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
 		$paragraphs = explode("\n", $lipsum);
-		$paragraphs = array_slice($paragraphs, 0, intval($settings['paragraphs']));
+		$paragraphs = array_slice($paragraphs, 0, intval($this->arguments['paragraphs']));
 		foreach ($paragraphs as $index => $paragraph) {
-			$length = $settings['wordsPerParagraph'] + rand(0 - intval($settings['skew']), intval($settings['skew']));
+			$length = $this->arguments['wordsPerParagraph'] + rand(0 - intval($this->arguments['skew']), intval($this->arguments['skew']));
 			$words = explode(' ', $paragraph);
 			$paragraphs[$index] = implode(' ', array_slice($words, 0, $length));
 		}
 
 		$lipsum = implode("\n", $paragraphs);
-		if ((boolean) $settings['html'] === TRUE) {
-			$lipsum = $this->contentObject->parseFunc($lipsum, array(), '< ' . $settings['parseFuncTSPath']);
+		if ((boolean) $this->arguments['html'] === TRUE) {
+			$lipsum = $this->contentObject->parseFunc($lipsum, array(), '< ' . $this->arguments['parseFuncTSPath']);
 		}
 		return $lipsum;
 	}
