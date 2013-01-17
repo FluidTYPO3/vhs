@@ -34,6 +34,7 @@
  * - arrays containing DomainObjects
  * - ObjectStorage containing DomainObjects
  * - standard types (string, integer, boolean, float, NULL)
+ * - DateTime including ones found as property values on DomainObjects
  *
  * Recursion protection is enabled for DomainObjects with the option to
  * add a special marker (any variable type above also supported here)
@@ -82,19 +83,53 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 		} elseif (TRUE === $value instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 				// Convert to associative array,
 			$value = $this->recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
+		} elseif (TRUE === $value instanceof DateTime) {
+			$value = $this->dateTimeToUnixtimeMiliseconds($value);
 		}
 
+			// process output of initial conversion, catching any specially supported object types such as DomainObject and DateTime
 		if (TRUE === is_array($value)) {
 			$value = $this->recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
-		}
+			$value = $this->recursiveDateTimeToUnixtimeMiliseconds($value);
+		};
 
 		$json = json_encode($value);
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument cannot be converted into JSON.', 1358440181); 
+			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument cannot be converted into JSON.', 1358440181);
 		}
 
 		return $json;
+	}
+
+	/**
+	 * Converts any encountered DateTime instances to UNIXTIME timestamps
+	 * which are then multiplied by 1000 to create a JavaScript appropriate
+	 * time stamp - ready to be loaded into a Date object client-side.
+	 *
+	 * Works on already converted DomainObjects which are at this point just
+	 * associative arrays of values - which might be DateTime instances.
+	 *
+	 * @param array $array
+	 * @return array
+	 */
+	protected function recursiveDateTimeToUnixtimeMiliseconds(array $array) {
+		foreach ($array as $key => $possibleDateTime) {
+			if (TRUE === $possibleDateTime instanceof DateTime) {
+				$array[$key] = $this->dateTimeToUnixtimeMiliseconds($possibleDateTime);
+			} elseif (TRUE === is_array($possibleDateTime)) {
+				$array[$key] = $this->recursiveDateTimeToUnixtimeMiliseconds($array);
+			}
+		}
+		return $array;
+	}
+
+	/**
+	 * @param DateTime $dateTime
+	 * @return integer
+	 */
+	protected function dateTimeToUnixtimeMiliseconds(DateTime $dateTime) {
+		return intval($dateTime->format('U')) * 1000;
 	}
 
 	/**
