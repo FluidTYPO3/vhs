@@ -66,10 +66,11 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 * @param boolean $useTraversableKeys If TRUE, preserves keys from Traversables converted to arrays. Not recommended for ObjectStorages!
 	 * @param boolean $preventRecursion If FALSE, allows recursion to occur which could potentially be fatal to the output unless managed
 	 * @param mixed $recursionMarker Any value - string, integer, boolean, object or NULL - inserted instead of recursive instances of objects
+	 * @param string $dateTimeFormat A date() format for converting DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)
 	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return string
 	 */
-	public function render($value = NULL, $useTraversableKeys = FALSE, $preventRecursion = TRUE, $recursionMarker = NULL) {
+	public function render($value = NULL, $useTraversableKeys = FALSE, $preventRecursion = TRUE, $recursionMarker = NULL, $dateTimeFormat = NULL) {
 		if (NULL === $value) {
 			$value = $this->renderChildren();
 			if (NULL === $value) {
@@ -84,13 +85,13 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 				// Convert to associative array,
 			$value = $this->recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
 		} elseif (TRUE === $value instanceof DateTime) {
-			$value = $this->dateTimeToUnixtimeMiliseconds($value);
+			$value = $this->dateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
 		}
 
 			// process output of initial conversion, catching any specially supported object types such as DomainObject and DateTime
 		if (TRUE === is_array($value)) {
 			$value = $this->recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
-			$value = $this->recursiveDateTimeToUnixtimeMiliseconds($value);
+			$value = $this->recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
 		};
 
 		$json = json_encode($value);
@@ -111,25 +112,34 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 * associative arrays of values - which might be DateTime instances.
 	 *
 	 * @param array $array
+	 * @dateTimeFormat
 	 * @return array
 	 */
-	protected function recursiveDateTimeToUnixtimeMiliseconds(array $array) {
+	protected function recursiveDateTimeToUnixtimeMiliseconds(array $array, $dateTimeFormat) {
 		foreach ($array as $key => $possibleDateTime) {
 			if (TRUE === $possibleDateTime instanceof DateTime) {
-				$array[$key] = $this->dateTimeToUnixtimeMiliseconds($possibleDateTime);
+				$array[$key] = $this->dateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
 			} elseif (TRUE === is_array($possibleDateTime)) {
-				$array[$key] = $this->recursiveDateTimeToUnixtimeMiliseconds($array);
+				$array[$key] = $this->recursiveDateTimeToUnixtimeMiliseconds($array, $dateTimeFormat);
 			}
 		}
 		return $array;
 	}
 
 	/**
+	 * Formats a single DateTime instance to whichever value is demanded by
+	 * the format specified in $dateTimeFormat (DateTime::format syntax).
+	 * Default format is NULL a JS UNIXTIME (time()*1000) is produced.
+	 *
 	 * @param DateTime $dateTime
+	 * @param string $dateTimeFormat
 	 * @return integer
 	 */
-	protected function dateTimeToUnixtimeMiliseconds(DateTime $dateTime) {
-		return intval($dateTime->format('U')) * 1000;
+	protected function dateTimeToUnixtimeMiliseconds(DateTime $dateTime, $dateTimeFormat) {
+		if (NULL === $dateTimeFormat) {
+			return intval($dateTime->format('U')) * 1000;
+		}
+		return $dateTime->format($dateTimeFormat);
 	}
 
 	/**
