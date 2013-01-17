@@ -44,6 +44,10 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 			}
 		}
 
+		if ($value instanceof Traversable) {
+			$value = iterator_to_array($value);
+		}
+
 		$json = json_encode($value);
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
