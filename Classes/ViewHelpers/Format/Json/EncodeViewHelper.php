@@ -33,7 +33,7 @@
 class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @param mixed $value
+	 * @param mixed $value Array or Traversable
 	 * @return string
 	 */
 	public function render($value = NULL) {
