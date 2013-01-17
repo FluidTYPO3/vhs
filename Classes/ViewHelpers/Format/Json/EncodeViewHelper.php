@@ -47,7 +47,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 		$json = json_encode($value);
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument cannot be converted into JSON.', 1358440181);            
+			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument cannot be converted into JSON.', 1358440181); 
 		}
 
 		return $json;
