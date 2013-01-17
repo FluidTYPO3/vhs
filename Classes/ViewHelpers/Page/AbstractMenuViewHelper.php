@@ -241,7 +241,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 		$shortcut = ($doktype == constant('t3lib_pageSelect::DOKTYPE_SHORTCUT')) ? $page['shortcut'] : $page['url'];
 		$page['active'] = $this->isActive($pageUid, $rootLine);
 		$page['current'] = $this->isCurrent($pageUid);
-		$page['hasSubPages'] = (count($this->pageSelect->getMenu($pageUid)) > 0) ? 1 : 0;
+		$page['hasSubPages'] = (count($this->pageSelect->getMenu($pageUid, $fields = '*', $sortField = 'sorting', $addWhere = 'AND nav_hide=0')) > 0) ? 1 : 0;
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['title'] = $title;
