@@ -36,7 +36,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 * @param mixed $value Array or Traversable
 	 * @return string
 	 */
-	public function render($value = NULL) {
+	public function render($value = NULL, $useTraversableKeys = FALSE) {
 		if (NULL === $value) {
 			$value = $this->renderChildren();
 			if (NULL === $value) {
@@ -45,7 +45,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 		}
 
 		if ($value instanceof Traversable) {
-			$value = iterator_to_array($value);
+			$value = iterator_to_array($value, $useTraversableKeys);
 		}
 
 		$json = json_encode($value);
