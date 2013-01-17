@@ -92,10 +92,16 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 		}
 		if ($this->arguments['as']) {
 			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
+				$backup = $this->templateVariableContainer->get($this->arguments['as']);
 				$this->templateVariableContainer->remove($this->arguments['as']);
 			}
 			$this->templateVariableContainer->add($this->arguments['as'], $sorted);
-			return $this->renderChildren();
+			$content = $this->renderChildren();
+			$this->templateVariableContainer->remove($this->arguments['as']);
+			if (isset($backup) === TRUE) {
+				$this->templateVariableContainer->add($this->arguments['as'], $backup);
+			}
+			return $content;
 		}
 		return $sorted;
 	}
