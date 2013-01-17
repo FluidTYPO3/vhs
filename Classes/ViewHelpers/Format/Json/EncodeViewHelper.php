@@ -24,7 +24,30 @@
  * ************************************************************* */
 
 /**
- * Returns a string containing the JSON representation of the argument
+ * ### JSON Encoding ViewHelper
+ *
+ * Returns a string containing the JSON representation of the argument.
+ * The argument may be any of the following types:
+ *
+ * - arrays, associative and traditional
+ * - DomainObjects
+ * - arrays containing DomainObjects
+ * - ObjectStorage containing DomainObjects
+ * - standard types (string, integer, boolean, float, NULL)
+ *
+ * Recursion protection is enabled for DomainObjects with the option to
+ * add a special marker (any variable type above also supported here)
+ * which is inserted where an object which would cause recursion would
+ * be placed.
+ *
+ * Be specially careful when you JSON encode DomainObjects which have
+ * recursive relations to itself using either 1:n or m:n - in this case
+ * the one member of the converted relation will be whichever value you
+ * specified as "recursionMarker" - or the default value, NULL. When
+ * using the output of such conversion in JavaScript please make sure you
+ * check the type before assuming that every member of a converted 1:n
+ * or m:n recursive relation is in fact a JavaScript. Not doing so may
+ * result in fatal JavaScript errors in the client browser.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
