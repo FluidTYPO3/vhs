@@ -38,16 +38,16 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Extbase_Tes
 
 		$this->assertEquals('{}', $viewHelper->render());
 	}
-	
+
 	/**
 	 * @test
 	 */
 	public function returnsExpectedStringForProvidedArguments() {
-		
+
 		$fixture = array(
-			'foo'    => 'bar', 
-			'bar'    => TRUE, 
-			'baz'    => 1, 
+			'foo'    => 'bar',
+			'bar'    => TRUE,
+			'baz'    => 1,
 			'foobar' => NULL,
 		);
 
@@ -67,6 +67,41 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Extbase_Tes
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue("\xB1\x31"));
 
 		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
-		$this->assertEquals('null', $viewHelper->render());        
+		$this->assertEquals('null', $viewHelper->render());
+	}
+
+	/**
+	 * @test
+	 */
+	public function returnsJsConsumableTimestamps() {
+		$date = new \DateTime('now');
+		$jsTimestamp = $date->getTimestamp()*1000;
+
+		$fixture = array('foo' => $date, 'bar' => array('baz' => $date));
+		$expected = sprintf('{"foo":%s,"bar":{"baz":%s}}', $jsTimestamp, $jsTimestamp);
+
+		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper', array('renderChildren'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
+
+		$this->assertEquals($expected, $viewHelper->render());
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertsDomainObjectsIntoAssocArrays() {
+		$foo1 = $this->objectManager->get('Tx_Vhs_Tests_Fixtures_Domain_Model_Foo');
+		$foo2 = $this->objectManager->get('Tx_Vhs_Tests_Fixtures_Domain_Model_Foo');
+		$foo3 = $this->objectManager->get('Tx_Vhs_Tests_Fixtures_Domain_Model_Foo');
+		$foo1->addChild($foo2);
+		$foo2->addChild($foo3);
+
+		$expectedRegex = '/\{"bar"\:"baz","children"\:\{"[a-f0-9]+"\:\{"bar"\:"baz","children"\:\{"[a-f0-9]+"\:\{"bar"\:"baz","children"\:\[\],"pid"\:null,"uid"\:null\}\},"pid"\:null,"uid"\:null\}\},"pid"\:null,"uid"\:null\}/';
+
+		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper', array('renderChildren'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($foo1));
+
+
+		$this->assertRegexp($expectedRegex, $viewHelper->render());
 	}
 }
