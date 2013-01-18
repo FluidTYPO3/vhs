@@ -23,6 +23,19 @@ Examples, tips and tricks can be found in the Wiki: https://github.com/NamelessC
 Download and install as TYPO3 extension. That's it. There are no configuration options
 apart from the arguments which each ViewHelper accepts.
 
+## Settings
+
+Although there are no static TypoScript files which can be included, VHS does support a few
+key settings which are defined in TypoScript:
+
+* `plugin.tx_vhs.settings.debug = 1` can be used to enable general debugging, which affects:
+  - Asset inclusions are debugged right before inclusion in the page
+* `plugin.tx_vhs.settings.each.debug = 1` can be used to enable debug output from individual
+  ViewHelper instances. Applies when a ViewHelper uses the "debug" parameter (where this is
+  supported) and/or when `plugin.tx_vhs.settings.debug = 1`.
+* `plugin.tx_vhs.settings.useDebugUtility` which causes VHS to use Extbase's DebugUtility to
+  dump variables. If this setting is not defined a value of `1` is assumed.
+
 ## Usage
 
 To use the ViewHelpers in your Fluid templates simply add the namespace:
