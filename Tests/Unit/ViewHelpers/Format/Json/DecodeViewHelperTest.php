@@ -38,18 +38,18 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Extbase_Tes
 
 		$this->assertNull($viewHelper->render());
 	}
-	
+
 	/**
 	 * @test
 	 */
 	public function returnsExpectedValueForProvidedArguments() {
-		
+
 		$fixture = '{"foo":"bar","bar":true,"baz":1,"foobar":null}';
 
 		$expected = array(
-			'foo'    => 'bar', 
-			'bar'    => TRUE, 
-			'baz'    => 1, 
+			'foo'    => 'bar',
+			'bar'    => TRUE,
+			'baz'    => 1,
 			'foobar' => NULL,
 		);
 
@@ -69,6 +69,6 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Extbase_Tes
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($invalidJson));
 
 		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
-		$this->assertEquals('null', $viewHelper->render());        
+		$this->assertEquals('null', $viewHelper->render());
 	}
 }
