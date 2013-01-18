@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
+ *  (c) 2013 Claus Due <claus@wildside.dk>, Wildside A/S
  *
  *  All rights reserved
  *
@@ -50,6 +50,7 @@
  * or m:n recursive relation is in fact a JavaScript. Not doing so may
  * result in fatal JavaScript errors in the client browser.
  *
+ * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Format\Json
@@ -96,7 +97,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 
 		$json = json_encode($value);
 
-		if (json_last_error() !== JSON_ERROR_NONE) {
+		if (JSON_ERROR_NONE !== json_last_error()) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument cannot be converted into JSON.', 1358440181);
 		}
 
