@@ -90,9 +90,9 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Extbase_Tes
 	 * @test
 	 */
 	public function convertsDomainObjectsIntoAssocArrays() {
-		$foo1 = new Tx_Vhs_Tests_Fixtures_Domain_Model_Foo();
-		$foo2 = new Tx_Vhs_Tests_Fixtures_Domain_Model_Foo();
-		$foo3 = new Tx_Vhs_Tests_Fixtures_Domain_Model_Foo();
+		$foo1 = $this->objectManager->get('Tx_Vhs_Tests_Fixtures_Domain_Model_Foo');
+		$foo2 = $this->objectManager->get('Tx_Vhs_Tests_Fixtures_Domain_Model_Foo');
+		$foo3 = $this->objectManager->get('Tx_Vhs_Tests_Fixtures_Domain_Model_Foo');
 		$foo1->addChild($foo2);
 		$foo2->addChild($foo3);
 
