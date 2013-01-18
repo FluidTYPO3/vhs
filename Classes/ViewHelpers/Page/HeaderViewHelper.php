@@ -29,7 +29,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_HeaderViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractRelocationViewHelper {
+class Tx_Vhs_ViewHelpers_Page_HeaderViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper {
 
 	/**
 	 * Render method
