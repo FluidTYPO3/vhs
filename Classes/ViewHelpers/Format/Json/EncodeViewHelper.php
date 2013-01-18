@@ -112,7 +112,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 * associative arrays of values - which might be DateTime instances.
 	 *
 	 * @param array $array
-	 * @dateTimeFormat
+	 * @param string dateTimeFormat
 	 * @return array
 	 */
 	protected function recursiveDateTimeToUnixtimeMiliseconds(array $array, $dateTimeFormat) {
@@ -120,7 +120,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 			if (TRUE === $possibleDateTime instanceof DateTime) {
 				$array[$key] = $this->dateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
 			} elseif (TRUE === is_array($possibleDateTime)) {
-				$array[$key] = $this->recursiveDateTimeToUnixtimeMiliseconds($array, $dateTimeFormat);
+				$array[$key] = $this->recursiveDateTimeToUnixtimeMiliseconds($array[$key], $dateTimeFormat);
 			}
 		}
 		return $array;
