@@ -40,6 +40,14 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 		$this->registerArgument('content', 'string', 'Content to relocate', FALSE, NULL);
 		$this->registerArgument('name', 'string', 'Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"');
 		$this->registerArgument('overwrite', 'boolean', 'If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.', FALSE, TRUE);
+		$this->registerArgument('dependencies', 'string', 'CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies');
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getDependencies() {
+		return t3lib_div::trimExplode(',', $this->arguments['dependencies'], TRUE);
 	}
 
 	/**
