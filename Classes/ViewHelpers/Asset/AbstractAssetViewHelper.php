@@ -248,4 +248,36 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		return $dotFreeArray;
 	}
 
+	/**
+	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @return array
+	 * @throws RuntimeException
+	 */
+	protected function sortAssetsByDependency($assets) {
+		$placed = array();
+		while ($asset = array_shift($assets)) {
+			$skip = FALSE;
+			/** @var $asset Tx_Vhs_ViewHelpers_AssetViewHelper */
+			$name = $asset->getName();
+			$dependencies = $asset->getDependencies();
+			foreach ($dependencies as $dependency) {
+				if (FALSE === isset($placed[$dependency])) {
+						// shove the Asset back to the end of the queue, the dependency has
+						// not yet been encountered and moving this item to the back of the
+						// queue ensures it will be encountered before re-encountering this
+						// specific Asset
+					if (0 === count($assets)) {
+						throw new RuntimeException('Asset "' . $name . '" depends on "' . $dependency . '" but "' . $dependency . '" was not found', 1358603979);
+					}
+					$assets[$name] = $asset;
+					$skip = TRUE;
+				}
+			}
+			if (FALSE === $skip) {
+				$placed[] = $asset;
+			}
+		}
+		return $placed;
+	}
+
 }
