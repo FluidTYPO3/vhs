@@ -227,14 +227,14 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	}
 
 	/**
-	 * Saves this Asset, perhaps discarding it if overriding is
+	 * Saves this Asset or perhaps discards it if overriding is
 	 * disabled and an identically named Asset already exists.
 	 *
 	 * Performed from every Asset's render() for it to work.
 	 *
 	 * @return void
 	 */
-	protected function save() {
+	protected function finalize() {
 		if (FALSE === isset($GLOBALS['VhsAssets'])) {
 			$GLOBALS['VhsAssets'] = array();
 		}
