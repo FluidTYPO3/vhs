@@ -29,7 +29,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_FooterViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper {
+class Tx_Vhs_ViewHelpers_Page_FooterViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
 
 	/**
 	 * Render method

@@ -27,11 +27,21 @@
  * Base class for ViewHelpers capable of registering assets
  * which will be included when rendering the page.
  *
+ * Note: building of all Assets takes place in the class
+ * Tx_Vhs_ViewHelpers_AssetViewHelper with two reasons:
+ *
+ * - A "buildAll" method should never be possible to call
+ *   from any Asset ViewHelper; it should only be possible
+ *   from a single class.
+ * - The method but must be public and non-static and thus
+ *   cannot be hidden from access by subclasses if placed
+ *   in this class.
+ *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
- * @subpackage ViewHelpers\Page
+ * @subpackage ViewHelpers\Asset
  */
-abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
@@ -225,6 +235,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 	 * @return void
 	 */
 	protected function save() {
+		if (FALSE === isset($GLOBALS['VhsAssets'])) {
+			$GLOBALS['VhsAssets'] = array();
+		}
 		$name = $this->getName();
 		$overwrite = $this->getOverwrite();
 		$slotFree = FALSE === isset($GLOBALS['VhsAssets'][$name]);
