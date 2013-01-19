@@ -37,6 +37,12 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
+
+	/**
+	 * @var array
+	 */
+	private static $settingsCache = NULL;
+
 	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
@@ -94,6 +100,45 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 			$content = $this->arguments['content'];
 		}
 		return $content;
+	}
+
+	/**
+	 * Returns the settings used by this particular Asset
+	 * during inclusion. Public access allows later inspection
+	 * of the TypoScript values which were applied to the Asset.
+	 *
+	 * @return array
+	 */
+	public function getSettings() {
+		if (TRUE === is_null(self::$settingsCache)) {
+			$allTypoScript = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+			if (FALSE === $settingsExist) {
+					// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
+				self::$settingsCache = array();
+			} else {
+				self::$settingsCache = $this->dotSuffixArrayToPlainArray($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+			}
+		}
+		return self::$settingsCache;
+	}
+
+	/**
+	 * @param array $array
+	 * @return array
+	 */
+	protected function dotSuffixArrayToPlainArray($array) {
+		$dotFreeArray = array();
+		foreach ($array as $key => $value) {
+			if (substr($key, -1) === '.') {
+				$key = substr($key, -1);
+			}
+			if (TRUE === is_array($value)) {
+				$value = $this->dotSuffixArrayToPlainArray($value);
+			}
+			$dotFreeArray[$key] = $value;
+		}
+		return $dotFreeArray;
 	}
 
 }
