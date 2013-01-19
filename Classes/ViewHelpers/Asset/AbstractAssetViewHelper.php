@@ -54,6 +54,21 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	private static $settingsCache = NULL;
 
 	/**
+	 * @var array
+	 */
+	private $assetSettingsCache;
+
+	/**
+	 * @var array
+	 */
+	protected $localSettings;
+
+	/**
+	 * @var string
+	 */
+	protected $content;
+
+	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -71,6 +86,15 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		$this->registerArgument('dependencies', 'string', 'CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies');
 		$this->registerArgument('group', 'string', 'Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.', FALSE, 'fluid');
 		$this->registerArgument('debug', 'boolean', 'If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper');
+	}
+
+	/**
+	 * Render method
+	 *
+	 * @return void
+	 */
+	public function render() {
+		$this->finalize();
 	}
 
 	/**
@@ -145,27 +169,40 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	 * @return array
 	 */
 	public function getDependencies() {
-		return t3lib_div::trimExplode(',', $this->arguments['dependencies'], TRUE);
+		$assetSettings = $this->getAssetSettings();
+		if (TRUE === isset($assetSettings['dependencies'])) {
+			return t3lib_div::trimExplode(',', $assetSettings['dependencies'], TRUE);
+		}
+		return array();
 	}
 
 	/**
 	 * @return boolean
 	 */
 	protected function getOverwrite() {
-		return (boolean) $this->arguments['overwrite'];
+		$assetSettings = $this->getAssetSettings();
+		return (TRUE === isset($assetSettings['overwrite']) && $assetSettings['overwrite'] > 0);
 	}
 
 	/**
 	 * @return string
 	 */
 	protected function getName() {
-		if (TRUE === isset($this->arguments['name'])) {
-			$name = $this->arguments['name'];
+		$assetSettings = $this->getAssetSettings();
+		if (TRUE === isset($assetSettings['name'])) {
+			$name = $assetSettings['name'];
 		} else {
-			$content = $this->getContent();
-			$name = md5($content);
+			$name = md5(implode('', array_values($assetSettings)));
 		}
 		return $name;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getGroup() {
+		$assetSettings = $this->getAssetSettings();
+		return $assetSettings['group'];
 	}
 
 	/**
@@ -198,7 +235,44 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 				self::$settingsCache = $this->dotSuffixArrayToPlainArray($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
-		return self::$settingsCache;
+		$settings = self::$settingsCache;
+		if (TRUE === is_array($this->localSettings)) {
+			$settings = t3lib_div::array_merge_recursive_overrule($settings, $this->localSettings);
+		}
+		return $settings;
+	}
+
+	/**
+	 * @param array|ArrayAccess $settings
+	 */
+	public function setSettings($settings) {
+		if (TRUE === is_array($settings) || TRUE === $settings instanceof ArrayAccess) {
+			$this->localSettings = $settings;
+			$this->argumentsCache = NULL;
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAssetSettings() {
+		if (TRUE === is_array($this->assetSettingsCache)) {
+			return $this->assetSettingsCache;
+		}
+			// Note: name and group are taken directly from arguments; if they are changed through
+			// TypoScript the changed values will be returned from this function.
+		$name = $this->arguments['name'];
+		$groupName = $this->arguments['group'];
+		$settings = $this->getSettings();
+		$assetSettings = $this->arguments;
+		if (TRUE === (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName]))) {
+			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['assetGroup'][$groupName]);
+		}
+		if (TRUE === (isset($settings['asset'][$name]) && is_array($settings['asset'][$name]))) {
+			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['asset'][$name]);
+		}
+		$this->assetSettingsCache = $assetSettings;
+		return $assetSettings;
 	}
 
 	/**
@@ -210,9 +284,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	public function getDebugInformation() {
 		return array(
 			'class' => get_class($this),
-			'arguments' => $this->arguments,
-			'settings' => $this->getSettings(),
-			'content' => $this->getContent()
+			'settings' => $this->getAssetSettings()
 		);
 	}
 
@@ -223,11 +295,14 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	 * @return boolean
 	 */
 	public function assertDebugEnabled() {
-		$settings = $this->getSettings();
-		if ($this->arguments['debug'] > 0) {
+		$settings = $this->getAssetSettings();
+		if (TRUE === (isset($settings['debug']) && $settings['debug'] > 0)) {
 			return TRUE;
 		}
-		return isset($settings['each']['debug']) && $settings['each']['debug'] > 0;
+		if (TRUE === (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0)) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 	/**
@@ -238,7 +313,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		$dotFreeArray = array();
 		foreach ($array as $key => $value) {
 			if (substr($key, -1) === '.') {
-				$key = substr($key, -1);
+				$key = substr($key, 0, -1);
 			}
 			if (TRUE === is_array($value)) {
 				$value = $this->dotSuffixArrayToPlainArray($value);
@@ -249,35 +324,22 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
-	 * @return array
-	 * @throws RuntimeException
+	 * @return boolean
 	 */
-	protected function sortAssetsByDependency($assets) {
-		$placed = array();
-		while ($asset = array_shift($assets)) {
-			$skip = FALSE;
-			/** @var $asset Tx_Vhs_ViewHelpers_AssetViewHelper */
-			$name = $asset->getName();
-			$dependencies = $asset->getDependencies();
-			foreach ($dependencies as $dependency) {
-				if (FALSE === isset($placed[$dependency])) {
-						// shove the Asset back to the end of the queue, the dependency has
-						// not yet been encountered and moving this item to the back of the
-						// queue ensures it will be encountered before re-encountering this
-						// specific Asset
-					if (0 === count($assets)) {
-						throw new RuntimeException('Asset "' . $name . '" depends on "' . $dependency . '" but "' . $dependency . '" was not found', 1358603979);
-					}
-					$assets[$name] = $asset;
-					$skip = TRUE;
-				}
-			}
-			if (FALSE === $skip) {
-				$placed[] = $asset;
+	public function assertHasBeenRemoved() {
+		$groupName = $this->arguments['group'];
+		$settings = $this->getSettings();
+		$dependencies = $this->getDependencies();
+		array_push($dependencies, $this->getName());
+		foreach ($dependencies as $name) {
+			if (TRUE === isset($settings['asset'][$name]['remove']) && $settings['asset'][$name]['remove'] > 0) {
+				return TRUE;
 			}
 		}
-		return $placed;
+		if (TRUE === isset($settings['assetGroup'][$groupName]['remove']) && $settings['assetGroup'][$groupName]['remove'] > 0) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 }
