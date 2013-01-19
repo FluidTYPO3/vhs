@@ -75,7 +75,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 	 * @return string
 	 */
 	protected function getName() {
-		if (isset($this->arguments['name'])) {
+		if (TRUE === isset($this->arguments['name'])) {
 			$name = $this->arguments['name'];
 		} else {
 			$content = $this->getContent();
@@ -88,7 +88,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 	 * @return string
 	 */
 	protected function getContent() {
-		if (isset($this->arguments['content']) === FALSE) {
+		if (FALSE === isset($this->arguments['content'])) {
 			$content = $this->renderChildren();
 		} else {
 			$content = $this->arguments['content'];
