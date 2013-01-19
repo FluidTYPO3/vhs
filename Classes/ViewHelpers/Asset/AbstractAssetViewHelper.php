@@ -74,6 +74,74 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	}
 
 	/**
+	 * Build this asset. Override this method in the specific
+	 * implementation of an Asset in order to:
+	 *
+	 * - if necessary compile the Asset (LESS, SASS, CoffeeScript etc)
+	 * - make a final rendering decision based on arguments
+	 *
+	 * Note that within this function the ViewHelper and TemplateVariable
+	 * Containers are not dependable, you cannot use the ControllerContext
+	 * and RenderingContext and you should therefore also never call
+	 * renderChildren from within this function. Anything else goes; CLI
+	 * commands to build, caching implementations - you name it.
+	 *
+	 * @return mixed
+	 */
+	public function build() {
+		return NULL;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	protected function bypass() {
+		if ($this->arguments['debug']) {
+			return $this->debug();
+		}
+		return NULL;
+	}
+
+	/**
+	 * Saves this Asset or perhaps discards it if overriding is
+	 * disabled and an identically named Asset already exists.
+	 *
+	 * Performed from every Asset's render() for it to work.
+	 *
+	 * @return void
+	 */
+	protected function finalize() {
+		if (FALSE === isset($GLOBALS['VhsAssets'])) {
+			$GLOBALS['VhsAssets'] = array();
+		}
+		$name = $this->getName();
+		$overwrite = $this->getOverwrite();
+		$slotFree = FALSE === isset($GLOBALS['VhsAssets'][$name]);
+		$this->debug();
+		if (FALSE === ($overwrite && $slotFree)) {
+			return $this->bypass();
+		}
+		$GLOBALS['VhsAssets'][$name] = &$this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	protected function debug() {
+		$settings = $this->getSettings();
+		$debugOutputEnabled = $this->assertDebugEnabled();
+		$useDebugUtility = FALSE === isset($settings['useDebugUtility']) || (isset($settings['useDebugUtility']) && $settings['useDebugUtility'] > 0);
+		$debugInformation = $this->getDebugInformation();
+		if (TRUE === $debugOutputEnabled) {
+			if (TRUE === $useDebugUtility) {
+				Tx_Extbase_Utility_Debugger::var_dump($debugInformation);
+			} else {
+				return var_export($debugInformation, TRUE);
+			}
+		}
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getDependencies() {
@@ -163,52 +231,6 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	}
 
 	/**
-	 * Build this asset. Override this method in the specific
-	 * implementation of an Asset in order to:
-	 *
-	 * - if necessary compile the Asset (LESS, SASS, CoffeeScript etc)
-	 * - make a final rendering decision based on arguments
-	 *
-	 * Note that within this function the ViewHelper and TemplateVariable
-	 * Containers are not dependable, you cannot use the ControllerContext
-	 * and RenderingContext and you should therefore also never call
-	 * renderChildren from within this function. Anything else goes; CLI
-	 * commands to build, caching implementations - you name it.
-	 *
-	 * @return mixed
-	 */
-	public function build() {
-		return NULL;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	protected function debug() {
-		$settings = $this->getSettings();
-		$debugOutputEnabled = $this->assertDebugEnabled();
-		$useDebugUtility = isset($settings['useDebugUtility']) && $settings['useDebugUtility'] > 0;
-		$debugInformation = $this->getDebugInformation();
-		if (TRUE === $debugOutputEnabled) {
-			if (TRUE === $useDebugUtility) {
-				Tx_Extbase_Utility_Debugger::var_dump($debugInformation);
-			} else {
-				return var_export($debugInformation, TRUE);
-			}
-		}
-	}
-
-	/**
-	 * @return mixed
-	 */
-	protected function bypass() {
-		if ($this->arguments['debug']) {
-			return $this->debug();
-		}
-		return NULL;
-	}
-
-	/**
 	 * @param array $array
 	 * @return array
 	 */
@@ -224,28 +246,6 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 			$dotFreeArray[$key] = $value;
 		}
 		return $dotFreeArray;
-	}
-
-	/**
-	 * Saves this Asset or perhaps discards it if overriding is
-	 * disabled and an identically named Asset already exists.
-	 *
-	 * Performed from every Asset's render() for it to work.
-	 *
-	 * @return void
-	 */
-	protected function finalize() {
-		if (FALSE === isset($GLOBALS['VhsAssets'])) {
-			$GLOBALS['VhsAssets'] = array();
-		}
-		$name = $this->getName();
-		$overwrite = $this->getOverwrite();
-		$slotFree = FALSE === isset($GLOBALS['VhsAssets'][$name]);
-		$this->debug();
-		if (FALSE === ($overwrite && $slotFree)) {
-			return $this->bypass();
-		}
-		$GLOBALS['VhsAssets'][$name] = &$this;
 	}
 
 }
