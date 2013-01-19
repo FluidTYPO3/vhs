@@ -150,6 +150,25 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 	}
 
 	/**
+	 * Build this asset. Override this method in the specific
+	 * implementation of an Asset in order to:
+	 *
+	 * - if necessary compile the Asset (LESS, SASS, CoffeeScript etc)
+	 * - make a final rendering decision based on arguments
+	 *
+	 * Note that within this function the ViewHelper and TemplateVariable
+	 * Containers are not dependable, you cannot use the ControllerContext
+	 * and RenderingContext and you should therefore also never call
+	 * renderChildren from within this function. Anything else goes; CLI
+	 * commands to build, caching implementations - you name it.
+	 *
+	 * @return mixed
+	 */
+	public function build() {
+		return NULL;
+	}
+
+	/**
 	 * @return mixed
 	 */
 	protected function debug() {
@@ -176,6 +195,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 		return NULL;
 	}
 
+	/**
 	 * @param array $array
 	 * @return array
 	 */
