@@ -124,6 +124,58 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 	}
 
 	/**
+	 * Allows public access to debug this particular Asset
+	 * instance later, when including the Asset in the page.
+	 *
+	 * @return array
+	 */
+	public function getDebugInformation() {
+		return array(
+			'class' => get_class($this),
+			'arguments' => $this->arguments,
+			'settings' => $this->getSettings(),
+			'content' => $this->getContent()
+		);
+	}
+
+	/**
+	 * Returns TRUE if the current Asset should be debugged as commanded
+	 * by settings in TypoScript an/ord ViewHelper attributes.
+	 *
+	 * @return boolean
+	 */
+	public function assertDebugEnabled() {
+		$settings = $this->getSettings();
+		return isset($settings['each']['debug']) && $settings['each']['debug'] > 0 && $this->arguments['debug'] > 0;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	protected function debug() {
+		$settings = $this->getSettings();
+		$debugOutputEnabled = $this->assertDebugEnabled();
+		$useDebugUtility = isset($settings['useDebugUtility']) && $settings['useDebugUtility'] > 0;
+		$debugInformation = $this->getDebugInformation();
+		if (TRUE === $debugOutputEnabled) {
+			if (TRUE === $useDebugUtility) {
+				Tx_Extbase_Utility_Debugger::var_dump($debugInformation);
+			} else {
+				return var_export($debugInformation, TRUE);
+			}
+		}
+	}
+
+	/**
+	 * @return mixed
+	 */
+	protected function bypass() {
+		if ($this->arguments['debug']) {
+			return $this->debug();
+		}
+		return NULL;
+	}
+
 	 * @param array $array
 	 * @return array
 	 */
