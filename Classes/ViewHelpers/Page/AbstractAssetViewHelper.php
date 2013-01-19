@@ -146,7 +146,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 	 */
 	public function assertDebugEnabled() {
 		$settings = $this->getSettings();
-		return isset($settings['each']['debug']) && $settings['each']['debug'] > 0 && $this->arguments['debug'] > 0;
+		if ($this->arguments['debug'] > 0) {
+			return TRUE;
+		}
+		return isset($settings['each']['debug']) && $settings['each']['debug'] > 0;
 	}
 
 	/**
