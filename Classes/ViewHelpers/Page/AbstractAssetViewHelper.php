@@ -216,4 +216,23 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractAssetViewHelper extends Tx_Fluid_
 		return $dotFreeArray;
 	}
 
+	/**
+	 * Saves this Asset, perhaps discarding it if overriding is
+	 * disabled and an identically named Asset already exists.
+	 *
+	 * Performed from every Asset's render() for it to work.
+	 *
+	 * @return void
+	 */
+	protected function save() {
+		$name = $this->getName();
+		$overwrite = $this->getOverwrite();
+		$slotFree = FALSE === isset($GLOBALS['VhsAssets'][$name]);
+		$this->debug();
+		if (FALSE === ($overwrite && $slotFree)) {
+			return $this->bypass();
+		}
+		$GLOBALS['VhsAssets'][$name] = &$this;
+	}
+
 }
