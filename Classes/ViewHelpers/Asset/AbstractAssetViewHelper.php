@@ -276,7 +276,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	/**
 	 * @return array
 	 */
-	public function getArguments() {
+	public function getVariables() {
 		$settings = $this->getAssetSettings();
 		if (TRUE === (isset($settings['arguments']) && is_array($settings['arguments']))) {
 			return $settings['arguments'];
