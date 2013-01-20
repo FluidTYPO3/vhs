@@ -194,7 +194,8 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			} else {
 				$fileRelativePathAndFilename = $assetSettings['path'];
 				$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-				if (FALSE === file_exists($absolutePathAndFilename)) {
+				$isExternal = (TRUE === isset($assetSettings['external']) && $assetSettings['external'] > 0);
+				if (FALSE === ($isExternal && file_exists($absolutePathAndFilename))) {
 					throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
 				}
 				$source .= file_get_contents($absolutePathAndFilename);
