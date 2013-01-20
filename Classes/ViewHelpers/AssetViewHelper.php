@@ -142,7 +142,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$source = '';
 			/** @var $spooledAssets Tx_Vhs_ViewHelper_AssetViewHelper[] */
 			foreach ($spooledAssets as $name => $asset) {
-				$assetSettings = $asset->getSettings();
+				$assetSettings = $asset->getAssetSettings();
 				$standalone = (TRUE === (boolean) $assetSettings['standalone']);
 				if (TRUE === $standalone) {
 					if (0 < count($chunk)) {
@@ -151,6 +151,11 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 					}
 					if (TRUE === isset($assetSettings['path'])) {
 						$fileRelativePathAndFilename = $assetSettings['path'];
+						$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
+						if (FALSE === file_exists($absolutePathAndFilename)) {
+							throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
+						}
+						$fileRelativePathAndFilename = substr($absolutePathAndFilename, strlen(PATH_site));
 						$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 					} else {
 						$chunks[] = $this->generateTagForAssetType($type, $asset->getContent());
@@ -181,7 +186,17 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			if (TRUE === $asset->assertAddNameCommentWithChunk()) {
 				$source .= '/* ' . $name . ' */' . LF;
 			}
-			$source .= $asset->getContent() . LF;
+			$assetSettings = $asset->getAssetSettings();
+			if (FALSE === isset($assetSettings['path'])) {
+				$source .= $asset->getContent() . LF;
+			} else {
+				$fileRelativePathAndFilename = $assetSettings['path'];
+				$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
+				if (FALSE === file_exists($absolutePathAndFilename)) {
+					throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
+				}
+				$source .= file_get_contents($absolutePathAndFilename);
+			}
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($assets)) . '.'.  $type;
 		$exists = file_exists(PATH__site . $fileRelativePathAndFilename);
