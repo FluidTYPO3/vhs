@@ -252,12 +252,13 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	 * @return string
 	 */
 	protected function getContent() {
-		if (FALSE === isset($this->arguments['content'])) {
+		$assetSettings = $this->getAssetSettings();
+		if (FALSE === isset($settings['content'])) {
 			$content = $this->renderChildren();
 		} else {
-			$content = $this->arguments['content'];
+			$content = $settings['content'];
 		}
-		if (TRUE === (boolean) $this->arguments['trim']) {
+		if (TRUE === (boolean) $settings['trim']) {
 			$lines = explode(LF, $content);
 			$lines = array_map('trim', $lines);
 			$content = implode('', $lines);
