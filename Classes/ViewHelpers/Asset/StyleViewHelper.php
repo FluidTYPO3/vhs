@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due, Wildside A/S <claus@wildside.dk>
+ *  (c) 2013 Claus Due, Wildside A/S <claus@wildside.dk>
  *
  *  All rights reserved
  *
@@ -24,24 +24,27 @@
  * ************************************************************* */
 
 /**
- * ViewHelper used to place header blocks in document footer
+ * ### Basic Style ViewHelper
+ *
+ * Allows inserting a `<link>` or `<style>` Asset. Settings
+ * specify where to insert the Asset and how to treat it.
  *
  * @package Vhs
- * @subpackage ViewHelpers\Page
+ * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_Page_FooterViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
+class Tx_Vhs_ViewHelpers_Asset_StyleViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
 
 	/**
-	 * Render method
-	 *
 	 * @return void
-	*/
-	public function render() {
-		if (TYPO3_MODE == 'BE') {
-			return;
-		}
-		$content = $this->getContent();
-		$GLOBALS['TSFE']->getPageRenderer()->addFooterData($content);
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->overrideArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, FALSE);
 	}
+
+	/**
+	 * @var string
+	 */
+	protected $type = 'css';
 
 }
