@@ -114,6 +114,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	public function initializeArguments() {
 		$this->registerArgument('content', 'string', 'Content to insert in header/footer', FALSE, NULL);
 		$this->registerArgument('path', 'string', 'If not using tag content, specify path to file here', FALSE, NULL);
+		$this->registerArgument('external', 'boolean', 'If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets', FALSE, FALSE);
 		$this->registerArgument('name', 'string', 'Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"');
 		$this->registerArgument('overwrite', 'boolean', 'If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.', FALSE, TRUE);
 		$this->registerArgument('dependencies', 'string', 'CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies');

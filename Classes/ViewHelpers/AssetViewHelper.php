@@ -151,11 +151,13 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 					}
 					if (TRUE === isset($assetSettings['path'])) {
 						$fileRelativePathAndFilename = $assetSettings['path'];
-						$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-						if (FALSE === file_exists($absolutePathAndFilename)) {
-							throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
+						if (FALSE === (isset($assetSettings['external']) && $assetSettings['external'] > 0)) {
+							$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
+							if (FALSE === file_exists($absolutePathAndFilename)) {
+								throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
+							}
+							$fileRelativePathAndFilename = substr($absolutePathAndFilename, strlen(PATH_site));
 						}
-						$fileRelativePathAndFilename = substr($absolutePathAndFilename, strlen(PATH_site));
 						$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 					} else {
 						$chunks[] = $this->generateTagForAssetType($type, $asset->getContent());
