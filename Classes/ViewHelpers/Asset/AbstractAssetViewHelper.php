@@ -170,10 +170,12 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		$name = $this->getName();
 		$overwrite = $this->getOverwrite();
 		$slotFree = FALSE === isset($GLOBALS['VhsAssets'][$name]);
-		$this->debug();
 		if (FALSE === ($overwrite && $slotFree)) {
-			return $this->bypass();
+			return;
 		}
+		$this->content = $this->getContent();
+		$this->tagBuilder->setContent($this->content);
+		$this->debug();
 		$GLOBALS['VhsAssets'][$name] = &$this;
 	}
 
@@ -338,10 +340,11 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	 * @return boolean
 	 */
 	public function assertDebugEnabled() {
-		$settings = $this->getAssetSettings();
+		$settings = $this->getSettings();
 		if (TRUE === (isset($settings['debug']) && $settings['debug'] > 0)) {
 			return TRUE;
 		}
+		$settings = $this->getAssetSettings();
 		if (TRUE === (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0)) {
 			return TRUE;
 		}
