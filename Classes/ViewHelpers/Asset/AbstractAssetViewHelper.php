@@ -350,7 +350,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	 */
 	public function assertAddNameCommentWithChunk() {
 		$settings = $this->getAssetSettings();
-		if (TRUE === (isset($settings) && 0 < $settings['namedChunks']) || FALSE === isset($settings['namedChunks'])) {
+		if (TRUE === (isset($settings['namedChunks']) && 0 < $settings['namedChunks']) || FALSE === isset($settings['namedChunks'])) {
 			return TRUE;
 		}
 		return FALSE;
