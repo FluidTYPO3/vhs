@@ -51,6 +51,10 @@
  * - a "debug" property which enables output of the information
  *   used by the current Asset, with an option to force debug
  *   mode through TypoScript.
+ * - additional properties which affect how the Asset is processed.
+ *   For a full list see the argument descriptions; the same
+ *   settings can be applied through TypoScript per-Asset, globally
+ *   or per-Asset-group.
  *
  * > Note: there are no static TypoScript templates for VHS but
  * > you will find a complete list in the README.md file in the
