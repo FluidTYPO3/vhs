@@ -147,7 +147,8 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 				if (TRUE === $standalone) {
 					if (0 < count($chunk)) {
 						$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
-						$chunk = array($mergedFileTag);
+						$chunk = array();
+						array_push($chunks, $mergedFileTag);
 					}
 					if (TRUE === isset($assetSettings['path'])) {
 						$fileRelativePathAndFilename = $assetSettings['path'];
