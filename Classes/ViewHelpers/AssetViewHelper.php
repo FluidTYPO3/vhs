@@ -185,6 +185,10 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		$ttl = (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['config.']['cache_period']) && $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] !== 0);
 		$source = '';
 		foreach ($assets as $name => $asset) {
+			if (TRUE === is_string($asset)) {
+				$source .= $asset;
+				continue;
+			}
 			if (TRUE === $asset->assertAddNameCommentWithChunk()) {
 				$source .= '/* ' . $name . ' */' . LF;
 			}
