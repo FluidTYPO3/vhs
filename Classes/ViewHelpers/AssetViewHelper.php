@@ -123,46 +123,60 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			}
 			$spool[$type][$name] = $asset;
 		}
-		$ttl = (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['config.']['cache_period']) && $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] !== 0);
+
 		$chunks = array();
 		foreach ($spool as $type => $spooledAssets) {
 			$standalone = FALSE;
 			$chunk = array();
+			$source = '';
 			/** @var $spooledAssets Tx_Vhs_ViewHelper_AssetViewHelper[] */
 			foreach ($spooledAssets as $name => $asset) {
-				$chunks[] = $this->generateTagForAssetType($type, $asset->getContent());
-				continue;
 				$assetSettings = $asset->getSettings();
 				$standalone = (TRUE === (boolean) $assetSettings['standalone']);
 				if (TRUE === $standalone) {
+					if (0 < count($chunk)) {
+						$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
+						$chunk = array($mergedFileTag);
+					}
 					if (TRUE === isset($assetSettings['path'])) {
 						$fileRelativePathAndFilename = $assetSettings['path'];
+						$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 					} else {
-						$fileRelativePathAndFilename = NULL;
+						$chunks[] = $this->generateTagForAssetType($type, $asset->getContent());
 					}
-					$chunks[] = $this->generateTagForAssetType($type, $asset->getContent(), $fileRelativePathAndFilename);
-				} elseif (0 < count($chunk)) {
-					$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($chunk)) . '.'.  $type;
-					$exists = file_exists(PATH__site . $fileRelativePathAndFilename);
-					$expired = filectime(PATH_site . $fileRelativePathAndFilename) + $ttl < time();
-					if (FALSE === $exists || TRUE === $expired) {
-						$contents = '';
-						foreach ($chunk as $chunkName => $chunkContent) {
-							$contents .= '/* ' . $chunkName . '*/' . LF;
-							$contents .= $chunkContent . LF . LF;
-						}
-						file_put_contents(PATH_site . $fileRelativePathAndFilename, $contents);
-					}
-					$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
-					$chunk = array();
 				} else {
-					$chunk[$name] = $asset->getContent();
+					$chunk[$name] = $asset;
 				}
+			}
+			if (0 < count($chunk)) {
+				$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
+				$chunk = array($mergedFileTag);
 			}
 			$content = implode(LF, $chunk);
 			array_push($chunks, $content);
 		}
 		return implode(LF, $chunks);
+	}
+
+	/**
+	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @param string $type
+	 * @return string
+	 */
+	private function writeCachedMergedFileAndReturnTag($assets, $type) {
+		$ttl = (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['config.']['cache_period']) && $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] !== 0);
+		$source = '';
+		foreach ($assets as $name => $asset) {
+			$source .= '/* ' . $name . ' */' . LF;
+			$source .= $asset->getContent();
+		}
+		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($assets)) . '.'.  $type;
+		$exists = file_exists(PATH__site . $fileRelativePathAndFilename);
+		$expired = filectime(PATH_site . $fileRelativePathAndFilename) + $ttl < time();
+		if (FALSE === $exists || TRUE === $expired) {
+			file_put_contents(PATH_site . $fileRelativePathAndFilename, $source);
+		}
+		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 	}
 
 	/**
