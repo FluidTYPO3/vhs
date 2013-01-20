@@ -69,6 +69,18 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	protected $content;
 
 	/**
+	/**
+	 * Example types: raw, meta, css, js.
+	 *
+	 * If a LESS stylesheet is being compiled the "type"
+	 * would be "css" because this will group the compiled
+	 * LESS stylesheet with other CSS - allowing it to be
+	 * merged with other CSS.
+	 *
+	 * @var string
+	 */
+	protected $type = 'raw';
+
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -187,6 +199,13 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	protected function getOverwrite() {
 		$assetSettings = $this->getAssetSettings();
 		return (TRUE === isset($assetSettings['overwrite']) && $assetSettings['overwrite'] > 0);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getType() {
+		return $this->type;
 	}
 
 	/**
