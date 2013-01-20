@@ -131,7 +131,6 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			}
 			$spool[$type][$name] = $asset;
 		}
-
 		$chunks = array();
 		foreach ($spool as $type => $spooledAssets) {
 			$standalone = FALSE;
@@ -175,8 +174,10 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		$ttl = (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['config.']['cache_period']) && $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] !== 0);
 		$source = '';
 		foreach ($assets as $name => $asset) {
-			$source .= '/* ' . $name . ' */' . LF;
-			$source .= $asset->getContent();
+			if (TRUE === $asset->assertAddNameCommentWithChunk()) {
+				$source .= '/* ' . $name . ' */' . LF;
+			}
+			$source .= $asset->getContent() . LF;
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($assets)) . '.'.  $type;
 		$exists = file_exists(PATH__site . $fileRelativePathAndFilename);

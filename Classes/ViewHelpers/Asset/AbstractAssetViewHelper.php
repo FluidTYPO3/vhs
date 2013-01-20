@@ -121,6 +121,8 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		$this->registerArgument('debug', 'boolean', 'If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper');
 		$this->registerArgument('standalone', 'boolean', 'If TRUE, excludes this Asset from any concatenation which may be applied');
 		$this->registerArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
+		$this->registerArgument('trim', 'boolean', 'If FALSE, disables the per-default enabled trimming of whitespace off beginnings and ends of lines in the Asset content body', FALSE, TRUE);
+		$this->registerArgument('namedChunks', 'boolean', 'If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency', FALSE, FALSE);
 	}
 
 	/**
@@ -252,6 +254,11 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		} else {
 			$content = $this->arguments['content'];
 		}
+		if (TRUE === (boolean) $this->arguments['trim']) {
+			$lines = explode(LF, $content);
+			$lines = array_map('trim', $lines);
+			$content = implode('', $lines);
+		}
 		return $content;
 	}
 
@@ -331,6 +338,21 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 			'class' => get_class($this),
 			'settings' => $this->getAssetSettings()
 		);
+	}
+
+	/**
+	 * Returns TRUE if settings specify that the name of each Asset
+	 * should be placed above the built content when placed in merged
+	 * Asset cache files.
+	 *
+	 * @return boolean
+	 */
+	public function assertAddNameCommentWithChunk() {
+		$settings = $this->getAssetSettings();
+		if (TRUE === (isset($settings) && 0 < $settings['namedChunks']) || FALSE === isset($settings['namedChunks'])) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 	/**
