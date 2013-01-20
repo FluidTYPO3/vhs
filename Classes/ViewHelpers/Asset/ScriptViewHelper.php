@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due, Wildside A/S <claus@wildside.dk>
+ *  (c) 2013 Claus Due, Wildside A/S <claus@wildside.dk>
  *
  *  All rights reserved
  *
@@ -24,24 +24,19 @@
  * ************************************************************* */
 
 /**
- * ViewHelper used to place header blocks in document footer
+ * ### Basic Script ViewHelper
+ *
+ * Allows inserting a `<script>` Asset. Settings specify
+ * where to insert the Asset and how to treat it.
  *
  * @package Vhs
- * @subpackage ViewHelpers\Page
+ * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_Page_FooterViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
+class Tx_Vhs_ViewHelpers_Asset_ScriptViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
 
 	/**
-	 * Render method
-	 *
-	 * @return void
-	*/
-	public function render() {
-		if (TYPO3_MODE == 'BE') {
-			return;
-		}
-		$content = $this->getContent();
-		$GLOBALS['TSFE']->getPageRenderer()->addFooterData($content);
-	}
+	 * @var string
+	 */
+	protected $type = 'js';
 
 }

@@ -23,6 +23,49 @@ Examples, tips and tricks can be found in the Wiki: https://github.com/NamelessC
 Download and install as TYPO3 extension. That's it. There are no configuration options
 apart from the arguments which each ViewHelper accepts.
 
+## Settings
+
+Although there are no static TypoScript files which can be included, VHS does support a few
+key settings which are defined in TypoScript:
+
+### Debug settings
+
+* `plugin.tx_vhs.settings.debug = 1` can be used to enable general debugging, which affects:
+  - Asset inclusions are debugged right before inclusion in the page
+* `plugin.tx_vhs.settings.asset.debug = 1` can be used to enable debug output from individual
+  Asset ViewHelper instances. Applies when a ViewHelper uses the "debug" parameter (where this
+  is supported) and/or when `plugin.tx_vhs.settings.debug = 1`.
+* `plugin.tx_vhs.settings.useDebugUtility` which causes VHS to use Extbase's DebugUtility to
+  dump variables. If this setting is not defined a value of `1` is assumed.
+
+### Asset settings
+
+```javascript
+plugin.tx_vhs.settings.asset.ASSETNAME {
+	content = Text # Text which overrides content
+	path = FileReference # If set, turns Asset into a file inclusion
+	name = Text a-zA-Z0-9_ # Can be used to change the name of an Asset on-the-fly, but watch out for dependencies
+	overwrite = Integer 0/1 # If set to `1` this Asset is permitted to overwrite existing, identically named Assets
+	dependencies = CSV # list of comma-separated Asset names upon which the current Asset depends; affects loading order
+	group = Text a-zA-Z0-9_ # Group name, default "fluid". By grouping Assets the settings used on the group will apply to Assets
+	debug = Integer 0/1 # If `1` enables debug output of each asset
+	standalone = Integer 0/1 # If `1` instructs VHS to process this Asset as standalone, excluding it from merging
+	allowMoveToFooter = Integer 0/1 # If `0` prevents Assets from being included in the page footer. Used by style-type Assets.
+	trim = Integer 0/1 # If `1` enables trimming of whitespace from beginning and end of lines when merging Assets
+	namedChunks = Integer 0/1 # If `0` prevents Asset name from being inserted as comment above the Asset body in merged files
+}
+plugin.tx_vhs.settings.assetGroup.ASSETGROUPNAME {
+	# this object supports the following properties only. When applied to a group the settings are used by each
+	# Asset in that group, unless overridden directly in the Asset's attributes or through TypoScript as above.
+	# SUPPORTED PROPERTIES: overwrite, dependencies, group, debug, standalone, allowMoveToFooter, trim and namedChunks
+	# Please note: changing the "group" property changes the name of the group which means another group configuration
+	# must be added which configures that group. Otherwise settings may be ignored.
+}
+plugin.tx_vhs.settings.asset {
+	# this object supports every property which "assetGroup" supports except for the "group" and "dependencies" properties.
+}
+```
+
 ## Usage
 
 To use the ViewHelpers in your Fluid templates simply add the namespace:
