@@ -252,6 +252,13 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	}
 
 	/**
+	 * @return string
+	 */
+	protected function getTagWithContent() {
+		return $this->tagBuilder->render();;
+	}
+
+	/**
 	 * Returns the settings used by this particular Asset
 	 * during inclusion. Public access allows later inspection
 	 * of the TypoScript values which were applied to the Asset.
