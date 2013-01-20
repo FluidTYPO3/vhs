@@ -161,7 +161,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 						}
 						$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 					} else {
-						$chunks[] = $this->generateTagForAssetType($type, $asset->getContent());
+						$chunks[] = $this->generateTagForAssetType($type, $this->extractAssetContent($asset));
 					}
 				} else {
 					$chunk[$name] = $asset;
@@ -195,15 +195,20 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			}
 			$assetSettings = $asset->getAssetSettings();
 			if (FALSE === isset($assetSettings['path'])) {
-				$source .= $asset->getContent() . LF;
+				$source .= $this->extractAssetContent($asset) . LF;
 			} else {
 				$fileRelativePathAndFilename = $assetSettings['path'];
 				$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
 				$isExternal = (TRUE === (isset($assetSettings['external']) && $assetSettings['external'] > 0));
+				$isFluidTemplate = $asset->assertFluidEnabled();
 				if (FALSE === $isExternal && FALSE === file_exists($absolutePathAndFilename)) {
 					throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
 				}
-				$source .= file_get_contents($absolutePathAndFilename);
+				if (TRUE === $isFluidTemplate) {
+					$source = $this->renderAssetAsFluidTemplate($asset);
+				} else {
+					$source .= file_get_contents($absolutePathAndFilename);
+				}
 			}
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($assets)) . '.'.  $type;
@@ -324,6 +329,41 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			}
 		}
 		return $placed;
+	}
+
+	/**
+	 * @param Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset
+	 * @return string
+	 */
+	private function extractAssetContent(Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset) {
+		$isFluidTemplate = TRUE === $asset->assertFluidEnabled();
+		if (TRUE === $isFluidTemplate) {
+			return $this->renderAssetAsFluidTemplate($asset);
+		}
+		return $asset->getContent();
+	}
+
+	/**
+	 * @param Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset
+	 * @return string
+	 */
+	private function renderAssetAsFluidTemplate(Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset) {
+		$settings = $asset->getAssetSettings();
+		$templateReference = $settings['path'];
+		$variables = $asset->getVariables();
+		$isExternal = (TRUE === (isset($settings['external']) && $settings['external'] > 0));
+		if (TRUE === $isExternal) {
+			$fileContents = file_get_contents($templateReference);
+		} else {
+			$templatePathAndFilename = t3lib_div::getFileAbsFileName($templateReference);
+			$fileContents = file_get_contents($templatePathAndFilename);
+		}
+		/** @var $view Tx_Fluid_View_StandaloneView */
+		$view = $this->objectManager->create('Tx_Fluid_View_StandaloneView');
+		$view->setTemplateSource($fileContents);
+		$view->assignMultiple($variables);
+		$content = $view->render();
+		return $content;
 	}
 
 }
