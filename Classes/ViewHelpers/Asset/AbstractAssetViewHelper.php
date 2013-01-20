@@ -121,6 +121,8 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		$this->registerArgument('group', 'string', 'Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.', FALSE, 'fluid');
 		$this->registerArgument('debug', 'boolean', 'If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper');
 		$this->registerArgument('standalone', 'boolean', 'If TRUE, excludes this Asset from any concatenation which may be applied');
+		$this->registerArgument('fluid', 'boolean', 'If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified', FALSE, FALSE);
+		$this->registerArgument('arguments', 'mixed', 'An optional array of arguments assigned to the Asset source file when being rendered as a Fluid template - requires the "fluid" attribute switched on', FALSE, FALSE);
 		$this->registerArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
 		$this->registerArgument('trim', 'boolean', 'If FALSE, disables the per-default enabled trimming of whitespace off beginnings and ends of lines in the Asset content body', FALSE, TRUE);
 		$this->registerArgument('namedChunks', 'boolean', 'If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency', FALSE, FALSE);
@@ -271,6 +273,17 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getArguments() {
+		$settings = $this->getAssetSettings();
+		if (TRUE === (isset($settings['arguments']) && is_array($settings['arguments']))) {
+			return $settings['arguments'];
+		}
+		return array();
+	}
+
+	/**
 	 * Returns the settings used by this particular Asset
 	 * during inclusion. Public access allows later inspection
 	 * of the TypoScript values which were applied to the Asset.
@@ -339,6 +352,21 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 			'class' => get_class($this),
 			'settings' => $this->getAssetSettings()
 		);
+	}
+
+	/**
+	 * Returns TRUE of settings specify that the source of this
+	 * Asset should be rendered as if it were a Fluid template,
+	 * using variables from the "arguments" attribute
+	 *
+	 * @return boolean
+	 */
+	public function assertFluidEnabled() {
+		$settings = $this->getAssetSettings();
+		if (TRUE === (isset($settings['fluid']) && $settings['fluid'] > 0)) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 	/**
