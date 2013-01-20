@@ -146,17 +146,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	 * @return mixed
 	 */
 	public function build() {
-		return NULL;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	protected function bypass() {
-		if ($this->arguments['debug']) {
-			return $this->debug();
-		}
-		return NULL;
+		return $this->content;
 	}
 
 	/**
