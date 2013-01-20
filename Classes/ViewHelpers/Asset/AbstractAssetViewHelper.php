@@ -119,6 +119,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		$this->registerArgument('group', 'string', 'Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.', FALSE, 'fluid');
 		$this->registerArgument('debug', 'boolean', 'If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper');
 		$this->registerArgument('standalone', 'boolean', 'If TRUE, excludes this Asset from any concatenation which may be applied');
+		$this->registerArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
 	}
 
 	/**
@@ -344,6 +345,17 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function assertAllowedInFooter() {
+		$settings = $this->getAssetSettings();
+		if (TRUE === (isset($settings['allowMoveToFooter']) && $settings['allowMoveToFooter'] < 1)) {
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 	/**
