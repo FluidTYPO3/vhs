@@ -94,10 +94,14 @@ class Tx_Vhs_ViewHelpers_Page_Content_GetViewHelper extends Tx_Fluid_Core_ViewHe
 			$loadRegister = TRUE;
 		}
 		$pid = $GLOBALS['TSFE']->id;
+		$mountpointRange = '';
 		if (isset($this->arguments['pageUid']) === TRUE) {
 			$pid = $this->arguments['pageUid'];
 		} elseif ($GLOBALS['TSFE']->page['content_from_pid']) {
 			$pid = $GLOBALS['TSFE']->page['content_from_pid'];
+		}
+		if (t3lib_div::_GP('MP') !== NULL) {
+			$mountpointRange = t3lib_div::_GP('MP');
 		}
 		$order = $this->arguments['order'] . ' ' . $this->arguments['sortDirection'];
 		$colPos = $this->arguments['column'];
@@ -111,7 +115,7 @@ class Tx_Vhs_ViewHelpers_Page_Content_GetViewHelper extends Tx_Fluid_Core_ViewHe
 		$rootLine = NULL;
 		if ($slide) {
 			$pageSelect = new t3lib_pageSelect();
-			$rootLine = $pageSelect->getRootLine($pid);
+			$rootLine = $pageSelect->getRootLine($pid, $mountpointRange);
 			if($slideCollectReverse){
 				$rootLine = array_reverse($rootLine);
 			}
