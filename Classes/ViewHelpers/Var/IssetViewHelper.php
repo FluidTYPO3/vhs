@@ -24,7 +24,21 @@
  ***************************************************************/
 
 /**
- * Variable: Isset
+ * ### Variable: Isset
+ *
+ * Renders the `then` child if the variable name given in
+ * the `name` argument exists in the template. The value
+ * can be zero, NULL or an empty string - but the ViewHelper
+ * will still return TRUE if the variable exists.
+ *
+ * Combines well with dynamic variable names:
+ *
+ *     <!-- if {variableContainingVariableName} is "foo" this checkx existence of {foo} -->
+ *     <v:var.isset name="{variableContainingVariableName}">...</v:var.isset>
+ *     <!-- if {suffix} is "Name" this checks existence of "variableName" -->
+ *     <v:var.isset name="variable{suffix}">...</v:var.isset>
+ *     <!-- outputs value of {foo} if {bar} is defined -->
+ *     {foo -> v:var.isset(name: bar)}
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
