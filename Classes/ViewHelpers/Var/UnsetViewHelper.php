@@ -49,7 +49,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_UnsetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_Var_UnsetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Unsets variable $name if it exists in the container
