@@ -24,7 +24,21 @@
  ***************************************************************/
 
 /**
- * Variable: Get
+ * ### Variable: Get
+ *
+ * ViewHelper used to read the value of a current template
+ * variable. Can be used with dynamic indices in arrays:
+ *
+ *     <v:var.get name="array.{dynamicIndex}" />
+ *     <v:var.get name="array.{v:var.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
+ *     <f:for each="{v:var.get(name: 'object.arrayProperty.{dynamicIndex}')}" as="nestedObject">
+ *         ...
+ *     </f:for>
+ *
+ * Or to read names of variables which contain dynamic parts:
+ *
+ *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
+ *     {v:var.get(name: 'dynamic{variableName}')}
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
