@@ -24,7 +24,26 @@
  ***************************************************************/
 
 /**
- * Variable: Unset
+ * ### Variable: Unset
+ *
+ * Quite simply, removes a currently available variable
+ * from the TemplateVariableContainer:
+ *
+ *     <!-- Data: {person: {name: 'Elvis', nick: 'King'}} -->
+ *     I'm {person.name}. Call me "{person.nick}". A ding-dang doo!
+ *     <v:var.unset name="person" />
+ *     <f:if condition="{person}">
+ *         <f:else>
+ *             You saw this coming...
+ *             <em>Elvis has left the building</em>
+ *         </f:else>
+ *     </f:if>
+ *
+ * At the time of writing this, `v:var.unset` is not able
+ * to remove members of for example arrays:
+ *
+ *     <!-- DOES NOT WORK! -->
+ *     <v:var.unset name="myObject.propertyName" />
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
