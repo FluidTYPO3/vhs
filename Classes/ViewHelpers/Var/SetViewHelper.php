@@ -24,7 +24,29 @@
  ***************************************************************/
 
 /**
- * Variable: Set
+ * ### Variable: Set
+ *
+ * Sets a single variable in the TemplateVariableContainer
+ * scope. The variable then becomes accessible as {var}.
+ *
+ * Combines well with `v:var.get` to set shorter variable
+ * names referencing dynamic variables, such as:
+ *
+ *     <v:var.set name="myObject" value="{v:var.get(name: 'arrayVariable.{offset}')}" />
+ *     <!-- If {index} == 4 then {myObject} is now == {arrayVariable.4} -->
+ *     {myObject.name} <!-- corresponds to {arrayVariable.4.name} -->
+ *
+ * Note that `{arrayVariable.{offset}.name}` is not possible
+ * due to the way Fluid parses nodes; the above piece of
+ * code would try reading `arrayVariable.{offset}.name`
+ * as a variable actually called "arrayVariable.{offset}.name"
+ * rather than the correct `arrayVariable[offset][name]`.
+ *
+ * In many ways this ViewHelper works like `f:alias`
+ * with one exception: in `f:alias` the variable only
+ * becomes accessible in the tag content, whereas `v:var.set`
+ * inserts the variable in the template and leaves it there
+ * (it "leaks" the variable).
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
