@@ -24,7 +24,9 @@
  * ************************************************************* */
 
 /**
- * Returns the current system UNIX timestamp as DateTime
+ * ### System: DateTime
+ *
+ * Returns the current system UNIX timestamp as DateTime.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
