@@ -24,9 +24,13 @@
 ***************************************************************/
 
 /**
- * Security: Deny
+ * ### Security: Deny
  *
  * Denies access to the child content based on given arguments.
+ * The ViewHelper is a condition based ViewHelper which means it
+ * supports the `f:then` and `f:else` child nodes.
+ *
+ * Is the mirror opposite of `v:security.allow`.
  *
  * @author Claus Due, Wildside A/S
  * @package Vhs
