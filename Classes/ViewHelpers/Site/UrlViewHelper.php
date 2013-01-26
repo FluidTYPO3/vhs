@@ -24,7 +24,10 @@
  * ************************************************************* */
 
 /**
- * Returns the website URL
+ * ### Site: URL
+ *
+ * Returns the website URL as returned by
+ * t3lib_div::getIndpEnv('TYPO3_SITE_URL')
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
