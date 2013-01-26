@@ -24,6 +24,8 @@
  ***************************************************************/
 
 /**
+ * ### Render: Template
+ *
  * Render a template file (with arguments if desired).
  *
  * Supports passing variables and controlling the format,
@@ -31,11 +33,11 @@
  * settings a' la plugin.tx_myext.view, which means that
  * this can be done (from any extension, not just "foo")
  *
- * 	<v:render.template
- * 		file="EXT:foo/Resources/Templates/Action/Show.html"
- * 		variables="{object: customLoadedObject}"
- * 		paths="{v:var.typoscript(path: 'plugin.tx_foo.view')}"
- * 		format="xml" />
+ *     <v:render.template
+ * 	    file="EXT:foo/Resources/Templates/Action/Show.html"
+ *      variables="{object: customLoadedObject}"
+ *      paths="{v:var.typoscript(path: 'plugin.tx_foo.view')}"
+ *      format="xml" />
  *
  * Which would render the "show" action's template from
  * EXT:foo using paths define in that extension's typoscript
