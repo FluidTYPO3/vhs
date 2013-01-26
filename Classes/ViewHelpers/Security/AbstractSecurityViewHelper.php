@@ -24,7 +24,7 @@
  ***************************************************************/
 
 /**
- * Base class: Security ViewHelpers
+ * ### Base class: Security ViewHelpers
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
