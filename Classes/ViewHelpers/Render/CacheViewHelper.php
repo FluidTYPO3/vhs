@@ -24,7 +24,7 @@
  ***************************************************************/
 
 /**
- * Cache Rendering ViewHelper
+ * ### Cache Rendering ViewHelper
  *
  * Caches the child content (any type supported as long as it
  * can be serialized). Because of the added overhead you should
