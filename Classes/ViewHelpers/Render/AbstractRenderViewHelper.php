@@ -24,7 +24,7 @@
  ***************************************************************/
 
 /**
- * Base class for all rendering ViewHelpers.
+ * ### Base class for all rendering ViewHelpers.
  *
  * If errors occur they can be graciously ignored and
  * replaced by a small error message or the error itself.
