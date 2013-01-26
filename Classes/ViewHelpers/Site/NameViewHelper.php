@@ -24,7 +24,9 @@
  * ************************************************************* */
 
 /**
- * Returns the site name
+ * ### Site: Name
+ *
+ * Returns the site name as specified in TYPO3_CONF_VARS.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
