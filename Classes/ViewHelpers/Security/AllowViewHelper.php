@@ -24,9 +24,21 @@
 ***************************************************************/
 
 /**
- * Security: Allow
+ * ### Security: Allow
  *
  * Allows access to the child content based on given arguments.
+ * The ViewHelper is a condition based ViewHelper which means it
+ * supports the `f:then` and `f:else` child nodes - you can use
+ * this behaviour to invert the access (i.e. use f:else in a check
+ * if a frontend user is logged in, if you want to hide content
+ * from authenticated users):
+ *
+ *     <v:security.allow anyFrontendUser="TRUE">
+ *         <f:then><!-- protected information displayed --></f:then>
+ *         <f:else><!-- link to login form displayed --></f:else>
+ *     </v:security.allow>
+ *
+ * Is the mirror opposite of `v:security.deny`.
  *
  * @author Claus Due, Wildside A/S
  * @package Vhs
