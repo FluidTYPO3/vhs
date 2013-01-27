@@ -75,14 +75,14 @@ class Tx_Vhs_ViewHelpers_Media_VimeoViewHelper extends Tx_Fluid_Core_ViewHelper_
 		$src = self::vimeoBaseUrl . $videoId . '?';
 
 		$queryParams = array(
-			'title='     . (int)$this->arguments['title'],
-			'byline='    . (int)$this->arguments['byline'],
-			'portrait='  . (int)$this->arguments['portrait'],
+			'title='     . (integer) $this->arguments['title'],
+			'byline='    . (integer) $this->arguments['byline'],
+			'portrait='  . (integer) $this->arguments['portrait'],
 			'color='     . str_replace('#', '', $this->arguments['color']),
-			'autoplay='  . (int)$this->arguments['autoplay'],
-			'loop='      . (int)$this->arguments['loop'],
-			'api='       . (int)$this->arguments['api'],
-			'player_id=' . (int)$this->arguments['playerId'],
+			'autoplay='  . (integer) $this->arguments['autoplay'],
+			'loop='      . (integer) $this->arguments['loop'],
+			'api='       . (integer) $this->arguments['api'],
+			'player_id=' . (integer) $this->arguments['playerId'],
 		);
 
 		$src .= implode('&', $queryParams);
