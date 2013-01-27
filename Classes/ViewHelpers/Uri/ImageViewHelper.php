@@ -24,33 +24,14 @@
  * ************************************************************* */
 
 /**
- * Renders an image tag for the given resource including all valid
- * HTML5 attributes. Derivates of the original image are rendered
- * if the provided (optional) dimensions differ.
+ * Returns the relative or absolute URI for the image resource
+ * or it's derivate if differing dimesions are provided.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Media
+ * @subpackage ViewHelpers\Uri
  */
-class Tx_Vhs_ViewHelpers_Media_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper {
-
-	/**
-	 * @var t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
-	 */
-	protected $tsfeBackup;
-
-	/**
-	 * @var string
-	 */
-	protected $workingDirectoryBackup;
-
-	/**
-	 * name of the tag to be created by this view helper
-	 *
-	 * @var string
-	 * @api
-	 */
-	protected $tagName = 'img';
+class Tx_Vhs_ViewHelpers_Uri_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -62,12 +43,6 @@ class Tx_Vhs_ViewHelpers_Media_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_
 		parent::initializeArguments();
 		$this->registerArgument('width', 'int', 'Optional width.', FALSE);
 		$this->registerArgument('height', 'int', 'Optional height.', FALSE);
-
-		$this->registerUniversalTagAttributes();
-
-		$this->registerTagAttribute('usemap', 'string', 'A hash-name reference to a map element with which to associate the image.', FALSE);
-		$this->registerTagAttribute('ismap', 'string', 'Specifies that its img element provides access to a server-side image map.', FALSE, '');
-		$this->registerTagAttribute('alt', 'string', 'Equivalent content for those who cannot process images or who have image loading disabled.', TRUE);
 	}
 
 	/**
@@ -85,15 +60,7 @@ class Tx_Vhs_ViewHelpers_Media_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_
 			$src = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $src;
 		}
 
-		$this->tag->addAttribute('src', $src);
-		$this->tag->addAttribute('width', $this->imageInfo[0]);
-		$this->tag->addAttribute('height', $this->imageInfo[1]);
-
-		if ($this->arguments['title'] === '') {
-			$this->tag->addAttribute('title', $this->arguments['alt']);
-		}
-
-		return $this->tag->render();
+		return $src;
 	}
 
 }
