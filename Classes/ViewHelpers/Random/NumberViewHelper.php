@@ -24,7 +24,11 @@
  ***************************************************************/
 
 /**
- * Random Number Generator
+ * ### Random: Number Generator
+ *
+ * Generates a random number. The default minimum number is
+ * set to 100000 in order to generate a longer integer string
+ * representation. Decimal values can be generated as well.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
