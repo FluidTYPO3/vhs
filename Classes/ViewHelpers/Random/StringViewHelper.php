@@ -24,11 +24,11 @@
  ***************************************************************/
 
 /**
- * Random String Generator
+ * ### Random: String Generator
  *
- * Use either "minimumLength"/"maximumLength" or just "length".
+ * Use either `minimumLength` / `maximumLength` or just `length`.
  *
- * Specify the characters which can be randomized using "characters".
+ * Specify the characters which can be randomized using `characters`.
  *
  * Has built-in insurance that first character of random string is
  * an alphabetic character (allowing safe use as DOM id for example).
