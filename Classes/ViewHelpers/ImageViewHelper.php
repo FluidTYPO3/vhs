@@ -30,7 +30,7 @@
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Media
+ * @subpackage ViewHelpers
  */
 class Tx_Vhs_ViewHelpers_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper {
 
