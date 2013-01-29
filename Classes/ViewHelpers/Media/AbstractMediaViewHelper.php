@@ -82,7 +82,7 @@ class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends Tx_Fluid_Core_Vie
 	 * @return string
 	 */
 	public function preprocessSourceUrl($src) {
-		if (TYPO3_MODE === 'BE' || FALSE === $this->arguments['relative']) {
+		if (TYPO3_MODE === 'BE' || FALSE === (boolean) $this->arguments['relative']) {
 			$src = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $src;
 		}
 

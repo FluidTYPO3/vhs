@@ -54,11 +54,7 @@ class Tx_Vhs_ViewHelpers_Uri_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_Ab
 
 		$this->preprocessImage();
 
-		$src = $this->mediaSource;
-
-		if (TYPO3_MODE === 'BE' || FALSE === $this->arguments['relative']) {
-			$src = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $src;
-		}
+		$src = $this->preprocessSourceUrl($this->mediaSource);
 
 		return $src;
 	}
