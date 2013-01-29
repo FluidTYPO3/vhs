@@ -105,16 +105,16 @@ class Tx_Vhs_ViewHelpers_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_Abstra
             'preload' => 'auto',
         );
 
-        if (TRUE === $this->arguments['autoplay']) {
+        if (TRUE === (boolean) $this->arguments['autoplay']) {
             $tagAttributes['autoplay'] = 'autoplay';
         }
-        if (TRUE === $this->arguments['controls']) {
+        if (TRUE === (boolean) $this->arguments['controls']) {
             $tagAttributes['controls'] = 'controls';
         }
-        if (TRUE === $this->arguments['loop']) {
+        if (TRUE === (boolean) $this->arguments['loop']) {
             $tagAttributes['loop'] = 'loop';
         }
-        if (TRUE === $this->arguments['muted']) {
+        if (TRUE === (boolean) $this->arguments['muted']) {
             $tagAttributes['muted'] = 'muted';
         }
         if (TRUE === in_array($this->validPreloadModes, $this->arguments['preload'])) {
