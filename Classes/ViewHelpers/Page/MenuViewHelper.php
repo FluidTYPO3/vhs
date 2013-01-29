@@ -24,7 +24,15 @@
  * ************************************************************* */
 
 /**
+ * ### Page: Menu ViewHelper
+ *
  * ViewHelper for rendering TYPO3 menus in Fluid
+ *
+ * Supports both automatic, tag-based rendering (which
+ * defaults to `ul > li` with options to set both the
+ * parent and child tag names. When using manual rendering
+ * a range of support CSS classes are available along
+ * with each page record.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
