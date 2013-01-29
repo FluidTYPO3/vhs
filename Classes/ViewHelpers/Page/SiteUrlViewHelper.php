@@ -24,9 +24,13 @@
  * ************************************************************* */
 
 /**
- * Returns the website URL
+ * ### Page: Site Url
  *
- * Alias of v:site.url
+ * #### DEPRECATED!
+ *
+ * Use `v:site.url` instead!
+ *
+ * Returns the website URL
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
