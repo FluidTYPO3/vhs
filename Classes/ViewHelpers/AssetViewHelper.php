@@ -97,7 +97,9 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	 */
 	public function clearCacheCommand() {
 		$files = glob(PATH_site . 'typo3temp/vhs-assets-*');
-		array_map('unlink', $files);
+		if (TRUE === is_array($files)) {
+			array_map('unlink', $files);
+		}
 	}
 
 	/**
