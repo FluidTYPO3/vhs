@@ -40,22 +40,26 @@ class Tx_Vhs_ViewHelpers_Iterator_ShiftViewHelper extends Tx_Fluid_Core_ViewHelp
 	 * @return array
 	 */
 	public function render($subject = NULL, $as = NULL) {
-		if ($subject === NULL) {
+		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
-		if ($subject instanceof Traversable) {
+		if (TRUE === $subject instanceof Traversable) {
 			$subject = iterator_to_array($subject, TRUE);
-		} elseif (is_array($subject) !== TRUE) {
+		} elseif (TRUE !== is_array($subject)) {
 			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
 		$output = array_shift($subject);
-		if ($this->arguments['as']) {
-			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
-				$this->templateVariableContainer->remove($this->arguments['as']);
+		if (NULL !== $as) {
+			if ($this->templateVariableContainer->exists($as)) {
+				$backup = $this->templateVariableContainer->get($as);
+				$this->templateVariableContainer->remove($as);
 			}
-			$this->templateVariableContainer->add($this->arguments['as'], $output);
+			$this->templateVariableContainer->add($as, $output);
 			$output = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
+			$this->templateVariableContainer->remove($as);
+			if (TRUE === isset($backup)) {
+				$this->templateVariableContainer->add($as, $backup);
+			}
 		}
 		return $output;
 	}
