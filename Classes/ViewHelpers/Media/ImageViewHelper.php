@@ -35,16 +35,6 @@
 class Tx_Vhs_ViewHelpers_Media_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper {
 
 	/**
-	 * @var t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
-	 */
-	protected $tsfeBackup;
-
-	/**
-	 * @var string
-	 */
-	protected $workingDirectoryBackup;
-
-	/**
 	 * name of the tag to be created by this view helper
 	 *
 	 * @var string
