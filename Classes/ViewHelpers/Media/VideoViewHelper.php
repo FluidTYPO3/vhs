@@ -67,7 +67,6 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
         $this->registerArgument('muted', 'boolean', 'Specifies that the audio output of the video should be muted.', FALSE, FALSE);
         $this->registerArgument('poster', 'string', 'Specifies an image to be shown while the video is downloading, or until the user hits the play button.', FALSE, NULL);
         $this->registerArgument('preload', 'string', 'Specifies if and how the author thinks the video should be loaded when the page loads. Can be "auto", "metadata" or "none".', FALSE, 'auto');
-        $this->registerArgument('relative', 'boolean', 'If FALSE source URLs will be rendered absolute.', FALSE, TRUE);
     }
 
     /**

@@ -45,7 +45,6 @@ class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends Tx_Fluid_Core_Vie
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('src', 'string', 'Path to the media resource.', TRUE);
 		$this->registerArgument('relative', 'boolean', 'If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.', FALSE, TRUE);
 	}
 

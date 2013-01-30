@@ -76,6 +76,7 @@ class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelper
      */
     public function initializeArguments() {
         parent::initializeArguments();
+        $this->registerArgument('src', 'string', 'Path to the media resource.', TRUE);
         $this->registerArgument('width', 'int', 'Optional width.', FALSE);
         $this->registerArgument('height', 'int', 'Optional height.', FALSE);
     }
