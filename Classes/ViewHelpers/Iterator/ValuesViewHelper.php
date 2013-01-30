@@ -36,11 +36,9 @@ class Tx_Vhs_ViewHelpers_Iterator_ValuesViewHelper extends Tx_Fluid_Core_ViewHel
 	 * Render method
 	 *
 	 * @param mixed $subject
-	 * @param integer $start
-	 * @param integer $length
 	 * @return array
 	 */
-	public function render($subject = NULL, $start = 0, $length = NULL) {
+	public function render($subject = NULL) {
 		if ($subject === NULL) {
 			$subject = $this->renderChildren();
 		}
