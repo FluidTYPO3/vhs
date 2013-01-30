@@ -30,9 +30,9 @@
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers
+ * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaImageViewHelper {
+class Tx_Vhs_ViewHelpers_Media_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper {
 
 	/**
 	 * @var t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode

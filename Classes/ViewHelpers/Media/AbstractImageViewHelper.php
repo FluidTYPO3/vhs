@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_AbstractMediaImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
+class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
 
     /**
      * @var tslib_cObj
