@@ -50,7 +50,7 @@ class Tx_Vhs_ViewHelpers_Random_NumberViewHelper extends Tx_Fluid_Core_ViewHelpe
 		}
 		$decimals = array_fill(0, rand($minimumDecimals, $maximumDecimals), 0);
 		$decimals = array_map(function() {
-			return rand(0,9);
+			return rand(0, 9);
 		}, $decimals);
 		return floatval($natural . '.' . implode('', $decimals));
 	}
