@@ -43,7 +43,7 @@ class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Pa
 	 */
 	public function render() {
 		$pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
-		$rootLine = $this->pageSelect->getRootLine($pageUid);
+		$rootLine = $this->getRootLine($pageUid);
 		$rootLine = array_reverse($rootLine);
 		$rootLine = array_slice($rootLine, $this->arguments['entryLevel']);
 		$rootLine = $this->parseMenu($rootLine, $rootLine);
