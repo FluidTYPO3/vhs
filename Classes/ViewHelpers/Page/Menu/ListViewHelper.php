@@ -40,7 +40,10 @@
  */
 class Tx_Vhs_ViewHelpers_Page_Menu_ListViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
 
-    public function initializeArguments() {
+	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
         parent::initializeArguments();
         $this->registerArgument('pages', 'mixed', 'Page UIDs to include in the menu. Can be CSV, array or an object implementing Traversable.', TRUE);
     }
