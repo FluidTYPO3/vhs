@@ -55,24 +55,19 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DirectoryViewHelper extends Tx_Vhs_ViewHelper
      */
     public function render() {
         $pages = $this->arguments['pages'];
-
         if ($pages instanceof Traversable) {
             $pages = iterator_to_array($pages);
-        } elseif (is_string($pages)) {
+        } elseif (TRUE === is_string($pages)) {
             $pages = t3lib_div::trimExplode(',', $pages, TRUE);
         }
-
         if (FALSE === is_array($pages)) {
             return NULL;
         }
-
         $menu = array();
         $rootLine = $this->getRootLine($GLOBALS['TSFE']->id);
-
         foreach ($pages as $pageUid) {
-            $menu += $this->getMenuItems($pageUid);
+            $menu = array_merge($menu, $this->getMenuItems($pageUid));
         }
-
         $menu = $this->parseMenu($menu, $rootLine);
         $rootLine = $this->parseMenu($rootLine, $rootLine);
         $this->backupVariables();
@@ -81,7 +76,6 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DirectoryViewHelper extends Tx_Vhs_ViewHelper
         $this->templateVariableContainer->remove('menu');
         $output = $this->renderContent($menu, $content);
         $this->restoreVariables();
-
         return $output;
     }
 
