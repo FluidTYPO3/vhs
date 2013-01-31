@@ -329,7 +329,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 
 			if (($page['active'] || $this->arguments['expandAll']) && $page['hasSubPages'] && $level < $this->arguments['levels']) {
 				$rootLine = $this->getRootLine($page['uid'], TRUE);
-				$subMenu = $this->getMenuItems($page['uid']);
+				$subMenu = $this->getMenuItems($page['uid'], $rootLine);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
 				$this->tag->setTagName($this->arguments['tagName']);
 				$this->tag->setContent($renderedSubMenu);
