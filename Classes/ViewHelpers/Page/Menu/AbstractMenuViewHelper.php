@@ -27,10 +27,11 @@
  * Base class for menu rendering ViewHelpers
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Page
+ * @subpackage ViewHelpers\Page\Menu
  */
-abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -43,7 +44,13 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 	protected $pageSelect;
 
 	/**
+	 * @var array
+	 */
+	protected $backups = array();
+
+	/**
 	 * Initialize
+	 * @return void
 	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
@@ -52,7 +59,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 		$this->registerArgument('entryLevel', 'integer', 'Optional entryLevel TS equivalent of the menu', FALSE, 0);
 		$this->registerArgument('levels', 'integer', 'Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel', FALSE, 1);
 		$this->registerArgument('expandAll', 'boolean', 'If TRUE and $levels > 1 then expands all (not just the active) menu items which have submenus', FALSE, FALSE);
-		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
 		$this->registerArgument('classActive', 'string', 'Optional class name to add to active links', FALSE, 'active');
 		$this->registerArgument('classCurrent', 'string', 'Optional class name to add to current link', FALSE, 'current');
 		$this->registerArgument('classHasSubpages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
@@ -323,10 +329,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 			}
 
 			if (($page['active'] || $this->arguments['expandAll']) && $page['hasSubPages'] && $level < $this->arguments['levels']) {
-				$rootLine = $this->pageSelect->getRootLine($page['uid']);
-				$rootLine = $this->parseMenu($rootLine, $rootLine);
-				$subMenu = $this->pageSelect->getMenu($page['uid']);
-				$subMenu = $this->parseMenu($subMenu, $rootLine);
+				$rootLine = $this->getRootLine($page['uid'], TRUE);
+				$subMenu = $this->getMenuItems($page['uid'], $rootLine);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
 				$this->tag->setTagName($this->arguments['tagName']);
 				$this->tag->setContent($renderedSubMenu);
@@ -339,4 +343,93 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper extends Tx_Fluid_C
 		return implode(LF, $html);
 	}
 
+	/**
+	 * Returns all menu items for provided pid and parsed it
+	 * to set css classes and respect visibility of items
+	 *
+	 * @param int $pageUid
+	 * @param array $rootline
+	 * @return array
+	 */
+	public function getMenuItems($pageUid, array $rootLine = NULL) {
+		$menu = $this->pageSelect->getMenu($pageUid);
+		if (NULL !== $rootLine) {
+			$menu = $this->parseMenu($menu, $rootLine);
+		}
+
+		return $menu;
+	}
+
+	/**
+	 * Returns rootline for provided pid and parsed it
+	 * to set css classes and respect visibility of items
+	 *
+	 * @param int $pageUid
+	 * @param boolean $parse
+	 * @return array
+	 */
+	public function getRootLine($pageUid, $parse = FALSE) {
+		$rootLine = $this->pageSelect->getRootLine($pageUid);
+		if (TRUE === $parse) {
+			$rootLine = $this->parseMenu($rootLine, $rootLine);
+		}
+
+		return $rootLine;
+	}
+
+	/**
+	 * Saves copies of all template variables while rendering
+	 * the menu
+	 *
+	 * @return void
+	 */
+	public function backupVariables() {
+		$backupVars = $this->arguments['backupVariables'];
+		$this->backups = array();
+		foreach ($backupVars as $var) {
+			if ($this->templateVariableContainer->exists($var)) {
+				$this->backups[$var] = $this->templateVariableContainer->get($var);
+				$this->templateVariableContainer->remove($var);
+			}
+		}
+	}
+
+	/**
+	 * Restores all saved template variables
+	 *
+	 * @return void
+	 */
+	public function restoreVariables() {
+		if (count($this->backups) > 0) {
+			foreach ($this->backups as $var => $value) {
+				$this->templateVariableContainer->add($var, $value);
+			}
+		}
+	}
+
+	/**
+	 * Renders the tag's content or if omitted auto
+	 * renders the menu for the provided arguments
+	 *
+	 * @param array $menu
+	 * @param string $content
+	 * @return string
+	 */
+	public function renderContent($menu, $content) {
+		if (strlen(trim($content)) === 0) {
+			$content = $this->autoRender($menu);
+			if (strlen(trim($content)) === 0) {
+				$output = '';
+			} else {
+				$this->tag->setTagName($this->arguments['tagName']);
+				$this->tag->setContent($content);
+				$this->tag->forceClosingTag(TRUE);
+				$output = $this->tag->render();
+			}
+		} else {
+			$output = $content;
+		}
+
+		return $output;
+	}
 }

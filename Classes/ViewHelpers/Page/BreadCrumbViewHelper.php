@@ -27,51 +27,46 @@
  * ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper {
+class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
+
+	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
+	}
 
 	/**
 	 * @return string
 	 */
 	public function render() {
 		$pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
-		$rootLine = $this->pageSelect->getRootLine($pageUid);
+		$rootLine = $this->getRootLine($pageUid);
 		$rootLine = array_reverse($rootLine);
 		$rootLine = array_slice($rootLine, $this->arguments['entryLevel']);
 		$rootLine = $this->parseMenu($rootLine, $rootLine);
 		if (count($rootLine) === 0) {
 			return NULL;
 		}
-		$backupVars = $this->arguments['backupVariables'];
-		$backups = array();
-		foreach ($backupVars as $var) {
-			if ($this->templateVariableContainer->exists($var)) {
-				$backups[$var] = $this->templateVariableContainer->get($var);
-				$this->templateVariableContainer->remove($var);
-			}
-		}
+
+		$this->backupVariables();
+
 		$this->templateVariableContainer->add('rootLine', $rootLine);
+
 		$content = $this->renderChildren();
+
 		$this->templateVariableContainer->remove('rootLine');
-		if (strlen(trim($content)) === 0) {
-			$content = $this->autoRender($rootLine);
-			if (strlen(trim($content)) === 0) {
-				$content = '';
-			} else {
-				$this->tag->setTagName($this->arguments['tagName']);
-				$this->tag->setContent($content);
-				$this->tag->forceClosingTag(TRUE);
-				$content = $this->tag->render();
-			}
-		}
-		if (count($backups) > 0) {
-			foreach ($backups as $var => $value) {
-				$this->templateVariableContainer->add($var, $value);
-			}
-		}
-		return $content;
+
+		$output = $this->renderContent($rootLine, $content);
+
+		$this->restoreVariables();
+
+		return $output;
 	}
 
 }
