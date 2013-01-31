@@ -35,10 +35,19 @@
  * with each page record.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractMenuViewHelper {
+class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
+
+	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
+	}
 
 	/**
 	 * Render method
@@ -48,48 +57,32 @@ class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_Abs
 	public function render() {
 		$pageUid = $this->arguments['pageUid'];
 		$entryLevel = $this->arguments['entryLevel'];
-		$rootLine = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
+		$rootLine = $this->getRootLine($GLOBALS['TSFE']->id);
 		if (!$pageUid) {
-			if ($rootLine[$entryLevel]['uid'] !== NULL) {
+			if (NULL !== $rootLine[$entryLevel]['uid']) {
 				$pageUid = $rootLine[$entryLevel]['uid'];
 			} else {
 				return '';
 			}
 		}
-		$menu = $this->pageSelect->getMenu($pageUid);
-		$menu = $this->parseMenu($menu, $rootLine);
+
+		$menu = $this->getMenuItems($pageUid, $rootLine);
 		$rootLine = $this->parseMenu($rootLine, $rootLine);
-		$backupVars = $this->arguments['backupVariables'];
-		$backups = array();
-		foreach ($backupVars as $var) {
-			if ($this->templateVariableContainer->exists($var)) {
-				$backups[$var] = $this->templateVariableContainer->get($var);
-				$this->templateVariableContainer->remove($var);
-			}
-		}
+
+		$this->backupVariables();
+
 		$this->templateVariableContainer->add('menu', $menu);
 		$this->templateVariableContainer->add('rootLine', $rootLine);
+
 		$content = $this->renderChildren();
+
 		$this->templateVariableContainer->remove('menu');
 		$this->templateVariableContainer->remove('rootLine');
-		if (strlen(trim($content)) === 0) {
-			$content = $this->autoRender($menu);
-			if (strlen(trim($content)) === 0) {
-				$output = '';
-			} else {
-				$this->tag->setTagName($this->arguments['tagName']);
-				$this->tag->setContent($content);
-				$this->tag->forceClosingTag(TRUE);
-				$output = $this->tag->render();
-			}
-		} else {
-			$output = $content;
-		}
-		if (count($backups) > 0) {
-			foreach ($backups as $var => $value) {
-				$this->templateVariableContainer->add($var, $value);
-			}
-		}
+
+		$output = $this->renderContent($menu, $content);
+
+		$this->restoreVariables();
+
 		return $output;
 	}
 
