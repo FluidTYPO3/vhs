@@ -41,6 +41,9 @@
  */
 class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
 
+	/**
+	 * @return void
+	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
