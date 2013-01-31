@@ -35,6 +35,7 @@
  * with each page record.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
@@ -42,7 +43,7 @@ class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_Men
 
 	public function initializeArguments() {
 		parent::initializeArguments();
-        $this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
+		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
 	}
 
 	/**
