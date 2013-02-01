@@ -72,6 +72,7 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 	/**
 	 * Render method
 	 *
+	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return string
 	 */
 	public function render() {
