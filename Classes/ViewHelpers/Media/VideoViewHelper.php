@@ -34,97 +34,97 @@
  */
 class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper {
 
-    /**
-     * @var string
-     */
-    protected $tagName = 'video';
+	/**
+	 * @var string
+	 */
+	protected $tagName = 'video';
 
-    /**
-     * @var array
-     */
-    protected $validTypes = array('mp4', 'webm', 'ogg');
+	/**
+	 * @var array
+	 */
+	protected $validTypes = array('mp4', 'webm', 'ogg');
 
-    /**
-     * @var array
-     */
-    protected $validPreloadModes = array('auto', 'metadata', 'none');
+	/**
+	 * @var array
+	 */
+	protected $validPreloadModes = array('auto', 'metadata', 'none');
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments() {
-        parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
-        $this->registerArgument('width', 'integer', 'Sets the width of the video player in pixels.', TRUE);
-        $this->registerArgument('height', 'integer', 'Sets the height of the video player in pixels.', TRUE);
-        $this->registerArgument('sources', 'array', 'Available sources for the video to embed in different formats (MP4, WebM, Ogg) as keyed array ("src" and "type")', TRUE);
-        $this->registerArgument('autoplay', 'boolean', 'Specifies that the video will start playing as soon as it is ready.', FALSE, FALSE);
-        $this->registerArgument('controls', 'boolean', 'Specifies that video controls should be displayed (such as a play/pause button etc).', FALSE, FALSE);
-        $this->registerArgument('loop', 'boolean', 'Specifies that the video will start over again, every time it is finished.', FALSE, FALSE);
-        $this->registerArgument('muted', 'boolean', 'Specifies that the audio output of the video should be muted.', FALSE, FALSE);
-        $this->registerArgument('poster', 'string', 'Specifies an image to be shown while the video is downloading, or until the user hits the play button.', FALSE, NULL);
-        $this->registerArgument('preload', 'string', 'Specifies if and how the author thinks the video should be loaded when the page loads. Can be "auto", "metadata" or "none".', FALSE, 'auto');
-    }
+	/**
+	 * Initialize arguments.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerUniversalTagAttributes();
+		$this->registerArgument('width', 'integer', 'Sets the width of the video player in pixels.', TRUE);
+		$this->registerArgument('height', 'integer', 'Sets the height of the video player in pixels.', TRUE);
+		$this->registerArgument('sources', 'array', 'Available sources for the video to embed in different formats (MP4, WebM, Ogg) as keyed array ("src" and "type")', TRUE);
+		$this->registerArgument('autoplay', 'boolean', 'Specifies that the video will start playing as soon as it is ready.', FALSE, FALSE);
+		$this->registerArgument('controls', 'boolean', 'Specifies that video controls should be displayed (such as a play/pause button etc).', FALSE, FALSE);
+		$this->registerArgument('loop', 'boolean', 'Specifies that the video will start over again, every time it is finished.', FALSE, FALSE);
+		$this->registerArgument('muted', 'boolean', 'Specifies that the audio output of the video should be muted.', FALSE, FALSE);
+		$this->registerArgument('poster', 'string', 'Specifies an image to be shown while the video is downloading, or until the user hits the play button.', FALSE, NULL);
+		$this->registerArgument('preload', 'string', 'Specifies if and how the author thinks the video should be loaded when the page loads. Can be "auto", "metadata" or "none".', FALSE, 'auto');
+	}
 
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render() {
-        if (0 == count($this->arguments['sources'])) {
-            throw new Tx_Fluid_Core_ViewHelper_Exception('No video sources provided.', 1359382189);
-        }
+	/**
+	 * Render method
+	 *
+	 * @return string
+	 */
+	public function render() {
+		if (0 == count($this->arguments['sources'])) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('No video sources provided.', 1359382189);
+		}
 
-        foreach ($this->arguments['sources'] as $source) {
-            if (FALSE === isset($source['src'])) {
-                throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "src" in sources array.', 1359381250);
-            }
-            $src = $source['src'];
+		foreach ($this->arguments['sources'] as $source) {
+			if (FALSE === isset($source['src'])) {
+				throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "src" in sources array.', 1359381250);
+			}
+			$src = $source['src'];
 
-            if (FALSE === isset($source['type'])) {
-                throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "type" in sources array.', 1359381255);
-            }
-            if (FALSE === in_array(strtolower($source['type']), $this->validTypes)) {
-                throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $source['type'] . '".', 1359381260);
-            }
-            $type = 'video/' . strtolower($source['type']);
+			if (FALSE === isset($source['type'])) {
+				throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "type" in sources array.', 1359381255);
+			}
+			if (FALSE === in_array(strtolower($source['type']), $this->validTypes)) {
+				throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $source['type'] . '".', 1359381260);
+			}
+			$type = 'video/' . strtolower($source['type']);
 
-            $src = $this->preprocessSourceUrl($src);
+			$src = $this->preprocessSourceUrl($src);
 
-            $this->renderChildTag('source', array('src' => $src, 'type' => $type), 'append');
-        }
+			$this->renderChildTag('source', array('src' => $src, 'type' => $type), 'append');
+		}
 
-        $tagAttributes = array(
-            'width'   => $this->arguments['width'],
-            'height'  => $this->arguments['height'],
-            'preload' => 'auto',
-        );
+		$tagAttributes = array(
+			'width'   => $this->arguments['width'],
+			'height'  => $this->arguments['height'],
+			'preload' => 'auto',
+		);
 
-        if (TRUE === (boolean) $this->arguments['autoplay']) {
-            $tagAttributes['autoplay'] = 'autoplay';
-        }
-        if (TRUE === (boolean) $this->arguments['controls']) {
-            $tagAttributes['controls'] = 'controls';
-        }
-        if (TRUE === (boolean) $this->arguments['loop']) {
-            $tagAttributes['loop'] = 'loop';
-        }
-        if (TRUE === (boolean) $this->arguments['muted']) {
-            $tagAttributes['muted'] = 'muted';
-        }
-        if (TRUE === in_array($this->validPreloadModes, $this->arguments['preload'])) {
-            $tagAttributes['preload'] = 'preload';
-        }
-        if (NULL !== $this->arguments['poster']) {
-            $tagAttributes['poster'] = $this->arguments['poster'];
-        }
+		if (TRUE === (boolean) $this->arguments['autoplay']) {
+			$tagAttributes['autoplay'] = 'autoplay';
+		}
+		if (TRUE === (boolean) $this->arguments['controls']) {
+			$tagAttributes['controls'] = 'controls';
+		}
+		if (TRUE === (boolean) $this->arguments['loop']) {
+			$tagAttributes['loop'] = 'loop';
+		}
+		if (TRUE === (boolean) $this->arguments['muted']) {
+			$tagAttributes['muted'] = 'muted';
+		}
+		if (TRUE === in_array($this->validPreloadModes, $this->arguments['preload'])) {
+			$tagAttributes['preload'] = 'preload';
+		}
+		if (NULL !== $this->arguments['poster']) {
+			$tagAttributes['poster'] = $this->arguments['poster'];
+		}
 
-        $this->tag->addAttributes($tagAttributes);
+		$this->tag->addAttributes($tagAttributes);
 
-        return $this->tag->render();
-    }
+		return $this->tag->render();
+	}
 }
