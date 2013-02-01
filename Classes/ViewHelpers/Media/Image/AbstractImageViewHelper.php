@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
+class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
 
 	/**
 	 * @var t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode

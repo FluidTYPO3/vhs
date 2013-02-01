@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Uri
  */
-class Tx_Vhs_ViewHelpers_Uri_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper {
+class Tx_Vhs_ViewHelpers_Uri_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper {
 
 	/**
 	 * Render method
