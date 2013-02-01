@@ -70,7 +70,6 @@ class Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper extends Tx_Vhs_ViewHel
 		$tagBuilder->forceClosingTag($forceClosingTag);
 		$childTag = $tagBuilder->render();
 		unset($tagBuilder);
-
 		if ($mode === 'append' || $mode === 'prepend') {
 			$content = $this->tag->getContent();
 			if ($mode === 'append') {
@@ -80,7 +79,6 @@ class Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper extends Tx_Vhs_ViewHel
 			}
 			$this->tag->setContent($content);
 		}
-
 		return $childTag;
 	}
 }

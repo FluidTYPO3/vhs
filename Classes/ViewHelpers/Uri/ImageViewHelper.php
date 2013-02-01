@@ -39,11 +39,8 @@ class Tx_Vhs_ViewHelpers_Uri_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_Ab
 	 * @return string
 	 */
 	public function render() {
-
 		$this->preprocessImage();
-
-		$src = $this->preprocessSourceUrl($this->mediaSource);
-
+		$src = $this->preprocessSourceUri($this->mediaSource);
 		return $src;
 	}
 

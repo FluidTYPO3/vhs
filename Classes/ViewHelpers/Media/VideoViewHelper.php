@@ -60,7 +60,6 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 		$this->registerUniversalTagAttributes();
 		$this->registerArgument('width', 'integer', 'Sets the width of the video player in pixels.', TRUE);
 		$this->registerArgument('height', 'integer', 'Sets the height of the video player in pixels.', TRUE);
-		$this->registerArgument('sources', 'array', 'Available sources for the video to embed in different formats (MP4, WebM, Ogg) as keyed array ("src" and "type")', TRUE);
 		$this->registerArgument('autoplay', 'boolean', 'Specifies that the video will start playing as soon as it is ready.', FALSE, FALSE);
 		$this->registerArgument('controls', 'boolean', 'Specifies that video controls should be displayed (such as a play/pause button etc).', FALSE, FALSE);
 		$this->registerArgument('loop', 'boolean', 'Specifies that the video will start over again, every time it is finished.', FALSE, FALSE);
@@ -76,11 +75,11 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 	 * @return string
 	 */
 	public function render() {
-		if (0 == count($this->arguments['sources'])) {
+		$sources = $this->getSourcesFromArgument();
+		if (0 == count($sources)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('No video sources provided.', 1359382189);
 		}
-
-		foreach ($this->arguments['sources'] as $source) {
+		foreach ($sources as $source) {
 			if (FALSE === isset($source['src'])) {
 				throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "src" in sources array.', 1359381250);
 			}
@@ -93,18 +92,14 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 				throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $source['type'] . '".', 1359381260);
 			}
 			$type = 'video/' . strtolower($source['type']);
-
-			$src = $this->preprocessSourceUrl($src);
-
+			$src = $this->preprocessSourceUri($src);
 			$this->renderChildTag('source', array('src' => $src, 'type' => $type), 'append');
 		}
-
 		$tagAttributes = array(
 			'width'   => $this->arguments['width'],
 			'height'  => $this->arguments['height'],
 			'preload' => 'auto',
 		);
-
 		if (TRUE === (boolean) $this->arguments['autoplay']) {
 			$tagAttributes['autoplay'] = 'autoplay';
 		}
@@ -123,9 +118,7 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 		if (NULL !== $this->arguments['poster']) {
 			$tagAttributes['poster'] = $this->arguments['poster'];
 		}
-
 		$this->tag->addAttributes($tagAttributes);
-
 		return $this->tag->render();
 	}
 }

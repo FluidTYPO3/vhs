@@ -76,7 +76,6 @@ class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelper
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('src', 'string', 'Path to the media resource.', TRUE);
 		$this->registerArgument('width', 'int', 'Optional width.', FALSE);
 		$this->registerArgument('height', 'int', 'Optional height.', FALSE);
 	}
@@ -86,7 +85,7 @@ class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelper
 	 * @return void
 	 */
 	public function preprocessImage() {
-		$src = $this->arguments['src'];
+		$src = $this->getSourcesFromArgument();
 		$width = $this->arguments['width'];
 		$height = $this->arguments['height'];
 		$minW = $this->arguments['minW'];
@@ -97,7 +96,6 @@ class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelper
 		if (TYPO3_MODE === 'BE') {
 			$this->simulateFrontendEnvironment();
 		}
-
 		$setup = array(
 			'width'  => $width,
 			'height' => $height,
@@ -106,25 +104,17 @@ class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelper
 			'maxW'   => $maxW,
 			'maxH'   => $maxH
 		);
-
 		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
 			$src = substr($src, 3);
 		}
-
 		$this->imageInfo = $this->contentObject->getImgResource($src, $setup);
-
 		$GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
-
 		if (!is_array($this->imageInfo)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Could not get image resource for "' . htmlspecialchars($src) . '".' , 1253191060);
 		}
-
 		$this->imageInfo[3] = t3lib_div::png_to_gif_by_imagemagick($this->imageInfo[3]);
-
 		$GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
-
 		$this->mediaSource = $GLOBALS['TSFE']->absRefPrefix . t3lib_div::rawUrlEncodeFP($this->imageInfo[3]);
-
 		if (TYPO3_MODE === 'BE') {
 			$this->resetFrontendEnvironment();
 		}
@@ -138,10 +128,8 @@ class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelper
 	 */
 	protected function simulateFrontendEnvironment() {
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
-			// set the working directory to the site root
 		$this->workingDirectoryBackup = getcwd();
 		chdir(PATH_site);
-
 		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$GLOBALS['TSFE'] = new stdClass();
 		$template = t3lib_div::makeInstance('t3lib_TStemplate');

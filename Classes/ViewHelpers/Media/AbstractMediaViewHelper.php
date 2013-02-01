@@ -45,21 +45,37 @@ class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends Tx_Fluid_Core_Vie
 	 * @api
 	 */
 	public function initializeArguments() {
+		$this->registerArgument('src', 'mixed', 'Path to the media resource(s). Can contain single or multiple paths for videos (either CSV, array or implementing Traversable).', TRUE);
 		$this->registerArgument('relative', 'boolean', 'If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.', FALSE, TRUE);
 	}
 
 	/**
-	 * Turns a relative source URL into an absolute URL
+	 * Turns a relative source URI into an absolute URL
 	 * if required
 	 *
 	 * @param string $src
 	 * @return string
 	 */
-	public function preprocessSourceUrl($src) {
+	public function preprocessSourceUri($src) {
 		if (TYPO3_MODE === 'BE' || FALSE === (boolean) $this->arguments['relative']) {
 			$src = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $src;
 		}
-
 		return $src;
 	}
+
+	/**
+	 * Returns an array of sources resolved from src argument
+	 *
+	 * @return array
+	 */
+	public function getSourcesFromArgument() {
+		$src = $this->arguments['src'];
+		if ($src instanceof Traversable) {
+			$src = iterator_to_array($pages);
+		} elseif (is_string($pages)) {
+			$src = t3lib_div::trimExplode(',', $pages, TRUE);
+		}
+		return $src;
+	}
+
 }
