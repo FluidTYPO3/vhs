@@ -51,36 +51,36 @@ class Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper extends Tx_Vhs_ViewHel
 		$this->registerTagAttribute('hidden', 'string', 'Specifies that the element represents an element that is not yet, or is no longer, relevant.');
 	}
 
- 	/**
-     * Renders the provided tag and optionally appends or prepends
-     * it to the main tag's content depending on 'mode' which can
-     * be one of 'none', 'append' or 'prepend'
-     *
-     * @param string $tagName
-     * @param array $attributes
-     * @param boolean $forceClosingTag
-     * @param string $mode
-     * @return string
-     */
-    public function renderChildTag($tagName, $attributes = array(), $forceClosingTag = FALSE, $mode = 'none') {
-        $tagBuilder = clone($this->tag);
-        $tagBuilder->reset();
-        $tagBuilder->setTagName($tagName);
-        $tagBuilder->addAttributes($attributes);
-        $tagBuilder->forceClosingTag($forceClosingTag);
-        $childTag = $tagBuilder->render();
-        unset($tagBuilder);
+	/**
+	 * Renders the provided tag and optionally appends or prepends
+	 * it to the main tag's content depending on 'mode' which can
+	 * be one of 'none', 'append' or 'prepend'
+	 *
+	 * @param string $tagName
+	 * @param array $attributes
+	 * @param boolean $forceClosingTag
+	 * @param string $mode
+	 * @return string
+	 */
+	public function renderChildTag($tagName, $attributes = array(), $forceClosingTag = FALSE, $mode = 'none') {
+		$tagBuilder = clone($this->tag);
+		$tagBuilder->reset();
+		$tagBuilder->setTagName($tagName);
+		$tagBuilder->addAttributes($attributes);
+		$tagBuilder->forceClosingTag($forceClosingTag);
+		$childTag = $tagBuilder->render();
+		unset($tagBuilder);
 
-        if ($mode === 'append' || $mode === 'prepend') {
-            $content = $this->tag->getContent();
-            if ($mode === 'append') {
-                $content = $content . $childTag;
-            } else {
-                $content = $childTag . $content;
-            }
-            $this->tag->setContent($content);
-        }
+		if ($mode === 'append' || $mode === 'prepend') {
+			$content = $this->tag->getContent();
+			if ($mode === 'append') {
+				$content = $content . $childTag;
+			} else {
+				$content = $childTag . $content;
+			}
+			$this->tag->setContent($content);
+		}
 
-        return $childTag;
-    }
+		return $childTag;
+	}
 }
