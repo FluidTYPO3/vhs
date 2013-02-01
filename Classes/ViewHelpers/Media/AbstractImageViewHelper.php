@@ -101,10 +101,10 @@ class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelper
 		$setup = array(
 			'width'  => $width,
 			'height' => $height,
-			'minW'   => $minWidth,
-			'minH'   => $minHeight,
-			'maxW'   => $maxWidth,
-			'maxH'   => $maxHeight
+			'minW'   => $minW,
+			'minH'   => $minH,
+			'maxW'   => $maxW,
+			'maxH'   => $maxH
 		);
 
 		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
