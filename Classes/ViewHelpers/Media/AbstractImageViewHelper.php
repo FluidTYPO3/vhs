@@ -82,7 +82,7 @@ class Tx_Vhs_ViewHelpers_Media_AbstractImageViewHelper extends Tx_Vhs_ViewHelper
 	}
 
 	/**
-	 *
+	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return void
 	 */
 	public function preprocessImage() {
