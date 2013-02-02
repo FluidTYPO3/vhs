@@ -95,7 +95,7 @@ class Tx_Vhs_ViewHelpers_Page_Content_GetViewHelper extends Tx_Fluid_Core_ViewHe
 		}
 		$pid = $GLOBALS['TSFE']->id;
 		$mountpointRange = '';
-		if (isset($this->arguments['pageUid']) === TRUE) {
+		if (isset($this->arguments['pageUid']) === TRUE && $this->arguments['pageUid'] > 0) {
 			$pid = $this->arguments['pageUid'];
 		} elseif ($GLOBALS['TSFE']->page['content_from_pid']) {
 			$pid = $GLOBALS['TSFE']->page['content_from_pid'];
