@@ -165,11 +165,8 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 	 * @return void
 	 */
 	protected function finalize() {
-		if (0 < count($GLOBALS['VhsAssets'])) {
-			/** @var $pageRenderer t3lib_PageRenderer */
-			$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-			$pageRenderer->addHeaderData('<!---- VhsAssetsHeader ----!>');
-			$pageRenderer->addFooterData('<!---- VhsAssetsFooter ----!>');
+		if (FALSE === isset($GLOBALS['VhsAssets'])) {
+			$GLOBALS['VhsAssets'] = array();
 		}
 		$name = $this->getName();
 		$overwrite = $this->getOverwrite();

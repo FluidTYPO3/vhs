@@ -67,12 +67,14 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 
 	/**
 	 * @param array $parameters
+	 * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
 	 * @return void
 	 */
-	public function buildAll(array $parameters) {
-		if (0 === count($GLOBALS['VhsAssets'])) {
+	public function buildAll(array $parameters, $cached = TRUE) {
+		if (FALSE === isset($GLOBALS['VhsAssets'])) {
 			return;
 		}
+		$cached = (boolean) $cached;
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$assets = $GLOBALS['VhsAssets'];
 		$assets = $this->sortAssetsByDependency($assets);
@@ -89,8 +91,15 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 				echo var_export($assets, TRUE);
 			}
 		}
-		$this->placeAssetsInHeaderAndFooter($assets);
-		unset($GLOBALS['VhsAssets']);
+		$this->placeAssetsInHeaderAndFooter($assets, $cached);
+	}
+
+	/**
+	 * @param array $parameters
+	 * @return void
+	 */
+	public function buildAllUncached(array $parameters) {
+		$this->buildAll($parameters, FALSE);
 	}
 
 	/**
@@ -105,9 +114,10 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 
 	/**
 	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @param boolean $cached
 	 * @return void
 	 */
-	private function placeAssetsInHeaderAndFooter($assets) {
+	private function placeAssetsInHeaderAndFooter($assets, $cached) {
 		$settings = $this->getSettings();
 		$header = array();
 		$footer = array();
@@ -119,10 +129,32 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 				$header[$name] = $asset;
 			}
 		}
-		$headerAssets = $this->buildAssetsChunk($header);
-		$footerAssets = $this->buildAssetsChunk($footer);
-		$GLOBALS['TSFE']->content = str_replace('<!---- VhsAssetsHeader ----!>', $headerAssets, $GLOBALS['TSFE']->content);
-		$GLOBALS['TSFE']->content = str_replace('<!---- VhsAssetsFooter ----!>', $footerAssets, $GLOBALS['TSFE']->content);
+		if (FALSE === $cached) {
+			$uncachedSuffix = 'Uncached';
+		} else {
+			$uncachedSuffix = '';
+			$depdenciesString = '<!---- VhsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' ----!>';
+			$GLOBALS['TSFE']->content = str_replace('<!---- VhsDependenciesLoaded ----!>', $headerAssets, $GLOBALS['TSFE']->content);
+		}
+		$this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
+		$this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer);
+		$GLOBALS['VhsAssets'] = array();
+	}
+
+	/**
+	 * @param string $markerName
+	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @return void
+	 */
+	private function insertAssetsAtMarker($markerName, $assets) {
+		if (FALSE === strpos($GLOBALS['TSFE']->content, '<!---- VhsAssets' . $markerName . ' ----!>')) {
+			$assetMarker = '<!---- VhsAssets' . $markerName . ' ----!>';
+			$inFooter = FALSE !== strpos($markerName, 'Footer');
+			$tag = TRUE === $inFooter ? '</body>' : '</head>';
+			$GLOBALS['TSFE']->content = str_replace($tag, $assetMarker . LF . $tag, $GLOBALS['TSFE']->content);
+		}
+		$chunk = $this->buildAssetsChunk($assets);
+		$GLOBALS['TSFE']->content = str_replace('<!---- VhsAssets' . $markerName . ' ----!>', $chunk, $GLOBALS['TSFE']->content);
 	}
 
 	/**
