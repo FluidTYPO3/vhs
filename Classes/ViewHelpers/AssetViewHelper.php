@@ -66,6 +66,11 @@
 class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
 
 	/**
+	 * @var array
+	 */
+	private static $cachedDependencies = array();
+
+	/**
 	 * @param array $parameters
 	 * @param object $caller
 	 * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
@@ -101,6 +106,12 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	 * @return void
 	 */
 	public function buildAllUncached(array $parameters, $caller) {
+		$content = $GLOBALS['TSFE']->content;
+		$matches = array();
+		preg_match_all('/\<\!\-\-\-\- VhsAssetsDependenciesLoaded ([a-zA-Z0-9\-\,]{1,}) \-\-\-\-\!\>/i', $content, $matches);
+		self::$cachedDependencies = explode(',', $matches[1][0]);
+		str_replace($matches[0][0], '', $matches[0][0]);
+		$GLOBALS['TSFE']->content = $content;
 		$this->buildAll($parameters, $caller, FALSE);
 	}
 
@@ -125,8 +136,8 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$uncachedSuffix = 'Uncached';
 		} else {
 			$uncachedSuffix = '';
-			$depdenciesString = '<!---- VhsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' ----!>';
-			$GLOBALS['TSFE']->content = str_replace('<!---- VhsDependenciesLoaded ----!>', $headerAssets, $GLOBALS['TSFE']->content);
+			$dependenciesString = '<!---- VhsAssetsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' ----!>';
+			$this->insertAssetsAtMarker('DependenciesLoaded', $dependenciesString);
 		}
 		$this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
 		$this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer);
@@ -145,7 +156,11 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$tag = TRUE === $inFooter ? '</body>' : '</head>';
 			$GLOBALS['TSFE']->content = str_replace($tag, $assetMarker . LF . $tag, $GLOBALS['TSFE']->content);
 		}
-		$chunk = $this->buildAssetsChunk($assets);
+		if (TRUE === is_array($assets)) {
+			$chunk = $this->buildAssetsChunk($assets);
+		} else {
+			$chunk = $assets;
+		}
 		$GLOBALS['TSFE']->content = str_replace('<!---- VhsAssets' . $markerName . ' ----!>', $chunk, $GLOBALS['TSFE']->content);
 	}
 
@@ -334,7 +349,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$name = $asset->getName();
 			$dependencies = $asset->getDependencies();
 			foreach ($dependencies as $dependency) {
-				if (FALSE === isset($placed[$dependency])) {
+				if (FALSE === isset($placed[$dependency]) && FALSE === in_array($dependency, self::$cachedDependencies)) {
 					// shove the Asset back to the end of the queue, the dependency has
 					// not yet been encountered and moving this item to the back of the
 					// queue ensures it will be encountered before re-encountering this
