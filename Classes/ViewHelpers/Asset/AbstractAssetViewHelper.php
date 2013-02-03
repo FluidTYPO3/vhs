@@ -233,6 +233,9 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		} else {
 			$name = md5(implode('', array_values($assetSettings)));
 		}
+		if (TRUE === (boolean) $assetSettings['fluid']) {
+			$name .= '-' . md5(implode('', array_values($this->getVariables())));
+		}
 		return $name;
 	}
 
