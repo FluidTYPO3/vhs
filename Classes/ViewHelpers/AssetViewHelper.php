@@ -249,11 +249,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			}
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($assets)) . '.'.  $type;
-		$exists = file_exists(PATH__site . $fileRelativePathAndFilename);
-		$expired = TRUE === $exists && filectime(PATH_site . $fileRelativePathAndFilename) + $ttl < time();
-		if (FALSE === ($exists && $expired)) {
-			file_put_contents(PATH_site . $fileRelativePathAndFilename, $source);
-		}
+		file_put_contents(PATH_site . $fileRelativePathAndFilename, $source);
 		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 	}
 
