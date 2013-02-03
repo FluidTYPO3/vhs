@@ -67,10 +67,11 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 
 	/**
 	 * @param array $parameters
+	 * @param object $caller
 	 * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
 	 * @return void
 	 */
-	public function buildAll(array $parameters, $cached = TRUE) {
+	public function buildAll(array $parameters, $caller, $cached = TRUE) {
 		if (FALSE === isset($GLOBALS['VhsAssets'])) {
 			return;
 		}
@@ -96,10 +97,11 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 
 	/**
 	 * @param array $parameters
+	 * @param object $caller
 	 * @return void
 	 */
-	public function buildAllUncached(array $parameters) {
-		$this->buildAll($parameters, FALSE);
+	public function buildAllUncached(array $parameters, $caller) {
+		$this->buildAll($parameters, $caller, FALSE);
 	}
 
 	/**
