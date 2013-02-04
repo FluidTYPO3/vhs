@@ -66,13 +66,21 @@
 class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
 
 	/**
+	 * @var array
+	 */
+	private static $cachedDependencies = array();
+
+	/**
 	 * @param array $parameters
+	 * @param object $caller
+	 * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
 	 * @return void
 	 */
-	public function buildAll(array $parameters) {
-		if (0 === count($GLOBALS['VhsAssets'])) {
+	public function buildAll(array $parameters, $caller, $cached = TRUE) {
+		if (FALSE === isset($GLOBALS['VhsAssets'])) {
 			return;
 		}
+		$cached = (boolean) $cached;
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$assets = $GLOBALS['VhsAssets'];
 		$assets = $this->sortAssetsByDependency($assets);
@@ -89,25 +97,30 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 				echo var_export($assets, TRUE);
 			}
 		}
-		$this->placeAssetsInHeaderAndFooter($assets);
-		unset($GLOBALS['VhsAssets']);
+		$this->placeAssetsInHeaderAndFooter($assets, $cached);
 	}
 
 	/**
+	 * @param array $parameters
+	 * @param object $caller
 	 * @return void
 	 */
-	public function clearCacheCommand() {
-		$files = glob(PATH_site . 'typo3temp/vhs-assets-*');
-		if (TRUE === is_array($files)) {
-			array_map('unlink', $files);
-		}
+	public function buildAllUncached(array $parameters, $caller) {
+		$content = $GLOBALS['TSFE']->content;
+		$matches = array();
+		preg_match_all('/\<\!\-\-\-\- VhsAssetsDependenciesLoaded ([a-zA-Z0-9\-\,]{1,}) \-\-\-\-\!\>/i', $content, $matches);
+		self::$cachedDependencies = explode(',', $matches[1][0]);
+		str_replace($matches[0][0], '', $matches[0][0]);
+		$GLOBALS['TSFE']->content = $content;
+		$this->buildAll($parameters, $caller, FALSE);
 	}
 
 	/**
 	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @param boolean $cached
 	 * @return void
 	 */
-	private function placeAssetsInHeaderAndFooter($assets) {
+	private function placeAssetsInHeaderAndFooter($assets, $cached) {
 		$settings = $this->getSettings();
 		$header = array();
 		$footer = array();
@@ -119,10 +132,36 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 				$header[$name] = $asset;
 			}
 		}
-		$headerAssets = $this->buildAssetsChunk($header);
-		$footerAssets = $this->buildAssetsChunk($footer);
-		$GLOBALS['TSFE']->content = str_replace('<!---- VhsAssetsHeader ----!>', $headerAssets, $GLOBALS['TSFE']->content);
-		$GLOBALS['TSFE']->content = str_replace('<!---- VhsAssetsFooter ----!>', $footerAssets, $GLOBALS['TSFE']->content);
+		if (FALSE === $cached) {
+			$uncachedSuffix = 'Uncached';
+		} else {
+			$uncachedSuffix = '';
+			$dependenciesString = '<!---- VhsAssetsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' ----!>';
+			$this->insertAssetsAtMarker('DependenciesLoaded', $dependenciesString);
+		}
+		$this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
+		$this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer);
+		$GLOBALS['VhsAssets'] = array();
+	}
+
+	/**
+	 * @param string $markerName
+	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @return void
+	 */
+	private function insertAssetsAtMarker($markerName, $assets) {
+		if (FALSE === strpos($GLOBALS['TSFE']->content, '<!---- VhsAssets' . $markerName . ' ----!>')) {
+			$assetMarker = '<!---- VhsAssets' . $markerName . ' ----!>';
+			$inFooter = FALSE !== strpos($markerName, 'Footer');
+			$tag = TRUE === $inFooter ? '</body>' : '</head>';
+			$GLOBALS['TSFE']->content = str_replace($tag, $assetMarker . LF . $tag, $GLOBALS['TSFE']->content);
+		}
+		if (TRUE === is_array($assets)) {
+			$chunk = $this->buildAssetsChunk($assets);
+		} else {
+			$chunk = $assets;
+		}
+		$GLOBALS['TSFE']->content = str_replace('<!---- VhsAssets' . $markerName . ' ----!>', $chunk, $GLOBALS['TSFE']->content);
 	}
 
 	/**
@@ -215,11 +254,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			}
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($assets)) . '.'.  $type;
-		$exists = file_exists(PATH__site . $fileRelativePathAndFilename);
-		$expired = filectime(PATH_site . $fileRelativePathAndFilename) + $ttl < time();
-		if (FALSE === $exists || TRUE === $expired) {
-			file_put_contents(PATH_site . $fileRelativePathAndFilename, $source);
-		}
+		file_put_contents(PATH_site . $fileRelativePathAndFilename, $source);
 		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 	}
 
@@ -314,7 +349,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$name = $asset->getName();
 			$dependencies = $asset->getDependencies();
 			foreach ($dependencies as $dependency) {
-				if (FALSE === isset($placed[$dependency])) {
+				if (FALSE === isset($placed[$dependency]) && FALSE === in_array($dependency, self::$cachedDependencies)) {
 					// shove the Asset back to the end of the queue, the dependency has
 					// not yet been encountered and moving this item to the back of the
 					// queue ensures it will be encountered before re-encountering this

@@ -168,10 +168,6 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 		if (FALSE === isset($GLOBALS['VhsAssets'])) {
 			$GLOBALS['VhsAssets'] = array();
 		}
-		if (FALSE === isset($GLOBALS['TSFE']->additionalHeaderData['VhsAssets'])) {
-			$GLOBALS['TSFE']->additionalHeaderData['VhsAssets'] = '<!---- VhsAssetsHeader ----!>';
-			$GLOBALS['TSFE']->additionalFooterData['VhsAssets'] = '<!---- VhsAssetsFooter ----!>';
-		}
 		$name = $this->getName();
 		$overwrite = $this->getOverwrite();
 		$slotFree = FALSE === isset($GLOBALS['VhsAssets'][$name]);
@@ -236,6 +232,9 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid
 			$name = $assetSettings['name'];
 		} else {
 			$name = md5(implode('', array_values($assetSettings)));
+		}
+		if (TRUE === (boolean) $assetSettings['fluid']) {
+			$name .= '-' . md5(implode('', array_values($this->getVariables())));
 		}
 		return $name;
 	}
