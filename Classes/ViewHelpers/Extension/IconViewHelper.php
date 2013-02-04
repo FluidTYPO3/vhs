@@ -24,7 +24,10 @@
  ***************************************************************/
 
 /**
- * Extension Icon ViewHelper
+ * ### Extension: Icon ViewHelper
+ *
+ * Outputs the icon of the extension key. Supports both
+ * extension key and extension name arguments.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
