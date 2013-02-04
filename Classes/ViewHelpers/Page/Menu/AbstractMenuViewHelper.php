@@ -329,8 +329,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			}
 
 			if (($page['active'] || $this->arguments['expandAll']) && $page['hasSubPages'] && $level < $this->arguments['levels']) {
-				$rootLine = $this->getRootLine($page['uid'], TRUE);
-				$subMenu = $this->getMenuItems($page['uid'], $rootLine);
+				$rootLineData = $this->pageSelect->getRootLine($pageUid);
+				$subMenuData = $this->pageSelect->getMenu($pageUid);
+				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
+				$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
 				$this->tag->setTagName($this->arguments['tagName']);
 				$this->tag->setContent($renderedSubMenu);
@@ -341,40 +343,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			$html[] = '</' . $tagName . '>';
 		}
 		return implode(LF, $html);
-	}
-
-	/**
-	 * Returns all menu items for provided pid and parsed it
-	 * to set css classes and respect visibility of items
-	 *
-	 * @param int $pageUid
-	 * @param array $rootline
-	 * @return array
-	 */
-	public function getMenuItems($pageUid, array $rootLine = NULL) {
-		$menu = $this->pageSelect->getMenu($pageUid);
-		if (NULL !== $rootLine) {
-			$menu = $this->parseMenu($menu, $rootLine);
-		}
-
-		return $menu;
-	}
-
-	/**
-	 * Returns rootline for provided pid and parsed it
-	 * to set css classes and respect visibility of items
-	 *
-	 * @param int $pageUid
-	 * @param boolean $parse
-	 * @return array
-	 */
-	public function getRootLine($pageUid, $parse = FALSE) {
-		$rootLine = $this->pageSelect->getRootLine($pageUid);
-		if (TRUE === $parse) {
-			$rootLine = $this->parseMenu($rootLine, $rootLine);
-		}
-
-		return $rootLine;
 	}
 
 	/**
@@ -431,5 +399,25 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Returns array of page UIDs from provided pages
+	 * argument or NULL if not processable
+	 *
+	 * @return array
+	 */
+	public function processPagesArgument() {
+		$pages = $this->arguments['pages'];
+		if ($pages instanceof Traversable) {
+			$pages = iterator_to_array($pages);
+		} elseif (is_string($pages)) {
+			$pages = t3lib_div::trimExplode(',', $pages, TRUE);
+		}
+		if (FALSE === is_array($pages)) {
+			return NULL;
+		}
+
+		return $pages;
 	}
 }
