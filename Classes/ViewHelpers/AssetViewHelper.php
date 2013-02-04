@@ -90,6 +90,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			}
 		}
 		$this->placeAssetsInHeaderAndFooter($assets);
+		unset($GLOBALS['VhsAssets']);
 	}
 
 	/**
