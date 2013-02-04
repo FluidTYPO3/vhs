@@ -65,24 +65,18 @@ class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_Men
 				return '';
 			}
 		}
-
-		$menu = $this->getMenuItems($pageUid, $rootLine);
-		$rootLine = $this->parseMenu($rootLine, $rootLine);
-
+		$rootLineData = $this->pageSelect->getRootLine($pageUid);
+		$menuData = $this->pageSelect->getMenu($pageUid);
+		$menu = $this->parseMenu($menuData, $rootLineData);
+		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->backupVariables();
-
 		$this->templateVariableContainer->add('menu', $menu);
 		$this->templateVariableContainer->add('rootLine', $rootLine);
-
 		$content = $this->renderChildren();
-
 		$this->templateVariableContainer->remove('menu');
 		$this->templateVariableContainer->remove('rootLine');
-
 		$output = $this->renderContent($menu, $content);
-
 		$this->restoreVariables();
-
 		return $output;
 	}
 

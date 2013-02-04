@@ -44,51 +44,34 @@ class Tx_Vhs_ViewHelpers_Page_Menu_ListViewHelper extends Tx_Vhs_ViewHelpers_Pag
 	 * @return void
 	 */
 	public function initializeArguments() {
-        parent::initializeArguments();
-        $this->registerArgument('pages', 'mixed', 'Page UIDs to include in the menu. Can be CSV, array or an object implementing Traversable.', TRUE);
-    }
+		parent::initializeArguments();
+		$this->registerArgument('pages', 'mixed', 'Page UIDs to include in the menu. Can be CSV, array or an object implementing Traversable.', TRUE);
+	}
 
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render() {
-        $pages = $this->arguments['pages'];
-
-        if ($pages instanceof Traversable) {
-            $pages = iterator_to_array($pages);
-        } elseif (is_string($pages)) {
-            $pages = t3lib_div::trimExplode(',', $pages, TRUE);
-        }
-
-        if (FALSE === is_array($pages)) {
-            return NULL;
-        }
-
-        $menu = array();
-        $rootLine = $this->getRootLine($GLOBALS['TSFE']->id);
-
-        foreach ($pages as $pageUid) {
-            $menu[] = $this->pageSelect->getPage($pageUid);
-        }
-
-        $menu = $this->parseMenu($menu, $rootLine);
-        $rootLine = $this->parseMenu($rootLine, $rootLine);
-
-        $this->backupVariables();
-
-        $this->templateVariableContainer->add('menu', $menu);
-
-        $content = $this->renderChildren();
-
-        $this->templateVariableContainer->remove('menu');
-
-        $output = $this->renderContent($menu, $content);
-
-        $this->restoreVariables();
-
-        return $output;
-    }
+	/**
+	 * Render method
+	 *
+	 * @return string
+	 */
+	public function render() {
+		$pages = $this->processPagesArgument();
+		if (NULL === $pages) {
+			return;
+		}
+		$menuData = array();
+		$rootLineData = $this->getRootLine($GLOBALS['TSFE']->id);
+		foreach ($pages as $pageUid) {
+			$menuData[] = $this->pageSelect->getPage($pageUid);
+		}
+		$menu = $this->parseMenu($menuData, $rootLineData);
+		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
+		$this->backupVariables();
+		$this->templateVariableContainer->add('menu', $menu);
+		$content = $this->renderChildren();
+		$this->templateVariableContainer->remove('menu');
+		$output = $this->renderContent($menu, $content);
+		$this->restoreVariables();
+		return $output;
+	}
 
 }
