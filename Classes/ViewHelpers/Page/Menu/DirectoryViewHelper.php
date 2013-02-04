@@ -59,7 +59,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DirectoryViewHelper extends Tx_Vhs_ViewHelper
 			return;
 		}
 		$menuData = array();
-		$rootLineData = $this->getRootLine($GLOBALS['TSFE']->id);
+		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
 		foreach ($pages as $pageUid) {
 			$menuData = array_merge($menuData, $this->pageSelect->getMenu($pageUid));
 		}
