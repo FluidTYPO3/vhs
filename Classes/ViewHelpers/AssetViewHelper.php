@@ -110,7 +110,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		$matches = array();
 		preg_match_all('/\<\!\-\-\-\- VhsAssetsDependenciesLoaded ([a-zA-Z0-9\-\,]{1,}) \-\-\-\-\!\>/i', $content, $matches);
 		self::$cachedDependencies = explode(',', $matches[1][0]);
-		str_replace($matches[0][0], '', $matches[0][0]);
+		$content = str_replace($matches[0][0], '', $content);
 		$GLOBALS['TSFE']->content = $content;
 		$this->buildAll($parameters, $caller, FALSE);
 	}
