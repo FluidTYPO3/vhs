@@ -329,6 +329,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			}
 
 			if (($page['active'] || $this->arguments['expandAll']) && $page['hasSubPages'] && $level < $this->arguments['levels']) {
+				$pageUid = $page['uid'];
 				$rootLineData = $this->pageSelect->getRootLine($pageUid);
 				$subMenuData = $this->pageSelect->getMenu($pageUid);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
@@ -415,7 +416,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			$pages = t3lib_div::trimExplode(',', $pages, TRUE);
 		}
 		if (FALSE === is_array($pages)) {
-			return NULL;
+			return array();
 		}
 
 		return $pages;
