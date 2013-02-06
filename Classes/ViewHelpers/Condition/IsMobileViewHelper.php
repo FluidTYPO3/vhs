@@ -28,8 +28,8 @@
  *
  * Condition ViewHelper which renders the `then` child if client
  * is a mobile device. Uses regex patterns from http://detectmobilebrowsers.com/
- * by Chad Smith. Notice: The methods to determine the client
- * is not 100% exact as it is based on analyzing the user agent string.
+ * by Chad Smith. Notice: The method to determine the client is not
+ * 100% exact as it is based on analyzing the user agent string.
  * By default tablets are treated as desktop devices. Set 'includeTables'
  * to TRUE to treat them as mobile devices.
  *
