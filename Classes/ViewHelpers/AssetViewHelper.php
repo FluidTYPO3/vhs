@@ -200,6 +200,8 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 								throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
 							}
 							$fileRelativePathAndFilename = substr($absolutePathAndFilename, strlen(PATH_site));
+							$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
+							$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
 						}
 						$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 					} else {
@@ -225,6 +227,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	 * @return string
 	 */
 	private function writeCachedMergedFileAndReturnTag($assets, $type) {
+		// @todo Finish implementation. This line is currently not used. I guess the intention was to better handle cache time of a file (vs. writing the file every time)
 		$ttl = (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['config.']['cache_period']) && $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] !== 0);
 		$source = '';
 		foreach ($assets as $name => $asset) {
@@ -252,9 +255,13 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 					$source .= file_get_contents($absolutePathAndFilename);
 				}
 			}
+			// Put a return carriage between assets preventing broken content.
+			$source .= "\n";
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($assets)) . '.'.  $type;
 		file_put_contents(PATH_site . $fileRelativePathAndFilename, $source);
+		$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
+		$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
 		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 	}
 
@@ -402,6 +409,32 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		$view->assignMultiple($variables);
 		$content = $view->render();
 		return $content;
+	}
+
+	/**
+	 * Append last modification time to the file preventing un-wanted caching of the file by the browser.
+	 *
+	 * @param $fileRelativePathAndFilename
+	 * @return string
+	 */
+	protected function appendModificationTime($fileRelativePathAndFilename) {
+		if (file_exists($fileRelativePathAndFilename)) {
+			$fileRelativePathAndFilename = '?' . filemtime($fileRelativePathAndFilename);
+		}
+		return $fileRelativePathAndFilename;
+	}
+
+	/**
+	 * Prefix a path according to "absRefPrefix" TS configuration.
+	 *
+	 * @param $fileRelativePathAndFilename
+	 * @return string
+	 */
+	protected function prefixPath($fileRelativePathAndFilename) {
+		if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
+			$fileRelativePathAndFilename = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'] . $fileRelativePathAndFilename;
+		}
+		return $fileRelativePathAndFilename;
 	}
 
 }
