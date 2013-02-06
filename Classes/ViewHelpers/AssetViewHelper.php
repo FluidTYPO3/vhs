@@ -136,7 +136,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$uncachedSuffix = 'Uncached';
 		} else {
 			$uncachedSuffix = '';
-			$dependenciesString = '<!---- VhsAssetsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' ----!>';
+			$dependenciesString = '<!-- VhsAssetsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' -->';
 			$this->insertAssetsAtMarker('DependenciesLoaded', $dependenciesString);
 		}
 		$this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
