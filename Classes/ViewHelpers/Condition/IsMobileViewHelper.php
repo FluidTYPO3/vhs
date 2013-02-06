@@ -27,9 +27,12 @@
  * ### Condition: Client is mobile device or not
  *
  * Condition ViewHelper which renders the `then` child if client
- * is a mobile device. Uses regex from http://detectmobilebrowsers.com/
- * by Chad Smith. Notice: This viewhelper only distinguishes between
- * mobile and desktop (i.e. tablets are treated as mobile devices as well).
+ * is a mobile device. Uses regex patterns from http://detectmobilebrowsers.com/
+ * by Chad Smith. Notice: The methods to determine the client
+ * is not 100% exact as it is based on analyzing the user agent string.
+ * By default tablets are treated as desktop devices. Set 'includeTables'
+ * to TRUE to treat them as mobile devices.
+ *
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
@@ -56,7 +59,7 @@ class Tx_Vhs_ViewHelpers_Condition_IsMobileViewHelper extends Tx_Vhs_ViewHelpers
 			$regexVendors .= self::REGEX_TABLETS;
 		}
 		$regexDevices = self::REGEX_DEVICES;
-		$isMobile = preg_match('/' . $regexVendors . '/i',$userAgent)||preg_match('/' . $regexDevices . '/i',substr($userAgent,0,4));
+		$isMobile = preg_match('/' . $regexVendors . '/i', $userAgent) || preg_match('/' . $regexDevices . '/i', substr($userAgent, 0, 4));
 		if (1 == $isMobile) {
 			$content = $this->renderThenChild();
 		} else {
