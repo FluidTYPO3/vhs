@@ -24,7 +24,9 @@
  ***************************************************************/
 
 /**
- * Condition to check if an extension is loaded
+ * ### Extension: Loaded (Condition) ViewHelper
+ *
+ * Condition to check if an extension is loaded.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
