@@ -55,7 +55,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_ListViewHelper extends Tx_Vhs_ViewHelpers_Pag
 	 */
 	public function render() {
 		$pages = $this->processPagesArgument();
-		if (NULL === $pages) {
+		if (0 === count($pages)) {
 			return;
 		}
 		$menuData = array();
