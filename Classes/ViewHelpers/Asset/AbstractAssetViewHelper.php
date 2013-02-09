@@ -41,7 +41,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
+	extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface

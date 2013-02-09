@@ -116,7 +116,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
 	 * @param boolean $cached
 	 * @return void
 	 */
@@ -146,7 +146,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 
 	/**
 	 * @param string $markerName
-	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
 	 * @return void
 	 */
 	private function insertAssetsAtMarker($markerName, $assets) {
@@ -165,7 +165,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
 	 * @return string
 	 */
 	private function buildAssetsChunk($assets) {
@@ -182,7 +182,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$standalone = FALSE;
 			$chunk = array();
 			$source = '';
-			/** @var $spooledAssets Tx_Vhs_ViewHelper_AssetViewHelper[] */
+			/** @var $spooledAssets Tx_Vhs_ViewHelpers_Asset_AssetInterface[] */
 			foreach ($spooledAssets as $name => $asset) {
 				$assetSettings = $asset->getAssetSettings();
 				$standalone = (TRUE === (boolean) $assetSettings['standalone']);
@@ -222,7 +222,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
 	 * @param string $type
 	 * @return string
 	 */
@@ -313,9 +313,9 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
+	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
 	 * @param array $settings Optional array of settings which will override any automatically detected settings
-	 * @return Tx_Vhs_ViewHelpers_AssetViewHelper[]
+	 * @return Tx_Vhs_ViewHelpers_Asset_AssetInterface[]
 	 * @throws RuntimeException
 	 */
 	private function manipulateAssetsByTypoScriptSetttings($assets, $settings = NULL) {
@@ -344,15 +344,15 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_AssetViewHelper[] $assets
-	 * @return Tx_Vhs_ViewHelpers_AssetViewHelper[]
+	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
+	 * @return Tx_Vhs_ViewHelpers_Asset_AssetInterface[]
 	 * @throws RuntimeException
 	 */
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
-			/** @var $asset Tx_Vhs_ViewHelpers_AssetViewHelper */
+			/** @var $asset Tx_Vhs_ViewHelpers_Asset_AssetInterface */
 			$name = $asset->getName();
 			$dependencies = $asset->getDependencies();
 			foreach ($dependencies as $dependency) {
@@ -377,10 +377,10 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset
+	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset
 	 * @return string
 	 */
-	private function extractAssetContent(Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset) {
+	private function extractAssetContent(Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset) {
 		$isFluidTemplate = TRUE === $asset->assertFluidEnabled();
 		if (TRUE === $isFluidTemplate) {
 			return $this->renderAssetAsFluidTemplate($asset);
@@ -389,10 +389,10 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset
+	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset
 	 * @return string
 	 */
-	private function renderAssetAsFluidTemplate(Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset) {
+	private function renderAssetAsFluidTemplate(Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset) {
 		$settings = $asset->getAssetSettings();
 		$templateReference = $settings['path'];
 		$variables = $asset->getVariables();
@@ -414,7 +414,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	/**
 	 * Append last modification time to the file preventing un-wanted caching of the file by the browser.
 	 *
-	 * @param $fileRelativePathAndFilename
+	 * @param string $fileRelativePathAndFilename
 	 * @return string
 	 */
 	protected function appendModificationTime($fileRelativePathAndFilename) {
@@ -427,7 +427,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	/**
 	 * Prefix a path according to "absRefPrefix" TS configuration.
 	 *
-	 * @param $fileRelativePathAndFilename
+	 * @param string $fileRelativePathAndFilename
 	 * @return string
 	 */
 	protected function prefixPath($fileRelativePathAndFilename) {
