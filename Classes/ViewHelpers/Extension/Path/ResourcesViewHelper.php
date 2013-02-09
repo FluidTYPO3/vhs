@@ -24,7 +24,9 @@
  ***************************************************************/
 
 /**
- * Site Relative path to Extension
+ * ### Path: Relative Extension Resource Path
+ *
+ * Site Relative path to Extension Resources/Public folder.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

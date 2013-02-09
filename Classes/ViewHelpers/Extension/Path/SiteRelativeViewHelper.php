@@ -24,7 +24,9 @@
  ***************************************************************/
 
 /**
- * Site Relative path to Extension
+ * ### Path: Relative Extension Folder Path
+ *
+ * Returns the site relative path to an extension folder.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

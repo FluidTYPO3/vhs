@@ -24,7 +24,9 @@
  ***************************************************************/
 
 /**
- * Relative path to Extension
+ * ### Path: Relative Extension Folder Path
+ *
+ * Returns the relative path to an Extension folder.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs

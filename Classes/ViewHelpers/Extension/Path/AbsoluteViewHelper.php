@@ -24,7 +24,9 @@
  ***************************************************************/
 
 /**
- * Absolute path to Extension
+ * ### Path: Absolute Extension Folder Path
+ *
+ * Returns the absolute path to an extension folder.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
