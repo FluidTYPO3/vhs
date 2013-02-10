@@ -24,33 +24,21 @@
  * ************************************************************* */
 
 /**
- * Basic interface for ViewHelpers whose purpose it is to
- * compile other Asset type ViewHelpers. Each Compiler's
- * class name or topmost interface name is used in other
- * CompilableAssets to indicate that the CompilableAsset
- * should be compiled by this particular Compiler.
+ * Basic interface for compilable Assets, which are a sub
+ * class of Assets that do not get included immediate but
+ * rather are collected and processed in bulk by an
+ * associated AssetCompilerInterface implementation. The
+ * association between CompilableAsset
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-interface Tx_Vhs_ViewHelpers_Asset_AssetCompilerInterface {
+interface Tx_Vhs_ViewHelpers_Asset_Compilable_CompilableAssetInterface extends Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @return string
 	 */
-	public function compile();
-
-	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset
-	 * @return void
-	 */
-	public function addAsset(Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper $asset);
-
-	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
-	 * @return string
-	 */
-	public function compileAssets($assets);
+	public function getCompilerClassName();
 
 }
