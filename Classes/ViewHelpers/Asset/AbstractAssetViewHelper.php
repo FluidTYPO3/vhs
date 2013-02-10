@@ -228,7 +228,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	/**
 	 * @return string
 	 */
-	protected function getName() {
+	public function getName() {
 		$assetSettings = $this->getAssetSettings();
 		if (TRUE === isset($assetSettings['name'])) {
 			$name = $assetSettings['name'];

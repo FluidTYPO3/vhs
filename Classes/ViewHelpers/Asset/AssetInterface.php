@@ -68,6 +68,11 @@ interface Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	public function getType();
 
 	/**
+	 * @return string
+	 */
+	public function getName();
+
+	/**
 	 * @return array
 	 */
 	public function getVariables();
