@@ -350,6 +350,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	 */
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
+		$compilables = array();
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
 			/** @var $asset Tx_Vhs_ViewHelpers_Asset_AssetInterface */
@@ -370,7 +371,40 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 				}
 			}
 			if (FALSE === $postpone) {
-				$placed[$name] = $asset;
+				if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_Compilable_CompilableAssetInterface) {
+					$compilerClassName = $asset->getCompilerClassName();
+					if (FALSE === isset($compilables[$compilerClassName])) {
+						$compilables[$compilerClassName] = array();
+					}
+					array_push($compilables[$compilerClassName], $asset);
+				} else {
+					$placed[$name] = $asset;
+				}
+			}
+		}
+		if (0 < count($compilables)) {
+			// loop once more, this time assigning compilable assets to their compilers
+			foreach ($placed as $asset) {
+				if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_Compilable_AssetCompilerInterface) {
+					/** @var $asset Tx_Vhs_ViewHelpers_Asset_Compilable_AssetCompilerInterface */
+					$compilerClassName = get_class($asset);
+					$compilerTopInterfaceName = array_shift(class_implements($compilerClassName));
+					if ('Tx_Vhs_ViewHelpers_Asset_Compilable_AssetCompilerInterface' !== $compilerTopInterfaceName) {
+						$compilerIdentity = $compilerTopInterfaceName;
+					} else {
+						$compilerIdentity = $compilerClassName;
+					}
+					if (TRUE === isset($compilables[$compilerIdentity])) {
+						foreach ($compilables[$compilerIdentity] as $compilableAsset) {
+							$asset->addAsset($compilableAsset);
+						}
+						unset($compilables[$compilerIdentity]);
+					}
+				}
+			}
+			if (0 < count($compilables)) {
+				throw new RuntimeException('Compilable Assets used without appropriate Compiler Assets: "' .
+					implode(', ', array_keys($compilables)) . '"', 1360502808);
 			}
 		}
 		return $placed;
@@ -385,7 +419,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		if (TRUE === $isFluidTemplate) {
 			return $this->renderAssetAsFluidTemplate($asset);
 		}
-		return $asset->getContent();
+		return $asset->build();
 	}
 
 	/**
