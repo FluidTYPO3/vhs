@@ -41,7 +41,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_ResourcesViewHelper extends Tx_Vhs_ViewH
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return t3lib_extMgm::extRelPath($extensionKey, 'Resources/Public/');
+		return t3lib_extMgm::extRelPath($extensionKey) . 'Resources/Public/';
 	}
 
 }
