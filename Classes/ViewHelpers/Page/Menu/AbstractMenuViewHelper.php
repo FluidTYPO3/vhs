@@ -252,6 +252,17 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['title'] = $title;
 		$page['doktype'] = (integer) $doktype;
+		
+		if ($doktype == 3) {
+			$urlTypes = array(
+				'1' => 'http://',
+				'4' => 'https://',
+				'2' => 'ftp://',
+				'3' => 'mailto:'
+			);
+			$page['link'] = $urlTypes[$page['urltype']] . $page['url'];
+		}
+
 		return $page;
 	}
 
