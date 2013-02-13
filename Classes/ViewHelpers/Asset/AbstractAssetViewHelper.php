@@ -131,6 +131,13 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	}
 
 	/**
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->build();
+	}
+
+	/**
 	 * Render method
 	 *
 	 * @return void
@@ -155,7 +162,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 * @return mixed
 	 */
 	public function build() {
-		return $this->content;
+		return $this->getContent();
 	}
 
 	/**
@@ -228,7 +235,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	/**
 	 * @return string
 	 */
-	protected function getName() {
+	public function getName() {
 		$assetSettings = $this->getAssetSettings();
 		if (TRUE === isset($assetSettings['name'])) {
 			$name = $assetSettings['name'];
