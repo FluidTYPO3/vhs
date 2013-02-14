@@ -76,6 +76,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('linkActive', 'boolean', 'If FALSE, does not wrap with links the titles of pages that are active in the rootline', FALSE, TRUE);
 		$this->registerArgument('backupVariables', 'array', 'Backup these template variables while rendering the menu and restore them afterwards. Default: [rootLine, page, menu]', FALSE, array('rootLine', 'page', 'menu'));
 		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.', FALSE, 'nav_title,title');
+		$this->registerArgument('doktypes', 'mixed', 'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or DOKTYPE_DEFAULT,DOKTYPE_SYSFOLDER');
 	}
 
 	/**
@@ -130,13 +131,26 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return array
 	 */
 	protected function allowedDoktypeList() {
-		$types = array(
-			constant('t3lib_pageSelect::DOKTYPE_DEFAULT'),
-			constant('t3lib_pageSelect::DOKTYPE_LINK'),
-			constant('t3lib_pageSelect::DOKTYPE_SHORTCUT'),
-			constant('t3lib_pageSelect::DOKTYPE_MOUNTPOINT')
-		);
-		if ($this->arguments['includeSpacers']) {
+		if (isset($this->arguments['doktypes']) && FALSE === empty($this->arguments['doktypes'])) {
+			if (TRUE === is_array($this->arguments['doktypes'])) {
+				$types = $this->arguments['doktype'];
+			} else {
+				$types = t3lib_div::trimExplode(',', $this->arguments['doktype']);
+			}
+			foreach ($types as $index => $type) {
+				if (FALSE === ctype_digit($type)) {
+					$types[$index] = constant('t3lib_pageSelect::' . $type);
+				}
+			}
+		} else {
+			$types = array(
+				constant('t3lib_pageSelect::DOKTYPE_DEFAULT'),
+				constant('t3lib_pageSelect::DOKTYPE_LINK'),
+				constant('t3lib_pageSelect::DOKTYPE_SHORTCUT'),
+				constant('t3lib_pageSelect::DOKTYPE_MOUNTPOINT')
+			);
+		}
+		if ($this->arguments['includeSpacers'] && FALSE === in_array(constant('t3lib_pageSelect::DOKTYPE_SPACER'), $types)) {
 			array_push($types, constant('t3lib_pageSelect::DOKTYPE_SPACER'));
 		}
 		return $types;
@@ -252,7 +266,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['title'] = $title;
 		$page['doktype'] = (integer) $doktype;
-		
+
 		if ($doktype == 3) {
 			$urlTypes = array(
 				'1' => 'http://',
