@@ -133,9 +133,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	protected function allowedDoktypeList() {
 		if (TRUE === isset($this->arguments['doktypes']) && FALSE === empty($this->arguments['doktypes'])) {
 			if (TRUE === is_array($this->arguments['doktypes'])) {
-				$types = $this->arguments['doktype'];
+				$types = $this->arguments['doktypes'];
 			} else {
-				$types = t3lib_div::trimExplode(',', $this->arguments['doktype']);
+				$types = t3lib_div::trimExplode(',', $this->arguments['doktypes']);
 			}
 			foreach ($types as $index => $type) {
 				if (FALSE === ctype_digit($type)) {
