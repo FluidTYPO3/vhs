@@ -42,6 +42,59 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 		unset($this->fixture);
 	}
 
+	public function simpleStructures() {
+		$structures = array(
+			// structure, key, expected
+			'flat associative array' => array(
+				array('myKey' => 'myValue'),
+				'myKey',
+				'myValue'
+			),
+			'deeper associative array' => array(
+				array(
+					'myFirstKey' => array(
+						'mySecondKey' => array(
+							'myThirdKey' => 'myValue'
+						)
+					)
+				),
+				'myFirstKey.mySecondKey.myThirdKey',
+				'myValue'
+			),
+		);
+		
+		return $structures;
+	}
+
+	public function constructObjectStorageContainingFrontendUser() {
+		$storage = new Tx_Extbase_Persistence_ObjectStorage();
+		$user1 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$user2 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$user3 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$user1->setFirstName('Peter');
+		$user2->setFirstName('Paul');
+		$user3->setFirstName('Marry');
+		$storage->attach($user1);
+		$storage->attach($user2);
+		$storage->attach($user3);
+
+		return $storage;
+	}
+
+	public function constructObjectStorageContainingFrontendUsersWithUserGroups() {
+		$storage = new Tx_Extbase_Persistence_ObjectStorage();
+		$userGroup1 = new Tx_Extbase_Domain_Model_FrontendUserGroup('my first group');
+		$userGroup2 = new Tx_Extbase_Domain_Model_FrontendUserGroup('my second group');
+		$user1 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$user2 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$user1->addUsergroup($userGroup1);
+		$user2->addUsergroup($userGroup2);
+		$storage->attach($user1);
+		$storage->attach($user2);
+
+		return $storage;
+	}
+
 	public function nestedStructures() {
 		$structures = array(
 			// structure, key, glue, expected
@@ -95,7 +148,53 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 				'l',
 				' ',
 				'some text'
-			)
+			),
+			'ridiculously nested array without glue' => array(
+				array(
+					array(
+						array(
+							array(
+								array(
+									array(
+										'l' => 'some'
+									)
+								)
+							),
+							array(
+								'l' => 'text'
+							)
+						)
+					)
+				),
+				'l',
+				NULL,
+				array(
+					0 => 'some',
+					1 => 'text',
+				)
+			),
+			'ObjectStorage containing FrontendUser' => array(
+				$this->constructObjectStorageContainingFrontendUser(),
+				'firstname',
+				', ',
+				'Peter, Paul, Marry'
+			),
+			'ObjectStorage containing FrontendUser without glue' => array(
+				$this->constructObjectStorageContainingFrontendUser(),
+				'firstname',
+				NULL,
+				array(
+					'Peter',
+					'Paul',
+					'Marry'
+				)
+			),
+			'ObjectStorage containing FrontendUsers with UserGroups' => array(
+				$this->constructObjectStorageContainingFrontendUsersWithUserGroups(),
+				'usergroup.title',
+				', ',
+				'my first group, my second group'
+			),
 		);
 
 		return $structures;
@@ -106,9 +205,21 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 	 * @dataProvider nestedStructures
 	 */
 	public function recursivelyExtractKey($structure, $key, $glue, $expected) {
+		$recursive = TRUE;
 		$this->assertSame(
 			$expected,
-			$this->fixture->render($structure, $key, $glue)
+			$this->fixture->render($structure, $key, $glue, $recursive)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider simpleStructures
+	 */
+	public function extractByKeyExtractsKeyByPath($structure, $key, $expected) {
+		$this->assertSame(
+			$expected,
+			$this->fixture->extractByKey($structure, $key)
 		);
 	}
 }
