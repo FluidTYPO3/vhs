@@ -283,7 +283,6 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 					$tagBuilder->setContent($content);
 				} else {
 					$tagBuilder->addAttribute('src', $file);
-					$tagBuilder->forceClosingTag(TRUE);
 				}
 				break;
 			case 'css':
@@ -295,7 +294,6 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 					$tagBuilder->setTagName('link');
 					$tagBuilder->addAttribute('rel', 'stylesheet');
 					$tagBuilder->addAttribute('href', $file);
-					$tagBuilder->forceClosingTag(TRUE);
 				}
 				break;
 			case 'meta':
