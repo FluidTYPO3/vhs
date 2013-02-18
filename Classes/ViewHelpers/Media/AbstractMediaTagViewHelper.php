@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
 
 	/**
 	 * Registers all standard and HTML5 universal attributes.
