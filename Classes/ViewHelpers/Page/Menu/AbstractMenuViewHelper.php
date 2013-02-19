@@ -58,6 +58,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('tagNameChildren', 'string', 'Tag name to use for child nodes surrounding links', FALSE, 'li');
 		$this->registerArgument('entryLevel', 'integer', 'Optional entryLevel TS equivalent of the menu', FALSE, 0);
 		$this->registerArgument('levels', 'integer', 'Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel', FALSE, 1);
+		$this->registerArgument('divider', 'string', 'Optional divider to insert between each menu item. Note that this does not mix well with automatic rendering due to the use of an ul > li structure', FALSE, NULL);
 		$this->registerArgument('expandAll', 'boolean', 'If TRUE and $levels > 1 then expands all (not just the active) menu items which have submenus', FALSE, FALSE);
 		$this->registerArgument('classActive', 'string', 'Optional class name to add to active links', FALSE, 'active');
 		$this->registerArgument('classCurrent', 'string', 'Optional class name to add to current link', FALSE, 'current');
@@ -337,6 +338,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$linkActive = (boolean) $this->arguments['linkActive'];
 		$showCurrent = (boolean) $this->arguments['showCurrent'];
 		$html = array();
+		$itemsRendered = 0;
+		$numberOfItems = count($menu);
 		foreach ($menu as $page) {
 			if ($page['current'] && !$showCurrent) {
 				continue;
@@ -367,6 +370,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				$this->tag->addAttribute('class', $this->arguments['class']);
 			}
 			$html[] = '</' . $tagName . '>';
+			$itemsRendered++;
+			if (TRUE === isset($this->arguments['divider']) && $itemsRendered < $numberOfItems) {
+				$html[] = $this->arguments['divider'];
+			}
 		}
 		return implode(LF, $html);
 	}
