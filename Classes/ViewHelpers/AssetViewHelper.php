@@ -250,7 +250,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 					throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
 				}
 				if (TRUE === $isFluidTemplate) {
-					$source = $this->renderAssetAsFluidTemplate($asset);
+					$source .= $this->renderAssetAsFluidTemplate($asset);
 				} else {
 					$source .= file_get_contents($absolutePathAndFilename);
 				}
