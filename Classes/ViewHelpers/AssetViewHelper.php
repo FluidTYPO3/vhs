@@ -108,9 +108,12 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	public function buildAllUncached(array $parameters, $caller) {
 		$content = $GLOBALS['TSFE']->content;
 		$matches = array();
-		preg_match_all('/\<\!\-\-\-\- VhsAssetsDependenciesLoaded ([a-zA-Z0-9\-\,]{1,}) \-\-\-\-\!\>/i', $content, $matches);
-		self::$cachedDependencies = explode(',', $matches[1][0]);
-		$content = str_replace($matches[0][0], '', $content);
+		preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\!\>/i', $content, $matches);
+		foreach ($matches[0] as $key => $match) {
+			$extractedDependencies = explode(',', $matches[1][$key]);
+			self::$cachedDependencies = array_merge(self::$cachedDependencies, $extractedDependencies);
+			$content = str_replace($matches[0][$key], '', $content);
+		}
 		$GLOBALS['TSFE']->content = $content;
 		$this->buildAll($parameters, $caller, FALSE);
 	}
