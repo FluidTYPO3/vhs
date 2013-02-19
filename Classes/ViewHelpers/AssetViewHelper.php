@@ -258,7 +258,11 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			// Put a return carriage between assets preventing broken content.
 			$source .= "\n";
 		}
-		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . implode('-', array_keys($assets)) . '.'.  $type;
+		$assetName = implode('-', array_keys($assets));
+		if ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename']) {
+			$assetName = md5($assetName);
+		}
+		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.'.  $type;
 		file_put_contents(PATH_site . $fileRelativePathAndFilename, $source);
 		$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
 		$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);

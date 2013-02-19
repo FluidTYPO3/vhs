@@ -64,6 +64,9 @@ plugin.tx_vhs.settings.assetGroup.ASSETGROUPNAME {
 plugin.tx_vhs.settings.asset {
 	# this object supports every property which "assetGroup" supports except for the "group" and "dependencies" properties.
 }
+plugin.tx_vhs.assets {
+	mergedAssetsUseHashedFilename = 0 # If set to a 1, Assets are merged into a file named using a hash if Assets' names.
+}
 ```
 
 ## Usage
