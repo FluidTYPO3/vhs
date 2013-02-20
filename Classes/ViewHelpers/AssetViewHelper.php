@@ -290,6 +290,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 					$tagBuilder->setContent($content);
 				} else {
 					$tagBuilder->addAttribute('src', $file);
+					$tagBuilder->forceClosingTag(TRUE);
 				}
 				break;
 			case 'css':
