@@ -137,7 +137,6 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	protected function getLanguageFlagSrc($iso) {
 		$path = trim($this->arguments['flagPath']);
 		$imgType = trim($this->arguments['flagImageType']);
-			//$iso = ($isoMatch[$iso]) ? $isoMatch[$iso] : $iso;
 		$img = $path . $iso . '.' . $imgType;
 		return $img;
 	}
@@ -152,13 +151,19 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 		$flagImage = $this->getFlagImage($language);
 		$label = $language['label'];
 		switch ($this->arguments['layout']) {
-			case 1:
+			case 'flag':
 				$html = $flagImage;
 				break;
-			case 2:
+			case 'name':
 				$html = $label;
 				break;
-			case 0:
+			case 'name,flag':
+				$html = $label;
+				if ($flagImage) {
+					$html .= '&nbsp;' . $flagImage;
+				}
+				break;
+			case 'flag,name':
 			default:
 				if ($flagImage) {
 					$html = $flagImage . '&nbsp;' . $label;
