@@ -264,8 +264,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (count($this->pageSelect->getMenu($pageUid, $fields = '*', $sortField = 'sorting', $addWhere = 'AND nav_hide=0')) > 0) ? 1 : 0;
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
+		$page['linktext'] = $title;
 		$page['class'] = implode(' ', $this->getItemClass($page));
-		$page['title'] = $title;
 		$page['doktype'] = (integer) $doktype;
 
 		if ($doktype == 3) {
@@ -349,11 +349,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			$target = $page['target'] != '' ? ' target="' . $page['target'] . '"' : '';
 			$html[] = '<' . $tagName . $elementId . $class . '>';
 			if ($page['current'] && $linkCurrent === FALSE) {
-				$html[] = $page['title'];
+				$html[] = $page['linktext'];
 			} elseif ($page['active'] && $linkActive === FALSE) {
-				$html[] = $page['title'];
+				$html[] = $page['linktext'];
 			} else {
-				$html[] = '<a href="' . $page['link'] . '"' . $class . $target . '>' . $page['title'] . '</a>';
+				$html[] = '<a href="' . $page['link'] . '"' . $class . $target . '>' . $page['linktext'] . '</a>';
 			}
 
 			if (($page['active'] || $this->arguments['expandAll']) && $page['hasSubPages'] && $level < $this->arguments['levels']) {
