@@ -98,8 +98,11 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	 */
 	protected function autoRender() {
 		$content = $this->getLanguageMenu();
-		$this->tag->setContent($content);
-		$content = $this->tag->render();
+		$content = trim($content);
+		if (FALSE === empty($content)) {
+			$this->tag->setContent($content);
+			$content = $this->tag->render();
+		}
 		return $content;
 	}
 
