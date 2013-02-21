@@ -119,7 +119,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 			} else {
 				$class = '';
 			}
-			if (FALSE === (bool) $var['current'] || (TRUE === (bool) $var['current'] && TRUE === (bool) $this->arguments['linkCurrent'])) {
+			if (FALSE === (boolean) $var['current'] || (TRUE === (boolean) $var['current'] && TRUE === (boolean) $this->arguments['linkCurrent'])) {
 				$html[] = '<' . $tagName . $class . '><a href="' . htmlspecialchars($var['url']) . '">' . $this->getLayout($var) . '</a></' . $tagName . '>';
 			} else {
 				$html[] = '<' . $tagName . $class . '>' . $this->getLayout($var) . '</' . $tagName . '>';
