@@ -104,8 +104,9 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 			} else {
 				$result = $this->extractByKey($content, $key);
 			}
-		} catch(Exception $e) {
-			// TODO react somehow better than ignoring the Exception
+		} catch(Exception $error) {
+			t3lib_div::sysLog($error->getMessage(), 'vhs', t3lib_div::SYSLOG_SEVERITY_WARNING);
+			$result = array();
 		}
 
 		return $result;
@@ -117,6 +118,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @param Traversable $iterator
 	 * @param string $key
 	 * @return mixed NULL or whatever we found at $key
+	 * @throws Exception
 	 */
 	public function extractByKey($iterator, $key) {
 		if (FALSE === is_array($iterator) && FALSE === $iterator instanceof Traversable) {
@@ -134,6 +136,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @param Traversable $iterator
 	 * @param string $key
 	 * @return string
+	 * @throws Exception
 	 */
 	public function recursivelyExtractKey($iterator, $key) {
 		$content = array();
