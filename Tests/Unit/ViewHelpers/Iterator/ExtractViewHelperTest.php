@@ -97,7 +97,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 
 	public function nestedStructures() {
 		$structures = array(
-			// structure, key, glue, expected
+			// structure, key, expected
 			'simple indexed_search searchWords array' => array(
 				array(
 					0 => array(
@@ -106,8 +106,9 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 					),
 				),
 				'sword',
-				' ',
-			   	'firstWord'
+				array(
+					'firstWord'
+				)
 			),
 			'interesting indexed_search searchWords array' => array(
 				array(
@@ -125,8 +126,11 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 					)
 				),
 				'sword',
-				', ',
-			   	'firstWord, secondWord, thirdWord'
+				array(
+					'firstWord',
+					'secondWord',
+					'thirdWord'
+				)
 			),
 			'ridiculously nested array' => array(
 				array(
@@ -146,28 +150,6 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 					)
 				),
 				'l',
-				' ',
-				'some text'
-			),
-			'ridiculously nested array without glue' => array(
-				array(
-					array(
-						array(
-							array(
-								array(
-									array(
-										'l' => 'some'
-									)
-								)
-							),
-							array(
-								'l' => 'text'
-							)
-						)
-					)
-				),
-				'l',
-				NULL,
 				array(
 					0 => 'some',
 					1 => 'text',
@@ -176,24 +158,11 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 			'ObjectStorage containing FrontendUser' => array(
 				$this->constructObjectStorageContainingFrontendUser(),
 				'firstname',
-				', ',
-				'Peter, Paul, Marry'
-			),
-			'ObjectStorage containing FrontendUser without glue' => array(
-				$this->constructObjectStorageContainingFrontendUser(),
-				'firstname',
-				NULL,
 				array(
 					'Peter',
 					'Paul',
 					'Marry'
 				)
-			),
-			'ObjectStorage containing FrontendUsers with UserGroups' => array(
-				$this->constructObjectStorageContainingFrontendUsersWithUserGroups(),
-				'usergroup.title',
-				', ',
-				'my first group, my second group'
 			),
 		);
 
@@ -204,11 +173,11 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 	 * @test
 	 * @dataProvider nestedStructures
 	 */
-	public function recursivelyExtractKey($structure, $key, $glue, $expected) {
+	public function recursivelyExtractKey($structure, $key, $expected) {
 		$recursive = TRUE;
 		$this->assertSame(
 			$expected,
-			$this->fixture->render($structure, $key, $glue, $recursive)
+			$this->fixture->render($key, $structure, $recursive)
 		);
 	}
 
