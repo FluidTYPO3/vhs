@@ -24,63 +24,60 @@
  ***************************************************************/
 
 /**
+ * ### Iterator / Extract VieWHelper
+ *
  * Loop through the iterator and extract a key, optionally join the
  * results if more than one value is found.
  *
- * = Extract values from an array by key =
+ * #### Extract values from an array by key
  *
  * The extbase version of indexed_search returns an array of the
  * previous search, which cannot easily be shown in the input field
  * of the result page. This can be solved.
  *
- * <code title="Input from extbase version of indexed_search">
- * array(
- *	 0 => array(
- *		 'sword' => 'firstWord',
- *		 'oper' => 'AND'
- *	 ),
- *	 1 => array(
- *		 'sword' => 'secondWord',
- *		 'oper' => 'AND'
- *	 ),
- *	 3 => array(
- *		 'sword' => 'thirdWord',
- *		 'oper' => 'AND'
- *	 )
- * )
- * </code>
+ * #### Input from extbase version of indexed_search">
+ *
+ *     array(
+ *	       0 => array(
+ *             'sword' => 'firstWord',
+ *             'oper' => 'AND'
+ *         ),
+ *         1 => array(
+ *             'sword' => 'secondWord',
+ *             'oper' => 'AND'
+ *         ),
+ *         3 => array(
+ *             'sword' => 'thirdWord',
+ *             'oper' => 'AND'
+ *         )
+ *     )
  *
  * Show the previous search words in the search form of the
  * result page:
  *
- * <code title="Example">
- * <f:form.textfield name="search[sword]"
- *     value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
- *     class="tx-indexedsearch-searchbox-sword" />
- * </code>
+ * #### Example
+ *     <f:form.textfield name="search[sword]"
+ *         value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
+ *         class="tx-indexedsearch-searchbox-sword" />
  *
- * = Get the names of several users =
+ * #### Get the names of several users
  *
  * Provided we have a bunch of FrontendUsers and we need to show
  * their firstname combined into a string:
  *
- * <code title="get the names of several users">
- * <h2>Welcome
- * <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
- * <!-- alternative: -->
- * {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
- * </h2>
- * </code>
+ *     <h2>Welcome
+ *     <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
+ *     <!-- alternative: -->
+ *     {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
+ *     </h2>
  *
- * <output>
- * <h2>Welcome Peter, Paul, Marry</h2>
- * </output>
+ * #### Output
  *
- * = Complex example=
+ *     <h2>Welcome Peter, Paul, Marry</h2>
  *
- * <code title="really get dirty with an array">
- * {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')->v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')->v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
- * </code>
+ * #### Complex example
+ *
+ *     {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')->v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')->v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
  *
  * @author Andreas Lappe <nd@kaeufli.ch>
  * @package Vhs
