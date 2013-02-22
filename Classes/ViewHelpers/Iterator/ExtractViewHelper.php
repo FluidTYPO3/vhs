@@ -3,7 +3,7 @@
  *  Copyright notice
  *
  *  (c) 2013 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -63,7 +63,7 @@
  * their firstname combined into a string:
  *
  * <code title="get the names of several users">
- * <h2>Welcome 
+ * <h2>Welcome
  * <v:iterator.extract key="firstname" content="frontendUsers" glue=", " />
  * </h2>
  * </code>
@@ -85,22 +85,18 @@
 class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @param Traversable $content
 	 * @param string $key
+	 * @param Traversable $content
 	 * @param mixed $glue NULL or string like ', '
 	 * @param boolean $recursive
 	 * @return mixed array or string
 	 */
-	public function render($content = NULL, $key = NULL, $glue = NULL, $recursive = TRUE) {
-		if ($content === NULL ) {
+	public function render($key, $content = NULL, $glue = NULL, $recursive = TRUE) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-		if ($key === NULL) {
-			$key = $this->arguments('key');
-		}
-
 		try {
-			if ($recursive === TRUE) {
+			if (TRUE === (boolean) $recursive) {
 				$result = $this->recursivelyExtractKey($content, $key, $glue);
 			} else {
 				$result = $this->extractByKey($content, $key);
@@ -120,8 +116,8 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @return mixed NULL or whatever we found at $key
 	 */
 	public function extractByKey($iterator, $key) {
-		if (! is_array($iterator) && ! $iterator instanceof Traversable) {
-			throw new Exception('Traversable object or array expected…');
+		if (FALSE === is_array($iterator) && FALSE === $iterator instanceof Traversable) {
+			throw new Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
 		}
 
 		$result = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($iterator, $key);
@@ -143,14 +139,14 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 		foreach ($iterator as $k => $v) {
 			// Lets see if we find something directly:
 			$result = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($v, $key);
-			if ($result !== NULL) {
+			if (NULL !== $result) {
 				$content[] = $result;
-			} else if (is_array($v) || $v instanceof Traversable) {
+			} elseif (TRUE === is_array($v) || TRUE === $v instanceof Traversable) {
 				$content[] = $this->recursivelyExtractKey($v, $key, $glue);
 			}
 		}
 
-		if ($glue !== NULL) {
+		if (NULL !== $glue) {
 			$content = implode($glue, $content);
 		} else {
 			$content = $this->flattenArray($content);
@@ -176,5 +172,5 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 
 		return $flattened;
 	}
+
 }
-?>
