@@ -54,7 +54,9 @@
  * result page:
  *
  * <code title="Example">
- * <f:form.textfield name="search[sword]" value="{v:iterator.extract(key:'sword', content: searchWords, glue: ' '}" class="tx-indexedsearch-searchbox-sword" />
+ * <f:form.textfield name="search[sword]"
+ *     value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
+ *     class="tx-indexedsearch-searchbox-sword" />
  * </code>
  *
  * = Get the names of several users =
@@ -64,7 +66,9 @@
  *
  * <code title="get the names of several users">
  * <h2>Welcome
- * <v:iterator.extract key="firstname" content="frontendUsers" glue=", " />
+ * <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
+ * <!-- alternative: -->
+ * {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
  * </h2>
  * </code>
  *
@@ -87,17 +91,16 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 	/**
 	 * @param string $key
 	 * @param Traversable $content
-	 * @param mixed $glue NULL or string like ', '
 	 * @param boolean $recursive
-	 * @return mixed array or string
+	 * @return array
 	 */
-	public function render($key, $content = NULL, $glue = NULL, $recursive = TRUE) {
+	public function render($key, $content = NULL, $recursive = TRUE) {
 		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 		try {
 			if (TRUE === (boolean) $recursive) {
-				$result = $this->recursivelyExtractKey($content, $key, $glue);
+				$result = $this->recursivelyExtractKey($content, $key);
 			} else {
 				$result = $this->extractByKey($content, $key);
 			}
@@ -130,10 +133,9 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 	 *
 	 * @param Traversable $iterator
 	 * @param string $key
-	 * @param mixed $glue NULL or string
 	 * @return string
 	 */
-	public function recursivelyExtractKey($iterator, $key, $glue) {
+	public function recursivelyExtractKey($iterator, $key) {
 		$content = array();
 
 		foreach ($iterator as $k => $v) {
@@ -142,15 +144,11 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 			if (NULL !== $result) {
 				$content[] = $result;
 			} elseif (TRUE === is_array($v) || TRUE === $v instanceof Traversable) {
-				$content[] = $this->recursivelyExtractKey($v, $key, $glue);
+				$content[] = $this->recursivelyExtractKey($v, $key);
 			}
 		}
 
-		if (NULL !== $glue) {
-			$content = implode($glue, $content);
-		} else {
-			$content = $this->flattenArray($content);
-		}
+		$content = $this->flattenArray($content);
 
 		return $content;
 	}
