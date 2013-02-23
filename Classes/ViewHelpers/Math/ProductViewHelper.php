@@ -24,13 +24,13 @@
  ***************************************************************/
 
 /**
- * Math: Sum
+ * ### Math: Product (multiplication)
  *
- * Performs sum of $a and $b. A can be an array and $b a
- * number, in which case each member of $a gets summed with $b.
- * If $a is an array and $b is not provided then array_sum is
+ * Product (multiplication) of $a and $b. A can be an array and $b a
+ * number, in which case each member of $a gets multiplied by $b.
+ * If $a is an array and $b is not provided then array_product is
  * used to return a single numeric value. If both $a and $b are
- * arrays, each member of $a is summed against the corresponding
+ * arrays, each member of $a is multiplied against the corresponding
  * member in $b compared using index.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
