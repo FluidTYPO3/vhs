@@ -24,11 +24,11 @@
  * ************************************************************* */
 
 /**
- * Required ViewHelper (condition)
+ * ### Form: Field Has Validator?
  *
  * Takes a property (dotted path supported) and renders the
- * then-child if the property at the given path has an
- * @validate $validator annotation
+ * then-child if the property at the given path has any
+ * @validate annotation.
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
