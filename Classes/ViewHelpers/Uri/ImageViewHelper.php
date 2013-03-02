@@ -24,6 +24,8 @@
  * ************************************************************* */
 
 /**
+ * ### Uri: Image
+ *
  * Returns the relative or absolute URI for the image resource
  * or it's derivate if differing dimesions are provided.
  *
