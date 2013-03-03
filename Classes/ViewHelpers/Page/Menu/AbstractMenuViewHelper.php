@@ -337,6 +337,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$linkCurrent = (boolean) $this->arguments['linkCurrent'];
 		$linkActive = (boolean) $this->arguments['linkActive'];
 		$showCurrent = (boolean) $this->arguments['showCurrent'];
+		$expandAll = (boolean) $this->arguments['expandAll'];
+		$maxLevels = (integer) $this->arguments['levels'];
 		$html = array();
 		$itemsRendered = 0;
 		$numberOfItems = count($menu);
@@ -355,13 +357,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			} else {
 				$html[] = '<a href="' . $page['link'] . '"' . $class . $target . '>' . $page['linktext'] . '</a>';
 			}
-
-			if (($page['active'] || $this->arguments['expandAll']) && $page['hasSubPages'] && $level < $this->arguments['levels']) {
+			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
-				$rootLineData = $this->pageSelect->getRootLine($pageUid);
+				$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
 				$subMenuData = $this->pageSelect->getMenu($pageUid);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
-				$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
 				$this->tag->setTagName($this->arguments['tagName']);
 				$this->tag->setContent($renderedSubMenu);
