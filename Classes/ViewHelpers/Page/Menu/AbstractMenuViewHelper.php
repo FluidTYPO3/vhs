@@ -304,7 +304,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				continue;
 			} elseif ($page['l18n_cfg'] == 1 && $GLOBALS['TSFE']->sys_language_uid == 0) {
 				continue;
-			} elseif ($page['l18n_cfg'] == 2 && $GLOBALS['TSFE']->sys_language_uid != 0) {
+			} elseif ($page['l18n_cfg'] == 2 && $GLOBALS['TSFE']->sys_language_uid != 0 && !$this->pageSelect->getPageOverlay($page['uid'], $GLOBALS['TSFE']->sys_language_uid)) {
 				continue;
 			} elseif (in_array($page['doktype'], $allowedDocumentTypes)) {
 				$page = $this->getMenuItemEntry($page, $rootLine);
