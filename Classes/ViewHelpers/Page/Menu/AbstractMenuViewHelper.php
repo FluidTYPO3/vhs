@@ -355,7 +355,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			} elseif ($page['active'] && $linkActive === FALSE) {
 				$html[] = $page['linktext'];
 			} else {
-				$html[] = '<a href="' . $page['link'] . '"' . $class . $target . '>' . $page['linktext'] . '</a>';
+				$html[] = sprintf('<a href="%s" title="%s"%s%s>%s</a>', $page['link'], $page['title'], $class, $target, $page['linktext']);
 			}
 			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
