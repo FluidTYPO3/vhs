@@ -139,7 +139,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$uncachedSuffix = 'Uncached';
 		} else {
 			$uncachedSuffix = '';
-			$dependenciesString = '<!---- VhsAssetsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' ----!>';
+			$dependenciesString = '<!-- VhsAssetsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' -->';
 			$this->insertAssetsAtMarker('DependenciesLoaded', $dependenciesString);
 		}
 		$this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
@@ -153,8 +153,8 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	 * @return void
 	 */
 	private function insertAssetsAtMarker($markerName, $assets) {
-		if (FALSE === strpos($GLOBALS['TSFE']->content, '<!---- VhsAssets' . $markerName . ' ----!>')) {
-			$assetMarker = '<!---- VhsAssets' . $markerName . ' ----!>';
+		if (FALSE === strpos($GLOBALS['TSFE']->content, '<!-- VhsAssets' . $markerName . ' -->')) {
+			$assetMarker = '<!-- VhsAssets' . $markerName . ' -->';
 			$inFooter = FALSE !== strpos($markerName, 'Footer');
 			$tag = TRUE === $inFooter ? '</body>' : '</head>';
 			$GLOBALS['TSFE']->content = str_replace($tag, $assetMarker . LF . $tag, $GLOBALS['TSFE']->content);
@@ -164,7 +164,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		} else {
 			$chunk = $assets;
 		}
-		$GLOBALS['TSFE']->content = str_replace('<!---- VhsAssets' . $markerName . ' ----!>', $chunk, $GLOBALS['TSFE']->content);
+		$GLOBALS['TSFE']->content = str_replace('<!-- VhsAssets' . $markerName . ' -->', $chunk, $GLOBALS['TSFE']->content);
 	}
 
 	/**
