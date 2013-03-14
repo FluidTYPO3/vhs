@@ -308,17 +308,22 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				continue;
 			} elseif (in_array($page['doktype'], $allowedDocumentTypes)) {
 				$page = $this->getMenuItemEntry($page, $rootLine);
-				$filtered[] = $page;
+				$filtered[$page['uid']] = $page;
 			}
 		}
-		if (isset($filtered[0])) {
-				// at least 1 page in menu
-			if ($classFirst) {
-				$filtered[0]['class'] = trim($filtered[0]['class'] . ' ' . $classFirst);
-			}
-			if ($classLast) {
-				$length = count($filtered);
-				$filtered[$length - 1]['class'] = trim($filtered[$length - 1]['class'] . ' ' . $classLast);
+		$length = count($filtered);
+		if ($length > 0) {
+			$idx = 1;
+			foreach ($filtered as $uid => $page) {
+				switch ($idx) {
+					case 1:
+						$filtered[$uid]['class'] = trim($filtered[$uid]['class'] . ' ' . $classFirst);
+						break;
+					case $length:
+						$filtered[$uid]['class'] = trim($filtered[$uid]['class'] . ' ' . $classLast);
+						break;
+				}
+				$idx++;
 			}
 		}
 		return $filtered;
