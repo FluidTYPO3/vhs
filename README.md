@@ -18,6 +18,12 @@ A quick explanation can be read in this README.
 
 Examples, tips and tricks can be found in the Wiki: https://github.com/NamelessCoder/vhs/wiki
 
+## ViewHelper argument reference
+
+Can be found online at:
+
+http://fedext.net/viewhelpers/vhs.html
+
 ## Installation
 
 Download and install as TYPO3 extension. That's it. There are no configuration options
@@ -217,9 +223,3 @@ Contains ViewHelpers to interact with Site values such as site name and site url
 ### Var
 
 Contains VieWHelpers to modify, read, output and check variables used in the template.
-
-## ViewHelper argument reference
-
-Can be found online at:
-
-http://fedext.net/viewhelpers/vhs.html
