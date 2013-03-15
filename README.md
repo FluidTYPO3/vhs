@@ -222,4 +222,4 @@ Contains VieWHelpers to modify, read, output and check variables used in the tem
 
 Can be found online at:
 
-http://fedext.net/vhs-viewhelpers/
+http://fedext.net/viewhelpers/vhs.html
