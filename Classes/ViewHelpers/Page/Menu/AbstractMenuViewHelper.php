@@ -46,7 +46,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	/**
 	 * @var array
 	 */
-	protected $backups = array();
+	protected $backups = array('menu');
 
 	/**
 	 * Initialize
