@@ -52,9 +52,9 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		$this->registerArgument('labelPrevious', 'string', 'Label for the "previous" link', FALSE, 'previous');
 		$this->registerArgument('labelNext', 'string', 'Label for the "next" link', FALSE, 'next');
 		$this->registerArgument('labelUp', 'string', 'Label for the "up" link', FALSE, 'up');
-		$this->registerArgument('renderFirst', 'boolean', 'If set the "first" link will be rendered', FALSE, TRUE);
-		$this->registerArgument('renderLast', 'boolean', 'If set the "last" link will be rendered', FALSE, TRUE);
-		$this->registerArgument('renderUp', 'boolean', 'If set the "up" link will be rendered', FALSE, TRUE);
+		$this->registerArgument('renderFirst', 'boolean', 'If set to FALSE the "first" link will not be rendered', FALSE, TRUE);
+		$this->registerArgument('renderLast', 'boolean', 'If set to FALSE the "last" link will not be rendered', FALSE, TRUE);
+		$this->registerArgument('renderUp', 'boolean', 'If set to FALSE the "up" link will not be rendered', FALSE, TRUE);
 	}
 
 	/**
