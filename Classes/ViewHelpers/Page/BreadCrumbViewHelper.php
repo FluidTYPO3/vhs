@@ -34,6 +34,11 @@
 class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
 
 	/**
+	 * @var array
+	 */
+	protected $backups = array('rootLine');
+
+	/**
 	 * @return void
 	 */
 	public function initializeArguments() {
