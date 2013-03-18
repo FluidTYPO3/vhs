@@ -174,6 +174,8 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 * @return void
 	 */
 	protected function finalize() {
+		$this->assetSettingsCache = NULL;
+		$this->localSettings = NULL;
 		if (FALSE === isset($GLOBALS['VhsAssets'])) {
 			$GLOBALS['VhsAssets'] = array();
 		}
@@ -186,7 +188,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$this->content = $this->getContent();
 		$this->tagBuilder->setContent($this->content);
 		$this->debug();
-		$GLOBALS['VhsAssets'][$name] = &$this;
+		$GLOBALS['VhsAssets'][$name] = clone $this;
 	}
 
 	/**
