@@ -52,9 +52,10 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		$this->registerArgument('labelPrevious', 'string', 'Label for the "previous" link', FALSE, 'previous');
 		$this->registerArgument('labelNext', 'string', 'Label for the "next" link', FALSE, 'next');
 		$this->registerArgument('labelUp', 'string', 'Label for the "up" link', FALSE, 'up');
-		$this->registerArgument('renderFirst', 'boolean', 'If set the "first" link will be rendered', FALSE, TRUE);
-		$this->registerArgument('renderLast', 'boolean', 'If set the "last" link will be rendered', FALSE, TRUE);
-		$this->registerArgument('renderUp', 'boolean', 'If set the "up" link will be rendered', FALSE, TRUE);
+		$this->registerArgument('renderFirst', 'boolean', 'If set to FALSE the "first" link will not be rendered', FALSE, TRUE);
+		$this->registerArgument('renderLast', 'boolean', 'If set to FALSE the "last" link will not be rendered', FALSE, TRUE);
+		$this->registerArgument('renderUp', 'boolean', 'If set to FALSE the "up" link will not be rendered', FALSE, TRUE);
+		$this->registerArgument('usePageTitles', 'boolean', 'If set to TRUE, uses target page titles instead of "next", "previous" etc. labels', FALSE, FALSE);
 	}
 
 	/**
@@ -98,19 +99,19 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		}
 		$menu = $this->parseMenu($menuItems, $rootLineData);
 		if (isset($menu[$firstUid])) {
-			$menu[$firstUid]['linktext'] = $this->arguments['labelFirst'];
+			$menu[$firstUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menu[$firstUid]);
 		}
 		if (isset($menu[$prevUid])) {
-			$menu[$prevUid]['linktext'] = $this->arguments['labelPrevious'];
+			$menu[$prevUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menu[$prevUid]);
 		}
 		if (isset($menu[$parentUid])) {
-			$menu[$parentUid]['linktext'] = $this->arguments['labelUp'];
+			$menu[$parentUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menu[$parentUid]);
 		}
 		if (isset($menu[$nextUid])) {
-			$menu[$nextUid]['linktext'] = $this->arguments['labelNext'];
+			$menu[$nextUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menu[$nextUid]);
 		}
 		if (isset($menu[$lastUid])) {
-			$menu[$lastUid]['linktext'] = $this->arguments['labelLast'];
+			$menu[$lastUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menu[$lastUid]);
 		}
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->backupVariables();
@@ -120,6 +121,21 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		$output = $this->renderContent($menu, $content);
 		$this->restoreVariables();
 		return $output;
+	}
+
+
+	/**
+	 * @todo Consider moving this, and argument usePageTitles, to AbstractMenuViewHelper; however, this is not merited by the current Menu VH collection
+	 * @param string $labelName
+	 * @param array $pageRecord
+	 * @return string
+	 */
+	protected function getCustomLabelOrPageTitle($labelName, $pageRecord) {
+		$title = $this->arguments[$labelName];
+		if ($this->arguments['usePageTitles']) {
+			$title = $this->getItemTitle($pageRecord);
+		}
+		return $title;
 	}
 
 }
