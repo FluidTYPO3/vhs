@@ -158,6 +158,22 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
+	 * @param array $page
+	 * @return string
+	 */
+	protected function getItemTitle($page) {
+		$title = $page['title'];
+		$titleFieldList = t3lib_div::trimExplode(',', $this->arguments['titleFields']);
+		foreach ($titleFieldList as $titleFieldName) {
+			if (empty($page[$titleFieldName]) === FALSE) {
+				$title = $page[$titleFieldName];
+				break;
+			}
+		}
+		return $title;
+	}
+
+	/**
 	 * Get the combined item CSS class based on menu item state and VH arguments
 	 *
 	 * @param array $pageRow
@@ -251,20 +267,12 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		} else {
 			$page = $this->pageSelect->getPage($pageUid);
 		}
-		$title = $page['title'];
-		$titleFieldList = t3lib_div::trimExplode(',', $this->arguments['titleFields']);
-		foreach ($titleFieldList as $titleFieldName) {
-			if (empty($page[$titleFieldName]) === FALSE) {
-				$title = $page[$titleFieldName];
-				break;
-			}
-		}
 		$shortcut = ($doktype == constant('t3lib_pageSelect::DOKTYPE_SHORTCUT')) ? $page['shortcut'] : $page['url'];
 		$page['active'] = $this->isActive($pageUid, $rootLine);
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (count($this->pageSelect->getMenu($pageUid, $fields = '*', $sortField = 'sorting', $addWhere = 'AND nav_hide=0')) > 0) ? 1 : 0;
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
-		$page['linktext'] = $title;
+		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['doktype'] = (integer) $doktype;
 
@@ -308,17 +316,22 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				continue;
 			} elseif (in_array($page['doktype'], $allowedDocumentTypes)) {
 				$page = $this->getMenuItemEntry($page, $rootLine);
-				$filtered[] = $page;
+				$filtered[$page['uid']] = $page;
 			}
 		}
-		if (isset($filtered[0])) {
-				// at least 1 page in menu
-			if ($classFirst) {
-				$filtered[0]['class'] = trim($filtered[0]['class'] . ' ' . $classFirst);
-			}
-			if ($classLast) {
-				$length = count($filtered);
-				$filtered[$length - 1]['class'] = trim($filtered[$length - 1]['class'] . ' ' . $classLast);
+		$length = count($filtered);
+		if ($length > 0) {
+			$idx = 1;
+			foreach ($filtered as $uid => $page) {
+				switch ($idx) {
+					case 1:
+						$filtered[$uid]['class'] = trim($filtered[$uid]['class'] . ' ' . $classFirst);
+						break;
+					case $length:
+						$filtered[$uid]['class'] = trim($filtered[$uid]['class'] . ' ' . $classLast);
+						break;
+				}
+				$idx++;
 			}
 		}
 		return $filtered;
