@@ -35,13 +35,22 @@
 class Tx_Vhs_ViewHelpers_Extension_Path_ResourcesViewHelper extends Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper {
 
 	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('path', 'string', 'Optional path to append after output of t3libextMgm::extRelPath');
+	}
+
+	/**
 	 * Render method
 	 *
 	 * @return string
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return t3lib_extMgm::extRelPath($extensionKey) . 'Resources/Public/';
+		$path = TRUE === empty($this->arguments['path']) ? '' : $this->arguments['path'];
+		return t3lib_extMgm::extRelPath($extensionKey) . 'Resources/Public/' . $path;
 	}
 
 }
