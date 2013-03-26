@@ -36,7 +36,7 @@ abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends 
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('extensionName', 'string', 'Name, in UpperCamelCase, of the extension to be checked', TRUE, NULL, TRUE);
+		$this->registerArgument('extensionName', 'string', 'Name, in UpperCamelCase, of the extension to be checked', FALSE, NULL, TRUE);
 	}
 
 	/**
@@ -51,7 +51,20 @@ abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends 
 	 * @return mixed
 	 */
 	protected function getExtensionName() {
-		return $this->arguments['extensionName'];
+		if (TRUE === isset($this->arguments['extensionName'])) {
+			return $this->arguments['extensionName'];
+		}
+		if (TRUE === method_exists($this, 'getControllerContext')) {
+			$controllerContext = call_user_func_array(array($this, 'getControllerContext'), array());
+		} else {
+			$controllerContext = $this->controllerContext;
+		}
+		$request = $controllerContext->getRequest();
+		$extensionName = $request->getControllerExtensionName();
+		if (TRUE === empty($extensionName)) {
+			throw new Exception('Unable to read extension name from ControllerContext and value not manually specified', 1364167519);
+		}
+		return $extensionName;
 	}
 
 }
