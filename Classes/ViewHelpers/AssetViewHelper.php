@@ -71,6 +71,14 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	private static $cachedDependencies = array();
 
 	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->overrideArgument('standalone', 'boolean', 'If TRUE, excludes this Asset from any concatenation which may be applied', FALSE, TRUE);
+	}
+
+	/**
 	 * @param array $parameters
 	 * @param object $caller
 	 * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
@@ -195,7 +203,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 						$chunk = array();
 						array_push($chunks, $mergedFileTag);
 					}
-					if (TRUE === isset($assetSettings['path'])) {
+					if (TRUE === isset($assetSettings['path']) && FALSE === empty($assetSettings['path'])) {
 						$fileRelativePathAndFilename = $assetSettings['path'];
 						if (FALSE === (isset($assetSettings['external']) && $assetSettings['external'] > 0)) {
 							$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
