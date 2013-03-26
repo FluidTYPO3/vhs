@@ -43,7 +43,8 @@ class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Pa
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
+		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel.', FALSE, NULL);
+		$this->registerArgument('endLevel', 'integer', 'Optional deepest level of rendering. If left out all levels up to the current are rendered.', FALSE, NULL);
 	}
 
 	/**
@@ -51,9 +52,11 @@ class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Pa
 	 */
 	public function render() {
 		$pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
+		$entryLevel = $this->arguments['entryLevel'];
+		$endLevel = $this->arguments['endLevel'];
 		$rootLineData = $this->pageSelect->getRootLine($pageUid);
 		$rootLineData = array_reverse($rootLineData);
-		$rootLineData = array_slice($rootLineData, $this->arguments['entryLevel']);
+		$rootLineData = array_slice($rootLineData, $entryLevel, $endLevel);
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		if (count($rootLine) === 0) {
 			return NULL;
