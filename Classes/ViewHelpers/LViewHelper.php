@@ -42,23 +42,27 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewHelper implements t3lib_Singleton {
+class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewHelper {
 
 	/**
 	 * Render method
 	 * @return string
 	 */
 	public function render() {
-		$key = $this->arguments['key'];
+		if (TRUE === isset($this->arguments['id']) && FALSE === empty($this->arguments['id'])) {
+			$id = $this->arguments['id'];
+		} else {
+			$id = $this->arguments['key'];
+		}
 		$default = $this->arguments['default'];
 		$htmlEscape = $this->arguments['htmlEscape'];
 		$arguments = $this->arguments['arguments'];
 		$extensionName = $this->arguments['extensionName'];
-		if (NULL === $key) {
-			$key = $this->renderChildren();
+		if (NULL === $id) {
+			$id = $this->renderChildren();
 		}
 		if (NULL === $default) {
-			$default = $key;
+			$default = $id;
 		}
 		if (NULL === $extensionName) {
 			if (method_exists($this, 'getControllerContext')) {
@@ -68,7 +72,7 @@ class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewH
 			}
 			$extensionName = $request->getControllerExtensionName();
 		}
-		$value = Tx_Extbase_Utility_Localization::translate($key, $extensionName, $arguments);
+		$value = Tx_Extbase_Utility_Localization::translate($id, $extensionName, $arguments);
 		if (NULL === $value) {
 			$value = $default;
 			if (is_array($arguments)) {
