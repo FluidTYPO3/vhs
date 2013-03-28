@@ -38,6 +38,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 	 */
 	public function initializeArguments() {
 		$this->registerArgument('a', 'mixed', 'First number for calculation', FALSE, NULL, TRUE);
+		$this->registerArgument('fail', 'boolean', 'If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).', FALSE, FALSE);
 	}
 
 	/**
@@ -85,10 +86,10 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 	 */
 	protected function getInlineArgument() {
 		$a = $this->renderChildren();
-		if (isset($this->arguments['a']) === TRUE) {
+		if (TRUE === isset($this->arguments['a'])) {
 			$a = $this->arguments['a'];
 		}
-		if ($a === NULL) {
+		if (NULL === $a && TRUE === (boolean) $this->arguments['fail']) {
 			throw new Exception('Required argument "a" was not supplied', 1237823699);
 		}
 		return $a;
