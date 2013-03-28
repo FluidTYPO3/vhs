@@ -42,7 +42,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewHelper implements t3lib_Singleton {
+class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewHelper {
 
 	/**
 	 * Render method
