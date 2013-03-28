@@ -45,14 +45,15 @@
 class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewHelper implements t3lib_Singleton {
 
 	/**
-	 * @param string $key
-	 * @param string $default
-	 * @param boolean $htmlEscape
-	 * @param array $arguments
-	 * @param string $extensionName
+	 * Render method
 	 * @return string
 	 */
-	public function render($key = NULL, $default = NULL, $htmlEscape = TRUE, array $arguments = NULL, $extensionName = NULL) {
+	public function render() {
+		$key = $this->arguments['key'];
+		$default = $this->arguments['default'];
+		$htmlEscape = $this->arguments['htmlEscape'];
+		$arguments = $this->arguments['arguments'];
+		$extensionName = $this->arguments['extensionName'];
 		if (NULL === $key) {
 			$key = $this->renderChildren();
 		}
