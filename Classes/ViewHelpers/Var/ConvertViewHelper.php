@@ -49,18 +49,15 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 	/**
 	 * Render method
      *
-	 * @param string $type
 	 * @return mixed
 	 */
-	public function render($type = '') {
+	public function render() {
 		if (TRUE === isset($this->arguments['value'])) {
 			$value = $this->arguments['value'];
 		} else {
 			$value = $this->renderChildren();
 		}
-        if ('' === $type) {
-            $type = $this->arguments['type'];
-        }
+        $type = $this->arguments['type'];
 		if (gettype($value) === $type) {
 			return $value;
 		}

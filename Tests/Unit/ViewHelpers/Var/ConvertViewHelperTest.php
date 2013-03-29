@@ -35,7 +35,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
     public function returnsEmptyStringForTypeStringAndValueNull() {
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-        $converted = $viewHelper->render('string');
+        $viewHelper->setArguments(array('type' => 'string'));
+        $converted = $viewHelper->render();
         $this->assertEquals('', $converted);
     }
 
@@ -45,7 +46,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
     public function returnsStringForTypeStringAndValueInteger() {
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(12345));
-        $converted = $viewHelper->render('string');
+        $viewHelper->setArguments(array('type' => 'string'));
+        $converted = $viewHelper->render();
         $this->assertInternalType('string', $converted);
     }
 
@@ -55,7 +57,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
     public function returnsArrayForTypeArrayAndValueNull() {
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-        $converted = $viewHelper->render('array');
+        $viewHelper->setArguments(array('type' => 'array'));
+        $converted = $viewHelper->render();
         $this->assertInternalType('array', $converted);
     }
 
@@ -65,7 +68,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
     public function returnsArrayForTypeArrayAndValueString() {
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
-        $converted = $viewHelper->render('array');
+        $viewHelper->setArguments(array('type' => 'array'));
+        $converted = $viewHelper->render();
         $this->assertInternalType('array', $converted);
         $this->assertEquals(array('foo'), $converted);
     }
@@ -76,7 +80,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
     public function returnsObjectStorageForTypeArrayAndValueNull() {
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-        $converted = $viewHelper->render('ObjectStorage');
+        $viewHelper->setArguments(array('type' => 'ObjectStorage'));
+        $converted = $viewHelper->render();
         $this->assertInstanceOf('TYPO3\CMS\Extbase\Persistence\ObjectStorage', $converted);
         $this->assertEquals(0, $converted->count());
     }
@@ -89,7 +94,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
         $storage->attach('foo');
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($storage));
-        $converted = $viewHelper->render('array');
+        $viewHelper->setArguments(array('type' => 'array'));
+        $converted = $viewHelper->render();
         $this->assertInternalType('array', $converted);
         $this->assertEquals(1, count($converted));
     }
@@ -100,7 +106,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
     public function returnsBooleanForTypeBooleanAndValueNull() {
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-        $converted = $viewHelper->render('boolean');
+        $viewHelper->setArguments(array('type' => 'boolean'));
+        $converted = $viewHelper->render();
         $this->assertInternalType('boolean', $converted);
         $this->assertFalse($converted);
     }
@@ -111,7 +118,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
     public function returnsBooleanForTypeBooleanAndValueInteger() {
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(1));
-        $converted = $viewHelper->render('boolean');
+        $viewHelper->setArguments(array('type' => 'boolean'));
+        $converted = $viewHelper->render();
         $this->assertInternalType('boolean', $converted);
         $this->assertTrue($converted);
     }
@@ -122,7 +130,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
     public function returnsBooleanForTypeBooleanAndValueString() {
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
-        $converted = $viewHelper->render('boolean');
+        $viewHelper->setArguments(array('type' => 'boolean'));
+        $converted = $viewHelper->render();
         $this->assertInternalType('boolean', $converted);
         $this->assertTrue($converted);
     }
