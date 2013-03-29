@@ -58,8 +58,10 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 		} else {
 			$value = $this->renderChildren();
 		}
-		$type = '' == $type ? $this->arguments['type'] : $type;
-		if (gettype($value) == $type) {
+        if ('' === $type) {
+            $type = $this->arguments['type'];
+        }
+		if (gettype($value) === $type) {
 			return $value;
 		}
 		if (NULL !== $value) {
