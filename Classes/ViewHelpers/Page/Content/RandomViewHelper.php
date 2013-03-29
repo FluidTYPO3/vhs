@@ -32,18 +32,18 @@
  */
 class Tx_Vhs_ViewHelpers_Page_Content_RandomViewHelper extends Tx_Fluid_Core_ViewHelper_Page_AbstractContentViewHelper {
 
-    /**
-     * Render method
-     *
-     * @return mixed
-     */
-    public function render() {
-        if (TYPO3_MODE == 'BE') {
-            return '';
-        }
-        $this->setQueryParameters(1, 'RAND()');
-        $contentRecords = $this->getContentRecords();
-        return $contentRecords;
-    }
+	/**
+	 * Render method
+	 *
+	 * @return mixed
+	 */
+	public function render() {
+		if (TYPO3_MODE == 'BE') {
+			return '';
+		}
+		$this->setQueryParameters(1, 'RAND()');
+		$contentRecords = $this->getContentRecords();
+		return $contentRecords;
+	}
 
 }
