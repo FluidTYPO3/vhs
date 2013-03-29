@@ -24,13 +24,13 @@
  * ************************************************************* */
 
 /**
- * ViewHelper used to render random content elements in Fluid page templates
+ * ViewHelper for fetching a random content element in Fluid page templates
  *
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Page\Content
  */
-class Tx_Vhs_ViewHelpers_Page_Content_RandomViewHelper extends Tx_Fluid_Core_ViewHelper_Page_AbstractContentViewHelper {
+class Tx_Vhs_ViewHelpers_Page_Content_Random_GetViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper {
 
 	/**
 	 * Render method
