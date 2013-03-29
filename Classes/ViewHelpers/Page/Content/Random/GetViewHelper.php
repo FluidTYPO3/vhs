@@ -41,8 +41,7 @@ class Tx_Vhs_ViewHelpers_Page_Content_Random_GetViewHelper extends Tx_Vhs_ViewHe
 		if (TYPO3_MODE == 'BE') {
 			return '';
 		}
-		$this->setQueryParameters(1, 'RAND()');
-		$contentRecords = $this->getContentRecords();
+		$contentRecords = $this->getContentRecords(1, 'RAND()');
 		return $contentRecords;
 	}
 

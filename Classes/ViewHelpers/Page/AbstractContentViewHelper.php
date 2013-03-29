@@ -46,16 +46,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper extends Tx_Flui
 	protected $configurationManager;
 
 	/**
-	 * @var integer
-	 */
-	protected $limit;
-
-	/**
-	 * @var string
-	 */
-	protected $order = '';
-
-	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -81,31 +71,19 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper extends Tx_Flui
 	}
 
 	/**
-	 * Set global query parameters
+	 * Get content records based on column and pid
 	 *
 	 * @param integer $limit
 	 * @param string $order
-	 * @return void
-	 */
-	public function setQueryParameters($limit = NULL, $order = NULL) {
-		if (NULL !== $limit) {
-			$this->limit = $limit;
-		} elseif (TRUE === isset($this->arguments['limit']) && FALSE === empty($this->arguments['limit'])) {
-			$this->limit = $this->arguments['limit'];
-		}
-		if (NULL !== $order) {
-			$this->order = $order;
-		} elseif (TRUE === isset($this->arguments['order']) && FALSE === empty($this->arguments['order'])) {
-			$this->order = $this->arguments['order'];
-		}
-	}
-
-	/**
-	 * Get content records based on column and pid
-	 *
 	 * @return array
 	 */
-	protected function getContentRecords() {
+	protected function getContentRecords($limit = NULL, $order = NULL) {
+		if (NULL === $limit && TRUE === isset($this->arguments['limit']) && FALSE === empty($this->arguments['limit'])) {
+			$limit = $this->arguments['limit'];
+		}
+		if (NULL === $order && TRUE === isset($this->arguments['order']) && FALSE === empty($this->arguments['order'])) {
+			$order = $this->arguments['order'];
+		}
 		$loadRegister = FALSE;
 		if (empty($this->arguments['loadRegister']) === FALSE) {
 			$this->contentObject->cObjGetSingle('LOAD_REGISTER', $this->arguments['loadRegister']);
@@ -121,7 +99,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper extends Tx_Flui
 		if (t3lib_div::_GP('MP') !== NULL) {
 			$mountpointRange = t3lib_div::_GP('MP');
 		}
-		$order = $this->order . ' ' . $this->arguments['sortDirection'];
+		$order = $order . ' ' . $this->arguments['sortDirection'];
 		$colPos = $this->arguments['column'];
 		$contentUids = $this->arguments['contentUids'];
 		$slide = $this->arguments['slide'] ? $this->arguments['slide'] : FALSE;
@@ -156,7 +134,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper extends Tx_Flui
 					" AND (sys_language_uid IN (-1,0) OR (sys_language_uid = '" .
 					$GLOBALS['TSFE']->sys_language_uid . "' AND l18n_parent = '0'))";
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', $conditions, 'uid', $order, $this->limit);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', $conditions, 'uid', $order, $limit);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$conf = array(
 					'tables' => 'tt_content',

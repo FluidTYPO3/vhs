@@ -44,7 +44,6 @@ class Tx_Vhs_ViewHelpers_Page_Content_GetViewHelper extends Tx_Fluid_Core_ViewHe
 		if (TYPO3_MODE == 'BE') {
 			return '';
 		}
-		$this->setQueryParameters();
 		$contentRecords = $this->getContentRecords();
 		return $contentRecords;
 	}
