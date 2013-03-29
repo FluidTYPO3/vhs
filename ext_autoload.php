@@ -1,8 +1,9 @@
 <?php
 
 $extensionClassesPath = t3lib_extMgm::extPath('vhs') . 'Classes/';
+$testClassesPath = t3lib_extMgm::extPath('vhs') . 'Tests/';
 return array(
-	'tx_vhs_tests_fixtures_domain_model_foo' => $extensionClassesPath . 'Domain/Model/Foo.php',
+    'tx_vhs_tests_fixtures_domain_model_foo' => $testClassesPath . 'Fixtures/Domain/Model/Foo.php',
 	'tx_vhs_viewhelpers_assetviewhelper' => $extensionClassesPath . 'ViewHelpers/AssetViewHelper.php',
 	'tx_vhs_viewhelpers_callviewhelper' => $extensionClassesPath . 'ViewHelpers/CallViewHelper.php',
 	'tx_vhs_viewhelpers_caseviewhelper' => $extensionClassesPath . 'ViewHelpers/CaseViewHelper.php',
