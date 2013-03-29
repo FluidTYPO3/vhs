@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2013 Claus Due <claus@wildside.dk>, Wildside A/S
  *
  *  All rights reserved
  *
@@ -29,10 +29,11 @@
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @author Dominique Feyer, <dfeyer@ttree.ch>
  * @author Daniel Schöne, <daniel@schoene.it>
+ * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Page\Content
  */
-class Tx_Vhs_ViewHelpers_Page_Content_RenderViewHelper extends Tx_Vhs_ViewHelpers_Page_Content_GetViewHelper {
+class Tx_Vhs_ViewHelpers_Page_Content_RenderViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper {
 
 	/**
 	 * @return void
@@ -51,6 +52,7 @@ class Tx_Vhs_ViewHelpers_Page_Content_RenderViewHelper extends Tx_Vhs_ViewHelper
 		if (TYPO3_MODE == 'BE') {
 			return '';
 		}
+        $this->setQueryParameters();
 		$content = $this->getContentRecords();
 		if ($this->arguments['as']) {
 			$this->templateVariableContainer->add($this->arguments['as'], $content);
