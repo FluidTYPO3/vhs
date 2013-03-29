@@ -135,4 +135,16 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
         $this->assertInternalType('boolean', $converted);
         $this->assertTrue($converted);
     }
+
+    /**
+     * @test
+     */
+    public function returnsExpectedDefaultValue() {
+        $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
+        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
+        $viewHelper->setArguments(array('type' => 'boolean', 'default' => TRUE));
+        $converted = $viewHelper->render();
+        $this->assertInternalType('boolean', $converted);
+        $this->assertTrue($converted);
+    }
 }
