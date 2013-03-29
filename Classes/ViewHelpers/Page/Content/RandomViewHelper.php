@@ -24,47 +24,26 @@
  * ************************************************************* */
 
 /**
- * ViewHelper used to render content elements in Fluid page templates
+ * ViewHelper used to render random content elements in Fluid page templates
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
- * @author Dominique Feyer, <dfeyer@ttree.ch>
- * @author Daniel Schöne, <daniel@schoene.it>
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Page\Content
  */
-class Tx_Vhs_ViewHelpers_Page_Content_RenderViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper {
-
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('as', 'string', 'If specified, adds template variable and assumes you manually iterate through {contentRecords}');
-	}
+class Tx_Vhs_ViewHelpers_Page_Content_RandomViewHelper extends Tx_Fluid_Core_ViewHelper_Page_AbstractContentViewHelper {
 
 	/**
 	 * Render method
 	 *
-	 * @return string
+	 * @return mixed
 	 */
 	public function render() {
 		if (TYPO3_MODE == 'BE') {
 			return '';
 		}
-		$this->setQueryParameters();
-		$content = $this->getContentRecords();
-		if ($this->arguments['as']) {
-			$this->templateVariableContainer->add($this->arguments['as'], $content);
-			$html = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
-		} else {
-			$html = '';
-			foreach ($content as $contentRecord) {
-				$html .= $contentRecord . LF;
-			}
-		}
-		return $html;
+		$this->setQueryParameters(1, 'RAND()');
+		$contentRecords = $this->getContentRecords();
+		return $contentRecords;
 	}
 
 }
