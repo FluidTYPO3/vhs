@@ -53,7 +53,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper extends Tx_Flui
 	/**
 	 * @var string
 	 */
-	protected $order;
+	protected $order = '';
 
 	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
@@ -96,7 +96,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper extends Tx_Flui
 		if (NULL !== $order) {
 			$this->order = $order;
 		} elseif (TRUE === isset($this->arguments['order']) && FALSE === empty($this->arguments['order'])) {
-			$this->limit = $this->arguments['order'];
+			$this->order = $this->arguments['order'];
 		}
 	}
 
