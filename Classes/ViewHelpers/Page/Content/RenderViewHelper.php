@@ -52,7 +52,7 @@ class Tx_Vhs_ViewHelpers_Page_Content_RenderViewHelper extends Tx_Vhs_ViewHelper
 		if (TYPO3_MODE == 'BE') {
 			return '';
 		}
-        $this->setQueryParameters();
+		$this->setQueryParameters();
 		$content = $this->getContentRecords();
 		if ($this->arguments['as']) {
 			$this->templateVariableContainer->add($this->arguments['as'], $content);
