@@ -48,7 +48,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 
 	/**
 	 * Render method
-     *
+	 *
 	 * @return mixed
 	 */
 	public function render() {
@@ -57,7 +57,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 		} else {
 			$value = $this->renderChildren();
 		}
-        $type = $this->arguments['type'];
+		$type = $this->arguments['type'];
 		if (gettype($value) === $type) {
 			return $value;
 		}
@@ -69,10 +69,10 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 					$storage->attach($item);
 				}
 				$value = $storage;
-            } elseif ('array' === $type && 'ObjectStorage' === gettype($value)) {
-                $value = $value->toArray();;
-            } elseif ('array' === $type) {
-                $value = array($value);
+			} elseif ('array' === $type && 'ObjectStorage' === gettype($value)) {
+				$value = $value->toArray();;
+			} elseif ('array' === $type) {
+				$value = array($value);
 			} else {
 				settype($value, $type);
 			}
