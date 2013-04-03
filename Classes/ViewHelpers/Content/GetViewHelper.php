@@ -24,13 +24,16 @@
  * ************************************************************* */
 
 /**
- * ViewHelper for fetching a random content element in Fluid page templates
+ * ViewHelper used to render content elements in Fluid page templates
  *
+ * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Dominique Feyer, <dfeyer@ttree.ch>
+ * @author Daniel Schöne, <daniel@schoene.it>
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Page\Content
+ * @subpackage ViewHelpers\Content
  */
-class Tx_Vhs_ViewHelpers_Page_Content_Random_GetViewHelper extends Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper {
+class Tx_Vhs_ViewHelpers_Content_GetViewHelper extends Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper {
 
 	/**
 	 * Render method
@@ -41,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Page_Content_Random_GetViewHelper extends Tx_Vhs_ViewHe
 		if (TYPO3_MODE == 'BE') {
 			return '';
 		}
-		$contentRecords = $this->getContentRecords(1, 'RAND()');
+		$contentRecords = $this->getContentRecords();
 		return $contentRecords;
 	}
 

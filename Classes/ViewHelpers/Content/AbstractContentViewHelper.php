@@ -31,9 +31,9 @@
  * @author Daniel Schöne, <daniel@schoene.it>
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Page
+ * @subpackage ViewHelpers\Content
  */
-abstract class Tx_Vhs_ViewHelpers_Page_AbstractContentViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * @var tslib_cObj

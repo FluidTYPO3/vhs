@@ -28,9 +28,9 @@
  *
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Page\Content
+ * @subpackage ViewHelpers\Content\Random
  */
-class Tx_Vhs_ViewHelpers_Page_Content_Random_RenderViewHelper extends Tx_Vhs_ViewHelpers_Page_Content_Random_GetViewHelper {
+class Tx_Vhs_ViewHelpers_Content_Random_RenderViewHelper extends Tx_Vhs_ViewHelpers_Content_Random_GetViewHelper {
 
 	/**
 	 * Render method
