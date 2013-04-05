@@ -59,8 +59,8 @@ class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	public function initializeArguments() {
 		$this->registerArgument('videoId', 'string', 'YouTube id of the video to embed.', TRUE);
-		$this->registerArgument('width', 'int', 'Width of the video in pixels. Defaults to 640', FALSE, 640);
-		$this->registerArgument('height', 'int', 'Height of the video in pixels. Defaults to 480', FALSE, 480);
+		$this->registerArgument('width', 'integer', 'Width of the video in pixels. Defaults to 640 for 16:9 content.', FALSE, 640);
+		$this->registerArgument('height', 'integer', 'Height of the video in pixels. Defaults to 385 for 16:9 content.', FALSE, 385);
 		$this->registerArgument('autoplay', 'boolean', 'Play the video automatically on load. Defaults to FALSE.', FALSE, FALSE);
 		$this->registerArgument('legacyCode', 'boolean', 'Whether to use the legacy flash video code.', FALSE, FALSE);
 		$this->registerArgument('showRelated', 'boolean', 'Whether to show related videos after playing.', FALSE, FALSE);
