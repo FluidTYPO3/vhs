@@ -249,23 +249,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			if (TRUE === $asset->assertAddNameCommentWithChunk()) {
 				$source .= '/* ' . $name . ' */' . LF;
 			}
-			$assetSettings = $asset->getAssetSettings();
-			if (FALSE === isset($assetSettings['path'])) {
-				$source .= $this->extractAssetContent($asset) . LF;
-			} else {
-				$fileRelativePathAndFilename = $assetSettings['path'];
-				$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-				$isExternal = (TRUE === (isset($assetSettings['external']) && $assetSettings['external'] > 0));
-				$isFluidTemplate = $asset->assertFluidEnabled();
-				if (FALSE === $isExternal && FALSE === file_exists($absolutePathAndFilename)) {
-					throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
-				}
-				if (TRUE === $isFluidTemplate) {
-					$source .= $this->renderAssetAsFluidTemplate($asset);
-				} else {
-					$source .= file_get_contents($absolutePathAndFilename);
-				}
-			}
+			$source .= $this->extractAssetContent($asset) . LF;
 			// Put a return carriage between assets preventing broken content.
 			$source .= "\n";
 		}
@@ -429,11 +413,28 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 	 * @return string
 	 */
 	private function extractAssetContent(Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset) {
-		$isFluidTemplate = TRUE === $asset->assertFluidEnabled();
-		if (TRUE === $isFluidTemplate) {
-			return $this->renderAssetAsFluidTemplate($asset);
+		$assetSettings = $asset->getAssetSettings();
+		$fileRelativePathAndFilename = $assetSettings['path'];
+		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
+		$isExternal = (TRUE === (isset($assetSettings['external']) && $assetSettings['external'] > 0));
+		$isFluidTemplate = $asset->assertFluidEnabled();
+		if (FALSE === empty($fileRelativePathAndFilename)) {
+			if (FALSE === $isExternal && FALSE === file_exists($absolutePathAndFilename)) {
+				throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
+			}
+			if (TRUE === $isFluidTemplate) {
+				$content = $this->renderAssetAsFluidTemplate($asset);
+			} else {
+				$content = $asset->build();
+			}
+		} else {
+			$content = $asset->build();
 		}
-		return $asset->build();
+		if ('css' === $asset->getType() && FALSE === empty($fileRelativePathAndFilename)) {
+			$path = pathinfo($absolutePathAndFilename, PATHINFO_DIRNAME);
+			$content = $this->detectAndCopyFileReferences($content, $path);
+		}
+		return $content;
 	}
 
 	/**
@@ -485,4 +486,60 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		return $fileRelativePathAndFilename;
 	}
 
+	/**
+	 * Fixes the relative paths inside of url() references in CSS files
+	 *
+	 * @param string $contents Data to process
+	 * @param string $originalDirectory Original location of file
+	 * @return string Processed data
+	 */
+	protected function detectAndCopyFileReferences($contents, $originalDirectory) {
+		if (FALSE !== stripos($contents, 'url')) {
+			$regex = '/url(\\(\\s*["\']?(?!\\/)([^"\']+)["\']?\\s*\\))/iU';
+			$contents = $this->copyReferencedFilesAndReplacePaths($contents, $regex, $originalDirectory, '(\'|\')');
+		}
+		if (FALSE !== stripos($contents, '@import')) {
+			$regex = '/@import\\s*(["\']?(?!\\/)([^"\']+)["\']?)/i';
+			$contents = $this->copyReferencedFilesAndReplacePaths($contents, $regex, $originalDirectory, '"|"');
+		}
+		return $contents;
+	}
+
+	/**
+	 * Finds and replaces all URLs by using a given regex
+	 *
+	 * @param string $contents Data to process
+	 * @param string $regex Regex used to find URLs in content
+	 * @param string $originalDirectory Original location to CSS file, if file based.
+	 * @param string $wrap Wrap around replaced values
+	 * @return string Processed data
+	 */
+	protected function copyReferencedFilesAndReplacePaths($contents, $regex, $originalDirectory, $wrap = '|') {
+		$matches = array();
+		$replacements = array();
+		$wrap = explode('|', $wrap);
+		$newDir = '';
+		preg_match_all($regex, $contents, $matches);
+		foreach ($matches[2] as $matchCount => $match) {
+			$match = trim($match, '\'" ');
+			if (FALSE === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
+				$checksum = md5($match);
+				$newPath = basename($match);
+				$extension = pathinfo($newPath, PATHINFO_EXTENSION);
+				$temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
+				$temporaryFile = PATH_site . 'typo3temp/' . $temporaryFileName;
+				if (FALSE === file_exists($temporaryFile)) {
+					$realPath = realpath($originalDirectory . '/' . $match);
+					copy($realPath, $temporaryFile);
+				}
+				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $wrap[1];
+			}
+		}
+		if (FALSE === empty($replacements)) {
+			$contents = str_replace(array_keys($replacements), array_values($replacements), $contents);
+		}
+		return $contents;
+	}
+
 }
+
