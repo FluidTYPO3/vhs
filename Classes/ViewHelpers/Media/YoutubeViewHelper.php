@@ -61,6 +61,7 @@ class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends Tx_Fluid_Core_ViewHelpe
 		$this->registerArgument('videoId', 'string', 'YouTube id of the video to embed.', TRUE);
 		$this->registerArgument('width', 'int', 'Width of the video in pixels. Defaults to 640', FALSE, 640);
 		$this->registerArgument('height', 'int', 'Height of the video in pixels. Defaults to 480', FALSE, 480);
+		$this->registerArgument('autoplay', 'boolean', 'Play the video automatically on load. Defaults to FALSE.', FALSE, FALSE);
 		$this->registerArgument('legacyCode', 'boolean', 'Whether to use the legacy flash video code.', FALSE, FALSE);
 		$this->registerArgument('showRelated', 'boolean', 'Whether to show related videos after playing.', FALSE, FALSE);
 		$this->registerArgument('extendedPrivacy', 'boolean', 'Whether to use cookie-less video player.', FALSE, TRUE);
@@ -73,15 +74,15 @@ class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	public function render() {
 		$videoId = $this->arguments['videoId'];
-		$width   = $this->arguments['width'];
-		$height  = $this->arguments['height'];
+		$width = $this->arguments['width'];
+		$height = $this->arguments['height'];
 
 		$this->tag->addAttribute('width', $width);
 		$this->tag->addAttribute('height', $height);
 
 		$src = $this->getSourceUrl($videoId);
 
-		if (FALSE === $this->arguments['legacyCode']) {
+		if (FALSE === (boolean) $this->arguments['legacyCode']) {
 			$this->tag->addAttribute('src', $src);
 			$this->tag->addAttribute('frameborder', 0);
 			$this->tag->addAttribute('allowFullScreen', 'allowFullScreen');
@@ -123,16 +124,25 @@ class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return string
 	 */
 	private function getSourceUrl($videoId) {
-		$src = TRUE === $this->arguments['extendedPrivacy'] ? self::youtubePrivacyBaseUrl : self::youtubeBaseUrl;
+		$src = (boolean) TRUE === $this->arguments['extendedPrivacy'] ? self::youtubePrivacyBaseUrl : self::youtubeBaseUrl;
 		if (FALSE === $this->arguments['legacyCode']) {
 			$src .= '/embed/'. $videoId;
-			if (FALSE === $this->arguments['showRelated']) {
-				$src .= '?rel=0';
+			if (FALSE === (boolean) $this->arguments['showRelated'] || TRUE === (boolean) $this->arguments['autoplay']) {
+				$src .= '?';
+			}
+			if (FALSE === (boolean) $this->arguments['showRelated']) {
+				$src .= 'rel=0&';
+			}
+			if (TRUE === (boolean) $this->arguments['autoplay']) {
+				$src .= 'autoplay=1';
 			}
 		} else {
 			$src .= '/v/' . $this->arguments['videoId'] . '?version=3';
-			if (FALSE === $this->arguments['showRelated']) {
+			if (FALSE === (boolean) $this->arguments['showRelated']) {
 				$src .= '&rel=0';
+			}
+			if (TRUE === (boolean) $this->arguments['autoplay']) {
+				$src .= '&autoplay=1';
 			}
 		}
 
