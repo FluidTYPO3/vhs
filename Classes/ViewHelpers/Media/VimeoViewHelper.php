@@ -50,8 +50,8 @@ class Tx_Vhs_ViewHelpers_Media_VimeoViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 */
 	public function initializeArguments() {
 		$this->registerArgument('videoId', 'string', 'YouTube id of the video to embed.', TRUE);
-		$this->registerArgument('width', 'int', 'Width of the video in pixels. Defaults to 640', FALSE, 640);
-		$this->registerArgument('height', 'int', 'Height of the video in pixels. Defaults to 480', FALSE, 480);
+		$this->registerArgument('width', 'integer', 'Width of the video in pixels. Defaults to 640 for 16:9 content.', FALSE, 640);
+		$this->registerArgument('height', 'integer', 'Height of the video in pixels. Defaults to 360 for 16:9 content.', FALSE, 360);
 		$this->registerArgument('title', 'boolean', 'Show the title on the video. Defaults to TRUE.', FALSE, TRUE);
 		$this->registerArgument('byline', 'boolean', 'Show the user’s byline on the video. Defaults to TRUE.', FALSE, TRUE);
 		$this->registerArgument('portrait', 'boolean', 'Show the user’s portrait on the video. Defaults to TRUE.', FALSE, TRUE);
