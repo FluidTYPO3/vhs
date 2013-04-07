@@ -32,7 +32,7 @@
  * ViewHelper used to place header blocks in document footer
  *
  * @package Vhs
- * @subpackage ViewHelpers\Page
+ * @subpackage ViewHelpers\Content
  * @deprecated
  */
 class Tx_Vhs_ViewHelpers_Page_Content_FooterViewHelper extends Tx_Vhs_ViewHelpers_Page_FooterViewHelper {
