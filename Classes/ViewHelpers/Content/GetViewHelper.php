@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due, Wildside A/S <claus@wildside.dk>
+ *  (c) 2013 Claus Due <claus@wildside.dk>, Wildside A/S
  *
  *  All rights reserved
  *
@@ -24,16 +24,28 @@
  * ************************************************************* */
 
 /**
- * Alias of Tx_Vhs_ViewHelpers_Content_RenderViewHelper for
- * backwards compatibility.
- *
- * Will be removed in 2.0
- *
  * ViewHelper used to render content elements in Fluid page templates
  *
+ * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Dominique Feyer, <dfeyer@ttree.ch>
+ * @author Daniel Schöne, <daniel@schoene.it>
+ * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Page\Content
- * @deprecated
+ * @subpackage ViewHelpers\Content
  */
-class Tx_Vhs_ViewHelpers_Page_Content_RenderViewHelper extends Tx_Vhs_ViewHelpers_Content_RenderViewHelper {
+class Tx_Vhs_ViewHelpers_Content_GetViewHelper extends Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper {
+
+	/**
+	 * Render method
+	 *
+	 * @return mixed
+	 */
+	public function render() {
+		if (TYPO3_MODE == 'BE') {
+			return '';
+		}
+		$contentRecords = $this->getContentRecords();
+		return $contentRecords;
+	}
+
 }
