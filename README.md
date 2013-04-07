@@ -6,7 +6,7 @@ TYPO3 extension VHS: Fluid ViewHelpers
 
 ## Overview
 
-![ViewHelpers](https://raw.github.com/wiki/NamelessCoder/vhs/Images/Home/Overview.png)
+![ViewHelpers](https://raw.github.com/wiki/FluidTYPO3/vhs/Images/Home/Overview.png)
 
 *Grayed ViewHelpers are still incomplete, blue ViewHelpers are condition ViewHelpers which
 mean they support usage of f:then and f:else as child tags - and the "then" and "else"
@@ -16,7 +16,7 @@ arguments, just like f:if does.*
 
 A quick explanation can be read in this README.
 
-Examples, tips and tricks can be found in the Wiki: https://github.com/NamelessCoder/vhs/wiki
+Examples, tips and tricks can be found in the Wiki: https://github.com/FluidTYPO3/vhs/wiki
 
 ## ViewHelper argument reference
 
