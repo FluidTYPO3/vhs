@@ -518,7 +518,6 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		$matches = array();
 		$replacements = array();
 		$wrap = explode('|', $wrap);
-		$newDir = '';
 		preg_match_all($regex, $contents, $matches);
 		foreach ($matches[2] as $matchCount => $match) {
 			$match = trim($match, '\'" ');
