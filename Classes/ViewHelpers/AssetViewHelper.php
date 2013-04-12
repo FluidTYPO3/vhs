@@ -518,21 +518,27 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 		$matches = array();
 		$replacements = array();
 		$wrap = explode('|', $wrap);
-		$newDir = '';
 		preg_match_all($regex, $contents, $matches);
 		foreach ($matches[2] as $matchCount => $match) {
 			$match = trim($match, '\'" ');
 			if (FALSE === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
 				$checksum = md5($match);
-				$newPath = basename($match);
+				if (preg_match('/([^"\']+)([#\?])([\w]+)/', $match, $items)) {
+					list(,$path, $divider, $suffix) = $items;
+				} else {
+					$path = $match;
+					$divider = '';
+					$suffix = '';
+				}
+				$newPath = basename($path);
 				$extension = pathinfo($newPath, PATHINFO_EXTENSION);
 				$temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
 				$temporaryFile = PATH_site . 'typo3temp/' . $temporaryFileName;
 				if (FALSE === file_exists($temporaryFile)) {
-					$realPath = realpath($originalDirectory . '/' . $match);
+					$realPath = realpath($originalDirectory . '/' . $path);
 					copy($realPath, $temporaryFile);
 				}
-				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $wrap[1];
+				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $divider . $suffix . $wrap[1];
 			}
 		}
 		if (FALSE === empty($replacements)) {
