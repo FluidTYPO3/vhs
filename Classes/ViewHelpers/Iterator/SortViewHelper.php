@@ -119,7 +119,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 				$index = $this->getSortValue($object);
 			}
 			while (isset($sorted[$index])) {
-				$index .= '1';
+				$index .= TRUE === is_int($index) ? '.1' : '1';
 			}
 			$sorted[$index] = $object;
 		}
@@ -161,7 +161,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 				$index = $this->getSortValue($item);
 			}
 			while (isset($sorted[$index])) {
-				$index .= '1';
+				$index .= TRUE === is_int($index) ? '.1' : '1';
 			}
 			$sorted[$index] = $item;
 		}
