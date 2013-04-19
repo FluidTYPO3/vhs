@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Media_VimeoViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('videoId', 'string', 'YouTube id of the video to embed.', TRUE);
+		$this->registerArgument('videoId', 'string', 'Vimeo ID of the video to embed.', TRUE);
 		$this->registerArgument('width', 'integer', 'Width of the video in pixels. Defaults to 640 for 16:9 content.', FALSE, 640);
 		$this->registerArgument('height', 'integer', 'Height of the video in pixels. Defaults to 360 for 16:9 content.', FALSE, 360);
 		$this->registerArgument('title', 'boolean', 'Show the title on the video. Defaults to TRUE.', FALSE, TRUE);
