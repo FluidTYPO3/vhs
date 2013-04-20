@@ -85,10 +85,10 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 */
 	public function render($identity, $content = NULL) {
 		if (ctype_alnum(preg_replace('/[\-_]/i', '', $identity)) === FALSE) {
-			if (method_exists($identity, '__toString')) {
-				$identity = (string) $identity;
-			} elseif ($identity instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			if ($identity instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 				$identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
+			} elseif (method_exists($identity, '__toString')) {
+				$identity = (string) $identity;
 			} else {
 				throw new RuntimeException(
 					'Parameter $identity for Render/CacheViewHelper was not a string or a string-convertible object',
