@@ -51,9 +51,9 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('multiple', 'boolean', 'if set, multiple select field', FALSE, FALSE);
 		$this->registerTagAttribute('size', 'string', 'Size of input field');
 		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
+		$this->registerArgument('multiple', 'boolean', 'if set, multiple select field', FALSE, FALSE);
 		$this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box');
 		$this->registerArgument('optionValueField', 'string', 'If specified, will call the appropriate getter on each object to determine the value.');
 		$this->registerArgument('optionLabelField', 'string', 'If specified, will call the appropriate getter on each object to determine the label.');
@@ -107,6 +107,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 			for ($i = 0; $i < $length; $i++) {
 				$this->registerFieldNameForFormTokenGeneration($name);
 			}
+			$this->tag->addAttribute('multiple', 'multiple');
 		} else {
 			$this->registerFieldNameForFormTokenGeneration($name);
 			$this->tag->removeAttribute('multiple');
