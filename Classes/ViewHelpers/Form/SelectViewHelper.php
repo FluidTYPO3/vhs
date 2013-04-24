@@ -51,7 +51,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('multiple', 'string', 'if set, multiple select field', FALSE, FALSE);
+		$this->registerTagAttribute('multiple', 'boolean', 'if set, multiple select field', FALSE, FALSE);
 		$this->registerTagAttribute('size', 'string', 'Size of input field');
 		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
 		$this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box');
@@ -70,7 +70,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	 */
 	public function render() {
 		$name = $this->getName();
-		if ($this->arguments['multiple'] !== FALSE && $this->arguments['multiple'] !== '') {
+		if (TRUE === (boolean) $this->arguments['multiple']) {
 			$name .= '[]';
 		}
 
@@ -101,7 +101,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 			// register field name for token generation.
 			// in case it is a multi-select, we need to register the field name
 			// as often as there are elements in the box
-		if ($this->arguments['multiple'] !== FALSE && $this->arguments['multiple'] !== '') {
+		if (TRUE === (boolean) $this->arguments['multiple']) {
 			$content .= $this->renderHiddenFieldForEmptyValue();
 			$length = count($options);
 			for ($i = 0; $i < $length; $i++) {
@@ -109,6 +109,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 			}
 		} else {
 			$this->registerFieldNameForFormTokenGeneration($name);
+			$this->tag->removeAttribute('multiple');
 		}
 
 		$content .= $this->tag->render();
