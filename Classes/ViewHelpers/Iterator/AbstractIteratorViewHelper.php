@@ -125,7 +125,7 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 	 */
 	protected function assertHaystackIsArrayAndHasNeedle($haystack, $needle) {
 		if ($needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface === FALSE) {
-			return array_search($needle, $haystack);
+			return array_search($needle, $haystack) || isset($haystack[$needle]);
 		} else {
 			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
 			foreach ($haystack as $index => $straw) {
