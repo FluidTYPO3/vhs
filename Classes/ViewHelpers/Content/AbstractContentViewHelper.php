@@ -68,6 +68,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		$this->registerArgument('slideCollect', 'integer', 'Enables collecting of Content Elements - amount of levels which shall get walked up the rootline. For infinite sliding (till the rootpage) set to -1 (lesser value for slide and slide.collect applies))', FALSE, 0);
 		$this->registerArgument('slideCollectReverse', 'boolean', 'Normally when collecting content elements the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))', FALSE, 0);
 		$this->registerArgument('loadRegister', 'array', 'List of LOAD_REGISTER variable');
+		$this->registerArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, TRUE);
 	}
 
 	/**
@@ -134,17 +135,9 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 					" AND (sys_language_uid IN (-1,0) OR (sys_language_uid = '" .
 					$GLOBALS['TSFE']->sys_language_uid . "' AND l18n_parent = '0'))";
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', $conditions, 'uid', $order, $limit);
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$conf = array(
-					'tables' => 'tt_content',
-					'source' => $row['uid'],
-					'dontCheckPid' => 0
-				);
-				array_push($content, $GLOBALS['TSFE']->cObj->RECORDS($conf));
-			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			if (count($content) && !$slideCollect){
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'uid', $order, $limit);
+			$content = (FALSE === (boolean) $this->arguments['render']) ? $rows : $this->getRenderedRecord($rows);
+			if (count($content) && !$slideCollect) {
 				break;
 			}
 		} while ($slide !== FALSE && --$slide !== -1);
@@ -154,6 +147,26 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		}
 
 		return $content;
+	}
+
+	/**
+	 * This function renders an array of tt_content record into an array of rendered content
+	 * it returns a list of elements rendered by typoscript RECORD function
+	 *
+	 * @param array $rows database rows of records (each item is a tt_content table record)
+	 * @return array
+	 */
+	protected function getRenderedRecord($rows) {
+		$elements = array();
+		foreach ($rows as $row) {
+			$conf = array(
+				'tables' => 'tt_content',
+				'source' => $row['uid'],
+				'dontCheckPid' => 1
+			);
+			array_push($elements, $GLOBALS['TSFE']->cObj->RECORDS($conf));
+		}
+		return $elements;
 	}
 
 }
