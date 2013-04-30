@@ -45,6 +45,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ContainsViewHelper extends Tx_Vhs_ViewHelpers_
 		parent::initializeArguments();
 		$this->registerArgument('needle', 'mixed', 'Needle to search for in haystack', TRUE);
 		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', TRUE);
+		$this->registerArgument('considerKeys', 'boolean', 'Tell whether to consider keys in the search assuming haystack is an array.', FALSE, FALSE);
 	}
 
 	/**
