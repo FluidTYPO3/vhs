@@ -64,7 +64,6 @@ class Tx_Vhs_ViewHelpers_Page_Menu_ListViewHelper extends Tx_Vhs_ViewHelpers_Pag
 			$menuData[] = $this->pageSelect->getPage($pageUid);
 		}
 		$menu = $this->parseMenu($menuData, $rootLineData);
-		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->backupVariables();
 		$this->templateVariableContainer->add('menu', $menu);
 		$content = $this->renderChildren();
