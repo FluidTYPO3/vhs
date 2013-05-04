@@ -46,7 +46,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	/**
 	 * @var array
 	 */
-	protected $backups = array('menu');
+	protected $backups = array('menu', 'rootLine');
 
 	/**
 	 * Initialize
@@ -442,6 +442,36 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			$output = $content;
 		}
 
+		return $output;
+	}
+
+	/**
+	 * Render method
+	 *
+	 * @return string
+	 */
+	public function render() {
+		$pageUid = $this->arguments['pageUid'];
+		$entryLevel = $this->arguments['entryLevel'];
+		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
+		if (!$pageUid) {
+			if (NULL !== $rootLineData[$entryLevel]['uid']) {
+				$pageUid = $rootLineData[$entryLevel]['uid'];
+			} else {
+				return '';
+			}
+		}
+		$menuData = $this->pageSelect->getMenu($pageUid);
+		$menu = $this->parseMenu($menuData, $rootLineData);
+		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
+		$this->backupVariables();
+		$this->templateVariableContainer->add('menu', $menu);
+		$this->templateVariableContainer->add('rootLine', $rootLine);
+		$content = $this->renderChildren();
+		$this->templateVariableContainer->remove('menu');
+		$this->templateVariableContainer->remove('rootLine');
+		$output = $this->renderContent($menu, $content);
+		$this->restoreVariables();
 		return $output;
 	}
 
