@@ -105,11 +105,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 
 	/**
 	 * @param integer $pageUid
-	 * @param array $rootLine
 	 * @return boolean
 	 */
 	protected function isCurrent($pageUid) {
-		return $pageUid == $GLOBALS['TSFE']->id;
+		return (boolean) ($pageUid == $GLOBALS['TSFE']->id);
 	}
 
 	/**
