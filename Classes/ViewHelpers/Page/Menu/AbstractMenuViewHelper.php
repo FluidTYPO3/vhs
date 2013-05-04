@@ -239,7 +239,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				case 2:
 						// mode: random subpage of selected or current page
 					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
-					$randomKey =
 					$page = count($menu) > 0 ? $menu[rand(0, count($menu) - 1)] : $page;
 					$pageUid = $page['uid'];
 					break;
