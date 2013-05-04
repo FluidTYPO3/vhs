@@ -59,6 +59,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	private $backupValues = array();
 
 	/**
+	 * @var boolean
+	 */
+	private $original = TRUE;
+
+	/**
 	 * Initialize
 	 * @return void
 	 */
@@ -119,18 +124,24 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * Note that the submenu VieWHelper is only capable of recycling one type of menu at
 	 * a time - for example, a List menu nested inside a regular Menu ViewHelper will
 	 * simply start another menu rendering completely separate from the parent menu.
-	 * @return void
+	 * @return NULL
 	 */
 	protected function initalizeSubmenuVariables() {
+		if (FALSE === $this->original) {
+			return NULL;
+		}
 		$variables = $this->templateVariableContainer->getAll();
 		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance', $this);
 		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables', $variables);
 	}
 
 	/**
-	 * @return void
+	 * @return NULL
 	 */
 	protected function cleanupSubmenuVariables() {
+		if (FALSE === $this->original) {
+			return NULL;
+		}
 		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
@@ -594,6 +605,13 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			self::$cache['currentRootLine'] = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
 		}
 		return self::$cache['currentRootLine'];
+	}
+
+	/**
+	 * @return void
+	 */
+	public function __clone() {
+		$this->original = FALSE;
 	}
 
 }

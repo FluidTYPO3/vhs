@@ -59,6 +59,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_SubViewHelper extends Tx_Vhs_ViewHelpers_Page
 		if (NULL === $parentInstance) {
 			return '';
 		}
+		$parentArguments = $parentInstance->getArguments();
 		$currentPageRootLine = $this->getCurrentPageRootLine();
 		$isActive = $this->isActive($pageUid, $currentPageRootLine);
 		// Note about next case: although $isCurrent in most cases implies $isActive, cases where the menu item
@@ -66,7 +67,8 @@ class Tx_Vhs_ViewHelpers_Page_Menu_SubViewHelper extends Tx_Vhs_ViewHelpers_Page
 		// rendered - which is expected for example if using a page setting to render a different page in menus.
 		// This means that the following check although it appears redundant, it is in fact not.
 		$isCurrent = $this->isCurrent($pageUid);
-		$shouldRender = (TRUE === $isActive || TRUE === $isCurrent);
+		$isExpanded = (TRUE === isset($parentArguments['expandAll']) && 0 < $parentArguments['expandAll']);
+		$shouldRender = (TRUE === $isActive || TRUE === $isCurrent || TRUE === $isExpanded);
 		if (FALSE === $shouldRender) {
 			return '';
 		}
