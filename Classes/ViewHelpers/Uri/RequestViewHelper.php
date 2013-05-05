@@ -31,7 +31,7 @@
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
- * @subpackage ViewHelpers\Site
+ * @subpackage ViewHelpers\Uri
  */
 class Tx_Vhs_ViewHelpers_Uri_RequestViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
