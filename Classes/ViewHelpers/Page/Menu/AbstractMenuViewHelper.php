@@ -166,9 +166,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$parentInstance = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance');
 		$arguments = $parentInstance->getArguments();
 		$arguments['pageUid'] = $pageUid;
-		$newInstance = clone $parentInstance;
-		$newInstance->setArguments($arguments);
-		return $newInstance;
+		$parentInstance->setArguments($arguments);
+		return $parentInstance;
 	}
 
 	/**
