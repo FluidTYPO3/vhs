@@ -55,7 +55,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_SubViewHelper extends Tx_Vhs_ViewHelpers_Page
 	 */
 	public function render() {
 		$pageUid = $this->arguments['pageUid'];
-		$parentInstance = $this->retrieveReconfiguredClonedParentMenuInstance($pageUid);
+		$parentInstance = $this->retrieveReconfiguredParentMenuInstance($pageUid);
 		if (NULL === $parentInstance) {
 			return '';
 		}

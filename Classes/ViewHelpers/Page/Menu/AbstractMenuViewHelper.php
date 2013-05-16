@@ -158,7 +158,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @param integer $pageUid UID of page that's the new parent page, overridden in arguments of cloned and recycled menu ViewHelper instance
 	 * @return Tx_Vhs_ViewHelpers_Menu_AbstractMenuViewHelper|NULL
 	 */
-	protected function retrieveReconfiguredClonedParentMenuInstance($pageUid) {
+	protected function retrieveReconfiguredParentMenuInstance($pageUid) {
 		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
