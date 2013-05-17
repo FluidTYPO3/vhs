@@ -195,7 +195,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	protected function getSortValue($object) {
 		$field = $this->arguments['sortBy'];
-		$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $field);
+		$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($object, $field);
 		if ($value instanceof DateTime) {
 			$value = $value->format('U');
 		} elseif ($value instanceof Tx_Extbase_Persistence_ObjectStorage) {
