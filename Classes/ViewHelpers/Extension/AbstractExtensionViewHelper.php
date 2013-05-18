@@ -51,7 +51,7 @@ abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends 
 	 * @return mixed
 	 */
 	protected function getExtensionName() {
-		if (TRUE === isset($this->arguments['extensionName'])) {
+		if (TRUE === isset($this->arguments['extensionName']) && FALSE === empty($this->arguments['extensionName'])) {
 			return $this->arguments['extensionName'];
 		}
 		$request = $this->controllerContext->getRequest();
