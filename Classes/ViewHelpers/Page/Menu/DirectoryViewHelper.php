@@ -41,6 +41,11 @@
 class Tx_Vhs_ViewHelpers_Page_Menu_DirectoryViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
 
 	/**
+	 * @var array
+	 */
+	protected $backups = array('menu');
+
+	/**
 	 * @return void
 	 */
 	public function initializeArguments() {
@@ -64,7 +69,6 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DirectoryViewHelper extends Tx_Vhs_ViewHelper
 			$menuData = array_merge($menuData, $this->pageSelect->getMenu($pageUid));
 		}
 		$menu = $this->parseMenu($menuData, $rootLineData);
-		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->backupVariables();
 		$this->templateVariableContainer->add('menu', $menu);
 		$content = $this->renderChildren();
