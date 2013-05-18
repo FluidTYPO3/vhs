@@ -34,6 +34,11 @@
 abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
+	 * @var array
+	 */
+	private static $cache = array();
+
+	/**
 	 * @var string
 	 */
 	protected $tagName = 'ul';
@@ -46,7 +51,17 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	/**
 	 * @var array
 	 */
-	protected $backups = array('menu');
+	protected $backups = array('menu', 'rootLine');
+
+	/**
+	 * @var array
+	 */
+	private $backupValues = array();
+
+	/**
+	 * @var boolean
+	 */
+	private $original = TRUE;
 
 	/**
 	 * Initialize
@@ -75,7 +90,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('showCurrent', 'boolean', 'If FALSE, does not display the current page', FALSE, TRUE);
 		$this->registerArgument('linkCurrent', 'boolean', 'If FALSE, does not wrap the current page in a link', FALSE, TRUE);
 		$this->registerArgument('linkActive', 'boolean', 'If FALSE, does not wrap with links the titles of pages that are active in the rootline', FALSE, TRUE);
-		$this->registerArgument('backupVariables', 'array', 'Backup these template variables while rendering the menu and restore them afterwards. Default: [rootLine, page, menu]', FALSE, array('rootLine', 'page', 'menu'));
 		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.', FALSE, 'nav_title,title');
 		$this->registerArgument('doktypes', 'mixed', 'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut');
 	}
@@ -104,12 +118,91 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
+	 * Initialize variables used by the submenu instance recycler. Variables set here
+	 * may be read by the Page / Menu / Sub ViewHelper which then automatically repeats
+	 * rendering using the exact same arguments but with a new page UID as starting page.
+	 * Note that the submenu VieWHelper is only capable of recycling one type of menu at
+	 * a time - for example, a List menu nested inside a regular Menu ViewHelper will
+	 * simply start another menu rendering completely separate from the parent menu.
+	 * @return NULL
+	 */
+	protected function initalizeSubmenuVariables() {
+		if (FALSE === $this->original) {
+			return NULL;
+		}
+		$variables = $this->templateVariableContainer->getAll();
+		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance', $this);
+		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables', $variables);
+	}
+
+	/**
+	 * @return NULL
+	 */
+	protected function cleanupSubmenuVariables() {
+		if (FALSE === $this->original) {
+			return NULL;
+		}
+		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance')) {
+			return NULL;
+		}
+		$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance');
+		$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables');
+	}
+
+	/**
+	 * Retrieves a stored, if any, parent instance of a menu. Although only implemented by
+	 * the Page / Menu / Sub ViewHelper, placing this method in this abstract class instead
+	 * will allow custom menu ViewHelpers to work as sub menu ViewHelpers without being
+	 * forced to implement their own variable retrieval or subclass Page / Menu / Sub.
+	 * Returns NULL if no parent exists.
+	 * @param integer $pageUid UID of page that's the new parent page, overridden in arguments of cloned and recycled menu ViewHelper instance
+	 * @return Tx_Vhs_ViewHelpers_Menu_AbstractMenuViewHelper|NULL
+	 */
+	protected function retrieveReconfiguredParentMenuInstance($pageUid) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance')) {
+			return NULL;
+		}
+		/** @var $parentInstance Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper */
+		$parentInstance = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance');
+		$arguments = $parentInstance->getArguments();
+		$arguments['pageUid'] = $pageUid;
+		$parentInstance->setArguments($arguments);
+		return $parentInstance;
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function cleanTemplateVariableContainer() {
+		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables')) {
+			return;
+		}
+		$storedVariables = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables');
+		foreach ($this->templateVariableContainer->getAll() as $variableName => $value) {
+			$this->backupValues[$variableName] = $value;
+			$this->templateVariableContainer->remove($variableName);
+		}
+		foreach ($storedVariables as $variableName => $value) {
+			$this->templateVariableContainer->add($variableName, $value);
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getArguments() {
+		if (FALSE === is_array($this->arguments)) {
+			return $this->arguments->toArray();
+		}
+		return $this->arguments;
+	}
+
+	/**
 	 * @param integer $pageUid
-	 * @param array $rootLine
 	 * @return boolean
 	 */
 	protected function isCurrent($pageUid) {
-		return $pageUid == $GLOBALS['TSFE']->id;
+		return (boolean) ($pageUid == $GLOBALS['TSFE']->id);
 	}
 
 	/**
@@ -239,7 +332,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				case 2:
 						// mode: random subpage of selected or current page
 					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
-					$randomKey =
 					$page = count($menu) > 0 ? $menu[rand(0, count($menu) - 1)] : $page;
 					$pageUid = $page['uid'];
 					break;
@@ -398,11 +490,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return void
 	 */
 	public function backupVariables() {
-		$backupVars = $this->arguments['backupVariables'];
-		$this->backups = array();
-		foreach ($backupVars as $var) {
+		foreach ($this->backups as $var) {
 			if ($this->templateVariableContainer->exists($var)) {
-				$this->backups[$var] = $this->templateVariableContainer->get($var);
+				$this->backupValues[$var] = $this->templateVariableContainer->get($var);
 				$this->templateVariableContainer->remove($var);
 			}
 		}
@@ -414,9 +504,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return void
 	 */
 	public function restoreVariables() {
-		if (count($this->backups) > 0) {
-			foreach ($this->backups as $var => $value) {
-				$this->templateVariableContainer->add($var, $value);
+		if (count($this->backupValues) > 0) {
+			foreach ($this->backupValues as $var => $value) {
+				if (FALSE === $this->templateVariableContainer->exists($var)) {
+					$this->templateVariableContainer->add($var, $value);
+				}
 			}
 		}
 	}
@@ -448,6 +540,39 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
+	 * Render method
+	 *
+	 * @return string
+	 */
+	public function render() {
+		$pageUid = $this->arguments['pageUid'];
+		$entryLevel = $this->arguments['entryLevel'];
+		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
+		if (!$pageUid) {
+			if (NULL !== $rootLineData[$entryLevel]['uid']) {
+				$pageUid = $rootLineData[$entryLevel]['uid'];
+			} else {
+				return '';
+			}
+		}
+		$menuData = $this->pageSelect->getMenu($pageUid);
+		$menu = $this->parseMenu($menuData, $rootLineData);
+		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
+		$this->cleanTemplateVariableContainer();
+		$this->backupVariables();
+		$this->templateVariableContainer->add('menu', $menu);
+		$this->templateVariableContainer->add('rootLine', $rootLine);
+		$this->initalizeSubmenuVariables();
+		$content = $this->renderChildren();
+		$output = $this->renderContent($menu, $content);
+		$this->cleanupSubmenuVariables();
+		$this->templateVariableContainer->remove('menu');
+		$this->templateVariableContainer->remove('rootLine');
+		$this->restoreVariables();
+		return $output;
+	}
+
+	/**
 	 * Returns array of page UIDs from provided pages
 	 * argument or NULL if not processable
 	 *
@@ -466,4 +591,26 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 
 		return $pages;
 	}
+
+	/**
+	 * Gets the current rootLine (of page being rendered). Implements
+	 * level one cache due to expectations of repeated executions per
+	 * menu rendering loop when using manual page rendering with subpages.
+	 *
+	 * @return array
+	 */
+	protected function getCurrentPageRootLine() {
+		if (FALSE === isset(self::$cache['currentRootLine'])) {
+			self::$cache['currentRootLine'] = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
+		}
+		return self::$cache['currentRootLine'];
+	}
+
+	/**
+	 * @return void
+	 */
+	public function __clone() {
+		$this->original = FALSE;
+	}
+
 }

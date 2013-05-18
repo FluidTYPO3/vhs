@@ -43,6 +43,11 @@
 class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
 
 	/**
+	 * @var array
+	 */
+	protected $backups = array('menu');
+
+	/**
 	 * @return void
 	 */
 	public function initializeArguments() {
@@ -113,7 +118,6 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		if (isset($menu[$lastUid])) {
 			$menu[$lastUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menu[$lastUid]);
 		}
-		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->backupVariables();
 		$this->templateVariableContainer->add('menu', $menu);
 		$content = $this->renderChildren();
