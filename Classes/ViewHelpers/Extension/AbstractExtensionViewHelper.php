@@ -54,12 +54,7 @@ abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends 
 		if (TRUE === isset($this->arguments['extensionName'])) {
 			return $this->arguments['extensionName'];
 		}
-		if (TRUE === method_exists($this, 'getControllerContext')) {
-			$controllerContext = call_user_func_array(array($this, 'getControllerContext'), array());
-		} else {
-			$controllerContext = $this->controllerContext;
-		}
-		$request = $controllerContext->getRequest();
+		$request = $this->controllerContext->getRequest();
 		$extensionName = $request->getControllerExtensionName();
 		if (TRUE === empty($extensionName)) {
 			throw new Exception('Unable to read extension name from ControllerContext and value not manually specified', 1364167519);
