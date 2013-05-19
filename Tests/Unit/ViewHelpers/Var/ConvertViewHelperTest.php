@@ -90,8 +90,9 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
      * @test
      */
     public function returnsArrayForTypeObjectStorage() {
+        $domainObject = $this->objectManager->get('Tx_Vhs_Tests_Fixtures_Domain_Model_Foo');
         $storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
-        $storage->attach('foo');
+        $storage->attach($domainObject);
         $viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($storage));
         $viewHelper->setArguments(array('type' => 'array'));
