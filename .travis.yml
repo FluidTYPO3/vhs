@@ -15,6 +15,8 @@ before_script:
   - mkdir fileadmin
   - mkdir uploads
   - mv build-environment/typo3/* ./
+  - rm phpunit.xml
+  - cp $PWD/typo3conf/ext/vhs/Tests/phpunit.xml $PWD/phpunit.xml
 # local init
   - rm -rf $PWD/typo3conf/ext/vhs
   - git clone https://github.com/FluidTYPO3/vhs.git typo3conf/ext/vhs
@@ -27,4 +29,4 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
 
 script:
-  - php $PWD/typo3/cli_dispatch.phpsh phpunit -c $PWD/typo3conf/ext/vhs/Tests/phpunit.xml
+  - php $PWD/typo3/cli_dispatch.phpsh phpunit -c phpunit.xml
