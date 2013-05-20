@@ -8,10 +8,10 @@ env:
 
 before_script:
   - rm -rf *
-  - git clone git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
+  - git clone https://github.com/FluidTYPO3/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
   - git clone https://github.com/FluidTYPO3/TYPO3v4-Core.git --recurse-submodules build-environment/typo3 --depth 50
-  - git clone git://git.typo3.org/TYPO3v4/Distributions/Introduction.git build-environment/Introduction
+  - git clone https://github.com/FluidTYPO3/Introduction.git build-environment/Introduction
   - mkdir fileadmin
   - mkdir uploads
   - mv build-environment/typo3/* ./
@@ -27,4 +27,4 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
 
 script:
-  - php $PWD/typo3/cli_dispatch.phpsh phpunit -c phpunit.xml
+  - php $PWD/typo3/cli_dispatch.phpsh phpunit -c $PWD/typo3conf/ext/vhs/Tests/phpunit.xml
