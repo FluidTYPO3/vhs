@@ -15,11 +15,11 @@ before_script:
   - mkdir fileadmin
   - mkdir uploads
   - mv build-environment/typo3/* ./
-  - rm phpunit.xml
-  - cp $PWD/typo3conf/ext/vhs/Tests/phpunit.xml $PWD/phpunit.xml
 # local init
   - rm -rf $PWD/typo3conf/ext/vhs
-  - git clone https://github.com/FluidTYPO3/vhs.git typo3conf/ext/vhs
+  - git clone https://github.com/FluidTYPO3/vhs.git typo3conf/ext/vhs --depth 50
+  - rm phpunit.xml
+  - cp $PWD/typo3conf/ext/vhs/Tests/phpunit.xml $PWD/phpunit.xml
 # continue install
   - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS typo3_test;" -uroot; fi
