@@ -30,4 +30,5 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
 
 script:
+  - find $PWD/typo3conf/ext/vhs -name *.php -exec phpLint {} --fails-on-warning --report-unused \;
   - php $PWD/typo3/cli_dispatch.phpsh phpunit -c phpunit.xml
