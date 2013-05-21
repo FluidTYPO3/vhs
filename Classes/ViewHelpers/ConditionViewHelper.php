@@ -73,13 +73,13 @@ class Tx_Vhs_ViewHelpers_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @api
 	 */
 	protected function renderThenChild() {
-		if ($this->hasArgument('then')) {
+		if (FALSE === empty($this->arguments['then'])) {
 			return $this->arguments['then'];
 		}
-		if ($this->hasArgument('__thenClosure')) {
+		if (FALSE === empty($this->arguments['__thenClosure'])) {
 			$thenClosure = $this->arguments['__thenClosure'];
 			return $thenClosure();
-		} elseif ($this->hasArgument('__elseClosure') || $this->hasArgument('else')) {
+		} elseif (FALSE === empty($this->arguments['__elseClosure']) || FALSE === empty($this->arguments['else'])) {
 			return '';
 		}
 
@@ -111,10 +111,10 @@ class Tx_Vhs_ViewHelpers_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @api
 	 */
 	protected function renderElseChild() {
-		if ($this->hasArgument('else')) {
+		if (FALSE === empty($this->arguments['else'])) {
 			return $this->arguments['else'];
 		}
-		if ($this->hasArgument('__elseClosure')) {
+		if (FALSE === empty($this->arguments['__elseClosure'])) {
 			$elseClosure = $this->arguments['__elseClosure'];
 			return $elseClosure();
 		}
