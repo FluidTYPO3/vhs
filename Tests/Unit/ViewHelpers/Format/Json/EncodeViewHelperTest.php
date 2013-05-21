@@ -101,7 +101,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Extbase_Tes
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($foo1));
 
-
 		$this->assertRegexp($expectedRegex, $viewHelper->render());
 	}
+
 }

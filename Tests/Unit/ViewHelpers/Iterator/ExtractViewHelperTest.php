@@ -3,7 +3,7 @@
  *  Copyright notice
  *
  *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -62,7 +62,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 				'myValue'
 			),
 		);
-		
+
 		return $structures;
 	}
 
@@ -192,4 +192,3 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Extbase_Tests
 		);
 	}
 }
-?>

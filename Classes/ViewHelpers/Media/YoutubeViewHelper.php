@@ -37,14 +37,14 @@ class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 *
 	 * @var string
 	 */
-	const youtubeBaseUrl = 'http://www.youtube.com';
+	const YOUTUBE_BASEURL = 'http://www.youtube.com';
 
 	/**
 	 * Base url for extended privacy
 	 *
 	 * @var string
 	 */
-	const youtubePrivacyBaseUrl = 'http://www.youtube-nocookie.com';
+	const YOUTUBE_PRIVACY_BASEURL = 'http://www.youtube-nocookie.com';
 
 	/**
 	 * @var string
@@ -124,7 +124,7 @@ class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return string
 	 */
 	private function getSourceUrl($videoId) {
-		$src = (boolean) TRUE === $this->arguments['extendedPrivacy'] ? self::youtubePrivacyBaseUrl : self::youtubeBaseUrl;
+		$src = (boolean) TRUE === $this->arguments['extendedPrivacy'] ? self::YOUTUBE_PRIVACY_BASEURL : self::YOUTUBE_BASEURL;
 		if (FALSE === $this->arguments['legacyCode']) {
 			$src .= '/embed/'. $videoId;
 			if (FALSE === (boolean) $this->arguments['showRelated'] || TRUE === (boolean) $this->arguments['autoplay']) {

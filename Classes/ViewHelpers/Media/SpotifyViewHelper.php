@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Media_SpotifyViewHelper extends Tx_Fluid_Core_ViewHelpe
 	/**
 	 * Play button base url
 	 */
-	const spotifyBaseUrl = 'https://embed.spotify.com/';
+	const SPOTIFY_BASEURL = 'https://embed.spotify.com/';
 
 	/**
 	 * @var string
@@ -83,7 +83,7 @@ class Tx_Vhs_ViewHelpers_Media_SpotifyViewHelper extends Tx_Fluid_Core_ViewHelpe
 			$height = 80;
 		}
 
-		$src = self::spotifyBaseUrl . '?uri=' . $spotifyUri . '&theme=' . $theme . '&view=' . $view;
+		$src = self::SPOTIFY_BASEURL . '?uri=' . $spotifyUri . '&theme=' . $theme . '&view=' . $view;
 
 		$this->tag->forceClosingTag(TRUE);
 		$this->tag->addAttribute('src', $src);

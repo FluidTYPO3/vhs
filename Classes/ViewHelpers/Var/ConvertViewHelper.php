@@ -49,6 +49,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 	/**
 	 * Render method
 	 *
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public function render() {
@@ -65,7 +66,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 			if ('ObjectStorage' === $type && 'array' === gettype($value)) {
 				$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 				$storage = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
-				foreach($value as $item) {
+				foreach ($value as $item) {
 					$storage->attach($item);
 				}
 				$value = $storage;

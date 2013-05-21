@@ -113,16 +113,16 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		if ($slide) {
 			$pageSelect = new t3lib_pageSelect();
 			$rootLine = $pageSelect->getRootLine($pid, $mountpointRange);
-			if($slideCollectReverse){
+			if ($slideCollectReverse) {
 				$rootLine = array_reverse($rootLine);
 			}
 		}
 
 		$content = array();
 		do {
-			if ($slide){
+			if ($slide) {
 				$page = array_shift($rootLine);
-				if (!$page){
+				if (!$page) {
 					break;
 				}
 				$pid = $page['uid'];

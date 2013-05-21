@@ -349,7 +349,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			}
 		}
 		$doktype = $page['doktype'];
-		if ($getLL){
+		if ($getLL) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $getLL);
 			foreach ($pageOverlay as $name => $value) {
 				if (empty($value) === FALSE) {

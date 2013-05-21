@@ -55,9 +55,9 @@ class Tx_Vhs_ViewHelpers_Media_ExistsViewHelper extends Tx_Fluid_Core_ViewHelper
 
 		$evaluation = FALSE;
 		if (isset($this->arguments['file'])) {
-			$evaluation = (file_exists($file) || file_exists(PATH_site . $file)) && is_file($file);
+			$evaluation = (file_exists($file) || file_exists(constant('PATH_site') . $file)) && is_file($file);
 		} elseif (isset($this->arguments['directory'])) {
-			$evaluation = (is_dir($directory) || is_dir(PATH_site . $directory));
+			$evaluation = (is_dir($directory) || is_dir(constant('PATH_site') . $directory));
 		}
 
 		if ($evaluation !== FALSE) {

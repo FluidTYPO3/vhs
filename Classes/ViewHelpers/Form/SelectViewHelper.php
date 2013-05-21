@@ -226,7 +226,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 			}
 		}
 		$selectedValues = array();
-		foreach($value as $selectedValueElement) {
+		foreach ($value as $selectedValueElement) {
 			if (is_object($selectedValueElement)) {
 				$selectedValues[] = Tx_Extbase_Reflection_ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
 			} else {

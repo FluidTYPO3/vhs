@@ -101,7 +101,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 			} else {
 				$result = $this->extractByKey($content, $key);
 			}
-		} catch(Exception $error) {
+		} catch (Exception $error) {
 			t3lib_div::sysLog($error->getMessage(), 'vhs', t3lib_div::SYSLOG_SEVERITY_WARNING);
 			$result = array();
 		}

@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Media_VimeoViewHelper extends Tx_Fluid_Core_ViewHelper_
 	/**
 	 * Base URL for Vimeo video player
 	 */
-	const vimeoBaseUrl = 'http://player.vimeo.com/video/';
+	const VIMEO_BASEURL = 'http://player.vimeo.com/video/';
 
 	/**
 	 * @var string
@@ -72,7 +72,7 @@ class Tx_Vhs_ViewHelpers_Media_VimeoViewHelper extends Tx_Fluid_Core_ViewHelper_
 		$width   = $this->arguments['width'];
 		$height  = $this->arguments['height'];
 
-		$src = self::vimeoBaseUrl . $videoId . '?';
+		$src = self::VIMEO_BASEURL . $videoId . '?';
 
 		$queryParams = array(
 			'title='     . (integer) $this->arguments['title'],

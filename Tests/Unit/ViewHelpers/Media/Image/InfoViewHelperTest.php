@@ -50,7 +50,7 @@ class Tx_Vhs_ViewHelpers_Media_Image_InfoViewHelperTest extends Tx_Extbase_Tests
 	public function returnsZeroWidthForEmptyArguments() {
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_Image_WidthViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-		
+
 		$this->assertEquals(0, $viewHelper->render());
 	}
 

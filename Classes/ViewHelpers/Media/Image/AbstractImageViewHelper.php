@@ -110,7 +110,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		$this->imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
 		if (!is_array($this->imageInfo)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Could not get image resource for "' . htmlspecialchars($src) . '".' , 1253191060);
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
 		}
 		$this->imageInfo[3] = t3lib_div::png_to_gif_by_imagemagick($this->imageInfo[3]);
 		$GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
@@ -129,13 +129,13 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 	protected function simulateFrontendEnvironment() {
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$this->workingDirectoryBackup = getcwd();
-		chdir(PATH_site);
+		chdir(constant('PATH_site'));
 		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$GLOBALS['TSFE'] = new stdClass();
 		$template = t3lib_div::makeInstance('t3lib_TStemplate');
 		$template->tt_track = 0;
 		$template->init();
-		$template->getFileName_backPath = PATH_site;
+		$template->getFileName_backPath = constant('PATH_site');
 		$GLOBALS['TSFE']->tmpl = $template;
 		$GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
 		$GLOBALS['TSFE']->config = $typoScriptSetup;

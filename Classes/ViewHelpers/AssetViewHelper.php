@@ -210,7 +210,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 							if (FALSE === file_exists($absolutePathAndFilename)) {
 								throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
 							}
-							$fileRelativePathAndFilename = substr($absolutePathAndFilename, strlen(PATH_site));
+							$fileRelativePathAndFilename = substr($absolutePathAndFilename, strlen(constant('PATH_site')));
 							$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
 							$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
 						}
@@ -258,7 +258,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 			$assetName = md5($assetName);
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.'.  $type;
-		file_put_contents(PATH_site . $fileRelativePathAndFilename, $source);
+		file_put_contents(constant('PATH_site') . $fileRelativePathAndFilename, $source);
 		$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
 		$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
 		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
@@ -533,7 +533,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 				$newPath = basename($path);
 				$extension = pathinfo($newPath, PATHINFO_EXTENSION);
 				$temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
-				$temporaryFile = PATH_site . 'typo3temp/' . $temporaryFileName;
+				$temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
 				if (FALSE === file_exists($temporaryFile)) {
 					$realPath = realpath($originalDirectory . '/' . $path);
 					copy($realPath, $temporaryFile);

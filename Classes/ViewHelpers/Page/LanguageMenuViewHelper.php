@@ -230,7 +230,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 		}
 
 			// overwrite of label
-		if(!empty($labelOverwrite)) {
+		if (!empty($labelOverwrite)) {
 			$i = 0;
 			foreach ($languageMenu as $key => $value) {
 				$languageMenu[$key]['label'] = $labelOverwrite[$i];
@@ -245,7 +245,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 		$whereClause .= $GLOBALS['TSFE']->sys_page->enableFields($table);
 		$sysLang = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('DISTINCT sys_language_uid', $table, $whereClause);
 
-		if(!empty($sysLang)) {
+		if (!empty($sysLang)) {
 			foreach ($sysLang as $val) {
 				$pageArray[$val['sys_language_uid']] = $val['sys_language_uid'];
 			}
