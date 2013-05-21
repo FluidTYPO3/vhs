@@ -7,7 +7,8 @@ env:
   - DB=mysql
 
 before_script:
-  - rm -rf *
+  - mkdir repository
+  - find . -maxdepth 1 \! -name repository \! -name . -exec mv {} repository/ \;
   - git clone https://github.com/FluidTYPO3/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
   - git clone https://github.com/FluidTYPO3/TYPO3v4-Core.git --recurse-submodules build-environment/typo3 --depth 50
@@ -17,7 +18,7 @@ before_script:
   - mv build-environment/typo3/* ./
 # local init
   - rm -rf $PWD/typo3conf/ext/vhs
-  - git clone https://github.com/FluidTYPO3/vhs.git typo3conf/ext/vhs --depth 50
+  - mv $PWD/repository $PWD/typo3conf/ext/vhs
   - rm phpunit.xml
   - cp $PWD/typo3conf/ext/vhs/Tests/phpunit.xml $PWD/phpunit.xml
 # continue install
