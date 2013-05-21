@@ -28,7 +28,14 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cache_tables.sql; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
+# prepare the CodeSniffer
+  - git clone git://github.com/squizlabs/PHP_CodeSniffer.git build-environment/CodeSniffer
+  - git clone https://github.com/FluidTYPO3/FluidTYPO3-CodingStandards.git build/environment/FluidTYPO3-CodingStandards
 
 script:
+# phplint checking on all PHP source files in extension
   - find $PWD/typo3conf/ext/vhs -name *.php -exec phpLint {} --fails-on-warning --report-unused \;
+# PHPCodeSniffer code inspection with only errors displayed (no warnings)
+  - $PWD/build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/vhs
+# PHPUnit tests from overridden phpunit tests configuration file
   - php $PWD/typo3/cli_dispatch.phpsh phpunit -c phpunit.xml
