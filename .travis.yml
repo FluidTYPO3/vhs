@@ -30,7 +30,7 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
 # prepare the CodeSniffer
   - git clone git://github.com/squizlabs/PHP_CodeSniffer.git build-environment/CodeSniffer
-  - git clone https://github.com/FluidTYPO3/FluidTYPO3-CodingStandards.git build/environment/FluidTYPO3-CodingStandards
+  - git clone https://github.com/FluidTYPO3/FluidTYPO3-CodingStandards.git build-environment/FluidTYPO3-CodingStandards
 
 script:
 # phplint checking on all PHP source files in extension
