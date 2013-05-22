@@ -244,13 +244,13 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	public function getName() {
 		$assetSettings = $this->getAssetSettings();
-		if (TRUE === isset($assetSettings['name'])) {
+		if (TRUE === (isset($assetSettings['name']) && FALSE === empty($assetSettings['name']))) {
 			$name = $assetSettings['name'];
 		} else {
-			$name = md5(implode('', array_values($assetSettings)));
+			$name = md5(serialize($assetSettings));
 		}
 		if (TRUE === (boolean) $assetSettings['fluid']) {
-			$name .= '-' . md5(implode('', array_values($this->getVariables())));
+			$name .= '-' . md5(zerialize($this->getVariables()));
 		}
 		return $name;
 	}
