@@ -268,12 +268,12 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	protected function getContent() {
 		$assetSettings = $this->getAssetSettings();
-		if (FALSE === isset($settings['content'])) {
-			$content = $this->renderChildren();
+		if (TRUE === (isset($assetSettings['content']) && !empty($assetSettings['content']))) {
+			$content = $assetSettings['content'];
 		} else {
-			$content = $settings['content'];
+			$content = $this->renderChildren();
 		}
-		if (TRUE === (boolean) $settings['trim']) {
+		if (TRUE === (boolean) $assetSettings['trim']) {
 			$lines = explode(LF, $content);
 			$lines = array_map('trim', $lines);
 			$content = implode('', $lines);
