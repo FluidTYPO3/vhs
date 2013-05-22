@@ -162,7 +162,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 * @return mixed
 	 */
 	public function build() {
-		if (FALSE === isset($this->arguments['path'])) {
+		if (FALSE === isset($this->arguments['path']) || TRUE === empty($this->arguments['path'])) {
 			return $this->getContent();
 		}
 		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($this->arguments['path']);
