@@ -40,7 +40,7 @@
  *         <f:then>
  * 	          Output if TRUE
  * 	       </f:then>
- *     </f:condition>
+ *     </v:condition>
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
