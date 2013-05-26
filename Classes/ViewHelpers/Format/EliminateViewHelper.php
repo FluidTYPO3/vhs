@@ -140,7 +140,7 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @return string
 	 */
 	protected function eliminateWhitespace($content) {
-		$content = preg_replace("'\s+'", '', $content);
+		$content = preg_replace('\s+', '', $content);
 		return $content;
 	}
 
