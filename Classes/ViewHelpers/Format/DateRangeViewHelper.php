@@ -73,7 +73,7 @@
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Format\Date
+ * @subpackage ViewHelpers\Format
  */
 class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
