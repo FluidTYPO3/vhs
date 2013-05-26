@@ -43,8 +43,8 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends Tx_Fluid_Core_ViewHelper_A
 	}
 
 	/**
-	 * @return int
 	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @return integer
 	 */
 	public function render() {
 
