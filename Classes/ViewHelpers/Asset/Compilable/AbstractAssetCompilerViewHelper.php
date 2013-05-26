@@ -54,7 +54,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_Compilable_AbstractAssetCompilerViewHelp
 	 * @return Tx_Vhs_ViewHelpers_Asset_AssetInterface[]
 	 */
 	public function getAssets() {
-		return $tis->assets;
+		return $this->assets;
 	}
 
 	/**

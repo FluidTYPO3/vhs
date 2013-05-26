@@ -268,12 +268,12 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	protected function getContent() {
 		$assetSettings = $this->getAssetSettings();
-		if (FALSE === isset($settings['content'])) {
+		if (FALSE === isset($assetSettings['content'])) {
 			$content = $this->renderChildren();
 		} else {
-			$content = $settings['content'];
+			$content = $assetSettings['content'];
 		}
-		if (TRUE === (boolean) $settings['trim']) {
+		if (TRUE === (boolean) $assetSettings['trim']) {
 			$lines = explode(LF, $content);
 			$lines = array_map('trim', $lines);
 			$content = implode('', $lines);
@@ -292,9 +292,9 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 * @return array
 	 */
 	public function getVariables() {
-		$settings = $this->getAssetSettings();
-		if (TRUE === (isset($settings['arguments']) && is_array($settings['arguments']))) {
-			return $settings['arguments'];
+		$assetSettings = $this->getAssetSettings();
+		if (TRUE === (isset($assetSettings['arguments']) && is_array($assetSettings['arguments']))) {
+			return $assetSettings['arguments'];
 		}
 		return array();
 	}
@@ -330,7 +330,6 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	public function setSettings($settings) {
 		if (TRUE === is_array($settings) || TRUE === $settings instanceof ArrayAccess) {
 			$this->localSettings = $settings;
-			$this->argumentsCache = NULL;
 		}
 	}
 
