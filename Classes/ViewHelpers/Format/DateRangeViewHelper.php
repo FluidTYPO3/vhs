@@ -83,21 +83,6 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 	protected $escapingInterceptorEnabled = FALSE;
 
 	/**
-	 * @var \DateTime
-	 */
-	protected $startDateTime;
-
-	/**
-	 * @var \DateTime
-	 */
-	protected $endDateTime;
-
-	/**
-	 * @var \DateInterval
-	 */
-	protected $interval;
-
-	/**
 	 * @return void
 	 */
 	public function initializeArguments() {
@@ -125,33 +110,35 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 		} else {
 			$start = 'now';
 		}
-		$this->startDateTime = $this->enforceDateTime($start);
+		$startDateTime = $this->enforceDateTime($start);
 
 		if (TRUE === isset($this->arguments['end']) && FALSE === empty($this->arguments['end'])) {
-			$this->endDateTime = $this->enforceDateTime($this->arguments['end']);
+			$endDateTime = $this->enforceDateTime($this->arguments['end']);
+		} else {
+			$endDateTime = NULL;
 		}
 
 		if (TRUE === isset($this->arguments['intervalFormat']) && FALSE === empty($this->arguments['intervalFormat'])) {
 			$intervalFormat = $this->arguments['intervalFormat'];
 		}
 
-		if (NULL === $intervalFormat && NULL === $this->endDateTime) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Either end or intervalFormat has to be provided.', 12345);
+		if (NULL === $intervalFormat && NULL === $endDateTime) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Either end or intervalFormat has to be provided.', 1369573110);
 		}
 
 		if (TRUE === isset($intervalFormat) && NULL !== $intervalFormat) {
 			try {
-				$this->interval = new \DateInterval($intervalFormat);
+				$interval = new \DateInterval($intervalFormat);
 			} catch (\Exception $exception) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.', 123456);
+				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.', 1369573111);
 			}
 		} else {
-			$this->interval = $this->endDateTime->diff($this->startDateTime);
+			$interval = $endDateTime->diff($startDateTime);
 		}
 
-		if (NULL !== $this->interval && NULL === $this->endDateTime) {
-			$this->endDateTime = clone($this->startDateTime);
-			$this->endDateTime->add($this->interval);
+		if (NULL !== $interval && NULL === $endDateTime) {
+			$endDateTime = clone($startDateTime);
+			$endDateTime->add($interval);
 		}
 
 		$return = $this->arguments['return'];
@@ -166,25 +153,25 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 			if (NULL !== $this->arguments['endFormat'] && FALSE === empty($this->arguments['endFormat'])) {
 				$endFormat = $this->arguments['endFormat'];
 			}
-			$output  = $this->formatDate($this->startDateTime, $startFormat);
+			$output  = $this->formatDate($startDateTime, $startFormat);
 			$output .= TRUE === $spaceGlue ? ' ' : '';
 			$output .= $glue;
 			$output .= TRUE === $spaceGlue ? ' ' : '';
-			$output .= $this->formatDate($this->endDateTime, $endFormat);
+			$output .= $this->formatDate($endDateTime, $endFormat);
 		} elseif ('DateTime' === $return) {
-			$output = $this->endDateTime;
+			$output = $endDateTime;
 		} elseif (TRUE === is_string($return)) {
 			if (FALSE === strpos($return, '%')) {
 				$return = '%' . $return;
 			}
-			$output = $this->interval->format($return);
+			$output = $interval->format($return);
 		} elseif (TRUE === is_array($return)) {
 			$output = array();
 			foreach ($return as $format) {
 				if (FALSE === strpos($format, '%')) {
 					$format = '%' . $format;
 				}
-				array_push($output, $this->interval->format($format));
+				array_push($output, $interval->format($format));
 			}
 		}
 		return $output;
@@ -204,7 +191,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 					$date = new \DateTime($date);
 				}
 			} catch (\Exception $exception) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369399931);
+				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
 			}
 		}
 		return $date;
