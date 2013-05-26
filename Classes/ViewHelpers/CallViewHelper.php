@@ -48,6 +48,7 @@ class Tx_Vhs_ViewHelpers_CallViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 	 * @param string $method
 	 * @param object $object
 	 * @param array $arguments
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public function render($method, $object = NULL, array $arguments = array()) {

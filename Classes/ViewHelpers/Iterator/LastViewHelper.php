@@ -44,6 +44,7 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends Tx_Vhs_ViewHelpers_Iter
 	/**
 	 * Render method
 	 *
+	 * @throws Exception
 	 * @return string
 	 */
 	public function render() {

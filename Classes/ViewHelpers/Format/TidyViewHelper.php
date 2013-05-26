@@ -37,6 +37,7 @@ class Tx_Vhs_ViewHelpers_Format_TidyViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * Trims content, then trims each line of content
 	 *
 	 * @param string $content
+	 * @throws Exception
 	 * @return string
 	 */
 	public function render($content = NULL) {

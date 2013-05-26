@@ -39,7 +39,7 @@ class Tx_Vhs_ViewHelpers_Media_Image_WidthViewHelper extends Tx_Vhs_ViewHelpers_
 
 		$info = $this->getInfo();
 
-		return isset($info['width']) ? $info['width'] : 0;
+		return TRUE === isset($info['width']) ? $info['width'] : 0;
 	}
 
 }

@@ -48,6 +48,7 @@ abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends 
 	}
 
 	/**
+	 * @throws Exception
 	 * @return mixed
 	 */
 	protected function getExtensionName() {

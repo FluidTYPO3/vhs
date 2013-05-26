@@ -59,6 +59,7 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 	 * @param string $text
 	 * @param boolean $trim
 	 * @param boolean $htmlentities
+	 * @throws Exception
 	 * @return string
 	 */
 	public function render($text = NULL, $trim = TRUE, $htmlentities = FALSE) {
@@ -82,6 +83,8 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 
 	/**
 	 * @param string $text
+	 * @throws Exception
+	 * @return string
 	 */
 	public function transform($text) {
 		$descriptorspec = array(

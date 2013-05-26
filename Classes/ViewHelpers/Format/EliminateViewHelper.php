@@ -98,7 +98,7 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends Tx_Fluid_Core_ViewHe
 	 */
 	protected function eliminateCharacters($content, $characters) {
 		$caseSensitive = (boolean) $this->arguments['caseSensitive'];
-		if (is_array($strings)) {
+		if (is_array($characters)) {
 			$subjects = $characters;
 		} else {
 			$subjects = str_split($characters);
@@ -140,7 +140,7 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @return string
 	 */
 	protected function eliminateWhitespace($content) {
-		$content = preg_replace("'\s+'", '', $content);
+		$content = preg_replace('\s+', '', $content);
 		return $content;
 	}
 

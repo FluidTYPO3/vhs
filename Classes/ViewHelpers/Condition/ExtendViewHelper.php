@@ -89,7 +89,7 @@ class Tx_Vhs_ViewHelpers_Condition_ExtendViewHelper extends Tx_Fluid_Core_ViewHe
 
 			}
 		}
-			// compund unnecessarily nested sub-stacks
+			// compound unnecessarily nested sub-stacks
 		foreach ($stack as $stackId => $stackItem) {
 			if (is_array($stackItem) === TRUE && count($stackItem) === 1) {
 				$stack[$stackId] = $stackItem;
@@ -192,6 +192,7 @@ class Tx_Vhs_ViewHelpers_Condition_ExtendViewHelper extends Tx_Fluid_Core_ViewHe
 	 * by recursively inspecting each stack to accumulate a bool verdict.
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode[] $childNodes
+	 * @throws Exception
 	 * @return void
 	 */
 	public function setChildNodes(array $childNodes) {
@@ -222,7 +223,6 @@ class Tx_Vhs_ViewHelpers_Condition_ExtendViewHelper extends Tx_Fluid_Core_ViewHe
 								$parentStack = $stackId;
 								array_push($idStack, uniqid('', TRUE));
 							} elseif ($syntacticalComponent === ')') {
-								$subStack = array();
 								$stackLevel --;
 								$parentStack = $stackLevel <= 0 ? NULL : $parentStack;
 								$stackId = array_pop($idStack);

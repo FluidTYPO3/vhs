@@ -62,8 +62,6 @@ class Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper extends Tx_Vhs_ViewHelpers_
 	 * @return string
 	 */
 	public function render($browser) {
-		$content = '';
-
 		if (array_key_exists($browser, $this->getBrowsers())) {
 			$content = $this->renderThenChild();
 		} else {

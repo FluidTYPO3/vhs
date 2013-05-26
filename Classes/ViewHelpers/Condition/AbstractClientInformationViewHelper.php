@@ -57,8 +57,6 @@ abstract class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper 
 	 * @return string
 	 */
 	public function getUserAgent() {
-		$userAgent = '';
-
 		if ($this->userAgent !== '') {
 			$userAgent = $this->userAgent;
 		} else {
@@ -80,7 +78,7 @@ abstract class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper 
 	}
 
 	/**
-	 * Return all systems 
+	 * Return all systems
 	 *
 	 * @return array
 	 */
