@@ -157,6 +157,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 	 * Flatten the result structure, to iterate it cleanly in fluid
 	 *
 	 * @param array $content
+	 * @param array $flattened
 	 * @return array
 	 */
 	public function flattenArray(array $content, $flattened = NULL) {

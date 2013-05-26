@@ -51,7 +51,7 @@ class Tx_Vhs_ViewHelpers_Form_HasValidatorViewHelper extends Tx_Fluid_Core_ViewH
 	protected $ownReflectionService;
 
 	/**
-	 * @param Tx_Extbase_Service_Reflection $reflectionService
+	 * @param Tx_Extbase_Reflection_Service $reflectionService
 	 * @return void
 	 */
 	public function injectOwnReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {

@@ -59,6 +59,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 
 	/**
 	 * @param array|Traversable $traversable
+	 * @throws Exception
 	 * @return array
 	 */
 	protected function convertTraversableToArray($traversable) {
@@ -82,6 +83,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 	}
 
 	/**
+	 * @throws Exception
 	 * @return mixed
 	 */
 	protected function getInlineArgument() {
@@ -97,6 +99,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 
 	/**
 	 * @param mixed $a
+	 * @throws Exception
 	 * @return mixed
 	 */
 	protected function calculate($a) {

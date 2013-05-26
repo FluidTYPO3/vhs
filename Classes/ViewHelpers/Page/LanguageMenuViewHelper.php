@@ -179,6 +179,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 
 	/**
 	 * Render the flag image for autorenderer
+	 *
 	 * @param array $language
 	 * @return string
 	 */
@@ -194,7 +195,6 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	/**
 	 * Sets all parameter for langMenu
 	 *
-	 * @param array $order list of all ids and orders
 	 * @return array
 	 */
 	protected function parseLanguageMenu() {

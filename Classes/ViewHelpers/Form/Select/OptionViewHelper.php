@@ -49,6 +49,7 @@ class Tx_Vhs_ViewHelpers_Form_Select_OptionViewHelper extends Tx_Fluid_ViewHelpe
 	}
 
 	/**
+	 * @throws Exception
 	 * @return string
 	 */
 	public function render() {

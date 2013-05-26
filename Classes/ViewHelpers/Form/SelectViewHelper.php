@@ -136,6 +136,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	/**
 	 * Render the option tags.
 	 *
+	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return array
 	 */
 	protected function getOptions() {

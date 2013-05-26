@@ -44,6 +44,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FirstViewHelper extends Tx_Vhs_ViewHelpers_Ite
 	/**
 	 * Render method
 	 *
+	 * @throws Exception
 	 * @return string
 	 */
 	public function render() {

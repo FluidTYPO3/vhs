@@ -43,6 +43,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 	}
 
 	/**
+	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return array
 	 */
 	public function getInfo() {
