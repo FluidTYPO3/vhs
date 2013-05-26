@@ -59,7 +59,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 		$this->registerArgument('start', 'mixed', 'Start date which can be a DateTime object or a string consumable by DateTime constructor', FALSE, 'now');
 		$this->registerArgument('end', 'mixed', 'End date which can be a DateTime object or a string consumable by DateTime constructor', FALSE, NULL);
 		$this->registerArgument('intervalFormat', 'string', 'Interval format consumable by DateInterval', FALSE, NULL);
-		$this->registerArgument('dateFormat', 'string', 'Date format to apply to both start and end date', FALSE, 'Y-m-d');
+		$this->registerArgument('format', 'string', 'Date format to apply to both start and end date', FALSE, 'Y-m-d');
 		$this->registerArgument('startFormat', 'string', 'Date format to apply to start date', FALSE, NULL);
 		$this->registerArgument('endFormat', 'string', 'Date format to apply to end date', FALSE, NULL);
 		$this->registerArgument('glue', 'string', 'Glue string to concatenate dates with', FALSE, '-');
@@ -112,7 +112,8 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 		if (NULL === $return) {
 			$spaceGlue = (boolean) $this->arguments['spaceGlue'];
 			$glue = strval($this->arguments['glue']);
-			$startFormat = $endFormat = $this->arguments['dateFormat'];
+			$startFormat = $this->arguments['format'];
+			$endFormat = $this->arguments['format'];
 			if (NULL !== $this->arguments['startFormat'] && FALSE === empty($this->arguments['startFormat'])) {
 				$startFormat = $this->arguments['startFormat'];
 			}
