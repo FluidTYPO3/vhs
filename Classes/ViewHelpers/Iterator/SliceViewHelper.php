@@ -38,6 +38,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SliceViewHelper extends Tx_Fluid_Core_ViewHelp
 	 * @param mixed $haystack
 	 * @param integer $start
 	 * @param integer $length
+	 * @throws Exception
 	 * @return array
 	 */
 	public function render($haystack = NULL, $start = 0, $length = NULL) {

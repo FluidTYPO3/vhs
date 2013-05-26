@@ -177,6 +177,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 
 	/**
 	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
+	 * @throws RuntimeException
 	 * @return string
 	 */
 	private function buildAssetsChunk($assets) {
@@ -410,6 +411,7 @@ class Tx_Vhs_ViewHelpers_AssetViewHelper extends Tx_Vhs_ViewHelpers_Asset_Abstra
 
 	/**
 	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset
+	 * @throws RuntimeException
 	 * @return string
 	 */
 	private function extractAssetContent(Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset) {

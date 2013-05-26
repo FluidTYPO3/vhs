@@ -50,6 +50,7 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 * Get the variable in $name.
 	 *
 	 * @param string $name
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public function render($name) {

@@ -192,6 +192,7 @@ class Tx_Vhs_ViewHelpers_Condition_ExtendViewHelper extends Tx_Fluid_Core_ViewHe
 	 * by recursively inspecting each stack to accumulate a bool verdict.
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode[] $childNodes
+	 * @throws Exception
 	 * @return void
 	 */
 	public function setChildNodes(array $childNodes) {

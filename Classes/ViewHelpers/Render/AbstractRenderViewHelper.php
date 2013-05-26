@@ -92,6 +92,7 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends Tx_Flu
 
 	/**
 	 * @param Tx_Extbase_MVC_View_ViewInterface $view
+	 * @throws Exception
 	 * @return string
 	 */
 	protected function renderView(Tx_Extbase_MVC_View_ViewInterface $view) {

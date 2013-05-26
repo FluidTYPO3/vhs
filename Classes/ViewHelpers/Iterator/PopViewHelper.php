@@ -37,6 +37,7 @@ class Tx_Vhs_ViewHelpers_Iterator_PopViewHelper extends Tx_Fluid_Core_ViewHelper
 	 *
 	 * @param mixed $subject The subject Traversable/Array instance to pop
 	 * @param string $as If specified, inserts a template variable with this name, then renders the child content, then removes the variable
+	 * @throws Exception
 	 * @return array
 	 */
 	public function render($subject = NULL, $as = NULL) {

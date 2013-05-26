@@ -34,6 +34,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends Tx_Fluid_Core_View
 
 	/**
 	 * @param string $json
+	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return mixed
 	 */
 	public function render($json = '') {
