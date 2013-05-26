@@ -223,7 +223,6 @@ class Tx_Vhs_ViewHelpers_Condition_ExtendViewHelper extends Tx_Fluid_Core_ViewHe
 								$parentStack = $stackId;
 								array_push($idStack, uniqid('', TRUE));
 							} elseif ($syntacticalComponent === ')') {
-								$subStack = array();
 								$stackLevel --;
 								$parentStack = $stackLevel <= 0 ? NULL : $parentStack;
 								$stackId = array_pop($idStack);

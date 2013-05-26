@@ -81,7 +81,6 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 							continue;
 						}
 						$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $segment);
-						$lastSegment = $segment;
 					}
 					return $value;
 				} catch (Exception $e) {
