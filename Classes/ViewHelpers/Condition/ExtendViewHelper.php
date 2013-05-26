@@ -89,7 +89,7 @@ class Tx_Vhs_ViewHelpers_Condition_ExtendViewHelper extends Tx_Fluid_Core_ViewHe
 
 			}
 		}
-			// compund unnecessarily nested sub-stacks
+			// compound unnecessarily nested sub-stacks
 		foreach ($stack as $stackId => $stackItem) {
 			if (is_array($stackItem) === TRUE && count($stackItem) === 1) {
 				$stack[$stackId] = $stackItem;
