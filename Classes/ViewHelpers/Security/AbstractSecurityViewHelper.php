@@ -173,7 +173,7 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 	 * Returns TRUE only if a backend user is currently logged in. If used,
 	 * argument specifies that the logged in user must be that specific user
 	 *
-	 * @param array $backendUser
+	 * @param integer $backendUser
 	 * @return boolean
 	 * @api
 	 */
