@@ -71,11 +71,10 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends Tx_Fluid
 	public function getSourcesFromArgument() {
 		$src = $this->arguments['src'];
 		if ($src instanceof Traversable) {
-			$src = iterator_to_array($pages);
-		} elseif (is_string($pages)) {
-			$src = t3lib_div::trimExplode(',', $pages, TRUE);
+			return iterator_to_array($src);
+		} elseif (is_string($src)) {
+			return t3lib_div::trimExplode(',', $src, TRUE);
 		}
-		return $src;
 	}
 
 }
