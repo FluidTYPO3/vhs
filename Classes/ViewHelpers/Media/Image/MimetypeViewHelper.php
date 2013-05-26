@@ -39,7 +39,7 @@ class Tx_Vhs_ViewHelpers_Media_Image_MimetypeViewHelper extends Tx_Vhs_ViewHelpe
 
 		$info = $this->getInfo();
 
-		return isset($info['type']) ? $info['type'] : '';
+		return TRUE === isset($info['type']) ? $info['type'] : '';
 	}
 
 }
