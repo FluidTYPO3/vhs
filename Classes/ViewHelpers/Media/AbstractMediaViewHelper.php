@@ -65,6 +65,8 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends Tx_Fluid
 
 	/**
 	 * Returns an array of sources resolved from src argument
+	 * which can be either an array, CSV or implement Traversable
+	 * to be consumed by ViewHelpers handling multiple sources.
 	 *
 	 * @return array
 	 */
