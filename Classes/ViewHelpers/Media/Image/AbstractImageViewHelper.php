@@ -85,7 +85,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 	 * @return void
 	 */
 	public function preprocessImage() {
-		$src = $this->getSourcesFromArgument();
+		$src = $this->arguments['src'];
 		$width = $this->arguments['width'];
 		$height = $this->arguments['height'];
 		$minW = $this->arguments['minW'];
