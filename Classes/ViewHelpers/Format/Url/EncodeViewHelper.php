@@ -40,7 +40,7 @@ class Tx_Vhs_ViewHelpers_Format_Url_EncodeViewHelper extends Tx_Fluid_Core_ViewH
 		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-		return urlencode($content);
+		return rawurlencode($content);
 	}
 
 }
