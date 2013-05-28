@@ -268,10 +268,10 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	protected function getContent() {
 		$assetSettings = $this->getAssetSettings();
-		if (FALSE === isset($assetSettings['content'])) {
-			$content = $this->renderChildren();
-		} else {
+		if (TRUE === isset($assetSettings['content']) && FALSE === empty($assetSettings['content'])) {
 			$content = $assetSettings['content'];
+		} else {
+			$content = $this->renderChildren();
 		}
 		if (TRUE === (boolean) $assetSettings['trim']) {
 			$lines = explode(LF, $content);
