@@ -82,7 +82,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
         $viewHelper->setArguments(array('type' => 'ObjectStorage'));
         $converted = $viewHelper->render();
-        $this->assertInstanceOf('TYPO3\CMS\Extbase\Persistence\ObjectStorage', $converted);
+        $this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $converted);
         $this->assertEquals(0, $converted->count());
     }
 
