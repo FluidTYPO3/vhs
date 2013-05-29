@@ -140,7 +140,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	 * @return array
 	 */
 	protected function getOptions() {
-		if (FALSE === is_array($this->arguments['options']) &&  FALSE === ($this->arguments['options'] instanceof Traversable)) {
+		if (FALSE === is_array($this->arguments['options']) && FALSE === ($this->arguments['options'] instanceof Traversable)) {
 			return array();
 		}
 		$options = array();
@@ -248,9 +248,9 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	protected function renderOptionTag($value, $label, $isSelected) {
 		$output = '<option value="' . htmlspecialchars($value) . '"';
 		if (TRUE === (boolean) $isSelected) {
-			$output.= ' selected="selected"';
+			$output .= ' selected="selected"';
 		}
-		$output.= '>' . htmlspecialchars($label) . '</option>';
+		$output .= '>' . htmlspecialchars($label) . '</option>';
 
 		return $output;
 	}
