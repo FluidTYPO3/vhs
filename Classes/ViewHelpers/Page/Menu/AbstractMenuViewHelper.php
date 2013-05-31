@@ -92,6 +92,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('linkActive', 'boolean', 'If FALSE, does not wrap with links the titles of pages that are active in the rootline', FALSE, TRUE);
 		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.', FALSE, 'nav_title,title');
 		$this->registerArgument('doktypes', 'mixed', 'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut');
+		$this->registerArgument('prepend', 'string', 'HTML markup to prepend to automatically rendered (and not empty) menus', FALSE);
+		$this->registerArgument('append', 'string', 'HTML markup to append to automatically rendered (and not empty) menus', FALSE);
 	}
 
 	/**
@@ -531,6 +533,12 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				$this->tag->setContent($content);
 				$this->tag->forceClosingTag(TRUE);
 				$output = $this->tag->render();
+				if (TRUE === isset($this->arguments['prepend'])) {
+					$output = (string) $this->arguments['prepend'] . $output;
+				}
+				if (TRUE === isset($this->arguments['append'])) {
+					$output = $output . (string) $this->arguments['append'];
+				}
 			}
 		} else {
 			$output = $content;
