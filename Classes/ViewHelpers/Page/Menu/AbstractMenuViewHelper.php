@@ -577,8 +577,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->templateVariableContainer->remove('menu');
 		$this->templateVariableContainer->remove('rootLine');
 		$this->restoreVariables();
-		$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
-		$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray');
+		if (TRUE === (boolean) $this->arguments['deferred']) {
+			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
+			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray');
+		}
 		return $output;
 	}
 
