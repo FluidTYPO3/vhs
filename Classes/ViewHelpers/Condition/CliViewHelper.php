@@ -24,43 +24,14 @@
  ***************************************************************/
 
 /**
- * ### Condition: Is context CLI?
+ * Alias of Tx_Vhs_ViewHelpers_If_Context_IsCliViewHelper for
+ * backwards compatibility.
  *
- * A condition ViewHelper which renders the `then` child if
- * current context being rendered is CLI.
- *
- * ### Examples
- *
- *     <!-- simple usage, content becomes then-child -->
- *     <v:condition.cli>
- *         Hooray for CLI contexts!
- *     </v:condition.cli>
- *     <!-- extended use combined with f:then and f:else -->
- *     <v:condition.cli>
- *         <f:then>
- *            Hooray for CLI contexts!
- *         </f:then>
- *         <f:else>
- *            Maybe BE, maybe FE.
- *         </f:else>
- *     </v:condition.cli>
+ * Will be removed in 2.0
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Condition
  */
-class Tx_Vhs_ViewHelpers_Condition_CliViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
-
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		if (defined('TYPO3_cliMode') === TRUE) {
-			return $this->renderThenChild();
-		}
-		return $this->renderElseChild();
-	}
-
+class Tx_Vhs_ViewHelpers_Condition_CliViewHelper extends Tx_Vhs_ViewHelpers_If_Context_IsCliViewHelper {
 }
