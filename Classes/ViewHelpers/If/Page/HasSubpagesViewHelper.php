@@ -33,9 +33,9 @@
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Condition
+ * @subpackage ViewHelpers\If\Page
  */
-class Tx_Vhs_ViewHelpers_Condition_HasSubpagesViewHelper extends Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper {
+class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper {
 
 	/**
 	 * Render method
