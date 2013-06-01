@@ -24,39 +24,15 @@
  ***************************************************************/
 
 /**
- * ### Variable: Isset
+ * Alias of Tx_Vhs_ViewHelpers_If_Var_IssetViewHelper for
+ * backwards compatibility.
  *
- * Renders the `then` child if the variable name given in
- * the `name` argument exists in the template. The value
- * can be zero, NULL or an empty string - but the ViewHelper
- * will still return TRUE if the variable exists.
+ * Will be removed in 2.0
  *
- * Combines well with dynamic variable names:
- *
- *     <!-- if {variableContainingVariableName} is "foo" this checkx existence of {foo} -->
- *     <v:var.isset name="{variableContainingVariableName}">...</v:var.isset>
- *     <!-- if {suffix} is "Name" this checks existence of "variableName" -->
- *     <v:var.isset name="variable{suffix}">...</v:var.isset>
- *     <!-- outputs value of {foo} if {bar} is defined -->
- *     {foo -> v:var.isset(name: bar)}
- *
+ * @deprecated
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_IssetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
-
-	/**
-	 * Renders else-child or else-argument if variable $name exists
-	 *
-	 * @param string $name
-	 * @return string
-	 */
-	public function render($name) {
-		if ($this->templateVariableContainer->exists($name) === TRUE) {
-			return $this->renderThenChild();
-		}
-		return $this->renderElseChild();
-	}
-
+class Tx_Vhs_ViewHelpers_Var_IssetViewHelper extends Tx_Vhs_ViewHelpers_If_Var_IssetViewHelper {
 }
