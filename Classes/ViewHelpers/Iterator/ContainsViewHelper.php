@@ -24,59 +24,15 @@
  ***************************************************************/
 
 /**
- * Condition ViewHelper. Renders the then-child if Iterator/array
- * haystack contains needle value.
+ * Alias of Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper for
+ * backwards compatibility.
  *
+ * Will be removed in 2.0
+ *
+ * @deprecated
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ContainsViewHelper extends Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper {
-
-	/**
-	 * @var mixed
-	 */
-	protected $evaluation = FALSE;
-
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('needle', 'mixed', 'Needle to search for in haystack', TRUE);
-		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', TRUE);
-		$this->registerArgument('considerKeys', 'boolean', 'Tell whether to consider keys in the search assuming haystack is an array.', FALSE, FALSE);
-	}
-
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$haystack = $this->arguments['haystack'];
-		$needle = $this->arguments['needle'];
-
-		if (is_array($haystack)) {
-			$this->evaluation = $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
-		} else if (is_string($haystack)) {
-			$this->evaluation = $this->assertHaystackIsStringAndHasNeedle($haystack, $needle);
-		} else if ($haystack instanceof Tx_Extbase_Persistence_QueryResultInterface) {
-			$this->evaluation = $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
-		} else if ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			$this->evaluation = $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} else if ($haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
-			$this->evaluation = $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} else {
-			$this->evaluation = FALSE;
-		}
-
-		if ($this->evaluation !== FALSE) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
-	}
-
-
+class Tx_Vhs_ViewHelpers_Iterator_ContainsViewHelper extends Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper {
 }

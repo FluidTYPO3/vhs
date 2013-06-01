@@ -24,37 +24,15 @@
  ***************************************************************/
 
 /**
- * ### Condition: Client's System
+ * Alias of Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelper for
+ * backwards compatibility.
  *
- * A condition ViewHelper which renders the `then` child if client's
- * operating system matches the `system` argument.
+ * Will be removed in 2.0
  *
- * ### Example
- *
- *     <v:condition.system system="mac">
- *         Thank you for using Mac!
- *     </v:condition.system>
- *
+ * @deprecated
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  * @subpackage ViewHelpers\Condition
  */
-class Tx_Vhs_ViewHelpers_Condition_SystemViewHelper extends Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper {
-
-	/**
-	 * Render method
-	 *
-	 * @param string $system
-	 * @return string
-	 */
-	public function render($system) {
-		foreach ($this->getSystems() as $sys) {
-			if ($sys === $system) {
-				return $this->renderThenChild();
-			}
-		}
-
-		return $this->renderElseChild();
-	}
+class Tx_Vhs_ViewHelpers_Condition_SystemViewHelper extends Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelper {
 }
-?>

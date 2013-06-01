@@ -24,15 +24,43 @@
  ***************************************************************/
 
 /**
- * Alias of Tx_Vhs_ViewHelpers_If_Context_IsBackendViewHelper for
- * backwards compatibility.
+ * ### Condition: Is context Frontend?
  *
- * Will be removed in 2.0
+ * A condition ViewHelper which renders the `then` child if
+ * current context being rendered is FE.
  *
- * @deprecated
+ * ### Examples
+ *
+ *     <!-- simple usage, content becomes then-child -->
+ *     <v:if.context.isFrontend>
+ *         Hooray for BE contexts!
+ *     </v:if.context.isFrontend>
+ *     <!-- extended use combined with f:then and f:else -->
+ *     <v:if.context.isFrontend>
+ *         <f:then>
+ *            Hooray for BE contexts!
+ *         </f:then>
+ *         <f:else>
+ *            Maybe BE, maybe CLI.
+ *         </f:else>
+ *     </v:if.context.isFrontend>
+ *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
- * @subpackage ViewHelpers\Condition
+ * @subpackage ViewHelpers\If\Context
  */
-class Tx_Vhs_ViewHelpers_Condition_BackendViewHelper extends Tx_Vhs_ViewHelpers_If_Context_IsBackendViewHelper {
+class Tx_Vhs_ViewHelpers_If_Context_IsFrontendViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+
+	/**
+	 * Render method
+	 *
+	 * @return string
+	 */
+	public function render() {
+		if (TYPO3_MODE === 'FE') {
+			return $this->renderThenChild();
+		}
+		return $this->renderElseChild();
+	}
+
 }

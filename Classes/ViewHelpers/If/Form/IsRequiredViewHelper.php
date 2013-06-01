@@ -24,15 +24,32 @@
  * ************************************************************* */
 
 /**
- * Alias of Tx_Vhs_ViewHelpers_If_Form_IsRequiredViewHelper
- * for backwards compatibility
+ * ### Is Field Required ViewHelper (condition)
  *
- * Will be removed in 2.0
+ * Takes a property (dotted path supported) and renders the
+ * then-child if the property at the given path has an
+ * @validate NotEmpty annotation
  *
- * @deprecated
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Form
  */
-class Tx_Vhs_ViewHelpers_Form_RequiredViewHelper extends Tx_Vhs_ViewHelpers_If_Form_IsRequiredViewHelper {
+class Tx_Vhs_ViewHelpers_If_Form_IsRequiredViewHelper extends Tx_Vhs_ViewHelpers_Form_HasValidatorViewHelper {
+
+	/**
+	 * Render
+	 *
+	 * Renders the then-child if the property at $property of the
+	 * object at $object (or the associated form object if $object
+	 * is not specified)
+	 *
+	 * @param string $property The property name, dotted path supported, to determine required
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object Optional object - if not specified, grabs the associated form object
+	 * @return string
+	 */
+	public function render($property, Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
+		$validatorName = 'NotEmpty';
+		return parent::render($property, $validatorName, $object);
+	}
+
 }
