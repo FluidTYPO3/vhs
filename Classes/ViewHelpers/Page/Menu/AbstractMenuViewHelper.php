@@ -532,22 +532,18 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			$output = $this->renderChildren();
 			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
 			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray');
-			return $output;
-		}
-		$content = $this->renderChildren();
-		if (strlen(trim($content)) === 0) {
-			$content = $this->autoRender($menu);
-			if (strlen(trim($content)) === 0) {
+		} else {
+			$content = $this->renderChildren();
+			if (0 < strlen(trim($content))) {
+				$output = $content;
 			} else {
+				$content = $this->autoRender($menu);
 				$this->tag->setTagName($this->arguments['tagName']);
 				$this->tag->setContent($content);
 				$this->tag->forceClosingTag(TRUE);
 				$output = $this->tag->render();
 			}
-		} else {
-			$output = $content;
 		}
-
 		return $output;
 	}
 
