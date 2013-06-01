@@ -29,6 +29,7 @@
  *
  * Will be removed in 2.0
  *
+ * @deprecated
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Form

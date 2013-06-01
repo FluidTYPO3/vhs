@@ -29,6 +29,7 @@
  *
  * Will be removed in 2.0
  *
+ * @deprecated
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  * @subpackage ViewHelpers\Condition

@@ -31,6 +31,7 @@
  *
  * Abstract ViewHelper around t3lib_utility_Client::getBrowserInfo().
  *
+ * @deprecated
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  * @subpackage ViewHelpers\Condition
@@ -40,4 +41,3 @@
  */
 abstract class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper extends Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper {
 }
-
