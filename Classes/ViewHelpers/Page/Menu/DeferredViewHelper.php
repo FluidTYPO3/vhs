@@ -51,8 +51,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DeferredViewHelper extends Tx_Vhs_ViewHelpers
 		}
 		if (NULL === $as) {
 			$content = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
-			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
-			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray');
+			$this->unsetDeferredVariableStorage();
 			return $content;
 		} elseif (TRUE === empty($as)) {
 			throw new Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
@@ -62,8 +61,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DeferredViewHelper extends Tx_Vhs_ViewHelpers
 			$this->templateVariableContainer->remove($as);
 		}
 		$this->templateVariableContainer->add($as, $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray'));
-		$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
-		$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray');
+		$this->unsetDeferredVariableStorage();
 		$content = $this->renderChildren();
 		$this->templateVariableContainer->remove($as);
 		if (TRUE === isset($backupVariable)) {
