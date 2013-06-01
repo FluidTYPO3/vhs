@@ -29,6 +29,7 @@
  *
  * Will be removed in 2.0
  *
+ * @deprecated
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Condition
