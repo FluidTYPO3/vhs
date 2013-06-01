@@ -525,6 +525,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return string
 	 */
 	public function renderContent($menu) {
+		if (0 === count($menu)) {
+			return NULL;
+		}
 		if (TRUE === (boolean) $this->arguments['deferred']) {
 			$content = $this->autoRender($menu);
 			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString', $content);
