@@ -522,18 +522,22 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * renders the menu for the provided arguments
 	 *
 	 * @param array $menu
-	 * @param string $content
 	 * @return string
 	 */
-	public function renderContent($menu, $content) {
+	public function renderContent($menu) {
+		if (TRUE === (boolean) $this->arguments['deferred']) {
+			$content = $this->autoRender($menu);
+			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString', $content);
+			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray', $menu);
+			$output = $this->renderChildren();
+			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
+			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray');
+			return $output;
+		}
+		$content = $this->renderChildren();
 		if (strlen(trim($content)) === 0) {
 			$content = $this->autoRender($menu);
 			if (strlen(trim($content)) === 0) {
-				if (TRUE === (boolean) $this->arguments['deferred']) {
-					$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString', $content);
-					$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray', $menu);
-					$output = $this->renderChildren();
-				}
 			} else {
 				$this->tag->setTagName($this->arguments['tagName']);
 				$this->tag->setContent($content);
@@ -571,16 +575,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->templateVariableContainer->add('menu', $menu);
 		$this->templateVariableContainer->add('rootLine', $rootLine);
 		$this->initalizeSubmenuVariables();
-		$content = $this->renderChildren();
-		$output = $this->renderContent($menu, $content);
+		$output = $this->renderContent($menu);
 		$this->cleanupSubmenuVariables();
 		$this->templateVariableContainer->remove('menu');
 		$this->templateVariableContainer->remove('rootLine');
 		$this->restoreVariables();
-		if (TRUE === (boolean) $this->arguments['deferred']) {
-			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
-			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray');
-		}
 		return $output;
 	}
 
