@@ -537,12 +537,14 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			if (0 < strlen(trim($content))) {
 				$output = $content;
 			} else {
-				$content = $this->autoRender($menu);
-				$this->tag->setTagName($this->arguments['tagName']);
-				$this->tag->setContent($content);
-				$this->tag->forceClosingTag(TRUE);
-				$output = $this->tag->render();
+				$output = $this->autoRender($menu);
 			}
+		}
+		if (0 < strlen(trim($output))) {
+			$this->tag->setTagName($this->arguments['tagName']);
+			$this->tag->setContent($output);
+			$this->tag->forceClosingTag(TRUE);
+			$output = $this->tag->render();
 		}
 		return $output;
 	}
