@@ -484,10 +484,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			}
 		}
 		$content = implode(LF, $html);
-		if (TRUE === (boolean) $this->arguments['deferred']) {
-			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString', $content);
-			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray', $includedPages);
-		}
 		return $content;
 	}
 
@@ -533,7 +529,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if (strlen(trim($content)) === 0) {
 			$content = $this->autoRender($menu);
 			if (strlen(trim($content)) === 0) {
-				$output = '';
+				if (TRUE === (boolean) $this->arguments['deferred']) {
+					$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString', $content);
+					$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray', $menu);
+					$output = $this->renderChildren();
+				}
 			} else {
 				$this->tag->setTagName($this->arguments['tagName']);
 				$this->tag->setContent($content);

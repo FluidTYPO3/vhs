@@ -44,14 +44,10 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DeferredViewHelper extends Tx_Vhs_ViewHelpers
 	 */
 	public function render($as = NULL) {
 		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray')) {
-			throw new Exception('A deferred menu was attempted rendered without a deferring parent having inserted a page array. ' .
-				'Did you remember to set "deferred" on the parent menu of v:page.menu.deferred? If your parent menu VH is custom, ' .
-				'did you respect the same rules as the built-in menu ViewHelpers', 1370096135);
+			return NULL;
 		}
 		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString')) {
-			throw new Exception('A deferred menu was attempted rendered without a deferring parent having inserted a pre-rendered menu ' .
-				'as string. Did you remember to set "deferred" on the parent menu of v:page.menu.deferred? If your parent menu VH is custom, ' .
-				'did you respect the same rules as the built-in menu ViewHelpers', 1370096155);
+			return NULL;
 		}
 		if (NULL === $as) {
 			return $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
