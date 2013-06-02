@@ -45,7 +45,7 @@ class Tx_Vhs_ViewHelpers_If_Page_IsChildPageViewHelper extends Tx_Fluid_Core_Vie
 	 * @return string
 	 */
 	public function render($pageUid = NULL, $respectSiteRoot = FALSE) {
-		if (NULL === $pageUid) {
+		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		$pageSelect = new t3lib_pageSelect();
