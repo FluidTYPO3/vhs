@@ -52,6 +52,7 @@ class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_Men
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
+		$this->registerArgument('menuVariable', 'string', 'Optional name of the menu Variable. By default \'menu\'', FALSE, 'menu');
 	}
 
 	/**
@@ -74,10 +75,10 @@ class Tx_Vhs_ViewHelpers_Page_MenuViewHelper extends Tx_Vhs_ViewHelpers_Page_Men
 		$menu = $this->parseMenu($menuData, $rootLineData);
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->backupVariables();
-		$this->templateVariableContainer->add('menu', $menu);
+		$this->templateVariableContainer->add($this->arguments['menuVariable'], $menu);
 		$this->templateVariableContainer->add('rootLine', $rootLine);
 		$content = $this->renderChildren();
-		$this->templateVariableContainer->remove('menu');
+		$this->templateVariableContainer->remove($this->arguments['menuVariable']);
 		$this->templateVariableContainer->remove('rootLine');
 		$output = $this->renderContent($menu, $content);
 		$this->restoreVariables();
