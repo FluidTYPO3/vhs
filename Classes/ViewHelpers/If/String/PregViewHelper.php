@@ -27,7 +27,9 @@
  * ### Condition: String matches regular expression
  *
  * Condition ViewHelper which renders the `then` child if provided
- * string matches provided regular expression.
+ * string matches provided regular expression. $matches array containing
+ * the results can be made available by providing a template variable
+ * name with argument $as.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
@@ -38,20 +40,34 @@ class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends Tx_Fluid_Core_ViewHelp
 	/**
 	 * Render method
 	 *
-	 * @param string $string
 	 * @param string $pattern
+	 * @param string $string
+	 * @param boolean $global
+	 * @param string $as
 	 * @return string
 	 */
-	public function render($string = NULL, $pattern) {
-		if (NULL === $string) {
-			$string = $this->renderChildren();
-		}
-		$result = preg_match($pattern, $string, $matches);
-		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_If_String_PregPageViewHelper', 'matches', $matches);
-		if (TRUE === $result) {
-			return $this->renderThenChild();
+	public function render($pattern, $string, $global = FALSE, $as = NULL) {
+		$matches = array();
+		if (TRUE === (boolean) $global) {
+			preg_match_all($pattern, $string, $matches);
 		} else {
-			return $this->renderElseChild();
+			preg_match($pattern, $string, $matches);
 		}
+		if (FALSE === empty($as)) {
+			if ($this->templateVariableContainer->exists($as)) {
+				$backupVariable = $this->templateVariableContainer->get($as);
+				$this->templateVariableContainer->remove($as);
+			}
+			$this->templateVariableContainer->add($as, $matches);
+		}
+		if (0 < count($matches)) {
+			$content = $this->renderThenChild();
+		} else {
+			$content =  $this->renderElseChild();
+		}
+		if (TRUE === isset($backupVariable)) {
+			$this->templateVariableContainer->add($as, $backupVariable);
+		}
+		return $content;
 	}
 }
