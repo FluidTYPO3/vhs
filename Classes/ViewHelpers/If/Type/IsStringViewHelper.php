@@ -41,7 +41,10 @@ class Tx_Vhs_ViewHelpers_If_Type_IsStringPageViewHelper extends Tx_Fluid_Core_Vi
 	 * @param mixed $value
 	 * @return string
 	 */
-	public function render($value) {
+	public function render($value = NULL) {
+		if (NULL === $value) {
+			$value = $this->renderChildren();
+		}
 		if (TRUE === is_string($value)) {
 			return $this->renderThenChild();
 		} else {

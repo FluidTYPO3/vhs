@@ -43,7 +43,10 @@ class Tx_Vhs_ViewHelpers_If_String_IsLowercasePageViewHelper extends Tx_Fluid_Co
 	 * @param boolean $fullString
 	 * @return string
 	 */
-	public function render($string, $fullString = FALSE) {
+	public function render($string = NULL, $fullString = FALSE) {
+		if (NULL === $string) {
+			$string = $this->renderChildren();
+		}
 		if (TRUE === $fullString) {
 			$result = ctype_lower($string);
 		} else {
