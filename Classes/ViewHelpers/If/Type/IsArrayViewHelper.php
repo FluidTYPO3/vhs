@@ -24,10 +24,10 @@
  ***************************************************************/
 
 /**
- * ### Condition: Value is an array
+ * ### Condition: Type of value is array
  *
- * Condition ViewHelper which renders the `then` child if provided
- * value is an array.
+ * Condition ViewHelper which renders the `then` child if type of
+ * provided value is array.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs

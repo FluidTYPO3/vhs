@@ -24,10 +24,10 @@
  ***************************************************************/
 
 /**
- * ### Condition: Value is a string
+ * ### Condition: Type of value is string
  *
- * Condition ViewHelper which renders the `then` child if provided
- * value is a string.
+ * Condition ViewHelper which renders the `then` child if type of
+ * provided value is string.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
