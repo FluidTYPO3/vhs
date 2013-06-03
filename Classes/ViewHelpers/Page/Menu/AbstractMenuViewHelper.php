@@ -531,9 +531,13 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if (0 === count($menu)) {
 			return NULL;
 		}
+		$this->tag->setTagName($this->arguments['tagName']);
+		$this->tag->forceClosingTag(TRUE);
 		if (TRUE === (boolean) $this->arguments['deferred']) {
-			$content = $this->autoRender($menu);
-			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString', $content);
+			$tagContent = $this->autoRender($menu);
+			$this->tag->setContent($tagContent);
+			$deferredContent = $this->tag->render();
+			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString', $deferredContent);
 			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray', $menu);
 			$output = $this->renderChildren();
 			$this->unsetDeferredVariableStorage();
@@ -542,14 +546,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			if (0 < strlen(trim($content))) {
 				$output = $content;
 			} else {
-				$output = $this->autoRender($menu);
+				$tagContent = $this->autoRender($menu);
+				$this->tag->setContent($tagContent);
+				$output = $this->tag->render();
 			}
-		}
-		if (0 < strlen(trim($output))) {
-			$this->tag->setTagName($this->arguments['tagName']);
-			$this->tag->setContent($output);
-			$this->tag->forceClosingTag(TRUE);
-			$output = $this->tag->render();
 		}
 		return $output;
 	}
