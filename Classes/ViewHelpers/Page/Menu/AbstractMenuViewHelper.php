@@ -212,6 +212,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return boolean
 	 */
 	protected function isActive($pageUid, $rootLine) {
+		if (1 < count($rootLine)) {
+			array_pop($rootLine);
+		}
 		foreach ($rootLine as $page) {
 			if ($page['uid'] == $pageUid) {
 				return TRUE;
