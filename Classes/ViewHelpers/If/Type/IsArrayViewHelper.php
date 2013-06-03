@@ -41,10 +41,7 @@ class Tx_Vhs_ViewHelpers_If_Type_IsArrayViewHelper extends Tx_Fluid_Core_ViewHel
 	 * @param mixed $value
 	 * @return string
 	 */
-	public function render($value = NULL) {
-		if (NULL === $value) {
-			$value = $this->renderChildren();
-		}
+	public function render($value) {
 		if (TRUE === is_array($value)) {
 			return $this->renderThenChild();
 		} else {
