@@ -33,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\String
  */
-class Tx_Vhs_ViewHelpers_If_String_PregPageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
 
 	/**
 	 * Render method
