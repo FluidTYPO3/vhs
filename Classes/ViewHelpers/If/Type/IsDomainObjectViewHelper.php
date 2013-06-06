@@ -34,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Type
  */
-class Tx_Vhs_ViewHelpers_If_Type_IsDomainObjectViewHelper extends Tx_Vhs_ViewHelpers_If_Type_IsInstanceOfViewHelper {
+class Tx_Vhs_ViewHelpers_If_Type_IsDomainObjectViewHelper extends Tx_FluidTx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
 
 	/**
 	 * Render method
@@ -43,11 +43,10 @@ class Tx_Vhs_ViewHelpers_If_Type_IsDomainObjectViewHelper extends Tx_Vhs_ViewHel
 	 * @return string
 	 */
 	public function render($value) {
-		if ('4' === substr(TYPO3_version, 0, 1)) {
-			$baseClass = 'Tx_Extbase_DomainObject_AbstractDomainObject';
+		if (TRUE === $value instanceof Tx_Extbase_DomainObject_AbstractDomainObject || TRUE === $value instanceof TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
+			return $this->renderThenChild();
 		} else {
-			$baseClass = 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject';
+			return $this->renderElseChild();
 		}
-		return parent::render($value, $baseClass);
 	}
 }
