@@ -33,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Type
  */
-class Tx_Vhs_ViewHelpers_If_Type_IsQueryResultViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_If_Type_IsQueryResultViewHelper extends Tx_Vhs_ViewHelpers_If_Type_IsInstanceOfViewHelper {
 
 	/**
 	 * Render method
@@ -47,10 +47,6 @@ class Tx_Vhs_ViewHelpers_If_Type_IsQueryResultViewHelper extends Tx_Fluid_Core_V
 		} else {
 			$baseClass = 'TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface';
 		}
-		if (TRUE === ($value instanceof $baseClass)) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+		return parent::render($value, $baseClass);
 	}
 }
