@@ -178,14 +178,15 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
+	 * @param array $assets
 	 * @throws RuntimeException
 	 * @return string
 	 */
 	private function buildAssetsChunk($assets) {
 		$spool = array();
 		foreach ($assets as $name => $asset) {
-			$type = $asset->getType();
+			$assetSettings = $this->extractAssetSettings($asset);
+			$type = $assetSettings['type'];
 			if (FALSE === isset($spool[$type])) {
 				$spool[$type] = array();
 			}
@@ -245,11 +246,8 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		$ttl = (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['config.']['cache_period']) && $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] !== 0);
 		$source = '';
 		foreach ($assets as $name => $asset) {
-			if (TRUE === is_string($asset)) {
-				$source .= $asset;
-				continue;
-			}
-			if (TRUE === $asset->assertAddNameCommentWithChunk()) {
+			$settings = $this->extractAssetSettings($asset);
+			if (TRUE === (isset($settings['namedChunks']) && 0 < $settings['namedChunks']) || FALSE === isset($settings['namedChunks'])) {
 				$source .= '/* ' . $name . ' */' . LF;
 			}
 			$source .= $this->extractAssetContent($asset) . LF;
@@ -314,8 +312,8 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
-	 * @return Tx_Vhs_ViewHelpers_Asset_AssetInterface[]
+	 * @param array $assets
+	 * @return array
 	 * @throws RuntimeException
 	 */
 	private function manipulateAssetsByTypoScriptSetttings($assets) {
@@ -325,20 +323,25 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		}
 		$filtered = array();
 		foreach ($assets as $name => $asset) {
-			$groupName = $asset->getGroup();
-			$removed = $asset->assertHasBeenRemoved();
+			$assetSettings = $this->extractAssetSettings($asset);
+			$groupName = $assetSettings['group'];
+			$removed = (TRUE === isset($assetSettings['removed']) ? $assetSettings['removed'] : FALSE);
 			if (TRUE === $removed) {
 				continue;
 			}
-			$localSettings = array();
+			$localSettings = $assetSettings;
 			if (TRUE === isset($settings['asset'][$name])) {
 				$localSettings = t3lib_div::array_merge_recursive_overrule($localSettings, (array) $settings['asset'][$name]);
 			}
 			if (TRUE === isset($settings['assetGroup'][$groupName])) {
 				$localSettings = t3lib_div::array_merge_recursive_overrule($localSettings, (array) $settings['assetGroup'][$groupName]);
 			}
-			$asset->setSettings($localSettings);
-			$filtered[$name] = $asset;
+			if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
+				$asset->setSettings($localSettings);
+				$filtered[$name] = $asset;
+			} else {
+				$filtered[$name] = $assetSettings;
+			}
 		}
 		return $filtered;
 	}
@@ -354,8 +357,12 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
 			/** @var $asset Tx_Vhs_ViewHelpers_Asset_AssetInterface */
-			$name = $asset->getName();
-			$dependencies = $asset->getDependencies();
+			$assetSettings = $this->extractAssetSettings($asset);
+			$name = $assetSettings['name'];
+			$dependencies = $assetSettings['dependencies'];
+			if (FALSE === is_array($dependencies)) {
+				$dependencies = t3lib_div::trimExplode(',', $assetSettings['dependencies'], TRUE);
+			}
 			foreach ($dependencies as $dependency) {
 				if (FALSE === isset($placed[$dependency]) && FALSE === in_array($dependency, self::$cachedDependencies)) {
 					// shove the Asset back to the end of the queue, the dependency has
@@ -533,7 +540,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 
 	/**
 	 * @param mixed $asset An Asset ViewHelper instance or an array containing an Asset definition
-	 * @return boolean
+	 * @return array
 	 */
 	protected function extractAssetSettings($asset) {
 		if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
