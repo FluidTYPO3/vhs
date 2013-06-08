@@ -51,6 +51,11 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Vhs_Service_AssetService
+	 */
+	protected $assetService;
+
+	/**
 	 * @var array
 	 */
 	private static $settingsCache = NULL;
@@ -99,6 +104,14 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param Tx_Vhs_Service_AssetService $assetService
+	 * @return void
+	 */
+	public function injectAssetService(Tx_Vhs_Service_AssetService $assetService) {
+		$this->assetService = $assetService;
 	}
 
 	/**
@@ -258,7 +271,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	/**
 	 * @return string
 	 */
-	protected function getGroup() {
+	public function getGroup() {
 		$assetSettings = $this->getAssetSettings();
 		return $assetSettings['group'];
 	}
