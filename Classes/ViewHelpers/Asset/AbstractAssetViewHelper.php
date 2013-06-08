@@ -314,7 +314,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 					// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
 				self::$settingsCache = array();
 			} else {
-				self::$settingsCache = $this->dotSuffixArrayToPlainArray($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = t3lib_div::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
 		$settings = self::$settingsCache;
@@ -426,24 +426,6 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 			return FALSE;
 		}
 		return TRUE;
-	}
-
-	/**
-	 * @param array $array
-	 * @return array
-	 */
-	protected function dotSuffixArrayToPlainArray($array) {
-		$dotFreeArray = array();
-		foreach ($array as $key => $value) {
-			if (substr($key, -1) === '.') {
-				$key = substr($key, 0, -1);
-			}
-			if (TRUE === is_array($value)) {
-				$value = $this->dotSuffixArrayToPlainArray($value);
-			}
-			$dotFreeArray[$key] = $value;
-		}
-		return $dotFreeArray;
 	}
 
 	/**
