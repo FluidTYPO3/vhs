@@ -139,7 +139,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		$footer = array();
 		$footerRelocationEnabled = (TRUE === isset($settings['enableFooterRelocation']) && $settings['relocateToFooter'] > 0) || FALSE === isset($settings['enableFooterRelocation']);
 		foreach ($assets as $name => $asset) {
-			if (TRUE === ($asset->assertAllowedInFooter() && $footerRelocationEnabled)) {
+			if (TRUE === ($this->assertAssetAllowedInFooter($asset) && $footerRelocationEnabled)) {
 				$footer[$name] = $asset;
 			} else {
 				$header[$name] = $asset;
@@ -198,7 +198,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$source = '';
 			/** @var $spooledAssets Tx_Vhs_ViewHelpers_Asset_AssetInterface[] */
 			foreach ($spooledAssets as $name => $asset) {
-				$assetSettings = $asset->getAssetSettings();
+				$assetSettings = $this->extractAssetSettings($asset);
 				$standalone = (TRUE === (boolean) $assetSettings['standalone']);
 				if (TRUE === $standalone) {
 					if (0 < count($chunk)) {
@@ -411,43 +411,13 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset
-	 * @throws RuntimeException
+	 * @param mixed $asset
 	 * @return string
 	 */
-	private function extractAssetContent(Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset) {
-		$assetSettings = $asset->getAssetSettings();
-		$fileRelativePathAndFilename = $assetSettings['path'];
-		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-		$isExternal = (TRUE === (isset($assetSettings['external']) && $assetSettings['external'] > 0));
-		$isFluidTemplate = $asset->assertFluidEnabled();
-		if (FALSE === empty($fileRelativePathAndFilename)) {
-			if (FALSE === $isExternal && FALSE === file_exists($absolutePathAndFilename)) {
-				throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
-			}
-			if (TRUE === $isFluidTemplate) {
-				$content = $this->renderAssetAsFluidTemplate($asset);
-			} else {
-				$content = $asset->build();
-			}
-		} else {
-			$content = $asset->build();
-		}
-		if ('css' === $asset->getType() && FALSE === empty($fileRelativePathAndFilename)) {
-			$path = pathinfo($absolutePathAndFilename, PATHINFO_DIRNAME);
-			$content = $this->detectAndCopyFileReferences($content, $path);
-		}
-		return $content;
-	}
-
-	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset
-	 * @return string
-	 */
-	private function renderAssetAsFluidTemplate(Tx_Vhs_ViewHelpers_Asset_AssetInterface $asset) {
-		$settings = $asset->getAssetSettings();
+	private function renderAssetAsFluidTemplate($asset) {
+		$settings = $this->extractAssetSettings($asset);
 		$templateReference = $settings['path'];
-		$variables = $asset->getVariables();
+		$variables = (TRUE === (isset($settings['arguments']) && is_array($settings['arguments'])) ? $settings['arguments'] : array());
 		$isExternal = (TRUE === (isset($settings['external']) && $settings['external'] > 0));
 		if (TRUE === $isExternal) {
 			$fileContents = file_get_contents($templateReference);
@@ -548,6 +518,74 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$contents = str_replace(array_keys($replacements), array_values($replacements), $contents);
 		}
 		return $contents;
+	}
+
+	/**
+	 * @param mixed $asset An Asset ViewHelper instance or an array containing an Asset definition
+	 * @return boolean
+	 */
+	protected function assertAssetAllowedInFooter($asset) {
+		if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
+			return $asset->assertAllowedInFooter();
+		}
+		return (boolean) (TRUE === isset($asset['allowMoveToFooter']) ? $asset['allowMoveToFooter'] : TRUE);
+	}
+
+	/**
+	 * @param mixed $asset An Asset ViewHelper instance or an array containing an Asset definition
+	 * @return boolean
+	 */
+	protected function extractAssetSettings($asset) {
+		if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
+			return $asset->getAssetSettings();
+		}
+		return $asset;
+	}
+
+	/**
+	 * @param mixed $asset An Asset ViewHelper instance or an array containing an Asset definition
+	 * @return string
+	 */
+	protected function buildAsset($asset) {
+		if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
+			return $asset->build();
+		}
+		if (FALSE === isset($asset['path']) || TRUE === empty($asset['path'])) {
+			return (TRUE === isset($asset['content']) ? $asset['content'] : NULL);
+		}
+		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($asset['path']);
+		$content = file_get_contents($absolutePathAndFilename);
+		return $content;
+	}
+
+	/**
+	 * @param mixed $asset
+	 * @throws RuntimeException
+	 * @return string
+	 */
+	private function extractAssetContent($asset) {
+		$assetSettings = $this->extractAssetSettings($asset);
+		$fileRelativePathAndFilename = $assetSettings['path'];
+		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
+		$isExternal = (TRUE === (isset($assetSettings['external']) && $assetSettings['external'] > 0));
+		$isFluidTemplate = (TRUE === (isset($assetSettings['fluid']) && $assetSettings['fluid'] > 0));
+		if (FALSE === empty($fileRelativePathAndFilename)) {
+			if (FALSE === $isExternal && FALSE === file_exists($absolutePathAndFilename)) {
+				throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
+			}
+			if (TRUE === $isFluidTemplate) {
+				$content = $this->renderAssetAsFluidTemplate($asset);
+			} else {
+				$content = $this->buildAsset($asset);
+			}
+		} else {
+			$content = $this->buildAsset($asset);
+		}
+		if ('css' === $assetSettings['type'] && FALSE === empty($fileRelativePathAndFilename)) {
+			$path = pathinfo($absolutePathAndFilename, PATHINFO_DIRNAME);
+			$content = $this->detectAndCopyFileReferences($content, $path);
+		}
+		return $content;
 	}
 
 }

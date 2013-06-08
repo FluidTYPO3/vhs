@@ -359,6 +359,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$groupName = $this->arguments['group'];
 		$settings = $this->getSettings();
 		$assetSettings = $this->arguments;
+		$assetSettings['type'] = $this->getType();
 		if (TRUE === (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName]))) {
 			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['assetGroup'][$groupName]);
 		}
