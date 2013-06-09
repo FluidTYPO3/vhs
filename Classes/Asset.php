@@ -449,6 +449,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public function setSettings($settings) {
 		$this->settings = $settings;
+		return $this;
 	}
 
 	/**
