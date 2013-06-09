@@ -240,8 +240,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 		if (TRUE === empty($path)) {
 			return $this->getContent();
 		}
-		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($path);
-		$content = file_get_contents($absolutePathAndFilename);
+		$content = file_get_contents($path);
 		return $content;
 	}
 
