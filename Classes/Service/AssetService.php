@@ -83,14 +83,22 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function buildAll(array $parameters, $caller, $cached = TRUE) {
-		if (FALSE === isset($GLOBALS['VhsAssets'])) {
+		if (self::$buildComplete) {
 			return;
 		}
+		$settings = $this->getSettings();
 		$cached = (boolean) $cached;
+		foreach ($settings['asset'] as $name => $typoScriptAsset) {
+			if (FALSE === isset($GLOBALS['VhsAssets'][$name]) && TRUE === is_array($typoScriptAsset)) {
+				if (FALSE === isset($typoScriptAsset['name'])) {
+					$typoScriptAsset['name'] = $name;
+				}
+				Tx_Vhs_Asset::createFromSettings($typoScriptAsset);
+			}
+		}
 		$assets = $GLOBALS['VhsAssets'];
 		$assets = $this->sortAssetsByDependency($assets);
 		$assets = $this->manipulateAssetsByTypoScriptSetttings($assets);
-		$settings = $this->getSettings();
 		$buildDebugRequested = (isset($settings['asset']['debugBuild']) && $settings['asset']['debugBuild'] > 0);
 		$assetDebugRequested = (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0);
 		$useDebugUtility = (isset($settings['asset']['useDebugUtility']) && $settings['asset']['useDebugUtility'] > 0) || FALSE === isset($settings['asset']['useDebugUtility']);
