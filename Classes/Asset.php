@@ -189,6 +189,17 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
+	 * @param string $content
+	 * @return Tx_Vhs_Asset
+	 */
+	public static function createFromContent($content) {
+		$asset = self::getInstance();
+		$asset->setContent($content);
+		$asset->setName(md5($content));
+		return $asset->finalize();
+	}
+
+	/**
 	 * @param string $url
 	 * @return Tx_Vhs_Asset
 	 */
