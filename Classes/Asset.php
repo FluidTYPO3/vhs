@@ -374,7 +374,13 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 * @return Tx_Vhs_Asset
 	 */
 	public function setPath($path) {
-		$path = t3lib_div::getFileAbsFileName($path);
+		if (NULL === $path) {
+			$this->path = NULL;
+			return $this;
+		}
+		if (FALSE === strpos($path, '://')) {
+			$path = t3lib_div::getFileAbsFileName($path);
+		}
 		if (NULL === $this->type) {
 			$this->type = pathinfo($path, PATHINFO_EXTENSION);
 		}
