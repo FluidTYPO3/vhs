@@ -445,10 +445,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 		if (TRUE === is_null(self::$settingsCache)) {
 			$allTypoScript = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
-			if (FALSE === $settingsExist) {
-				// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
-				self::$settingsCache = array();
-			} else {
+			if (TRUE === $settingsExist) {
 				self::$settingsCache = t3lib_div::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
