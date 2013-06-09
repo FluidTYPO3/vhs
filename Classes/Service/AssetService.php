@@ -259,7 +259,8 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$assetName = md5($assetName);
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.'.  $type;
-		file_put_contents(constant('PATH_site') . $fileRelativePathAndFilename, $source);
+		$fileAbsolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
+		file_put_contents($fileAbsolutePathAndFilename, $source);
 		$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
 		$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
 		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
