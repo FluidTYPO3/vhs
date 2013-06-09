@@ -454,7 +454,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 				self::$settingsCache = t3lib_div::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
-		$settings = self::$settingsCache;
+		$settings = (array) self::$settingsCache;
 		$properties = get_class_vars(get_class($this));
 		foreach (array_keys($properties) as $propertyName) {
 			$properties[$propertyName] = $this->$propertyName;
