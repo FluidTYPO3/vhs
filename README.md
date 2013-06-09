@@ -58,7 +58,7 @@ TypoScript). VHS Assets solves all of this.
 The following Fluid usage:
 
 ```
-<v:asset.javascript path="fileadmin/demo.js" />
+<v:asset.script path="fileadmin/demo.js" />
 ```
 
 Is the exact same as ths PHP:
