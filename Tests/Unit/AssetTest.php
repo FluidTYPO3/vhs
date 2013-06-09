@@ -60,6 +60,18 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function canCreateAssetInstanceFromStaticFileFactoryWithUrl() {
+		$url = 'http://localhost';
+		$asset = Tx_Vhs_Asset::createFromUrl($url);
+		$this->assertInstanceOf('Tx_Vhs_Asset', $asset);
+		$this->assertEquals($url, $asset->getPath());
+		$this->assertSame(TRUE, $asset->getStandalone());
+		$this->assertSame(TRUE, $asset->getExternal());
+	}
+
+	/**
+	 * @test
+	 */
 	public function canCreateAssetInstanceFromStaticSettingsFactory() {
 		$file = $this->getAbsoluteAssetFixturePath();
 		$settings = array(
@@ -95,6 +107,18 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function assetCanBeRemoved() {
+		$file = $this->getAbsoluteAssetFixturePath();
+		$asset = Tx_Vhs_Asset::createFromFile($file);
+		$asset->remove();
+		$this->assertSame(TRUE, $asset->getRemoved());
+		$this->assertSame(TRUE, $asset->assertHasBeenRemoved());
+		#$this->assertThat($asset->getSettings())
+	}
+
+	/**
+	 * @test
+	 */
 	public function assetsAddedByFilenameUsesFileBasenameAsAssetName() {
 		$file = $this->getAbsoluteAssetFixturePath();
 		$expectedName = pathinfo($file, PATHINFO_FILENAME);
@@ -111,6 +135,9 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 		$asset = Tx_Vhs_Asset::createFromFile($file);
 		$expectedTrimmedContent = trim(file_get_contents($file));
 		$this->assertEquals($expectedTrimmedContent, trim($asset->build()));
+		$asset->setContent(file_get_contents($file));
+		$asset->setPath(NULL);
+		$this->assertEquals($expectedTrimmedContent, trim($asset->build()));
 	}
 
 	/**
@@ -121,6 +148,73 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 		$asset = Tx_Vhs_Asset::createFromFile($file);
 		$expectedTrimmedContent = trim(file_get_contents($file));
 		$this->assertEquals($expectedTrimmedContent, trim($asset->getContent()));
+	}
+
+	/**
+	 * @test
+	 */
+	public function specialGettersAndAssertionsReturnBooleans() {
+		$file = $this->getAbsoluteAssetFixturePath();
+		$asset = Tx_Vhs_Asset::createFromFile($file);
+		$constraint = new PHPUnit_Framework_Constraint_IsType('boolean');
+		$this->assertThat($asset->getRemoved(), $constraint);
+		$this->assertThat($asset->assertAddNameCommentWithChunk(), $constraint);
+		$this->assertThat($asset->assertAllowedInFooter(), $constraint);
+		$this->assertThat($asset->assertDebugEnabled(), $constraint);
+		$this->assertThat($asset->assertFluidEnabled(), $constraint);
+		$this->assertThat($asset->assertHasBeenRemoved(), $constraint);
+	}
+
+	/**
+	 * @test
+	 */
+	public function specialSupportGettersReturnExpectedTypes() {
+		$file = $this->getAbsoluteAssetFixturePath();
+		$asset = Tx_Vhs_Asset::createFromFile($file);
+		$gettableProperties = Tx_Extbase_Reflection_ObjectAccess::getGettablePropertyNames($asset);
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		foreach ($gettableProperties as $propertyName) {
+			if (FALSE === property_exists('Tx_Vhs_Asset', $propertyName)) {
+				continue;
+			}
+			$propertyValue = Tx_Extbase_Reflection_ObjectAccess::getProperty($asset, $propertyName);
+			/** @var $propertyReflection Tx_Extbase_Reflection_PropertyReflection */
+			$propertyReflection = $objectManager->get('Tx_Extbase_Reflection_PropertyReflection', 'Tx_Vhs_Asset', $propertyName);
+			$expectedDataType = array_pop($propertyReflection->getTagValues('var'));
+			$constraint = new PHPUnit_Framework_Constraint_IsType($expectedDataType);
+			$this->assertThat($propertyValue, $constraint);
+		}
+		$constraint = new PHPUnit_Framework_Constraint_IsType('array');
+		$this->assertThat($asset->getDebugInformation(), $constraint);
+		$this->assertThat($asset->getAssetSettings(), $constraint);
+		$this->assertGreaterThan(0, count($asset->getAssetSettings()));
+		$this->assertThat($asset->getSettings(), $constraint);
+		$this->assertGreaterThan(0, count($asset->getSettings()));
+		$this->assertNotNull($asset->getContent());
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildMethodsReturnExpectedValues() {
+		$file = $this->getAbsoluteAssetFixturePath();
+		$asset = Tx_Vhs_Asset::createFromFile($file);
+		$constraint = new PHPUnit_Framework_Constraint_IsType('string');
+		$this->assertThat($asset->render(), $constraint);
+		$this->assertNotEmpty($asset->render());
+		$this->assertThat($asset->build(), $constraint);
+		$this->assertNotEmpty($asset->build());
+		$this->assertSame($asset, $asset->finalize());
+	}
+
+	/**
+	 * @test
+	 */
+	public function assertSupportsRawContent() {
+		$file = $this->getAbsoluteAssetFixturePath();
+		$content = file_get_contents($file);
+		$asset = Tx_Vhs_Asset::createFromContent($content);
+		$this->assertSame($content, $asset->getContent());
 	}
 
 	/**
