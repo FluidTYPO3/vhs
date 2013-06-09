@@ -206,9 +206,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		}
 		$chunks = array();
 		foreach ($spool as $type => $spooledAssets) {
-			$standalone = FALSE;
 			$chunk = array();
-			$source = '';
 			/** @var $spooledAssets Tx_Vhs_ViewHelpers_Asset_AssetInterface[] */
 			foreach ($spooledAssets as $name => $asset) {
 				$assetSettings = $this->extractAssetSettings($asset);
