@@ -243,6 +243,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 			$name = md5(spl_object_hash($this));
 		}
 		$GLOBALS['VhsAssets'][$name] = $this;
+		return $this;
 	}
 
 	/**
