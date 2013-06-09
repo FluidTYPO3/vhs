@@ -339,6 +339,9 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 * @return string
 	 */
 	public function getContent() {
+		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists(t3lib_div::getFileAbsFileName($this->path))) {
+			return file_get_contents(t3lib_div::getFileAbsFileName($this->path));
+		}
 		return $this->content;
 	}
 
