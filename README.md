@@ -65,7 +65,7 @@ Is the exact same as ths PHP:
 
 ```
 Tx_Vhs_Asset::createFromFile('fileadmin/demo.js');
-``´
+```
 
 Which is a short form of:
 
