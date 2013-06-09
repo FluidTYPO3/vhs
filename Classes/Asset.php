@@ -242,7 +242,6 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 		if (TRUE === empty($name)) {
 			$name = md5(spl_object_hash($this));
 		}
-		var_dump(get_class_vars($this));
 		$GLOBALS['VhsAssets'][$name] = $this;
 	}
 
