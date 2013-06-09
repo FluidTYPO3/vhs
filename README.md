@@ -46,6 +46,77 @@ key settings which are defined in TypoScript:
 * `plugin.tx_vhs.settings.useDebugUtility` which causes VHS to use Extbase's DebugUtility to
   dump variables. If this setting is not defined a value of `1` is assumed.
 
+## Assets
+
+VHS contains a highly useful feature which enables you to define Assets (CSS/JS/etc) in Fluid templates, PHP and TypoScript.
+What's different from the traditional ways of including such Assets (in Fluid or otherwise) all are used differently, controlled
+differently and probably worst of all, not all of them are integrator friendly (as in: allows Assets to be affected using
+TypoScript). VHS Assets solves all of this.
+
+### Asset Examples
+
+The following Fluid usage:
+
+```
+<v:asset.javascript path="fileadmin/demo.js" />
+```
+
+Is the exact same as ths PHP:
+
+```
+Tx_Vhs_Asset::createFromFile('fileadmin/demo.js');
+``´
+
+Which is a short form of:
+
+```
+Tx_Vhs_Asset::createFromSettings(array(
+	'name' => 'demo',
+	'path' => 'fileadmin/demo.js'
+));
+```
+
+Which is itself a short form of:
+
+```
+$asset = Tx_Vhs_Asset::getInstance();
+// or alternatively, if this fits better in your other code:
+$asset = $objectManager->get('Tx_Vhs_Asset');
+// then:
+$asset->setName('demo');
+$asset->setPath('fileadmin/demo.js');
+$asset->finalize(); // manually created Assets must be finalized before they show up.
+```
+
+The PHP above does the exact same as this TypoScript:
+
+```
+plugin.tx_vhs.settngs.asset.demo.path = fileadmin/demo.js
+```
+
+Which is a short form of:
+
+```
+plugin.tx_vhs.settings.asset.demo {
+	name = demo
+	path = fileadmin/demo.js
+}
+```
+
+In summary: regardless of where and how you use VHS Assets, they always use the same attributes, they always behave the same,
+support the same features (such as dependency on other Assets regardless of inclusion order and addressing Assets by a group name
+to affect multiple Assets - and even rendering JS/CSS as if the file was a Fluid template).
+
+The API for inclusion changes but the result is the same.
+
+But the real benefit of VHS Assets comes in the form of the TypoScript integration, which lets you override settings of individual
+Assets (regardless of how they were originally defined - Fluid, PHP, TypoScript) by setting their attributes in TypoScript. This
+allows integrators to control every aspect of every Asset (but not the ones included in traditional ways) all the way down to
+replacing the script source or CSS content that gets inserted or moving JS file(s) which used by be merged, to a new CDN server
+without even breaking dependencies and execution order.
+
+To affect VHS Assets through TypoScript, the following settings can be used:
+
 ### Asset settings
 
 ```javascript
