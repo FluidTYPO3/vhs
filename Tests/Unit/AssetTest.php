@@ -113,7 +113,8 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 		$asset->remove();
 		$this->assertSame(TRUE, $asset->getRemoved());
 		$this->assertSame(TRUE, $asset->assertHasBeenRemoved());
-		#$this->assertThat($asset->getSettings())
+		$constraint = new PHPUnit_Framework_Constraint_IsType('array');
+		$this->assertThat($asset->getSettings(), $constraint);
 	}
 
 	/**
