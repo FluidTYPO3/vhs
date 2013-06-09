@@ -56,6 +56,11 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	private static $cachedDependencies = array();
 
 	/**
+	 * @var boolean
+	 */
+	private static $buildComplete = FALSE;
+
+	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -98,6 +103,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			}
 		}
 		$this->placeAssetsInHeaderAndFooter($assets, $cached);
+		self::$buildComplete = TRUE;
 	}
 
 	/**
