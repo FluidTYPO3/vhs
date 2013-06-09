@@ -41,6 +41,11 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
 	 * @var array
 	 */
 	private static $settingsCache = NULL;
@@ -59,6 +64,14 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	}
 
 	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
 	 * @param array $parameters
 	 * @param object $caller
 	 * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
@@ -69,7 +82,6 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			return;
 		}
 		$cached = (boolean) $cached;
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$assets = $GLOBALS['VhsAssets'];
 		$assets = $this->sortAssetsByDependency($assets);
 		$assets = $this->manipulateAssetsByTypoScriptSetttings($assets);
