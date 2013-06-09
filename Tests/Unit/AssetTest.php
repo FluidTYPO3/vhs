@@ -83,6 +83,47 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function assetsCanBeAdded() {
+		$name = 'dummy';
+		$file = $this->getAbsoluteAssetFixturePath();
+		$asset = Tx_Vhs_Asset::createFromFile($file);
+		$this->assertSame($asset, $GLOBALS['VhsAssets'][$name]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function assetsAddedByFilenameUsesFileBasenameAsAssetName() {
+		$file = $this->getAbsoluteAssetFixturePath();
+		$expectedName = pathinfo($file, PATHINFO_FILENAME);
+		$asset = Tx_Vhs_Asset::createFromFile($file);
+		$this->assertSame($asset, $GLOBALS['VhsAssets'][$expectedName]);
+		$this->assertEquals($expectedName, $asset->getName(), 'Getter for name property does not return the expected name after creation from file path');
+	}
+
+	/**
+	 * @test
+	 */
+	public function assetBuildMethodReturnsExpectedContentComparedByTrimmedContent() {
+		$file = $this->getAbsoluteAssetFixturePath();
+		$asset = Tx_Vhs_Asset::createFromFile($file);
+		$expectedTrimmedContent = trim(file_get_contents($file));
+		$this->assertEquals($expectedTrimmedContent, trim($asset->build()));
+	}
+
+	/**
+	 * @test
+	 */
+	public function assetGetContentMethodReturnsExpectedContentComparedByTrimmedContent() {
+		$file = $this->getAbsoluteAssetFixturePath();
+		$asset = Tx_Vhs_Asset::createFromFile($file);
+		$expectedTrimmedContent = trim(file_get_contents($file));
+		$this->assertEquals($expectedTrimmedContent, trim($asset->getContent()));
+	}
+
+	/**
 	 * @return string
 	 */
 	protected function getRelativeAssetFixturePath() {
