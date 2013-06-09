@@ -183,7 +183,6 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public static function createFromFile($filePathAndFilename) {
 		$asset = self::getInstance();
-		$asset->setStandalone(TRUE);
 		$asset->setExternal(FALSE);
 		$asset->setPath($filePathAndFilename);
 		return $asset->finalize();
