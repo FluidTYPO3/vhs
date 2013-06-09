@@ -258,6 +258,13 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
+	 * @return Tx_Vhs_Asset
+	 */
+	public function remove() {
+		return $this->setRemoved(TRUE);
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getDependencies() {
