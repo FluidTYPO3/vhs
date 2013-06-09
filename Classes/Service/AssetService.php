@@ -185,7 +185,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 
 	/**
 	 * @param string $markerName
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
+	 * @param mixed $assets
 	 * @return void
 	 */
 	private function insertAssetsAtMarker($markerName, $assets) {
