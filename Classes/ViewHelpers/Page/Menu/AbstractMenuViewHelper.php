@@ -336,14 +336,14 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				case 2:
 						// mode: random subpage of selected or current page
 					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
-					$page = count($menu) > 0 ? $menu[rand(0, count($menu) - 1)] : $page;
+					$page = count($menu) > 0 ? $menu[array_rand($menu)] : $page;
 					$pageUid = $page['uid'];
 					break;
 				case 1:
 						// mode: first subpage of selected or current page
 					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
 						// note: if menu does not contain items, let TYPO3 linking take care of shortcut handling
-					$page = count($menu) > 0 ? $menu[0] : $page;
+					$page = count($menu) > 0 ? reset($menu) : $page;
 					$pageUid = $page['uid'];
 					break;
 				case 0:
