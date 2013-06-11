@@ -92,6 +92,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('linkActive', 'boolean', 'If FALSE, does not wrap with links the titles of pages that are active in the rootline', FALSE, TRUE);
 		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.', FALSE, 'nav_title,title');
 		$this->registerArgument('doktypes', 'mixed', 'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut');
+		$this->registerArgument('excludeSubpageTypes', 'mixed', 'CSV list or array of doktypes to not consider as subpages. Can be constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut', FALSE, 'SYSFOLDER');
 		$this->registerArgument('deferred', 'boolean', 'If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering', FALSE, FALSE);
 	}
 
@@ -230,16 +231,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 */
 	protected function allowedDoktypeList() {
 		if (TRUE === isset($this->arguments['doktypes']) && FALSE === empty($this->arguments['doktypes'])) {
-			if (TRUE === is_array($this->arguments['doktypes'])) {
-				$types = $this->arguments['doktypes'];
-			} else {
-				$types = t3lib_div::trimExplode(',', $this->arguments['doktypes']);
-			}
-			foreach ($types as $index => $type) {
-				if (FALSE === ctype_digit($type)) {
-					$types[$index] = constant('t3lib_pageSelect::DOKTYPE_' . strtoupper($type));
-				}
-			}
+			$types = $this->parseDoktypeList($this->arguments['doktypes']);
 		} else {
 			$types = array(
 				constant('t3lib_pageSelect::DOKTYPE_DEFAULT'),
@@ -252,6 +244,31 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			array_push($types, constant('t3lib_pageSelect::DOKTYPE_SPACER'));
 		}
 		return $types;
+	}
+
+	/**
+	 * Parses the provided CSV list or array of doktypes to
+	 * return an array of integers
+	 *
+	 * @param mixed $doktypes
+	 * @return array
+	 */
+	protected function parseDoktypeList($doktypes) {
+		if (TRUE === is_array($doktypes)) {
+			$types = $doktypes;
+		} else {
+			$types = t3lib_div::trimExplode(',', $doktypes);
+		}
+		$parsed = array();
+		foreach ($types as $index => $type) {
+			if (FALSE === ctype_digit($type)) {
+				$typeNumber = constant('t3lib_pageSelect::DOKTYPE_' . strtoupper($type));
+				if (NULL !== $typeNumber) {
+					$parsed[$index] = $typeNumber;
+				}
+			}
+		}
+		return $parsed;
 	}
 
 	/**
@@ -312,6 +329,24 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
+	 * Returns submenu for provided UID respecting
+	 * possible subpage types to exclude
+	 *
+	 * @param integer $pageUid
+	 * @return array
+	 */
+	protected function getSubmenu($pageUid) {
+		$where = 'AND nav_hide=0';
+		if (NULL !== $this->arguments['excludeSubpageTypes'] && FALSE === empty($this->arguments['excludeSubpageTypes'])) {
+			$excludeSubpageTypes = $this->parseDoktypeList($this->arguments['excludeSubpageTypes']);
+			if (0 < count($excludeSubpageTypes)) {
+				$where .= ' AND doktype NOT IN (' . implode(',', $excludeSubpageTypes) . ')';
+			}
+		}
+		return $this->pageSelect->getMenu($pageUid, '*', 'sorting', $where);
+	}
+
+	/**
 	 * @param array $page
 	 * @param array $rootLine
 	 * @return array
@@ -366,7 +401,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$shortcut = ($doktype == constant('t3lib_pageSelect::DOKTYPE_SHORTCUT')) ? $page['shortcut'] : $page['url'];
 		$page['active'] = $this->isActive($pageUid, $rootLine);
 		$page['current'] = $this->isCurrent($pageUid);
-		$page['hasSubPages'] = (count($this->pageSelect->getMenu($pageUid, $fields = '*', $sortField = 'sorting', $addWhere = 'AND nav_hide=0')) > 0) ? 1 : 0;
+		$page['hasSubPages'] = (count($this->getSubmenu($pageUid)) > 0) ? 1 : 0;
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
