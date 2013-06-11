@@ -142,7 +142,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 * @return array
 	 */
 	public function getSettings() {
-		if (TRUE === is_null(self::$settingsCache)) {
+		if (NULL === self::$settingsCache) {
 			$allTypoScript = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {
@@ -152,7 +152,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				self::$settingsCache = t3lib_div::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
-		$settings = self::$settingsCache;
+		$settings = (array) self::$settingsCache;
 		return $settings;
 	}
 

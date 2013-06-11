@@ -447,7 +447,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 * @return array
 	 */
 	public function getSettings() {
-		if (TRUE === is_null(self::$settingsCache)) {
+		if (NULL === self::$settingsCache) {
 			$allTypoScript = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (TRUE === $settingsExist) {
@@ -552,7 +552,8 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public function assertDebugEnabled() {
 		$settings = $this->getSettings();
-		return (FALSE === isset($settings['debug']) ? (boolean) $settings['debug'] : FALSE);
+		$enabled = (TRUE === isset($settings['debug']) ? (boolean) $settings['debug'] : FALSE);
+		return $enabled;
 	}
 
 	/**
