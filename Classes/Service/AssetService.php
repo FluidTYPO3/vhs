@@ -83,7 +83,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function buildAll(array $parameters, $caller, $cached = TRUE) {
-		if (self::$buildComplete) {
+		if (TRUE === self::$buildComplete) {
 			return;
 		}
 		$settings = $this->getSettings();
@@ -489,7 +489,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 * @return string
 	 */
 	protected function prefixPath($fileRelativePathAndFilename) {
-		if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
+		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
 			$fileRelativePathAndFilename = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'] . $fileRelativePathAndFilename;
 		}
 		return $fileRelativePathAndFilename;
