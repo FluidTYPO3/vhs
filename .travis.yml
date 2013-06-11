@@ -7,35 +7,19 @@ env:
   - DB=mysql
 
 before_script:
-  - mkdir repository
-  - find . -maxdepth 1 \! -name repository \! -name . -exec mv {} repository/ \;
+  - export REPOSITORY="vhs"
   - git clone https://github.com/FluidTYPO3/TYPO3-Travis-Integration.git build-environment
+  - source build-environment/install-utilities.sh
+  - source build-environment/install-preserve-repository.sh
   - source build-environment/install-helper.sh
-  - git clone https://github.com/FluidTYPO3/TYPO3v4-Core.git --recurse-submodules build-environment/typo3 --depth 50
-  - git clone https://github.com/FluidTYPO3/Introduction.git build-environment/Introduction
-  - mkdir fileadmin
-  - mkdir uploads
-  - mv build-environment/typo3/* ./
-# local init
-  - rm -rf $PWD/typo3conf/ext/vhs
-  - mv $PWD/repository $PWD/typo3conf/ext/vhs
-  - rm phpunit.xml
-  - cp $PWD/typo3conf/ext/vhs/Tests/phpunit.xml $PWD/phpunit.xml
-# continue install
-  - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS typo3_test;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/Introduction/typo3conf/ext/introduction/Resources/Private/Subpackages/Introduction/Database/introduction.sql; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cache_tables.sql; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
-# prepare the CodeSniffer
-  - git clone git://github.com/squizlabs/PHP_CodeSniffer.git build-environment/CodeSniffer
-  - git clone https://github.com/FluidTYPO3/FluidTYPO3-CodingStandards.git build-environment/FluidTYPO3-CodingStandards
+  - source build-environment/install-typo3.sh
+  - source build-environment/install-reintegrate-repository.sh
+  - source build-environment/install-phpunit-setup.sh
 
 script:
 # phplint checking on all PHP source files in extension
-  - find $PWD/typo3conf/ext/vhs -name *.php -exec phpLint {} --fails-on-warning --report-unused \;
+  - php $PWD/typo3/cli_dispatch.phpsh extbase builder:phpsyntax --extension $REPOSITORY
 # PHPCodeSniffer code inspection with only errors displayed (no warnings)
-  - $PWD/build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/vhs
+  - $PWD/build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/$REPOSITORY
 # PHPUnit tests from overridden phpunit tests configuration file
   - php $PWD/typo3/cli_dispatch.phpsh phpunit -c phpunit.xml
