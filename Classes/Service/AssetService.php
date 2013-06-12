@@ -122,6 +122,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function buildAllUncached(array $parameters, $caller) {
+		self::$buildComplete = FALSE;
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$this->configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 		$content = $GLOBALS['TSFE']->content;
