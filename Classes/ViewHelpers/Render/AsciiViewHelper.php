@@ -42,7 +42,7 @@
  * And arrays are also supported - they will produce a string of characters
  * from each number in the array:
  *
- *     {v:render.ascii(ascii: {0: 13, 1: 10)}
+ *     {v:render.ascii(ascii: {0: 13, 1: 10})}
  *
  * Will produce a Windows line break, \r\n
  *
