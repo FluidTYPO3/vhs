@@ -51,6 +51,11 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Vhs_Service_AssetService
+	 */
+	protected $assetService;
+
+	/**
 	 * @var array
 	 */
 	private static $settingsCache = NULL;
@@ -99,6 +104,14 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param Tx_Vhs_Service_AssetService $assetService
+	 * @return void
+	 */
+	public function injectAssetService(Tx_Vhs_Service_AssetService $assetService) {
+		$this->assetService = $assetService;
 	}
 
 	/**
@@ -258,7 +271,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	/**
 	 * @return string
 	 */
-	protected function getGroup() {
+	public function getGroup() {
 		$assetSettings = $this->getAssetSettings();
 		return $assetSettings['group'];
 	}
@@ -314,7 +327,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 					// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
 				self::$settingsCache = array();
 			} else {
-				self::$settingsCache = $this->dotSuffixArrayToPlainArray($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = t3lib_div::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
 		$settings = self::$settingsCache;
@@ -346,12 +359,14 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$groupName = $this->arguments['group'];
 		$settings = $this->getSettings();
 		$assetSettings = $this->arguments;
+		$assetSettings['type'] = $this->getType();
 		if (TRUE === (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName]))) {
 			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['assetGroup'][$groupName]);
 		}
 		if (TRUE === (isset($settings['asset'][$name]) && is_array($settings['asset'][$name]))) {
 			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['asset'][$name]);
 		}
+		$assetSettings['name'] = $name;
 		$this->assetSettingsCache = $assetSettings;
 		return $assetSettings;
 	}
@@ -426,24 +441,6 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 			return FALSE;
 		}
 		return TRUE;
-	}
-
-	/**
-	 * @param array $array
-	 * @return array
-	 */
-	protected function dotSuffixArrayToPlainArray($array) {
-		$dotFreeArray = array();
-		foreach ($array as $key => $value) {
-			if (substr($key, -1) === '.') {
-				$key = substr($key, 0, -1);
-			}
-			if (TRUE === is_array($value)) {
-				$value = $this->dotSuffixArrayToPlainArray($value);
-			}
-			$dotFreeArray[$key] = $value;
-		}
-		return $dotFreeArray;
 	}
 
 	/**
