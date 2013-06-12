@@ -80,6 +80,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('classHasSubpages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
 		$this->registerArgument('useShortcutTarget', 'boolean', 'Optional param for using shortcut target instead of shortcut itself for current link', FALSE, FALSE);
 		$this->registerArgument('useShortcutData', 'boolean', 'If TRUE, fetches ALL data from the shortcut target before any additional processing takes place. Note that this overrides everything, including the UID, effectively substituting the shortcut for the target', FALSE, FALSE);
+		$this->registerArgument('useShortcutUid', 'boolean', 'If TRUE, substitutes the link UID of a shortcut with the target page UID and thus avoiding redirects.', FALSE, FALSE);
 		$this->registerArgument('classFirst', 'string', 'Optional class name for the first menu elment', FALSE, '');
 		$this->registerArgument('classLast', 'string', 'Optional class name for the last menu elment', FALSE, '');
 		$this->registerArgument('substElementUid', 'boolean', 'Optional parameter for wrapping the link with the uid of the page', FALSE, '');
@@ -390,7 +391,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			} elseif (TRUE === isset($this->arguments['useShortcutTarget']) && TRUE === (boolean) $this->arguments['useShortcutTarget']) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
-			}
+			} elseif (TRUE === isset($this->arguments['useShortcutUid']) && TRUE === (boolean) $this->arguments['useShortcutUid']) {
+				// overwrite current page UID
+				$pageUid = $targetPage['uid'];
 			}
 		}
 
