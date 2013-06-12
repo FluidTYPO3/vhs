@@ -308,7 +308,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
-	 * Create the href of a link for page $pageUid
+	 * Create the href of a link for page $pageUid respecting
+	 * a possible shortcut UID
 	 *
 	 * @param integer $pageUid
 	 * @param integer $doktype
@@ -398,16 +399,18 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		} else {
 			$page = $this->pageSelect->getPage($pageUid);
 		}
-		$shortcut = ($doktype == constant('t3lib_pageSelect::DOKTYPE_SHORTCUT')) ? $page['shortcut'] : $page['url'];
+
+		$doktype = (integer) $page['doktype'];
+		$shortcut = ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT) ? $page['shortcut'] : $page['url'];
 		$page['active'] = $this->isActive($pageUid, $rootLine);
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (count($this->getSubmenu($pageUid)) > 0) ? 1 : 0;
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
-		$page['doktype'] = (integer) $doktype;
+		$page['doktype'] = $doktype;
 
-		if ($doktype == 3) {
+		if ($doktype == t3lib_pageSelect::DOKTYPE_LINK) {
 			$urlTypes = array(
 				'1' => 'http://',
 				'4' => 'https://',
