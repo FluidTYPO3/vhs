@@ -353,11 +353,19 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	/**
 	 * @param array $page
 	 * @param array $rootLine
+	 * @throws Exception
 	 * @return array
 	 */
 	protected function getMenuItemEntry($page, $rootLine) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
 		$pageUid = $page['uid'];
+		$argumentCount = 0;
+		$argumentCount += intval($this->arguments['useShortcutData']);
+		$argumentCount += intval($this->arguments['useShortcutTarget']);
+		$argumentCount += intval($this->arguments['useShortcutUid']);
+		if (1 < $argumentCount) {
+			throw new Exception('Arguments useShortcutData, useShortcutTarget and useShortcutUid are mutually exclusive. Please use only one at a time.', 1371069824);
+		}
 		// first, ensure the complete data array is present
 		$page = $this->pageSelect->getPage($pageUid);
 		$targetPage = NULL;
