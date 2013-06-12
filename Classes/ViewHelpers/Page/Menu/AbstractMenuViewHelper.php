@@ -362,12 +362,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			switch ($page['shortcut_mode']) {
 				case 3:
-					// mode: parent page of current or selected page
-					if ($page['shortcut'] > 0) {
-						// start off by overwriting $page with specifically chosen page
-						$targetPage = $this->pageSelect->getPage($page['shortcut']);
-					}
-					$targetPage = $this->pageSelect->getPage($targetPage['pid']);
+					// mode: parent page of current page (using PID of current page)
+					$targetPage = $this->pageSelect->getPage($page['pid']);
 					break;
 				case 2:
 					// mode: random subpage of selected or current page
