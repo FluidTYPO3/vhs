@@ -357,8 +357,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$pageUid = $page['uid'];
 		// first, ensure the complete data array is present
 		$page = $this->pageSelect->getPage($pageUid);
+		$targetPage = NULL;
 		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
-			$targetPage = NULL;
 			switch ($page['shortcut_mode']) {
 				case 3:
 					// mode: parent page of current or selected page
@@ -367,28 +367,30 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 						$targetPage = $this->pageSelect->getPage($page['shortcut']);
 					}
 					$targetPage = $this->pageSelect->getPage($targetPage['pid']);
-					$pageUid = $targetPage['uid'];
 					break;
 				case 2:
 					// mode: random subpage of selected or current page
 					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
 					$targetPage = count($menu) > 0 ? $menu[array_rand($menu)] : $page;
-					$pageUid = $targetPage['uid'];
 					break;
 				case 1:
 					// mode: first subpage of selected or current page
 					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
 					$targetPage = count($menu) > 0 ? reset($menu) : $page;
-					$pageUid = $targetPage['uid'];
 					break;
 				case 0:
 				default:
 					$targetPage = $this->pageSelect->getPage($page['shortcut']);
-					$pageUid = $targetPage['uid'];
 			}
-			if (TRUE === (boolean) $this->arguments['useShortcutData']) {
+			if (TRUE === isset($this->arguments['useShortcutData']) && TRUE === (boolean) $this->arguments['useShortcutData']) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
+				// overwrite current page UID
+				$pageUid = $targetPage['uid'];
+			} elseif (TRUE === isset($this->arguments['useShortcutTarget']) && TRUE === (boolean) $this->arguments['useShortcutTarget']) {
+				// overwrite current page data with shortcut page data
+				$page = $targetPage;
+			}
 			}
 		}
 
