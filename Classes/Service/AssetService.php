@@ -88,12 +88,14 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		}
 		$settings = $this->getSettings();
 		$cached = (boolean) $cached;
-		foreach ($settings['asset'] as $name => $typoScriptAsset) {
-			if (FALSE === isset($GLOBALS['VhsAssets'][$name]) && TRUE === is_array($typoScriptAsset)) {
-				if (FALSE === isset($typoScriptAsset['name'])) {
-					$typoScriptAsset['name'] = $name;
+		if (TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
+			foreach ($settings['asset'] as $name => $typoScriptAsset) {
+				if (FALSE === isset($GLOBALS['VhsAssets'][$name]) && TRUE === is_array($typoScriptAsset)) {
+					if (FALSE === isset($typoScriptAsset['name'])) {
+						$typoScriptAsset['name'] = $name;
+					}
+					Tx_Vhs_Asset::createFromSettings($typoScriptAsset);
 				}
-				Tx_Vhs_Asset::createFromSettings($typoScriptAsset);
 			}
 		}
 		$assets = $GLOBALS['VhsAssets'];
