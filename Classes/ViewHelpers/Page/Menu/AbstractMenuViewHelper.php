@@ -80,6 +80,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('classHasSubpages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
 		$this->registerArgument('useShortcutTarget', 'boolean', 'Optional param for using shortcut target instead of shortcut itself for current link', FALSE, FALSE);
 		$this->registerArgument('useShortcutData', 'boolean', 'If TRUE, fetches ALL data from the shortcut target before any additional processing takes place. Note that this overrides everything, including the UID, effectively substituting the shortcut for the target', FALSE, FALSE);
+		$this->registerArgument('useShortcutUid', 'boolean', 'If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.', FALSE, FALSE);
 		$this->registerArgument('classFirst', 'string', 'Optional class name for the first menu elment', FALSE, '');
 		$this->registerArgument('classLast', 'string', 'Optional class name for the last menu elment', FALSE, '');
 		$this->registerArgument('substElementUid', 'boolean', 'Optional parameter for wrapping the link with the uid of the page', FALSE, '');
@@ -308,7 +309,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
-	 * Create the href of a link for page $pageUid
+	 * Create the href of a link for page $pageUid respecting
+	 * a possible shortcut UID
 	 *
 	 * @param integer $pageUid
 	 * @param integer $doktype
@@ -316,7 +318,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return string
 	 */
 	protected function getItemLink($pageUid, $doktype, $shortcut) {
-		if ($this->arguments['useShortcutTarget'] && ($doktype == constant('t3lib_pageSelect::DOKTYPE_SHORTCUT') || $doktype == constant('t3lib_pageSelect::DOKTYPE_LINK'))) {
+		$isShortcutOrLink = ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT || $doktype == t3lib_pageSelect::DOKTYPE_LINK);
+		$useShortcutTarget = (boolean) $this->arguments['useShortcutTarget'];
+		if (TRUE === $isShortcutOrLink && TRUE === $useShortcutTarget && 0 < $shortcut) {
 			$pageUid = $shortcut;
 		}
 		$config = array(
@@ -349,45 +353,56 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	/**
 	 * @param array $page
 	 * @param array $rootLine
+	 * @throws Exception
 	 * @return array
 	 */
 	protected function getMenuItemEntry($page, $rootLine) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
 		$pageUid = $page['uid'];
-		if ($this->arguments['useShortcutData'] && $page['doktype'] == constant('t3lib_pageSelect::DOKTYPE_SHORTCUT')) {
-				// first, ensure the complete data array is present based on the shortcut page's data
-			$page = $this->pageSelect->getPage($pageUid);
+		$argumentCount = 0;
+		$argumentCount += intval($this->arguments['useShortcutData']);
+		$argumentCount += intval($this->arguments['useShortcutTarget']);
+		$argumentCount += intval($this->arguments['useShortcutUid']);
+		if (1 < $argumentCount) {
+			throw new Exception('Arguments useShortcutData, useShortcutTarget and useShortcutUid are mutually exclusive. Please use only one at a time.', 1371069824);
+		}
+		// first, ensure the complete data array is present
+		$page = $this->pageSelect->getPage($pageUid);
+		$targetPage = NULL;
+		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			switch ($page['shortcut_mode']) {
 				case 3:
-						// mode: parent page of current or selected page
-					if ($page['shortcut'] > 0) {
-							// start off by overwriting $page with specifically chosen page
-						$page = $this->pageSelect->getPage($page['shortcut']);
-					}
-						// overwrite page with parent page data
-					$page = $this->pageSelect->getPage($page['pid']);
-					$pageUid = $page['uid'];
+					// mode: parent page of current page (using PID of current page)
+					$targetPage = $this->pageSelect->getPage($page['pid']);
 					break;
 				case 2:
-						// mode: random subpage of selected or current page
+					// mode: random subpage of selected or current page
 					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
-					$page = count($menu) > 0 ? $menu[array_rand($menu)] : $page;
-					$pageUid = $page['uid'];
+					$targetPage = count($menu) > 0 ? $menu[array_rand($menu)] : $page;
 					break;
 				case 1:
-						// mode: first subpage of selected or current page
+					// mode: first subpage of selected or current page
 					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
-						// note: if menu does not contain items, let TYPO3 linking take care of shortcut handling
-					$page = count($menu) > 0 ? reset($menu) : $page;
-					$pageUid = $page['uid'];
+					$targetPage = count($menu) > 0 ? reset($menu) : $page;
 					break;
 				case 0:
 				default:
-					$page = $this->pageSelect->getPage($page['shortcut']);
-					$pageUid = $page['uid'];
+					$targetPage = $this->pageSelect->getPage($page['shortcut']);
+			}
+			if (TRUE === (boolean) $this->arguments['useShortcutData']) {
+				// overwrite current page data with shortcut page data
+				$page = $targetPage;
+				// overwrite current page UID
+				$pageUid = $targetPage['uid'];
+			} elseif (TRUE === (boolean) $this->arguments['useShortcutTarget']) {
+				// overwrite current page data with shortcut page data
+				$page = $targetPage;
+			} elseif (TRUE === (boolean) $this->arguments['useShortcutUid']) {
+				// overwrite current page UID
+				$pageUid = $targetPage['uid'];
 			}
 		}
-		$doktype = $page['doktype'];
+
 		if ($getLL) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $getLL);
 			foreach ($pageOverlay as $name => $value) {
@@ -395,19 +410,19 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 					$page[$name] = $value;
 				}
 			}
-		} else {
-			$page = $this->pageSelect->getPage($pageUid);
 		}
-		$shortcut = ($doktype == constant('t3lib_pageSelect::DOKTYPE_SHORTCUT')) ? $page['shortcut'] : $page['url'];
+
+		$doktype = (integer) $page['doktype'];
+		$shortcut = ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT) ? $page['shortcut'] : $page['url'];
 		$page['active'] = $this->isActive($pageUid, $rootLine);
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (count($this->getSubmenu($pageUid)) > 0) ? 1 : 0;
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
-		$page['doktype'] = (integer) $doktype;
+		$page['doktype'] = $doktype;
 
-		if ($doktype == 3) {
+		if ($doktype == t3lib_pageSelect::DOKTYPE_LINK) {
 			$urlTypes = array(
 				'1' => 'http://',
 				'4' => 'https://',
