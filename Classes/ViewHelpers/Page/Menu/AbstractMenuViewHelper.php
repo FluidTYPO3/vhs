@@ -318,7 +318,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return string
 	 */
 	protected function getItemLink($pageUid, $doktype, $shortcut) {
-		if (TRUE === (boolean) $this->arguments['useShortcutTarget'] && 0 < $shortcut && ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT || $doktype == t3lib_pageSelect::DOKTYPE_LINK)) {
+		$isShortcutOrLink = ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT || $doktype == t3lib_pageSelect::DOKTYPE_LINK);
+		$useShortcutTarget = (boolean) $this->arguments['useShortcutTarget'];
+		if (TRUE === $isShortcutOrLink && TRUE === $useShortcutTarget && 0 < $shortcut) {
 			$pageUid = $shortcut;
 		}
 		$config = array(
@@ -379,15 +381,15 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				default:
 					$targetPage = $this->pageSelect->getPage($page['shortcut']);
 			}
-			if (TRUE === isset($this->arguments['useShortcutData']) && TRUE === (boolean) $this->arguments['useShortcutData']) {
+			if (TRUE === (boolean) $this->arguments['useShortcutData']) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
 				// overwrite current page UID
 				$pageUid = $targetPage['uid'];
-			} elseif (TRUE === isset($this->arguments['useShortcutTarget']) && TRUE === (boolean) $this->arguments['useShortcutTarget']) {
+			} elseif (TRUE === (boolean) $this->arguments['useShortcutTarget']) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
-			} elseif (TRUE === isset($this->arguments['useShortcutUid']) && TRUE === (boolean) $this->arguments['useShortcutUid']) {
+			} elseif (TRUE === (boolean) $this->arguments['useShortcutUid']) {
 				// overwrite current page UID
 				$pageUid = $targetPage['uid'];
 			}
