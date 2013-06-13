@@ -27,15 +27,15 @@
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Condition_BrowserViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper
+	 * @var Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper', array('hasArgument'));
+		$this->fixture = $this->getMock('Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper', array('renderThenChild', 'renderElseChild'));
 	}
 
 	public function tearDown() {
@@ -48,12 +48,8 @@ class Tx_Vhs_ViewHelpers_Condition_BrowserViewHelperTest extends Tx_Extbase_Test
 	public function renderWithBrowserAsStringReturnsRenderedThenChildIfBrowserMatches() {
 		$browser = 'safari';
 		$this->fixture->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17');
-		$this->fixture->expects($this->once())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
-
-		$this->assertSame(
-			NULL,
-			$this->fixture->render($browser)
-		);
+		$this->fixture->expects($this->once())->method('renderThenChild');
+		$this->fixture->render($browser);
 	}
 
 	/**
@@ -62,12 +58,7 @@ class Tx_Vhs_ViewHelpers_Condition_BrowserViewHelperTest extends Tx_Extbase_Test
 	public function renderWithBrowserAsStringReturnsRenderedElseChildIfBrowserDoesNotMatch() {
 		$browser = 'chrome';
 		$this->fixture->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17');
-		$this->fixture->expects($this->once())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
-
-		$this->assertSame(
-			NULL,
-			$this->fixture->render($browser)
-		);
+		$this->fixture->expects($this->once())->method('renderElseChild');
+		$this->fixture->render($browser);
 	}
 }
-?>

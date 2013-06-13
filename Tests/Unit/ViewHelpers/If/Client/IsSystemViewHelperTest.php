@@ -27,15 +27,15 @@
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Condition_SystemViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Vhs_ViewHelpers_Condition_SystemViewHelper
+	 * @var Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelper
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Condition_SystemViewHelper', array('hasArgument'));
+		$this->fixture = $this->getMock('Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelper', array('renderThenChild', 'renderElseChild'));
 	}
 
 	public function tearDown() {
@@ -48,12 +48,8 @@ class Tx_Vhs_ViewHelpers_Condition_SystemViewHelperTest extends Tx_Extbase_Tests
 	public function renderWithSystemAsStringReturnsRenderedThenChildIfSystemMatches() {
 		$system = 'mac';
 		$this->fixture->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17');
-		$this->fixture->expects($this->once())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
-
-		$this->assertSame(
-			NULL,
-			$this->fixture->render($system)
-		);
+		$this->fixture->expects($this->once())->method('renderThenChild');
+		$this->fixture->render($system);
 	}
 
 	/**
@@ -62,12 +58,8 @@ class Tx_Vhs_ViewHelpers_Condition_SystemViewHelperTest extends Tx_Extbase_Tests
 	public function renderWithSystemAsStringReturnsRenderedElseChildIfSystemDoesNotMatch() {
 		$system = 'win7';
 		$this->fixture->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17');
-		$this->fixture->expects($this->once())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
-
-		$this->assertSame(
-			NULL,
-			$this->fixture->render($system)
-		);
+		$this->fixture->expects($this->once())->method('renderElseChild');
+		$this->fixture->render($system);
 	}
 }
 ?>
