@@ -71,9 +71,8 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DirectoryViewHelper extends Tx_Vhs_ViewHelper
 		$menu = $this->parseMenu($menuData, $rootLineData);
 		$this->backupVariables();
 		$this->templateVariableContainer->add('menu', $menu);
-		$content = $this->renderChildren();
+		$output = $this->renderContent($menu);
 		$this->templateVariableContainer->remove('menu');
-		$output = $this->renderContent($menu, $content);
 		$this->restoreVariables();
 		return $output;
 	}
