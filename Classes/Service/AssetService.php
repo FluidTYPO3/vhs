@@ -627,4 +627,14 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		return $content;
 	}
 
+	/**
+	 * @return void
+	 */
+	public function clearCacheCommand() {
+		$assetCacheFiles = glob(t3lib_div::getFileAbsFileName('typo3temp/vhs-assets-*'));
+		foreach ($assetCacheFiles as $assetCacheFile) {
+			unlink($assetCacheFile);
+		}
+	}
+
 }
