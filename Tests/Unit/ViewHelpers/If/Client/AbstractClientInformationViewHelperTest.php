@@ -27,17 +27,16 @@
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper
+	 * @var Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper
 	 */
 	protected $fixture;
 
 	public function setUp() {
 		// Uses an actual implementation of this abstract class to test the methods
-		$this->fixture = new Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper();
-		//$this->fixture = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper', array('hasArgument'));
+		$this->fixture = new Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper();
 	}
 
 	public function tearDown() {
