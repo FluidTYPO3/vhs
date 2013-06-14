@@ -367,27 +367,29 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			throw new Exception('Arguments useShortcutData, useShortcutTarget and useShortcutUid are mutually exclusive. Please use only one at a time.', 1371069824);
 		}
 		// first, ensure the complete data array is present
-		$page = $this->pageSelect->getPage($pageUid);
+		$page = $this->getPage($pageUid);
 		$targetPage = NULL;
 		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			switch ($page['shortcut_mode']) {
 				case 3:
 					// mode: parent page of current page (using PID of current page)
-					$targetPage = $this->pageSelect->getPage($page['pid']);
+					$targetPage = $this->getPage($page['pid']);
 					break;
 				case 2:
 					// mode: random subpage of selected or current page
-					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
+					$uid = $page['shortcut'] > 0 ? $page['shortcut'] : $pageUid;
+					$menu = $this->getMenu($uid);
 					$targetPage = count($menu) > 0 ? $menu[array_rand($menu)] : $page;
 					break;
 				case 1:
 					// mode: first subpage of selected or current page
-					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
+					$uid = $page['shortcut'] > 0 ? $page['shortcut'] : $pageUid;
+					$menu = $this->getMenu($uid);
 					$targetPage = count($menu) > 0 ? reset($menu) : $page;
 					break;
 				case 0:
 				default:
-					$targetPage = $this->pageSelect->getPage($page['shortcut']);
+					$targetPage = $this->getPage($page['shortcut']);
 			}
 			if (TRUE === (boolean) $this->arguments['useShortcutData']) {
 				// overwrite current page data with shortcut page data
@@ -519,8 +521,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			}
 			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
-				$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
-				$subMenuData = $this->pageSelect->getMenu($pageUid);
+				$rootLineData = $this->getRootLine();
+				$subMenuData = $this->getMenu($pageUid);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
 				$this->tag->setTagName($this->arguments['tagName']);
@@ -612,7 +614,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	public function render() {
 		$pageUid = $this->arguments['pageUid'];
 		$entryLevel = $this->arguments['entryLevel'];
-		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
+		$rootLineData = $this->getRootLine();
 		if (!$pageUid) {
 			if (NULL !== $rootLineData[$entryLevel]['uid']) {
 				$pageUid = $rootLineData[$entryLevel]['uid'];
@@ -620,7 +622,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				return '';
 			}
 		}
-		$menuData = $this->pageSelect->getMenu($pageUid);
+		$menuData = $this->getMenu($pageUid);
 		$menu = $this->parseMenu($menuData, $rootLineData);
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->cleanTemplateVariableContainer();
@@ -657,17 +659,57 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
-	 * Gets the current rootLine (of page being rendered). Implements
-	 * level one cache due to expectations of repeated executions per
+	 * Gets the rootLine of page with provided $uid or current page if omitted.
+	 * Implements level one cache due to expectations of repeated executions per
 	 * menu rendering loop when using manual page rendering with subpages.
 	 *
+	 * @param integer $uid
 	 * @return array
 	 */
-	protected function getCurrentPageRootLine() {
-		if (FALSE === isset(self::$cache['currentRootLine'])) {
-			self::$cache['currentRootLine'] = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
+	protected function getRootLine($uid = NULL) {
+		if (NULL === $uid) {
+			$uid = $GLOBALS['TSFE']->id;
 		}
-		return self::$cache['currentRootLine'];
+		if (FALSE === isset(self::$cache['rootLine'][$uid])) {
+			self::$cache['rootLine'][$uid] = $this->pageSelect->getRootLine($uid);
+		}
+		return self::$cache['rootLine'][$uid];
+	}
+
+	/**
+	 * Gets the menu for provided $uid or current page if omitted. Implements
+	 * level one cache due to expectations of repeated executions per´menu
+	 * rendering loop when using manual page rendering with subpages.
+	 *
+	 * @param integer $uid
+	 * @return array
+	 */
+	protected function getMenu($uid = NULL) {
+		if (NULL === $uid) {
+			$uid = $GLOBALS['TSFE']->id;
+		}
+		if (FALSE === isset(self::$cache['menu'][$uid])) {
+			self::$cache['menu'][$uid] = $this->pageSelect->getMenu($uid);
+		}
+		return self::$cache['menu'][$uid];
+	}
+
+	/**
+	 * Gets the page record for provided $uid or current page if omitted.
+	 * Implements level one cache due to expectations of repeated executions per
+	 * menu rendering loop when using manual page rendering with subpages.
+	 *
+	 * @param integer $uid
+	 * @return array
+	 */
+	protected function getPage($uid = NULL) {
+		if (NULL === $uid) {
+			$uid = $GLOBALS['TSFE']->id;
+		}
+		if (FALSE === isset(self::$cache['page'][$uid])) {
+			self::$cache['page'][$uid] = $this->pageSelect->getPage($uid);
+		}
+		return self::$cache['page'][$uid];
 	}
 
 	/**
