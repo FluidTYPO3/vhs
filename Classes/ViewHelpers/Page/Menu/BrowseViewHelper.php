@@ -71,7 +71,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 	public function render() {
 		$pageUid = $GLOBALS['TSFE']->id;
 		$showHidden = (boolean) $this->arguments['showHidden'];
-		$rootLineData = $this->pageSelect->getRootLine($pageUid, $showHidden);
+		$rootLineData = $this->pageSelect->getRootLine($pageUid, '', $showHidden);
 		$currentPage = $this->pageSelect->getPage($pageUid);
 		$parentUid = $currentPage['pid'];
 		$parentPage = $this->pageSelect->getPage($parentUid);
