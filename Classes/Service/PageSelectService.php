@@ -29,9 +29,7 @@
  * Wrapper service for t3lib_pageSelect including static caches for
  * menus, rootlines, pages and page overlays to be implemented in
  * viewhelpers by replacing calls to t3lib_pageSelect::getMenu()
- * and the like. Consideration of hidden pages in menus is controlled
- * by calling Tx_Vhs_Service_PageSelectService::setShowHidden(TRUE)
- * which defaults to FALSE.
+ * and the like.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
@@ -48,11 +46,6 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * @var t3lib_pageSelect
 	 */
 	private static $pageSelectHidden;
-
-	/**
-	 * @var bool
-	 */
-	private static $showHidden = FALSE;
 
 	/**
 	 * @var array
@@ -100,13 +93,6 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 			self::$instance = new self;
 		}
 		return self::$instance;
-	}
-
-	/**
-	 * @param boolean $showHidden
-	 */
-	public function setShowHidden($showHidden = FALSE) {
-		self::$showHidden = (boolean) $showHidden;
 	}
 
 	/**
@@ -166,21 +152,23 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 
 	/**
 	 * Wrapper for t3lib_pageSelect::getMenu()
+	 * Caution: slightly different signature
 	 *
 	 * @param integer $pageUid
+	 * @param boolean $showHidden
 	 * @param string $fields
 	 * @param string $sortField
 	 * @param string $addWhere
 	 * @param int $checkShortcuts
 	 * @return array
 	 */
-	public function getMenu($pageUid = NULL, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = 1) {
+	public function getMenu($pageUid = NULL, $showHidden = FALSE, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = 1) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$key = md5(json_encode(array(self::$showHidden, $pageUid, $fields, $sortField, $addWhere, $checkShortcuts)));
+		$key = md5(json_encode(array($showHidden, $pageUid, $fields, $sortField, $addWhere, $checkShortcuts)));
 		if (FALSE === isset(self::$cachedMenus[$key])) {
-			if (TRUE === self::$showHidden) {
+			if (TRUE === $showHidden) {
 				self::$cachedMenus[$key] = self::$pageSelectHidden->getMenu($pageUid, $fields, $sortField, $addWhere, $checkShortcuts);
 			} else {
 				self::$cachedMenus[$key] = self::$pageSelect->getMenu($pageUid, $fields, $sortField, $addWhere, $checkShortcuts);
@@ -193,15 +181,16 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * Wrapper for t3lib_pageSelect::getRootline()
 	 *
 	 * @param integer $pageUid
+	 * @param boolean $showHidden
 	 * @return array
 	 */
-	public function getRootline($pageUid = NULL) {
+	public function getRootline($pageUid = NULL, $showHidden = FALSE) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$key = md5(json_encode(array(self::$showHidden, $pageUid)));
+		$key = md5(json_encode(array($showHidden, $pageUid)));
 		if (FALSE === isset(self::$cachedRootLines[$key])) {
-			if (TRUE === self::$showHidden) {
+			if (TRUE === $showHidden) {
 				self::$cachedRootLines[$key] = self::$pageSelectHidden->getRootLine($pageUid);
 			} else {
 				self::$cachedRootLines[$key] = self::$pageSelect->getRootLine($pageUid);
