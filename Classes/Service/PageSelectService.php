@@ -150,7 +150,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	public function getPageOverlay($pageInput, $lUid = -1) {
 		$key = md5(json_encode(array($pageInput, $lUid)));
 		if (FALSE === isset(self::$cachedOverlays[$key])) {
-			self::$cachedOverlays[$key] = self::$pageSelect->getMenu($pageUid, $fields, $sortField, $addWhere, $checkShortcuts);
+			self::$cachedOverlays[$key] = self::$pageSelect->getPageOverlay($pageInput, $lUid);
 		}
 		return self::$cachedOverlays[$key];
 	}
