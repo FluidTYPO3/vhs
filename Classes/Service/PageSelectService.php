@@ -68,31 +68,11 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	private static $cachedRootLines = array();
 
 	/**
-	 * @var Tx_Vhs_Service_PageSelectService
+	 * Initialize t3lib_pageSelect objects
 	 */
-	private static $instance;
-
-	/**
-	 * Initialize t3lib_pageSelect object
-	 */
-	private function __construct() {
+	public function initializeObject() {
 		self::$pageSelect = $this->createPageSelectInstance(FALSE);
 		self::$pageSelectHidden = $this->createPageSelectInstance(TRUE);
-	}
-
-	/**
-	 * Avoid cloning
-	 */
-	private function __clone() {}
-
-	/**
-	 * @return Tx_Vhs_Service_PageSelectService
-	 */
-	public static function getInstance() {
-		if (NULL === self::$instance) {
-			self::$instance = new self;
-		}
-		return self::$instance;
 	}
 
 	/**
