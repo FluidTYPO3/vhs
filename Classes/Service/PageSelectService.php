@@ -26,7 +26,12 @@
 /**
  * Page Select Service
  *
- * Wrapper for t3lib_pageSelect including a static cache
+ * Wrapper service for t3lib_pageSelect including static caches for
+ * menus, rootlines, pages and page overlays to be implemented in
+ * viewhelpers by replacing calls to t3lib_pageSelect::getMenu()
+ * and the like. Consideration of hidden pages in menus is controlled
+ * by calling Tx_Vhs_Service_PageSelectService::setShowHidden(TRUE)
+ * which defaults to FALSE.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
@@ -129,6 +134,8 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	}
 
 	/**
+	 * Wrapper for t3lib_pageSelect::getPage()
+	 *
 	 * @param integer $pageUid
 	 * @return array
 	 */
@@ -143,6 +150,8 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	}
 
 	/**
+	 * Wrapper for t3lib_pageSelect::getPageOverlay()
+	 *
 	 * @param mixed $pageInput
 	 * @param integer $lUid
 	 * @return array
@@ -156,6 +165,8 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	}
 
 	/**
+	 * Wrapper for t3lib_pageSelect::getMenu()
+	 *
 	 * @param integer $pageUid
 	 * @param string $fields
 	 * @param string $sortField
@@ -179,6 +190,8 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	}
 
 	/**
+	 * Wrapper for t3lib_pageSelect::getRootline()
+	 *
 	 * @param integer $pageUid
 	 * @return array
 	 */
