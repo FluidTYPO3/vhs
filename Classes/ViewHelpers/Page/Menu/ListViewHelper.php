@@ -65,7 +65,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_ListViewHelper extends Tx_Vhs_ViewHelpers_Pag
 		}
 		$menuData = array();
 		$showHidden = (boolean) $this->arguments['showHidden'];
-		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id, $showHidden);
+		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id, '', $showHidden);
 		foreach ($pages as $pageUid) {
 			$menuData[] = $this->pageSelect->getPage($pageUid);
 		}
