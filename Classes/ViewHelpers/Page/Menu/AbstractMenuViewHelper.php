@@ -59,6 +59,14 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	protected $pageSelect;
 
 	/**
+	 * @param Tx_Vhs_Service_PageSelectService $pageSelectService
+	 * @return void
+	 */
+	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelectService) {
+		$this->pageSelect = $pageSelectService;
+	}
+
+	/**
 	 * Initialize
 	 * @return void
 	 */
@@ -90,13 +98,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('doktypes', 'mixed', 'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut');
 		$this->registerArgument('excludeSubpageTypes', 'mixed', 'CSV list or array of doktypes to not consider as subpages. Can be constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut', FALSE, 'SYSFOLDER');
 		$this->registerArgument('deferred', 'boolean', 'If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering', FALSE, FALSE);
-	}
-
-	/**
-	 * Inject Tx_Vhs_Service_PageSelectService instance
-	 */
-	public function __construct() {
-		$this->pageSelect = Tx_Vhs_Service_PageSelectService::getInstance();
 	}
 
 	/**
