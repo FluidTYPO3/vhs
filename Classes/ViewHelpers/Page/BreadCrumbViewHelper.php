@@ -54,8 +54,7 @@ class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Pa
 		$pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
 		$entryLevel = $this->arguments['entryLevel'];
 		$endLevel = $this->arguments['endLevel'];
-		$showHidden = (boolean) $this->arguments['showHidden'];
-		$rootLineData = $this->pageSelect->getRootLine($pageUid, '', $showHidden);
+		$rootLineData = $this->pageSelect->getRootLine($pageUid);
 		$rootLineData = array_reverse($rootLineData);
 		$rootLineData = array_slice($rootLineData, $entryLevel, $endLevel);
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);

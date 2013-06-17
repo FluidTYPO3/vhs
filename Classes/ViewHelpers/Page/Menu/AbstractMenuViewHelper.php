@@ -502,7 +502,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			}
 			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
-				$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id, '', $showHidden);
+				$rootLineData = $this->pageSelect->getRootLine();
 				$subMenuData = $this->pageSelect->getMenu($pageUid, $showHidden);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
@@ -596,7 +596,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$pageUid = $this->arguments['pageUid'];
 		$entryLevel = $this->arguments['entryLevel'];
 		$showHidden = (boolean) $this->arguments['showHidden'];
-		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id, '', $showHidden);
+		$rootLineData = $this->pageSelect->getRootLine();
 		if (!$pageUid) {
 			if (NULL !== $rootLineData[$entryLevel]['uid']) {
 				$pageUid = $rootLineData[$entryLevel]['uid'];
