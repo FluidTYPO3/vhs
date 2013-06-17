@@ -86,6 +86,10 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		if (TRUE === self::$buildComplete) {
 			return;
 		}
+		if (FALSE === $this->objectManager instanceof Tx_Extbase_Object_ObjectManager) {
+			$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			$this->configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		}
 		$settings = $this->getSettings();
 		$cached = (boolean) $cached;
 		if (TRUE === $cached && TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
@@ -123,8 +127,6 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 */
 	public function buildAllUncached(array $parameters, $caller) {
 		self::$buildComplete = FALSE;
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$this->configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 		$content = $GLOBALS['TSFE']->content;
 		$matches = array();
 		preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\!\>/i', $content, $matches);
