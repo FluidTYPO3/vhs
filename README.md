@@ -204,22 +204,3 @@ misinterpreted when used as numeric values.
 
 It is highly recommended to use the inline annotation when your return values have a specific
 type before being output. Which is exactly the case when working with the v:math.* ViewHelpers.
-
-## ViewHelper Group descriptions
-
-### Condition
-
-These ViewHelpers all use the AbstractConditionViewHelper base and supports the exact same usage
-as f:if - which means that any ViewHelper in the Condition sub-scope as well as any ViewHelper
-in the overview graphic which is marked with a question mark, supports usage such as:
-
-```xml
-<v:condition.frontend then="We're in FE context" />
-
-<v:iterator.contains haystack="{arrayOrWhateverIterator}" needle="{specificObject}">
-    <f:then>We've got a match!</f:then>
-    <f:else>No match, sorry</f:else>
-</v:iterator.contains>
-
-<div class="{v:condition.frontend(then: 'fe-class')}">...</div>
-```
