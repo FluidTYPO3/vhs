@@ -161,19 +161,20 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * Wrapper for t3lib_pageSelect::getRootline()
 	 *
 	 * @param integer $pageUid
+	 * @param string $MP
 	 * @param boolean $showHidden
 	 * @return array
 	 */
-	public function getRootline($pageUid = NULL, $showHidden = FALSE) {
+	public function getRootline($pageUid = NULL, $MP = '', $showHidden = FALSE) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$key = md5(json_encode(array($showHidden, $pageUid)));
+		$key = md5(json_encode(array($showHidden, $MP, $pageUid)));
 		if (FALSE === isset(self::$cachedRootLines[$key])) {
 			if (TRUE === $showHidden) {
-				self::$cachedRootLines[$key] = self::$pageSelectHidden->getRootLine($pageUid);
+				self::$cachedRootLines[$key] = self::$pageSelectHidden->getRootLine($pageUid, $MP);
 			} else {
-				self::$cachedRootLines[$key] = self::$pageSelect->getRootLine($pageUid);
+				self::$cachedRootLines[$key] = self::$pageSelect->getRootLine($pageUid, $MP);
 			}
 		}
 		return self::$cachedRootLines[$key];
