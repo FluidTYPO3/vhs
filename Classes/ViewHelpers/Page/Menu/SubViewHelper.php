@@ -60,7 +60,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_SubViewHelper extends Tx_Vhs_ViewHelpers_Page
 			return '';
 		}
 		$parentArguments = $parentInstance->getArguments();
-		$currentPageRootLine = $this->getCurrentPageRootLine();
+		$currentPageRootLine = $this->getRootLine();
 		$isActive = $this->isActive($pageUid, $currentPageRootLine);
 		// Note about next case: although $isCurrent in most cases implies $isActive, cases where the menu item
 		// that is being rendered is in fact the current page but is NOT part of the rootline of the menu being
