@@ -34,19 +34,9 @@
 abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
-	 * @var array
-	 */
-	private static $cache = array();
-
-	/**
 	 * @var string
 	 */
 	protected $tagName = 'ul';
-
-	/**
-	 * @var t3lib_pageSelect
-	 */
-	protected $pageSelect;
 
 	/**
 	 * @var array
@@ -62,6 +52,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @var boolean
 	 */
 	private $original = TRUE;
+
+	/**
+	 * @var Tx_Vhs_Service_PageSelectService
+	 */
+	protected $pageSelect;
 
 	/**
 	 * Initialize
@@ -97,27 +92,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('deferred', 'boolean', 'If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering', FALSE, FALSE);
 	}
 
-	/**
-	 * Initialize object
-	 * @return void
-	 */
-	public function initializeObject() {
-		if (is_array($GLOBALS['TSFE']->fe_user->user) === TRUE) {
-			$groups = array(-2, 0);
-			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
-		} else {
-			$groups = array(-1, 0);
+	public function __construct() {
+		$this->pageSelect = Tx_Vhs_Service_PageSelectService::getInstance();
+		if (FALSE === empty($this->arguments['showHidden'])) {
+			$this->pageSelect->setShowHidden($this->arguments['showHidden']);
 		}
-		$this->pageSelect = new t3lib_pageSelect();
-		$this->pageSelect->init((boolean) $this->arguments['showHidden']);
-		$clauses = array();
-		foreach ($groups as $group) {
-			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
-				$group . ",%' OR fe_group LIKE '%," . $group . "' OR fe_group LIKE '%," . $group . ",%'";
-			array_push($clauses, $clause);
-		}
-		array_push($clauses, "fe_group = '' OR fe_group = '0'");
-		$this->pageSelect->where_groupAccess = ' AND (' . implode(' OR ', $clauses) .  ')';
 	}
 
 	/**
@@ -654,20 +633,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		}
 
 		return $pages;
-	}
-
-	/**
-	 * Gets the current rootLine (of page being rendered). Implements
-	 * level one cache due to expectations of repeated executions per
-	 * menu rendering loop when using manual page rendering with subpages.
-	 *
-	 * @return array
-	 */
-	protected function getCurrentPageRootLine() {
-		if (FALSE === isset(self::$cache['currentRootLine'])) {
-			self::$cache['currentRootLine'] = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
-		}
-		return self::$cache['currentRootLine'];
 	}
 
 	/**
