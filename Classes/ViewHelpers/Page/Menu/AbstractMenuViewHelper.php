@@ -92,6 +92,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('deferred', 'boolean', 'If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering', FALSE, FALSE);
 	}
 
+	/**
+	 * Inject and configure Tx_Vhs_Service_PageSelectService instance
+	 */
 	public function __construct() {
 		$this->pageSelect = Tx_Vhs_Service_PageSelectService::getInstance();
 		if (FALSE === empty($this->arguments['showHidden'])) {
