@@ -88,6 +88,23 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	private function __clone() {}
 
 	/**
+	 * @return Tx_Vhs_Service_PageSelectService
+	 */
+	public static function getInstance() {
+		if (NULL === self::$instance) {
+			self::$instance = new self;
+		}
+		return self::$instance;
+	}
+
+	/**
+	 * @param boolean $showHidden
+	 */
+	public function setShowHidden($showHidden = FALSE) {
+		self::$showHidden = (boolean) $showHidden;
+	}
+
+	/**
 	 * @param boolean $showHidden
 	 * @return t3lib_pageSelect
 	 */
@@ -109,23 +126,6 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 		array_push($clauses, "fe_group = '' OR fe_group = '0'");
 		$pageSelect->where_groupAccess = ' AND (' . implode(' OR ', $clauses) .  ')';
 		return $pageSelect;
-	}
-
-	/**
-	 * @param boolean $showHidden
-	 */
-	public function setShowHidden($showHidden = FALSE) {
-		self::$showHidden = (boolean) $showHidden;
-	}
-
-	/**
-	 * @return Tx_Vhs_Service_PageSelectService
-	 */
-	public static function getInstance() {
-		if (NULL === self::$instance) {
-			self::$instance = new self;
-		}
-		return self::$instance;
 	}
 
 	/**
