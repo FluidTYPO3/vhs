@@ -92,7 +92,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * @return t3lib_pageSelect
 	 */
 	private function createPageSelectInstance($showHidden = FALSE) {
-		if (is_array($GLOBALS['TSFE']->fe_user->user) === TRUE) {
+		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
 			$groups = array(-2, 0);
 			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
 		} else {
