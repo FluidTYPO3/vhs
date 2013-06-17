@@ -34,19 +34,9 @@
 abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
-	 * @var array
-	 */
-	private static $cache = array();
-
-	/**
 	 * @var string
 	 */
 	protected $tagName = 'ul';
-
-	/**
-	 * @var t3lib_pageSelect
-	 */
-	protected $pageSelect;
 
 	/**
 	 * @var array
@@ -62,6 +52,19 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @var boolean
 	 */
 	private $original = TRUE;
+
+	/**
+	 * @var Tx_Vhs_Service_PageSelectService
+	 */
+	protected $pageSelect;
+
+	/**
+	 * @param Tx_Vhs_Service_PageSelectService $pageSelectService
+	 * @return void
+	 */
+	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelectService) {
+		$this->pageSelect = $pageSelectService;
+	}
 
 	/**
 	 * Initialize
@@ -95,29 +98,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('doktypes', 'mixed', 'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut');
 		$this->registerArgument('excludeSubpageTypes', 'mixed', 'CSV list or array of doktypes to not consider as subpages. Can be constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut', FALSE, 'SYSFOLDER');
 		$this->registerArgument('deferred', 'boolean', 'If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering', FALSE, FALSE);
-	}
-
-	/**
-	 * Initialize object
-	 * @return void
-	 */
-	public function initializeObject() {
-		if (is_array($GLOBALS['TSFE']->fe_user->user) === TRUE) {
-			$groups = array(-2, 0);
-			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
-		} else {
-			$groups = array(-1, 0);
-		}
-		$this->pageSelect = new t3lib_pageSelect();
-		$this->pageSelect->init((boolean) $this->arguments['showHidden']);
-		$clauses = array();
-		foreach ($groups as $group) {
-			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
-				$group . ",%' OR fe_group LIKE '%," . $group . "' OR fe_group LIKE '%," . $group . ",%'";
-			array_push($clauses, $clause);
-		}
-		array_push($clauses, "fe_group = '' OR fe_group = '0'");
-		$this->pageSelect->where_groupAccess = ' AND (' . implode(' OR ', $clauses) .  ')';
 	}
 
 	/**
@@ -347,7 +327,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				$where .= ' AND doktype NOT IN (' . implode(',', $excludeSubpageTypes) . ')';
 			}
 		}
-		return $this->pageSelect->getMenu($pageUid, '*', 'sorting', $where);
+		$showHidden = (boolean) $this->arguments['showHidden'];
+		return $this->pageSelect->getMenu($pageUid, $showHidden, '*', 'sorting', $where);
 	}
 
 	/**
@@ -369,6 +350,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		// first, ensure the complete data array is present
 		$page = $this->pageSelect->getPage($pageUid);
 		$targetPage = NULL;
+		$showHidden = (boolean) $this->arguments['showHidden'];
 		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			switch ($page['shortcut_mode']) {
 				case 3:
@@ -377,12 +359,12 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 					break;
 				case 2:
 					// mode: random subpage of selected or current page
-					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
+					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid, $showHidden);
 					$targetPage = count($menu) > 0 ? $menu[array_rand($menu)] : $page;
 					break;
 				case 1:
 					// mode: first subpage of selected or current page
-					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
+					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid, $showHidden);
 					$targetPage = count($menu) > 0 ? reset($menu) : $page;
 					break;
 				case 0:
@@ -502,6 +484,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$itemsRendered = 0;
 		$numberOfItems = count($menu);
 		$includedPages = array();
+		$showHidden = (boolean) $this->arguments['showHidden'];
 		foreach ($menu as $page) {
 			if ($page['current'] && !$showCurrent) {
 				continue;
@@ -519,8 +502,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			}
 			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
-				$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
-				$subMenuData = $this->pageSelect->getMenu($pageUid);
+				$rootLineData = $this->pageSelect->getRootLine();
+				$subMenuData = $this->pageSelect->getMenu($pageUid, $showHidden);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
 				$this->tag->setTagName($this->arguments['tagName']);
@@ -612,7 +595,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	public function render() {
 		$pageUid = $this->arguments['pageUid'];
 		$entryLevel = $this->arguments['entryLevel'];
-		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
+		$showHidden = (boolean) $this->arguments['showHidden'];
+		$rootLineData = $this->pageSelect->getRootLine();
 		if (!$pageUid) {
 			if (NULL !== $rootLineData[$entryLevel]['uid']) {
 				$pageUid = $rootLineData[$entryLevel]['uid'];
@@ -620,7 +604,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				return '';
 			}
 		}
-		$menuData = $this->pageSelect->getMenu($pageUid);
+		$menuData = $this->pageSelect->getMenu($pageUid, $showHidden);
 		$menu = $this->parseMenu($menuData, $rootLineData);
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->cleanTemplateVariableContainer();
@@ -654,20 +638,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		}
 
 		return $pages;
-	}
-
-	/**
-	 * Gets the current rootLine (of page being rendered). Implements
-	 * level one cache due to expectations of repeated executions per
-	 * menu rendering loop when using manual page rendering with subpages.
-	 *
-	 * @return array
-	 */
-	protected function getCurrentPageRootLine() {
-		if (FALSE === isset(self::$cache['currentRootLine'])) {
-			self::$cache['currentRootLine'] = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
-		}
-		return self::$cache['currentRootLine'];
 	}
 
 	/**

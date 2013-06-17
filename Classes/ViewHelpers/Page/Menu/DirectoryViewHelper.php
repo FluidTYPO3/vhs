@@ -64,9 +64,10 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DirectoryViewHelper extends Tx_Vhs_ViewHelper
 			return;
 		}
 		$menuData = array();
-		$rootLineData = $this->pageSelect->getRootLine($GLOBALS['TSFE']->id);
+		$showHidden = (boolean) $this->arguments['showHidden'];
+		$rootLineData = $this->pageSelect->getRootLine();
 		foreach ($pages as $pageUid) {
-			$menuData = array_merge($menuData, $this->pageSelect->getMenu($pageUid));
+			$menuData = array_merge($menuData, $this->pageSelect->getMenu($pageUid, $showHidden));
 		}
 		$menu = $this->parseMenu($menuData, $rootLineData);
 		$this->backupVariables();
