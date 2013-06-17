@@ -111,7 +111,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		$slideCollectReverse = $this->arguments['slideCollectReverse'];
 		$rootLine = NULL;
 		if ($slide) {
-			$pageSelect = new t3lib_pageSelect();
+			$pageSelect = Tx_Vhs_Service_PageSelectService::getInstance();
 			$rootLine = $pageSelect->getRootLine($pid, $mountpointRange);
 			if ($slideCollectReverse) {
 				$rootLine = array_reverse($rootLine);
