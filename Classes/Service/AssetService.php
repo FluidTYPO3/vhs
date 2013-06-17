@@ -146,6 +146,8 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 */
 	public function getSettings() {
 		if (NULL === self::$settingsCache) {
+			$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			$this->configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 			$allTypoScript = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {
