@@ -48,8 +48,8 @@ class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Vhs_ViewHelper
 		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$pageHasSubPages = (0 < count($this->pageSelect->getMenu($pageUid))) ? 1 : 0;
-		if (1 === $pageHasSubPages) {
+		$pageHasSubPages = (0 < count($this->pageSelect->getMenu($pageUid)));
+		if (TRUE === $pageHasSubPages) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();
