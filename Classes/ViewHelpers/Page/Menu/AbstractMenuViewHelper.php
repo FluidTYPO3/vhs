@@ -215,9 +215,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return boolean
 	 */
 	protected function isActive($pageUid, $rootLine, $originalPageUid = NULL) {
-		if (1 < count($rootLine)) {
-			array_pop($rootLine);
-		}
 		if (NULL !== $originalPageUid && $pageUid !== $originalPageUid) {
 			$pageUid = $originalPageUid;
 		}
