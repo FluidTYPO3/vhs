@@ -119,7 +119,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * Wrapper for t3lib_pageSelect::getPageOverlay()
 	 *
 	 * @param mixed $pageInput
-	 * @param integer $lUid
+	 * @param integer $languageUid
 	 * @return array
 	 */
 	public function getPageOverlay($pageInput, $lUid = -1) {
@@ -139,7 +139,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * @param string $fields
 	 * @param string $sortField
 	 * @param string $addWhere
-	 * @param int $checkShortcuts
+	 * @param integer $checkShortcuts
 	 * @return array
 	 */
 	public function getMenu($pageUid = NULL, $showHidden = FALSE, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = 1) {
