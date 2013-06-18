@@ -38,6 +38,19 @@
 class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
 
 	/**
+	 * @var Tx_Vhs_Service_PageSelectService
+	 */
+	protected $pageSelect;
+
+	/**
+	 * @param Tx_Vhs_Service_PageSelectService $pageSelect
+	 * @return void
+	 */
+	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelect) {
+		$this->pageSelect = $pageSelect;
+	}
+
+	/**
 	 * Render method
 	 *
 	 * @param integer $pageUid
