@@ -35,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Page
  */
-class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper {
+class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
 
 	/**
 	 * Render method
