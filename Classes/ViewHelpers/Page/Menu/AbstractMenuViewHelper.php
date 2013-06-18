@@ -211,11 +211,15 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	/**
 	 * @param integer $pageUid
 	 * @param array $rootLine
+	 * @param integer $originalPageUid
 	 * @return boolean
 	 */
-	protected function isActive($pageUid, $rootLine) {
+	protected function isActive($pageUid, $rootLine, $originalPageUid = NULL) {
 		if (1 < count($rootLine)) {
 			array_pop($rootLine);
+		}
+		if (NULL !== $originalPageUid && $pageUid !== $originalPageUid) {
+			$pageUid = $originalPageUid;
 		}
 		foreach ($rootLine as $page) {
 			if ($page['uid'] == $pageUid) {
@@ -359,6 +363,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	protected function getMenuItemEntry($page, $rootLine) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
 		$pageUid = $page['uid'];
+		// keep a backup of the original page UID to determine 'active' state
+		$originalPageUid = $page['uid'];
 		$argumentCount = 0;
 		$argumentCount += intval($this->arguments['useShortcutData']);
 		$argumentCount += intval($this->arguments['useShortcutTarget']);
@@ -414,7 +420,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 
 		$doktype = (integer) $page['doktype'];
 		$shortcut = ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT) ? $page['shortcut'] : $page['url'];
-		$page['active'] = $this->isActive($pageUid, $rootLine);
+		$page['active'] = $this->isActive($pageUid, $rootLine, $originalPageUid);
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (count($this->getSubmenu($pageUid)) > 0) ? 1 : 0;
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
