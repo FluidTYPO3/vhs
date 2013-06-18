@@ -122,10 +122,10 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * @param integer $languageUid
 	 * @return array
 	 */
-	public function getPageOverlay($pageInput, $lUid = -1) {
-		$key = md5(json_encode(array($pageInput, $lUid)));
+	public function getPageOverlay($pageInput, $languageUid = -1) {
+		$key = md5(serialize($pageInput) . $languageUid);
 		if (FALSE === isset(self::$cachedOverlays[$key])) {
-			self::$cachedOverlays[$key] = self::$pageSelect->getPageOverlay($pageInput, $lUid);
+			self::$cachedOverlays[$key] = self::$pageSelect->getPageOverlay($pageInput, $languageUid);
 		}
 		return self::$cachedOverlays[$key];
 	}
@@ -146,7 +146,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$key = md5(json_encode(array($showHidden, $pageUid, $fields, $sortField, $addWhere, $checkShortcuts)));
+		$key = md5(intval($showHidden) . $pageUid . $fields . $sortField .$addWhere . intval($checkShortcuts));
 		if (FALSE === isset(self::$cachedMenus[$key])) {
 			if (TRUE === $showHidden) {
 				self::$cachedMenus[$key] = self::$pageSelectHidden->getMenu($pageUid, $fields, $sortField, $addWhere, $checkShortcuts);
@@ -168,7 +168,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$key = md5(json_encode(array($MP, $pageUid)));
+		$key = md5($MP . $pageUid);
 		if (FALSE === isset(self::$cachedRootLines[$key])) {
 			self::$cachedRootLines[$key] = self::$pageSelect->getRootLine($pageUid, $MP);
 		}
