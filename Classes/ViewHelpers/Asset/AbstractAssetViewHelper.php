@@ -298,7 +298,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 * @return string
 	 */
 	protected function getTagWithContent() {
-		return $this->tagBuilder->render();;
+		return $this->tagBuilder->render();
 	}
 
 	/**

@@ -46,12 +46,25 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Vhs_Service_PageSelectService
+	 */
+	protected $pageSelect;
+
+	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
+	}
+
+	/**
+	 * @param Tx_Vhs_Service_PageSelectService $pageSelect
+	 * @return void
+	 */
+	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelect) {
+		$this->pageSelect = $pageSelect;
 	}
 
 	/**
@@ -111,8 +124,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		$slideCollectReverse = $this->arguments['slideCollectReverse'];
 		$rootLine = NULL;
 		if ($slide) {
-			$pageSelect = new t3lib_pageSelect();
-			$rootLine = $pageSelect->getRootLine($pid, $mountpointRange);
+			$rootLine = $this->pageSelect->getRootLine($pid, $mountpointRange);
 			if ($slideCollectReverse) {
 				$rootLine = array_reverse($rootLine);
 			}
