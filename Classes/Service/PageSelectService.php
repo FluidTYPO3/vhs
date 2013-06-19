@@ -146,7 +146,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$key = md5(intval($showHidden) . $pageUid . $fields . $sortField .$addWhere . intval($checkShortcuts));
+		$key = md5(intval($showHidden) . $pageUid . $fields . $sortField . $addWhere . intval($checkShortcuts));
 		if (FALSE === isset(self::$cachedMenus[$key])) {
 			if (TRUE === $showHidden) {
 				self::$cachedMenus[$key] = self::$pageSelectHidden->getMenu($pageUid, $fields, $sortField, $addWhere, $checkShortcuts);
@@ -168,7 +168,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$key = md5($MP . $pageUid);
+		$key = md5($pageUid . $MP);
 		if (FALSE === isset(self::$cachedRootLines[$key])) {
 			self::$cachedRootLines[$key] = self::$pageSelect->getRootLine($pageUid, $MP);
 		}
