@@ -33,6 +33,19 @@
 class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
+	 * @var Tx_Vhs_Service_PageSelectService
+	 */
+	protected $pageSelect;
+
+	/**
+	 * @param Tx_Vhs_Service_PageSelectService $pageSelect
+	 * @return void
+	 */
+	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelect) {
+		$this->pageSelect = $pageSelect;
+	}
+
+	/**
 	 * @return void
 	 */
 	public function initializeArguments() {
@@ -46,8 +59,7 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 */
 	public function render() {
 		$pageUid = NULL !== $this->arguments['pageUid'] ? intval($this->arguments['pageUid']) : $GLOBALS['TSFE']->id;
-		$pageSelect = new t3lib_pageSelect();
-		$page = $pageSelect->getPage($pageUid);
+		$page = $this->pageSelect->getPage($pageUid);
 		$output = NULL;
 		if (TRUE === empty($this->arguments['field'])) {
 			$output = $page;

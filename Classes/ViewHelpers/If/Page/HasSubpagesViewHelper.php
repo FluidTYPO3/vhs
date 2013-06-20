@@ -35,7 +35,20 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Page
  */
-class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Vhs_ViewHelpers_Condition_AbstractClientInformationViewHelper {
+class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+
+	/**
+	 * @var Tx_Vhs_Service_PageSelectService
+	 */
+	protected $pageSelect;
+
+	/**
+	 * @param Tx_Vhs_Service_PageSelectService $pageSelect
+	 * @return void
+	 */
+	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelect) {
+		$this->pageSelect = $pageSelect;
+	}
 
 	/**
 	 * Render method
@@ -48,10 +61,9 @@ class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Vhs_ViewHelper
 		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$pageSelect = new t3lib_pageSelect();
-		$pageSelect->init((boolean) $includeHidden);
-		$pageHasSubPages = (0 < count($pageSelect->getMenu($pageUid))) ? 1 : 0;
-		if (1 === $pageHasSubPages) {
+		$menu = $this->pageSelect->getMenu($pageUid, (boolean) $includeHidden);
+		$pageHasSubPages = (0 < count($menu));
+		if (TRUE === $pageHasSubPages) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();

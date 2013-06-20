@@ -81,7 +81,7 @@ class Tx_Vhs_ViewHelpers_Once_SessionViewHelper extends Tx_Vhs_ViewHelpers_Once_
 		$index = get_class($this);
 		$existsInSession = (isset($_SESSION[$index]) === TRUE && isset($_SESSION[$index][$identifier]) === TRUE);
 		if ($existsInSession === TRUE && $_SESSION[$index][$identifier] <= time() - $this->arguments['ttl']) {
-			unset($_SESSION[$inde][$identifier]);
+			unset($_SESSION[$index][$identifier]);
 		}
 	}
 
