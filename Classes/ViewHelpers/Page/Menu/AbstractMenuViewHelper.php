@@ -73,7 +73,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
 		$this->registerArgument('tagName', 'string', 'Tag name to use for enclsing container', FALSE, 'ul');
-		$this->registerArgument('tagNameChildren', 'string', 'Tag name to use for child nodes surrounding links', FALSE, 'li');
+		$this->registerArgument('tagNameChildren', 'string', 'Tag name to use for child nodes surrounding links. If set to "a" enables non-wrapping mode.', FALSE, 'li');
 		$this->registerArgument('entryLevel', 'integer', 'Optional entryLevel TS equivalent of the menu', FALSE, 0);
 		$this->registerArgument('levels', 'integer', 'Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel', FALSE, 1);
 		$this->registerArgument('divider', 'string', 'Optional divider to insert between each menu item. Note that this does not mix well with automatic rendering due to the use of an ul > li structure', FALSE, NULL);
@@ -477,6 +477,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 */
 	protected function autoRender($menu, $level = 1) {
 		$tagName = $this->arguments['tagNameChildren'];
+		$this->tag->setTagName($this->getWrappingTagName());
 		$substElementUid = $this->arguments['substElementUid'];
 		$linkCurrent = (boolean) $this->arguments['linkCurrent'];
 		$linkActive = (boolean) $this->arguments['linkActive'];
@@ -495,7 +496,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			$class = trim($page['class']) != '' ? ' class="' . $page['class'] . '"' : '';
 			$elementId = $substElementUid ? ' id="elem_' . $page['uid'] . '"' : '';
 			$target = $page['target'] != '' ? ' target="' . $page['target'] . '"' : '';
-			$html[] = '<' . $tagName . $elementId . $class . '>';
+			if (FALSE === $this->isNonWrappingMode()) {
+				$html[] = '<' . $tagName . $elementId . $class . '>';
+			}
 			if ($page['current'] && $linkCurrent === FALSE) {
 				$html[] = $page['linktext'];
 			} elseif ($page['active'] && $linkActive === FALSE) {
@@ -509,14 +512,16 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				$subMenuData = $this->pageSelect->getMenu($pageUid, $showHidden);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
-				$this->tag->setTagName($this->arguments['tagName']);
+				$this->tag->setTagName($this->getWrappingTagName());
 				$this->tag->setContent($renderedSubMenu);
 				$this->tag->addAttribute('class', ($this->arguments['class'] ? $this->arguments['class'] . ' lvl-' : 'lvl-') . strval($level));
 				$html[] = $this->tag->render();
 				$this->tag->addAttribute('class', $this->arguments['class']);
 				array_push($includedPages, $page);
 			}
-			$html[] = '</' . $tagName . '>';
+			if (FALSE === $this->isNonWrappingMode()) {
+				$html[] = '</' . $tagName . '>';
+			}
 			$itemsRendered++;
 			if (TRUE === isset($this->arguments['divider']) && $itemsRendered < $numberOfItems) {
 				$html[] = $this->arguments['divider'];
@@ -524,6 +529,25 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		}
 		$content = implode(LF, $html);
 		return $content;
+	}
+
+	/**
+	 * Returns the wrapping tag to use
+	 *
+	 * @return string
+	 */
+	public function getWrappingTagName() {
+		return $this->isNonWrappingMode() ? 'nav' : $this->arguments['tagName'];
+	}
+
+	/**
+	 * Returns TRUE for non-wrapping mode which is triggered
+	 * by setting tagNameChildren to 'a'
+	 *
+	 * @return boolean
+	 */
+	public function isNonWrappingMode() {
+		return 'a' == strtolower($this->arguments['tagNameChildren']);
 	}
 
 	/**
@@ -567,7 +591,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if (0 === count($menu)) {
 			return NULL;
 		}
-		$this->tag->setTagName($this->arguments['tagName']);
+		$this->tag->setTagName($this->getWrappingTagName());
 		$this->tag->forceClosingTag(TRUE);
 		if (TRUE === (boolean) $this->arguments['deferred']) {
 			$tagContent = $this->autoRender($menu);
