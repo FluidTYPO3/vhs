@@ -62,9 +62,9 @@ class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Pa
 			return NULL;
 		}
 		$this->backupVariables();
-		$this->templateVariableContainer->add('rootLine', $rootLine);
+		$this->templateVariableContainer->add($this->arguments['as'], $rootLine);
 		$output = $this->renderContent($rootLine);
-		$this->templateVariableContainer->remove('rootLine');
+		$this->templateVariableContainer->remove($this->arguments['as']);
 		$this->restoreVariables();
 		return $output;
 	}
