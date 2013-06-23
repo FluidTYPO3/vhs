@@ -79,6 +79,9 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	 * @return string
 	 */
 	public function render() {
+		if (FALSE === is_object($GLOBALS['TSFE']->sys_page)) {
+			return NULL;
+		}
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$this->tagName = $this->arguments['tagName'];
 		$this->languageMenu = $this->parseLanguageMenu($this->arguments['order'], $this->arguments['labelOverwrite']);
