@@ -24,7 +24,7 @@
  * ************************************************************* */
 
 /**
- * @protection off
+ * @protection on
  * @author Claus Due <claus@wildside.dk>
  * @package Vhs
  */
@@ -108,15 +108,6 @@ class Tx_Vhs_ViewHelpers_Once_InstanceViewHelperTest extends Tx_Extbase_Tests_Un
 		$arguments = $instance->prepareArguments();
 		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($instance, $arguments);
 		$instance->setViewHelperNode($node);
-	}
-
-	/**
-	 * @test
-	 */
-	public function canRenderWithoutProvidedArguments() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Once_InstanceViewHelper', $instance);
-		$instance->render();
 	}
 
 }
