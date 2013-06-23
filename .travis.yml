@@ -19,6 +19,8 @@ before_script:
 script:
 # phplint checking on all PHP source files in extension
   - php $PWD/typo3/cli_dispatch.phpsh extbase builder:phpsyntax --extension $REPOSITORY
+# install extension
+  - php $PWD/typo3/cli_dispatch.phpsh extbase builder:install $REPOSITORY
 # PHPCodeSniffer code inspection with only errors displayed (no warnings)
   - $PWD/build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/$REPOSITORY
 # PHPUnit tests from overridden phpunit tests configuration file
