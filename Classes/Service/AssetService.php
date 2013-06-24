@@ -275,6 +275,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	private function writeCachedMergedFileAndReturnTag($assets, $type) {
 		$ttl = (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['config.']['cache_period']) && $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] !== 0)
 			? $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] : 10800;
+		$disableCache = (boolean) $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableCache'];
 		$source = '';
 		$assetName = implode('-', array_keys($assets));
 		if ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename']) {
@@ -282,7 +283,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.'.  $type;
 		$fileAbsolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-		if (FALSE === file_exists($fileAbsolutePathAndFilename) || filectime($fileAbsolutePathAndFilename) < time() - $ttl) {
+		if (FALSE === file_exists($fileAbsolutePathAndFilename) || filectime($fileAbsolutePathAndFilename) < time() - $ttl || TRUE === $disableCache) {
 			foreach ($assets as $name => $asset) {
 				$settings = $this->extractAssetSettings($asset);
 				if (TRUE === (isset($settings['namedChunks']) && 0 < $settings['namedChunks']) || FALSE === isset($settings['namedChunks'])) {

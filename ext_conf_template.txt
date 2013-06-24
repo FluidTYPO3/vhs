@@ -1,0 +1,2 @@
+  # cat=basic/enable; type=boolean; label=Development Mode: Disable cache to generate merged assets file on every request.
+disableCache = 0
