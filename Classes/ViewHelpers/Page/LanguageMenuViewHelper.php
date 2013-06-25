@@ -71,6 +71,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 		$this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', FALSE, 'typo3/sysext/t3skin/images/flags/');
 		$this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', FALSE, 'png');
 		$this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', FALSE, TRUE);
+		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'languageMenu');
 	}
 
 	/**
@@ -85,10 +86,10 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$this->tagName = $this->arguments['tagName'];
 		$this->languageMenu = $this->parseLanguageMenu($this->arguments['order'], $this->arguments['labelOverwrite']);
-		$this->templateVariableContainer->add('languageMenu', $this->languageMenu);
+		$this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
 		$content = $this->renderChildren();
+		$this->templateVariableContainer->remove($this->arguments['as']);
 		if (strlen(trim($content)) === 0) {
-			$this->templateVariableContainer->remove('languageMenu');
 			$content = $this->autoRender($this->languageMenu);
 		}
 		return $content;
