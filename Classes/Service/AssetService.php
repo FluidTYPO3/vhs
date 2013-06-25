@@ -537,11 +537,10 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$match = trim($match, '\'" ');
 			if (FALSE === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
 				$checksum = md5($match);
-				if (preg_match('/([^"\']+)([#\?])([\w]+)/', $match, $items)) {
-					list(,$path, $divider, $suffix) = $items;
+				if (preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
+					list(,$path, $suffix) = $items;
 				} else {
 					$path = $match;
-					$divider = '';
 					$suffix = '';
 				}
 				$newPath = basename($path);
@@ -549,10 +548,10 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
 				$temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
 				if (FALSE === file_exists($temporaryFile)) {
-					$realPath = realpath($originalDirectory . '/' . $path);
+					$realPath = t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/') . $path);
 					copy($realPath, $temporaryFile);
 				}
-				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $divider . $suffix . $wrap[1];
+				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
 			}
 		}
 		if (FALSE === empty($replacements)) {
@@ -622,9 +621,8 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		} else {
 			$content = $this->buildAsset($asset);
 		}
-		if ('css' === $assetSettings['type'] && FALSE === empty($fileRelativePathAndFilename)) {
-			$path = pathinfo($absolutePathAndFilename, PATHINFO_DIRNAME);
-			$content = $this->detectAndCopyFileReferences($content, $path);
+		if ('css' === $assetSettings['type']) {
+			$content = $this->detectAndCopyFileReferences($content, $fileRelativePathAndFilename);
 		}
 		return $content;
 	}
