@@ -537,7 +537,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$match = trim($match, '\'" ');
 			if (FALSE === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
 				$checksum = md5($match);
-				if (preg_match('/([^"\'\?#]+)(.+)?/', $match, $items)) {
+				if (preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
 					list(,$path, $suffix) = $items;
 				} else {
 					$path = $match;
