@@ -250,6 +250,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				if (NULL !== $typeNumber) {
 					$parsed[$index] = $typeNumber;
 				}
+			} else {
+				$parsed[$index] = intval($type);
 			}
 		}
 		return $parsed;
