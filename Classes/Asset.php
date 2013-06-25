@@ -292,6 +292,9 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public function setType($type) {
 		$this->type = $type;
+		if ('css' == strtolower($type)) {
+			$this->setMovable(FALSE);
+		}
 		return $this;
 	}
 
@@ -385,7 +388,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 			$this->type = pathinfo($path, PATHINFO_EXTENSION);
 		}
 		if (NULL === $this->name) {
-			$this->name = pathinfo($path, PATHINFO_FILENAME);
+			$this->setName(pathinfo($path, PATHINFO_FILENAME));
 		}
 		$this->path = $path;
 		return $this;
