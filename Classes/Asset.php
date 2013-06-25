@@ -288,7 +288,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $type
-	 * @return Tx_Vhs_Aasset
+	 * @return Tx_Vhs_Asset
 	 */
 	public function setType($type) {
 		$this->type = $type;
