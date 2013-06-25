@@ -323,14 +323,14 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return array
 	 */
 	protected function getSubmenu($pageUid) {
-		$where = 'AND nav_hide=0';
+		$showHidden = (boolean) $this->arguments['showHidden'];
+		$where = TRUE === $showHidden ? '' : 'AND nav_hide=0';
 		if (NULL !== $this->arguments['excludeSubpageTypes'] && FALSE === empty($this->arguments['excludeSubpageTypes'])) {
 			$excludeSubpageTypes = $this->parseDoktypeList($this->arguments['excludeSubpageTypes']);
 			if (0 < count($excludeSubpageTypes)) {
 				$where .= ' AND doktype NOT IN (' . implode(',', $excludeSubpageTypes) . ')';
 			}
 		}
-		$showHidden = (boolean) $this->arguments['showHidden'];
 		return $this->pageSelect->getMenu($pageUid, $showHidden, '*', 'sorting', $where);
 	}
 
