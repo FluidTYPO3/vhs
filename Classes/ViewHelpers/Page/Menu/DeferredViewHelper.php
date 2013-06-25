@@ -38,11 +38,11 @@
 class Tx_Vhs_ViewHelpers_Page_Menu_DeferredViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
 
 	/**
-	 * @param string $as
 	 * @return string
 	 * @throws Exception
 	 */
-	public function render($as = NULL) {
+	public function render() {
+		$as = $this->arguments['as'];
 		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray')) {
 			return NULL;
 		}
