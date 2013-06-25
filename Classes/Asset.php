@@ -288,10 +288,13 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $type
-	 * @return Tx_Vhs_Aasset
+	 * @return Tx_Vhs_Asset
 	 */
 	public function setType($type) {
 		$this->type = $type;
+		if ('css' == strtolower($type)) {
+			$this->setMovable(FALSE);
+		}
 		return $this;
 	}
 
@@ -335,15 +338,6 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
-	 * @param string $content
-	 * @return Tx_Vhs_Asset
-	 */
-	public function setContent($content) {
-		$this->content = $content;
-		return $this;
-	}
-
-	/**
 	 * @param string $name
 	 * @return Tx_Vhs_Asset
 	 */
@@ -360,6 +354,15 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 			return file_get_contents(t3lib_div::getFileAbsFileName($this->path));
 		}
 		return $this->content;
+	}
+
+	/**
+	 * @param string $content
+	 * @return Tx_Vhs_Asset
+	 */
+	public function setContent($content) {
+		$this->content = $content;
+		return $this;
 	}
 
 	/**
@@ -382,10 +385,10 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 			$path = t3lib_div::getFileAbsFileName($path);
 		}
 		if (NULL === $this->type) {
-			$this->type = pathinfo($path, PATHINFO_EXTENSION);
+			$this->setType(pathinfo($path, PATHINFO_EXTENSION));
 		}
 		if (NULL === $this->name) {
-			$this->name = pathinfo($path, PATHINFO_FILENAME);
+			$this->setName(pathinfo($path, PATHINFO_FILENAME));
 		}
 		$this->path = $path;
 		return $this;
@@ -481,6 +484,13 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function getMovable() {
+		return $this->movable;
+	}
+
+	/**
 	 * @param boolean $movable
 	 * @return $this
 	 */
@@ -492,8 +502,8 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	/**
 	 * @return boolean
 	 */
-	public function getMovable() {
-		return $this->movable;
+	public function getRemoved() {
+		return $this->removed;
 	}
 
 	/**
@@ -503,13 +513,6 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	public function setRemoved($removed) {
 		$this->removed = $removed;
 		return $this;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function getRemoved() {
-		return $this->removed;
 	}
 
 	/**
