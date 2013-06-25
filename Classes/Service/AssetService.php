@@ -537,11 +537,10 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$match = trim($match, '\'" ');
 			if (FALSE === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
 				$checksum = md5($match);
-				if (preg_match('/([^"\']+)([#\?])([\w]+)/', $match, $items)) {
-					list(,$path, $divider, $suffix) = $items;
+				if (preg_match('/([^"\'\?#]+)(.+)?/', $match, $items)) {
+					list(,$path, $suffix) = $items;
 				} else {
 					$path = $match;
-					$divider = '';
 					$suffix = '';
 				}
 				$newPath = basename($path);
@@ -552,7 +551,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 					$realPath = realpath($originalDirectory . '/' . $path);
 					copy($realPath, $temporaryFile);
 				}
-				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $divider . $suffix . $wrap[1];
+				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
 			}
 		}
 		if (FALSE === empty($replacements)) {
