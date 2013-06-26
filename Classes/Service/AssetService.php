@@ -548,7 +548,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
 				$temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
 				if (FALSE === file_exists($temporaryFile)) {
-					$realPath = t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/') . $path);
+					$realPath = realpath(t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path);
 					copy($realPath, $temporaryFile);
 				}
 				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
@@ -606,6 +606,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	private function extractAssetContent($asset) {
 		$assetSettings = $this->extractAssetSettings($asset);
 		$fileRelativePathAndFilename = $assetSettings['path'];
+		$fileRelativePath = dirname($assetSettings['path']);
 		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
 		$isExternal = (TRUE === (isset($assetSettings['external']) && $assetSettings['external'] > 0));
 		$isFluidTemplate = (TRUE === (isset($assetSettings['fluid']) && $assetSettings['fluid'] > 0));
@@ -622,7 +623,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$content = $this->buildAsset($asset);
 		}
 		if ('css' === $assetSettings['type']) {
-			$content = $this->detectAndCopyFileReferences($content, $fileRelativePathAndFilename);
+			$content = $this->detectAndCopyFileReferences($content, $fileRelativePath);
 		}
 		return $content;
 	}
