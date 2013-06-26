@@ -262,8 +262,9 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		} else {
 			$name = md5(serialize($assetSettings));
 		}
-		if (TRUE === (boolean) $assetSettings['fluid']) {
-			$name .= '-' . md5(serialize($this->getVariables()));
+		$variables = $this->getVariables();
+		if (0 < count($variables)) {
+			$name .= '-' . md5(serialize($variables));
 		}
 		return $name;
 	}
