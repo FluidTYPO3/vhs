@@ -388,11 +388,12 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
 		$compilables = array();
+		$assetNames = array_combine(array_keys($assets), array_keys($assets));
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
 			/** @var $asset Tx_Vhs_ViewHelpers_Asset_AssetInterface */
 			$assetSettings = $this->extractAssetSettings($asset);
-			$name = $assetSettings['name'];
+			$name = array_shift($assetNames);
 			$dependencies = $assetSettings['dependencies'];
 			if (FALSE === is_array($dependencies)) {
 				$dependencies = t3lib_div::trimExplode(',', $assetSettings['dependencies'], TRUE);
@@ -408,6 +409,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 						break;
 					}
 					$assets[$name] = $asset;
+					$assetNames[$name] = $name;
 					$postpone = TRUE;
 				}
 			}
