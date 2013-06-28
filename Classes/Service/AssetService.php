@@ -172,6 +172,10 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		$footer = array();
 		$footerRelocationEnabled = (TRUE === isset($settings['enableFooterRelocation']) && $settings['relocateToFooter'] > 0) || FALSE === isset($settings['enableFooterRelocation']);
 		foreach ($assets as $name => $asset) {
+			$assetSettings = $this->extractAssetSettings($asset);
+			if (TRUE === isset($assetSettings['name'])) {
+				$name = $assetSettings['name'];
+			}
 			if (TRUE === ($this->assertAssetAllowedInFooter($asset) && $footerRelocationEnabled)) {
 				$footer[$name] = $asset;
 			} else {
@@ -231,6 +235,9 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			/** @var $spooledAssets Tx_Vhs_ViewHelpers_Asset_AssetInterface[] */
 			foreach ($spooledAssets as $name => $asset) {
 				$assetSettings = $this->extractAssetSettings($asset);
+				if (TRUE === isset($assetSettings)) {
+					$name = $assetSettings['name'];
+				}
 				$standalone = (TRUE === (boolean) $assetSettings['standalone']);
 				if (TRUE === $standalone) {
 					if (0 < count($chunk)) {
