@@ -277,8 +277,10 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			? $GLOBALS['TSFE']->tmpl->setup['config.']['cache_period'] : 10800;
 		$source = '';
 		$assetName = implode('-', array_keys($assets));
-		if ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename']) {
-			$assetName = md5($assetName);
+		if (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename'])) {
+			if (TRUE === (boolean) $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename']) {
+				$assetName = md5($assetName);
+			}
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.'.  $type;
 		$fileAbsolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
