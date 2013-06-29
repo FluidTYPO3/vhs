@@ -66,6 +66,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$this->registerUniversalTagAttributes();
 		$this->registerTagAttribute('target', 'string', 'Target of link', FALSE);
 		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
+		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.', FALSE, 'nav_title,title');
 	}
 
 	/**
@@ -79,26 +80,26 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @param boolean $absolute If set, the URI of the rendered link is absolute
 	 * @param boolean $addQueryString If set, the current query parameters will be kept in the URI
 	 * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
-	 * @return string Rendered page URI
+	 * @return NULL|string Rendered page URI
 	 */
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
 		if (NULL === $pageUid) {
-			return;
+			return NULL;
 		}
 		$page = $this->pageSelect->getPage($pageUid);
 		if (TRUE === empty($page)) {
-			return;
+			return NULL;
 		}
-		$title = $page['title'];
+		$title = $this->getTitleValue($page);
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
 		$l18nConfig = $page['l18n_cfg'];
 		if (0 < $getLL) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $getLL);
 			if (TRUE === (boolean) t3lib_div::hideIfNotTranslated($l18nConfig) && TRUE === empty($pageOverlay)) {
-				return;
+				return NULL;
 			}
-			if (FALSE === empty($pageOverlay['title'])) {
-				$title = $pageOverlay['title'];
+			if (NULL !== ($overlayTitle = $this->getTitleValue($pageOverlay))) {
+				$title = $overlayTitle;
 			}
 		}
 		$uriBuilder = $this->controllerContext->getUriBuilder();
@@ -106,5 +107,21 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($title);
 		return $this->tag->render();
+	}
+
+	/**
+	 * @param array $record
+	 * @return string
+	 */
+	private function getTitleValue($record) {
+		$title = NULL;
+		$titleFieldList = t3lib_div::trimExplode(',', $this->arguments['titleFields']);
+		foreach ($titleFieldList as $titleFieldName) {
+			if (FALSE === empty($record[$titleFieldName])) {
+				$title = $record[$titleFieldName];
+				break;
+			}
+		}
+		return $title;
 	}
 }
