@@ -91,8 +91,12 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		}
 		$title = $page['title'];
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
+		$l18nConfig = $page['l18n_cfg'];
 		if (0 < $getLL) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $getLL);
+			if (TRUE === (boolean) t3lib_div::hideIfNotTranslated($l18nConfig) && TRUE === empty($pageOverlay)) {
+				return;
+			}
 			if (FALSE === empty($pageOverlay['title'])) {
 				$title = $pageOverlay['title'];
 			}
