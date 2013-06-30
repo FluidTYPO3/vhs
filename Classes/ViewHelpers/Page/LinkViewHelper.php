@@ -108,8 +108,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			}
 		}
 		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder
-			->reset()
+		$uri = $uriBuilder->reset()
 			->setTargetPageUid($pageUid)
 			->setTargetPageType($this->arguments['pageType'])
 			->setNoCache($this->arguments['noCache'])
@@ -120,8 +119,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			->setCreateAbsoluteUri($this->arguments['absolute'])
 			->setAddQueryString($this->arguments['addQueryString'])
 			->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
-			->build()
-		;
+			->build();
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($title);
 		return $this->tag->render();
