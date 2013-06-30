@@ -66,26 +66,31 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$this->registerUniversalTagAttributes();
 		$this->registerTagAttribute('target', 'string', 'Target of link', FALSE);
 		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
-		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.', FALSE, 'nav_title,title');
+		$this->registerArgument('pageUid', 'integer', 'UID of the page to create the link and fetch the title for.', FALSE);
+		$this->registerArgument('additionalParams', 'array', 'Query parameters to be attached to the resulting URI', FALSE, array());
+		$this->registerArgument('pageType', 'integer', 'Type of the target page. See typolink.parameter', FALSE, 0);
+		$this->registerArgument('noCache', 'boolean', 'When TRUE disables caching for the target page. You should not need this.', FALSE, FALSE);
+		$this->registerArgument('noCacheHash', 'boolean', 'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this.', FALSE, FALSE);
+		$this->registerArgument('section', 'string', 'The anchor to be added to the URI', FALSE, '');
+		$this->registerArgument('linkAccessRestrictedPages', 'boolean', 'When TRUE, links pointing to access restricted pages will still link
+			to the page even though the page cannot be accessed.', FALSE, FALSE);
+		$this->registerArgument('absolute', 'boolean', 'When TRUE, the URI of the rendered link is absolute', FALSE, FALSE);
+		$this->registerArgument('addQueryString', 'boolean', 'When TRUE, the current query parameters will be kept in the URI', FALSE, FALSE);
+		$this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE', FALSE, array());
+		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to
+			for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved
+			AFTER page field overlays.', FALSE, 'nav_title,title');
 	}
 
 	/**
-	 * @param integer $pageUid target page. See TypoLink destination
-	 * @param array $additionalParams query parameters to be attached to the resulting URI
-	 * @param integer $pageType type of the target page. See typolink.parameter
-	 * @param boolean $noCache set this to disable caching for the target page. You should not need this.
-	 * @param boolean $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
-	 * @param string $section the anchor to be added to the URI
-	 * @param boolean $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
-	 * @param boolean $absolute If set, the URI of the rendered link is absolute
-	 * @param boolean $addQueryString If set, the current query parameters will be kept in the URI
-	 * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
+	 * Render method
 	 * @return NULL|string Rendered page link
 	 */
-	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
-		if (NULL === $pageUid) {
+	public function render() {
+		if (FALSE === isset($this->arguments['pageUid']) || TRUE === empty($this->arguments['pageUid'])) {
 			return NULL;
 		}
+		$pageUid = $this->arguments['pageUid'];
 		$page = $this->pageSelect->getPage($pageUid);
 		if (TRUE === empty($page)) {
 			return NULL;
@@ -103,7 +108,20 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			}
 		}
 		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setUseCacheHash(!$noCacheHash)->setSection($section)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->build();
+		$uri = $uriBuilder
+			->reset()
+			->setTargetPageUid($pageUid)
+			->setTargetPageType($this->arguments['pageType'])
+			->setNoCache($this->arguments['noCache'])
+			->setUseCacheHash(!$this->arguments['noCacheHash'])
+			->setSection($this->arguments['section'])
+			->setLinkAccessRestrictedPages($this->arguments['linkAccessRestrictedPages'])
+			->setArguments($this->arguments['additionalParams'])
+			->setCreateAbsoluteUri($this->arguments['absolute'])
+			->setAddQueryString($this->arguments['addQueryString'])
+			->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
+			->build()
+		;
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($title);
 		return $this->tag->render();
