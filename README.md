@@ -1,8 +1,8 @@
-TYPO3 extension VHS: Fluid ViewHelpers
-======================================
+VHS: Fluid ViewHelpers
+======================
 
-	Collection of general purpose ViewHelpers usable in the Fluid templating engine
-	that's bundled with the TYPO3 CMS.
+> Collection of general purpose ViewHelpers usable in the Fluid templating engine
+> that's bundled with the TYPO3 CMS.
 
 [![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs)
 
@@ -13,7 +13,6 @@ TYPO3 extension VHS: Fluid ViewHelpers
 
 _Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
 and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
-
 ## Overview
 
 ![ViewHelpers](https://raw.github.com/wiki/FluidTYPO3/vhs/Images/Home/Overview.png)
