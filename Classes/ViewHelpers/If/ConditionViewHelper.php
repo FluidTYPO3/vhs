@@ -87,7 +87,7 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
 				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
-				$data = $childNode->evaluate($this->renderingContext);
+				$data = $childNode->evaluate($this->fetchRenderingContext());
 				return $data;
 			}
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
@@ -121,7 +121,7 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
 				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
-				return $childNode->evaluate($this->renderingContext);
+				return $childNode->evaluate($this->fetchRenderingContext());
 			}
 		}
 
@@ -142,7 +142,7 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 				if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
 					$viewHelperClassName = $childNode->getViewHelperClassName();
 					if ($viewHelperClassName === 'Tx_Vhs_ViewHelpers_Condition_ExtendViewHelper') {
-						$condition = $childNode->evaluate($this->renderingContext);
+						$condition = $childNode->evaluate($this->fetchRenderingContext());
 						break;
 					}
 				}
@@ -153,6 +153,16 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 		} else {
 			return $this->renderElseChild();
 		}
+	}
+
+	/**
+	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
+	 */
+	protected function fetchRenderingContext() {
+		if (TRUE === method_exists($this, 'getRenderingContext')) {
+			return call_user_func_array(array($this, 'getRenderingContext'), array());
+		}
+		return $this->renderingContext;
 	}
 
 }
