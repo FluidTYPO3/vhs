@@ -102,6 +102,9 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				}
 			}
 		}
+		if (FALSE === isset($GLOBALS['VhsAssets']) || FALSE === is_array($GLOBALS['VhsAssets'])) {
+			return;
+		}
 		$assets = $GLOBALS['VhsAssets'];
 		$assets = $this->sortAssetsByDependency($assets);
 		$assets = $this->manipulateAssetsByTypoScriptSetttings($assets);
