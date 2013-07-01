@@ -61,6 +61,11 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	private static $buildComplete = FALSE;
 
 	/**
+	 * @var boolean
+	 */
+	private static $cacheCleared = FALSE;
+
+	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -636,13 +641,21 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	}
 
 	/**
+	 * @param array $parameters
 	 * @return void
 	 */
-	public function clearCacheCommand() {
+	public function clearCacheCommand($parameters) {
+		if (TRUE === self::$cacheCleared) {
+			return;
+		}
+		if ('all' !== $parameters['cacheCmd']) {
+			return;
+		}
 		$assetCacheFiles = glob(t3lib_div::getFileAbsFileName('typo3temp/vhs-assets-*'));
 		foreach ($assetCacheFiles as $assetCacheFile) {
 			unlink($assetCacheFile);
 		}
+		self::$cacheCleared = TRUE;
 	}
 
 }
