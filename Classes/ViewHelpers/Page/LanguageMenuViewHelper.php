@@ -155,7 +155,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	 * @return string
 	 */
 	protected function getLayout(array $language) {
-		$flagImage = $this->getFlagImage($language);
+		$flagImage = FALSE !== stripos($this->arguments['layout'], 'flag') ? $this->getFlagImage($language) : '';
 		$label = $language['label'];
 		switch ($this->arguments['layout']) {
 			case 'flag':
