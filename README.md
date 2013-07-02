@@ -211,3 +211,8 @@ misinterpreted when used as numeric values.
 
 It is highly recommended to use the inline annotation when your return values have a specific
 type before being output. Which is exactly the case when working with the v:math.* ViewHelpers.
+
+## Known issues
+
+* PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent 
+  version. PHP 5.3.7 is recommended at least
