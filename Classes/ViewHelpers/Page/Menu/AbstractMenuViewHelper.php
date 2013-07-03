@@ -116,7 +116,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			return NULL;
 		}
 		$variables = $this->templateVariableContainer->getAll();
-		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance', $this);
+		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance', clone($this));
 		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables', $variables);
 	}
 
