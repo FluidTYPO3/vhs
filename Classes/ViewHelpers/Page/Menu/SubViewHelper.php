@@ -72,7 +72,18 @@ class Tx_Vhs_ViewHelpers_Page_Menu_SubViewHelper extends Tx_Vhs_ViewHelpers_Page
 		if (FALSE === $shouldRender) {
 			return '';
 		}
+		// retrieve the set of template variables which were in play when the parent menu VH started rendering.
+		$variables = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables');
+		$parentInstance->setOriginal(FALSE);
 		$content = $parentInstance->render();
+		$parentInstance->setOriginal(TRUE);
+		// restore the previous set of variables after they most likely have changed during the render() above.
+		foreach ($variables as $name => $value) {
+			if ($this->templateVariableContainer->exists($name)) {
+				$this->templateVariableContainer->remove($name);
+				$this->templateVariableContainer->add($name, $value);
+			}
+		}
 		return $content;
 	}
 
