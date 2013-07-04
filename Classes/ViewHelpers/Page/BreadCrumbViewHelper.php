@@ -45,12 +45,14 @@ class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Pa
 		parent::initializeArguments();
 		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel.', FALSE, NULL);
 		$this->registerArgument('endLevel', 'integer', 'Optional deepest level of rendering. If left out all levels up to the current are rendered.', FALSE, NULL);
+		$this->overrideArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'rootLine');
 	}
 
 	/**
 	 * @return string
 	 */
 	public function render() {
+		$this->backups = array($this->arguments['as']);
 		$pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
 		$entryLevel = $this->arguments['entryLevel'];
 		$endLevel = $this->arguments['endLevel'];
