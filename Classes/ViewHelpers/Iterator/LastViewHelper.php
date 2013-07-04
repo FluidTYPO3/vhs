@@ -38,7 +38,7 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends Tx_Vhs_ViewHelpers_Iter
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', TRUE);
+		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', FALSE, NULL);
 	}
 
 	/**
@@ -49,6 +49,9 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends Tx_Vhs_ViewHelpers_Iter
 	 */
 	public function render() {
 		$haystack = $this->arguments['haystack'];
+		if (NULL === $haystack) {
+			$haystack = $this->renderChildren();
+		}
 		if (is_array($haystack) === FALSE && $haystack instanceof Iterator === FALSE && is_null($haystack) === FALSE) {
 			throw new Exception('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
 				gettype($haystack), 1351958398);
