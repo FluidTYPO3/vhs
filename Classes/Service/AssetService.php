@@ -561,9 +561,11 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
 				if (FALSE === file_exists($temporaryFile)) {
 					$realPath = realpath(t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path);
-					copy($realPath, $temporaryFile);
+					if (FALSE !== $realPath) {
+						copy($realPath, $temporaryFile);
+						$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
+					}
 				}
-				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
 			}
 		}
 		if (FALSE === empty($replacements)) {
