@@ -45,7 +45,7 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends Tx_Vhs_ViewHelpers_Iter
 	 * Render method
 	 *
 	 * @throws Exception
-	 * @return string
+	 * @return mixed|NULL
 	 */
 	public function render() {
 		$haystack = $this->arguments['haystack'];
@@ -55,6 +55,9 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends Tx_Vhs_ViewHelpers_Iter
 		if (is_array($haystack) === FALSE && $haystack instanceof Iterator === FALSE && is_null($haystack) === FALSE) {
 			throw new Exception('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
 				gettype($haystack), 1351958398);
+		}
+		if (NULL === $haystack) {
+			return NULL;
 		}
 		$needle = NULL;
 		foreach ($haystack as $needle) {
