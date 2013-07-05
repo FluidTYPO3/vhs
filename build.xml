@@ -76,11 +76,11 @@
     <target name="phploc" description="Measure project size using PHPLOC">
         <exec executable="${tooldir}/phploc" output="${output}/logs/phploc.txt">
             <arg line="--log-xml ${output}/logs/phploc.xml"/>
-            <arg line="--log-csv ${output}/logs/phploc.xml"/>
+            <arg line="--log-csv ${output}/logs/phploc.csv"/>
             <arg path="${basedir}/Classes"/>
         </exec>
         <echo message="##teamcity[publishArtifacts '${output}/logs/phploc.xml']"/>
-        <echo message="##teamcity[publishArtifacts '${output}/logs/phploc.xml']"/>
+        <echo message="##teamcity[publishArtifacts '${output}/logs/phploc.csv']"/>
         <echo message="##teamcity[publishArtifacts '${output}/logs/phploc.txt']"/>
     </target>
 
