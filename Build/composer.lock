@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "aa705c6e3d37e0811aab936d807f70a2",
+    "hash": "d6e8dce6e3c6305cee6b916ca9046ccf",
     "packages": [
 
     ],
@@ -56,16 +56,16 @@
         },
         {
             "name": "apigen/apigen",
-            "version": "2.8.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/apigen/apigen",
-                "reference": "2.8.0"
+                "reference": "c6c0af2b5ac8128320f82e971b19756439fac42c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/apigen/apigen/zipball/2.8.0",
-                "reference": "2.8.0",
+                "url": "https://github.com/apigen/apigen/zipball/c6c0af2b5ac8128320f82e971b19756439fac42c",
+                "reference": "c6c0af2b5ac8128320f82e971b19756439fac42c",
                 "shasum": ""
             },
             "require": {
@@ -123,7 +123,7 @@
                 "phpDocumentor",
                 "phpdoc"
             ],
-            "time": "2012-09-29 10:34:02"
+            "time": "2012-09-29 13:17:32"
         },
         {
             "name": "dg/texy",
@@ -1505,6 +1505,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "apigen/apigen": 20,
         "phploc/phploc": 20,
         "pdepend/pdepend": 20,
         "mayflower/php-codebrowser": 20

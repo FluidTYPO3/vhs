@@ -6,7 +6,7 @@
     },
     "require-dev": {
         "phing/phing": "2.5.*",
-        "apigen/apigen": "2.8.*",
+        "apigen/apigen": "dev-master",
         "phpmd/phpmd": "1.4.*",
         "sebastian/phpcpd": "1.4.*",
         "squizlabs/php_codesniffer": "1.4.*",
