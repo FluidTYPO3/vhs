@@ -135,8 +135,12 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		$hideUnTranslated = (boolean) $this->arguments['hideUnTranslated'];
 		$currentLanguage = $GLOBALS['TSFE']->sys_language_uid;
 		$languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
-		if ($hideUnTranslated && 0 < $currentLanguage) {
-			$languageCondition .= ' AND l18n_parent > 0';
+		if ($currentLanguage > 0) {
+			if ($hideUnTranslated) {
+				$languageCondition .= ' AND l18n_parent > 0';
+			}
+			$nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' . $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
+			$languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
 		}
 		$languageCondition .= ')';
 		do {
