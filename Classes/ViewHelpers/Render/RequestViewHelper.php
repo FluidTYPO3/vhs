@@ -97,7 +97,7 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 		}
 		$temporaryContentObject = new tslib_cObj();
 		/** @var Tx_Extbase_MVC_Web_Request $request */
-		$request = $this->objectManager->create($this->requestType);
+		$request = $this->objectManager->get($this->requestType);
 		$request->setControllerActionName($action);
 		$request->setControllerName($controller);
 		$request->setPluginName($pluginName);
@@ -105,7 +105,7 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 		$request->setArguments($arguments);
 		try {
 			/** @var Tx_Extbase_MVC_ResponseInterface $response */
-			$response = $this->objectManager->create($this->responseType);
+			$response = $this->objectManager->get($this->responseType);
 			$this->configurationManager->setContentObject($temporaryContentObject);
 			$this->configurationManager->setConfiguration(
 				$this->configurationManager->getConfiguration(
