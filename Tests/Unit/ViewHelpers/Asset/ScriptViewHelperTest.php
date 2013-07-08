@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 
+ *  (c) 2013 Cedric Ziel <cedric@cedric-ziel.com>
  *
  *  All rights reserved
  *
