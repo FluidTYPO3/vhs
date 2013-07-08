@@ -85,7 +85,6 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 					return $value;
 				} catch (Exception $e) {
 					return NULL;
-					throw $e;
 				}
 			}
 		}
