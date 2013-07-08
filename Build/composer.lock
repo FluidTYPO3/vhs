@@ -269,12 +269,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/nette.git",
-                "reference": "85f07b90bbbb7a35488af01d07faa29e4ac91a99"
+                "reference": "9662d1583ba4507cf043f861c2391dd943ebbe5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/nette/zipball/85f07b90bbbb7a35488af01d07faa29e4ac91a99",
-                "reference": "85f07b90bbbb7a35488af01d07faa29e4ac91a99",
+                "url": "https://api.github.com/repos/nette/nette/zipball/9662d1583ba4507cf043f861c2391dd943ebbe5b",
+                "reference": "9662d1583ba4507cf043f861c2391dd943ebbe5b",
                 "shasum": ""
             },
             "require": {
@@ -335,7 +335,7 @@
                 "neon",
                 "templating"
             ],
-            "time": "2013-07-04 14:53:21"
+            "time": "2013-07-05 13:59:44"
         },
         {
             "name": "pdepend/pdepend",
