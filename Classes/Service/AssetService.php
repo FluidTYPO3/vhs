@@ -416,7 +416,6 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 					// specific Asset
 					if (0 === count($assets)) {
 						throw new RuntimeException('Asset "' . $name . '" depends on "' . $dependency . '" but "' . $dependency . '" was not found', 1358603979);
-						break;
 					}
 					$assets[$name] = $asset;
 					$assetNames[$name] = $name;
