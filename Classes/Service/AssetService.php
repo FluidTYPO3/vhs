@@ -398,7 +398,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
 		$compilables = array();
-		$assetNames = array_combine(array_keys($assets), array_keys($assets));
+		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
 			/** @var $asset Tx_Vhs_ViewHelpers_Asset_AssetInterface */
@@ -559,10 +559,15 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
 				$temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
 				if (FALSE === file_exists($temporaryFile)) {
-					$realPath = realpath(t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path);
-					copy($realPath, $temporaryFile);
+					$rawPath = t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path;
+					$realPath = realpath($rawPath);
+					if (FALSE === $realPath) {
+						t3lib_div::sysLog('Asset at path "'. $rawPath .'" not found. Processing skipped.', t3lib_div::SYSLOG_SEVERITY_WARNING);
+					} else {
+						copy($realPath, $temporaryFile);
+						$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
+					}
 				}
-				$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
 			}
 		}
 		if (FALSE === empty($replacements)) {
