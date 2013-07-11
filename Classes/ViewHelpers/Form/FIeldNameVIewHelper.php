@@ -26,6 +26,10 @@
 /**
  * Form Field Name View Helper
  *
+ * This viewhelper returns the properly prefixed name of the given
+ * form field and generates the corresponding HMAC to allow posting
+ * of dynamically added fields.
+ *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Form
