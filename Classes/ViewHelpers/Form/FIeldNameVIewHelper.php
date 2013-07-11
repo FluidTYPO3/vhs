@@ -41,8 +41,8 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends Tx_Fluid_Core_ViewHelp
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('name', 'string', 'Name of input tag');
-		$this->registerArgument('property', 'string', 'Name of Object Property. If used in conjunction with <f:form object="...">, "name" and "value" properties will be ignored.');
+		$this->registerArgument('name', 'string', 'Name of the form field to generate the HMAC for.');
+		$this->registerArgument('property', 'string', 'Name of object property. If used in conjunction with <f:form object="...">, "name" argument will be ignored.');
 	}
 
 	/**
