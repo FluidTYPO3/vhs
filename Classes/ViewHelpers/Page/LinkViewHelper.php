@@ -28,10 +28,13 @@
  *
  * Viewhelper for rendering page links
  *
- * This viewhelper acts identically to Fluid's link viewhelper except
- * it fetches the link text for the provided page UID which is to be
- * omitted obviously: <v:page.link pageUid="UID" />. The viewhelper
- * is l18n aware.
+ * This viewhelper behaves identically to Fluid's link viewhelper
+ * except for it fetches the title of the provided page UID and inserts
+ * it as linktext if that is omitted. The link will not render at all
+ * if the requested page is not translated in the current language.
+ *
+ * Automatic linktext: <v:page.link pageUid="UID" />
+ * Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
  *
  * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
@@ -95,7 +98,10 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		if (TRUE === empty($page)) {
 			return NULL;
 		}
-		$title = $this->getTitleValue($page);
+		$title = $this->renderChildren();
+		if (NULL === $title) {
+			$title = $this->getTitleValue($page);
+		}
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
 		$l18nConfig = $page['l18n_cfg'];
 		if (0 < $getLL) {
