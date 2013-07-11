@@ -82,6 +82,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		$this->registerArgument('slideCollectReverse', 'boolean', 'Normally when collecting content elements the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))', FALSE, 0);
 		$this->registerArgument('loadRegister', 'array', 'List of LOAD_REGISTER variable');
 		$this->registerArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, TRUE);
+		$this->registerArgument('hideUntranslated', 'boolean', 'If FALSE, will NOT include elements which have NOT been translated, if current language is NOT the default language. Default is to show untranslated elements but never display the original if there is a translated version', FALSE, FALSE);
 	}
 
 	/**
@@ -131,6 +132,17 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		}
 
 		$content = array();
+		$hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
+		$currentLanguage = $GLOBALS['TSFE']->sys_language_uid;
+		$languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
+		if ($currentLanguage > 0) {
+			if ($hideUntranslated) {
+				$languageCondition .= ' AND l18n_parent > 0';
+			}
+			$nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' . $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
+			$languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
+		}
+		$languageCondition .= ')';
 		do {
 			if ($slide) {
 				$page = array_shift($rootLine);
@@ -144,11 +156,10 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 			} else {
 				$conditions = "pid = '" . $pid ."' AND colPos = '" . $colPos . "'" .
 					$GLOBALS['TSFE']->cObj->enableFields('tt_content') .
-					" AND (sys_language_uid IN (-1,0) OR (sys_language_uid = '" .
-					$GLOBALS['TSFE']->sys_language_uid . "' AND l18n_parent = '0'))";
+					' AND ' . $languageCondition;
 			}
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'uid', $order, $limit);
-			$content = (FALSE === (boolean) $this->arguments['render']) ? $rows : $this->getRenderedRecord($rows);
+			$content = (FALSE === (boolean) $this->arguments['render']) ? $rows : $this->getRenderedRecords($rows);
 			if (count($content) && !$slideCollect) {
 				break;
 			}
@@ -168,7 +179,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	 * @param array $rows database rows of records (each item is a tt_content table record)
 	 * @return array
 	 */
-	protected function getRenderedRecord($rows) {
+	protected function getRenderedRecords($rows) {
 		$elements = array();
 		foreach ($rows as $row) {
 			$conf = array(
