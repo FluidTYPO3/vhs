@@ -198,7 +198,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 		$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($object, $field);
 		if ($value instanceof DateTime) {
 			$value = $value->format('U');
-		} elseif ($value instanceof Tx_Extbase_Persistence_ObjectStorage) {
+		} elseif ($value instanceof Tx_Extbase_Persistence_ObjectStorage || $value instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
 			$value = $value->count();
 		} elseif (is_array($value)) {
 			$value = count($value);
