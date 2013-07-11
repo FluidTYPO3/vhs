@@ -120,7 +120,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->tagBuilder = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TagBuilder');
+		$this->tagBuilder = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_TagBuilder');
 	}
 
 	/**

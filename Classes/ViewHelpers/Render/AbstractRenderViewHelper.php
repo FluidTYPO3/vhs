@@ -99,7 +99,7 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends Tx_Flu
 	 */
 	protected function getPreparedView() {
 		/** @var $view Tx_Fluid_View_StandaloneView */
-		$view = $this->objectManager->create('Tx_Fluid_View_StandaloneView');
+		$view = $this->objectManager->get('Tx_Fluid_View_StandaloneView');
 		return $view;
 	}
 
