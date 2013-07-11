@@ -318,7 +318,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 */
 	private function generateTagForAssetType($type, $content, $file = NULL) {
 		/** @var $tagBuilder Tx_Fluid_Core_ViewHelper_TagBuilder */
-		$tagBuilder = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TagBuilder');
+		$tagBuilder = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_TagBuilder');
 		switch ($type) {
 			case 'js':
 				$tagBuilder->setTagName('script');
@@ -478,7 +478,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$fileContents = file_get_contents($templatePathAndFilename);
 		}
 		/** @var $view Tx_Fluid_View_StandaloneView */
-		$view = $this->objectManager->create('Tx_Fluid_View_StandaloneView');
+		$view = $this->objectManager->get('Tx_Fluid_View_StandaloneView');
 		$view->setTemplateSource($fileContents);
 		$view->assignMultiple($variables);
 		$content = $view->render();
