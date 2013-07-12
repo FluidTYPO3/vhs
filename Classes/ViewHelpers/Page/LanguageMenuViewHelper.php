@@ -118,13 +118,22 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	protected function getLanguageMenu() {
 		$tagName = $this->arguments['tagNameChildren'];
 		$html = array();
-		foreach ($this->languageMenu as $var) {
-			if ($var['inactive']) {
-				$class = ' class="inactive"';
-			} elseif ($var['current']) {
-				$class= ' class="current"';
-			} else {
-				$class = '';
+		$itemCount = count($this->languageMenu);
+		foreach ($this->languageMenu as $index => $var) {
+			$class = '';
+			$classes = array();
+			if (TRUE === (boolean) $var['inactive']) {
+				$classes[] = 'inactive';
+			} elseif (TRUE === (boolean) $var['current']) {
+				$classes[] = 'current';
+			}
+			if (0 === $index) {
+				$classes[] = 'first';
+			} elseif (($itemCount - 1) === $index) {
+				$classes[] = 'last';
+			}
+			if (0 < count($classes)) {
+				$class = ' class="' . implode(' ', $classes) .'" ';
 			}
 			if (TRUE === (boolean) $var['current'] && FALSE === (boolean) $this->arguments['linkCurrent']) {
 				$html[] = '<' . $tagName . $class . '>' . $this->getLayout($var) . '</' . $tagName . '>';
