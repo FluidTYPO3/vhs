@@ -125,7 +125,10 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 		$expectedName = pathinfo($file, PATHINFO_FILENAME);
 		$asset = Tx_Vhs_Asset::createFromFile($file);
 		$this->assertSame($asset, $GLOBALS['VhsAssets'][$expectedName]);
-		$this->assertEquals($expectedName, $asset->getName(), 'Getter for name property does not return the expected name after creation from file path');
+		$this->assertEquals(
+			$expectedName, $asset->getName(),
+			'Getter for name property does not return the expected name after creation from file path'
+		);
 	}
 
 	/**
