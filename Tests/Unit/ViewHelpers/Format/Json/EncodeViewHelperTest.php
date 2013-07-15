@@ -45,9 +45,9 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Extbase_Tes
 	public function returnsExpectedStringForProvidedArguments() {
 
 		$fixture = array(
-			'foo'    => 'bar',
-			'bar'    => TRUE,
-			'baz'    => 1,
+			'foo' => 'bar',
+			'bar' => TRUE,
+			'baz' => 1,
 			'foobar' => NULL,
 		);
 
@@ -75,7 +75,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Extbase_Tes
 	 */
 	public function returnsJsConsumableTimestamps() {
 		$date = new \DateTime('now');
-		$jsTimestamp = $date->getTimestamp()*1000;
+		$jsTimestamp = $date->getTimestamp() * 1000;
 
 		$fixture = array('foo' => $date, 'bar' => array('baz' => $date));
 		$expected = sprintf('{"foo":%s,"bar":{"baz":%s}}', $jsTimestamp, $jsTimestamp);
