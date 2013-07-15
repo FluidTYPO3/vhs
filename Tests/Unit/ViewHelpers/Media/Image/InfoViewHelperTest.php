@@ -41,7 +41,7 @@ class Tx_Vhs_ViewHelpers_Media_Image_InfoViewHelperTest extends Tx_Extbase_Tests
 
 	public function setUp() {
 		$this->fixturesPath = 'EXT:vhs/Tests/Fixtures/Files';
-		$this->actualInfo   = getimagesize(dirname(__FILE__) . '/../../../../Fixtures/Files/typo3_logo.jpg');
+		$this->actualInfo = getimagesize(dirname(__FILE__) . '/../../../../Fixtures/Files/typo3_logo.jpg');
 	}
 
 	/**

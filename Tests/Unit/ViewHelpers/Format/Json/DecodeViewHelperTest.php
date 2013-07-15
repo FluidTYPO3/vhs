@@ -47,9 +47,9 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Extbase_Tes
 		$fixture = '{"foo":"bar","bar":true,"baz":1,"foobar":null}';
 
 		$expected = array(
-			'foo'    => 'bar',
-			'bar'    => TRUE,
-			'baz'    => 1,
+			'foo' => 'bar',
+			'bar' => TRUE,
+			'baz' => 1,
 			'foobar' => NULL,
 		);
 

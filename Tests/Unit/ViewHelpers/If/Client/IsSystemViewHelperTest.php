@@ -62,4 +62,5 @@ class Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelperTest extends Tx_Extbase_Tes
 		$this->fixture->render($system);
 	}
 }
+
 ?>

@@ -83,4 +83,5 @@ class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelperTest exten
 		);
 	}
 }
+
 ?>
