@@ -17,6 +17,8 @@ before_script:
   - source build-environment/install-phpunit-setup.sh
 
 script:
+# initial, quick inspection
+  - php build-environment/FluidTYPO3-CodingStandards/commit_message_inspector.php $PWD/typo3conf/ext/$REPOSITORY
 # install extension
   - php $PWD/typo3/cli_dispatch.phpsh extbase builder:install $REPOSITORY
 # phplint checking on all PHP source files in extension
