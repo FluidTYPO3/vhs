@@ -97,12 +97,12 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 			$this->simulateFrontendEnvironment();
 		}
 		$setup = array(
-			'width'  => $width,
+			'width' => $width,
 			'height' => $height,
-			'minW'   => $minW,
-			'minH'   => $minH,
-			'maxW'   => $maxW,
-			'maxH'   => $maxH
+			'minW' => $minW,
+			'minH' => $minH,
+			'maxW' => $maxW,
+			'maxH' => $maxH,
 		);
 		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
 			$src = substr($src, 3);
