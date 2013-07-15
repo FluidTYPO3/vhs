@@ -78,6 +78,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		parent::initializeArguments();
 		$this->registerArgument('width', 'string', 'Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.', FALSE);
 		$this->registerArgument('height', 'string', 'Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.', FALSE);
+		$this->registerArgument('treatIdAsReference', 'boolean', 'When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.', FALSE, FALSE);
 	}
 
 	/**
@@ -92,6 +93,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		$minH = $this->arguments['minH'];
 		$maxW = $this->arguments['maxW'];
 		$maxH = $this->arguments['maxH'];
+		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
 		if (TYPO3_MODE === 'BE') {
 			$this->simulateFrontendEnvironment();
@@ -103,6 +105,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 			'minH' => $minH,
 			'maxW' => $maxW,
 			'maxH' => $maxH,
+			'treatIdAsReference' => $treatIdAsReference,
 		);
 		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
 			$src = substr($src, 3);
