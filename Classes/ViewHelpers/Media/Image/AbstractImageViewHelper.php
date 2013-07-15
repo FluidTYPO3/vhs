@@ -76,8 +76,8 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('width', 'int', 'Optional width.', FALSE);
-		$this->registerArgument('height', 'int', 'Optional height.', FALSE);
+		$this->registerArgument('width', 'string', 'Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.', FALSE);
+		$this->registerArgument('height', 'string', 'Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.', FALSE);
 	}
 
 	/**
