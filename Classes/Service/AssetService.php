@@ -558,15 +558,15 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$extension = pathinfo($newPath, PATHINFO_EXTENSION);
 				$temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
 				$temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
-				if (FALSE === file_exists($temporaryFile)) {
-					$rawPath = t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path;
-					$realPath = realpath($rawPath);
-					if (FALSE === $realPath) {
-						t3lib_div::sysLog('Asset at path "'. $rawPath .'" not found. Processing skipped.', t3lib_div::SYSLOG_SEVERITY_WARNING);
-					} else {
+				$rawPath = t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path;
+				$realPath = realpath($rawPath);
+				if (FALSE === $realPath) {
+					t3lib_div::sysLog('Asset at path "'. $rawPath .'" not found. Processing skipped.', t3lib_div::SYSLOG_SEVERITY_WARNING);
+				} else {
+					if (FALSE === file_exists($temporaryFile)) {
 						copy($realPath, $temporaryFile);
-						$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
 					}
+					$replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
 				}
 			}
 		}
