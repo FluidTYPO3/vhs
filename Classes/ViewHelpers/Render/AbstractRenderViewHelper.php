@@ -77,7 +77,7 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends Tx_Flu
 	protected function getPreparedNamespaces() {
 		$namespaces = array();
 		foreach ((array) $this->arguments['namespaces'] as $namespaceIdentifier => $namespace) {
-			$addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . ')';
+			$addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . '}';
 			array_push($namespaces, $addedOverriddenNamespace);
 		}
 		return $namespaces;
