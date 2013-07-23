@@ -74,6 +74,7 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 	 * @param string|NULL $controller
 	 * @param string|NULL $extensionName
 	 * @param string|NULL $pluginName
+	 * @param string|NULL $vendorName
 	 * @param array $arguments
 	 * @param integer $pageUid
 	 * @return Tx_Extbase_MVC_ResponseInterface
@@ -85,6 +86,7 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 			$controller = NULL,
 			$extensionName = NULL,
 			$pluginName = NULL,
+			$vendorName = NULL,
 			array $arguments = array(),
 			$pageUid = 0) {
 		$contentObjectBackup = $this->configurationManager->getContentObject();
@@ -103,6 +105,9 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 		$request->setPluginName($pluginName);
 		$request->setControllerExtensionName($extensionName);
 		$request->setArguments($arguments);
+		if (NULL !== $vendorName) {
+			$request->setControllerVendorName($vendorName);
+		}
 		try {
 			/** @var Tx_Extbase_MVC_ResponseInterface $response */
 			$response = $this->objectManager->get($this->responseType);
