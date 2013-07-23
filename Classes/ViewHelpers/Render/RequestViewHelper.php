@@ -104,8 +104,10 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 		$request->setControllerName($controller);
 		$request->setPluginName($pluginName);
 		$request->setControllerExtensionName($extensionName);
-		$request->setControllerVendorName($vendorName);
 		$request->setArguments($arguments);
+		if (NULL !== $vendorName) {
+			$request->setControllerVendorName($vendorName);
+		}
 		try {
 			/** @var Tx_Extbase_MVC_ResponseInterface $response */
 			$response = $this->objectManager->get($this->responseType);
