@@ -105,7 +105,8 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 		$request->setPluginName($pluginName);
 		$request->setControllerExtensionName($extensionName);
 		$request->setArguments($arguments);
-		if (NULL !== $vendorName) {
+		// TODO: remove for 6.2 LTS
+		if (FALSE === empty($vendorName)) {
 			$request->setControllerVendorName($vendorName);
 		}
 		try {
