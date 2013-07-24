@@ -661,6 +661,18 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
+	 * @param $pageUid
+	 * @param string $where
+	 * @return array
+	 */
+	public function getMenu($pageUid, $where = '') {
+		$excludePages = $this->processPagesArgument($this->arguments['excludePages']);
+		$showHidden = (boolean) $this->arguments['showHidden'];
+		$menuData = $this->pageSelect->getMenu($pageUid, $showHidden, $excludePages, $where);
+		return $menuData;
+	}
+
+	/**
 	 * Returns array of page UIDs from provided pages
 	 *
 	 * @param mixed $pages
