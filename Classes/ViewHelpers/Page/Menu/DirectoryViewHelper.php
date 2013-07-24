@@ -64,10 +64,9 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DirectoryViewHelper extends Tx_Vhs_ViewHelper
 			return;
 		}
 		$menuData = array();
-		$showHidden = (boolean) $this->arguments['showHidden'];
 		$rootLineData = $this->pageSelect->getRootLine();
 		foreach ($pages as $pageUid) {
-			$menuData = array_merge($menuData, $this->pageSelect->getMenu($pageUid, $showHidden));
+			$menuData = array_merge($menuData, $this->getMenu($pageUid));
 		}
 		$menu = $this->parseMenu($menuData, $rootLineData);
 		$this->backupVariables();
