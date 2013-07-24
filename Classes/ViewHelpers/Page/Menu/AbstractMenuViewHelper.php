@@ -662,8 +662,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 
 	/**
 	 * Returns array of page UIDs from provided pages
-	 * argument or NULL if not processable
 	 *
+	 * @param mixed $pages
 	 * @return array
 	 */
 	public function processPagesArgument($pages = NULL) {
