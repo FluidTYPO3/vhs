@@ -666,8 +666,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 *
 	 * @return array
 	 */
-	public function processPagesArgument() {
-		$pages = $this->arguments['pages'];
+	public function processPagesArgument($pages = NULL) {
+		if (NULL === $pages) {
+			$pages = $this->arguments['pages'];
+		}
 		if ($pages instanceof Traversable) {
 			$pages = iterator_to_array($pages);
 		} elseif (is_string($pages)) {
