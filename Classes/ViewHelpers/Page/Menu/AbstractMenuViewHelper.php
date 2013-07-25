@@ -100,6 +100,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('deferred', 'boolean', 'If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering', FALSE, FALSE);
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'menu');
 		$this->registerArgument('rootLineAs', 'string', 'If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'rootLine');
+		$this->registerArgument('excludePages', 'mixed', 'Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.', FALSE, '');
 	}
 
 	/**
@@ -341,7 +342,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				$where .= ' AND doktype NOT IN (' . implode(',', $excludeSubpageTypes) . ')';
 			}
 		}
-		return $this->pageSelect->getMenu($pageUid, $showHidden, '*', 'sorting', $where);
+		return $this->getMenu($pageUid, $where);
 	}
 
 	/**
@@ -365,7 +366,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		// first, ensure the complete data array is present
 		$page = $this->pageSelect->getPage($pageUid);
 		$targetPage = NULL;
-		$showHidden = (boolean) $this->arguments['showHidden'];
 		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			switch ($page['shortcut_mode']) {
 				case 3:
@@ -374,12 +374,12 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 					break;
 				case 2:
 					// mode: random subpage of selected or current page
-					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid, $showHidden);
+					$menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
 					$targetPage = count($menu) > 0 ? $menu[array_rand($menu)] : $page;
 					break;
 				case 1:
 					// mode: first subpage of selected or current page
-					$menu = $this->pageSelect->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid, $showHidden);
+					$menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $pageUid);
 					$targetPage = count($menu) > 0 ? reset($menu) : $page;
 					break;
 				case 0:
@@ -500,7 +500,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$itemsRendered = 0;
 		$numberOfItems = count($menu);
 		$includedPages = array();
-		$showHidden = (boolean) $this->arguments['showHidden'];
 		foreach ($menu as $page) {
 			if ($page['current'] && !$showCurrent) {
 				continue;
@@ -521,7 +520,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
 				$rootLineData = $this->pageSelect->getRootLine();
-				$subMenuData = $this->pageSelect->getMenu($pageUid, $showHidden);
+				$subMenuData = $this->getMenu($pageUid);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
 				$this->tag->setTagName($this->getWrappingTagName());
@@ -634,7 +633,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	public function render() {
 		$pageUid = $this->arguments['pageUid'];
 		$entryLevel = $this->arguments['entryLevel'];
-		$showHidden = (boolean) $this->arguments['showHidden'];
 		$rootLineData = $this->pageSelect->getRootLine();
 		if (!$pageUid) {
 			if (NULL !== $rootLineData[$entryLevel]['uid']) {
@@ -643,7 +641,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				return '';
 			}
 		}
-		$menuData = $this->pageSelect->getMenu($pageUid, $showHidden);
+		$menuData = $this->getMenu($pageUid);
 		$menu = $this->parseMenu($menuData, $rootLineData);
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		$this->cleanTemplateVariableContainer();
@@ -660,13 +658,27 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	}
 
 	/**
-	 * Returns array of page UIDs from provided pages
-	 * argument or NULL if not processable
-	 *
+	 * @param $pageUid
+	 * @param string $where
 	 * @return array
 	 */
-	public function processPagesArgument() {
-		$pages = $this->arguments['pages'];
+	public function getMenu($pageUid, $where = '') {
+		$excludePages = $this->processPagesArgument($this->arguments['excludePages']);
+		$showHidden = (boolean) $this->arguments['showHidden'];
+		$menuData = $this->pageSelect->getMenu($pageUid, $showHidden, $excludePages, $where);
+		return $menuData;
+	}
+
+	/**
+	 * Returns array of page UIDs from provided pages
+	 *
+	 * @param mixed $pages
+	 * @return array
+	 */
+	public function processPagesArgument($pages = NULL) {
+		if (NULL === $pages) {
+			$pages = $this->arguments['pages'];
+		}
 		if ($pages instanceof Traversable) {
 			$pages = iterator_to_array($pages);
 		} elseif (is_string($pages)) {
@@ -675,7 +687,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if (FALSE === is_array($pages)) {
 			return array();
 		}
-
 		return $pages;
 	}
 
