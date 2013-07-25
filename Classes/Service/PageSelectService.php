@@ -132,26 +132,29 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 
 	/**
 	 * Wrapper for t3lib_pageSelect::getMenu()
-	 * Caution: slightly different signature
+	 * Caution: different signature
 	 *
 	 * @param integer $pageUid
 	 * @param boolean $showHidden
-	 * @param string $fields
-	 * @param string $sortField
-	 * @param string $addWhere
-	 * @param integer $checkShortcuts
+	 * @param array $excludePages
+	 * @param string $where
+	 * @param boolean $checkShortcuts
 	 * @return array
 	 */
-	public function getMenu($pageUid = NULL, $showHidden = FALSE, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = 1) {
+	public function getMenu($pageUid = NULL, $showHidden = FALSE, $excludePages = array(), $where = '', $checkShortcuts = FALSE) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$key = md5(intval($showHidden) . $pageUid . $fields . $sortField . $addWhere . intval($checkShortcuts));
+		$addWhere = 0 < count($excludePages) ? 'AND uid NOT IN (' . implode(',', $excludePages) . ')' : '';
+		if ('' !== $where) {
+			$addWhere = $where . ' ' . $addWhere;
+		}
+		$key = md5(intval($showHidden) . $pageUid . $addWhere . intval($checkShortcuts));
 		if (FALSE === isset(self::$cachedMenus[$key])) {
 			if (TRUE === $showHidden) {
-				self::$cachedMenus[$key] = self::$pageSelectHidden->getMenu($pageUid, $fields, $sortField, $addWhere, $checkShortcuts);
+				self::$cachedMenus[$key] = self::$pageSelectHidden->getMenu($pageUid, '*', 'sorting', $addWhere, $checkShortcuts);
 			} else {
-				self::$cachedMenus[$key] = self::$pageSelect->getMenu($pageUid, $fields, $sortField, $addWhere, $checkShortcuts);
+				self::$cachedMenus[$key] = self::$pageSelect->getMenu($pageUid, '*', 'sorting', $addWhere, $checkShortcuts);
 			}
 		}
 		return self::$cachedMenus[$key];
