@@ -257,9 +257,9 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 							$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
 							$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
 						}
-						$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
+						$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename, $assetSettings['attributes']);
 					} else {
-						$chunks[] = $this->generateTagForAssetType($type, $this->extractAssetContent($asset));
+						$chunks[] = $this->generateTagForAssetType($type, $this->extractAssetContent($asset), NULL, $assetSettings['attributes']);
 					}
 				} else {
 					$chunk[$name] = $asset;
@@ -311,10 +311,11 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 * @param string $type
 	 * @param string $content
 	 * @param string $file
+	 * @param array $attributes
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	private function generateTagForAssetType($type, $content, $file = NULL) {
+	private function generateTagForAssetType($type, $content, $file = NULL, $attributes = array()) {
 		/** @var $tagBuilder Tx_Fluid_Core_ViewHelper_TagBuilder */
 		$tagBuilder = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_TagBuilder');
 		switch ($type) {
@@ -349,6 +350,9 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 					throw new RuntimeException('Attempt to include file based asset with unknown type ("' . $type . '")', 1358645219);
 				}
 				break;
+		}
+		foreach($attributes as $key => $value){
+			$tagBuilder->addAttribute($key, $value);
 		}
 		return $tagBuilder->render();
 	}

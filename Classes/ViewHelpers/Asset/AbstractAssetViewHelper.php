@@ -141,6 +141,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$this->registerArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
 		$this->registerArgument('trim', 'boolean', 'If FALSE, disables the per-default enabled trimming of whitespace off beginnings and ends of lines in the Asset content body', FALSE, TRUE);
 		$this->registerArgument('namedChunks', 'boolean', 'If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency', FALSE, FALSE);
+		$this->registerArgument('attributes', 'array', 'additional tag attributes as array like media=print ', FALSE, NULL);
 	}
 
 	/**
