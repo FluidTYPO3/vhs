@@ -668,3 +668,4 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	}
 
 }
+
