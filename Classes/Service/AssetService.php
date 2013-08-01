@@ -351,7 +351,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				}
 				break;
 		}
-		foreach($attributes as $key => $value){
+		foreach ($attributes as $key => $value){
 			$tagBuilder->addAttribute($key, $value);
 		}
 		return $tagBuilder->render();
