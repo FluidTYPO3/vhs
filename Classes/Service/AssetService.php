@@ -248,7 +248,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 					}
 					if (TRUE === isset($assetSettings['path']) && FALSE === empty($assetSettings['path'])) {
 						$fileRelativePathAndFilename = $assetSettings['path'];
-						if (FALSE === (isset($assetSettings['external']) && $assetSettings['external'] > 0)) {
+						if (FALSE === isset($assetSettings['external']) || FALSE === (boolean) $assetSettings['external']) {
 							$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
 							if (FALSE === file_exists($absolutePathAndFilename)) {
 								throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
