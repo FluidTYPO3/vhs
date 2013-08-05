@@ -246,7 +246,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 						$chunk = array();
 						array_push($chunks, $mergedFileTag);
 					}
-					$chunks[] = $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type);
+					array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
 				} else {
 					$chunk[$name] = $asset;
 				}
