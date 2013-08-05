@@ -246,21 +246,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 						$chunk = array();
 						array_push($chunks, $mergedFileTag);
 					}
-					if (TRUE === isset($assetSettings['path']) && FALSE === empty($assetSettings['path'])) {
-						$fileRelativePathAndFilename = $assetSettings['path'];
-						if (FALSE === isset($assetSettings['external']) || FALSE === (boolean) $assetSettings['external']) {
-							$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-							if (FALSE === file_exists($absolutePathAndFilename)) {
-								throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
-							}
-							$fileRelativePathAndFilename = substr($absolutePathAndFilename, strlen(constant('PATH_site')));
-							$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
-							$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
-						}
-						$chunks[] = $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
-					} else {
-						$chunks[] = $this->generateTagForAssetType($type, $this->extractAssetContent($asset));
-					}
+					$chunks[] = $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type);
 				} else {
 					$chunk[$name] = $asset;
 				}
