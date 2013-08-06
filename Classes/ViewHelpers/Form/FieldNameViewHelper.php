@@ -49,8 +49,7 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends Tx_Fluid_Core_ViewHelp
 	 * @return string
 	 */
 	public function render() {
-		$version = explode('.', TYPO3_version);
-		$variableNameSpace = ($version[0] >= 6) ? 'TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper' : 'Tx_Fluid_ViewHelpers_FormViewHelper';
+		$variableNameSpace = $this->getVariableNameSpace();
 		if ($this->isObjectAccessorMode()) {
 			$formObjectName = $this->viewHelperVariableContainer->get($variableNameSpace, 'formObjectName');
 			if (!empty($formObjectName)) {
@@ -94,5 +93,12 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends Tx_Fluid_Core_ViewHelp
 		$formFieldNames[] = $name;
 		$this->viewHelperVariableContainer->addOrUpdate($variableNameSpace, 'formFieldNames', $formFieldNames);
 		return $name;
+	}
+	/**
+	 * @return string
+	 */
+	protected function getVariableNameSpace() {
+		$version = explode('.', TYPO3_version);
+		return ($version[0] >= 6) ? 'TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper' : 'Tx_Fluid_ViewHelpers_FormViewHelper';
 	}
 }
