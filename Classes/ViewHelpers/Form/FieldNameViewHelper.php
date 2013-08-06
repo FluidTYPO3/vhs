@@ -94,6 +94,15 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends Tx_Fluid_Core_ViewHelp
 		$this->viewHelperVariableContainer->addOrUpdate($variableNameSpace, 'formFieldNames', $formFieldNames);
 		return $name;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isObjectAccessorMode() {
+		$variableNameSpace = $this->getVariableNameSpace();
+		return TRUE === $this->hasArgument('property') && TRUE === $this->viewHelperVariableContainer->exists($variableNameSpace, 'formObjectName');
+	}
+
 	/**
 	 * @return string
 	 */
