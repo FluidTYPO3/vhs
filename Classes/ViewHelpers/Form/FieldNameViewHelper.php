@@ -85,7 +85,7 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends Tx_Fluid_Core_ViewHelp
 		if (count($fieldNameSegments) > 1) {
 			$name .= '[' . $fieldNameSegments[1];
 		}
-		if ($this->viewHelperVariableContainer->exists($this->variableNameSpace, 'formFieldNames')) {
+		if ($this->viewHelperVariableContainer->exists($variableNameSpace, 'formFieldNames')) {
 			$formFieldNames = $this->viewHelperVariableContainer->get($variableNameSpace, 'formFieldNames');
 		} else {
 			$formFieldNames = array();
