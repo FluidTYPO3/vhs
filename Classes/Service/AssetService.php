@@ -475,6 +475,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			$templatePathAndFilename = t3lib_div::getFileAbsFileName($templateReference);
 			$fileContents = file_get_contents($templatePathAndFilename);
 		}
+		$variables = t3lib_div::removeDotsFromTS($variables);
 		/** @var $view Tx_Fluid_View_StandaloneView */
 		$view = $this->objectManager->get('Tx_Fluid_View_StandaloneView');
 		$view->setTemplateSource($fileContents);
