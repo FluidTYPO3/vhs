@@ -70,7 +70,7 @@ class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends Tx_Fluid_Core_Vi
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object Optional object - if not specified, grabs the associated form object
 	 * @return string
 	 */
-	public function render($property, $validatorName, Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
+	public function render($property, $validatorName = NULL, Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
 		if ($object === NULL) {
 			$object = $this->getFormObject();
 			$className = get_class($object);
@@ -91,7 +91,7 @@ class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends Tx_Fluid_Core_Vi
 			}
 		}
 		$annotations = $this->ownReflectionService->getPropertyTagValues($className, $property, 'validate');
-		if (in_array('NotEmpty', $annotations) === TRUE) {
+		if (0 < count($annotations) && (NULL === $validatorName || in_array($validatorName, $annotations) === TRUE)) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();
