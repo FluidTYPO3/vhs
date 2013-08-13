@@ -39,6 +39,9 @@ class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends Tx_Fluid_Core_ViewHelper_
 	const CASE_UCWORDS = 'ucwords';
 	const CASE_UCFIRST = 'ucfirst';
 	const CASE_LCFIRST = 'lcfirst';
+	const CASE_CAMELCASE = 'CamelCase';
+	const CASE_LOWERCAMELCASE = 'lowerCamelCase';
+	const CASE_UNDERSCORED = 'lowercase_underscored';
 
 	/**
 	 * @param string $string
@@ -55,6 +58,10 @@ class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends Tx_Fluid_Core_ViewHelper_
 			case self::CASE_UCWORDS: $string = ucwords($string); break;
 			case self::CASE_UCFIRST: $string{0} = strtoupper($string{0}); break;
 			case self::CASE_LCFIRST: $string{0} = strtolower($string{0}); break;
+			case self::CASE_CAMELCASE: $string = t3lib_div::underscoredToUpperCamelCase($string); break;
+			case self::CASE_LOWERCAMELCASE: $string = t3lib_div::underscoredToLowerCamelCase($string); break;
+			case self::CASE_UNDERSCORED: $string = t3lib_div::camelCaseToLowerCaseUnderscored($string); break;
+			default: break;
 		}
 		return $string;
 	}
