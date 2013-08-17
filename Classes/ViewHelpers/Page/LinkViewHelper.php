@@ -94,6 +94,28 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			return NULL;
 		}
 		$pageUid = $this->arguments['pageUid'];
+		$additionalParameters = array();
+		if (FALSE === is_numeric($pageUid)) {
+			$linkConfig = t3lib_div::unQuoteFilenames($pageUid, TRUE);
+			$pageUid = $linkConfig[0];
+			if (TRUE === isset($linkConfig[1]) && '-' !== $linkConfig[1]) {
+				$this->tag->addAttribute('target', $linkConfig[1]);
+			}
+			if (TRUE === isset($linkConfig[2]) && '-' !== $linkConfig[2]) {
+				$this->tag->addAttribute('class', $linkConfig[2]);
+			}
+			if (TRUE === isset($linkConfig[3]) && '-' !== $linkConfig[3]) {
+				$this->tag->addAttribute('title', $linkConfig[3]);
+			}
+			if (TRUE === isset($linkConfig[4]) && '-' !== $linkConfig[4]) {
+				$additionalParametersString = trim($linkConfig[4], '&');
+				$additionalParametersArray = t3lib_div::trimExplode('&', $additionalParametersString);
+				foreach ($additionalParametersArray as $parameter) {
+					list($key, $value) = t3lib_div::trimExplode('=', $parameter);
+					$additionalParameters[$key] = $value;
+				}
+			}
+		}
 		$page = $this->pageSelect->getPage($pageUid);
 		if (TRUE === empty($page)) {
 			return NULL;
@@ -124,6 +146,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			->setArguments($this->arguments['additionalParams'])
 			->setCreateAbsoluteUri($this->arguments['absolute'])
 			->setAddQueryString($this->arguments['addQueryString'])
+			->setArguments($additionalParameters)
 			->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
 			->build();
 		$this->tag->addAttribute('href', $uri);
