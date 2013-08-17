@@ -94,7 +94,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			return NULL;
 		}
 		$pageUid = $this->arguments['pageUid'];
-		$additionalParameters = array();
+		$additionalParameters = $this->arguments['additionalParams'];
 		if (FALSE === is_numeric($pageUid)) {
 			$linkConfig = t3lib_div::unQuoteFilenames($pageUid, TRUE);
 			$pageUid = $linkConfig[0];
