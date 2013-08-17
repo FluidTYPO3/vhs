@@ -240,15 +240,21 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			foreach ($spooledAssets as $name => $asset) {
 				$assetSettings = $this->extractAssetSettings($asset);
 				$standalone = (TRUE === (boolean) $assetSettings['standalone']);
-				if (TRUE === $standalone) {
-					if (0 < count($chunk)) {
-						$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
-						$chunk = array();
-						array_push($chunks, $mergedFileTag);
-					}
-					array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
-				} else {
+				$external = (TRUE === (boolean) $assetSettings['external']);
+				$path = $assetSettings['path'];
+				if (FALSE === $standalone) {
 					$chunk[$name] = $asset;
+				} else {
+					if (TRUE === $external) {
+						array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
+					} else {
+						if (0 < count($chunk)) {
+							$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
+							$chunk = array();
+							array_push($chunks, $mergedFileTag);
+						}
+						array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
+					}
 				}
 			}
 			if (0 < count($chunk)) {
