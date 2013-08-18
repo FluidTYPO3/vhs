@@ -98,9 +98,9 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 
 		$content = '';
 
-			// register field name for token generation.
-			// in case it is a multi-select, we need to register the field name
-			// as often as there are elements in the box
+		// register field name for token generation.
+		// in case it is a multi-select, we need to register the field name
+		// as often as there are elements in the box
 		if (TRUE === (boolean) $this->arguments['multiple']) {
 			$content .= $this->renderHiddenFieldForEmptyValue();
 			$length = count($options);
@@ -196,7 +196,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	 */
 	protected function isSelected($value) {
 		$selectedValue = $this->getSelectedValue();
-		if ($value === $selectedValue || (string) value === $selectedValue) {
+		if ($value === $selectedValue || (string) $value === $selectedValue) {
 			return TRUE;
 		}
 		if (TRUE === isset($this->arguments['multiple']) && FALSE === empty($this->arguments['multiple'])) {
