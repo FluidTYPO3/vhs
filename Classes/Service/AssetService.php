@@ -282,7 +282,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.'.  $type;
 		$fileAbsolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-		if (FALSE === file_exists($fileAbsolutePathAndFilename)) {
+		if (FALSE === file_exists($fileAbsolutePathAndFilename) || TRUE === isset($GLOBALS['BE_USER'])) {
 			foreach ($assets as $name => $asset) {
 				$settings = $this->extractAssetSettings($asset);
 				if (TRUE === (isset($settings['namedChunks']) && 0 < $settings['namedChunks']) || FALSE === isset($settings['namedChunks'])) {
