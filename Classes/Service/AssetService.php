@@ -280,9 +280,14 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$assetName = md5($assetName);
 			}
 		}
-		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.'.  $type;
+		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.' . $type;
 		$fileAbsolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-		if (FALSE === file_exists($fileAbsolutePathAndFilename) || TRUE === isset($GLOBALS['BE_USER'])) {
+		if (
+				FALSE === file_exists($fileAbsolutePathAndFilename)
+				|| TRUE === isset($GLOBALS['BE_USER'])
+				|| TRUE === (boolean) $GLOBALS['TSFE']->no_cache
+				|| TRUE === (boolean) $GLOBALS['TSFE']->page['no_cache']
+		) {
 			foreach ($assets as $name => $asset) {
 				$settings = $this->extractAssetSettings($asset);
 				if (TRUE === (isset($settings['namedChunks']) && 0 < $settings['namedChunks']) || FALSE === isset($settings['namedChunks'])) {
@@ -446,7 +451,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			}
 			if (0 < count($compilables)) {
 				throw new RuntimeException('Compilable Assets used without appropriate Compiler Assets: "' .
-					implode(', ', array_keys($compilables)) . '"', 1360502808);
+				implode(', ', array_keys($compilables)) . '"', 1360502808);
 			}
 		}
 		return $placed;
@@ -540,7 +545,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			if (FALSE === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
 				$checksum = md5($match);
 				if (preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
-					list(,$path, $suffix) = $items;
+					list(, $path, $suffix) = $items;
 				} else {
 					$path = $match;
 					$suffix = '';
@@ -552,7 +557,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$rawPath = t3lib_div::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path;
 				$realPath = realpath($rawPath);
 				if (FALSE === $realPath) {
-					t3lib_div::sysLog('Asset at path "'. $rawPath .'" not found. Processing skipped.', t3lib_div::SYSLOG_SEVERITY_WARNING);
+					t3lib_div::sysLog('Asset at path "' . $rawPath . '" not found. Processing skipped.', t3lib_div::SYSLOG_SEVERITY_WARNING);
 				} else {
 					if (FALSE === file_exists($temporaryFile)) {
 						copy($realPath, $temporaryFile);
