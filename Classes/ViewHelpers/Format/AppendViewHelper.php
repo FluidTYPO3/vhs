@@ -55,11 +55,11 @@
 class Tx_Vhs_ViewHelpers_Format_AppendViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @param string $subject
 	 * @param string $add
+	 * @param string $subject
 	 * @return string
 	 */
-	public function render($subject = NULL, $add) {
+	public function render($add, $subject = NULL) {
 		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
