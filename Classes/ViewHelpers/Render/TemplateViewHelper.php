@@ -89,17 +89,23 @@ class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Re
 		$view = $this->getPreparedView();
 		$view->setTemplatePathAndFilename($file);
 		$view->assignMultiple($variables);
+
 		if ($format !== NULL) {
 			$view->setFormat($format);
 		}
 		if (is_array($paths) === TRUE) {
 			if (isset($paths['layoutRootPath']) === TRUE) {
+				$paths['layoutRootPath'] = is_int(strpos($paths['layoutRootPath'], 'EXT:')) ? t3lib_div::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
 				$view->setLayoutRootPath($paths['layoutRootPath']);
 			}
 			if (isset($paths['partialRootPath']) === TRUE) {
+				$paths['partialRootPath'] = is_int(strpos($paths['partialRootPath'], 'EXT:')) ? t3lib_div::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
 				$view->setPartialRootPath($paths['partialRootPath']);
 			}
 		}
+		
+	
+		
 		return $this->renderView($view);
 	}
 
