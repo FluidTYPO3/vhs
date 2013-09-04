@@ -36,6 +36,9 @@
  * or 2 (two) to indicate that the TS-controlled page title
  * must be disabled. A value of 2 (two) ensures that the title
  * used in this ViewHelper will be used in the rendered page.
+ * 
+ * If you use the ViewHelper in a plugin it has to be USER
+ * not USER_INT, what means it has to be cached!
  *
  * #### Why can I not forcibly override the title?
  *
