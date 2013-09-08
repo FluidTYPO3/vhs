@@ -119,7 +119,9 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends Tx_Fluid_Core_ViewHelp
 	 * @return string
 	 */
 	protected function getVariableNameSpace() {
-		$version = explode('.', TYPO3_version);
-		return ($version[0] >= 6) ? 'TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper' : 'Tx_Fluid_ViewHelpers_FormViewHelper';
+		if (TRUE === $this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames')) {
+			return 'TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper';
+		}
+		return 'Tx_Fluid_ViewHelpers_FormViewHelper';
 	}
 }
