@@ -110,7 +110,16 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		if (FALSE === isset(self::$cachedPages[$pageUid])) {
-			self::$cachedPages[$pageUid] = self::$pageSelect->getPage($pageUid);
+			$page = self::$pageSelect->getPage($pageUid);
+			if (NULL!==$page['media']) {
+				/* @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
+				$fileRepository = \t3lib_div::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
+				$fileReferences = $fileRepository->findByRelation('pages', 'media', $pageUid);
+				if (!empty($fileReferences)) {
+					$page['media'] = $fileReferences;
+				}
+			}
+			self::$cachedPages[$pageUid] = $page;
 		}
 		return self::$cachedPages[$pageUid];
 	}
