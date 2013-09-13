@@ -32,6 +32,16 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function setsMovableFalseWhenSettingTypeCss() {
+		$asset = Tx_Vhs_Asset::getInstance();
+		$asset->setMovable(TRUE);
+		$asset->setType('css');
+		$this->assertFalse($asset->getMovable());
+	}
+
+	/**
+	 * @test
+	 */
 	public function canCreateAssetInstanceFromStaticFactory() {
 		$asset = Tx_Vhs_Asset::getInstance();
 		$this->assertInstanceOf('Tx_Vhs_Asset', $asset);

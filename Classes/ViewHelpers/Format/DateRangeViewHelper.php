@@ -137,7 +137,8 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 		}
 
 		if (NULL !== $interval && NULL === $endDateTime) {
-			$endDateTime = clone($startDateTime);
+			$endDateTime = new DateTime();
+			$endDateTime->add($endDateTime->diff($startDateTime));
 			$endDateTime->add($interval);
 		}
 

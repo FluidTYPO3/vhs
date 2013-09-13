@@ -55,11 +55,11 @@ class Tx_Vhs_ViewHelpers_CallViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 		if ($object === NULL) {
 			$object = $this->renderChildren();
 			if (is_object($object) === FALSE) {
-				throw new Exception('Using v:call requires an object either as "object" attribute, tag content or inline argument', 1356849652);
+				throw new RuntimeException('Using v:call requires an object either as "object" attribute, tag content or inline argument', 1356849652);
 			}
 		}
 		if (!method_exists($object, $method)) {
-			throw new Exception('Method "' . $method . '" does not exist on object of type ' . get_class($object), 1356834755);
+			throw new RuntimeException('Method "' . $method . '" does not exist on object of type ' . get_class($object), 1356834755);
 		}
 		return call_user_func_array(array($object, $method), $arguments);
 	}

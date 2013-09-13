@@ -34,6 +34,18 @@
 class Tx_Vhs_ViewHelpers_Format_TidyViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
+	 * @var boolean
+	 */
+	protected $hasTidy = FALSE;
+
+	/**
+	 * @return void
+	 */
+	public function initialize() {
+		$this->hasTidy = class_exists('tidy');
+	}
+
+	/**
 	 * Trims content, then trims each line of content
 	 *
 	 * @param string $content
@@ -41,15 +53,15 @@ class Tx_Vhs_ViewHelpers_Format_TidyViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @return string
 	 */
 	public function render($content = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-		if (class_exists('tidy') === FALSE) {
-			throw new Exception('TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.', 1352059753);
+		if (TRUE === $this->hasTidy) {
+			$tidy = tidy_parse_string($content);
+			$tidy->cleanRepair();
+			return (string) $tidy;
 		}
-		$tidy = tidy_parse_string($content);
-		$tidy->cleanRepair();
-		return (string) $tidy;
+		throw new RuntimeException('TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.', 1352059753);
 	}
 
 }
