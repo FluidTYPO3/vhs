@@ -78,7 +78,7 @@ class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Re
 	 * @param string $file Path to template file, EXT:myext/... paths supported
 	 * @param array $variables Optional array of template variables when rendering
 	 * @param string $format Optional format of the template(s) being rendered
-	 * @param string $paths Optional array (plugin.tx_myext.view style) of paths
+	 * @param string $paths Optional array (plugin.tx_myext.view style) of paths, EXT:mypath/... paths supported
 	 * @return string
 	 */
 	public function render($file = NULL, $variables = array(), $format = NULL, $paths = NULL) {
@@ -94,9 +94,11 @@ class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Re
 		}
 		if (is_array($paths) === TRUE) {
 			if (isset($paths['layoutRootPath']) === TRUE) {
+				$paths['layoutRootPath'] = 0===strpos($paths['layoutRootPath'], 'EXT:') ? t3lib_div::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
 				$view->setLayoutRootPath($paths['layoutRootPath']);
 			}
 			if (isset($paths['partialRootPath']) === TRUE) {
+				$paths['partialRootPath'] = 0===strpos($paths['partialRootPath'], 'EXT:') ? t3lib_div::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
 				$view->setPartialRootPath($paths['partialRootPath']);
 			}
 		}
