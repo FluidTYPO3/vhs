@@ -24,10 +24,11 @@
  * ************************************************************* */
 
 /**
+ * @protection on
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
 	/**
 	 * @test

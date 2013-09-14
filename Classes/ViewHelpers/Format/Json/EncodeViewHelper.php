@@ -68,7 +68,6 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 * @param boolean $preventRecursion If FALSE, allows recursion to occur which could potentially be fatal to the output unless managed
 	 * @param mixed $recursionMarker Any value - string, integer, boolean, object or NULL - inserted instead of recursive instances of objects
 	 * @param string $dateTimeFormat A date() format for converting DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return string
 	 */
 	public function render($value = NULL, $useTraversableKeys = FALSE, $preventRecursion = TRUE, $recursionMarker = NULL, $dateTimeFormat = NULL) {
@@ -78,7 +77,20 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 				return '{}';
 			}
 		}
+		$json = $this->encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat);
+		return $json;
+	}
 
+	/**
+	 * @param string $value
+	 * @param boolean $useTraversableKeys
+	 * @param boolean $preventRecursion
+	 * @param string $recursionMarker
+	 * @param string $dateTimeFormat
+	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @return mixed
+	 */
+	protected function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat) {
 		if (TRUE === $value instanceof Traversable) {
 				// Note: also converts Extbase ObjectStorage to Tx_Extkey_Domain_Model_ObjectType[] which are later each converted
 			$value = iterator_to_array($value, $useTraversableKeys);
@@ -94,13 +106,10 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 			$value = $this->recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
 			$value = $this->recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
 		};
-
 		$json = json_encode($value);
-
 		if (JSON_ERROR_NONE !== json_last_error()) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument cannot be converted into JSON.', 1358440181);
 		}
-
 		return $json;
 	}
 

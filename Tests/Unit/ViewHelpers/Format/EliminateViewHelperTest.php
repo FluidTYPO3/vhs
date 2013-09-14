@@ -24,99 +24,166 @@
  * ************************************************************* */
 
 /**
- * @protection off
+ * @protection on
  * @author Claus Due <claus@wildside.dk>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_EliminateViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_Format_EliminateViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+
+	protected $arguments = array(
+		'caseSensitive' => TRUE,
+		'characters' => NULL,
+		'strings' => NULL,
+		'whitespace' => FALSE,
+		'tabs' => FALSE,
+		'unixBreaks' => FALSE,
+		'windowsBreaks' => FALSE,
+		'digits' => FALSE,
+		'letters' => FALSE,
+		'nonAscii' => FALSE
+	);
 
 	/**
-	 * @var $objectManager Tx_Extbase_Object_ObjectManagerInterface
+	 * @test
 	 */
-	protected $objectManager;
-
-	/**
-	 * @param $objectManager Tx_Extbase_Object_ObjectManagerInterface
-	 * @return void
-	 */
-	protected function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * @return Tx_Vhs_ViewHelpers_Format_EliminateViewHelper
-	 * @support
-	 */
-	protected function getPreparedInstance() {
-		$viewHelperClassName = 'Tx_Vhs_ViewHelpers_Format_EliminateViewHelper';
-		$arguments = array();
-		$nodeClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode' : '\\TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode');
-		$renderingContextClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Fluid_Core_Rendering_RenderingContext' : '\\TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext');
-		$controllerContextClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Extbase_MVC_Controller_ControllerContext' : '\\TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');
-		$requestClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Extbase_MVC_Web_Request' : '\\TYPO3\\CMS\\Extbase\\MVC\\Web\\Request');
-
-		/** @var Tx_Extbase_MVC_Web_Request $request */
-		$request = $this->objectManager->get($requestClassName);
-		/** @var $viewHelperInstance Tx_Fluid_Core_ViewHelper_AbstractViewHelper */
-		$viewHelperInstance = $this->objectManager->get($viewHelperClassName);
-		/** @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node */
-		$node = $this->objectManager->get($nodeClassName, $viewHelperInstance, $arguments);
-		/** @var Tx_Extbase_MVC_Controller_ControllerContext $controllerContext */
-		$controllerContext = $this->objectManager->get($controllerContextClassName);
-		$controllerContext->setRequest($request);
-		/** @var Tx_Fluid_Core_Rendering_RenderingContext $renderingContext */
-		$renderingContext = $this->objectManager->get($renderingContextClassName);
-		$renderingContext->setControllerContext($controllerContext);
-
-		$viewHelperInstance->setRenderingContext($renderingContext);
-		$viewHelperInstance->setViewHelperNode($node);
-		return $viewHelperInstance;
+	public function removesNonAscii() {
+		$arguments = $this->arguments;
+		$arguments['nonAscii'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', 'fooøæåbar', $arguments);
+		$this->assertSame('foobar', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canCreateViewHelperClassInstance() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Format_EliminateViewHelper', $instance);
+	public function removesLetters() {
+		$arguments = $this->arguments;
+		$arguments['letters'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
+		$this->assertSame('123', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canInitializeViewHelper() {
-		$instance = $this->getPreparedInstance();
-		$instance->initialize();
+	public function removesLettersRespectsCaseSensitive() {
+		$arguments = $this->arguments;
+		$arguments['letters'] = TRUE;
+		$arguments['caseSensitive'] = FALSE;
+		$test = $this->executeViewHelperUsingTagContent('Text', 'FOO123bar', $arguments);
+		$this->assertSame('123', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canPrepareViewHelperArguments() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Format_EliminateViewHelper', $instance);
-		$arguments = $instance->prepareArguments();
-		$constraint = new PHPUnit_Framework_Constraint_IsType('array');
-		$this->assertThat($arguments, $constraint);
+	public function removesDigits() {
+		$arguments = $this->arguments;
+		$arguments['digits'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
+		$this->assertSame('foobar', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canSetViewHelperNode() {
-		$instance = $this->getPreparedInstance();
-		$arguments = $instance->prepareArguments();
-		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($instance, $arguments);
-		$instance->setViewHelperNode($node);
+	public function removesWindowsCarriageReturns() {
+		$arguments = $this->arguments;
+		$arguments['windowsBreaks'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', "breaks\rbreaks", $arguments);
+		$this->assertSame('breaksbreaks', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canRenderWithoutProvidedArguments() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Format_EliminateViewHelper', $instance);
-		$instance->render();
+	public function removesUnixBreaks() {
+		$arguments = $this->arguments;
+		$arguments['unixBreaks'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', "breaks\nbreaks", $arguments);
+		$this->assertSame('breaksbreaks', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removesTabs() {
+		$arguments = $this->arguments;
+		$arguments['tabs'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', 'tabs	tabs', $arguments);
+		$this->assertSame('tabstabs', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removesWhitespace() {
+		$arguments = $this->arguments;
+		$arguments['whitespace'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', ' trimmed ', $arguments);
+		$this->assertSame('trimmed', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removesCharactersRespectsCaseSensitive() {
+		$arguments = $this->arguments;
+		$arguments['characters'] = 'abc';
+		$arguments['caseSensitive'] = FALSE;
+		$result = $this->executeViewHelperUsingTagContent('Text', 'ABCdef', $arguments);
+		$this->assertSame('def', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removesCharactersAsString() {
+		$arguments = $this->arguments;
+		$arguments['characters'] = 'abc';
+		$result = $this->executeViewHelperUsingTagContent('Text', 'abcdef', $arguments);
+		$this->assertSame('def', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removesCharactersAsArray() {
+		$arguments = $this->arguments;
+		$arguments['characters'] = array('a', 'b', 'c');
+		$result = $this->executeViewHelperUsingTagContent('Text', 'abcdef', $arguments);
+		$this->assertSame('def', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removesStringsRespectsCaseSensitive() {
+		$arguments = $this->arguments;
+		$arguments['strings'] = 'abc,def,ghi';
+		$arguments['caseSensitive'] = FALSE;
+		$result = $this->executeViewHelperUsingTagContent('Text', 'aBcDeFgHijkl', $arguments);
+		$this->assertSame('jkl', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removesStringsAsString() {
+		$arguments = $this->arguments;
+		$arguments['strings'] = 'abc,def,ghi';
+		$result = $this->executeViewHelperUsingTagContent('Text', 'abcdefghijkl', $arguments);
+		$this->assertSame('jkl', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removesStringsAsArray() {
+		$arguments = $this->arguments;
+		$arguments['strings'] = array('abc', 'def', 'ghi');
+		$result = $this->executeViewHelperUsingTagContent('Text', 'abcdefghijkl', $arguments);
+		$this->assertSame('jkl', $result);
 	}
 
 }
