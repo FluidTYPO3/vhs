@@ -30,6 +30,23 @@
 abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
+	 * @test
+	 */
+	public function canCreateViewHelperInstance() {
+		$instance = $this->createInstance();
+		$this->assertInstanceOf($this->getViewHelperClassName(), $instance);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canPrepareArguments() {
+		$instance = $this->createInstance();
+		$arguments = $instance->prepareArguments();
+		$this->assertThat($arguments, new PHPUnit_Framework_Constraint_IsType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
+	}
+
+	/**
 	 * @return string
 	 */
 	protected function getViewHelperClassName() {
@@ -58,12 +75,13 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 		$instance = $this->objectManager->get($className);
 		if (TRUE === method_exists($instance, 'injectConfigurationManager')) {
 			$cObject = new tslib_cObj();
-			$cObject->start(Tx_Flux_Tests_Fixtures_Data_Records::$contentRecordWithoutParentAndWithoutChildren, 'tt_content');
+			$cObject->start(array(), 'tt_content');
 			/** @var Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager */
 			$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 			$configurationManager->setContentObject($cObject);
 			$instance->injectConfigurationManager($configurationManager);
 		}
+		$instance->initialize();
 		return $instance;
 	}
 
@@ -133,6 +151,22 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	 * @return mixed|Tx_Fluid_Core_ViewHelper_AbstractViewHelper
 	 */
 	protected function executeViewHelper($arguments = array(), $variables = array(), $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
+		$instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
+		$output = $instance->initializeArgumentsAndRender();
+		return $output;
+	}
+
+	/**
+	 * @param string $nodeType
+	 * @param mixed $nodeValue
+	 * @param array $arguments
+	 * @param array $variables
+	 * @param string $extensionName
+	 * @param string $pluginName
+	 * @return mixed|Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 */
+	protected function executeViewHelperUsingTagContent($nodeType, $nodeValue, $arguments = array(), $variables = array(), $extensionName = NULL, $pluginName = NULL) {
+		$childNode = $this->createNode($nodeType, $nodeValue);
 		$instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
 		$output = $instance->initializeArgumentsAndRender();
 		return $output;

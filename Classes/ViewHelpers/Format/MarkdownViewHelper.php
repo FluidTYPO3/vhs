@@ -65,8 +65,8 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 	public function render($text = NULL, $trim = TRUE, $htmlentities = FALSE) {
 		$this->markdownExecutablePath = trim(shell_exec('which markdown'));
 		if (is_executable($this->markdownExecutablePath) === FALSE) {
-			throw new Exception('Use of Markdown requires the "markdown" shell utility to be installed an accessible; this' .
-				' binary could not be found in any of your configured paths available to this script', 1350511561);
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
+				'and accessible; this binary could not be found in any of your configured paths available to this script', 1350511561);
 		}
 		if ($text === NULL) {
 			$text = $this->renderChildren();

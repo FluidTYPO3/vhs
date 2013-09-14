@@ -24,7 +24,7 @@
  * ************************************************************* */
 
 /**
- * @protection off
+ * @protection on
  * @author Claus Due <claus@wildside.dk>
  * @package Vhs
  */
@@ -67,8 +67,7 @@ class Tx_Vhs_ViewHelpers_Format_RegularExpressionViewHelperTest extends Tx_Vhs_V
 			'pattern' => '/[0-9]{3}/',
 			'replacement' => 'baz',
 		);
-		$node = $this->createNode('Text', 'foo123bar');
-		$test = $this->executeViewHelper($arguments, array(), $node);
+		$test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
 		$this->assertSame(array('123'), $test);
 	}
 

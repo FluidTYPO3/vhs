@@ -140,7 +140,7 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @return string
 	 */
 	protected function eliminateWhitespace($content) {
-		$content = preg_replace('\s+', '', $content);
+		$content = preg_replace('/\s+/', '', $content);
 		return $content;
 	}
 
@@ -176,7 +176,7 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @return string
 	 */
 	protected function eliminateDigits($content) {
-		$content = preg_replace('#[^0-9]#', '', $content);
+		$content = preg_replace('#[0-9]#', '', $content);
 		return $content;
 	}
 
@@ -187,9 +187,9 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends Tx_Fluid_Core_ViewHe
 	protected function eliminateLetters($content) {
 		$caseSensitive = (boolean) $this->arguments['caseSensitive'];
 		if ($caseSensitive) {
-			$content = preg_replace('#[^a-z]#', '', $content);
+			$content = preg_replace('#[a-z]#', '', $content);
 		} else {
-			$content = preg_replace('/[^a-z]/i', '', $content);
+			$content = preg_replace('/[a-z]/i', '', $content);
 		}
 		return $content;
 	}

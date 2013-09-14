@@ -28,86 +28,142 @@
  * @author Claus Due <claus@wildside.dk>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
 	/**
-	 * @var $objectManager Tx_Extbase_Object_ObjectManagerInterface
+	 * @var array
 	 */
-	protected $objectManager;
+	protected $arguments = array(
+		'start' => 1,
+		'end' => 86401,
+		'intervalFormat' => NULL,
+		'startFormat' => 'Y-m-d',
+		'endFormat' => 'Y-m-d',
+		'glue' => '-',
+		'spaceGlue' => TRUE,
+		'return' => NULL,
+	);
 
 	/**
-	 * @param $objectManager Tx_Extbase_Object_ObjectManagerInterface
-	 * @return void
+	 * @test
 	 */
-	protected function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * @return Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper
-	 * @support
-	 */
-	protected function getPreparedInstance() {
-		$viewHelperClassName = 'Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper';
-		$arguments = array();
-		$nodeClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode' : '\\TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode');
-		$renderingContextClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Fluid_Core_Rendering_RenderingContext' : '\\TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext');
-		$controllerContextClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Extbase_MVC_Controller_ControllerContext' : '\\TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');
-		$requestClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Extbase_MVC_Web_Request' : '\\TYPO3\\CMS\\Extbase\\MVC\\Web\\Request');
-
-		/** @var Tx_Extbase_MVC_Web_Request $request */
-		$request = $this->objectManager->get($requestClassName);
-		/** @var $viewHelperInstance Tx_Fluid_Core_ViewHelper_AbstractViewHelper */
-		$viewHelperInstance = $this->objectManager->get($viewHelperClassName);
-		/** @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node */
-		$node = $this->objectManager->get($nodeClassName, $viewHelperInstance, $arguments);
-		/** @var Tx_Extbase_MVC_Controller_ControllerContext $controllerContext */
-		$controllerContext = $this->objectManager->get($controllerContextClassName);
-		$controllerContext->setRequest($request);
-		/** @var Tx_Fluid_Core_Rendering_RenderingContext $renderingContext */
-		$renderingContext = $this->objectManager->get($renderingContextClassName);
-		$renderingContext->setControllerContext($controllerContext);
-
-		$viewHelperInstance->setRenderingContext($renderingContext);
-		$viewHelperInstance->setViewHelperNode($node);
-		return $viewHelperInstance;
+	public function rendersWithDefaultArguments() {
+		$test = $this->executeViewHelper($this->arguments);
+		$this->assertSame('1970-01-01 - 1970-01-02', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canCreateViewHelperClassInstance() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper', $instance);
+	public function usesNowAsStart() {
+		$arguments = $this->arguments;
+		unset($arguments['start']);
+		$now = new DateTime('now');
+		$expected = $now->format($arguments['startFormat']);
+		$test = $this->executeViewHelper($arguments);
+		$this->assertSame($expected . ' - 1970-01-02', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canInitializeViewHelper() {
-		$instance = $this->getPreparedInstance();
-		$instance->initialize();
+	public function rendersStrftimeFormats() {
+		$arguments = $this->arguments;
+		$arguments['startFormat'] = '%h';
+		$test = $this->executeViewHelper($arguments);
+		$this->assertSame('Jan - 1970-01-02', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canPrepareViewHelperArguments() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper', $instance);
-		$arguments = $instance->prepareArguments();
-		$constraint = new PHPUnit_Framework_Constraint_IsType('array');
-		$this->assertThat($arguments, $constraint);
+	public function canReturnDateTime() {
+		$arguments = $this->arguments;
+		$arguments['return'] = 'DateTime';
+		$test = $this->executeViewHelper($arguments);
+		$this->assertInstanceOf('DateTime', $test);
 	}
 
 	/**
 	 * @test
 	 */
-	public function canSetViewHelperNode() {
-		$instance = $this->getPreparedInstance();
-		$arguments = $instance->prepareArguments();
-		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($instance, $arguments);
-		$instance->setViewHelperNode($node);
+	public function canReturnIntervalComponentArray() {
+		$arguments = $this->arguments;
+		$arguments['return'] = array('d', 's');
+		$test = $this->executeViewHelper($arguments);
+		$this->assertSame(array('1', '0'), $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canReturnFormattedInterval() {
+		$arguments = $this->arguments;
+		$arguments['return'] = 'd';
+		$test = $this->executeViewHelper($arguments);
+		$this->assertSame('1', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canReturnFormattedStrftimeFormat() {
+		$arguments = $this->arguments;
+		$arguments['return'] = 'd';
+		$test = $this->executeViewHelper($arguments);
+		$this->assertSame('1', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function supportsIntervalFormat() {
+		$arguments = $this->arguments;
+		$arguments['intervalFormat'] = 'P3M';
+		unset($arguments['end']);
+		$test = $this->executeViewHelper($arguments);
+		$this->assertSame('1970-01-01 - 1970-04-01', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function returnsErrorIfMissingRequiredArgumentsEndAndIntervalFormat() {
+		$arguments = $this->arguments;
+		unset($arguments['end'], $arguments['intervalFormat']);
+		$test = $this->executeViewHelper($arguments);
+		$this->assertSame('Either end or intervalFormat has to be provided.', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function returnsErrorOnInvalidDateInterval() {
+		$arguments = $this->arguments;
+		$arguments['intervalFormat'] = 'what is this then';
+		unset($arguments['end']);
+		$test = $this->executeViewHelper($arguments);
+		$this->assertContains('"what is this then" could not be parsed by \\DateInterval constructor', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function returnsErrorOnInvalidStart() {
+		$arguments = $this->arguments;
+		$arguments['start'] = 'what is this then';
+		$test = $this->executeViewHelper($arguments);
+		$this->assertContains('"what is this then" could not be parsed by \\DateTime constructor', $test);
+	}
+
+	/**
+	 * @test
+	 */
+	public function returnsErrorOnInvalidEnd() {
+		$arguments = $this->arguments;
+		$arguments['end'] = 'what is this then';
+		$test = $this->executeViewHelper($arguments);
+		$this->assertContains('"what is this then" could not be parsed by \\DateTime constructor', $test);
 	}
 
 }

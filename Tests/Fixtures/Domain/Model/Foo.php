@@ -34,6 +34,11 @@ class Tx_Vhs_Tests_Fixtures_Domain_Model_Foo extends Tx_Extbase_DomainObject_Abs
      */
     protected $bar;
 
+	/**
+	 * @var Tx_Vhs_Tests_Fixtures_Domain_Model_Foo
+	 */
+	protected $foo;
+
     /**
      * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Vhs_Tests_Fixtures_Domain_Model_Foo>
      */
@@ -50,6 +55,20 @@ class Tx_Vhs_Tests_Fixtures_Domain_Model_Foo extends Tx_Extbase_DomainObject_Abs
     public function getBar() {
         return $this->bar;
     }
+
+	/**
+	 * @param \Tx_Vhs_Tests_Fixtures_Domain_Model_Foo $foo
+	 */
+	public function setFoo($foo) {
+		$this->foo = $foo;
+	}
+
+	/**
+	 * @return \Tx_Vhs_Tests_Fixtures_Domain_Model_Foo
+	 */
+	public function getFoo() {
+		return $this->foo;
+	}
 
     /**
      * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Vhs_Tests_Fixtures_Domain_Model_Foo>

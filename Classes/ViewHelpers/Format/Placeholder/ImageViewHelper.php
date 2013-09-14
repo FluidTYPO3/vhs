@@ -72,7 +72,7 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_ImageViewHelper extends Tx_Fluid_Cor
 			array_push($url, '&text=' . urlencode($text));
 		}
 		$imageUrl = implode('/', $url);
-		$this->tag->forceClosingTag(TRUE);
+		$this->tag->forceClosingTag(FALSE);
 		$this->tag->addAttribute('src', $imageUrl);
 		$this->tag->addAttribute('alt', $imageUrl);
 		$this->tag->addAttribute('width', $this->arguments['width']);

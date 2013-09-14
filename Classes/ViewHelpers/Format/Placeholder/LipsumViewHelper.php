@@ -35,6 +35,11 @@
 class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
+	 * @var string
+	 */
+	protected $lipsum;
+
+	/**
 	 * @var	tslib_cObj
 	 */
 	protected $contentObject;
@@ -43,6 +48,13 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
+
+	/**
+	 * @return void
+	 */
+	public function initialize() {
+		$this->lipsum = $this->getDefaultLoremIpsum();
+	}
 
 	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
@@ -74,9 +86,9 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 	 */
 	public function render($lipsum = NULL) {
 		if (strlen($lipsum) === 0) {
-			$lipsum = $this->getDefaultLoremIpsum();
+			$lipsum = $this->lipsum;
 		}
-		if (strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\./]/i', $lipsum)) {
+		if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
 				// argument is most likely a file reference.
 			$sourceFile = t3lib_div::getFileAbsFileName($lipsum);
 			if (file_exists($sourceFile) === TRUE) {
@@ -84,7 +96,7 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 			} else {
 				t3lib_div::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
 					'The file was: ' . $sourceFile, 'Vhs');
-				$lipsum = $this->getDefaultLoremIpsum();
+				$lipsum = $this->lipsum;
 			}
 		}
 		$lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
