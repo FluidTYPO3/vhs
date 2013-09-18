@@ -72,7 +72,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
-		$this->registerArgument('tagName', 'string', 'Tag name to use for enclsing container', FALSE, 'ul');
+		$this->registerArgument('tagName', 'string', 'Tag name to use for enclosing container', FALSE, 'ul');
 		$this->registerArgument('tagNameChildren', 'string', 'Tag name to use for child nodes surrounding links. If set to "a" enables non-wrapping mode.', FALSE, 'li');
 		$this->registerArgument('entryLevel', 'integer', 'Optional entryLevel TS equivalent of the menu', FALSE, 0);
 		$this->registerArgument('levels', 'integer', 'Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel', FALSE, 1);
@@ -101,6 +101,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'menu');
 		$this->registerArgument('rootLineAs', 'string', 'If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'rootLine');
 		$this->registerArgument('excludePages', 'mixed', 'Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.', FALSE, '');
+		$this->registerArgument('nonWrappingMode', 'boolean', 'If TRUE, does not wrap the menu in enclosing container', FALSE, FALSE);
 	}
 
 	/**
@@ -558,7 +559,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return boolean
 	 */
 	public function isNonWrappingMode() {
-		return 'a' == strtolower($this->arguments['tagNameChildren']);
+		$tagNameChildrenOverrides = 'a' == strtolower($this->arguments['tagNameChildren']);
+		return (boolean) $this->arguments['nonWrappingMode'] || $tagNameChildrenOverrides;
 	}
 
 	/**
