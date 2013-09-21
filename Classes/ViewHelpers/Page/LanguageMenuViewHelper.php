@@ -85,6 +85,10 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 		}
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$this->tagName = $this->arguments['tagName'];
+
+		// to set the tagName we should call initialize()
+		$this->initialize();
+
 		$this->languageMenu = $this->parseLanguageMenu($this->arguments['order'], $this->arguments['labelOverwrite']);
 		$this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
 		$content = $this->renderChildren();
