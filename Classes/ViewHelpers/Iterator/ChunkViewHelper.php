@@ -30,13 +30,12 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ChunkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper
-{
+class Tx_Vhs_ViewHelpers_Iterator_ChunkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Render method
 	 *
-	 * @param int $count The count of items per chunk or if fixed number of chunks
+	 * @param integer $count The count of items per chunk or if fixed number of chunks
 	 * @param boolean $fixed Whether to allocate items to a fixed number of chunks or not
 	 * @param mixed $subject The subject Traversable/Array instance to shift
 	 * @param string $as If specified, inserts a template variable with this name, then renders the child content, then removes the variable
@@ -49,7 +48,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ChunkViewHelper extends Tx_Fluid_Core_ViewHelp
 		}
 		if (TRUE === $subject instanceof Traversable) {
 			$subject = iterator_to_array($subject, TRUE);
-		} elseif (TRUE !== is_array($subject)) {
+		} elseif (FALSE === is_array($subject)) {
 			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
 		if (TRUE === $fixed) {
