@@ -47,7 +47,7 @@ class Tx_Vhs_ViewHelpers_Math_RangeViewHelper extends Tx_Vhs_ViewHelpers_Math_Ab
 			$a = $this->convertTraversableToArray($a);
 			sort($a, SORT_NUMERIC);
 			if (count($a) === 1) {
-				return array_pop($a);
+				return array(reset($a), reset($a));
 			} else {
 				return array(array_shift($a), array_pop($a));
 			}
