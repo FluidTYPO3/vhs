@@ -28,20 +28,27 @@
  * @author Claus Due <claus@wildside.dk>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Math_SumViewHelperTest extends Tx_Vhs_ViewHelpers_Math_AbstractMathViewHelperTest {
+abstract class Tx_Vhs_ViewHelpers_Math_AbstractMathViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
 	/**
-	 * @test
+	 * @param mixed $a
+	 * @oaram mixed $expected
+	 * @return void
 	 */
-	public function testSingleArgumentIterator() {
-		$this->executeSingleArgumentTest(array(8, 2), 10);
+	protected function executeSingleArgumentTest($a, $expected) {
+		$result = $this->executeViewHelper(array('a' => $a));
+		$this->assertEquals($expected, $result);
 	}
 
 	/**
-	 * @test
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @param mixed $expected
+	 * @return void
 	 */
-	public function testDualArguments() {
-		$this->executeDualArgumentTest(8, 2, 10);
+	protected function executeDualArgumentTest($a, $b, $expected) {
+		$result = $this->executeViewHelper(array('a' => $a, 'b' => $b));
+		$this->assertEquals($expected, $result);
 	}
 
 }

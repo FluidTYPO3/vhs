@@ -70,8 +70,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 					$storage->attach($item);
 				}
 				$value = $storage;
-			} elseif ('array' === $type && 'ObjectStorage' === gettype($value)) {
-				$value = $value->toArray();;
+			} elseif ('array' === $type && TRUE === $value instanceof Traversable) {
+				$value = iterator_to_array($value, FALSE);
 			} elseif ('array' === $type) {
 				$value = array($value);
 			} else {
@@ -81,11 +81,11 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 			if (TRUE === isset($this->arguments['default'])) {
 				$default = $this->arguments['default'];
 				if (gettype($default) !== $type) {
-					throw new Exception('Supplied argument "default" is not of the type "' . $type .'"', 1364542576);
+					throw new RuntimeException('Supplied argument "default" is not of the type "' . $type .'"', 1364542576);
 				}
 				$value = $default;
 			} else {
-				switch($type) {
+				switch ($type) {
 					case 'string':
 						$value = '';
 						break;
@@ -106,7 +106,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 						$value = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
 						break;
 					default:
-						throw new Exception('Provided argument "type" is not valid', 1364542884);
+						throw new RuntimeException('Provided argument "type" is not valid', 1364542884);
 				}
 			}
 		}

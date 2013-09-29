@@ -96,33 +96,9 @@ class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends Tx_Fluid_Core_ViewHelp
 			}
 		}
 		if (is_array($value)) {
-			$value = $this->convertTypoScriptArrayToPlainArray($value);
+			$value = t3lib_div::removeDotsFromTS($value);
 		}
 		return $value;
-	}
-
-	/**
-	 * @param array $typoScriptArray
-	 * @return array
-	 */
-	protected function convertTypoScriptArrayToPlainArray(array $typoScriptArray) {
-		foreach ($typoScriptArray as $key => &$value) {
-			if (substr($key, -1) === '.') {
-				$keyWithoutDot = substr($key, 0, -1);
-				$hasNodeWithoutDot = array_key_exists($keyWithoutDot, $typoScriptArray);
-				$typoScriptNodeValue = $hasNodeWithoutDot ? $typoScriptArray[$keyWithoutDot] : NULL;
-				if (is_array($value)) {
-					$typoScriptArray[$keyWithoutDot] = $this->convertTypoScriptArrayToPlainArray($value);
-					if (!is_null($typoScriptNodeValue)) {
-						$typoScriptArray[$keyWithoutDot]['_typoScriptNodeValue']  = $typoScriptNodeValue;
-					}
-					unset($typoScriptArray[$key]);
-				} else {
-					$typoScriptArray[$keyWithoutDot] = NULL;
-				}
-			}
-		}
-		return $typoScriptArray;
 	}
 
 }

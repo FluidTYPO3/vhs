@@ -49,12 +49,11 @@ class Tx_Vhs_ViewHelpers_Math_MedianViewHelper extends Tx_Vhs_ViewHelpers_Math_A
 			sort($a, SORT_NUMERIC);
 			$size = count($a);
 			$midpoint = $size / 2;
-			if (floor($midpoint) != $midpoint) {
-				$candidates = array_slice($a, floor($midpoint), 2);
-				return array_sum($candidates) / 2;
-			} else {
+			if (1 === $size % 2) {
 				return $a[$midpoint];
 			}
+			$candidates = array_slice($a, floor($midpoint) - 1, 2);
+			return array_sum($candidates) / 2;
 		}
 		return $a;
 	}

@@ -27,7 +27,96 @@
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+
+	/**
+	 * @param mixed $value
+	 * @param string $type
+	 * @param mixed $expected
+	 * @return void
+	 */
+	protected function executeConversion($value, $type, $expected) {
+		$this->assertEquals($expected, $this->executeViewHelper(array('value' => $value, 'type' => $type)));
+	}
+
+	/**
+	 * @test
+	 */
+	public function throwsRuntimeExceptionIfTypeOfDefaultValueIsUnsupported() {
+		$this->setExpectedException('RuntimeException', NULL, 1364542576);
+		$this->executeViewHelper(array('type' => 'foobar', 'value' => NULL, 'default' => '1'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function throwsRuntimeExceptionIfTypeIsUnsupportedAndNoDefaultProvided() {
+		$this->setExpectedException('RuntimeException', NULL, 1364542884);
+		$this->executeViewHelper(array('type' => 'unsupported', 'value' => NULL));
+	}
+
+	/**
+	 * @test
+	 */
+	public function throwsRuntimeExceptionIfTypeOfDefaultIsNotSameAsType() {
+		$this->setExpectedException('RuntimeException', NULL, 1364542576);
+		$this->executeViewHelper(array('type' => 'ObjectStorage', 'value' => NULL, 'default' => '1'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertNullToString() {
+		$this->executeConversion(NULL, 'string', '');
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertNullToInteger() {
+		$this->executeConversion(NULL, 'integer', 0);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertNullToFloat() {
+		$this->executeConversion(NULL, 'float', 0);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertStringToString() {
+		$this->executeConversion('1', 'string', '1');
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertStringToInteger() {
+		$this->executeConversion('1', 'integer', 1);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertArrayToObjectStorage() {
+		$dummy = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
+		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$storage->attach($dummy);
+		$this->executeConversion(array($dummy), 'ObjectStorage', $storage);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertObjectStorageToArray() {
+		$dummy = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
+		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$storage->attach($dummy);
+		$this->executeConversion($storage, 'array', array($dummy));
+	}
 
 	/**
 	 * @test

@@ -57,21 +57,9 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends Tx_Vhs_ViewHelpe
 		$haystack = $this->arguments['haystack'];
 		$needle = $this->arguments['needle'];
 
-		if (is_array($haystack)) {
-			$this->evaluation = $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
-		} else if (is_string($haystack)) {
-			$this->evaluation = $this->assertHaystackIsStringAndHasNeedle($haystack, $needle);
-		} else if ($haystack instanceof Tx_Extbase_Persistence_QueryResultInterface) {
-			$this->evaluation = $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
-		} else if ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			$this->evaluation = $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} else if ($haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
-			$this->evaluation = $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} else {
-			$this->evaluation = FALSE;
-		}
+		$this->evaluation = $this->assertHaystackHasNeedle($haystack, $needle);
 
-		if ($this->evaluation !== FALSE) {
+		if (FALSE !== $this->evaluation) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();
