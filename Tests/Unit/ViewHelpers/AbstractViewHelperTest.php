@@ -60,6 +60,9 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
 	 */
 	protected function createNode($type, $value) {
+		if ('Boolean' === $type) {
+			$value = $this->createNode('Text', strval($value));
+		}
 		/** @var Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node */
 		$className = 'Tx_Fluid_Core_Parser_SyntaxTree_' . $type . 'Node';
 		$node = new $className($value);
@@ -99,8 +102,8 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 		$container = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
 		/** @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperContainer */
 		$viewHelperContainer = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		foreach ($variables as $name => $value) {
-			$container->add($name, $value);
+		if (0 < count($variables)) {
+			Tx_Extbase_Reflection_ObjectAccess::setProperty($container, 'variables', $variables, TRUE);
 		}
 		$node = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode($instance, $arguments);
 		/** @var Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder */
