@@ -105,11 +105,11 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 	 */
 	protected function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle) {
 		$index = 0;
+		/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
+		if ($needle instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+			$needle = $needle->getUid();
+		}
 		foreach ($haystack as $candidate) {
-			/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
-			if ($needle instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
-				$needle = $needle->getUid();
-			}
 			if ($candidate->getUid() == $needle) {
 				return $index;
 			}

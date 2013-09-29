@@ -59,11 +59,14 @@ class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends Tx_Fluid_Core_ViewHelp
 				$this->templateVariableContainer->remove($as);
 			}
 			$this->templateVariableContainer->add($as, $matches);
-		}
-		if (0 < count($matches)) {
-			$content = $this->renderThenChild();
+			$content = $this->renderChildren();
+			$this->templateVariableContainer->remove($as);
 		} else {
-			$content =  $this->renderElseChild();
+			if (0 < count($matches)) {
+				$content = $this->renderThenChild();
+			} else {
+				$content =  $this->renderElseChild();
+			}
 		}
 		if (TRUE === isset($backupVariable)) {
 			$this->templateVariableContainer->add($as, $backupVariable);

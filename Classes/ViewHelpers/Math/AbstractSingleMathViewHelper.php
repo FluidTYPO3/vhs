@@ -117,12 +117,4 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 		return $this->calculateAction($a);
 	}
 
-	/**
-	 * @param mixed $a
-	 * @return mixed
-	 */
-	protected function calculateAction($a) {
-		return $a;
-	}
-
 }
