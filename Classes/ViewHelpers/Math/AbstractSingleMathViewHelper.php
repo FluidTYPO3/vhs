@@ -110,7 +110,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 				throw new Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
 			}
 			foreach ($a as $index => $value) {
-				$a[$index] = $this->calculateAction($a);
+				$a[$index] = $this->calculateAction($value);
 			}
 			return $a;
 		}
