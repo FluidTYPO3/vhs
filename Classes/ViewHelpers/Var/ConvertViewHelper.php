@@ -70,8 +70,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 					$storage->attach($item);
 				}
 				$value = $storage;
-			} elseif ('array' === $type && 'ObjectStorage' === gettype($value)) {
-				$value = $value->toArray();;
+			} elseif ('array' === $type && TRUE === $value instanceof Traversable) {
+				$value = iterator_to_array($value, FALSE);
 			} elseif ('array' === $type) {
 				$value = array($value);
 			} else {
