@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends Tx_Fluid_Core_ViewHelp
 	public function render($pattern, $string, $global = FALSE, $as = NULL) {
 		$matches = array();
 		if (TRUE === (boolean) $global) {
-			preg_match_all($pattern, $string, $matches);
+			preg_match_all($pattern, $string, $matches, PREG_SET_ORDER);
 		} else {
 			preg_match($pattern, $string, $matches);
 		}
