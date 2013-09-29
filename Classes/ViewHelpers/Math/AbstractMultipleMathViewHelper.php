@@ -71,7 +71,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper extends Tx
 			}
 			foreach ($a as $index => $value) {
 				$bSideValue = ($bIsIterable === TRUE ? $b[$index] : $b);
-				$a[$index] = $this->calculateAction($a, $bSideValue);
+				$a[$index] = $this->calculateAction($value, $bSideValue);
 			}
 			return $a;
 		} elseif ($bIsIterable === TRUE) {
