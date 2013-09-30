@@ -66,15 +66,15 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 	 */
 	protected function assertHaystackHasNeedle($haystack, $needle) {
 		if (is_array($haystack)) {
-			return (boolean) $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
+			return FALSE !== $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			return (boolean) $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+			return FALSE !== $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
-			return (boolean) $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+			return FALSE !== $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_QueryResult) {
-			return (boolean) $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
+			return FALSE !== $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
 		} elseif (is_string($haystack)) {
-			return strpos($haystack, $needle) !== FALSE;
+			return FALSE !== strpos($haystack, $needle);
 		}
 		return FALSE;
 	}
@@ -105,11 +105,11 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 	 */
 	protected function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle) {
 		$index = 0;
+		/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
+		if ($needle instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+			$needle = $needle->getUid();
+		}
 		foreach ($haystack as $candidate) {
-			/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
-			if ($needle instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
-				$needle = $needle->getUid();
-			}
 			if ($candidate->getUid() == $needle) {
 				return $index;
 			}

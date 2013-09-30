@@ -28,95 +28,34 @@
  * @author Claus Due <claus@wildside.dk>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
 	/**
-	 * @var $objectManager Tx_Extbase_Object_ObjectManagerInterface
+	 * @test
 	 */
-	protected $objectManager;
-
-	/**
-	 * @param $objectManager Tx_Extbase_Object_ObjectManagerInterface
-	 * @return void
-	 */
-	protected function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * @return Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper
-	 * @support
-	 */
-	protected function getPreparedInstance() {
-		$viewHelperClassName = 'Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper';
-		$arguments = array();
-		$nodeClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode' : '\\TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode');
-		$renderingContextClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Fluid_Core_Rendering_RenderingContext' : '\\TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext');
-		$controllerContextClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Extbase_MVC_Controller_ControllerContext' : '\\TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');
-		$requestClassName = (FALSE !== strpos($viewHelperClassName, '_') ? 'Tx_Extbase_MVC_Web_Request' : '\\TYPO3\\CMS\\Extbase\\MVC\\Web\\Request');
-
-		/** @var Tx_Extbase_MVC_Web_Request $request */
-		$request = $this->objectManager->get($requestClassName);
-		/** @var $viewHelperInstance Tx_Fluid_Core_ViewHelper_AbstractViewHelper */
-		$viewHelperInstance = $this->objectManager->get($viewHelperClassName);
-		/** @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node */
-		$node = $this->objectManager->get($nodeClassName, $viewHelperInstance, $arguments);
-		/** @var Tx_Extbase_MVC_Controller_ControllerContext $controllerContext */
-		$controllerContext = $this->objectManager->get($controllerContextClassName);
-		$controllerContext->setRequest($request);
-		/** @var Tx_Fluid_Core_Rendering_RenderingContext $renderingContext */
-		$renderingContext = $this->objectManager->get($renderingContextClassName);
-		$renderingContext->setControllerContext($controllerContext);
-
-		$viewHelperInstance->setRenderingContext($renderingContext);
-		$viewHelperInstance->setViewHelperNode($node);
-		return $viewHelperInstance;
+	public function returnsNullIfPathIsNull() {
+		$this->assertNull($this->executeViewHelper(array('path' => NULL)));
 	}
 
 	/**
 	 * @test
 	 */
-	public function canCreateViewHelperClassInstance() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper', $instance);
+	public function returnsArrayIfPathContainsArray() {
+		$this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase')), new PHPUnit_Framework_Constraint_IsType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
 	}
 
 	/**
 	 * @test
 	 */
-	public function canInitializeViewHelper() {
-		$instance = $this->getPreparedInstance();
-		$instance->initialize();
+	public function canGetPathUsingArgument() {
+		$this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features.rewrittenPropertyMapper')));
 	}
 
 	/**
 	 * @test
 	 */
-	public function canPrepareViewHelperArguments() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper', $instance);
-		$arguments = $instance->prepareArguments();
-		$constraint = new PHPUnit_Framework_Constraint_IsType('array');
-		$this->assertThat($arguments, $constraint);
-	}
-
-	/**
-	 * @test
-	 */
-	public function canSetViewHelperNode() {
-		$instance = $this->getPreparedInstance();
-		$arguments = $instance->prepareArguments();
-		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($instance, $arguments);
-		$instance->setViewHelperNode($node);
-	}
-
-	/**
-	 * @test
-	 */
-	public function canRenderWithoutProvidedArguments() {
-		$instance = $this->getPreparedInstance();
-		$this->assertInstanceOf('Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper', $instance);
-		$instance->render();
+	public function canGetPathUsingTagContent() {
+		$this->assertNotEmpty($this->executeViewHelperUsingTagContent('Text', 'config.tx_extbase.features.rewrittenPropertyMapper'));
 	}
 
 }

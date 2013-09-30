@@ -42,7 +42,7 @@ class Tx_Vhs_ViewHelpers_If_String_IsNumericViewHelper extends Tx_Fluid_Core_Vie
 	 * @return string
 	 */
 	public function render($value) {
-		if (TRUE === is_numeric($value)) {
+		if (TRUE === ctype_digit($value)) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();

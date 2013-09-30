@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends Tx_Fluid_Core_ViewHelp
 	public function render($pattern, $string, $global = FALSE, $as = NULL) {
 		$matches = array();
 		if (TRUE === (boolean) $global) {
-			preg_match_all($pattern, $string, $matches);
+			preg_match_all($pattern, $string, $matches, PREG_SET_ORDER);
 		} else {
 			preg_match($pattern, $string, $matches);
 		}
@@ -59,11 +59,14 @@ class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends Tx_Fluid_Core_ViewHelp
 				$this->templateVariableContainer->remove($as);
 			}
 			$this->templateVariableContainer->add($as, $matches);
-		}
-		if (0 < count($matches)) {
-			$content = $this->renderThenChild();
+			$content = $this->renderChildren();
+			$this->templateVariableContainer->remove($as);
 		} else {
-			$content =  $this->renderElseChild();
+			if (0 < count($matches)) {
+				$content = $this->renderThenChild();
+			} else {
+				$content =  $this->renderElseChild();
+			}
 		}
 		if (TRUE === isset($backupVariable)) {
 			$this->templateVariableContainer->add($as, $backupVariable);
