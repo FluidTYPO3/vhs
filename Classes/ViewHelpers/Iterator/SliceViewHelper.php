@@ -38,10 +38,11 @@ class Tx_Vhs_ViewHelpers_Iterator_SliceViewHelper extends Tx_Fluid_Core_ViewHelp
 	 * @param mixed $haystack
 	 * @param integer $start
 	 * @param integer $length
+	 * @param string $as
 	 * @throws Exception
 	 * @return array
 	 */
-	public function render($haystack = NULL, $start = 0, $length = NULL) {
+	public function render($haystack = NULL, $start = 0, $length = NULL, $as = NULL) {
 		if ($haystack === NULL) {
 			$haystack = $this->renderChildren();
 		}
@@ -51,13 +52,13 @@ class Tx_Vhs_ViewHelpers_Iterator_SliceViewHelper extends Tx_Fluid_Core_ViewHelp
 			throw new Exception('Cannot slice unsupported type: ' . gettype($haystack), 1353812601);
 		}
 		$output = array_slice($haystack, $start, $length, TRUE);
-		if ($this->arguments['as']) {
-			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
-				$this->templateVariableContainer->remove($this->arguments['as']);
+		if (NULL !== $as) {
+			if ($this->templateVariableContainer->exists($as)) {
+				$this->templateVariableContainer->remove($as);
 			}
-			$this->templateVariableContainer->add($this->arguments['as'], $output);
+			$this->templateVariableContainer->add($as, $output);
 			$output = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
+			$this->templateVariableContainer->remove($as);
 		}
 		return $output;
 	}
