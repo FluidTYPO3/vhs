@@ -86,6 +86,11 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	protected $tagBuilder;
 
 	/**
+	 * @var t3lib_TSparser
+	 */
+	protected $typoScriptParser;
+
+	/**
 	 * Example types: raw, meta, css, js.
 	 *
 	 * If a LESS stylesheet is being compiled the "type"
@@ -121,6 +126,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->tagBuilder = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_TagBuilder');
+		$this->typoScriptParser = $this->objectManager->get('t3lib_TSparser');
 	}
 
 	/**
@@ -141,6 +147,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$this->registerArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
 		$this->registerArgument('trim', 'boolean', 'If FALSE, disables the per-default enabled trimming of whitespace off beginnings and ends of lines in the Asset content body', FALSE, TRUE);
 		$this->registerArgument('namedChunks', 'boolean', 'If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency', FALSE, FALSE);
+		$this->registerArgument('stdWrap', 'string', 'An optional string of stdWrap functions which you use inside the Asset, be it standalone or inline. When set, the content or path resource will be modified using stdWrap', FALSE, NULL);
 	}
 
 	/**
@@ -286,6 +293,11 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 			$content = $assetSettings['content'];
 		} else {
 			$content = $this->renderChildren();
+		}
+		if (FALSE === empty($assetSettings['stdWrap'])) {
+			$this->typoScriptParser->parse($assetSettings['stdWrap']);
+			$setupWithDots = $this->typoScriptParser->setup;
+			$content = $GLOBALS['TSFE']->cObj->stdWrap($content, $setupWithDots);
 		}
 		if (TRUE === (boolean) $assetSettings['trim']) {
 			$lines = explode(LF, $content);

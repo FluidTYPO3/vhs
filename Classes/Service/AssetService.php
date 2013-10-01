@@ -162,7 +162,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
 				self::$settingsCache = array();
 			} else {
-				self::$settingsCache = t3lib_div::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = Tx_Vhs_Utility_SettingsUtility::removeDotsFromSettings($allTypoScript['plugin.']['tx_vhs.']['settings.'], array('stdWrap'));
 			}
 		}
 		$settings = (array) self::$settingsCache;
