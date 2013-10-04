@@ -81,7 +81,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		$lastUid = $pageUids[$uidCount - 1];
 		for ($i = 0; $i < $uidCount; $i++) {
 			if ($pageUids[$i] == $pageUid) {
-				if ($i > 1) {
+				if ($i > 0) {
 					$prevUid = $pageUids[$i - 1];
 				}
 				if ($i < $uidCount) {
@@ -90,33 +90,39 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 				break;
 			}
 		}
-		$menuItems = array();
+		$pages = array();
 		if (TRUE === (boolean) $this->arguments['renderFirst']) {
-			$menuItems[] = $menuData[$firstUid];
+			$pages['first'] = $menuData[$firstUid];
 		}
-		$menuItems[] = $menuData[$prevUid];
+		$pages['prev'] = $menuData[$prevUid];
 		if (TRUE === (boolean) $this->arguments['renderUp']) {
-			$menuItems[] = $parentPage;
+			$pages['up'] = $parentPage;
 		}
-		$menuItems[] = $menuData[$nextUid];
+		$pages['next'] = $menuData[$nextUid];
 		if (TRUE === (boolean) $this->arguments['renderLast']) {
-			$menuItems[] = $menuData[$lastUid];
+			$pages['last'] = $menuData[$lastUid];
 		}
-		$menu = $this->parseMenu($menuItems, $rootLineData);
-		if (isset($menu[$firstUid])) {
-			$menu[$firstUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menu[$firstUid]);
+		$menuItems = $this->parseMenu($pages, $rootLineData);
+		$menu = array();
+		if (TRUE === isset($pages['first'])) {
+			$menu['first'] = $menuItems[$firstUid];
+			$menu['first']['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menuItems[$firstUid]);
 		}
-		if (isset($menu[$prevUid])) {
-			$menu[$prevUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menu[$prevUid]);
+		if (TRUE === isset($pages['prev'])) {
+			$menu['prev'] = $menuItems[$prevUid];
+			$menu['prev']['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menuItems[$prevUid]);
 		}
-		if (isset($menu[$parentUid])) {
-			$menu[$parentUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menu[$parentUid]);
+		if (TRUE === isset($pages['up'])) {
+			$menu['up'] = $menuItems[$parentUid];
+			$menu['up']['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menuItems[$parentUid]);
 		}
-		if (isset($menu[$nextUid])) {
-			$menu[$nextUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menu[$nextUid]);
+		if (TRUE === isset($pages['next'])) {
+			$menu['next'] = $menuItems[$nextUid];
+			$menu['next']['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menuItems[$nextUid]);
 		}
-		if (isset($menu[$lastUid])) {
-			$menu[$lastUid]['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menu[$lastUid]);
+		if (TRUE === isset($pages['last'])) {
+			$menu['last'] = $menuItems[$lastUid];
+			$menu['last']['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menuItems[$lastUid]);
 		}
 		$this->backupVariables();
 		$this->templateVariableContainer->add($this->arguments['as'], $menu);
