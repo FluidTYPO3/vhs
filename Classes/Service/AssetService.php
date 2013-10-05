@@ -244,6 +244,9 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$path = $assetSettings['path'];
 				if (FALSE === $standalone) {
 					$chunk[$name] = $asset;
+				} elseif (TRUE === empty($path)) {
+					$assetContent = $this->extractAssetContent($asset);
+					array_push($chunks, $this->generateTagForAssetType($type, $assetContent));
 				} else {
 					if (TRUE === $external) {
 						array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
