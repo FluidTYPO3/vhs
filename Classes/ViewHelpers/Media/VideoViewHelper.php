@@ -93,7 +93,7 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 			}
 			$type = 'video/' . strtolower($source['type']);
 			$src = $this->preprocessSourceUri($src);
-			$this->renderChildTag('source', array('src' => $src, 'type' => $type), 'append');
+			$this->renderChildTag('source', array('src' => $src, 'type' => $type), FALSE, 'append');
 		}
 		$tagAttributes = array(
 			'width'   => $this->arguments['width'],
