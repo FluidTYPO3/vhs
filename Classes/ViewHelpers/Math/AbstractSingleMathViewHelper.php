@@ -88,7 +88,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_F
 	 */
 	protected function getInlineArgument() {
 		$a = $this->renderChildren();
-		if (TRUE === isset($this->arguments['a'])) {
+		if (NULL === $a && TRUE === isset($this->arguments['a'])) {
 			$a = $this->arguments['a'];
 		}
 		if (NULL === $a && TRUE === (boolean) $this->arguments['fail']) {
