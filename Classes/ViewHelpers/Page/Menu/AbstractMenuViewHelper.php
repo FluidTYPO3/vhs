@@ -57,25 +57,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @var Tx_Vhs_Service_PageSelectService
 	 */
 	protected $pageSelect;
-	
-	/**
-	 * @var Tx_Extbase_Object_ObjectManager
-	 */
-	protected $objectManager;
 
-	/**
-	 * @var Tx_Flux_Service_FluxService
-	 */
-	protected $fluxService;
-
-	/**
-	 * CONSTRUCTOR
-	 */
-	public function __construct() {
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$this->fluxService = $this->objectManager->get('Tx_Flux_Service_FluxService');
-	}
-	
 	/**
 	 * @param Tx_Vhs_Service_PageSelectService $pageSelectService
 	 * @return void
@@ -119,7 +101,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'menu');
 		$this->registerArgument('rootLineAs', 'string', 'If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'rootLine');
 		$this->registerArgument('excludePages', 'mixed', 'Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.', FALSE, '');
-		$this->registerArgument('flexFormContent', 'boolean', 'If TRUE, converts the flex form content to an array.', FALSE, FALSE);
 	}
 
 	/**
@@ -437,12 +418,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['doktype'] = $doktype;
-		
-		if (TRUE === $this->arguments['flexFormContent']) {
-			if (isset($page['tx_fed_page_flexform'])) {
-				$page['flexform'] = $this->fluxService->convertFlexFormContentToArray($page['tx_fed_page_flexform']);
-			}
-		}
 
 		if ($doktype == t3lib_pageSelect::DOKTYPE_LINK) {
 			$urlTypes = array(
