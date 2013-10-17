@@ -60,6 +60,15 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	public function render() {
 		$pageUid = NULL !== $this->arguments['pageUid'] ? intval($this->arguments['pageUid']) : $GLOBALS['TSFE']->id;
 		$page = $this->pageSelect->getPage($pageUid);
+		$languageUid = intval($GLOBALS['TSFE']->sys_language_uid);
+		if (0 !== $languageUid && FALSE !== $this->pageSelect->getPageOverlay($page['uid'], $languageUid)) {
+			$pageOverlay = $this->pageSelect->getPageOverlay($page['uid'], $languageUid);
+			foreach ($pageOverlay as $name => $value) {
+				if (FALSE === empty($value)) {
+					$page[$name] = $value;
+				}
+			}
+		}
 		$output = NULL;
 		if (TRUE === empty($this->arguments['field'])) {
 			$output = $page;
