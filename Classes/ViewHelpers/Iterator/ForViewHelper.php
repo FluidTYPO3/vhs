@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2013 Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  *
  *  All rights reserved
  *
@@ -24,13 +24,13 @@
  ***************************************************************/
 
 /**
- * Repeats rendering of children $count times while updating $iteration
+ * Repeats rendering of children with a typical for loop: starting at index $from it will loop until the index has reached $to.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_LoopViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Initialize
@@ -38,9 +38,9 @@ class Tx_Vhs_ViewHelpers_Iterator_LoopViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('count', 'integer', 'Number of times to render child content', TRUE);
-		$this->registerArgument('minimum', 'integer', 'Minimum number of loops before stopping', FALSE, 0);
-		$this->registerArgument('maximum', 'integer', 'Maxiumum number of loops before stopping', FALSE, PHP_INT_MAX);
+		$this->registerArgument('to', 'integer', 'Number that the index needs to reach before stopping', TRUE);
+		$this->registerArgument('from', 'integer', 'Starting number for the index', FALSE, 0);
+		$this->registerArgument('step', 'integer', 'Stepping number that the index is increased by after each loop', FALSE, 1);
 		$this->registerArgument('iteration', 'string', 'Variable name to insert result into, suppresses output', FALSE, NULL);
 	}
 
@@ -48,28 +48,24 @@ class Tx_Vhs_ViewHelpers_Iterator_LoopViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return string
 	 */
 	public function render() {
-		$max = $this->arguments['count'];
-		if ($max < $this->arguments['minimum']) {
-			$max = $this->arguments['minimum'];
-		} elseif ($max > $this->arguments['maximum']) {
-			$max = $this->arguments['maximum'];
-		}
-		$i = 0;
+		$max = $this->arguments['to'];
+		$from = $this->arguments['from'];
+		$step = $this->arguments['step'];
 		$content = '';
 
 		if (TRUE === $this->templateVariableContainer->exists($this->arguments['iteration'])) {
 			$backupVariable = $this->templateVariableContainer->get($this->arguments['iteration']);
 		}
 
-		while ($i < $max) {
-			if ($this->arguments['iteration']) {
+		for ($i = $from; $i <= $max; $i += $step) {
+			if (FALSE === empty($this->arguments['iteration'])) {
 				$iteration = array(
 					'cycle' => $i + 1,
 					'index' => $i,
 					'isOdd' => ($i % 2 == 0 ? 1 : 0),
 					'isEven' => $i % 2,
-					'isFirst' => ($i === 0 ? 1 : 0),
-					'isLast' => ($i === ($max - 1) ? 1 : 0)
+					'isFirst' => ($i === $from ? 1 : 0),
+					'isLast' => ($i === $max ? 1 : 0)
 				);
 				if (TRUE === $this->templateVariableContainer->exists($this->arguments['iteration'])) {
 					$this->templateVariableContainer->remove($this->arguments['iteration']);
@@ -80,7 +76,6 @@ class Tx_Vhs_ViewHelpers_Iterator_LoopViewHelper extends Tx_Fluid_Core_ViewHelpe
 			} else {
 				$content .= $this->renderChildren() . LF;
 			}
-			$i++;
 		}
 
 		if (TRUE === isset($backupVariable)) {
