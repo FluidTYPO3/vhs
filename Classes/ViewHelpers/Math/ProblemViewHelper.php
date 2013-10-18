@@ -1,15 +1,14 @@
 <?php
 
-
-class Tx_Vhs_ViewHelpers_Math_ProblemViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper {
+class Tx_Vhs_ViewHelpers_Math_ProblemViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
     /**
-     * @param string problem
+     * @param string $a
      * 
      * @return string
      */
-	public function render($problem){
-		return( \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses($problem) );
-	} 
+	public function render($a){
+		return( \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses($a) );
+	}
 	
 }
 
