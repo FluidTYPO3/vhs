@@ -57,4 +57,3 @@ class Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelper extends Tx_Vhs_ViewHelpers
 		return $this->renderElseChild();
 	}
 }
-?>

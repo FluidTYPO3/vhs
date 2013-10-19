@@ -36,4 +36,3 @@
  */
 class Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper extends Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper {
 }
-
