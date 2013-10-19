@@ -26,6 +26,9 @@
 /**
  * ViewHelper used to render a meta tag
  *
+ * If you use the ViewHelper in a plugin it has to be USER
+ * not USER_INT, what means it has to be cached!
+ *
  * @author Georg Ringer
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
