@@ -194,4 +194,3 @@ return array(
 	'tx_vhs_viewhelpers_var_typoscriptviewhelper' => $extensionClassesPath . 'ViewHelpers/Var/TyposcriptViewHelper.php',
 	'tx_vhs_viewhelpers_var_unsetviewhelper' => $extensionClassesPath . 'ViewHelpers/Var/UnsetViewHelper.php',
 );
-?>

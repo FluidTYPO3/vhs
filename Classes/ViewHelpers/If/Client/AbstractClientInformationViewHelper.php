@@ -88,4 +88,3 @@ abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper 
 		return $clientInfo['all_systems'];
 	}
 }
-?>

@@ -71,4 +71,3 @@ class Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper extends Tx_Vhs_ViewHelper
 		return $content;
 	}
 }
-?>
