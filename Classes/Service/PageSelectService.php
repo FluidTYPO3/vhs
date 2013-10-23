@@ -178,4 +178,29 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 		return self::$cachedRootLines[$key];
 	}
 
+	/**
+	 * Checks if a page for a specific language should be hidden
+	 *
+	 * @param integer $pageUid
+	 * @param integer $languageUid
+	 * @param integer $normalWhenNoLanguage
+	 * @return boolean
+	 */
+	public function hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage = FALSE) {
+		$l18nCfg = $GLOBALS['TSFE']->page['l18n_cfg'];
+		$hideIfNotTranslated = t3lib_div::hideIfNotTranslated($l18nCfg);
+		$hideIfDefaultLanguage = t3lib_div::hideIfDefaultLanguage($l18nCfg);
+
+		$pageOverlay = 0 !== $languageUid ? $this->getPageOverlay($pageUid, $languageUid) : array();
+
+		// $hideIfDefaultLanguage must be compared to 0, because t3lib_div returns an integer and not a boolean as promised
+		if (((FALSE === $hideIfNotTranslated && TRUE === $normalWhenNoLanguage) || 0 === $languageUid || 0 !== count($pageOverlay)) &&
+			(0 === $hideIfDefaultLanguage || (0 !== $languageUid && 0 !== count($pageOverlay)))) {
+
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
 }
