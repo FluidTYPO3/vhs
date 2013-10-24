@@ -117,7 +117,6 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		$assetDebugRequested = (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0);
 		$useDebugUtility = (isset($settings['asset']['useDebugUtility']) && $settings['asset']['useDebugUtility'] > 0) || FALSE === isset($settings['asset']['useDebugUtility']);
 		if (TRUE === ($buildDebugRequested || $assetDebugRequested)) {
-			$this->debug();
 			if (TRUE === $useDebugUtility) {
 				Tx_Extbase_Utility_Debugger::var_dump($assets);
 			} else {
