@@ -75,10 +75,10 @@ class Tx_Vhs_ViewHelpers_Iterator_LoopViewHelper extends Tx_Fluid_Core_ViewHelpe
 					$this->templateVariableContainer->remove($this->arguments['iteration']);
 				}
 				$this->templateVariableContainer->add($this->arguments['iteration'], $iteration);
-				$content .= $this->renderChildren() . LF;
+				$content .= $this->renderChildren();
 				$this->templateVariableContainer->remove($this->arguments['iteration']);
 			} else {
-				$content .= $this->renderChildren() . LF;
+				$content .= $this->renderChildren();
 			}
 			$i++;
 		}
