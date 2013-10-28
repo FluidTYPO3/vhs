@@ -27,6 +27,7 @@
  * ViewHelper to access data of the current page record
  *
  * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
+ * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
@@ -49,7 +50,7 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('pageUid', 'integer', 'If specified, this UID will be used to fetch page data instead of using the current page.', FALSE, NULL);
+		$this->registerArgument('pageUid', 'integer', 'If specified, this UID will be used to fetch page data instead of using the current page.', FALSE, 0);
 		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
 		$this->registerArgument('field', 'string', 'If specified, only this field will be returned/assigned instead of the complete page record.', FALSE, NULL);
 	}
@@ -58,35 +59,56 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @return mixed
 	 */
 	public function render() {
-		$pageUid = NULL !== $this->arguments['pageUid'] ? intval($this->arguments['pageUid']) : $GLOBALS['TSFE']->id;
+		// Get page via pageUid argument or current id
+		$pageUid = intval($this->arguments['pageUid']);
+		if (0 === $pageUid) {
+			 $pageUid = $GLOBALS['TSFE']->id;
+		}
+
 		$page = $this->pageSelect->getPage($pageUid);
+
+		// Add the page overlay
 		$languageUid = intval($GLOBALS['TSFE']->sys_language_uid);
-		if (0 !== $languageUid && FALSE !== $this->pageSelect->getPageOverlay($page['uid'], $languageUid)) {
-			$pageOverlay = $this->pageSelect->getPageOverlay($page['uid'], $languageUid);
-			foreach ($pageOverlay as $name => $value) {
-				if (FALSE === empty($value)) {
-					$page[$name] = $value;
-				}
+		if (0 !== $languageUid) {
+			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $languageUid);
+			if (TRUE === is_array($pageOverlay)) {
+				$page = t3lib_div::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
 			}
 		}
-		$output = NULL;
-		if (TRUE === empty($this->arguments['field'])) {
-			$output = $page;
-		} else {
-			$field = $this->arguments['field'];
-			if (TRUE === isset($page[$field])) {
-				$output = $page[$field];
-			}
+
+		$content = NULL;
+
+		// Check if field should be returned or assigned
+		$field = $this->arguments['field'];
+		if (TRUE === empty($field)) {
+			$content = $page;
+		} elseif (TRUE === isset($page[$field])) {
+			$content = $page[$field];
 		}
-		if (FALSE === empty($this->arguments['as'])) {
-			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
-				$this->templateVariableContainer->remove($this->arguments['as']);
-			}
-			$this->templateVariableContainer->add($this->arguments['as'], $output);
-			return NULL;
-		} else {
-			return $output;
+
+		// Return if no assign
+		$as = $this->arguments['as'];
+		if (TRUE === empty($as)) {
+			return $content;
 		}
+
+		// Backup as argument
+		if (TRUE === $this->templateVariableContainer->exists($as)) {
+			$backupVariable = $this->templateVariableContainer->get($as);
+			$this->templateVariableContainer->remove($as);
+		}
+
+		// Render Children
+		$this->templateVariableContainer->add($as, $content);
+		$output = $this->renderChildren();
+		$this->templateVariableContainer->remove($as);
+
+		// Restore as argument
+		if (TRUE === isset($backupVariable)) {
+			$this->templateVariableContainer->add($as, $backupVariable);
+		}
+
+		return $output;
 	}
 
 }
