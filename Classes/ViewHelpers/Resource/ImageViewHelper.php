@@ -92,7 +92,7 @@ class Tx_Vhs_ViewHelpers_Resource_ImageViewHelper extends Tx_Vhs_ViewHelpers_Res
 		// Return if no assign
 		$as = $this->arguments['as'];
 		if (TRUE === empty($as)) {
-			return implode(LF, $tags);
+			return implode('', $tags);
 		}
 
 		// Backup as argument

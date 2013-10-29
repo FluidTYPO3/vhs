@@ -39,7 +39,8 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends Tx
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('identifier', 'mixed', 'The FAL sys_file record identifiers (either CSV, array or implementing Traversable).', FALSE, NULL);
+		$this->registerArgument('identifier', 'mixed', 'The FAL combined identifiers (either CSV, array or implementing Traversable).', FALSE, NULL);
+		$this->registerArgument('categories', 'mixed', 'The sys_category records to select the resources from (either CSV, array or implementing Traversable).', FALSE, NULL);
 	}
 
 	/**
@@ -49,33 +50,57 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends Tx
 	 * @param mixed $identifier
 	 * @return array|NULL
 	 */
-	public function getFiles($onlyProperties = FALSE, $identifier = NULL) {
-		if (NULL === $identifier) {
-			$identifier = $this->arguments['identifier'];
-		}
+	public function getFiles($onlyProperties = FALSE, $identifier = NULL, $categories = NULL) {
+		$identifier = $this->arrayForMixedArgument($identifier, 'identifier');
+		$categories = $this->arrayForMixedArgument($categories, 'categories');
 
-		if (TRUE === $identifier instanceof Traversable) {
-			$identifier = iterator_to_array($identifier);
-		} elseif (TRUE === is_string($identifier)) {
-			$identifier = t3lib_div::trimExplode(',', $identifier, TRUE);
-		} else {
-			$identifier = (array) $identifier;
-		}
-
-		if (TRUE === empty($identifier)) {
+		if (TRUE === empty($identifier) && TRUE === empty($categories)) {
 			 return NULL;
 		}
 
 		$files = array();
-
 		$resourceFactory = t3lib_div::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+
+		if (FALSE === empty($categories)) {
+			$sqlCategories = implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'sys_category_record_mm', 'tablenames = \'sys_file\' AND uid_local IN (' . $sqlCategories . ')');
+
+			$fileUids = array();
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$fileUids[] = intval($row['uid_foreign']);
+			}
+			$fileUids = array_unique($fileUids);
+
+			if (TRUE === empty($identifier)) {
+				foreach ($fileUids as $fileUid) {
+					try {
+						$file = $resourceFactory->getFileObject($fileUid);
+
+						if (TRUE === $onlyProperties) {
+							$file = $file->getProperties();
+						}
+
+						$files[] = $file;
+					} catch (Exception $e) {
+						continue;
+					}
+				}
+
+				return $files;
+			}
+		}
 
 		foreach ($identifier as $i) {
 			try {
 				$file = $resourceFactory->getFileObjectFromCombinedIdentifier($i);
+				if (TRUE === isset($fileUids) && FALSE === in_array($file->getUid(), $fileUids)) {
+					continue;
+				}
+
 				if (TRUE === $onlyProperties) {
 					$file = $file->getProperties();
 				}
+
 				$files[] = $file;
 			} catch (Exception $e) {
 				continue;
@@ -83,6 +108,29 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends Tx
 		}
 
 		return $files;
+	}
+
+	/**
+	 * Mixed argument with CSV, array, Traversable
+	 *
+	 * @param mixed $argument
+	 * @param string $name
+	 * @return array
+	 */
+	public function arrayForMixedArgument($argument, $name) {
+		if (NULL === $argument) {
+			$argument = $this->arguments[$name];
+		}
+
+		if (TRUE === $argument instanceof Traversable) {
+			$argument = iterator_to_array($argument);
+		} elseif (TRUE === is_string($argument)) {
+			$argument = t3lib_div::trimExplode(',', $argument, TRUE);
+		} else {
+			$argument = (array) $argument;
+		}
+
+		return $argument;
 	}
 
 }
