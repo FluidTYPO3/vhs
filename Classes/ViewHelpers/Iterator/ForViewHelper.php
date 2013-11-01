@@ -48,38 +48,64 @@ class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Fluid_Core_ViewHelper
 	 * @return string
 	 */
 	public function render() {
-		$max = $this->arguments['to'];
-		$from = $this->arguments['from'];
-		$step = $this->arguments['step'];
+		$to = intval($this->arguments['to']);
+		$from = intval($this->arguments['from']);
+		$step = intval($this->arguments['step']);
+		$iteration = $this->arguments['iteration'];
 		$content = '';
 
-		if (TRUE === $this->templateVariableContainer->exists($this->arguments['iteration'])) {
-			$backupVariable = $this->templateVariableContainer->get($this->arguments['iteration']);
+		if (0 === $step) {
+			throw new RuntimeException('"step" may not be 0.', 1383267698);
+		}
+		if ($from < $to && 0 > $step) {
+			throw new RuntimeException('"step" must be greater than 0 if "from" is smaller than "to".', 1383268407);
+		}
+		if ($from > $to && 0 < $step) {
+			throw new RuntimeException('"step" must be smaller than 0 if "from" is greater than "to".', 1383268415);
 		}
 
-		for ($i = $from; $i <= $max; $i += $step) {
-			if (FALSE === empty($this->arguments['iteration'])) {
-				$iteration = array(
-					'cycle' => $i + 1,
-					'index' => $i,
-					'isOdd' => ($i % 2 == 0 ? 1 : 0),
-					'isEven' => $i % 2,
-					'isFirst' => ($i === $from ? 1 : 0),
-					'isLast' => ($i === $max ? 1 : 0)
-				);
-				if (TRUE === $this->templateVariableContainer->exists($this->arguments['iteration'])) {
-					$this->templateVariableContainer->remove($this->arguments['iteration']);
-				}
-				$this->templateVariableContainer->add($this->arguments['iteration'], $iteration);
-				$content .= $this->renderChildren();
-				$this->templateVariableContainer->remove($this->arguments['iteration']);
-			} else {
-				$content .= $this->renderChildren();
+		if (TRUE === $this->templateVariableContainer->exists($iteration)) {
+			$backupVariable = $this->templateVariableContainer->get($iteration);
+			$this->templateVariableContainer->remove($iteration);
+		}
+
+		if ($from === $to) {
+			$content = $this->renderIteration($from, $from, $to, $iteration);
+		} elseif ($from < $to) {
+			for ($i = $from; $i <= $to; $i += $step) {
+				$content .= $this->renderIteration($i, $from, $to, $iteration);
+			}
+		} else {
+			for ($i = $from; $i >= $to; $i += $step) {
+				$content .= $this->renderIteration($i, $from, $to, $iteration);
 			}
 		}
 
 		if (TRUE === isset($backupVariable)) {
-			$this->templateVariableContainer->add($this->arguments['iteration'], $backupVariable);
+			$this->templateVariableContainer->add($iteration, $backupVariable);
+		}
+
+		return $content;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function renderIteration($i, $from, $to, $iterationArgument) {
+		if (FALSE === empty($iterationArgument)) {
+			$iteration = array(
+				'cycle' => $i + 1,
+				'index' => $i,
+				'isOdd' => ($i % 2 == 0 ? 1 : 0),
+				'isEven' => $i % 2,
+				'isFirst' => ($i === $from ? 1 : 0),
+				'isLast' => ($i === $to ? 1 : 0)
+			);
+			$this->templateVariableContainer->add($iterationArgument, $iteration);
+			$content = $this->renderChildren();
+			$this->templateVariableContainer->remove($iterationArgument);
+		} else {
+			$content = $this->renderChildren();
 		}
 
 		return $content;
