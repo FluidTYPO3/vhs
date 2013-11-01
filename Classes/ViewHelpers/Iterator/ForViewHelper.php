@@ -24,7 +24,8 @@
  ***************************************************************/
 
 /**
- * Repeats rendering of children with a typical for loop: starting at index $from it will loop until the index has reached $to.
+ * Repeats rendering of children with a typical for loop: starting at
+ * index $from it will loop until the index has reached $to.
  *
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
@@ -33,8 +34,6 @@
 class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Vhs_ViewHelpers_Iterator_AbstractLoopViewHelper {
 
 	/**
-	 * Initialize
-	 *
 	 * @return void
 	 */
 	public function initializeArguments() {
