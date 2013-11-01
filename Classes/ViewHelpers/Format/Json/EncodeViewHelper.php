@@ -73,7 +73,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	public function render($value = NULL, $useTraversableKeys = FALSE, $preventRecursion = TRUE, $recursionMarker = NULL, $dateTimeFormat = NULL) {
 		if (NULL === $value) {
 			$value = $this->renderChildren();
-			if (NULL === $value) {
+			if (TRUE === empty($value)) {
 				return '{}';
 			}
 		}
@@ -189,7 +189,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 */
 	protected function recursiveDomainObjectToArray(Tx_Extbase_DomainObject_DomainObjectInterface $domainObject, $preventRecursion, $recursionMarker) {
 		$hash = spl_object_hash($domainObject);
-		if (TRUE === ($preventRecursion && in_array($hash, $this->encounteredClasses))) {
+		if (TRUE === $preventRecursion && TRUE === in_array($hash, $this->encounteredClasses)) {
 			return $recursionMarker;
 		}
 		$converted = Tx_Extbase_Reflection_ObjectAccess::getGettableProperties($domainObject);
