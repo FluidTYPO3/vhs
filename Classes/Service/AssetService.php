@@ -291,8 +291,8 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				|| TRUE === (boolean) $GLOBALS['TSFE']->page['no_cache']
 		) {
 			foreach ($assets as $name => $asset) {
-				$settings = $this->extractAssetSettings($asset);
-				if (TRUE === (isset($settings['namedChunks']) && 0 < $settings['namedChunks']) || FALSE === isset($settings['namedChunks'])) {
+				$assetSettings = $this->extractAssetSettings($asset);
+				if (TRUE === (isset($assetSettings['namedChunks']) && 0 < $assetSettings['namedChunks']) || FALSE === isset($assetSettings['namedChunks'])) {
 					$source .= '/* ' . $name . ' */' . LF;
 				}
 				$source .= $this->extractAssetContent($asset) . LF;
@@ -301,7 +301,10 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			}
 			file_put_contents($fileAbsolutePathAndFilename, $source);
 		}
-		$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
+		$settings = $this->getSettings();
+		if (FALSE === isset($settings['appendModificationTime']) || TRUE === (boolean) $settings['appendModificationTime']) {
+			$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
+		}
 		$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
 		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
 	}
