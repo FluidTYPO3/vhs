@@ -82,16 +82,15 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 		} elseif (FALSE === empty($this->arguments['__elseClosure']) || FALSE === empty($this->arguments['else'])) {
 			return '';
 		}
-
 		$elseViewHelperEncountered = FALSE;
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
+				&& $childNode->getViewHelperClassName() === $this->getThenViewHelperClassName()) {
 				$data = $childNode->evaluate($this->fetchRenderingContext());
 				return $data;
 			}
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
+				&& $childNode->getViewHelperClassName() === $this->getElseViewHelperClassName()) {
 				$elseViewHelperEncountered = TRUE;
 			}
 		}
@@ -119,9 +118,10 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 			return $elseClosure();
 		}
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
-				return $childNode->evaluate($this->fetchRenderingContext());
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+				if ($childNode->getViewHelperClassName() === $this->getElseViewHelperClassName()) {
+					return $childNode->evaluate($this->fetchRenderingContext());
+				}
 			}
 		}
 
@@ -141,7 +141,7 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 			foreach ($this->childNodes as $childNode) {
 				if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
 					$viewHelperClassName = $childNode->getViewHelperClassName();
-					if ($viewHelperClassName === 'Tx_Vhs_ViewHelpers_Condition_ExtendViewHelper') {
+					if ($viewHelperClassName === 'Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper') {
 						$condition = $childNode->evaluate($this->fetchRenderingContext());
 						break;
 					}
@@ -165,4 +165,29 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 		return $this->renderingContext;
 	}
 
+	/**
+	 * @return boolean
+	 */
+	protected function assertCoreVersionIsAtLeastSixPointZero() {
+		$version = explode('.', TYPO3_version);
+		return ($version[0] >= 6);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getThenViewHelperClassName() {
+		$viewHelperClassName = TRUE === $this->assertCoreVersionIsAtLeastSixPointZero() ?
+			'TYPO3\\CMS\\Fluid\\ViewHelpers\\ThenViewHelper' : 'Tx_Fluid_ViewHelpers_ThenViewHelper';
+		return $viewHelperClassName;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getElseViewHelperClassName() {
+		$viewHelperClassName = TRUE === $this->assertCoreVersionIsAtLeastSixPointZero() ?
+			'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper' : 'Tx_Fluid_ViewHelpers_ElseViewHelper';
+		return $viewHelperClassName;
+	}
 }
