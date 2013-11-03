@@ -48,6 +48,23 @@
  * inserts the variable in the template and leaves it there
  * (it "leaks" the variable).
  *
+ * If $name contains a dot, VHS will attempt to load the object
+ * stored under the named used as the first segment part and
+ * set the value at the remaining path. E.g.
+ * `{value -> v:var.set(name: 'object.property.subProperty')}`
+ * would attempt to load `{object}` first, then set
+ * `property.subProperty` on that object/array using
+ * ObjectAccess::setPropertyPath(). If `{object}` is not
+ * an object or an array, the variable will not be set. Please
+ * note: Extbase does not currently support setting variables
+ * deeper than two levels, meaning a `name` of fx `foo.bar.baz`
+ * will be ignored. To set values deeper than two levels you
+ * must first extract the second-level object then set the
+ * value on that object.
+ *
+ * Using as `{value -> v:var.set(name: 'myVar')}` makes `{myVar}` contain
+ * `{value}`.
+ *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Var
@@ -57,10 +74,6 @@ class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	/**
 	 * Set (override) the variable in $name.
 	 *
-	 * Why is $value first? In order to support this, for example:
-	 *
-	 * {value -> vhs:format.plaintext() -> vhs:var.set(name: 'myVariable')}
-	 *
 	 * @param string $name
 	 * @param mixed $value
 	 * @return void
@@ -69,10 +82,28 @@ class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		if ($value === NULL) {
 			$value = $this->renderChildren();
 		}
-		if ($this->templateVariableContainer->exists($name) === TRUE) {
-			$this->templateVariableContainer->remove($name);
+		if (FALSE === strpos($name, '.')) {
+			if ($this->templateVariableContainer->exists($name) === TRUE) {
+				$this->templateVariableContainer->remove($name);
+			}
+			$this->templateVariableContainer->add($name, $value);
+		} elseif (1 == substr_count($name, '.')) {
+			$parts = explode('.', $name);
+			$objectName = array_shift($parts);
+			$path = implode('.', $parts);
+			if (FALSE === $this->templateVariableContainer->exists($objectName)) {
+				return NULL;
+			}
+			$object = $this->templateVariableContainer->get($objectName);
+			try {
+				Tx_Extbase_Reflection_ObjectAccess::setProperty($object, $path, $value);
+				// Note: re-insert the variable to ensure unreferenced values like arrays also get updated
+				$this->templateVariableContainer->remove($objectName);
+				$this->templateVariableContainer->add($objectName, $object);
+			} catch (Exception $error) {
+				return NULL;
+			}
 		}
-		$this->templateVariableContainer->add($name, $value);
 		return NULL;
 	}
 
