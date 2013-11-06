@@ -35,35 +35,8 @@
 class Tx_Vhs_ViewHelpers_Iterator_ImplodeViewHelper extends Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper {
 
 	/**
-	 * Initialize
-	 *
-	 * @return void
+	 * @var string
 	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-	}
-
-	/**
-	 * Render method
-	 *
-	 * @param mixed $content String or variable convertible to string which should be exploded
-	 * @return mixed
-	 */
-	public function render($content = NULL) {
-		if (!$content) {
-			$content = $this->renderChildren();
-		}
-		$glue = $this->resolveGlue();
-		$output = implode($glue, $content);
-		if ($this->arguments['as']) {
-			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
-				$this->templateVariableContainer->remove($this->arguments['as']);
-			}
-			$this->templateVariableContainer->add($this->arguments['as'], $output);
-			return NULL;
-		} else {
-			return $output;
-		}
-	}
+	protected $method = 'implode';
 
 }

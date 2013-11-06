@@ -151,7 +151,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode
 	 * @param string $extensionName
 	 * @param string $pluginName
-	 * @return mixed|Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 * @return mixed
 	 */
 	protected function executeViewHelper($arguments = array(), $variables = array(), $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
 		$instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
@@ -166,7 +166,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	 * @param array $variables
 	 * @param string $extensionName
 	 * @param string $pluginName
-	 * @return mixed|Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 * @return mixed
 	 */
 	protected function executeViewHelperUsingTagContent($nodeType, $nodeValue, $arguments = array(), $variables = array(), $extensionName = NULL, $pluginName = NULL) {
 		$childNode = $this->createNode($nodeType, $nodeValue);
