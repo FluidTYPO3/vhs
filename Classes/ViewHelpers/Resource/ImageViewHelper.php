@@ -95,22 +95,8 @@ class Tx_Vhs_ViewHelpers_Resource_ImageViewHelper extends Tx_Vhs_ViewHelpers_Res
 			return implode('', $tags);
 		}
 
-		// Backup as argument
-		if (TRUE === $this->templateVariableContainer->exists($as)) {
-			$backupVariable = $this->templateVariableContainer->get($as);
-			$this->templateVariableContainer->remove($as);
-		}
-
-		// Render Children
-		$this->templateVariableContainer->add($as, $images);
-		$output = $this->renderChildren();
-		$this->templateVariableContainer->remove($as);
-
-		// Restore as argument
-		if (TRUE === isset($backupVariable)) {
-			$this->templateVariableContainer->add($as, $backupVariable);
-		}
-
+		$variables = array($as => $tags);
+		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		return $output;
 	}
 

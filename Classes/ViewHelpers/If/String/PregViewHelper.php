@@ -54,22 +54,14 @@ class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends Tx_Fluid_Core_ViewHelp
 			preg_match($pattern, $string, $matches);
 		}
 		if (FALSE === empty($as)) {
-			if ($this->templateVariableContainer->exists($as)) {
-				$backupVariable = $this->templateVariableContainer->get($as);
-				$this->templateVariableContainer->remove($as);
-			}
-			$this->templateVariableContainer->add($as, $matches);
-			$content = $this->renderChildren();
-			$this->templateVariableContainer->remove($as);
+			$variables = array($as => $matches);
+			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		} else {
 			if (0 < count($matches)) {
 				$content = $this->renderThenChild();
 			} else {
 				$content =  $this->renderElseChild();
 			}
-		}
-		if (TRUE === isset($backupVariable)) {
-			$this->templateVariableContainer->add($as, $backupVariable);
 		}
 		return $content;
 	}
