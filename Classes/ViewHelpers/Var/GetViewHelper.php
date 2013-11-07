@@ -47,13 +47,42 @@
 class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Get the variable in $name.
+	 * ### Variable: Get
+	 *
+	 * Get the variable in $name. Supports dotted-path syntax.
+	 *
+	 * Can be used to access dynamic variables such as:
+	 *
+	 *     {v:var.get(name: 'object.arrayProperty.{index}')}
+	 *
+	 * And can be chained with `v:var.set` to reassign the
+	 * output to another variable:
+	 *
+	 *     {v:var.get(name: 'myArray.{index}') -> v:var.set(name: 'myVar')}
+	 *
+	 * If your target object is an array with unsequential yet
+	 * numeric indices (e.g. {123: 'value1', 513: 'value2'},
+	 * commonly seen in reindexed UID map arrays) use
+	 * `useRawIndex="TRUE"` to indicate you do not want your
+	 * array/QueryResult/Iterator to be accessed by locating
+	 * the Nth element - which is the default behavior.
+	 *
+	 * ```warning
+	 * Do not try `useRawKeys="TRUE"` on QueryResult or
+	 * ObjectStorage unless you are fully aware what you are
+	 * doing. These particular types require an unpredictable
+	 * index value - the SPL object hash value - when accessing
+	 * members directly. This SPL indexing and the very common
+	 * occurrences of QueryResult and ObjectStorage variables
+	 * in templates is the very reason why `useRawKeys` by
+	 * default is set to `FALSE`.
+	 * ```
 	 *
 	 * @param string $name
-	 * @throws Exception
+	 * @param boolean $useRawKeys
 	 * @return mixed
 	 */
-	public function render($name) {
+	public function render($name, $useRawKeys = FALSE) {
 		if (strpos($name, '.') === FALSE) {
 			if ($this->templateVariableContainer->exists($name) === TRUE) {
 				return $this->templateVariableContainer->get($name);
@@ -63,6 +92,9 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 			$templateVariableRootName = $lastSegment = array_shift($segments);
 			if ($this->templateVariableContainer->exists($templateVariableRootName)) {
 				$templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
+				if (TRUE === $useRawKeys) {
+					return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
+				}
 				try {
 					$value = $templateVariableRoot;
 					foreach ($segments as $segment) {
