@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Vhs_ViewHelpers_It
 	 * @return mixed
 	 */
 	public function render($subject = NULL, $filter = NULL, $propertyName = NULL, $preserveKeys = FALSE) {
-		if (!$subject) {
+		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
 		if (NULL === $subject || (FALSE === is_array($subject) && FALSE === $subject instanceof Traversable)) {
