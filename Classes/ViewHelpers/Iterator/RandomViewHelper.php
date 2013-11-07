@@ -45,12 +45,15 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends Tx_Fluid_Core_ViewHel
 	 * Render method
 	 *
 	 * @param mixed $subject
+	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return mixed
 	 */
 	public function render($subject = NULL) {
-		if (NULL === $subject && (FALSE === isset($this->arguments['as']) || TRUE === empty($this->arguments['as']))) {
+		if (NULL === $subject && (FALSE === isset($as) || TRUE === empty($as))) {
 			$subject = $this->renderChildren();
 		}
+
+		$as = $this->arguments['as'];
 		$array = NULL;
 		if (TRUE === is_array($subject)) {
 			$array = $subject;
@@ -61,22 +64,14 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends Tx_Fluid_Core_ViewHel
 				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
 				$array = $subject->toArray();
 			} elseif (NULL !== $subject) {
-				throw new Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
+				throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
 				' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1370966821);
 			}
 		}
 		$randomElement = $array[array_rand($array)];
-		if (TRUE === isset($this->arguments['as']) && FALSE === empty($this->arguments['as'])) {
-			if (TRUE === $this->templateVariableContainer->exists($this->arguments['as'])) {
-				$backup = $this->templateVariableContainer->get($this->arguments['as']);
-				$this->templateVariableContainer->remove($this->arguments['as']);
-			}
-			$this->templateVariableContainer->add($this->arguments['as'], $randomElement);
-			$content = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
-			if (TRUE === isset($backup)) {
-				$this->templateVariableContainer->add($this->arguments['as'], $backup);
-			}
+		if (TRUE === isset($as) && FALSE === empty($as)) {
+			$variables = array($as => $randomElement);
+			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 			return $content;
 		}
 		return $randomElement;

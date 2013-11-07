@@ -40,6 +40,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ValuesViewHelper extends Tx_Fluid_Core_ViewHel
 	 * @return array
 	 */
 	public function render($subject = NULL) {
+		$as = $this->arguments['as'];
 		if ($subject === NULL) {
 			$subject = $this->renderChildren();
 		}
@@ -49,13 +50,9 @@ class Tx_Vhs_ViewHelpers_Iterator_ValuesViewHelper extends Tx_Fluid_Core_ViewHel
 			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
 		$output = array_values($subject);
-		if ($this->arguments['as']) {
-			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
-				$this->templateVariableContainer->remove($this->arguments['as']);
-			}
-			$this->templateVariableContainer->add($this->arguments['as'], $output);
-			$output = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
+		if (NULL !== $as) {
+			$variables = array($as => $output);
+			$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $output;
 	}

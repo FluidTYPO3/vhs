@@ -53,12 +53,8 @@ class Tx_Vhs_ViewHelpers_Iterator_SliceViewHelper extends Tx_Fluid_Core_ViewHelp
 		}
 		$output = array_slice($haystack, $start, $length, TRUE);
 		if (NULL !== $as) {
-			if ($this->templateVariableContainer->exists($as)) {
-				$this->templateVariableContainer->remove($as);
-			}
-			$this->templateVariableContainer->add($as, $output);
-			$output = $this->renderChildren();
-			$this->templateVariableContainer->remove($as);
+			$variables = array($as => $output);
+			$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $output;
 	}

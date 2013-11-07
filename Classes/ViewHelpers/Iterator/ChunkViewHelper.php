@@ -59,16 +59,8 @@ class Tx_Vhs_ViewHelpers_Iterator_ChunkViewHelper extends Tx_Fluid_Core_ViewHelp
 			$output = array_chunk($subject, $count);
 		}
 		if (NULL !== $as) {
-			if ($this->templateVariableContainer->exists($as)) {
-				$backup = $this->templateVariableContainer->get($as);
-				$this->templateVariableContainer->remove($as);
-			}
-			$this->templateVariableContainer->add($as, $output);
-			$output = $this->renderChildren();
-			$this->templateVariableContainer->remove($as);
-			if (TRUE === isset($backup)) {
-				$this->templateVariableContainer->add($as, $backup);
-			}
+			$variables = array($as => $output);
+			$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $output;
 	}

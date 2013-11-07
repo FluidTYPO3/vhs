@@ -62,7 +62,8 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return mixed
 	 */
 	public function render($subject = NULL) {
-		if ($subject === NULL && !$this->arguments['as']) {
+		$as = $this->arguments['as'];
+		if (NULL === $subject && NULL === $as) {
 				// this case enables inline usage if the "as" argument
 				// is not provided. If "as" is provided, the tag content
 				// (which is where inline arguments are taken from) is
@@ -90,17 +91,9 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1351958941);
 			}
 		}
-		if ($this->arguments['as']) {
-			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
-				$backup = $this->templateVariableContainer->get($this->arguments['as']);
-				$this->templateVariableContainer->remove($this->arguments['as']);
-			}
-			$this->templateVariableContainer->add($this->arguments['as'], $sorted);
-			$content = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
-			if (isset($backup) === TRUE) {
-				$this->templateVariableContainer->add($this->arguments['as'], $backup);
-			}
+		if (NULL !== $as) {
+			$variables = array($as => $sorted);
+			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 			return $content;
 		}
 		return $sorted;

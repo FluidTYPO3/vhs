@@ -92,21 +92,8 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			return $content;
 		}
 
-		// Backup as argument
-		if (TRUE === $this->templateVariableContainer->exists($as)) {
-			$backupVariable = $this->templateVariableContainer->get($as);
-			$this->templateVariableContainer->remove($as);
-		}
-
-		// Render Children
-		$this->templateVariableContainer->add($as, $content);
-		$output = $this->renderChildren();
-		$this->templateVariableContainer->remove($as);
-
-		// Restore as argument
-		if (TRUE === isset($backupVariable)) {
-			$this->templateVariableContainer->add($as, $backupVariable);
-		}
+		$variables = array($as => $content);
+		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 
 		return $output;
 	}

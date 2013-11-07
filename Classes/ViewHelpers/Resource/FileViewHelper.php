@@ -58,23 +58,8 @@ class Tx_Vhs_ViewHelpers_Resource_FileViewHelper extends Tx_Vhs_ViewHelpers_Reso
 		if (TRUE === empty($as)) {
 			return $files;
 		}
-
-		// Backup as argument
-		if (TRUE === $this->templateVariableContainer->exists($as)) {
-			$backupVariable = $this->templateVariableContainer->get($as);
-			$this->templateVariableContainer->remove($as);
-		}
-
-		// Render Children
-		$this->templateVariableContainer->add($as, $files);
-		$output = $this->renderChildren();
-		$this->templateVariableContainer->remove($as);
-
-		// Restore as argument
-		if (TRUE === isset($backupVariable)) {
-			$this->templateVariableContainer->add($as, $backupVariable);
-		}
-
+		$variables = array($as => $files);
+		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		return $output;
 	}
 

@@ -110,15 +110,8 @@ class Tx_Vhs_ViewHelpers_TryViewHelper extends Tx_Fluid_Core_ViewHelper_Abstract
 				$content = $this->renderChildren();
 			}
 		} catch (Exception $error) {
-			if (TRUE === $this->templateVariableContainer->exists('exception')) {
-				$backup = $this->templateVariableContainer->get('exception');
-			}
-			$this->templateVariableContainer->add('exception', $error);
-			$content = $this->renderElseChild();
-			$this->templateVariableContainer->remove('exception');
-			if (TRUE === isset($backup)) {
-				$this->templateVariableContainer->add('exception', $backup);
-			}
+			$variables = array('exception' => $error);
+			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $content;
 	}

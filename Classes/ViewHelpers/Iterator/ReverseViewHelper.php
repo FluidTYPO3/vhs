@@ -56,7 +56,8 @@ class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends Tx_Fluid_Core_ViewHe
 	 * @return mixed
 	 */
 	public function render($subject = NULL) {
-		if ($subject === NULL && !$this->arguments['as']) {
+		$as = $this->arguments['as'];
+		if ($subject === NULL && !$as) {
 				// this case enables inline usage if the "as" argument
 				// is not provided. If "as" is provided, the tag content
 				// (which is where inline arguments are taken from) is
@@ -82,119 +83,12 @@ class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends Tx_Fluid_Core_ViewHe
 			}
 		}
 		$array = array_reverse($array, TRUE);
-		if ($this->arguments['as']) {
-			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
-				$backup = $this->templateVariableContainer->get($this->arguments['as']);
-				$this->templateVariableContainer->remove($this->arguments['as']);
-			}
-			$this->templateVariableContainer->add($this->arguments['as'], $array);
-			$content = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
-			if (isset($backup) === TRUE) {
-				$this->templateVariableContainer->add($this->arguments['as'], $backup);
-			}
+		if (NULL !== $as) {
+			$variables = array($as => $array);
+			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 			return $content;
 		}
 		return $array;
 	}
 
-	/**
-	 * Sort an array
-	 *
-	 * @param array $array
-	 * @return array
-	 */
-	protected function sortArray($array) {
-		$sorted = array();
-		foreach ($array as $index => $object) {
-			if ($this->arguments['sortBy']) {
-				$index = $this->getSortValue($object);
-			}
-			while (isset($sorted[$index])) {
-				$index .= '1';
-			}
-			$sorted[$index] = $object;
-		}
-		if ($this->arguments['order'] === 'ASC') {
-			ksort($sorted, constant($this->arguments['sortFlags']));
-		} elseif ($this->arguments['order'] === 'RAND') {
-			$sortedKeys = array_keys($sorted);
-			shuffle($sortedKeys);
-			$backup = $sorted;
-			$sorted = array();
-			foreach ($sortedKeys as $sortedKey) {
-				$sorted[$sortedKey] = $backup[$sortedKey];
-			}
-		} elseif ($this->arguments['order'] === 'SHUFFLE') {
-			shuffle($sorted);
-		} else {
-			krsort($sorted, constant($this->arguments['sortFlags']));
-		}
-		return $sorted;
-	}
-
-	/**
-	 * Sort a Tx_Extbase_Persistence_ObjectStorage instance
-	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $storage
-	 * @return Tx_Extbase_Persistence_ObjectStorage
-	 */
-	protected function sortObjectStorage($storage) {
-		/** @var Tx_Extbase_Object_ObjectManager $objectManager */
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		/** @var Tx_Extbase_Persistence_ObjectStorage $temp */
-		$temp = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
-		foreach ($storage as $item) {
-			$temp->attach($item);
-		}
-		$sorted = array();
-		foreach ($storage as $index => $item) {
-			if ($this->arguments['sortBy']) {
-				$index = $this->getSortValue($item);
-			}
-			while (isset($sorted[$index])) {
-				$index .= '1';
-			}
-			$sorted[$index] = $item;
-		}
-		if ($this->arguments['order'] === 'ASC') {
-			ksort($sorted, constant($this->arguments['sortFlags']));
-		} elseif ($this->arguments['order'] === 'RAND') {
-			$sortedKeys = array_keys($sorted);
-			shuffle($sortedKeys);
-			$backup = $sorted;
-			$sorted = array();
-			foreach ($sortedKeys as $sortedKey) {
-				$sorted[$sortedKey] = $backup[$sortedKey];
-			}
-		} elseif ($this->arguments['order'] === 'SHUFFLE') {
-			shuffle($sorted);
-		} else {
-			krsort($sorted, constant($this->arguments['sortFlags']));
-		}
-		$storage = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
-		foreach ($sorted as $item) {
-			$storage->attach($item);
-		}
-		return $storage;
-	}
-
-	/**
-	 * Gets the value to use as sorting value from $object
-	 *
-	 * @param mixed $object
-	 * @return mixed
-	 */
-	protected function getSortValue($object) {
-		$field = $this->arguments['sortBy'];
-		$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $field);
-		if ($value instanceof DateTime) {
-			$value = $value->format('U');
-		} elseif ($value instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			$value = $value->count();
-		} elseif (is_array($value)) {
-			$value = count($value);
-		}
-		return $value;
-	}
 }

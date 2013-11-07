@@ -50,13 +50,9 @@ class Tx_Vhs_ViewHelpers_Iterator_PopViewHelper extends Tx_Fluid_Core_ViewHelper
 			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
 		$output = array_pop($subject);
-		if ($this->arguments['as']) {
-			if ($this->templateVariableContainer->exists($this->arguments['as'])) {
-				$this->templateVariableContainer->remove($this->arguments['as']);
-			}
-			$this->templateVariableContainer->add($this->arguments['as'], $output);
-			$output = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
+		if (NULL !== $as) {
+			$variables = array($as => $output);
+			$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $output;
 	}
