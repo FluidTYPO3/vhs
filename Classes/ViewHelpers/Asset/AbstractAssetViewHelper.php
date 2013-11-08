@@ -200,7 +200,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$name = $this->getName();
 		$overwrite = $this->getOverwrite();
 		$slotFree = FALSE === isset($GLOBALS['VhsAssets'][$name]);
-		if (FALSE === ($overwrite && $slotFree)) {
+		if (FALSE === ($overwrite || $slotFree)) {
 			return;
 		}
 		$this->content = $this->getContent();
