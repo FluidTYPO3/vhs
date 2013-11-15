@@ -511,11 +511,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				$html[] = '<' . $tagName . $elementId . $class . '>';
 			}
 			if ($page['current'] && $linkCurrent === FALSE) {
-				$html[] = $page['linktext'];
+				$html[] = htmlspecialchars($page['linktext']);
 			} elseif ($page['active'] && $linkActive === FALSE) {
-				$html[] = $page['linktext'];
+				$html[] = htmlspecialchars($page['linktext']);
 			} else {
-				$html[] = sprintf('<a href="%s" title="%s"%s%s>%s</a>', $page['link'], $page['title'], $class, $target, $page['linktext']);
+				$html[] = sprintf('<a href="%s" title="%s"%s%s>%s</a>', $page['link'], htmlspecialchars($page['title']), $class, $target, htmlspecialchars($page['linktext']));
 			}
 			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
