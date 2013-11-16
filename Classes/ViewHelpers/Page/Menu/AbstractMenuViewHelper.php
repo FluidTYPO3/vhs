@@ -310,9 +310,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @param integer $pageUid
 	 * @param integer $doktype
 	 * @param integer $shortcut
+	 * @param integer $getLL
 	 * @return string
 	 */
-	protected function getItemLink($pageUid, $doktype, $shortcut) {
+	protected function getItemLink($pageUid, $doktype, $shortcut, $getLL) {
 		$isShortcutOrLink = ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT || $doktype == t3lib_pageSelect::DOKTYPE_LINK);
 		$useShortcutTarget = (boolean) $this->arguments['useShortcutTarget'];
 		if (TRUE === $isShortcutOrLink && TRUE === $useShortcutTarget && 0 < $shortcut) {
@@ -321,7 +322,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$config = array(
 			'parameter' => $pageUid,
 			'returnLast' => 'url',
-			'additionalParams' => '',
+			'addQueryString ' => true,
+			'additionalParams' => '&L='.$getLL,
 			'useCacheHash' => FALSE
 		);
 		return $GLOBALS['TSFE']->cObj->typoLink('', $config);
@@ -415,7 +417,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$page['active'] = $this->isActive($pageUid, $rootLine, $originalPageUid);
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (count($this->getSubmenu($originalPageUid)) > 0) ? 1 : 0;
-		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
+		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut, $getLL);
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['doktype'] = $doktype;
