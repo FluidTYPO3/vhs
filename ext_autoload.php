@@ -129,6 +129,7 @@ return array(
 	'tx_vhs_viewhelpers_math_moduloviewhelper' => $extensionClassesPath . 'ViewHelpers/Math/ModuloViewHelper.php',
 	'tx_vhs_viewhelpers_math_powerviewhelper' => $extensionClassesPath . 'ViewHelpers/Math/PowerViewHelper.php',
 	'tx_vhs_viewhelpers_math_productviewhelper' => $extensionClassesPath . 'ViewHelpers/Math/ProductViewHelper.php',
+	'tx_vhs_viewhelpers_math_problemviewhelper' => $extensionClassesPath . 'ViewHelpers/Math/ProblemViewHelper.php',
 	'tx_vhs_viewhelpers_math_rangeviewhelper' => $extensionClassesPath . 'ViewHelpers/Math/RangeViewHelper.php',
 	'tx_vhs_viewhelpers_math_roundviewhelper' => $extensionClassesPath . 'ViewHelpers/Math/RoundViewHelper.php',
 	'tx_vhs_viewhelpers_math_squarerootviewhelper' => $extensionClassesPath . 'ViewHelpers/Math/SquareRootViewHelper.php',
