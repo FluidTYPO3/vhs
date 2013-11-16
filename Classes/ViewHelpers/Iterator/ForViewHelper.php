@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Vhs_ViewHelpers_Iterator_AbstractLoopViewHelper {
 
 	/**
 	 * Initialize
@@ -38,10 +38,11 @@ class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Fluid_Core_ViewHelper
 	 * @return void
 	 */
 	public function initializeArguments() {
+		parent::initializeArguments();
+
 		$this->registerArgument('to', 'integer', 'Number that the index needs to reach before stopping', TRUE);
 		$this->registerArgument('from', 'integer', 'Starting number for the index', FALSE, 0);
 		$this->registerArgument('step', 'integer', 'Stepping number that the index is increased by after each loop', FALSE, 1);
-		$this->registerArgument('iteration', 'string', 'Variable name to insert result into, suppresses output', FALSE, NULL);
 	}
 
 	/**
@@ -70,42 +71,19 @@ class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Fluid_Core_ViewHelper
 		}
 
 		if ($from === $to) {
-			$content = $this->renderIteration($from, $from, $to, $iteration);
+			$content = $this->renderIteration($from, $from, $to, $step, $iteration);
 		} elseif ($from < $to) {
 			for ($i = $from; $i <= $to; $i += $step) {
-				$content .= $this->renderIteration($i, $from, $to, $iteration);
+				$content .= $this->renderIteration($i, $from, $to, $step, $iteration);
 			}
 		} else {
 			for ($i = $from; $i >= $to; $i += $step) {
-				$content .= $this->renderIteration($i, $from, $to, $iteration);
+				$content .= $this->renderIteration($i, $from, $to, $step, $iteration);
 			}
 		}
 
 		if (TRUE === isset($backupVariable)) {
 			$this->templateVariableContainer->add($iteration, $backupVariable);
-		}
-
-		return $content;
-	}
-
-	/**
-	 * @return string
-	 */
-	private function renderIteration($i, $from, $to, $iterationArgument) {
-		if (FALSE === empty($iterationArgument)) {
-			$iteration = array(
-				'cycle' => $i + 1,
-				'index' => $i,
-				'isOdd' => ($i % 2 == 0 ? 1 : 0),
-				'isEven' => $i % 2,
-				'isFirst' => ($i === $from ? 1 : 0),
-				'isLast' => ($i === $to ? 1 : 0)
-			);
-			$this->templateVariableContainer->add($iterationArgument, $iteration);
-			$content = $this->renderChildren();
-			$this->templateVariableContainer->remove($iterationArgument);
-		} else {
-			$content = $this->renderChildren();
 		}
 
 		return $content;
