@@ -99,6 +99,11 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	protected $content = NULL;
 
 	/**
+	 * @var array
+	 */
+	protected $stdWrap = array();
+
+	/**
 	 * @var string
 	 */
 	protected $path = NULL;
@@ -238,9 +243,13 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	public function build() {
 		$path = $this->getPath();
 		if (TRUE === empty($path)) {
-			return $this->getContent();
+			$content = $this->getContent();
+		} else {
+			$content = file_get_contents($path);
 		}
-		$content = file_get_contents($path);
+		if (FALSE === empty($this->stdWrap)) {
+			$content = $GLOBALS['TSFE']->cObj->stdWrap($content, $this->stdWrap);
+		}
 		return $content;
 	}
 
@@ -365,6 +374,22 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public function setContent($content) {
 		$this->content = $content;
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getStdWrap() {
+		return $this->stdWrap;
+	}
+
+	/**
+	 * @param array $stdWrap
+	 * @return Tx_Vhs_Asset
+	 */
+	public function setStdWrap($stdWrap) {
+		$this->stdWrap = $stdWrap;
 		return $this;
 	}
 
