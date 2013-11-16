@@ -101,6 +101,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named after this value and renders the tag content. If the tag content is empty automatic rendering is triggered.', FALSE, 'menu');
 		$this->registerArgument('rootLineAs', 'string', 'If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'rootLine');
 		$this->registerArgument('excludePages', 'mixed', 'Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.', FALSE, '');
+		$this->registerArgument('includeAnchorTitle', 'boolean', 'If TRUE, includes the page title as title attribute on the anchor.', FALSE, TRUE);
 	}
 
 	/**
@@ -496,6 +497,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$showCurrent = (boolean) $this->arguments['showCurrent'];
 		$expandAll = (boolean) $this->arguments['expandAll'];
 		$maxLevels = (integer) $this->arguments['levels'];
+		$includeAnchorTitle = (boolean) $this->arguments['includeAnchorTitle'];
 		$html = array();
 		$itemsRendered = 0;
 		$numberOfItems = count($menu);
@@ -514,8 +516,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 				$html[] = htmlspecialchars($page['linktext']);
 			} elseif ($page['active'] && $linkActive === FALSE) {
 				$html[] = htmlspecialchars($page['linktext']);
-			} else {
+			} elseif (TRUE === $includeAnchorTitle) {
 				$html[] = sprintf('<a href="%s" title="%s"%s%s>%s</a>', $page['link'], htmlspecialchars($page['title']), $class, $target, htmlspecialchars($page['linktext']));
+			} else {
+				$html[] = sprintf('<a href="%s"%s%s>%s</a>', $page['link'], $class, $target, htmlspecialchars($page['linktext']));
 			}
 			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
