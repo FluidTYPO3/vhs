@@ -183,24 +183,20 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 *
 	 * @param integer $pageUid
 	 * @param integer $languageUid
-	 * @param integer $normalWhenNoLanguage
+	 * @param boolean $normalWhenNoLanguage
 	 * @return boolean
 	 */
-	public function hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage = FALSE) {
-		$l18nCfg = $GLOBALS['TSFE']->page['l18n_cfg'];
-		$hideIfNotTranslated = t3lib_div::hideIfNotTranslated($l18nCfg);
-		$hideIfDefaultLanguage = t3lib_div::hideIfDefaultLanguage($l18nCfg);
-
+	public function hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage = TRUE) {
+		$page = $this->getPage($pageUid);
+		$l18nCfg = TRUE === isset($page['l18n_cfg']) ? $page['l18n_cfg'] : 0;
+		$hideIfNotTranslated = (boolean) t3lib_div::hideIfNotTranslated($l18nCfg);
+		$hideIfDefaultLanguage = (boolean) t3lib_div::hideIfDefaultLanguage($l18nCfg);
 		$pageOverlay = 0 !== $languageUid ? $this->getPageOverlay($pageUid, $languageUid) : array();
-
-		// $hideIfDefaultLanguage must be compared to 0, because t3lib_div returns an integer and not a boolean as promised
-		if (((FALSE === $hideIfNotTranslated && TRUE === $normalWhenNoLanguage) || 0 === $languageUid || 0 !== count($pageOverlay)) &&
-			(0 === $hideIfDefaultLanguage || (0 !== $languageUid && 0 !== count($pageOverlay)))) {
-
-			return FALSE;
-		}
-
-		return TRUE;
+		$translationAvailable = 0 !== count($pageOverlay);
+		return
+			(TRUE === $hideIfNotTranslated && 0 !== $languageUid && FALSE === $translationAvailable) ||
+			(TRUE === $hideIfDefaultLanguage && (0 === $languageUid || FALSE === $translationAvailable)) ||
+			(FALSE === $normalWhenNoLanguage && 0 !== $languageUid && FALSE === $translationAvailable);
 	}
 
 }
