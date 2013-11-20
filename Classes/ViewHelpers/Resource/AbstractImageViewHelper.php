@@ -77,7 +77,6 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 		$this->registerArgument('minHeight', 'string', 'Minimum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.', FALSE, NULL);
 		$this->registerArgument('maxWidth', 'string', 'Maximum width of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.', FALSE, NULL);
 		$this->registerArgument('maxHeight', 'string', 'Maximum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.', FALSE, NULL);
-		$this->registerArgument('treatIdAsReference', 'boolean', 'When TRUE treat given identifier argument as sys_file_reference record.', FALSE, FALSE);
 	}
 
 	/**
@@ -102,7 +101,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 			'minH' => $this->arguments['minHeight'],
 			'maxW' => $this->arguments['maxWidth'],
 			'maxH' => $this->arguments['maxHeight'],
-			'treatIdAsReference' => (boolean) $this->arguments['treatIdAsReference']
+			'treatIdAsReference' => FALSE
 		);
 
 		$images = array();
