@@ -67,6 +67,7 @@ class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends Tx_Fluid_Core_ViewH
 	public function initializeArguments() {
 		$this->registerArgument('title', 'string', 'Title tag content');
 		$this->registerArgument('whitespaceString', 'string', 'String used to replace groups of white space characters, one replacement inserted per group', FALSE, ' ');
+		$this->registerArgument('setIndexedDocTitle', 'boolean', 'Set indexed doc title to title', FALSE, FALSE);
 	}
 
 	/**
@@ -85,6 +86,9 @@ class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends Tx_Fluid_Core_ViewH
 		}
 		$title = trim(preg_replace( '/\s+/', $this->arguments['whitespaceString'], $title), $this->arguments['whitespaceString']);
 		$GLOBALS['TSFE']->getPageRenderer()->setTitle($title);
+		if (TRUE === $this->arguments['setIndexedDocTitle']) {
+			$GLOBALS['TSFE']->indexedDocTitle = $title;
+		}
 	}
 
 }
