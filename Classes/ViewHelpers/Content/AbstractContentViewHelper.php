@@ -159,7 +159,11 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 					' AND ' . $languageCondition;
 			}
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'uid', $order, $limit);
-			$content = (FALSE === (boolean) $this->arguments['render']) ? $rows : $this->getRenderedRecords($rows);
+			if (TRUE === (boolean) $this->arguments['render'] && FALSE === empty($rows)) {
+				$content = $this->getRenderedRecords($rows);
+			} else {
+				$content = $rows;
+			}
 			if (count($content) && !$slideCollect) {
 				break;
 			}
@@ -179,7 +183,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	 * @param array $rows database rows of records (each item is a tt_content table record)
 	 * @return array
 	 */
-	protected function getRenderedRecords($rows) {
+	protected function getRenderedRecords(array $rows) {
 		$elements = array();
 		foreach ($rows as $row) {
 			$conf = array(
