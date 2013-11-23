@@ -30,10 +30,49 @@
  * ViewHelperVariableContainer instances from ViewHelpers.
  *
  * @author Claus Due <claus@namelesscoder.net>
+ * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage Utility
  */
 class Tx_Vhs_Utility_ViewHelperUtility {
+
+	/**
+	 * Returns a backup of all $variables from $variableContainer and removes them.
+	 *
+	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param array $variables
+	 * @return array
+	 */
+	public static function backupVariables(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables) {
+		$backups = array();
+
+		foreach ($variables as $variableName => $variableValue) {
+			if (TRUE === $variableContainer->exists($variableName)) {
+				$backups[$variableName] = $variableContainer->get($variableName);
+				$variableContainer->remove($variableName);
+			}
+			$variableContainer->add($variableName, $variableValue);
+		}
+
+		return $backups;
+	}
+
+	/**
+	 * Restores $variables in $variableContainer
+	 *
+	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param array $variables
+	 * @param array $backups
+	 * @return void
+	 */
+	public static function restoreVariables(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables, array $backups) {
+		foreach ($variables as $variableName => $variableValue) {
+			$variableContainer->remove($variableName);
+			if (TRUE === isset($backups[$variableName])) {
+				$variableContainer->add($variableName, $variableValue);
+			}
+		}
+	}
 
 	/**
 	 * Renders tag content of ViewHelper and inserts variables
@@ -47,24 +86,9 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 	 * @return mixed
 	 */
 	public static function renderChildrenWithVariables(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables) {
-		$backups = array();
-
-		foreach ($variables as $variableName => $variableValue) {
-			if (TRUE === $variableContainer->exists($variableName)) {
-				$backups[$variableName] = $variableContainer->get($variableName);
-				$variableContainer->remove($variableName);
-			}
-			$variableContainer->add($variableName, $variableValue);
-		}
-
+		$backups = self::backupVariables($variableContainer, $variables);
 		$content = $viewHelper->renderChildren();
-
-		foreach ($variables as $variableName => $variableValue) {
-			$variableContainer->remove($variableName);
-			if (TRUE === isset($backups[$variableName])) {
-				$variableContainer->add($variableName, $variableValue);
-			}
-		}
+		self::restoreVariables($variableContainer, $variables, $backups);
 
 		return $content;
 	}
