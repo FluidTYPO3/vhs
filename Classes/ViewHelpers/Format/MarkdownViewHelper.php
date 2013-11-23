@@ -63,18 +63,18 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 	 * @return string
 	 */
 	public function render($text = NULL, $trim = TRUE, $htmlentities = FALSE) {
-		$this->markdownExecutablePath = trim(shell_exec('which markdown'));
-		if (is_executable($this->markdownExecutablePath) === FALSE) {
+		$this->markdownExecutablePath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('markdown');
+		if (FALSE === is_executable($this->markdownExecutablePath)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
 				'and accessible; this binary could not be found in any of your configured paths available to this script', 1350511561);
 		}
-		if ($text === NULL) {
+		if (NULL === $text) {
 			$text = $this->renderChildren();
 		}
-		if ($trim) {
+		if (TRUE === (boolean) $trim) {
 			$text = trim($text);
 		}
-		if ($htmlentities) {
+		if (TRUE === (boolean) $htmlentities) {
 			$text = htmlentities($text);
 		}
 		$transformed = $this->transform($text);
@@ -110,7 +110,7 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 
 		$exitCode = proc_close($process);
 
-		if (trim($errors) !== '') {
+		if ('' !== trim($errors)) {
 			throw new Exception('There was an error while executing ' . $this->markdownExecutablePath . '. The return code was ' .
 				$exitCode . ' and the message reads: ' . $errors, 1350514144);
 		}
