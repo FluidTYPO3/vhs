@@ -24,6 +24,10 @@
  ***************************************************************/
 
 /**
+ * ### Deprecation Notice
+ *
+ * Please switch to ``v:if``. This view helper will be removed in 2.0.
+ *
  * ### Condition ViewHelper
  *
  * Extended condition ViewHelper. Works slightly different from
@@ -42,6 +46,7 @@
  * 	       </f:then>
  *     </v:if.condition>
  *
+ * @deprecated
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\If
