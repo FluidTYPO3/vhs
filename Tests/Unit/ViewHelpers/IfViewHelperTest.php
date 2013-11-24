@@ -41,6 +41,14 @@ class Tx_Vhs_ViewHelpers_IfViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractVie
 	/**
 	 * @test
 	 */
+	public function rendersThenChildWithPrecedence() {
+		$stack = array(1, 'OR', 0, 'AND', 0);
+		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+	}
+
+	/**
+	 * @test
+	 */
 	public function rendersElseChildWithFlatArrayComparison() {
 		$stack = array(array('foo'), '==', '3');
 		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
