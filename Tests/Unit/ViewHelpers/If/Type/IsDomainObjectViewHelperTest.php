@@ -34,7 +34,7 @@ class Tx_Vhs_ViewHelpers_If_Type_IsDomainObjectViewHelperTest extends Tx_Vhs_Vie
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new Tx_Extbase_Domain_Model_FrontendUser())));
+		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser())));
 	}
 
 	/**

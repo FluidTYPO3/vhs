@@ -33,7 +33,7 @@
  * @see Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper for an implementation of this class
  * @see Tx_Vhs_ViewHelpers_Condition_SystemViewHelper for an implementation of this class
  */
-abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * @var string
@@ -60,7 +60,7 @@ abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper 
 		if ($this->userAgent !== '') {
 			$userAgent = $this->userAgent;
 		} else {
-			$userAgent = t3lib_div::getIndpEnv('HTTP_USER_AGENT');
+			$userAgent = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
 		}
 
 		return $userAgent;

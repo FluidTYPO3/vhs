@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_ResourcesViewHelperTest extends Tx_Vhs_V
 	 */
 	public function rendersUsingArgument() {
 		$test = $this->executeViewHelper(array('extensionName' => 'Vhs', 'path' => 'ext_icon.gif'));
-		$this->assertSame(t3lib_extMgm::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+		$this->assertSame(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_ResourcesViewHelperTest extends Tx_Vhs_V
 	 */
 	public function rendersUsingControllerContext() {
 		$test = $this->executeViewHelper(array('path' => 'ext_icon.gif'), array(), NULL, 'Vhs');
-		$this->assertSame(t3lib_extMgm::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+		$this->assertSame(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
 	}
 
 	/**

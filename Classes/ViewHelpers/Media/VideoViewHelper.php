@@ -71,25 +71,25 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 	/**
 	 * Render method
 	 *
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string
 	 */
 	public function render() {
 		$sources = $this->getSourcesFromArgument();
 		if (0 == count($sources)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('No video sources provided.', 1359382189);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('No video sources provided.', 1359382189);
 		}
 		foreach ($sources as $source) {
 			if (FALSE === isset($source['src'])) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "src" in sources array.', 1359381250);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Missing value for "src" in sources array.', 1359381250);
 			}
 			$src = $source['src'];
 
 			if (FALSE === isset($source['type'])) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "type" in sources array.', 1359381255);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Missing value for "type" in sources array.', 1359381255);
 			}
 			if (FALSE === in_array(strtolower($source['type']), $this->validTypes)) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $source['type'] . '".', 1359381260);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid video type "' . $source['type'] . '".', 1359381260);
 			}
 			$type = 'video/' . strtolower($source['type']);
 			$src = $this->preprocessSourceUri($src);

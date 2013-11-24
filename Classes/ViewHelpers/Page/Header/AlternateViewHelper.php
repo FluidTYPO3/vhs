@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
-class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var Tx_Vhs_Service_PageSelectService
@@ -38,12 +38,12 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends Tx_Fluid_Core_V
 	protected $pageSelect;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_TagBuilder
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
 	 */
 	protected $tagBuilder;
 
@@ -56,12 +56,12 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends Tx_Fluid_Core_V
 	}
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->tagBuilder = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_TagBuilder');
+		$this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 	}
 
 	/**
@@ -87,7 +87,7 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends Tx_Fluid_Core_V
 		if (TRUE === $languages instanceof Traversable) {
 			$languages = iterator_to_array($languages);
 		} elseif (TRUE === is_string($languages)) {
-			$languages = t3lib_div::trimExplode(',', $languages, TRUE);
+			$languages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $languages, TRUE);
 		} else {
 			$languages = (array) $languages;
 		}

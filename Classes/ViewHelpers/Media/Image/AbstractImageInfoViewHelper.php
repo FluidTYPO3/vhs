@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media\Image
  */
-abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -43,7 +43,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 	}
 
 	/**
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return array
 	 */
 	public function getInfo() {
@@ -57,10 +57,10 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 			}
 		}
 
-		$file = t3lib_div::getFileAbsFileName($path);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 
 		if (!file_exists($file) || is_dir($file)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
 		}
 
 		$info = getimagesize($file);

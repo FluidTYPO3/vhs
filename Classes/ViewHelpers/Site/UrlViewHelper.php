@@ -27,19 +27,19 @@
  * ### Site: URL
  *
  * Returns the website URL as returned by
- * t3lib_div::getIndpEnv('TYPO3_SITE_URL')
+ * \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
  *
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Site
  */
-class Tx_Vhs_ViewHelpers_Site_UrlViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Site_UrlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @return string
 	 */
 	public function render() {
-		$url = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		return $url;
 	}
 }

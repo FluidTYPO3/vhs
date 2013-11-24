@@ -51,7 +51,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Condition
  */
-class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
 
 	/**
 	 * @var array
@@ -76,7 +76,7 @@ class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends Tx_Fluid_Core_Vie
 	public function render() {
 		$compoundedStack = $this->compoundStack($this->stack);
 		$evaluation = $this->evaluateStack($compoundedStack);
-		return Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean($evaluation);
+		return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean($evaluation);
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends Tx_Fluid_Core_Vie
 		} elseif (count($stack) === 3) {
 			list ($leftSide, $comparator, $rightSide) = array_values($stack);
 			if (is_array($leftSide) === FALSE && is_array($comparator) === FALSE && is_array($rightSide) === FALSE) {
-				return Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::evaluateComparator($comparator, $leftSide, $rightSide);
+				return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::evaluateComparator($comparator, $leftSide, $rightSide);
 			} else {
 				$leftSide = $comparator = $rightSide = NULL;
 			}
@@ -130,7 +130,7 @@ class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends Tx_Fluid_Core_Vie
 					$conjunction = NULL;
 				}
 			} elseif ($leftSide && $comparator && $rightSide) {
-				$partialEvaluation = Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::evaluateComparator($comparator, $leftSide, $rightSide);
+				$partialEvaluation = \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::evaluateComparator($comparator, $leftSide, $rightSide);
 				if ($conjunction === NULL) {
 					$evaluation = $partialEvaluation;
 				} else {
@@ -178,7 +178,7 @@ class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends Tx_Fluid_Core_Vie
 	 * @return mixed
 	 */
 	protected function extractValue($subject) {
-		if ($subject instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+		if ($subject instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 			$subject = $subject->evaluate($this->renderingContext);
 		}
 		return $subject;
@@ -208,7 +208,7 @@ class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends Tx_Fluid_Core_Vie
 			end($idStack);
 			$stackId = $idStack[key($idStack)];
 			$stackItem = array();
-			if ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode) {
+			if ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode) {
 				$nodeContent = $node->evaluate($this->renderingContext);
 				$nodeContent = trim($nodeContent);
 				if (strpos($nodeContent, '(') === FALSE && strpos($nodeContent, ')') === FALSE) {
@@ -241,10 +241,10 @@ class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends Tx_Fluid_Core_Vie
 
 					}
 				}
-			} elseif ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode) {
+			} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode) {
 				// BooleanNode gets added onto the stack to be evaluated later
 				$stackItem = $node->evaluate($this->renderingContext);
-			} elseif ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+			} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 				// ViewHelperNode gets added onto the stack to be evaluated later
 				$stackItem = $node->evaluate($this->renderingContext);
 			}

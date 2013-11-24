@@ -35,15 +35,15 @@
  * @package Vhs
  * @subpackage Service
  */
-class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
+class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var t3lib_pageSelect
+	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
 	private static $pageSelect;
 
 	/**
-	 * @var t3lib_pageSelect
+	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
 	private static $pageSelectHidden;
 
@@ -77,7 +77,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 
 	/**
 	 * @param boolean $showHidden
-	 * @return t3lib_pageSelect
+	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
 	private function createPageSelectInstance($showHidden = FALSE) {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
@@ -86,7 +86,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 		} else {
 			$groups = array(-1, 0);
 		}
-		$pageSelect = new t3lib_pageSelect();
+		$pageSelect = new \TYPO3\CMS\Frontend\Page\PageRepository();
 		$pageSelect->init((boolean) $showHidden);
 		$clauses = array();
 		foreach ($groups as $group) {
@@ -189,8 +189,8 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	public function hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage = TRUE) {
 		$page = $this->getPage($pageUid);
 		$l18nCfg = TRUE === isset($page['l18n_cfg']) ? $page['l18n_cfg'] : 0;
-		$hideIfNotTranslated = (boolean) t3lib_div::hideIfNotTranslated($l18nCfg);
-		$hideIfDefaultLanguage = (boolean) t3lib_div::hideIfDefaultLanguage($l18nCfg);
+		$hideIfNotTranslated = (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($l18nCfg);
+		$hideIfDefaultLanguage = (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($l18nCfg);
 		$pageOverlay = 0 !== $languageUid ? $this->getPageOverlay($pageUid, $languageUid) : array();
 		$translationAvailable = 0 !== count($pageOverlay);
 		return

@@ -35,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -64,8 +64,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 		}
 		if (NULL !== $value) {
 			if ('ObjectStorage' === $type && 'array' === gettype($value)) {
-				$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-				$storage = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+				$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+				$storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 				foreach ($value as $item) {
 					$storage->attach($item);
 				}
@@ -102,8 +102,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends Tx_Fluid_Core_ViewHelper_
 						$value = array();
 						break;
 					case 'ObjectStorage':
-						$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-						$value = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+						$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+						$value = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 						break;
 					default:
 						throw new RuntimeException('Provided argument "type" is not valid', 1364542884);

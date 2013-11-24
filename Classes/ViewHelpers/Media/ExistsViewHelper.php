@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_ExistsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_Media_ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -50,7 +50,7 @@ class Tx_Vhs_ViewHelpers_Media_ExistsViewHelper extends Tx_Fluid_Core_ViewHelper
 	 */
 	public function render() {
 
-		$file = t3lib_div::getFileAbsFileName($this->arguments['file']);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->arguments['file']);
 		$directory = $this->arguments['directory'];
 
 		$evaluation = FALSE;

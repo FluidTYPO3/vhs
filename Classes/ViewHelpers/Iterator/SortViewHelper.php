@@ -36,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -74,14 +74,14 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 		if (is_array($subject) === TRUE) {
 			$sorted = $this->sortArray($subject);
 		} else {
-			if ($subject instanceof Tx_Extbase_Persistence_ObjectStorage || $subject instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+			if ($subject instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage || $subject instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
 				$sorted = $this->sortObjectStorage($subject);
 			} elseif ($subject instanceof Iterator) {
 				/** @var Iterator $subject */
 				$array = iterator_to_array($subject, TRUE);
 				$sorted = $this->sortArray($array);
-			} elseif ($subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
-				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
+			} elseif ($subject instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface) {
+				/** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface $subject */
 				$sorted = $this->sortArray($subject->toArray());
 			} elseif ($subject !== NULL) {
 					// a NULL value is respected and ignored, but any
@@ -135,16 +135,16 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 	}
 
 	/**
-	 * Sort a Tx_Extbase_Persistence_ObjectStorage instance
+	 * Sort a \TYPO3\CMS\Extbase\Persistence\ObjectStorage instance
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $storage
-	 * @return Tx_Extbase_Persistence_ObjectStorage
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	protected function sortObjectStorage($storage) {
-		/** @var Tx_Extbase_Object_ObjectManager $objectManager */
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		/** @var Tx_Extbase_Persistence_ObjectStorage $temp */
-		$temp = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		/** @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage $temp */
+		$temp = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($storage as $item) {
 			$temp->attach($item);
 		}
@@ -173,7 +173,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 		} else {
 			krsort($sorted, constant($this->arguments['sortFlags']));
 		}
-		$storage = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($sorted as $item) {
 			$storage->attach($item);
 		}
@@ -188,10 +188,10 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	protected function getSortValue($object) {
 		$field = $this->arguments['sortBy'];
-		$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($object, $field);
+		$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($object, $field);
 		if ($value instanceof DateTime) {
 			$value = intval($value->format('U'));
-		} elseif ($value instanceof Tx_Extbase_Persistence_ObjectStorage || $value instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+		} elseif ($value instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage || $value instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
 			$value = $value->count();
 		} elseif (is_array($value)) {
 			$value = count($value);

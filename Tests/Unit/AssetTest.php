@@ -27,7 +27,7 @@
  * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @package Vhs
  */
-class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_AssetTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
@@ -54,7 +54,7 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 		$file = $this->getRelativeAssetFixturePath();
 		$asset = Tx_Vhs_Asset::createFromFile($file);
 		$this->assertInstanceOf('Tx_Vhs_Asset', $asset);
-		$this->assertEquals(t3lib_div::getFileAbsFileName($file), $asset->getPath());
+		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($file), $asset->getPath());
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	 */
 	public function supportsChainingInAllSettersWithFakeNullArgument() {
 		$asset = Tx_Vhs_Asset::getInstance();
-		$settableProperties = Tx_Extbase_Reflection_ObjectAccess::getSettablePropertyNames($asset);
+		$settableProperties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getSettablePropertyNames($asset);
 		foreach ($settableProperties as $propertyName) {
 			$setter = 'set' . ucfirst($propertyName);
 			$asset = $asset->$setter(NULL);
@@ -185,13 +185,13 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	public function specialSupportGettersReturnExpectedTypes() {
 		$file = $this->getAbsoluteAssetFixturePath();
 		$asset = Tx_Vhs_Asset::createFromFile($file);
-		$gettableProperties = Tx_Extbase_Reflection_ObjectAccess::getGettablePropertyNames($asset);
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$gettableProperties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($asset);
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		foreach ($gettableProperties as $propertyName) {
 			if (FALSE === property_exists('Tx_Vhs_Asset', $propertyName)) {
 				continue;
 			}
-			$propertyValue = Tx_Extbase_Reflection_ObjectAccess::getProperty($asset, $propertyName);
+			$propertyValue = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($asset, $propertyName);
 			/** @var $propertyReflection Tx_Extbase_Reflection_PropertyReflection */
 			$propertyReflection = $objectManager->get('Tx_Extbase_Reflection_PropertyReflection', 'Tx_Vhs_Asset', $propertyName);
 			$expectedDataType = array_pop($propertyReflection->getTagValues('var'));
@@ -235,7 +235,7 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	 * @return string
 	 */
 	protected function getRelativeAssetFixturePath() {
-		$file = t3lib_extMgm::siteRelPath('vhs') . 'Tests/Fixtures/Files/dummy.js';
+		$file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('vhs') . 'Tests/Fixtures/Files/dummy.js';
 		return $file;
 	}
 
@@ -243,7 +243,7 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	 * @return string
 	 */
 	protected function getAbsoluteAssetFixturePath() {
-		$file = t3lib_extMgm::extPath('vhs', 'Tests/Fixtures/Files/dummy.js');
+		$file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('vhs', 'Tests/Fixtures/Files/dummy.js');
 		return $file;
 	}
 

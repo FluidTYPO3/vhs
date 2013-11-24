@@ -42,11 +42,11 @@
  * @subpackage ViewHelpers\Asset
  */
 abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
-	extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -76,12 +76,12 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	protected $content;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_TagBuilder
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
 	 */
 	protected $tagBuilder;
 
@@ -99,10 +99,10 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -115,12 +115,12 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	}
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->tagBuilder = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_TagBuilder');
+		$this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 	}
 
 	/**
@@ -178,7 +178,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		if (FALSE === isset($this->arguments['path']) || TRUE === empty($this->arguments['path'])) {
 			return $this->getContent();
 		}
-		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($this->arguments['path']);
+		$absolutePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->arguments['path']);
 		$content = file_get_contents($absolutePathAndFilename);
 		return $content;
 	}
@@ -219,7 +219,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$debugInformation = $this->getDebugInformation();
 		if (TRUE === $debugOutputEnabled) {
 			if (TRUE === $useDebugUtility) {
-				Tx_Extbase_Utility_Debugger::var_dump($debugInformation);
+				\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($debugInformation);
 			} else {
 				return var_export($debugInformation, TRUE);
 			}
@@ -232,7 +232,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	public function getDependencies() {
 		$assetSettings = $this->getAssetSettings();
 		if (TRUE === isset($assetSettings['dependencies'])) {
-			return t3lib_div::trimExplode(',', $assetSettings['dependencies'], TRUE);
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $assetSettings['dependencies'], TRUE);
 		}
 		return array();
 	}
@@ -322,18 +322,18 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	public function getSettings() {
 		if (TRUE === is_null(self::$settingsCache)) {
-			$allTypoScript = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+			$allTypoScript = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {
 					// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
 				self::$settingsCache = array();
 			} else {
-				self::$settingsCache = t3lib_div::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
 		$settings = self::$settingsCache;
 		if (TRUE === is_array($this->localSettings)) {
-			$settings = t3lib_div::array_merge_recursive_overrule($settings, $this->localSettings);
+			$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
 		}
 		return $settings;
 	}
@@ -362,13 +362,13 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$assetSettings = $this->arguments;
 		$assetSettings['type'] = $this->getType();
 		if (TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
-			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['asset']);
+			$assetSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($assetSettings, $settings['asset']);
 		}
 		if (TRUE === (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName]))) {
-			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['assetGroup'][$groupName]);
+			$assetSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($assetSettings, $settings['assetGroup'][$groupName]);
 		}
 		if (TRUE === (isset($settings['asset'][$name]) && is_array($settings['asset'][$name]))) {
-			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['asset'][$name]);
+			$assetSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($assetSettings, $settings['asset'][$name]);
 		}
 		$assetSettings['name'] = $name;
 		$this->assetSettingsCache = $assetSettings;

@@ -30,11 +30,11 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format\Json
  */
-class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param string $json
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return mixed
 	 */
 	public function render($json = '') {
@@ -48,7 +48,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends Tx_Fluid_Core_View
 		$value = json_decode($json, TRUE);
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument is invalid JSON.', 1358440054);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('The provided argument is invalid JSON.', 1358440054);
 		}
 
 		return $value;

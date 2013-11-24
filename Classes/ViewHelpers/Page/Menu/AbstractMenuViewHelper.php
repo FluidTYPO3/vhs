@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Menu
  */
-abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -251,7 +251,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if (TRUE === is_array($doktypes)) {
 			$types = $doktypes;
 		} else {
-			$types = t3lib_div::trimExplode(',', $doktypes);
+			$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $doktypes);
 		}
 		$parsed = array();
 		foreach ($types as $index => $type) {
@@ -273,7 +273,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 */
 	protected function getItemTitle($page) {
 		$title = $page['title'];
-		$titleFieldList = t3lib_div::trimExplode(',', $this->arguments['titleFields']);
+		$titleFieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
 			if (empty($page[$titleFieldName]) === FALSE) {
 				$title = $page[$titleFieldName];
@@ -684,7 +684,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if ($pages instanceof Traversable) {
 			$pages = iterator_to_array($pages);
 		} elseif (is_string($pages)) {
-			$pages = t3lib_div::trimExplode(',', $pages, TRUE);
+			$pages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pages, TRUE);
 		}
 		if (FALSE === is_array($pages)) {
 			return array();

@@ -44,10 +44,10 @@ class Tx_Vhs_ViewHelpers_If_Form_IsRequiredViewHelper extends Tx_Vhs_ViewHelpers
 	 * is not specified)
 	 *
 	 * @param string $property The property name, dotted path supported, to determine required
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object Optional object - if not specified, grabs the associated form object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object Optional object - if not specified, grabs the associated form object
 	 * @return string
 	 */
-	public function render($property, Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
+	public function render($property, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object = NULL) {
 		$validatorName = 'NotEmpty';
 		return parent::render($property, $validatorName, $object);
 	}

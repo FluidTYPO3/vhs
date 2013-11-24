@@ -40,7 +40,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var Tx_Vhs_Service_PageSelectService
@@ -96,7 +96,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$pageUid = $this->arguments['pageUid'];
 		$additionalParameters = $this->arguments['additionalParams'];
 		if (FALSE === is_numeric($pageUid)) {
-			$linkConfig = t3lib_div::unQuoteFilenames($pageUid, TRUE);
+			$linkConfig = \TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames($pageUid, TRUE);
 			$pageUid = $linkConfig[0];
 			if (TRUE === isset($linkConfig[1]) && '-' !== $linkConfig[1]) {
 				$this->tag->addAttribute('target', $linkConfig[1]);
@@ -109,9 +109,9 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			}
 			if (TRUE === isset($linkConfig[4]) && '-' !== $linkConfig[4]) {
 				$additionalParametersString = trim($linkConfig[4], '&');
-				$additionalParametersArray = t3lib_div::trimExplode('&', $additionalParametersString);
+				$additionalParametersArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('&', $additionalParametersString);
 				foreach ($additionalParametersArray as $parameter) {
-					list($key, $value) = t3lib_div::trimExplode('=', $parameter);
+					list($key, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $parameter);
 					$additionalParameters[$key] = $value;
 				}
 			}
@@ -128,7 +128,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$l18nConfig = $page['l18n_cfg'];
 		if (0 < $getLL) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $getLL);
-			if (TRUE === (boolean) t3lib_div::hideIfNotTranslated($l18nConfig) && TRUE === empty($pageOverlay)) {
+			if (TRUE === (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($l18nConfig) && TRUE === empty($pageOverlay)) {
 				return NULL;
 			}
 			if (NULL !== ($overlayTitle = $this->getTitleValue($pageOverlay))) {
@@ -160,7 +160,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 */
 	private function getTitleValue($record) {
 		$title = NULL;
-		$titleFieldList = t3lib_div::trimExplode(',', $this->arguments['titleFields']);
+		$titleFieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
 			if (FALSE === empty($record[$titleFieldName])) {
 				$title = $record[$titleFieldName];

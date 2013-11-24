@@ -34,7 +34,7 @@ class Tx_Vhs_ViewHelpers_If_Type_IsTraversableViewHelperTest extends Tx_Vhs_View
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new Tx_Extbase_Persistence_ObjectStorage())));
+		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new \TYPO3\CMS\Extbase\Persistence\ObjectStorage())));
 	}
 
 	/**

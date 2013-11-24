@@ -34,8 +34,8 @@ class Tx_Vhs_ViewHelpers_If_Type_IsQueryResultViewHelperTest extends Tx_Vhs_View
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$query = $this->objectManager->get('Tx_Extbase_Domain_Repository_FrontendUserRepository')->createQuery();
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new Tx_Extbase_Persistence_QueryResult($query))));
+		$query = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository')->createQuery();
+		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult($query))));
 	}
 
 	/**

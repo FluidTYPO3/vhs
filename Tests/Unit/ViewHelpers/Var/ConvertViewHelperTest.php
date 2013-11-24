@@ -102,8 +102,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Vhs_ViewHelpers_Ab
 	 * @test
 	 */
 	public function convertArrayToObjectStorage() {
-		$dummy = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$dummy = $this->objectManager->get('\TYPO3\CMS\Extbase\Domain\Model\FrontendUser');
+		$storage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$storage->attach($dummy);
 		$this->executeConversion(array($dummy), 'ObjectStorage', $storage);
 	}
@@ -112,8 +112,8 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Vhs_ViewHelpers_Ab
 	 * @test
 	 */
 	public function convertObjectStorageToArray() {
-		$dummy = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$dummy = $this->objectManager->get('\TYPO3\CMS\Extbase\Domain\Model\FrontendUser');
+		$storage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$storage->attach($dummy);
 		$this->executeConversion($storage, 'array', array($dummy));
 	}
@@ -171,7 +171,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Vhs_ViewHelpers_Ab
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$viewHelper->setArguments(array('type' => 'ObjectStorage'));
 		$converted = $viewHelper->render();
-		$this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $converted);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $converted);
 		$this->assertEquals(0, $converted->count());
 	}
 
@@ -180,7 +180,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelperTest extends Tx_Vhs_ViewHelpers_Ab
 	 */
 	public function returnsArrayForTypeObjectStorage() {
 		$domainObject = $this->objectManager->get('Tx_Vhs_Tests_Fixtures_Domain_Model_Foo');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$storage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$storage->attach($domainObject);
 		$viewHelper = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Var_ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($storage));

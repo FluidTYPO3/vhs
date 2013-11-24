@@ -33,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var tslib_cObj
@@ -41,7 +41,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	protected $contentObject;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -51,10 +51,10 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	protected $pageSelect;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -111,8 +111,8 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		} elseif ($GLOBALS['TSFE']->page['content_from_pid']) {
 			$pid = $GLOBALS['TSFE']->page['content_from_pid'];
 		}
-		if (t3lib_div::_GP('MP') !== NULL) {
-			$mountpointRange = t3lib_div::_GP('MP');
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP') !== NULL) {
+			$mountpointRange = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP');
 		}
 		$order = $order . ' ' . $this->arguments['sortDirection'];
 		$colPos = $this->arguments['column'];

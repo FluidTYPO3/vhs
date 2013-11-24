@@ -85,7 +85,7 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 */
 	public function render($identity, $content = NULL) {
 		if (ctype_alnum(preg_replace('/[\-_]/i', '', $identity)) === FALSE) {
-			if ($identity instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			if ($identity instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				$identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
 			} elseif (method_exists($identity, '__toString')) {
 				$identity = (string) $identity;

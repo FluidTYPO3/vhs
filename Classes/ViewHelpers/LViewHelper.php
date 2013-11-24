@@ -42,7 +42,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewHelper {
+class Tx_Vhs_ViewHelpers_LViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper {
 
 	/**
 	 * Render method
@@ -72,7 +72,7 @@ class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewH
 			}
 			$extensionName = $request->getControllerExtensionName();
 		}
-		$value = Tx_Extbase_Utility_Localization::translate($id, $extensionName, $arguments);
+		$value = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($id, $extensionName, $arguments);
 		if (NULL === $value) {
 			$value = $default;
 			if (is_array($arguments)) {

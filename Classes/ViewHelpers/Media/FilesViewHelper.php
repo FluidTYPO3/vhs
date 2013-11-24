@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -64,7 +64,7 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends Tx_Fluid_Core_ViewHelper_
 		$order          = $this->arguments['order'];
 		$excludePattern = $this->arguments['excludePattern'];
 
-		$files = t3lib_div::getFilesInDir($path, $extensionList, $prependPath, $order, $excludePattern);
+		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($path, $extensionList, $prependPath, $order, $excludePattern);
 
 		return $files;
 	}

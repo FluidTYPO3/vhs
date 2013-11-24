@@ -43,7 +43,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_SwitchViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Vhs_ViewHelpers_SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
 
 	/**
 	 * @var array
@@ -90,7 +90,7 @@ class Tx_Vhs_ViewHelpers_SwitchViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchBreakRequested', FALSE);
 		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchContinueUntilBreak', FALSE);
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
 				&& $childNode->getViewHelperClassName() === 'Tx_Vhs_ViewHelpers_CaseViewHelper') {
 				$content .= $childNode->evaluate($context);
 				$shouldBreak = $this->determineBooleanOf($context, 'switchBreakRequested');
@@ -113,10 +113,10 @@ class Tx_Vhs_ViewHelpers_SwitchViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $context
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context
 	 * @return void
 	 */
-	protected function storeBackup(Tx_Fluid_Core_Rendering_RenderingContextInterface $context) {
+	protected function storeBackup(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context) {
 		$this->backup = array(
 			$context->getViewHelperVariableContainer()->get('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue'),
 			$this->determineBooleanOf($context, 'switchBreakRequested'),
@@ -125,17 +125,17 @@ class Tx_Vhs_ViewHelpers_SwitchViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $context
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context
 	 * @return void
 	 */
-	protected function restoreBackup(Tx_Fluid_Core_Rendering_RenderingContextInterface $context) {
+	protected function restoreBackup(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context) {
 		$context->getViewHelperVariableContainer()->add('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue', $this->backup[0]);
 		$context->getViewHelperVariableContainer()->add('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchBreakRequested', $this->backup[1]);
 		$context->getViewHelperVariableContainer()->add('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchContinueUntilBreak', $this->backup[2]);
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $context
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context
 	 * @param mixed $var
 	 * @return boolean
 	 */

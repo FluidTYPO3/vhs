@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Form\Select
  */
-class Tx_Vhs_ViewHelpers_Form_Select_OptionViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class Tx_Vhs_ViewHelpers_Form_Select_OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper {
 
 	/**
 	 * @var string

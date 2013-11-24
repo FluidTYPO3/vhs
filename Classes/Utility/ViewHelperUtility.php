@@ -39,11 +39,11 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 	/**
 	 * Returns a backup of all $variables from $variableContainer and removes them.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer
 	 * @param array $variables
 	 * @return array
 	 */
-	public static function backupVariables(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables) {
+	public static function backupVariables(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer, array $variables) {
 		$backups = array();
 
 		foreach ($variables as $variableName => $variableValue) {
@@ -60,12 +60,12 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 	/**
 	 * Restores $variables in $variableContainer
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer
 	 * @param array $variables
 	 * @param array $backups
 	 * @return void
 	 */
-	public static function restoreVariables(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables, array $backups) {
+	public static function restoreVariables(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer, array $variables, array $backups) {
 		foreach ($variables as $variableName => $variableValue) {
 			$variableContainer->remove($variableName);
 			if (TRUE === isset($backups[$variableName])) {
@@ -80,12 +80,12 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 	 * of each existing variable, restoring it after rendering.
 	 * Returns the output of the renderChildren() method on $viewHelper.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer
 	 * @param array $variables
 	 * @return mixed
 	 */
-	public static function renderChildrenWithVariables(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables) {
+	public static function renderChildrenWithVariables(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer, array $variables) {
 		$backups = self::backupVariables($variableContainer, $variables);
 		$content = $viewHelper->renderChildren();
 		self::restoreVariables($variableContainer, $variables, $backups);

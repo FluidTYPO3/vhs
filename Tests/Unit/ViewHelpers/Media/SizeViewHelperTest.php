@@ -27,7 +27,7 @@
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @var string
@@ -65,7 +65,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Extbase_Tests_Unit_
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
 
-		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
+		$this->setExpectedException('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\Exception');
 		$viewHelper->render();
 	}
 
@@ -76,7 +76,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Extbase_Tests_Unit_
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
 
-		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
+		$this->setExpectedException('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\Exception');
 		$viewHelper->render();
 	}
 

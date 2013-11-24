@@ -27,7 +27,7 @@
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  */
-class Tx_Vhs_Tests_Fixtures_Domain_Model_Foo extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Vhs_Tests_Fixtures_Domain_Model_Foo extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
      * @var string
@@ -40,13 +40,13 @@ class Tx_Vhs_Tests_Fixtures_Domain_Model_Foo extends Tx_Extbase_DomainObject_Abs
 	protected $foo;
 
     /**
-     * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Vhs_Tests_Fixtures_Domain_Model_Foo>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Vhs_Tests_Fixtures_Domain_Model_Foo>
      */
     protected $children;
 
     public function __construct() {
         $this->bar = 'baz';
-        $this->children = new Tx_Extbase_Persistence_ObjectStorage();
+        $this->children = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
 
     /**
@@ -71,7 +71,7 @@ class Tx_Vhs_Tests_Fixtures_Domain_Model_Foo extends Tx_Extbase_DomainObject_Abs
 	}
 
     /**
-     * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Vhs_Tests_Fixtures_Domain_Model_Foo>
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Vhs_Tests_Fixtures_Domain_Model_Foo>
      */
     public function getChildren() {
         return $this->children;

@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var Tx_Vhs_Service_PageSelectService
@@ -72,7 +72,7 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		if (0 !== $languageUid) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $languageUid);
 			if (TRUE === is_array($pageOverlay)) {
-				$page = t3lib_div::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
+				$page = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
 			}
 		}
 

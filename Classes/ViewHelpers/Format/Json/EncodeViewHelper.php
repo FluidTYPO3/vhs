@@ -55,7 +55,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format\Json
  */
-class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var array
@@ -87,14 +87,14 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 * @param boolean $preventRecursion
 	 * @param string $recursionMarker
 	 * @param string $dateTimeFormat
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return mixed
 	 */
 	protected function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat) {
 		if (TRUE === $value instanceof Traversable) {
 				// Note: also converts Extbase ObjectStorage to Tx_Extkey_Domain_Model_ObjectType[] which are later each converted
 			$value = iterator_to_array($value, $useTraversableKeys);
-		} elseif (TRUE === $value instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+		} elseif (TRUE === $value instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				// Convert to associative array,
 			$value = $this->recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
 		} elseif (TRUE === $value instanceof DateTime) {
@@ -108,7 +108,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 		};
 		$json = json_encode($value);
 		if (JSON_ERROR_NONE !== json_last_error()) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument cannot be converted into JSON.', 1358440181);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('The provided argument cannot be converted into JSON.', 1358440181);
 		}
 		return $json;
 	}
@@ -160,14 +160,14 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 * value type. The type is checked and another recursive call is used to
 	 * convert any nested objects.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface[] $domainObjects
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface[] $domainObjects
 	 * @param boolean $preventRecursion
 	 * @param mixed $recursionMarker
 	 * @return array
 	 */
 	protected function recursiveArrayOfDomainObjectsToArray(array $domainObjects, $preventRecursion, $recursionMarker) {
 		foreach ($domainObjects as $key => $possibleDomainObject) {
-			if (TRUE === $possibleDomainObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			if (TRUE === $possibleDomainObject instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				$domainObjects[$key] = $this->recursiveDomainObjectToArray($possibleDomainObject, $preventRecursion, $recursionMarker);
 			} elseif (TRUE === $possibleDomainObject instanceof Traversable) {
 				$traversableAsArray = iterator_to_array($possibleDomainObject);
@@ -182,17 +182,17 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 	 * that array through recursive DomainObject detection. This will convert
 	 * any 1:1, 1:n, n:1 and m:n relations.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $domainObject
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $domainObject
 	 * @param boolean $preventRecursion
 	 * @param mixed $recursionMarker
 	 * @return array
 	 */
-	protected function recursiveDomainObjectToArray(Tx_Extbase_DomainObject_DomainObjectInterface $domainObject, $preventRecursion, $recursionMarker) {
+	protected function recursiveDomainObjectToArray(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $domainObject, $preventRecursion, $recursionMarker) {
 		$hash = spl_object_hash($domainObject);
 		if (TRUE === ($preventRecursion && in_array($hash, $this->encounteredClasses))) {
 			return $recursionMarker;
 		}
-		$converted = Tx_Extbase_Reflection_ObjectAccess::getGettableProperties($domainObject);
+		$converted = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($domainObject);
 		array_push($this->encounteredClasses, $hash);
 		$converted = $this->recursiveArrayOfDomainObjectsToArray($converted, $preventRecursion, $recursionMarker);
 		return $converted;

@@ -34,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Form
  */
-class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * @var string
@@ -46,15 +46,15 @@ class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends Tx_Fluid_Core_Vi
 	 * is used by the parent class - but is, quite unfriendly and needlessly, set
 	 * with "private" access.
 	 *
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 */
 	protected $ownReflectionService;
 
 	/**
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
 	 * @return void
 	 */
-	public function injectOwnReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectOwnReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
 		$this->ownReflectionService = $reflectionService;
 	}
 
@@ -67,10 +67,10 @@ class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends Tx_Fluid_Core_Vi
 	 *
 	 * @param string $property The property name, dotted path supported, to determine required
 	 * @param string $validatorName The class name of the Validator that indicates the property is required
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object Optional object - if not specified, grabs the associated form object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object Optional object - if not specified, grabs the associated form object
 	 * @return string
 	 */
-	public function render($property, $validatorName = NULL, Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
+	public function render($property, $validatorName = NULL, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object = NULL) {
 		if ($object === NULL) {
 			$object = $this->getFormObject();
 			$className = get_class($object);
@@ -99,7 +99,7 @@ class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends Tx_Fluid_Core_Vi
 
 	/**
 	 * @param string $formClassName
-	 * @return Tx_Extbase_DomainObject_DomainObjectInterface|NULL
+	 * @return \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|NULL
 	 */
 	protected function getFormObject($formClassName = 'Tx_Fluid_ViewHelpers_FormViewHelper') {
 		if ($this->viewHelperVariableContainer->exists($formClassName, 'formObject')) {

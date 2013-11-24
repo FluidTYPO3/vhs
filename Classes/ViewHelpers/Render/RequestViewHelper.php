@@ -40,25 +40,25 @@
 class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper {
 
 	/**
-	 * @var Tx_Extbase_MVC_Dispatcher
+	 * @var \TYPO3\CMS\Extbase\Mvc\Dispatcher
 	 */
 	protected $dispatcher;
 
 	/**
 	 * @var string
 	 */
-	protected $requestType = 'Tx_Extbase_MVC_Web_Request';
+	protected $requestType = 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request';
 
 	/**
 	 * @var string
 	 */
-	protected $responseType = 'Tx_Extbase_MVC_Web_Response';
+	protected $responseType = 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response';
 
 	/**
-	 * @param Tx_Extbase_MVC_Dispatcher $dispatcher
+	 * @param \TYPO3\CMS\Extbase\Mvc\Dispatcher $dispatcher
 	 * @return void
 	 */
-	public function injectDispatcher(Tx_Extbase_MVC_Dispatcher $dispatcher) {
+	public function injectDispatcher(\TYPO3\CMS\Extbase\Mvc\Dispatcher $dispatcher) {
 		$this->dispatcher = $dispatcher;
 	}
 
@@ -92,13 +92,13 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 		$contentObjectBackup = $this->configurationManager->getContentObject();
 		if ($this->request) {
 			$configurationBackup = $this->configurationManager->getConfiguration(
-				Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+				\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
 				$this->request->getControllerExtensionName(),
 				$this->request->getPluginName()
 			);
 		}
 		$temporaryContentObject = new tslib_cObj();
-		/** @var Tx_Extbase_MVC_Web_Request $request */
+		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
 		$request = $this->objectManager->get($this->requestType);
 		$request->setControllerActionName($action);
 		$request->setControllerName($controller);
@@ -115,7 +115,7 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 			$this->configurationManager->setContentObject($temporaryContentObject);
 			$this->configurationManager->setConfiguration(
 				$this->configurationManager->getConfiguration(
-					Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+					\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
 					$extensionName,
 					$pluginName
 				)

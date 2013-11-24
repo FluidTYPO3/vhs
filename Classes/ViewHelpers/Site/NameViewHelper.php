@@ -32,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Site
  */
-class Tx_Vhs_ViewHelpers_Site_NameViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Site_NameViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @return string

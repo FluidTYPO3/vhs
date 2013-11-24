@@ -1,7 +1,7 @@
 <?php
 
-$extensionClassesPath = t3lib_extMgm::extPath('vhs') . 'Classes/';
-$testClassesPath = t3lib_extMgm::extPath('vhs') . 'Tests/';
+$extensionClassesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('vhs') . 'Classes/';
+$testClassesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('vhs') . 'Tests/';
 return array(
 	'tx_vhs_asset' => $extensionClassesPath . 'Asset.php',
 	'tx_vhs_service_assetservice' => $extensionClassesPath . 'Service/AssetService.php',

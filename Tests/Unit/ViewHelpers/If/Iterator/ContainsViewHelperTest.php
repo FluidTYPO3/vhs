@@ -44,10 +44,10 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelperTest extends Tx_Vhs_ViewH
 	 * @test
 	 */
 	public function supportsObjectStorage() {
-		$needle = new Tx_Extbase_Domain_Model_FrontendUser();
-		Tx_Extbase_Reflection_ObjectAccess::setProperty($needle, 'uid', 1);
-		$with = new Tx_Extbase_Persistence_ObjectStorage();
-		$without = new Tx_Extbase_Persistence_ObjectStorage();
+		$needle = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($needle, 'uid', 1);
+		$with = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$without = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$with->attach($needle);
 		$this->renderTestWithHaystackAndNeedle($with, $without, $needle);
 	}

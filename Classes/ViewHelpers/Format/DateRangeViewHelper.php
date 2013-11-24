@@ -75,7 +75,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var boolean
@@ -101,7 +101,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 	/**
 	 * Render method
 	 *
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return mixed
 	 */
 	public function render() {
@@ -123,14 +123,14 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 		}
 
 		if (NULL === $intervalFormat && NULL === $endDateTime) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Either end or intervalFormat has to be provided.', 1369573110);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Either end or intervalFormat has to be provided.', 1369573110);
 		}
 
 		if (TRUE === isset($intervalFormat) && NULL !== $intervalFormat) {
 			try {
 				$interval = new \DateInterval($intervalFormat);
 			} catch (\Exception $exception) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.', 1369573111);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.', 1369573111);
 			}
 		} else {
 			$interval = $endDateTime->diff($startDateTime);
@@ -181,7 +181,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 	/**
 	 * @param mixed $date
 	 * @return \DateTime
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 */
 	protected function enforceDateTime($date) {
 		if (FALSE === ($date instanceof \DateTime)) {
@@ -192,7 +192,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends Tx_Fluid_Core_ViewHe
 					$date = new \DateTime($date);
 				}
 			} catch (\Exception $exception) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
 			}
 		}
 		return $date;

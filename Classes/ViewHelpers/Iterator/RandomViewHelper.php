@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -45,7 +45,7 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends Tx_Fluid_Core_ViewHel
 	 * Render method
 	 *
 	 * @param mixed $subject
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return mixed
 	 */
 	public function render($subject = NULL) {
@@ -60,11 +60,11 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends Tx_Fluid_Core_ViewHel
 		} else {
 			if (TRUE === ($subject instanceof Iterator)) {
 				$array = iterator_to_array($subject, TRUE);
-			} elseif (TRUE === ($subject instanceof Tx_Extbase_Persistence_QueryResultInterface) || TRUE === ($subject instanceof TYPO3\CMS\Extbase\Persistence\QueryResultInterface)) {
-				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
+			} elseif (TRUE === ($subject instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface) || TRUE === ($subject instanceof TYPO3\CMS\Extbase\Persistence\QueryResultInterface)) {
+				/** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface $subject */
 				$array = $subject->toArray();
 			} elseif (NULL !== $subject) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
 				' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1370966821);
 			}
 		}

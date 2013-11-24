@@ -67,10 +67,10 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Vhs_ViewHelpe
 	}
 
 	public function constructObjectStorageContainingFrontendUser() {
-		$storage = new Tx_Extbase_Persistence_ObjectStorage();
-		$user1 = new Tx_Extbase_Domain_Model_FrontendUser();
-		$user2 = new Tx_Extbase_Domain_Model_FrontendUser();
-		$user3 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$storage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$user1 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
+		$user2 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
+		$user3 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
 		$user1->setFirstName('Peter');
 		$user2->setFirstName('Paul');
 		$user3->setFirstName('Marry');
@@ -82,11 +82,11 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Vhs_ViewHelpe
 	}
 
 	public function constructObjectStorageContainingFrontendUsersWithUserGroups() {
-		$storage = new Tx_Extbase_Persistence_ObjectStorage();
-		$userGroup1 = new Tx_Extbase_Domain_Model_FrontendUserGroup('my first group');
-		$userGroup2 = new Tx_Extbase_Domain_Model_FrontendUserGroup('my second group');
-		$user1 = new Tx_Extbase_Domain_Model_FrontendUser();
-		$user2 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$storage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$userGroup1 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('my first group');
+		$userGroup2 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('my second group');
+		$user1 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
+		$user2 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
 		$user1->addUsergroup($userGroup1);
 		$user2->addUsergroup($userGroup2);
 		$storage->attach($user1);

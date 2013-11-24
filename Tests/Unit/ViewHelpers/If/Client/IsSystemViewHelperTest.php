@@ -27,7 +27,7 @@
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @var Tx_Vhs_ViewHelpers_If_Client_IsSystemViewHelper

@@ -69,7 +69,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Set (override) the variable in $name.
@@ -96,7 +96,7 @@ class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 			}
 			$object = $this->templateVariableContainer->get($objectName);
 			try {
-				Tx_Extbase_Reflection_ObjectAccess::setProperty($object, $path, $value);
+				\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($object, $path, $value);
 				// Note: re-insert the variable to ensure unreferenced values like arrays also get updated
 				$this->templateVariableContainer->remove($objectName);
 				$this->templateVariableContainer->add($objectName, $object);

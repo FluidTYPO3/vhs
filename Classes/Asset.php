@@ -74,7 +74,7 @@
 class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -149,10 +149,10 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	private static $settingsCache = NULL;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -161,7 +161,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public static function getInstance() {
 		/** @var $asset Tx_Vhs_Asset */
-		$asset = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager')->get('Tx_Vhs_Asset');
+		$asset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('Tx_Vhs_Asset');
 		return $asset;
 	}
 
@@ -172,7 +172,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	public static function createFromSettings(array $settings) {
 		$asset = self::getInstance();
 		foreach ($settings as $propertyName => $value) {
-			Tx_Extbase_Reflection_ObjectAccess::setProperty($asset, $propertyName, $value);
+			\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($asset, $propertyName, $value);
 		}
 		return $asset->finalize();
 	}
@@ -353,8 +353,8 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 * @return string
 	 */
 	public function getContent() {
-		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists(t3lib_div::getFileAbsFileName($this->path))) {
-			return file_get_contents(t3lib_div::getFileAbsFileName($this->path));
+		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->path))) {
+			return file_get_contents(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->path));
 		}
 		return $this->content;
 	}
@@ -385,7 +385,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 			return $this;
 		}
 		if (FALSE === strpos($path, '://')) {
-			$path = t3lib_div::getFileAbsFileName($path);
+			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 		}
 		if (NULL === $this->type) {
 			$this->setType(pathinfo($path, PATHINFO_EXTENSION));
@@ -454,10 +454,10 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public function getSettings() {
 		if (NULL === self::$settingsCache) {
-			$allTypoScript = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+			$allTypoScript = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (TRUE === $settingsExist) {
-				self::$settingsCache = t3lib_div::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
 		$settings = (array) self::$settingsCache;
@@ -465,8 +465,8 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 		foreach (array_keys($properties) as $propertyName) {
 			$properties[$propertyName] = $this->$propertyName;
 		}
-		$settings = t3lib_div::array_merge_recursive_overrule($settings, $this->settings);
-		$settings = t3lib_div::array_merge_recursive_overrule($settings, $properties);
+		$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $this->settings);
+		$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $properties);
 		return $settings;
 	}
 

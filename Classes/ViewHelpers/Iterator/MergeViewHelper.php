@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var boolean
@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends Tx_Fluid_Core_ViewHelp
 		$this->useKeys = (boolean) $useKeys;
 		$a = $this->ensureIsArray($a);
 		$b = $this->ensureIsArray($b);
-		$merged = t3lib_div::array_merge_recursive_overrule($a, $b);
+		$merged = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($a, $b);
 		return $merged;
 	}
 

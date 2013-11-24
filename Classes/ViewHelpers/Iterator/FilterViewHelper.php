@@ -82,7 +82,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Vhs_ViewHelpers_It
 	 */
 	protected function filter($item, $filter, $propertyName) {
 		if (FALSE === empty($propertyName) && (TRUE === is_object($item) || TRUE === is_array($item))) {
-			$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($item, $propertyName);
+			$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($item, $propertyName);
 		} else {
 			$value = $item;
 		}

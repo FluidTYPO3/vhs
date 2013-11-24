@@ -62,7 +62,7 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelperTest extends Tx_Vhs_ViewHelpers_Abstra
 	 * @test
 	 */
 	public function returnsNullAndSuppressesExceptionOnInvalidPropertyGetting() {
-		$user = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
+		$user = $this->objectManager->get('\TYPO3\CMS\Extbase\Domain\Model\FrontendUser');
 		$this->assertEquals(NULL, $this->executeViewHelper(array('name' => 'test.void'), array('test' => $user)));
 	}
 

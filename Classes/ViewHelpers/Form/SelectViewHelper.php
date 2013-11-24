@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Form
  */
-class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper {
 
 	/**
 	 * @var string
@@ -136,7 +136,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	/**
 	 * Render the option tags.
 	 *
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return array
 	 */
 	protected function getOptions() {
@@ -149,12 +149,12 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 			if (is_object($value)) {
 
 				if (TRUE === isset($this->arguments['optionValueField']) && FALSE === empty($this->arguments['optionValueField'])) {
-					$key = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
+					$key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 					if (TRUE === is_object($key)) {
 						if (TRUE === method_exists($key, '__toString')) {
 							$key = (string) $key;
 						} else {
-							throw new Tx_Fluid_Core_ViewHelper_Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
+							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
 						}
 					}
 				} elseif (NULL !== $this->persistenceManager->getBackend()->getIdentifierByObject($value)) {
@@ -162,16 +162,16 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 				} elseif (TRUE === method_exists($value, '__toString')) {
 					$key = (string) $value;
 				} else {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
+					throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
 				}
 
 				if (TRUE === isset($this->arguments['optionLabelField']) && FALSE === empty($this->arguments['optionLabelField'])) {
-					$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionLabelField']);
+					$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $this->arguments['optionLabelField']);
 					if (TRUE === is_object($value)) {
 						if (TRUE === method_exists($value, '__toString')) {
 							$value = (string) $value;
 						} else {
-							throw new Tx_Fluid_Core_ViewHelper_Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
+							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
 						}
 					}
 				} elseif (TRUE === method_exists($value, '__toString')) {
@@ -221,7 +221,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 		}
 		if (FALSE === is_array($value) && FALSE === ($value instanceof Iterator)) {
 			if (TRUE === is_object($value)) {
-				return Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
+				return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 			} else {
 				return $value;
 			}
@@ -229,7 +229,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 		$selectedValues = array();
 		foreach ($value as $selectedValueElement) {
 			if (TRUE === is_object($selectedValueElement)) {
-				$selectedValues[] = Tx_Extbase_Reflection_ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
+				$selectedValues[] = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
 			} else {
 				$selectedValues[] = $selectedValueElement;
 			}

@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * @param integer $index
@@ -44,14 +44,14 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 		$asArray = array();
 		if (is_array($haystack)) {
 			$asArray = $haystack;
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			/** @var $haystack Tx_Extbase_Persistence_ObjectStorage */
+		} elseif ($haystack instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
+			/** @var $haystack \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
 			$asArray = $haystack->toArray();
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+		} elseif ($haystack instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
 			/** @var $haystack Tx_Extbase_Persistence_LazyObjectStorage */
 			$asArray = $haystack->toArray();
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_QueryResult) {
-			/** @var $haystack Tx_Extbase_Persistence_QueryResult */
+		} elseif ($haystack instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult) {
+			/** @var $haystack \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult */
 			$asArray = $haystack->toArray();
 		} elseif (is_string($haystack)) {
 			$asArray = str_split($haystack);
@@ -67,11 +67,11 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 	protected function assertHaystackHasNeedle($haystack, $needle) {
 		if (is_array($haystack)) {
 			return FALSE !== $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
+		} elseif ($haystack instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
 			return FALSE !== $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+		} elseif ($haystack instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
 			return FALSE !== $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_QueryResult) {
+		} elseif ($haystack instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult) {
 			return FALSE !== $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
 		} elseif (is_string($haystack)) {
 			return FALSE !== strpos($haystack, $needle);
@@ -85,12 +85,12 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 	 * @return mixed
 	 */
 	protected function assertHaystackIsQueryResultAndHasNeedle($haystack, $needle) {
-		if ($needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
-			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
+		if ($needle instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
+			/** @var $needle \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface */
 			$needle = $needle->getUid();
 		}
 		foreach ($haystack as $index => $candidate) {
-			/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
+			/** @var $candidate \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface */
 			if ($candidate->getUid() == $needle) {
 				return $index;
 			}
@@ -105,7 +105,7 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 	 */
 	protected function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle) {
 		$index = 0;
-		/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
+		/** @var $candidate \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface */
 		if ($needle instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
 			$needle = $needle->getUid();
 		}
@@ -124,7 +124,7 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 	 * @return boolean
 	 */
 	protected function assertHaystackIsArrayAndHasNeedle($haystack, $needle) {
-		if ($needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface === FALSE) {
+		if ($needle instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface === FALSE) {
 			if (isset($this->arguments['considerKeys']) && $this->arguments['considerKeys']) {
 				$result = array_search($needle, $haystack) || isset($haystack[$needle]);
 			} else {
@@ -132,9 +132,9 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx
 			}
 			return $result;
 		} else {
-			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
+			/** @var $needle \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface */
 			foreach ($haystack as $index => $straw) {
-				/** @var $straw Tx_Extbase_DomainObject_DomainObjectInterface */
+				/** @var $straw \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface */
 				if ($straw->getUid() == $needle->getUid()) {
 					return $index;
 				}

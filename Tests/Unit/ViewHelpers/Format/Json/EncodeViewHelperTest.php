@@ -71,7 +71,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Vhs_ViewHel
 	 * @test
 	 */
 	public function encodesTraversable() {
-		$traversable = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$traversable = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$instance = $this->createInstance();
 		$test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, FALSE, TRUE, NULL, NULL);
 		$this->assertEquals('[]', $test);
@@ -92,7 +92,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Vhs_ViewHel
 	 */
 	public function returnsExpectedStringForProvidedArguments() {
 
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$storage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$fixture = array(
 			'foo' => 'bar',
 			'bar' => TRUE,
@@ -117,7 +117,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelperTest extends Tx_Vhs_ViewHel
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue("\xB1\x31"));
 
-		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
+		$this->setExpectedException('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\Exception');
 		$this->assertEquals('null', $viewHelper->render());
 	}
 

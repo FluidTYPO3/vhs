@@ -46,7 +46,7 @@
  */
 class Tx_Vhs_ViewHelpers_Security_AllowViewHelper
 extends Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper
-implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
 
 	/**
 	 * Render allow - i.e. render "then" child if arguments are satisfied

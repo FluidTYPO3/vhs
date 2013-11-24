@@ -42,7 +42,7 @@ class Tx_Vhs_ViewHelpers_Extension_IconViewHelper extends Tx_Vhs_ViewHelpers_Ext
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return t3lib_extMgm::extPath($extensionKey, 'ext_icon.gif');
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, 'ext_icon.gif');
 	}
 
 }

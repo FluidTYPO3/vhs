@@ -30,18 +30,18 @@
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
-	 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
+	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
 	 */
 	protected $frontendUserRepository;
 
 	/**
-	 * @param Tx_Extbase_Domain_Repository_FrontendUserRepository $frontendUserRepository
+	 * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
 	 * @return void
 	 */
-	public function injectFrontendUserRepository(Tx_Extbase_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
+	public function injectFrontendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository) {
 		$this->frontendUserRepository = $frontendUserRepository;
 		$query = $this->frontendUserRepository->createQuery();
 		$querySettings = $query->getQuerySettings();
@@ -56,10 +56,10 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 	public function initializeArguments() {
 		$this->registerArgument('anyFrontendUser', 'boolean', 'If TRUE, allows any FrontendUser unless other arguments disallows each specific FrontendUser', FALSE, FALSE);
 		$this->registerArgument('anyFrontendUserGroup', 'boolean', 'If TRUE, allows any FrontendUserGroup unless other arguments disallows each specific FrontendUser', FALSE, FALSE);
-		$this->registerArgument('frontendUser', 'Tx_Extbase_Domain_Model_FrontendUser', 'The FrontendUser to allow/deny');
-		$this->registerArgument('frontendUsers', '<Tx_Extbase_Persistence_ObjectStorage>Tx_Extbase_Domain_Model_FrontendUser', 'The FrontendUsers ObjectStorage to allow/deny');
-		$this->registerArgument('frontendUserGroup', 'Tx_Extbase_Domain_Model_FrontendUserGroup', 'The FrontendUserGroup to allow/deny');
-		$this->registerArgument('frontendUserGroups', '<Tx_Extbase_Persistence_ObjectStorage>Tx_Extbase_Domain_Model_FrontendUserGroup', 'The FrontendUserGroups ObjectStorage to allow/deny');
+		$this->registerArgument('frontendUser', '\TYPO3\CMS\Extbase\Domain\Model\FrontendUser', 'The FrontendUser to allow/deny');
+		$this->registerArgument('frontendUsers', '<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>\TYPO3\CMS\Extbase\Domain\Model\FrontendUser', 'The FrontendUsers ObjectStorage to allow/deny');
+		$this->registerArgument('frontendUserGroup', '\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup', 'The FrontendUserGroup to allow/deny');
+		$this->registerArgument('frontendUserGroups', '<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup', 'The FrontendUserGroups ObjectStorage to allow/deny');
 		$this->registerArgument('anyBackendUser', 'boolean', 'If TRUE, allows any backend user unless other arguments disallows each specific backend user', FALSE, FALSE);
 		$this->registerArgument('backendUser', 'integer', 'The uid of a backend user to allow/deny');
 		$this->registerArgument('backendUsers', 'mixed', 'The backend users list to allow/deny. If string, CSV of uids is assumed, if array, array of uids is assumed');
@@ -125,11 +125,11 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 	 * Returns TRUE only if a FrontendUser is currently logged in. Use argument
 	 * to return TRUE only if the FrontendUser logged in must be that specific user.
 	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUser $frontendUser
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $frontendUser
 	 * @return boolean
 	 * @api
 	 */
-	public function assertFrontendUserLoggedIn(Tx_Extbase_Domain_Model_FrontendUser $frontendUser = NULL) {
+	public function assertFrontendUserLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $frontendUser = NULL) {
 		$currentFrontendUser = $this->getCurrentFrontendUser();
 		if (!$currentFrontendUser) {
 			return FALSE;
@@ -147,7 +147,7 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 	/**
 	 * Returns TRUE if a FrontendUserGroup (specific given argument, else not) is logged in
 	 *
-	 * @param mixed $groups One Tx_Extbase_Domain_Model_FrontendUsergroup or ObjectStorage containing same
+	 * @param mixed $groups One \TYPO3\CMS\Extbase\Domain\Model\FrontendUsergroup or ObjectStorage containing same
 	 * @return boolean
 	 * @api
 	 */
@@ -158,9 +158,9 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 		}
 		$currentFrontendUserGroups = $currentFrontendUser->getUsergroup();
 		if ($groups) {
-			if ($groups instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) {
+			if ($groups instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup) {
 				return $currentFrontendUserGroups->contains($groups);
-			} elseif ($groups instanceof Tx_Extbase_Persistence_ObjectStorage) {
+			} elseif ($groups instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
 				$currentFrontendUserGroupsClone = clone $currentFrontendUserGroups;
 				$currentFrontendUserGroupsClone->removeAll($groups);
 				return ($currentFrontendUserGroups->count() !== $currentFrontendUserGroupsClone->count());
@@ -234,7 +234,7 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 	/**
 	 * Gets the currently logged in Frontend User
 	 *
-	 * @return Tx_Extbase_Domain_Model_FrontendUser
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 * @api
 	 */
 	public function getCurrentFrontendUser() {

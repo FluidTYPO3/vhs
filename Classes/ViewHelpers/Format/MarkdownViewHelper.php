@@ -43,7 +43,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var boolean
@@ -65,7 +65,7 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends Tx_Fluid_Core_ViewHel
 	public function render($text = NULL, $trim = TRUE, $htmlentities = FALSE) {
 		$this->markdownExecutablePath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('markdown');
 		if (FALSE === is_executable($this->markdownExecutablePath)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
 				'and accessible; this binary could not be found in any of your configured paths available to this script', 1350511561);
 		}
 		if (NULL === $text) {

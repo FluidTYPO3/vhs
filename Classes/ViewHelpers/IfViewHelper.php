@@ -28,7 +28,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	const OPERATOR_IS_EQUAL = '==';
 	const OPERATOR_IS_NOT_EQUAL = '!=';
@@ -109,12 +109,12 @@ class Tx_Vhs_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractC
 		if (0 === $stackCount) {
 			return FALSE;
 		} elseif (1 === $stackCount) {
-			return Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(reset($stack));
+			return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(reset($stack));
 		} elseif (3 === $stackCount) {
 			list ($leftSide, $operator, $rightSide) = array_values($stack);
 			if (TRUE === is_string($operator) && TRUE === isset($this->comparisonOperators[$operator])) {
 				$operator = $this->comparisonOperators[$operator];
-				return Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::evaluateComparator($operator, $leftSide, $rightSide);
+				return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::evaluateComparator($operator, $leftSide, $rightSide);
 			}
 		}
 

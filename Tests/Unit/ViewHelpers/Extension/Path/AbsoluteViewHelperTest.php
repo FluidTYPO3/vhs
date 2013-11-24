@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_AbsoluteViewHelperTest extends Tx_Vhs_Vi
 	 */
 	public function rendersUsingArgument() {
 		$test = $this->executeViewHelper(array('extensionName' => 'Vhs'));
-		$this->assertSame(t3lib_extMgm::extPath('vhs'), $test);
+		$this->assertSame(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('vhs'), $test);
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_AbsoluteViewHelperTest extends Tx_Vhs_Vi
 	 */
 	public function rendersUsingControllerContext() {
 		$test = $this->executeViewHelper(array(), array(), NULL, 'Vhs');
-		$this->assertSame(t3lib_extMgm::extPath('vhs'), $test);
+		$this->assertSame(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('vhs'), $test);
 	}
 
 	/**

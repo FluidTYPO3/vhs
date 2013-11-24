@@ -33,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -71,8 +71,8 @@ class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends Tx_Fluid_Core_ViewHe
 			if ($subject instanceof Iterator) {
 				/** @var Iterator $subject */
 				$array = iterator_to_array($subject, TRUE);
-			} elseif ($subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
-				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
+			} elseif ($subject instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface) {
+				/** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResultInterface $subject */
 				$array = $subject->toArray();
 			} elseif ($subject !== NULL) {
 					// a NULL value is respected and ignored, but any

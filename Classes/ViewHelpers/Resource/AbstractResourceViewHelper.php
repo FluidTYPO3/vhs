@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -67,7 +67,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends Tx
 		}
 
 		$files = array();
-		$resourceFactory = t3lib_div::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 
 		if (FALSE === empty($categories)) {
 			$sqlCategories = implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'));
@@ -141,7 +141,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends Tx
 		if (TRUE === $argument instanceof Traversable) {
 			$argument = iterator_to_array($argument);
 		} elseif (TRUE === is_string($argument)) {
-			$argument = t3lib_div::trimExplode(',', $argument, TRUE);
+			$argument = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $argument, TRUE);
 		} else {
 			$argument = (array) $argument;
 		}

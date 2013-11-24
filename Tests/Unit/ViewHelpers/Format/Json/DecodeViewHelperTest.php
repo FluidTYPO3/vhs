@@ -69,7 +69,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Vhs_ViewHel
 		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($invalidJson));
 
-		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
+		$this->setExpectedException('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\Exception');
 		$this->assertEquals('null', $viewHelper->render());
 	}
 }

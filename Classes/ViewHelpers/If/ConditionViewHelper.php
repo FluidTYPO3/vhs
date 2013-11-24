@@ -51,7 +51,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If
  */
-class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
 
 	/**
 	 * An array of Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
@@ -89,12 +89,12 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 		}
 		$elseViewHelperEncountered = FALSE;
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
 				&& $childNode->getViewHelperClassName() === $this->getThenViewHelperClassName()) {
 				$data = $childNode->evaluate($this->fetchRenderingContext());
 				return $data;
 			}
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
 				&& $childNode->getViewHelperClassName() === $this->getElseViewHelperClassName()) {
 				$elseViewHelperEncountered = TRUE;
 			}
@@ -123,7 +123,7 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 			return $elseClosure();
 		}
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 				if ($childNode->getViewHelperClassName() === $this->getElseViewHelperClassName()) {
 					return $childNode->evaluate($this->fetchRenderingContext());
 				}
@@ -144,7 +144,7 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 		if ($condition === NULL) {
 			// search for the v:condition.extend ViewHelper
 			foreach ($this->childNodes as $childNode) {
-				if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+				if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 					$viewHelperClassName = $childNode->getViewHelperClassName();
 					if ($viewHelperClassName === 'Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper') {
 						$condition = $childNode->evaluate($this->fetchRenderingContext());
@@ -161,7 +161,7 @@ class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper
 	}
 
 	/**
-	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
+	 * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
 	 */
 	protected function fetchRenderingContext() {
 		if (TRUE === method_exists($this, 'getRenderingContext')) {

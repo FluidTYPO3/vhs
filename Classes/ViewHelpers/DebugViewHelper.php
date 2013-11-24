@@ -29,10 +29,10 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Vhs_ViewHelpers_DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
 
 	/**
-	 * @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode[]
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode[]
 	 */
 	protected $childViewHelperNodes = array();
 
@@ -56,12 +56,12 @@ class Tx_Vhs_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_Abstra
 			$argumentDefinitions = array();
 			foreach ($arguments as &$argument) {
 				$name = $argument->getName();
-				$argumentDefinitions[$name] = Tx_Extbase_Reflection_ObjectAccess::getGettableProperties($argument);
+				$argumentDefinitions[$name] = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($argument);
 			}
 			$sections = array(
 				$viewHelperDescription,
-				Tx_Extbase_Utility_Debugger::var_dump($argumentDefinitions, '[ARGUMENTS]', 4, TRUE, FALSE, TRUE),
-				Tx_Extbase_Utility_Debugger::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, TRUE, FALSE, TRUE),
+				\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($argumentDefinitions, '[ARGUMENTS]', 4, TRUE, FALSE, TRUE),
+				\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, TRUE, FALSE, TRUE),
 				$renderMethodDescription
 			);
 			array_push($nodes, implode(LF, $sections));
@@ -78,7 +78,7 @@ class Tx_Vhs_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_Abstra
 	 */
 	public function setChildNodes(array $childNodes) {
 		foreach ($childNodes as $childNode) {
-			if (TRUE === $childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+			if (TRUE === $childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 				array_push($this->childViewHelperNodes, $childNode);
 			}
 		}
