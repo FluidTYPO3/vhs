@@ -506,8 +506,8 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	 * @return string
 	 */
 	protected function prefixPath($fileRelativePathAndFilename) {
-		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
-			$fileRelativePathAndFilename = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'] . $fileRelativePathAndFilename;
+		if (FALSE === empty($GLOBALS['TSFE']->absRefPrefix)) {
+			$fileRelativePathAndFilename = $GLOBALS['TSFE']->absRefPrefix . $fileRelativePathAndFilename;
 		}
 		return $fileRelativePathAndFilename;
 	}
