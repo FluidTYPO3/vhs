@@ -65,11 +65,13 @@ class Tx_Vhs_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractC
 	);
 
 	/**
+	 * Lower value means less precedence
+	 *
 	 * @var array
 	 */
 	protected $operatorPrecedence = array(
-		self::OPERATOR_LOGICAL_AND => 0,
-		self::OPERATOR_LOGICAL_OR => 1
+		self::OPERATOR_LOGICAL_OR => 0,
+		self::OPERATOR_LOGICAL_AND => 1
 	);
 
 	/**
@@ -124,13 +126,10 @@ class Tx_Vhs_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractC
 			if (TRUE === is_string($element) && TRUE === isset($this->logicalOperators[$element])) {
 				$currentOperator = $this->logicalOperators[$element];
 				$currentOperatorPrecedence = $this->operatorPrecedence[$currentOperator];
-				if ($currentOperatorPrecedence < $operatorPrecedence) {
+				if ($currentOperatorPrecedence <= $operatorPrecedence) {
 					$operator = $currentOperator;
 					$operatorPrecedence = $currentOperatorPrecedence;
 					$operatorIndex = $index;
-					if (0 === $operatorPrecedence) {
-						break;
-					}
 				}
 			}
 		}
