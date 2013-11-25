@@ -1,8 +1,5 @@
 {
-    "name": "ft3/vhs",
+    "name": "fluidtypo3/vhs",
     "description": "The vhs package from FluidTYPO3",
-    "require": {
-        "composer/installers": "*"
-    },
     "type": "typo3-cms-extension"
 }
