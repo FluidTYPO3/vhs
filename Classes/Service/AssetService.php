@@ -136,7 +136,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		self::$buildComplete = FALSE;
 		$content = $GLOBALS['TSFE']->content;
 		$matches = array();
-		preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\!\>/i', $content, $matches);
+		preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
 		foreach ($matches[0] as $key => $match) {
 			$extractedDependencies = explode(',', $matches[1][$key]);
 			self::$cachedDependencies = array_merge(self::$cachedDependencies, $extractedDependencies);
@@ -238,8 +238,9 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			/** @var $spooledAssets Tx_Vhs_ViewHelpers_Asset_AssetInterface[] */
 			foreach ($spooledAssets as $name => $asset) {
 				$assetSettings = $this->extractAssetSettings($asset);
-				$standalone = (TRUE === (boolean) $assetSettings['standalone']);
-				$external = (TRUE === (boolean) $assetSettings['external']);
+				$standalone = (boolean) $assetSettings['standalone'];
+				$external = (boolean) $assetSettings['external'];
+				$rewrite = (boolean) $assetSettings['rewrite'];
 				$path = $assetSettings['path'];
 				if (FALSE === $standalone) {
 					$chunk[$name] = $asset;
@@ -255,7 +256,13 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 							$chunk = array();
 							array_push($chunks, $mergedFileTag);
 						}
-						array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
+						if (TRUE === $rewrite) {
+							array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
+						} else {
+							$path = substr($path, strlen(PATH_site));
+							$path = $this->prefixPath($path);
+							array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
+						}
 					}
 				}
 			}
@@ -345,7 +352,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$tagBuilder->setTagName('meta');
 				break;
 			default:
-				if ($file === NULL) {
+				if (NULL === $file) {
 					return $content;
 				} else {
 					throw new RuntimeException('Attempt to include file based asset with unknown type ("' . $type . '")', 1358645219);
@@ -374,6 +381,9 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				continue;
 			}
 			$localSettings = $assetSettings;
+			if (TRUE === isset($settings['asset'])) {
+				$localSettings = t3lib_div::array_merge_recursive_overrule($localSettings, (array) $settings['asset']);
+			}
 			if (TRUE === isset($settings['asset'][$name])) {
 				$localSettings = t3lib_div::array_merge_recursive_overrule($localSettings, (array) $settings['asset'][$name]);
 			}
@@ -610,8 +620,12 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		if (FALSE === isset($asset['path']) || TRUE === empty($asset['path'])) {
 			return (TRUE === isset($asset['content']) ? $asset['content'] : NULL);
 		}
-		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($asset['path']);
-		$content = file_get_contents($absolutePathAndFilename);
+		if (TRUE === isset($asset['external']) && TRUE === (boolean) $asset['external']) {
+			$path = $asset['path'];
+		} else {
+			$path = t3lib_div::getFileAbsFileName($asset['path']);
+		}
+		$content = file_get_contents($path);
 		return $content;
 	}
 
@@ -625,8 +639,8 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		$fileRelativePathAndFilename = $assetSettings['path'];
 		$fileRelativePath = dirname($assetSettings['path']);
 		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($fileRelativePathAndFilename);
-		$isExternal = (TRUE === (isset($assetSettings['external']) && $assetSettings['external'] > 0));
-		$isFluidTemplate = (TRUE === (isset($assetSettings['fluid']) && $assetSettings['fluid'] > 0));
+		$isExternal = TRUE === isset($assetSettings['external']) && TRUE === (boolean) $assetSettings['external'];
+		$isFluidTemplate = TRUE === isset($assetSettings['fluid']) && TRUE === (boolean) $assetSettings['fluid'];
 		if (FALSE === empty($fileRelativePathAndFilename)) {
 			if (FALSE === $isExternal && FALSE === file_exists($absolutePathAndFilename)) {
 				throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');

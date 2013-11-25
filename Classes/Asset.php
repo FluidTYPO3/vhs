@@ -143,6 +143,11 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	protected $standalone = FALSE;
 
+    /**
+     * @var boolean
+     */
+    protected $rewrite = TRUE;
+
 	/**
 	 * @var array
 	 */
@@ -316,6 +321,22 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	public function getExternal() {
 		return $this->external;
 	}
+
+    /**
+     * @param boolean $rewrite
+     * @return Tx_Vhs_Asset
+     */
+    public function setRewrite($rewrite) {
+        $this->rewrite = $rewrite;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getRewrite() {
+        return $this->rewrite;
+    }
 
 	/**
 	 * @param boolean $standalone

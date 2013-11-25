@@ -136,6 +136,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$this->registerArgument('group', 'string', 'Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.', FALSE, 'fluid');
 		$this->registerArgument('debug', 'boolean', 'If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper');
 		$this->registerArgument('standalone', 'boolean', 'If TRUE, excludes this Asset from any concatenation which may be applied');
+		$this->registerArgument('rewrite', 'boolean', 'If FALSE, this Asset will be included as is without any processing of contained urls', FALSE, TRUE);
 		$this->registerArgument('fluid', 'boolean', 'If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified', FALSE, FALSE);
 		$this->registerArgument('arguments', 'mixed', 'An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same', FALSE, FALSE);
 		$this->registerArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
@@ -178,8 +179,12 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		if (FALSE === isset($this->arguments['path']) || TRUE === empty($this->arguments['path'])) {
 			return $this->getContent();
 		}
-		$absolutePathAndFilename = t3lib_div::getFileAbsFileName($this->arguments['path']);
-		$content = file_get_contents($absolutePathAndFilename);
+		if (TRUE === isset($this->arguments['external']) && TRUE === (boolean) $this->arguments['external']) {
+			$path = $this->arguments['path'];
+		} else {
+			$path = t3lib_div::getFileAbsFileName($this->arguments['path']);
+		}
+		$content = file_get_contents($path);
 		return $content;
 	}
 
@@ -369,6 +374,9 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		}
 		if (TRUE === (isset($settings['asset'][$name]) && is_array($settings['asset'][$name]))) {
 			$assetSettings = t3lib_div::array_merge_recursive_overrule($assetSettings, $settings['asset'][$name]);
+		}
+		if (FALSE === empty($assetSettings['path']) && FALSE === (boolean) $assetSettings['external']) {
+			$assetSettings['path'] = t3lib_div::getFileAbsFileName($assetSettings['path']);
 		}
 		$assetSettings['name'] = $name;
 		$this->assetSettingsCache = $assetSettings;
