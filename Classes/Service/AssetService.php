@@ -137,7 +137,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		$content = $GLOBALS['TSFE']->content;
 		$matches = array();
 		preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
-		foreach ($matches[0] as $key => $match) {
+		foreach ($matches[1] as $key => $match) {
 			$extractedDependencies = explode(',', $matches[1][$key]);
 			self::$cachedDependencies = array_merge(self::$cachedDependencies, $extractedDependencies);
 			$content = str_replace($matches[0][$key], '', $content);
@@ -244,34 +244,34 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$path = $assetSettings['path'];
 				if (FALSE === $standalone) {
 					$chunk[$name] = $asset;
-				} elseif (TRUE === empty($path)) {
-					$assetContent = $this->extractAssetContent($asset);
-					array_push($chunks, $this->generateTagForAssetType($type, $assetContent));
 				} else {
-					if (TRUE === $external) {
-						array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
+					if (0 < count($chunk)) {
+						$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
+						array_push($chunks, $mergedFileTag);
+						$chunk = array();
+					}
+					if (TRUE === empty($path)) {
+						$assetContent = $this->extractAssetContent($asset);
+						array_push($chunks, $this->generateTagForAssetType($type, $assetContent));
 					} else {
-						if (0 < count($chunk)) {
-							$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
-							$chunk = array();
-							array_push($chunks, $mergedFileTag);
-						}
-						if (TRUE === $rewrite) {
-							array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
-						} else {
-							$path = substr($path, strlen(PATH_site));
-							$path = $this->prefixPath($path);
+						if (TRUE === $external) {
 							array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
+						} else {
+							if (TRUE === $rewrite) {
+								array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
+							} else {
+								$path = substr($path, strlen(PATH_site));
+								$path = $this->prefixPath($path);
+								array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
+							}
 						}
 					}
 				}
 			}
 			if (0 < count($chunk)) {
 				$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
-				$chunk = array($mergedFileTag);
+				array_push($chunks, $mergedFileTag);
 			}
-			$content = implode(LF, $chunk);
-			array_push($chunks, $content);
 		}
 		return implode(LF, $chunks);
 	}
