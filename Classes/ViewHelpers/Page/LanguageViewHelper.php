@@ -51,7 +51,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('languages', 'mixed', 'The languages (either CSV, array or implementing Traversable)', TRUE);
+		$this->registerArgument('languages', 'mixed', 'The languages (either CSV, array or implementing Traversable)', FALSE);
 		$this->registerArgument('pageUid', 'integer', 'The page uid to check', FALSE, 0);
 		$this->registerArgument('normalWhenNoLanguage', 'boolean', 'If TRUE, a missing page overlay should be ignored', FALSE, FALSE);
 	}
