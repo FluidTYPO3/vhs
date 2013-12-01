@@ -308,9 +308,16 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			}
 			file_put_contents($fileAbsolutePathAndFilename, $source);
 		}
-		$settings = $this->getSettings();
-		if (FALSE === isset($settings['appendModificationTime']) || TRUE === (boolean) $settings['appendModificationTime']) {
-			$fileRelativePathAndFilename .= $this->appendModificationTime($fileRelativePathAndFilename);
+		if (FALSE === empty($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'])) {
+			$timestampMode = $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'];
+			if (TRUE === file_exists($fileRelativePathAndFilename)) {
+				$lastModificationTime = filemtime($fileRelativePathAndFilename);
+				if ('querystring' === $timestampMode) {
+					$fileRelativePathAndFilename .= '?' . $lastModificationTime;
+				} elseif ('embed' === $timestampMode) {
+					$fileRelativePathAndFilename = substr_replace($fileRelativePathAndFilename, '.' . $lastModificationTime, strrpos($fileRelativePathAndFilename, '.'), 0);
+				}
+			}
 		}
 		$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
 		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
@@ -494,19 +501,6 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		$view->assignMultiple($variables);
 		$content = $view->render();
 		return $content;
-	}
-
-	/**
-	 * Append last modification time to the file preventing un-wanted caching of the file by the browser.
-	 *
-	 * @param string $fileRelativePathAndFilename
-	 * @return string
-	 */
-	protected function appendModificationTime($fileRelativePathAndFilename) {
-		if (file_exists($fileRelativePathAndFilename)) {
-			$fileRelativePathAndFilename = '?' . filemtime($fileRelativePathAndFilename);
-		}
-		return $fileRelativePathAndFilename;
 	}
 
 	/**
