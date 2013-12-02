@@ -137,11 +137,11 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 		$content = $GLOBALS['TSFE']->content;
 		$matches = array();
 		preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
-		foreach ($matches[0] as $key => $match) {
+		foreach ($matches[1] as $key => $match) {
 			$extractedDependencies = explode(',', $matches[1][$key]);
 			self::$cachedDependencies = array_merge(self::$cachedDependencies, $extractedDependencies);
-			$content = str_replace($matches[0][$key], '', $content);
 		}
+		$content = str_replace($matches[0][$key], '', $content);
 		$GLOBALS['TSFE']->content = $content;
 		$this->buildAll($parameters, $caller, FALSE);
 	}
@@ -415,6 +415,7 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
 		$compilables = array();
+		$encounteredDependencies = array();
 		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
@@ -426,6 +427,9 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$dependencies = t3lib_div::trimExplode(',', $assetSettings['dependencies'], TRUE);
 			}
 			foreach ($dependencies as $dependency) {
+				if (FALSE === in_array($dependency, $encounteredDependencies)) {
+					array_push($encounteredDependencies, $dependency);
+				}
 				if (FALSE === isset($placed[$dependency]) && FALSE === in_array($dependency, self::$cachedDependencies)) {
 					// shove the Asset back to the end of the queue, the dependency has
 					// not yet been encountered and moving this item to the back of the
@@ -474,6 +478,14 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 			if (0 < count($compilables)) {
 				throw new RuntimeException('Compilable Assets used without appropriate Compiler Assets: "' .
 				implode(', ', array_keys($compilables)) . '"', 1360502808);
+			}
+		}
+		foreach ($placed as $name => $asset) {
+			// loop once more to remove assets that are declared to be dependency only
+			// but have not been encountered
+			$assetSettings = $this->extractAssetSettings($asset);
+			if (TRUE === (boolean) $assetSettings['isDependency'] && FALSE === in_array($name, $encounteredDependencies)) {
+				unset($placed[$name]);
 			}
 		}
 		return $placed;
