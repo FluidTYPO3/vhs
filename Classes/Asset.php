@@ -84,6 +84,11 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	protected $dependencies = array();
 
 	/**
+	 * @var boolean
+	 */
+	protected $isDependency = FALSE;
+
+	/**
 	 * @var string
 	 */
 	protected $type = NULL;
@@ -285,6 +290,22 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	public function setDependencies($dependencies) {
 		$this->dependencies = $dependencies;
 		return $this;
+	}
+
+	/**
+	 * @param boolean $isDependency
+	 * @return Tx_Vhs_Asset
+	 */
+	public function setIsDependency($isDependency) {
+		$this->isDependency = (boolean) $isDependency;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getIsDependency() {
+		return $this->isDependency;
 	}
 
 	/**
