@@ -7,6 +7,10 @@ php:
 env:
   - DB=mysql
 
+install:
+  - set
+  - if [ $(phpenv version-name) <= "5.4" ]; then pecl install taint fi
+
 before_script:
   - export REPOSITORY="vhs"
   - git clone https://github.com/FluidTYPO3/TYPO3-Travis-Integration.git build-environment
