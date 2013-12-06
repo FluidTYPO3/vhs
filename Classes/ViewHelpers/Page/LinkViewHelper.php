@@ -76,13 +76,13 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$this->registerArgument('noCacheHash', 'boolean', 'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this.', FALSE, FALSE);
 		$this->registerArgument('section', 'string', 'The anchor to be added to the URI', FALSE, '');
 		$this->registerArgument('linkAccessRestrictedPages', 'boolean', 'When TRUE, links pointing to access restricted pages will still link' .
-			'to the page even though the page cannot be accessed.', FALSE, FALSE);
+				'to the page even though the page cannot be accessed.', FALSE, FALSE);
 		$this->registerArgument('absolute', 'boolean', 'When TRUE, the URI of the rendered link is absolute', FALSE, FALSE);
 		$this->registerArgument('addQueryString', 'boolean', 'When TRUE, the current query parameters will be kept in the URI', FALSE, FALSE);
 		$this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE', FALSE, array());
 		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to' .
-			'for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved' .
-			'AFTER page field overlays.', FALSE, 'nav_title,title');
+				'for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved' .
+				'AFTER page field overlays.', FALSE, 'nav_title,title');
 	}
 
 	/**
@@ -120,10 +120,10 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		if (TRUE === empty($page)) {
 			return NULL;
 		}
+
+		// Render child-contents to see if an alternative title content should be used
 		$title = $this->renderChildren();
-		if (NULL === $title) {
-			$title = $this->getTitleValue($page);
-		}
+
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
 		$l18nConfig = $page['l18n_cfg'];
 		if (0 < $getLL) {
@@ -131,24 +131,29 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			if (TRUE === (boolean) t3lib_div::hideIfNotTranslated($l18nConfig) && TRUE === empty($pageOverlay)) {
 				return NULL;
 			}
-			if (NULL !== ($overlayTitle = $this->getTitleValue($pageOverlay))) {
+			if (NULL === $title && NULL !== ($overlayTitle = $this->getTitleValue($pageOverlay))) {
 				$title = $overlayTitle;
 			}
+		} else {
+			if (NULL === $title) {
+				$title = $this->getTitleValue($page);
+			}
 		}
+
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uri = $uriBuilder->reset()
-			->setTargetPageUid($pageUid)
-			->setTargetPageType($this->arguments['pageType'])
-			->setNoCache($this->arguments['noCache'])
-			->setUseCacheHash(!$this->arguments['noCacheHash'])
-			->setSection($this->arguments['section'])
-			->setLinkAccessRestrictedPages($this->arguments['linkAccessRestrictedPages'])
-			->setArguments($this->arguments['additionalParams'])
-			->setCreateAbsoluteUri($this->arguments['absolute'])
-			->setAddQueryString($this->arguments['addQueryString'])
-			->setArguments($additionalParameters)
-			->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
-			->build();
+				->setTargetPageUid($pageUid)
+				->setTargetPageType($this->arguments['pageType'])
+				->setNoCache($this->arguments['noCache'])
+				->setUseCacheHash(!$this->arguments['noCacheHash'])
+				->setSection($this->arguments['section'])
+				->setLinkAccessRestrictedPages($this->arguments['linkAccessRestrictedPages'])
+				->setArguments($this->arguments['additionalParams'])
+				->setCreateAbsoluteUri($this->arguments['absolute'])
+				->setAddQueryString($this->arguments['addQueryString'])
+				->setArguments($additionalParameters)
+				->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
+				->build();
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($title);
 		return $this->tag->render();
