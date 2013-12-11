@@ -30,6 +30,7 @@
  * @author Dominique Feyer, <dfeyer@ttree.ch>
  * @author Daniel Schöne, <daniel@schoene.it>
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
+ * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
@@ -75,7 +76,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		$this->registerArgument('limit', 'integer', 'Optional limit to the number of content elements to render');
 		$this->registerArgument('order', 'string', 'Optional sort field of content elements - RAND() supported', FALSE, 'sorting');
 		$this->registerArgument('sortDirection', 'string', 'Optional sort direction of content elements', FALSE, 'ASC');
-		$this->registerArgument('pageUid', 'integer', 'If set, selects only content from this page UID');
+		$this->registerArgument('pageUid', 'integer', 'If set, selects only content from this page UID', FALSE, 0);
 		$this->registerArgument('contentUids', 'array', 'If used, replaces all conditions with an "uid IN (1,2,3)" style condition using the UID values from this array');
 		$this->registerArgument('slide', 'integer', 'Enables Content Sliding - amount of levels which shall get walked up the rootline. For infinite sliding (till the rootpage) set to -1)', FALSE, 0);
 		$this->registerArgument('slideCollect', 'integer', 'Enables collecting of Content Elements - amount of levels which shall get walked up the rootline. For infinite sliding (till the rootpage) set to -1 (lesser value for slide and slide.collect applies))', FALSE, 0);
@@ -93,68 +94,81 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	 * @return array
 	 */
 	protected function getContentRecords($limit = NULL, $order = NULL) {
-		if (NULL === $limit && TRUE === isset($this->arguments['limit']) && FALSE === empty($this->arguments['limit'])) {
-			$limit = $this->arguments['limit'];
+		if (NULL === $limit && FALSE === empty($this->arguments['limit'])) {
+			$limit = intval($this->arguments['limit']);
 		}
-		if (NULL === $order && TRUE === isset($this->arguments['order']) && FALSE === empty($this->arguments['order'])) {
+		if (NULL === $order && FALSE === empty($this->arguments['order'])) {
 			$order = $this->arguments['order'];
 		}
+
 		$loadRegister = FALSE;
-		if (empty($this->arguments['loadRegister']) === FALSE) {
+		if (FALSE === empty($this->arguments['loadRegister'])) {
 			$this->contentObject->cObjGetSingle('LOAD_REGISTER', $this->arguments['loadRegister']);
 			$loadRegister = TRUE;
 		}
-		$pid = $GLOBALS['TSFE']->id;
-		$mountpointRange = '';
-		if (isset($this->arguments['pageUid']) === TRUE && $this->arguments['pageUid'] > 0) {
-			$pid = $this->arguments['pageUid'];
-		} elseif ($GLOBALS['TSFE']->page['content_from_pid']) {
-			$pid = $GLOBALS['TSFE']->page['content_from_pid'];
+
+		$pageUid = $GLOBALS['TSFE']->id;
+		if (FALSE === empty($this->arguments['pageUid'])) {
+			$pageUid = $this->arguments['pageUid'];
+		} elseif (FALSE === empty($GLOBALS['TSFE']->page['content_from_pid'])) {
+			$pageUid = $GLOBALS['TSFE']->page['content_from_pid'];
 		}
-		if (t3lib_div::_GP('MP') !== NULL) {
-			$mountpointRange = t3lib_div::_GP('MP');
+		$pageUid = intval($pageUid);
+
+		$mountpointRange = t3lib_div::_GP('MP');
+		if (TRUE === empty($mountpointRange)) {
+			$mountpointRange = '';
 		}
-		$order = $order . ' ' . $this->arguments['sortDirection'];
-		$colPos = $this->arguments['column'];
-		$contentUids = $this->arguments['contentUids'];
-		$slide = $this->arguments['slide'] ? $this->arguments['slide'] : FALSE;
-		$slideCollect = $this->arguments['slideCollect'] ? $this->arguments['slideCollect'] : FALSE;
-		if ($slideCollect !== FALSE) {
-			$slide = min($slide, $slideCollect);
+
+		if (FALSE === empty($order)) {
+			$sortDirection = strtoupper(trim($this->arguments['sortDirection']));
+			if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
+				$sortDirection = 'ASC';
+			}
+			$order = $order . ' ' . $sortDirection;
 		}
-		$slideCollectReverse = $this->arguments['slideCollectReverse'];
+
+		$slide = intval($this->arguments['slide']);
+		$slideCollect = intval($this->arguments['slideCollect']);
+		$slide = min($slide, $slideCollect);
+		$slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
+
 		$rootLine = NULL;
-		if ($slide) {
-			$rootLine = $this->pageSelect->getRootLine($pid, $mountpointRange);
-			if ($slideCollectReverse) {
+		if (0 !== $slide) {
+			$rootLine = $this->pageSelect->getRootLine($pageUid, $mountpointRange);
+			if (TRUE === $slideCollectReverse) {
 				$rootLine = array_reverse($rootLine);
 			}
 		}
+
+		$colPos = intval($this->arguments['column']);
+		$contentUids = $this->arguments['contentUids'];
 
 		$content = array();
 		$hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
 		$currentLanguage = $GLOBALS['TSFE']->sys_language_uid;
 		$languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
-		if ($currentLanguage > 0) {
-			if ($hideUntranslated) {
+		if (0 < $currentLanguage) {
+			if (TRUE === $hideUntranslated) {
 				$languageCondition .= ' AND l18n_parent > 0';
 			}
 			$nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' . $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
 			$languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
 		}
 		$languageCondition .= ')';
+
 		do {
-			if ($slide) {
+			if (0 !== $slide) {
 				$page = array_shift($rootLine);
-				if (!$page) {
+				if (TRUE === empty($page)) {
 					break;
 				}
-				$pid = $page['uid'];
+				$pageUid = $page['uid'];
 			}
-			if (is_array($contentUids)) {
+			if (TRUE === is_array($contentUids)) {
 				$conditions = 'uid IN (' . implode(',', $contentUids) . ')';
 			} else {
-				$conditions = "pid = '" . $pid ."' AND colPos = '" . $colPos . "'" .
+				$conditions = "pid = '" . $pageUid ."' AND colPos = '" . $colPos . "'" .
 					$GLOBALS['TSFE']->cObj->enableFields('tt_content') .
 					' AND ' . $languageCondition;
 			}
@@ -164,12 +178,12 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 			} else {
 				$content = $rows;
 			}
-			if (count($content) && !$slideCollect) {
+			if (0 !== count($content) && 0 === $slideCollect) {
 				break;
 			}
-		} while ($slide !== FALSE && --$slide !== -1);
+		} while (--$slide !== -1);
 
-		if ($loadRegister) {
+		if (TRUE === $loadRegister) {
 			$this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
 		}
 

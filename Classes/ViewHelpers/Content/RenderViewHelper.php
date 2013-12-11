@@ -52,15 +52,17 @@ class Tx_Vhs_ViewHelpers_Content_RenderViewHelper extends Tx_Vhs_ViewHelpers_Con
 		if (TYPO3_MODE == 'BE') {
 			return '';
 		}
+
 		$content = $this->getContentRecords();
-		if ($this->arguments['as']) {
-			$this->templateVariableContainer->add($this->arguments['as'], $content);
-			$html = $this->renderChildren();
-			$this->templateVariableContainer->remove($this->arguments['as']);
-		} else {
-			$html = implode(LF, $content);
+
+		$as = $this->arguments['as'];
+		if (TRUE === empty($as)) {
+			return implode(LF, $content);
 		}
-		return $html;
+
+		$variables = array($as => $content);
+		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		return $output;
 	}
 
 }
