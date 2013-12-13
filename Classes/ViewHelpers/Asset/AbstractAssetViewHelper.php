@@ -140,7 +140,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$this->registerArgument('fluid', 'boolean', 'If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified', FALSE, FALSE);
 		$this->registerArgument('arguments', 'mixed', 'An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same', FALSE, FALSE);
 		$this->registerArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
-		$this->registerArgument('trim', 'boolean', 'If FALSE, disables the per-default enabled trimming of whitespace off beginnings and ends of lines in the Asset content body', FALSE, TRUE);
+		$this->registerArgument('trim', 'boolean', 'DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn\'t do anything.', FALSE, FALSE);
 		$this->registerArgument('namedChunks', 'boolean', 'If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency', FALSE, FALSE);
 	}
 
@@ -291,11 +291,6 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 			$content = $assetSettings['content'];
 		} else {
 			$content = $this->renderChildren();
-		}
-		if (TRUE === (boolean) $assetSettings['trim']) {
-			$lines = explode(LF, $content);
-			$lines = array_map('trim', $lines);
-			$content = implode('', $lines);
 		}
 		return $content;
 	}
