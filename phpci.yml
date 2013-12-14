@@ -1,0 +1,35 @@
+build_settings:
+    verbose: false
+    ignore:
+        - "Tests"
+    mysql:
+        host: "localhost"
+        user: "test"
+        pass: ""
+
+setup:
+    mysql:
+        - "DROP DATABASE IF EXISTS test;"
+        - "CREATE DATABASE test;"
+    copy_build:
+        directory: temp
+    typo3_install:
+        version: master
+        verbose: false
+    typo3_extension_prepare:
+        extension: vhs
+        source: temp
+        verbose: false
+    typo3_extension_install:
+        extension: vhs
+        verbose: false
+test:
+    php_loc:
+        allow_failures: true
+        directory: typo3conf/ext/vhs
+    php_spec:
+        allow_failures: false
+
+complete:
+    mysql:
+        - "DROP DATABASE IF EXISTS test;"

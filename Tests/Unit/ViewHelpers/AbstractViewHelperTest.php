@@ -126,8 +126,8 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 		/** @var Tx_Fluid_Core_Rendering_RenderingContext $renderingContext */
 		$renderingContext = $this->objectManager->get('Tx_Fluid_Core_Rendering_RenderingContext');
 		$renderingContext->setControllerContext($controllerContext);
-		$renderingContext->injectViewHelperVariableContainer($viewHelperContainer);
-		$renderingContext->injectTemplateVariableContainer($container);
+		Tx_Extbase_Reflection_ObjectAccess::setProperty($renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, TRUE);
+		Tx_Extbase_Reflection_ObjectAccess::setProperty($renderingContext, 'templateVariableContainer', $container, TRUE);
 		$instance->setArguments($arguments);
 		$instance->setRenderingContext($renderingContext);
 		if (TRUE === $instance instanceof Tx_Fluidwidget_Core_Widget_AbstractWidgetViewHelper) {
