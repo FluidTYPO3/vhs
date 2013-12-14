@@ -41,21 +41,21 @@ class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelperTest extends Tx_Vhs_ViewHelpers
 	 * @test
 	 */
 	public function returnsArrayIfPathContainsArray() {
-		$this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase')), new PHPUnit_Framework_Constraint_IsType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
+		$this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase.features')), new PHPUnit_Framework_Constraint_IsType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
 	}
 
 	/**
 	 * @test
 	 */
 	public function canGetPathUsingArgument() {
-		$this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features.rewrittenPropertyMapper')));
+		$this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features')));
 	}
 
 	/**
 	 * @test
 	 */
 	public function canGetPathUsingTagContent() {
-		$this->assertNotEmpty($this->executeViewHelperUsingTagContent('Text', 'config.tx_extbase.features.rewrittenPropertyMapper'));
+		$this->assertNotEmpty($this->executeViewHelperUsingTagContent('Text', 'config.tx_extbase.features'));
 	}
 
 }
