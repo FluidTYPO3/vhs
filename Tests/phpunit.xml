@@ -17,4 +17,9 @@
                         <directory>typo3conf/ext/vhs/Tests</directory>
                 </testsuite>
         </testsuites>
+		<filter>
+				<whitelist>
+						<directory>typo3conf/ext/vhs/Classes</directory>
+				</whitelist>
+		</filter>
 </phpunit>

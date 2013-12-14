@@ -1,30 +1,57 @@
 language: php
+
 php:
   - 5.3
   - 5.4
-  - 5.5
 
 env:
-  - DB=mysql
+  - DB=mysql TYPO3=master INTEGRATION=master
+  - DB=mysql TYPO3=TYPO3_6-1 INTEGRATION=master
+  - DB=mysql TYPO3=TYPO3_6-0 INTEGRATION=master
+
+matrix:
+   include:
+     - php: 5.5
+       env: DB=mysql TYPO3=master INTEGRATION=master
 
 before_script:
-  - export REPOSITORY="vhs"
-  - git clone https://github.com/FluidTYPO3/TYPO3-Travis-Integration.git build-environment
-  - source build-environment/install-utilities.sh
-  - source build-environment/install-preserve-repository.sh
+  # Get latest git version cause of travis issues (https://github.com/travis-ci/travis-ci/issues/1710)
+  - sudo apt-get update && sudo apt-get install git
+  - cd ..
+  - git clone --single-branch --branch $INTEGRATION --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
+  - git clone --depth 1 git://github.com/FluidTYPO3/FluidTYPO3-CodingStandards.git build-environment/FluidTYPO3-CodingStandards
+  - git clone git://github.com/squizlabs/PHP_CodeSniffer.git build-environment/CodeSniffer
+  - git clone --single-branch --branch $TYPO3 --depth 1 https://github.com/TYPO3/TYPO3.CMS.git core
   - source build-environment/install-helper.sh
-  - source build-environment/install-typo3.sh
-  - source build-environment/install-reintegrate-repository.sh
-  - source build-environment/install-phpunit-setup.sh
+  - git clone --single-branch --branch $TYPO3 --depth 1 git://git.typo3.org/TYPO3v4/Distributions/Introduction.git build-environment/Introduction
+  - mv core/typo3 .
+  - if [[ -d core/t3lib ]]; then mv core/t3lib . ; fi
+  - mv build-environment/typo3conf .
+  - mkdir fileadmin
+  - mkdir uploads
+  - mkdir typo3temp
+
+  - git clone --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit
+  - git clone --depth 1 git://github.com/FluidTYPO3/builder.git typo3conf/ext/builder
+  - mv vhs ./typo3conf/ext/
+
+  - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
+  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS typo3_test;" -uroot; fi
+  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/Introduction/typo3conf/ext/introduction/Resources/Private/Subpackages/Introduction/Database/introduction.sql; fi
+  - if [[ "$DB" == "mysql" && -f build-environment/dbimport/cache_tables.sql ]]; then mysql -uroot typo3_test < build-environment/dbimport/cache_tables.sql; fi
+  - if [[ "$DB" == "mysql" && -f build-environment/dbimport/cli_users.sql ]]; then mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql; fi
+  - if [[ "$DB" == "mysql" && -f build-environment/dbimport/phpunit.sql ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
+
+  # post core schema import of extension schemas and state file from this and dependency extensions
+  - if [[ "$DB" == "mysql" && -f typo3conf/ext/vhs/Build/ImportSchema.sql ]]; then mysql -uroot typo3_test < typo3conf/ext/vhs/Build/ImportSchema.sql; fi
+  - if [[ -f typo3conf/LocalConfiguration.php && -f typo3conf/ext/vhs/Build/LocalConfiguration.php ]]; then cp typo3conf/ext/vhs/Build/LocalConfiguration.php typo3conf/LocalConfiguration.php; fi
+  - if [[ -f typo3conf/PackageStates.php && -f typo3conf/ext/vhs/Build/PackageStates.php ]]; then cp typo3conf/ext/vhs/Build/PackageStates.php typo3conf/PackageStates.php; fi
+  - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then cp typo3conf/ext/vhs/Tests/phpunit.xml phpunit.xml; fi
 
 script:
-# initial, quick inspection
-  - php build-environment/FluidTYPO3-CodingStandards/commit_message_inspector.php $PWD/typo3conf/ext/$REPOSITORY
-# install extension
-  - php $PWD/typo3/cli_dispatch.phpsh extbase builder:install $REPOSITORY
 # phplint checking on all PHP source files in extension
-  - php $PWD/typo3/cli_dispatch.phpsh extbase builder:phpsyntax --extension $REPOSITORY
+  - typo3/cli_dispatch.phpsh extbase builder:phpsyntax --extension vhs
 # PHPCodeSniffer code inspection with only errors displayed (no warnings)
-  - $PWD/build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/$REPOSITORY
+  - build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/vhs
 # PHPUnit tests from overridden phpunit tests configuration file
-  - php $PWD/typo3/cli_dispatch.phpsh phpunit -c phpunit.xml
+  - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then typo3/cli_dispatch.phpsh phpunit -c phpunit.xml --coverage-text; fi
