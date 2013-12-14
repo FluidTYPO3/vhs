@@ -39,7 +39,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends Tx_Fluid_Core_ViewHelper_A
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('path', 'string', 'Path to the file to determine size for.', TRUE);
+		$this->registerArgument('path', 'string', 'Path to the file to determine size for.', FALSE, NULL);
 	}
 
 	/**
