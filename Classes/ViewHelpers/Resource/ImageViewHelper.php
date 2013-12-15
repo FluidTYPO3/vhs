@@ -68,6 +68,7 @@ class Tx_Vhs_ViewHelpers_Resource_ImageViewHelper extends Tx_Vhs_ViewHelpers_Res
 			return NULL;
 		}
 
+		$info = array();
 		$tags = array();
 
 		foreach ($images as &$image) {
@@ -87,6 +88,13 @@ class Tx_Vhs_ViewHelpers_Resource_ImageViewHelper extends Tx_Vhs_ViewHelpers_Res
 			$tag = $this->tag->render();
 			$image['tag'] = $tag;
 			$tags[] = $tag;
+
+			$info[] = array(
+				'source' => $source,
+				'width' => $width,
+				'height' => $height,
+				'tag' => $tag
+			);
 		}
 
 		// Return if no assign
@@ -95,7 +103,7 @@ class Tx_Vhs_ViewHelpers_Resource_ImageViewHelper extends Tx_Vhs_ViewHelpers_Res
 			return implode('', $tags);
 		}
 
-		$variables = array($as => $tags);
+		$variables = array($as => $info);
 		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		return $output;
 	}
