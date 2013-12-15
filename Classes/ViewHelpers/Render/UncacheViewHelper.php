@@ -24,7 +24,10 @@
  ***************************************************************/
 
 /**
- * Uncaches stuff
+ * Uncaches partials or sections. Use like ``f:render``.
+ * The partial or section will then be rendered each time.
+ * Please be aware that this will impact render time.
+ * Arguments must be serializable and will be cached.
  *
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
