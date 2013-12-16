@@ -37,7 +37,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Render method

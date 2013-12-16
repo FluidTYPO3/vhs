@@ -39,13 +39,13 @@ class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Vhs_ViewHelpers_Itera
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-
 		$this->registerArgument('to', 'integer', 'Number that the index needs to reach before stopping', TRUE);
 		$this->registerArgument('from', 'integer', 'Starting number for the index', FALSE, 0);
 		$this->registerArgument('step', 'integer', 'Stepping number that the index is increased by after each loop', FALSE, 1);
 	}
 
 	/**
+	 * @throws RuntimeException
 	 * @return string
 	 */
 	public function render() {
