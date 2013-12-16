@@ -93,4 +93,21 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 		return $content;
 	}
 
+	/**
+	 * @param mixed $candidate
+	 * @return array
+	 */
+	public static function arrayFromArrayOrTraversableOrCSV($candidate) {
+		if (TRUE === $candidate instanceof Traversable) {
+			return iterator_to_array($candidate);
+		}
+		if (TRUE === is_string($candidate)) {
+			return t3lib_div::trimExplode(',', $candidate, TRUE);
+		}
+		if (FALSE === is_array($candidate)) {
+			return array($candidate);
+		}
+		return (array) $candidate;
+	}
+
 }
