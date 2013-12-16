@@ -13,13 +13,6 @@ VHS: Fluid ViewHelpers
 
 _Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
 and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
-## Overview
-
-![ViewHelpers](https://raw.github.com/wiki/FluidTYPO3/vhs/Images/Home/Overview.png)
-
-*Grayed ViewHelpers are still incomplete, blue ViewHelpers are condition ViewHelpers which
-mean they support usage of f:then and f:else as child tags - and the "then" and "else"
-arguments, just like f:if does.*
 
 ## Wiki
 
