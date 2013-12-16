@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_NextViewHelper extends Tx_Vhs_ViewHelpers_Iterator_ContainsViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_NextViewHelper extends Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper {
 
 	/**
 	 * Render method
