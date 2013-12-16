@@ -59,7 +59,7 @@ class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends Tx_Fluid_Core_ViewHelp
 	 */
 	protected function ensureIsArray($candidate) {
 		if (TRUE === $candidate instanceof Traversable) {
-			return iterator_to_array($candidate, $useKeys);
+			return iterator_to_array($candidate, $this->useKeys);
 		}
 		if (TRUE === empty($candidate)) {
 			return array();
