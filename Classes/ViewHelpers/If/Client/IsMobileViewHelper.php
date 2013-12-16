@@ -24,6 +24,10 @@
  ***************************************************************/
 
 /**
+ * ### Will be removed in 2.0
+ *
+ * Please don't do user agent sniffing. This is bad practice.
+ *
  * ### Condition: Client is mobile device or not
  *
  * Condition ViewHelper which renders the `then` child if client
@@ -35,6 +39,7 @@
  * to TRUE to treat them as mobile devices though it's more reliable
  * to check for maximum screen dimensions clientside.
  *
+ * @deprecated
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\If\Client
