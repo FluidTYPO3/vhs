@@ -6,13 +6,6 @@ VHS: Fluid ViewHelpers
 
 [![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs)
 
-## Code Quality
-
-![Abstraction Instability Chart](Documentation/ComplexityChart.png)
-![Inheritance and dependency risk](Documentation/PyramidChart.png)
-
-_Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
-and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
 
 ## Wiki
 
@@ -207,5 +200,14 @@ type before being output. Which is exactly the case when working with the v:math
 
 ## Known issues
 
-* PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent 
+* PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent
   version. PHP 5.3.7 is recommended at least
+
+## Code Quality
+
+![Abstraction Instability Chart](Documentation/ComplexityChart.png)
+![Inheritance and dependency risk](Documentation/PyramidChart.png)
+
+_Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
+and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
+## Overview
