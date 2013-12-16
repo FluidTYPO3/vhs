@@ -95,11 +95,12 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 
 	/**
 	 * @param mixed $candidate
+	 * @param boolean $useKeys
 	 * @return array
 	 */
-	public static function arrayFromArrayOrTraversableOrCSV($candidate) {
+	public static function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = TRUE) {
 		if (TRUE === $candidate instanceof Traversable) {
-			return iterator_to_array($candidate);
+			return iterator_to_array($candidate, $useKeys);
 		}
 		if (TRUE === is_string($candidate)) {
 			return t3lib_div::trimExplode(',', $candidate, TRUE);
