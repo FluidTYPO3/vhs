@@ -33,11 +33,6 @@
 class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @var boolean
-	 */
-	protected $useKeys = TRUE;
-
-	/**
 	 * Merges arrays/Traversables $a and $b into an array
 	 *
 	 * @param mixed $a First array/Traversable
@@ -47,27 +42,10 @@ class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends Tx_Fluid_Core_ViewHelp
 	 */
 	public function render($a, $b, $useKeys = TRUE) {
 		$this->useKeys = (boolean) $useKeys;
-		$a = $this->ensureIsArray($a);
-		$b = $this->ensureIsArray($b);
+		$a = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
+		$b = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
 		$merged = t3lib_div::array_merge_recursive_overrule($a, $b);
 		return $merged;
-	}
-
-	/**
-	 * @param mixed $candidate
-	 * @return array
-	 */
-	protected function ensureIsArray($candidate) {
-		if (TRUE === $candidate instanceof Traversable) {
-			return iterator_to_array($candidate, $this->useKeys);
-		}
-		if (TRUE === empty($candidate)) {
-			return array();
-		}
-		if (FALSE === is_array($candidate)) {
-			return array($candidate);
-		}
-		return (array) $candidate;
 	}
 
 }
