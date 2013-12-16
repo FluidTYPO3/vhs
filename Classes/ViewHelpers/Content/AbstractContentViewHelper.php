@@ -57,7 +57,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->contentObject = $this->configurationManager->getContentObject();
+		$this->contentObject = $configurationManager->getContentObject();
 	}
 
 	/**
@@ -115,11 +115,6 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		}
 		$pageUid = intval($pageUid);
 
-		$mountpointRange = t3lib_div::_GP('MP');
-		if (TRUE === empty($mountpointRange)) {
-			$mountpointRange = '';
-		}
-
 		if (FALSE === empty($order)) {
 			$sortDirection = strtoupper(trim($this->arguments['sortDirection']));
 			if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
@@ -135,10 +130,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 
 		$rootLine = NULL;
 		if (0 !== $slide) {
-			$rootLine = $this->pageSelect->getRootLine($pageUid, $mountpointRange);
-			if (TRUE === $slideCollectReverse) {
-				$rootLine = array_reverse($rootLine);
-			}
+			$rootLine = $this->getRootLine($pageUid, NULL, $slideCollectReverse);
 		}
 
 		$colPos = intval($this->arguments['column']);
