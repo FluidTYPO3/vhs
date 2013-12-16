@@ -4,7 +4,7 @@ VHS: Fluid ViewHelpers
 > Collection of general purpose ViewHelpers usable in the Fluid templating engine
 > that's bundled with the TYPO3 CMS.
 
-[![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs) ![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/FluidTYPO3/vhs/trend.png)
+[![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/FluidTYPO3/vhs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Wiki
 
