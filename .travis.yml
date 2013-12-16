@@ -14,6 +14,10 @@ matrix:
      - php: 5.5
        env: DB=mysql TYPO3=master INTEGRATION=master
 
+install:
+  - set
+  - if [ $(phpenv version-name) <= "5.4" ]; then pecl install taint fi
+
 before_script:
   # Get latest git version cause of travis issues (https://github.com/travis-ci/travis-ci/issues/1710)
   - sudo apt-get update && sudo apt-get install git
