@@ -1,5 +1,12 @@
 {
     "name": "fluidtypo3/vhs",
     "description": "The vhs package from FluidTYPO3",
-    "type": "typo3-cms-extension"
+    "type": "typo3-cms-extension",
+    "keywords": ["TYPO3 CMS", "templating", "Utility", "ViewHelper", "fedext", "fluid"],
+    "homepage": "http://fedext.net",
+    "license": "GPL-2.0+",
+    "support": {
+        "irc": "irc://irc.freenode.org/fedext",
+        "issues": "https://github.com/FluidTYPO3/vhs/issues"
+    }
 }
