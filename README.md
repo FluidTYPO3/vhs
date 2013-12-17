@@ -4,7 +4,7 @@ VHS: Fluid ViewHelpers
 > Collection of general purpose ViewHelpers usable in the Fluid templating engine
 > that's bundled with the TYPO3 CMS.
 
-[![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/FluidTYPO3/vhs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs)
 
 ## Wiki
 
@@ -209,3 +209,5 @@ type before being output. Which is exactly the case when working with the v:math
 
 _Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
 and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
+
+![Please forgive the tracking - your data is in good hands!](https://fedext.net/bigbrother.php?repository=vhs)
