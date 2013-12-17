@@ -62,6 +62,9 @@ abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends Tx_Fluid_C
 	 * @return string
 	 */
 	public function render() {
+		if (FALSE === Tx_Vhs_Utility_ViewHelperUtility::insideUncachedEnvironment()) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('This view helper must be used in an uncached environment.', 1387240885);
+		}
 		$this->removeIfExpired();
 		$evaluation = $this->assertShouldSkip();
 		if ($evaluation === FALSE) {

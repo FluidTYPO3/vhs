@@ -44,6 +44,20 @@ class Tx_Vhs_View_UncacheTemplateView extends Tx_Fluid_View_TemplateView {
 		$arguments = $conf['arguments'];
 		$controllerContext = $conf['controllerContext'];
 
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$contentObject = $configurationManager->getContentObject();
+
+		if (NULL === $contentObject) {
+			$contentObject = t3lib_div::makeInstance('tslib_cObj');
+			$intInclude = 1;
+		} else {
+			$intInclude = $contentObject->INT_include;
+		}
+		$contentObject->INT_include = 1;
+
+		$configurationManager->setContentObject($contentObject);
+
 		$renderingContext = $this->objectManager->get('Tx_Fluid_Core_Rendering_RenderingContext');
 		$renderingContext->setControllerContext($controllerContext);
 		$this->setRenderingContext($renderingContext);
@@ -52,13 +66,16 @@ class Tx_Vhs_View_UncacheTemplateView extends Tx_Fluid_View_TemplateView {
 		$this->templateCompiler = $this->objectManager->get('Tx_Fluid_Core_Compiler_TemplateCompiler');
 		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
 
+		$output = '';
 		if (NULL !== $partial) {
 			array_push($this->renderingStack, array('type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => NULL, 'renderingContext' => $renderingContext));
-			return $this->renderPartial($partial, $section, $arguments);
+			$output = $this->renderPartial($partial, $section, $arguments);
 			array_pop($this->renderingStack);
 		}
 
-		return '';
+		$contentObject->INT_include = $intInclude;
+
+		return $output;
 	}
 
 }

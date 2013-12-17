@@ -111,4 +111,14 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 		return (array) $candidate;
 	}
 
+	/**
+	 * @return boolean
+	 */
+	public static function insideUncachedEnvironment() {
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$contentObject = $configurationManager->getContentObject();
+		return 1 === $GLOBALS['TSFE']->no_cache || 1 === $contentObject->INT_include;
+	}
+
 }

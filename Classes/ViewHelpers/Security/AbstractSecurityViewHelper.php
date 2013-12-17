@@ -76,6 +76,9 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 	 * @return boolean
 	 */
 	protected function evaluateArguments() {
+		if (FALSE === Tx_Vhs_Utility_ViewHelperUtility::insideUncachedEnvironment()) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('This view helper must be used in an uncached environment.', 1387240885);
+		}
 		$evaluationType = $this->arguments['evaluationType'];
 		$evaluations = array();
 		if ($this->arguments['anyFrontendUser']) {
