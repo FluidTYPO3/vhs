@@ -209,3 +209,7 @@ type before being output. Which is exactly the case when working with the v:math
 
 _Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
 and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/FluidTYPO3/vhs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
