@@ -40,32 +40,32 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	/**
 	 * @var t3lib_pageSelect
 	 */
-	private static $pageSelect;
+	protected static $pageSelect;
 
 	/**
 	 * @var t3lib_pageSelect
 	 */
-	private static $pageSelectHidden;
+	protected static $pageSelectHidden;
 
 	/**
 	 * @var array
 	 */
-	private static $cachedPages = array();
+	protected static $cachedPages = array();
 
 	/**
 	 * @var array
 	 */
-	private static $cachedOverlays = array();
+	protected static $cachedOverlays = array();
 
 	/**
 	 * @var array
 	 */
-	private static $cachedMenus = array();
+	protected static $cachedMenus = array();
 
 	/**
 	 * @var array
 	 */
-	private static $cachedRootLines = array();
+	protected static $cachedRootLines = array();
 
 	/**
 	 * Initialize t3lib_pageSelect objects
