@@ -28,8 +28,9 @@
  *
  * A condition ViewHelper which renders the `then` child if
  * current page or page with provided UID has subpages. By default
- * hidden subpages are considered non existent which can be overridden
- * by setting $includeHidden to TRUE.
+ * disabled subpages are considered non existent which can be overridden
+ * by setting $includeHidden to TRUE. To exclude pages that are hidden
+ * in menus set $showHiddenInMenu to TRUE.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
@@ -55,13 +56,14 @@ class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends Tx_Fluid_Core_Vie
 	 *
 	 * @param integer $pageUid
 	 * @param boolean $includeHidden
+	 * @param boolean $showHiddenInMenu
 	 * @return string
 	 */
-	public function render($pageUid = NULL, $includeHidden = FALSE) {
+	public function render($pageUid = NULL, $includeHidden = FALSE, $showHiddenInMenu = FALSE) {
 		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$menu = $this->pageSelect->getMenu($pageUid, (boolean) $includeHidden);
+		$menu = $this->pageSelect->getMenu($pageUid, (boolean) $includeHidden, array(), '', $showHiddenInMenu);
 		$pageHasSubPages = (0 < count($menu));
 		if (TRUE === $pageHasSubPages) {
 			return $this->renderThenChild();

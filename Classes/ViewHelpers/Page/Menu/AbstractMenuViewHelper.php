@@ -90,7 +90,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$this->registerArgument('includeSpacers', 'boolean', 'Wether or not to include menu spacers in the page select query', FALSE, FALSE);
 		$this->registerArgument('bullet', 'string', 'Piece of text/html to insert before each item', FALSE);
 		$this->registerArgument('resolveExclude', 'boolean', 'Exclude link if realurl/cooluri flag tx_realurl_exclude is set', FALSE, FALSE);
-		$this->registerArgument('showHidden', 'boolean', 'Include "hidden in menu" pages', FALSE, FALSE);
+		$this->registerArgument('showHidden', 'boolean', 'Include disabled pages into the menu', FALSE, FALSE);
+		$this->registerArgument('showHiddenInMenu', 'boolean', 'Include pages that are set to be hidden in menus', FALSE, FALSE);
 		$this->registerArgument('showCurrent', 'boolean', 'If FALSE, does not display the current page', FALSE, TRUE);
 		$this->registerArgument('linkCurrent', 'boolean', 'If FALSE, does not wrap the current page in a link', FALSE, TRUE);
 		$this->registerArgument('linkActive', 'boolean', 'If FALSE, does not wrap with links the titles of pages that are active in the rootline', FALSE, TRUE);
@@ -335,8 +336,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return array
 	 */
 	protected function getSubmenu($pageUid) {
-		$showHidden = (boolean) $this->arguments['showHidden'];
-		$where = TRUE === $showHidden ? '' : 'AND nav_hide=0';
+		$where = '';
 		if (NULL !== $this->arguments['excludeSubpageTypes'] && FALSE === empty($this->arguments['excludeSubpageTypes'])) {
 			$excludeSubpageTypes = $this->parseDoktypeList($this->arguments['excludeSubpageTypes']);
 			if (0 < count($excludeSubpageTypes)) {
@@ -667,7 +667,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	public function getMenu($pageUid, $where = '') {
 		$excludePages = $this->processPagesArgument($this->arguments['excludePages']);
 		$showHidden = (boolean) $this->arguments['showHidden'];
-		$menuData = $this->pageSelect->getMenu($pageUid, $showHidden, $excludePages, $where);
+		$showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
+		$menuData = $this->pageSelect->getMenu($pageUid, $showHidden, $excludePages, $where, $showHiddenInMenu, FALSE);
 		return $menuData;
 	}
 
