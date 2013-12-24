@@ -92,8 +92,35 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @return NULL|string
 	 */
 	public function render() {
+		// Check if link wizard link
+		$pageUid = $this->arguments['pageUid'];
+		$additionalParameters = $this->arguments['additionalParams'];
+		if (FALSE === is_numeric($pageUid)) {
+			$linkConfig = t3lib_div::unQuoteFilenames($pageUid, TRUE);
+			if (TRUE === isset($linkConfig[0])) {
+				$pageUid = $linkConfig[0];
+			}
+			if (TRUE === isset($linkConfig[1]) && '-' !== $linkConfig[1]) {
+				$this->tag->addAttribute('target', $linkConfig[1]);
+			}
+			if (TRUE === isset($linkConfig[2]) && '-' !== $linkConfig[2]) {
+				$this->tag->addAttribute('class', $linkConfig[2]);
+			}
+			if (TRUE === isset($linkConfig[3]) && '-' !== $linkConfig[3]) {
+				$this->tag->addAttribute('title', $linkConfig[3]);
+			}
+			if (TRUE === isset($linkConfig[4]) && '-' !== $linkConfig[4]) {
+				$additionalParametersString = trim($linkConfig[4], '&');
+				$additionalParametersArray = t3lib_div::trimExplode('&', $additionalParametersString);
+				foreach ($additionalParametersArray as $parameter) {
+					list($key, $value) = t3lib_div::trimExplode('=', $parameter);
+					$additionalParameters[$key] = $value;
+				}
+			}
+		}
+
 		// Get page via pageUid argument or current id
-		$pageUid = intval($this->arguments['pageUid']);
+		$pageUid = intval($pageUid);
 		if (0 === $pageUid) {
 			 $pageUid = $GLOBALS['TSFE']->id;
 		}
@@ -140,7 +167,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 				->setUseCacheHash(!$this->arguments['noCacheHash'])
 				->setSection($this->arguments['section'])
 				->setLinkAccessRestrictedPages($this->arguments['linkAccessRestrictedPages'])
-				->setArguments($this->arguments['additionalParams'])
+				->setArguments($additionalParameters)
 				->setCreateAbsoluteUri($this->arguments['absolute'])
 				->setAddQueryString($this->arguments['addQueryString'])
 				->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
