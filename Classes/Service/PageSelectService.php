@@ -138,14 +138,18 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * @param boolean $showHidden
 	 * @param array $excludePages
 	 * @param string $where
+	 * @param boolean $showHiddenInMenu
 	 * @param boolean $checkShortcuts
 	 * @return array
 	 */
-	public function getMenu($pageUid = NULL, $showHidden = FALSE, $excludePages = array(), $where = '', $checkShortcuts = FALSE) {
+	public function getMenu($pageUid = NULL, $showHidden = FALSE, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		$addWhere = 0 < count($excludePages) ? 'AND uid NOT IN (' . implode(',', $excludePages) . ')' : '';
+		if (FALSE === (boolean) $showHiddenInMenu) {
+			$addWhere .= ' AND nav_hide=0';
+		}
 		if ('' !== $where) {
 			$addWhere = $where . ' ' . $addWhere;
 		}
@@ -165,6 +169,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 *
 	 * @param integer $pageUid
 	 * @param string $MP
+	 * @param boolean $reverse
 	 * @return array
 	 */
 	public function getRootLine($pageUid = NULL, $MP = NULL, $reverse = FALSE) {
