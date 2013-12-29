@@ -76,6 +76,9 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 	 * @return boolean
 	 */
 	protected function evaluateArguments() {
+		if (FALSE === Tx_Vhs_Utility_ViewHelperUtility::insideUncachedEnvironment()) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('This view helper must be used in an uncached environment.', 1387240885);
+		}
 		$evaluationType = $this->arguments['evaluationType'];
 		$evaluations = array();
 		if ($this->arguments['anyFrontendUser']) {
@@ -250,23 +253,6 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx
 	 */
 	public function getCurrentBackendUser() {
 		return $GLOBALS['BE_USER']->user;
-	}
-
-	/**
-	 * Override: forcibly disables page caching - a TRUE condition
-	 * in this ViewHelper means page content would be depending on
-	 * the current visitor's session/cookie/auth etc.
-	 *
-	 * Returns value of "then" attribute.
-	 * If then attribute is not set, iterates through child nodes and renders ThenViewHelper.
-	 * If then attribute is not set and no ThenViewHelper and no ElseViewHelper is found, all child nodes are rendered
-	 *
-	 * @return string rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
-	 * @api
-	 */
-	protected function renderThenChild() {
-		$GLOBALS['TSFE']->no_cache = 1;
-		return parent::renderThenChild();
 	}
 
 }

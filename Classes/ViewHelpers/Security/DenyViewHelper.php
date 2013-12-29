@@ -32,6 +32,10 @@
  *
  * Is the mirror opposite of `v:security.allow`.
  *
+ * #### Caching
+ *
+ * Use in uncached environments like a v:render.uncache partial only!
+ *
  * @author Claus Due, Wildside A/S
  * @package Vhs
  * @subpackage ViewHelpers\Security
