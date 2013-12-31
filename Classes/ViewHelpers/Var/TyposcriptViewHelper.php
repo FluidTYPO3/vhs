@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+*  (c) 2014 Claus Due <claus@namelesscoder.net>
 *
 *  All rights reserved
 *
@@ -53,7 +53,7 @@
  *     <!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
  *     {wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */

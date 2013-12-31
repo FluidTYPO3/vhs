@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Cedric Ziel <cedric@cedric-ziel.com>, Internetdienstleistungen & EDV
+ *  (c) 2014 Cedric Ziel <cedric@cedric-ziel.com>, Internetdienstleistungen & EDV
  *
  *  All rights reserved
  *

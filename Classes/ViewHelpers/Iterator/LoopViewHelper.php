@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -26,8 +26,8 @@
 /**
  * Repeats rendering of children $count times while updating $iteration
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Georg Ringer <typo3@ringerge.org>
+ *  (c) 2014 Georg Ringer <typo3@ringerge.org>
  *
  *  All rights reserved
  *

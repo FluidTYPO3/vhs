@@ -24,46 +24,13 @@
  ***************************************************************/
 
 /**
- * Condition ViewHelper. Renders the then-child if Iterator/array
- * haystack contains needle value.
+ * Provides injected services and methods for easier implementation in
+ * subclassing ViewHelpers
  *
- * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
- * @subpackage ViewHelpers\If\Iterator
+ * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
-
-	/**
-	 * @var mixed
-	 */
-	protected $evaluation = FALSE;
-
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('needle', 'mixed', 'Needle to search for in haystack', TRUE);
-		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', TRUE);
-		$this->registerArgument('considerKeys', 'boolean', 'Tell whether to consider keys in the search assuming haystack is an array.', FALSE, FALSE);
-	}
-
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$haystack = $this->arguments['haystack'];
-		$needle = $this->arguments['needle'];
-
-		$this->evaluation = $this->assertHaystackHasNeedle($haystack, $needle);
-
-		if (FALSE !== $this->evaluation) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
-	}
+abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
 
 	/**
 	 * @param integer $index

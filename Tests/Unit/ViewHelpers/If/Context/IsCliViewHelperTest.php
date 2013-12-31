@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@wildside.dk>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -25,7 +25,7 @@
 
 /**
  * @protection off
- * @author Claus Due <claus@wildside.dk>
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 class Tx_Vhs_ViewHelpers_If_Context_IsCliViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {

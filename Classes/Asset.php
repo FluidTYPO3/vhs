@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -68,7 +68,7 @@
  * > the instance after it is returned - but when using a "createFrom"... method
  * > VHS assumes you always want your Asset included in the output.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
