@@ -192,14 +192,24 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	protected function getRenderedRecords(array $rows) {
 		$elements = array();
 		foreach ($rows as $row) {
-			$conf = array(
-				'tables' => 'tt_content',
-				'source' => $row['uid'],
-				'dontCheckPid' => 1
-			);
-			array_push($elements, $GLOBALS['TSFE']->cObj->RECORDS($conf));
+			array_push($elements, $this->renderRecord($row));
 		}
 		return $elements;
 	}
 
+	/**
+	 * This function renders a raw tt_content record into the corresponding
+	 * element by typoscript RENDER function
+	 *
+	 * @param array $row
+	 * @return string
+	 */
+	protected function renderRecord(array $row) {
+		$conf = array(
+			'tables' => 'tt_content',
+			'source' => $row['uid'],
+			'dontCheckPid' => 1
+		);
+		return $GLOBALS['TSFE']->cObj->RECORDS($conf);
+	}
 }
