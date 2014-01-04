@@ -28,7 +28,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-abstract class Tx_Vhs_ViewHelpers_Resource_Record_AbstractRecordResourceViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Vhs_ViewHelpers_Resource_Record_RecordResourceViewHelperInterface {
+abstract class Tx_Vhs_ViewHelpers_Resource_Record_AbstractRecordResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements Tx_Vhs_ViewHelpers_Resource_Record_RecordResourceViewHelperInterface {
 
 	/**
 	 * @var string
@@ -46,15 +46,15 @@ abstract class Tx_Vhs_ViewHelpers_Resource_Record_AbstractRecordResourceViewHelp
 	protected $idField = 'uid';
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -97,7 +97,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_Record_AbstractRecordResourceViewHelp
 			return array();
 		}
 
-		return t3lib_div::trimExplode(',', $record[$field]);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $record[$field]);
 	}
 
 	/**

@@ -37,7 +37,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Render method
@@ -82,7 +82,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Fluid_Core_ViewHel
 	 */
 	protected function filter($item, $filter, $propertyName) {
 		if (FALSE === empty($propertyName) && (TRUE === is_object($item) || TRUE === is_array($item))) {
-			$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($item, $propertyName);
+			$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($item, $propertyName);
 		} else {
 			$value = $item;
 		}

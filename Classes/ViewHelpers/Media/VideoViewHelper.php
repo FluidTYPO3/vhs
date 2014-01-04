@@ -91,7 +91,7 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 					$src = $source;
 					$type = substr($source, strrpos($source, '.') + 1);
 				} else {
-					$src = substr(t3lib_div::getFileAbsFileName($source), strlen(PATH_site));
+					$src = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($source), strlen(PATH_site));
 					$type = pathinfo($src, PATHINFO_EXTENSION);
 				}
 			} elseif (TRUE === is_array($source)) {

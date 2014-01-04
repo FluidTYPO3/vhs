@@ -50,7 +50,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If
  */
-class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Vhs_ViewHelpers_If_ConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 
 	/**
 	 * An array of Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode

@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Iterator
  */
-class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * @var mixed

@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Once
  */
-abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * Standard storage - static variable meaning uniqueness of $identifier

@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -57,7 +57,7 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends Tx_Fluid_Core_ViewHel
 			}
 		}
 
-		$file = t3lib_div::getFileAbsFileName($filePath);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($filePath);
 
 		$parts = explode('.', basename($file));
 

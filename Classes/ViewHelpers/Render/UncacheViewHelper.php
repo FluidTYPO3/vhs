@@ -33,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class Tx_Vhs_ViewHelpers_Render_UncacheViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Render_UncacheViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize
@@ -60,7 +60,7 @@ class Tx_Vhs_ViewHelpers_Render_UncacheViewHelper extends Tx_Fluid_Core_ViewHelp
 
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 		$content = '<!--' . $substKey . '-->';
-		$templateView = t3lib_div::makeInstance('Tx_Vhs_View_UncacheTemplateView');
+		$templateView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Vhs_View_UncacheTemplateView');
 
 		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
 			'type' => 'POSTUSERFUNC',

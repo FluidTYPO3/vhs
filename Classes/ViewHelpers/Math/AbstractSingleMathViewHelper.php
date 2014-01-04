@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @return void

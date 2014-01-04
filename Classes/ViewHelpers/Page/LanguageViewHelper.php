@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_LanguageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Page_LanguageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var Tx_Vhs_Service_PageSelectService
@@ -68,7 +68,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageViewHelper extends Tx_Fluid_Core_ViewHelpe
 		if (TRUE === $languages instanceof Traversable) {
 			$languages = iterator_to_array($languages);
 		} elseif (TRUE === is_string($languages)) {
-			$languages = t3lib_div::trimExplode(',', $languages, TRUE);
+			$languages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $languages, TRUE);
 		} else {
 			$languages = (array) $languages;
 		}

@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Form\Select
  */
-class Tx_Vhs_ViewHelpers_Form_Select_OptgroupViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class Tx_Vhs_ViewHelpers_Form_Select_OptgroupViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string

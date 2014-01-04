@@ -31,15 +31,15 @@
 class Tx_Vhs_ViewHelpers_If_Page_IsLanguageViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var $objectManager Tx_Extbase_Object_ObjectManagerInterface
+	 * @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @param $objectManager Tx_Extbase_Object_ObjectManagerInterface
+	 * @param $objectManager \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 * @return void
 	 */
-	protected function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	protected function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -57,7 +57,7 @@ class Tx_Vhs_ViewHelpers_If_Page_IsLanguageViewHelperTest extends Tx_Extbase_Tes
 
 		/** @var Tx_Extbase_MVC_Web_Request $request */
 		$request = $this->objectManager->get($requestClassName);
-		/** @var $viewHelperInstance Tx_Fluid_Core_ViewHelper_AbstractViewHelper */
+		/** @var $viewHelperInstance \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper */
 		$viewHelperInstance = $this->objectManager->get($viewHelperClassName);
 		/** @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node */
 		$node = $this->objectManager->get($nodeClassName, $viewHelperInstance, $arguments);

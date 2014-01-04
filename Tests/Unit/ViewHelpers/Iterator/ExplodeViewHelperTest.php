@@ -93,7 +93,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelperTest extends Tx_Vhs_ViewHelpe
 		$mockContainer->expects($this->exactly(2))->method('add')->with('test', $array);
 		$mockContainer->expects($this->once())->method('get')->with('test')->will($this->returnValue($array));
 		$mockContainer->expects($this->exactly(2))->method('remove')->with('test');
-		Tx_Extbase_Reflection_ObjectAccess::setProperty($mock, 'templateVariableContainer', $mockContainer, TRUE);
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($mock, 'templateVariableContainer', $mockContainer, TRUE);
 		$mock->render();
 	}
 

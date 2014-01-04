@@ -32,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format\Placeholder
  */
-class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var string
@@ -40,12 +40,12 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 	protected $lipsum;
 
 	/**
-	 * @var	tslib_cObj
+	 * @var	\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -57,10 +57,10 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -90,11 +90,11 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 		}
 		if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
 				// argument is most likely a file reference.
-			$sourceFile = t3lib_div::getFileAbsFileName($lipsum);
+			$sourceFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($lipsum);
 			if (file_exists($sourceFile) === TRUE) {
 				$lipsum = file_get_contents($sourceFile);
 			} else {
-				t3lib_div::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
+				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
 					'The file was: ' . $sourceFile, 'Vhs');
 				$lipsum = $this->lipsum;
 			}

@@ -37,7 +37,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Random
  */
-class Tx_Vhs_ViewHelpers_Random_StringViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Random_StringViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param integer $length

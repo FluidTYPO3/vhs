@@ -39,7 +39,7 @@ class Tx_Vhs_ViewHelpers_Resource_Record_FalViewHelper extends Tx_Vhs_ViewHelper
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->resourceFactory = t3lib_div::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$this->resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 	}
 
 	/**

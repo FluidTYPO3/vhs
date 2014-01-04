@@ -41,7 +41,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_RelativeViewHelper extends Tx_Vhs_ViewHe
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return t3lib_extMgm::extRelPath($extensionKey);
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey);
 	}
 
 }
