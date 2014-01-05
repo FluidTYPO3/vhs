@@ -130,7 +130,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 
 		$rootLine = NULL;
 		if (0 !== $slide) {
-			$rootLine = $this->getRootLine($pageUid, NULL, $slideCollectReverse);
+			$rootLine = $this->pageSelect->getRootLine($pageUid, NULL, $slideCollectReverse);
 		}
 
 		$colPos = intval($this->arguments['column']);
