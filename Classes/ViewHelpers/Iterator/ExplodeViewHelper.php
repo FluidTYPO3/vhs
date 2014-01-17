@@ -68,9 +68,14 @@ class Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper extends Tx_Fluid_Core_ViewHe
 		if (TRUE === empty($as) || TRUE === $contentWasSource) {
 			return $output;
 		}
-		$variables = array($as => $output);
-		$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		return $content;
+		if ($this->arguments['as']) {
+			if ($this->templateVariableContainer->exists($as)) {
+				$this->templateVariableContainer->remove($as);
+			}
+	
+			$this->templateVariableContainer->add($as, $output); 						
+			$content = $this->renderChildren();
+		}
 	}
 
 	/**
@@ -90,6 +95,9 @@ class Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper extends Tx_Fluid_Core_ViewHe
 				default:
 					$glue = $value;
 			}
+		}
+		if($glue == '\n') {
+			$glue = chr(10); 
 		}
 		return $glue;
 	}
