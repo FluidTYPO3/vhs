@@ -96,6 +96,9 @@ class Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper extends Tx_Fluid_Core_ViewHe
 					$glue = $value;
 			}
 		}
+		if($glue == '\n') {
+			$glue = chr(10); 
+		}
 		return $glue;
 	}
 
