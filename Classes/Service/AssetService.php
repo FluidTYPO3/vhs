@@ -426,7 +426,11 @@ class Tx_Vhs_Service_AssetService implements t3lib_Singleton {
 				$dependencies = t3lib_div::trimExplode(',', $assetSettings['dependencies'], TRUE);
 			}
 			foreach ($dependencies as $dependency) {
-				if (FALSE === isset($placed[$dependency]) && FALSE === in_array($dependency, self::$cachedDependencies)) {
+				if (
+					TRUE === array_key_exists($dependency, $assets)
+					&& FALSE === isset($placed[$dependency])
+					&& FALSE === in_array($dependency, self::$cachedDependencies)
+				) {
 					// shove the Asset back to the end of the queue, the dependency has
 					// not yet been encountered and moving this item to the back of the
 					// queue ensures it will be encountered before re-encountering this
