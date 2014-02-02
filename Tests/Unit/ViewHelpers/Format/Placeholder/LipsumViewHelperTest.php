@@ -37,7 +37,7 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelperTest extends Tx_Vhs_
 		'paragraphs' => 5,
 		'skew' => 0,
 		'html' => FALSE,
-		'parseFuncTsPath' => ''
+		'parseFuncTSPath' => ''
 	);
 
 	/**

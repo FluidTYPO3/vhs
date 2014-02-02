@@ -110,7 +110,8 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 
 		$lipsum = implode("\n", $paragraphs);
 		if ((boolean) $this->arguments['html'] === TRUE) {
-			$lipsum = $this->contentObject->parseFunc($lipsum, array(), '< ' . $this->arguments['parseFuncTSPath']);
+			$tsParserPath = (FALSE === empty($this->arguments['parseFuncTSPath']) ? '< ' . $this->arguments['parseFuncTSPath'] : NULL);
+			$lipsum = $this->contentObject->parseFunc($lipsum, array(), $tsParserPath);
 		}
 		return $lipsum;
 	}
