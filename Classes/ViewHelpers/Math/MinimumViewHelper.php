@@ -36,6 +36,14 @@
 class Tx_Vhs_ViewHelpers_Math_MinimumViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper {
 
 	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->overrideArgument('b', 'mixed', 'Second number or Iterator/Traversable/Array for calculation', FALSE, NULL);
+	}
+
+	/**
 	 * @return mixed
 	 * @throw Exception
 	 */
