@@ -34,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Form
  */
-class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * @var string

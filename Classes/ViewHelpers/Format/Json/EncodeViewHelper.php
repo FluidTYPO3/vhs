@@ -55,7 +55,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format\Json
  */
-class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var array
@@ -192,7 +192,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends Tx_Fluid_Core_View
 		if (TRUE === $preventRecursion && TRUE === in_array($hash, $this->encounteredClasses)) {
 			return $recursionMarker;
 		}
-		$converted = Tx_Extbase_Reflection_ObjectAccess::getGettableProperties($domainObject);
+		$converted = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($domainObject);
 		array_push($this->encounteredClasses, $hash);
 		$converted = $this->recursiveArrayOfDomainObjectsToArray($converted, $preventRecursion, $recursionMarker);
 		return $converted;

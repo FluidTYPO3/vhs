@@ -29,7 +29,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Vhs_ViewHelpers_DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 
 	/**
 	 * @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode[]
@@ -56,7 +56,7 @@ class Tx_Vhs_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_Abstra
 			$argumentDefinitions = array();
 			foreach ($arguments as &$argument) {
 				$name = $argument->getName();
-				$argumentDefinitions[$name] = Tx_Extbase_Reflection_ObjectAccess::getGettableProperties($argument);
+				$argumentDefinitions[$name] = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($argument);
 			}
 			$sections = array(
 				$viewHelperDescription,

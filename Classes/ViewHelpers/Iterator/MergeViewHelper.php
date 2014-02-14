@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Merges arrays/Traversables $a and $b into an array
@@ -44,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends Tx_Fluid_Core_ViewHelp
 		$this->useKeys = (boolean) $useKeys;
 		$a = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
 		$b = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
-		$merged = t3lib_div::array_merge_recursive_overrule($a, $b);
+		$merged = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($a, $b);
 		return $merged;
 	}
 

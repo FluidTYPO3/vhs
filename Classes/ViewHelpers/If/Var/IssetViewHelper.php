@@ -44,7 +44,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Var
  */
-class Tx_Vhs_ViewHelpers_If_Var_IssetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_If_Var_IssetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * Renders else-child or else-argument if variable $name exists

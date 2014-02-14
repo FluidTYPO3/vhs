@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Uri_RequestViewHelperTest extends Tx_Vhs_ViewHelpers_Ab
 	 */
 	public function rendersUrl() {
 		$test = $this->executeViewHelper();
-		$this->assertSame(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), $test);
+		$this->assertSame(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), $test);
 	}
 
 }

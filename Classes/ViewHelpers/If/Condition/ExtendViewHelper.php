@@ -55,7 +55,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Condition
  */
-class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Vhs_ViewHelpers_If_Condition_ExtendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 
 	/**
 	 * @var array

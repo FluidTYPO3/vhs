@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -57,7 +57,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends Tx_Fluid_Core_ViewHelper_A
 			}
 		}
 
-		$file = t3lib_div::getFileAbsFileName($path);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 
 		if (!file_exists($file) || is_dir($file)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $file . '". File does not exist or is a directory.', 1356953963);

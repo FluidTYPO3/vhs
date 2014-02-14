@@ -149,7 +149,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 			if (is_object($value)) {
 
 				if (TRUE === isset($this->arguments['optionValueField']) && FALSE === empty($this->arguments['optionValueField'])) {
-					$key = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
+					$key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 					if (TRUE === is_object($key)) {
 						if (TRUE === method_exists($key, '__toString')) {
 							$key = (string) $key;
@@ -166,7 +166,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 				}
 
 				if (TRUE === isset($this->arguments['optionLabelField']) && FALSE === empty($this->arguments['optionLabelField'])) {
-					$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionLabelField']);
+					$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $this->arguments['optionLabelField']);
 					if (TRUE === is_object($value)) {
 						if (TRUE === method_exists($value, '__toString')) {
 							$value = (string) $value;
@@ -221,7 +221,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 		}
 		if (FALSE === is_array($value) && FALSE === ($value instanceof Iterator)) {
 			if (TRUE === is_object($value)) {
-				return Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
+				return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 			} else {
 				return $value;
 			}
@@ -229,7 +229,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 		$selectedValues = array();
 		foreach ($value as $selectedValueElement) {
 			if (TRUE === is_object($selectedValueElement)) {
-				$selectedValues[] = Tx_Extbase_Reflection_ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
+				$selectedValues[] = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
 			} else {
 				$selectedValues[] = $selectedValueElement;
 			}

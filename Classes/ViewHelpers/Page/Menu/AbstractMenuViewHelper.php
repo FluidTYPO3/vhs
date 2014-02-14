@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Menu
  */
-abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -228,14 +228,14 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 			$types = $this->parseDoktypeList($this->arguments['doktypes']);
 		} else {
 			$types = array(
-				constant('t3lib_pageSelect::DOKTYPE_DEFAULT'),
-				constant('t3lib_pageSelect::DOKTYPE_LINK'),
-				constant('t3lib_pageSelect::DOKTYPE_SHORTCUT'),
-				constant('t3lib_pageSelect::DOKTYPE_MOUNTPOINT')
+				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT'),
+				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK'),
+				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT'),
+				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT')
 			);
 		}
-		if ($this->arguments['includeSpacers'] && FALSE === in_array(constant('t3lib_pageSelect::DOKTYPE_SPACER'), $types)) {
-			array_push($types, constant('t3lib_pageSelect::DOKTYPE_SPACER'));
+		if ($this->arguments['includeSpacers'] && FALSE === in_array(constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER'), $types)) {
+			array_push($types, constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER'));
 		}
 		return $types;
 	}
@@ -251,12 +251,12 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if (TRUE === is_array($doktypes)) {
 			$types = $doktypes;
 		} else {
-			$types = t3lib_div::trimExplode(',', $doktypes);
+			$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $doktypes);
 		}
 		$parsed = array();
 		foreach ($types as $index => $type) {
 			if (FALSE === ctype_digit($type)) {
-				$typeNumber = constant('t3lib_pageSelect::DOKTYPE_' . strtoupper($type));
+				$typeNumber = constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
 				if (NULL !== $typeNumber) {
 					$parsed[$index] = $typeNumber;
 				}
@@ -273,7 +273,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 */
 	protected function getItemTitle($page) {
 		$title = $page['title'];
-		$titleFieldList = t3lib_div::trimExplode(',', $this->arguments['titleFields']);
+		$titleFieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
 			if (empty($page[$titleFieldName]) === FALSE) {
 				$title = $page[$titleFieldName];
@@ -313,7 +313,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 	 * @return string
 	 */
 	protected function getItemLink($pageUid, $doktype, $shortcut) {
-		$isShortcutOrLink = ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT || $doktype == t3lib_pageSelect::DOKTYPE_LINK);
+		$isShortcutOrLink = ($doktype == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT || $doktype == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK);
 		$useShortcutTarget = (boolean) $this->arguments['useShortcutTarget'];
 		if (TRUE === $isShortcutOrLink && TRUE === $useShortcutTarget && 0 < $shortcut) {
 			$pageUid = $shortcut;
@@ -366,7 +366,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		// first, ensure the complete data array is present
 		$page = $this->pageSelect->getPage($pageUid);
 		$targetPage = NULL;
-		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
+		if ($page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
 			switch ($page['shortcut_mode']) {
 				case 3:
 					// mode: parent page of current page (using PID of current page)
@@ -410,7 +410,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		}
 
 		$doktype = (integer) $page['doktype'];
-		$shortcut = ($doktype == t3lib_pageSelect::DOKTYPE_SHORTCUT) ? $page['shortcut'] : $page['url'];
+		$shortcut = ($doktype == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) ? $page['shortcut'] : $page['url'];
 		$page['active'] = $this->isActive($pageUid, $rootLine, $originalPageUid);
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (count($this->getSubmenu($originalPageUid)) > 0) ? 1 : 0;
@@ -419,7 +419,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['doktype'] = $doktype;
 
-		if ($doktype == t3lib_pageSelect::DOKTYPE_LINK) {
+		if ($doktype == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK) {
 			$urlTypes = array(
 				'1' => 'http://',
 				'4' => 'https://',
@@ -684,7 +684,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends Tx_Fl
 		if ($pages instanceof Traversable) {
 			$pages = iterator_to_array($pages);
 		} elseif (is_string($pages)) {
-			$pages = t3lib_div::trimExplode(',', $pages, TRUE);
+			$pages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pages, TRUE);
 		}
 		if (FALSE === is_array($pages)) {
 			return array();

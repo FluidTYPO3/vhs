@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository

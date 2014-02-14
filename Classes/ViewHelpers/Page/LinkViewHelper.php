@@ -41,7 +41,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var Tx_Vhs_Service_PageSelectService
@@ -96,7 +96,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$pageUid = $this->arguments['pageUid'];
 		$additionalParameters = $this->arguments['additionalParams'];
 		if (FALSE === is_numeric($pageUid)) {
-			$linkConfig = t3lib_div::unQuoteFilenames($pageUid, TRUE);
+			$linkConfig = \TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames($pageUid, TRUE);
 			if (TRUE === isset($linkConfig[0])) {
 				$pageUid = $linkConfig[0];
 			}
@@ -111,9 +111,9 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			}
 			if (TRUE === isset($linkConfig[4]) && '-' !== $linkConfig[4]) {
 				$additionalParametersString = trim($linkConfig[4], '&');
-				$additionalParametersArray = t3lib_div::trimExplode('&', $additionalParametersString);
+				$additionalParametersArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('&', $additionalParametersString);
 				foreach ($additionalParametersArray as $parameter) {
-					list($key, $value) = t3lib_div::trimExplode('=', $parameter);
+					list($key, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $parameter);
 					$additionalParameters[$key] = $value;
 				}
 			}
@@ -182,7 +182,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @return string
 	 */
 	private function getTitleValue($record) {
-		$titleFieldList = t3lib_div::trimExplode(',', $this->arguments['titleFields']);
+		$titleFieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
 			if (FALSE === empty($record[$titleFieldName])) {
 				return $record[$titleFieldName];

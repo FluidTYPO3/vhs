@@ -34,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\String
  */
-class Tx_Vhs_ViewHelpers_If_String_IsLowercaseViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_If_String_IsLowercaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * Render method

@@ -36,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -141,8 +141,8 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return Tx_Extbase_Persistence_ObjectStorage
 	 */
 	protected function sortObjectStorage($storage) {
-		/** @var Tx_Extbase_Object_ObjectManager $objectManager */
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
 		/** @var Tx_Extbase_Persistence_ObjectStorage $temp */
 		$temp = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
 		foreach ($storage as $item) {
@@ -188,7 +188,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	protected function getSortValue($object) {
 		$field = $this->arguments['sortBy'];
-		$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($object, $field);
+		$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($object, $field);
 		if ($value instanceof DateTime) {
 			$value = intval($value->format('U'));
 		} elseif ($value instanceof Tx_Extbase_Persistence_ObjectStorage || $value instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
