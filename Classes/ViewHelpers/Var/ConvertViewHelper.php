@@ -64,7 +64,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 		}
 		if (NULL !== $value) {
 			if ('ObjectStorage' === $type && 'array' === gettype($value)) {
-				$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
+				$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 				$storage = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
 				foreach ($value as $item) {
 					$storage->attach($item);
@@ -102,7 +102,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 						$value = array();
 						break;
 					case 'ObjectStorage':
-						$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
+						$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 						$value = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
 						break;
 					default:

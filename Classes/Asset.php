@@ -166,7 +166,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public static function getInstance() {
 		/** @var $asset Tx_Vhs_Asset */
-		$asset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager')->get('Tx_Vhs_Asset');
+		$asset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager')->get('Tx_Vhs_Asset');
 		return $asset;
 	}
 

@@ -186,7 +186,7 @@ class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 		$file = $this->getAbsoluteAssetFixturePath();
 		$asset = Tx_Vhs_Asset::createFromFile($file);
 		$gettableProperties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($asset);
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		foreach ($gettableProperties as $propertyName) {
 			if (FALSE === property_exists('Tx_Vhs_Asset', $propertyName)) {
 				continue;

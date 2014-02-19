@@ -92,8 +92,8 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 			return;
 		}
 		if (FALSE === $this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager) {
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
-			$this->configurationManager = $this->objectManager->get('\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+			$this->configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
 		}
 		$settings = $this->getSettings();
 		$cached = (boolean) $cached;
@@ -332,7 +332,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 */
 	private function generateTagForAssetType($type, $content, $file = NULL) {
 		/** @var $tagBuilder \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder */
-		$tagBuilder = $this->objectManager->get('\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+		$tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
 		switch ($type) {
 			case 'js':
 				$tagBuilder->setTagName('script');

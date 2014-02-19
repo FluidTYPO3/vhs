@@ -61,7 +61,7 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends \TYPO3\CMS\Flui
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->tagBuilder = $this->objectManager->get('\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+		$this->tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
 	}
 
 	/**
