@@ -80,7 +80,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 			$cObject = new tslib_cObj();
 			$cObject->start(array(), 'tt_content');
 			/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager */
-			$configurationManager = $this->objectManager->get('\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
+			$configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
 			$configurationManager->setContentObject($cObject);
 			$instance->injectConfigurationManager($configurationManager);
 		}

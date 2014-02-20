@@ -142,7 +142,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	 */
 	protected function sortObjectStorage($storage) {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		/** @var Tx_Extbase_Persistence_ObjectStorage $temp */
 		$temp = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
 		foreach ($storage as $item) {
