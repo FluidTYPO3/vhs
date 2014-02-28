@@ -56,7 +56,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelperTest extends Tx_Vhs_ViewHelper
 	/**
 	 * @test
 	 */
-	public function supportsIteators() {
+	public function supportsIterators() {
 		$array = array('test' => 'test');
 		$iterator = new ArrayIterator($array);
 		$arguments = array(
