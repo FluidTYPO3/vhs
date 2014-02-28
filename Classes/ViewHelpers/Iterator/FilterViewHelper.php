@@ -55,7 +55,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends \TYPO3\CMS\Fluid\Core
 		if (NULL === $subject || (FALSE === is_array($subject) && FALSE === $subject instanceof Traversable)) {
 			return array();
 		}
-		if (TRUE === empty($filter)) {
+		if (TRUE === is_null($filter) || '' === $filter) {
 			return $subject;
 		}
 		if (TRUE === $subject instanceof Traversable) {
