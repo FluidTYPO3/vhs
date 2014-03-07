@@ -29,7 +29,7 @@
  * A condition ViewHelper which renders the `then` child if
  * current page or page with provided UID has subpages. By default
  * disabled subpages are considered non existent which can be overridden
- * by setting $includeHidden to TRUE. To exclude pages that are hidden
+ * by setting $includeHidden to TRUE. To include pages that are hidden
  * in menus set $showHiddenInMenu to TRUE.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
