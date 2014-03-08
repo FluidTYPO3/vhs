@@ -514,8 +514,12 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 * @return string
 	 */
 	protected function prefixPath($fileRelativePathAndFilename) {
-		if (FALSE === empty($GLOBALS['TSFE']->absRefPrefix)) {
+		$settings = $this->getSettings();
+		$prefixPath = $settings['prependPath'];
+		if (FALSE === empty($GLOBALS['TSFE']->absRefPrefix) && TRUE === empty($prefixPath)) {
 			$fileRelativePathAndFilename = $GLOBALS['TSFE']->absRefPrefix . $fileRelativePathAndFilename;
+		} elseif (FALSE === empty($prefixPath)) {
+			$fileRelativePathAndFilename = $prefixPath . $fileRelativePathAndFilename;
 		}
 		return $fileRelativePathAndFilename;
 	}

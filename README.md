@@ -140,6 +140,23 @@ plugin.tx_vhs.assets {
 }
 ```
 
+## Secondary domain name for resources
+
+You can configure VHS to write path prepends in two ways, one of which allows you to create a so-called "cookie-free domain" on
+which requests will contain fewer headers. Normally, setting `config.absRefPrefix` causes your resources' paths to be prefixed
+with a domain, but using this approach will always prepend a domain name which cannot be "cookie-free". VHS allows an alternative
+setting for path prefix, which can be set to a secondary domain name (pointing to the same virtual host or not) which sets no
+cookies, causing all asset tags to be written with this prefix prepended:
+
+```javascript
+plugin.tx_vhs.settings.prependPath = http://static.mydomain.com/
+```
+
+The setting affects *every* relative-path resource ViewHelper (NB: this does not include links!) in VHS, which is why it is not
+placed inside the "asset" scope. If you need to output this prefix path in templates you can use the `v:page.staticPrefix`
+ViewHelper - it accepts no arguments and only outputs the setting if it is set. For example, using `f:image` will not prefix
+the image path but manually creating an `<img />` tag and using `f:uri.image` as `src` argument will allow you to prefix the path.
+
 ## Usage
 
 To use the ViewHelpers in your Fluid templates simply add the namespace:
