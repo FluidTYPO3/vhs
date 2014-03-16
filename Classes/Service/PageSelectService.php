@@ -146,7 +146,10 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$addWhere = 0 < count($excludePages) ? 'AND uid NOT IN (' . implode(',', $excludePages) . ')' : '';
+		$addWhere = 'AND doktype!=254';
+		if (0 < count($excludePages)) {
+			$addWhere .= ' AND uid NOT IN (' . implode(',', $excludePages) . ')';
+		}
 		if (FALSE === (boolean) $showHiddenInMenu) {
 			$addWhere .= ' AND nav_hide=0';
 		}
