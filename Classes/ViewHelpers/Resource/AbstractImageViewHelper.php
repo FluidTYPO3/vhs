@@ -176,10 +176,11 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 	 * @return string
 	 */
 	public function preprocessSourceUri($source) {
-		if ('BE' === TYPO3_MODE || FALSE === (boolean) $this->arguments['relative']) {
+		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+			$source = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;
+		} elseif ('BE' === TYPO3_MODE || FALSE === (boolean) $this->arguments['relative']) {
 			$source = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $source;
 		}
-
 		return $source;
 	}
 

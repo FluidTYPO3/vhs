@@ -57,7 +57,9 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends \TYPO3\C
 	 * @return string
 	 */
 	public function preprocessSourceUri($src) {
-		if (TYPO3_MODE === 'BE' || FALSE === (boolean) $this->arguments['relative']) {
+		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+			$src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
+		} elseif (TYPO3_MODE === 'BE' || FALSE === (boolean) $this->arguments['relative']) {
 			$src = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $src;
 		}
 		return $src;
