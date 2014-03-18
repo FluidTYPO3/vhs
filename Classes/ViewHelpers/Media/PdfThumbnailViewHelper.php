@@ -58,7 +58,7 @@ class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpe
 	 * @return string
 	 */
 	public function render() {
-		$path = t3lib_div::getFileAbsFileName($this->arguments['path']);
+		$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->arguments['path']);
 		if (FALSE === file_exists($path)) {
 			return NULL;
 		}
@@ -76,7 +76,7 @@ class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpe
 		$filename = basename($path);
 		$pageArgument = $page > 0 ? $page - 1 : 0;
 		$colorspace = TRUE === isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace']) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'] : 'RGB';
-		$destination = t3lib_div::getFileAbsFileName('typo3temp/vhs-pdf-' . $filename . '-page' . $page . '.png');
+		$destination = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/vhs-pdf-' . $filename . '-page' . $page . '.png');
 		if (FALSE === file_exists($destination) || TRUE === $forceOverwrite) {
 			$arguments = '-colorspace ' . $colorspace;
 			if (0 < intval($density)) {
@@ -90,8 +90,8 @@ class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpe
 				$arguments .= ' -background "' . $background . '" -flatten';
 			}
 			$arguments .= ' "' . $destination . '"';
-			$command = t3lib_exec::imageMagickCommand('convert', $arguments);
-			t3lib_exec::exec($command);
+			$command = \TYPO3\CMS\Core\Utility\CommandUtility::imageMagickCommand('convert', $arguments);
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec($command);
 		}
 		$image = substr($destination, strlen(PATH_site));
 		return parent::render($image, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);

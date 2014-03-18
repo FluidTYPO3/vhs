@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+*  (c) 2014 Claus Due <claus@namelesscoder.net>
 *
 *  All rights reserved
 *
@@ -28,11 +28,11 @@
  *
  * Explodes a string by $glue
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var string

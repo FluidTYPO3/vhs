@@ -1,0 +1,25 @@
+{
+    "config": {
+        "vendor-dir": "Libraries"
+    },
+    "require": {
+    },
+    "require-dev": {
+        "phing/phing": "2.5.*",
+        "apigen/apigen": "dev-master",
+        "phpmd/phpmd": "1.4.*",
+        "sebastian/phpcpd": "1.4.*",
+        "squizlabs/php_codesniffer": "1.4.*",
+        "phploc/phploc": "dev-master",
+        "pdepend/pdepend": "dev-master",
+        "mayflower/php-codebrowser": "@dev",
+        "phpunit/phpunit": "3.7.21"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Mayflower/PHP_CodeBrowser"
+        }
+    ],
+    "minimum-stability": "dev"
+}

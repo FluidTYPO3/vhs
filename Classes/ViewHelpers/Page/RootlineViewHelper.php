@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_RootlineViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Page_RootlineViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var Tx_Vhs_Service_PageSelectService

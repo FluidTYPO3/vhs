@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due, Wildside A/S <claus@wildside.dk>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -93,7 +93,7 @@ class Tx_Vhs_ViewHelpers_Asset_PrefetchViewHelper extends Tx_Vhs_ViewHelpers_Ass
 	public function build() {
 		$domains = $this->arguments['domains'];
 		if (FALSE === is_array($domains)) {
-			$domains = t3lib_div::trimExplode(',', $domains, TRUE);
+			$domains = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $domains, TRUE);
 		}
 		$headerCode = '';
 		if (TRUE === (boolean) $this->arguments['force']) {

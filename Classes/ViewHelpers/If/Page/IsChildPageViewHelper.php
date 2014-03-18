@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
+ *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  *
  *  All rights reserved
  *
@@ -35,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\If\Page
  */
-class Tx_Vhs_ViewHelpers_If_Page_IsChildPageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_If_Page_IsChildPageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * Render method
@@ -48,7 +48,7 @@ class Tx_Vhs_ViewHelpers_If_Page_IsChildPageViewHelper extends Tx_Fluid_Core_Vie
 		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$pageSelect = new t3lib_pageSelect();
+		$pageSelect = new \TYPO3\CMS\Frontend\Page\PageRepository();
 		$page = $pageSelect->getPage($pageUid);
 		if (TRUE === (boolean) $respectSiteRoot && TRUE === isset($page['is_siteroot']) && TRUE === (boolean) $page['is_siteroot']) {
 			return $this->renderElseChild();

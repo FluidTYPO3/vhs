@@ -6,21 +6,6 @@ VHS: Fluid ViewHelpers
 
 [![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs)
 
-## Code Quality
-
-![Abstraction Instability Chart](Documentation/ComplexityChart.png)
-![Inheritance and dependency risk](Documentation/PyramidChart.png)
-
-_Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
-and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
-## Overview
-
-![ViewHelpers](https://raw.github.com/wiki/FluidTYPO3/vhs/Images/Home/Overview.png)
-
-*Grayed ViewHelpers are still incomplete, blue ViewHelpers are condition ViewHelpers which
-mean they support usage of f:then and f:else as child tags - and the "then" and "else"
-arguments, just like f:if does.*
-
 ## Wiki
 
 A quick explanation can be read in this README.
@@ -155,6 +140,23 @@ plugin.tx_vhs.assets {
 }
 ```
 
+## Secondary domain name for resources
+
+You can configure VHS to write path prepends in two ways, one of which allows you to create a so-called "cookie-free domain" on
+which requests will contain fewer headers. Normally, setting `config.absRefPrefix` causes your resources' paths to be prefixed
+with a domain, but using this approach will always prepend a domain name which cannot be "cookie-free". VHS allows an alternative
+setting for path prefix, which can be set to a secondary domain name (pointing to the same virtual host or not) which sets no
+cookies, causing all asset tags to be written with this prefix prepended:
+
+```javascript
+plugin.tx_vhs.settings.prependPath = http://static.mydomain.com/
+```
+
+The setting affects *every* relative-path resource ViewHelper (NB: this does not include links!) in VHS, which is why it is not
+placed inside the "asset" scope. If you need to output this prefix path in templates you can use the `v:page.staticPrefix`
+ViewHelper - it accepts no arguments and only outputs the setting if it is set. For example, using `f:image` will not prefix
+the image path but manually creating an `<img />` tag and using `f:uri.image` as `src` argument will allow you to prefix the path.
+
 ## Usage
 
 To use the ViewHelpers in your Fluid templates simply add the namespace:
@@ -214,5 +216,15 @@ type before being output. Which is exactly the case when working with the v:math
 
 ## Known issues
 
-* PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent 
+* PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent
   version. PHP 5.3.7 is recommended at least
+
+## Code Quality
+
+![Abstraction Instability Chart](Documentation/ComplexityChart.png)
+![Inheritance and dependency risk](Documentation/PyramidChart.png)
+
+_Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
+and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
+
+![Please forgive the tracking - your data is in good hands!](https://fedext.net/bigbrother.php?repository=vhs)

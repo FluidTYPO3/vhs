@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
+ *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  *
  *  All rights reserved
  *
@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media\Image
  */
-abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -57,7 +57,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 			}
 		}
 
-		$file = t3lib_div::getFileAbsFileName($path);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 
 		if (!file_exists($file) || is_dir($file)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due, Wildside A/S <claus@wildside.dk>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -36,7 +36,7 @@
  * or 2 (two) to indicate that the TS-controlled page title
  * must be disabled. A value of 2 (two) ensures that the title
  * used in this ViewHelper will be used in the rendered page.
- * 
+ *
  * If you use the ViewHelper in a plugin it has to be USER
  * not USER_INT, what means it has to be cached!
  *
@@ -57,7 +57,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
-class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Arguments initialization

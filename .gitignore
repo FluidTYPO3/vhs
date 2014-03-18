@@ -1,0 +1,13 @@
+# Ignore Build folder contents completely!
+Build/*
+# .. But ey, we need composer
+!Build/composer.json
+!Build/composer.lock
+
+# We may exclude some files as well. Maybe PDepend graphs..
+
+# Sample properties file in build.properties.dist
+build.properties
+
+# Ignore Ant property cache
+cache.properties

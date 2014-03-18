@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+*  (c) 2014 Claus Due <claus@namelesscoder.net>
 *
 *  All rights reserved
 *
@@ -53,22 +53,22 @@
  *     <!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
  *     {wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -85,7 +85,7 @@ class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends Tx_Fluid_Core_ViewHelp
 		if (!$path) {
 			return NULL;
 		}
-		$all = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$all = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$segments = explode('.', $path);
 		$value = $all;
 		foreach ($segments as $path) {
@@ -96,7 +96,7 @@ class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends Tx_Fluid_Core_ViewHelp
 			}
 		}
 		if (is_array($value)) {
-			$value = t3lib_div::removeDotsFromTS($value);
+			$value = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($value);
 		}
 		return $value;
 	}

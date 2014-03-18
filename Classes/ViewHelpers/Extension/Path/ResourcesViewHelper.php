@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -28,7 +28,7 @@
  *
  * Site Relative path to Extension Resources/Public folder.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Extension\Path
  */
@@ -39,7 +39,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_ResourcesViewHelper extends Tx_Vhs_ViewH
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('path', 'string', 'Optional path to append after output of t3libextMgm::extRelPath');
+		$this->registerArgument('path', 'string', 'Optional path to append after output of \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath');
 	}
 
 	/**
@@ -50,7 +50,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_ResourcesViewHelper extends Tx_Vhs_ViewH
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
 		$path = TRUE === empty($this->arguments['path']) ? '' : $this->arguments['path'];
-		return t3lib_extMgm::extRelPath($extensionKey) . 'Resources/Public/' . $path;
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'Resources/Public/' . $path;
 	}
 
 }

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@wildside.dk>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -24,7 +24,7 @@
  * ************************************************************* */
 
 /**
- * @author Claus Due <claus@wildside.dk>
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
@@ -70,17 +70,17 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	}
 
 	/**
-	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 */
 	protected function createInstance() {
 		$className = $this->getViewHelperClassName();
-		/** @var Tx_Fluid_Core_ViewHelper_AbstractViewHelper $instance */
+		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $instance */
 		$instance = $this->objectManager->get($className);
 		if (TRUE === method_exists($instance, 'injectConfigurationManager')) {
 			$cObject = new tslib_cObj();
 			$cObject->start(array(), 'tt_content');
-			/** @var Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager */
-			$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+			/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager */
+			$configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
 			$configurationManager->setContentObject($cObject);
 			$instance->injectConfigurationManager($configurationManager);
 		}
@@ -94,7 +94,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode
 	 * @param string $extensionName
 	 * @param string $pluginName
-	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 */
 	protected function buildViewHelperInstance($arguments = array(), $variables = array(), $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
 		$instance = $this->createInstance();
@@ -103,7 +103,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 		/** @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperContainer */
 		$viewHelperContainer = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		if (0 < count($variables)) {
-			Tx_Extbase_Reflection_ObjectAccess::setProperty($container, 'variables', $variables, TRUE);
+			\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($container, 'variables', $variables, TRUE);
 		}
 		$node = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode($instance, $arguments);
 		/** @var Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder */
@@ -126,14 +126,14 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 		/** @var Tx_Fluid_Core_Rendering_RenderingContext $renderingContext */
 		$renderingContext = $this->objectManager->get('Tx_Fluid_Core_Rendering_RenderingContext');
 		$renderingContext->setControllerContext($controllerContext);
-		Tx_Extbase_Reflection_ObjectAccess::setProperty($renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, TRUE);
-		Tx_Extbase_Reflection_ObjectAccess::setProperty($renderingContext, 'templateVariableContainer', $container, TRUE);
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, TRUE);
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($renderingContext, 'templateVariableContainer', $container, TRUE);
 		$instance->setArguments($arguments);
 		$instance->setRenderingContext($renderingContext);
 		if (TRUE === $instance instanceof Tx_Fluidwidget_Core_Widget_AbstractWidgetViewHelper) {
 			/** @var Tx_Fluid_Core_Widget_WidgetContext $widgetContext */
 			$widgetContext = $this->objectManager->get('Tx_Fluid_Core_Widget_WidgetContext');
-			Tx_Extbase_Reflection_ObjectAccess::setProperty($instance, 'widgetContext', $widgetContext, TRUE);
+			\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($instance, 'widgetContext', $widgetContext, TRUE);
 		}
 		if (NULL !== $childNode) {
 			$node->addChildNode($childNode);

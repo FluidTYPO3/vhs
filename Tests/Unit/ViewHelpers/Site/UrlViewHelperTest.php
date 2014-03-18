@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@wildside.dk>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -25,7 +25,7 @@
 
 /**
  * @protection off
- * @author Claus Due <claus@wildside.dk>
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 class Tx_Vhs_ViewHelpers_Site_UrlViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
@@ -35,7 +35,7 @@ class Tx_Vhs_ViewHelpers_Site_UrlViewHelperTest extends Tx_Vhs_ViewHelpers_Abstr
 	 */
 	public function rendersUrl() {
 		$test = $this->executeViewHelper();
-		$this->assertSame(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), $test);
+		$this->assertSame(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $test);
 	}
 
 }

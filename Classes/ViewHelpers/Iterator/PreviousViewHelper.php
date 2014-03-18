@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -26,11 +26,11 @@
 /**
  * Returns previous element in array $haystack from position of $needle
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_PreviousViewHelper extends Tx_Vhs_ViewHelpers_Iterator_ContainsViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_PreviousViewHelper extends Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper {
 
 	/**
 	 * Render method

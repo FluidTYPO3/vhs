@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -33,7 +33,7 @@
  * in GET/POST parameters but must be provided as if the
  * arguments were sent directly to the Controller action.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
@@ -92,12 +92,12 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 		$contentObjectBackup = $this->configurationManager->getContentObject();
 		if ($this->request) {
 			$configurationBackup = $this->configurationManager->getConfiguration(
-				Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+				\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
 				$this->request->getControllerExtensionName(),
 				$this->request->getPluginName()
 			);
 		}
-		$temporaryContentObject = new tslib_cObj();
+		$temporaryContentObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
 		/** @var Tx_Extbase_MVC_Web_Request $request */
 		$request = $this->objectManager->get($this->requestType);
 		$request->setControllerActionName($action);
@@ -115,7 +115,7 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 			$this->configurationManager->setContentObject($temporaryContentObject);
 			$this->configurationManager->setConfiguration(
 				$this->configurationManager->getConfiguration(
-					Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+					\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
 					$extensionName,
 					$pluginName
 				)

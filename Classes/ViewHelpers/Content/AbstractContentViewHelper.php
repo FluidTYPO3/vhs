@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -26,7 +26,7 @@
 /**
  * ### Base class: Content ViewHelpers
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @author Dominique Feyer, <dfeyer@ttree.ch>
  * @author Daniel Schöne, <daniel@schoene.it>
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
@@ -34,15 +34,15 @@
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -52,12 +52,12 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	protected $pageSelect;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->contentObject = $this->configurationManager->getContentObject();
+		$this->contentObject = $configurationManager->getContentObject();
 	}
 
 	/**
@@ -115,11 +115,6 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 		}
 		$pageUid = intval($pageUid);
 
-		$mountpointRange = t3lib_div::_GP('MP');
-		if (TRUE === empty($mountpointRange)) {
-			$mountpointRange = '';
-		}
-
 		if (FALSE === empty($order)) {
 			$sortDirection = strtoupper(trim($this->arguments['sortDirection']));
 			if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
@@ -135,10 +130,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 
 		$rootLine = NULL;
 		if (0 !== $slide) {
-			$rootLine = $this->pageSelect->getRootLine($pageUid, $mountpointRange);
-			if (TRUE === $slideCollectReverse) {
-				$rootLine = array_reverse($rootLine);
-			}
+			$rootLine = $this->pageSelect->getRootLine($pageUid, NULL, $slideCollectReverse);
 		}
 
 		$colPos = intval($this->arguments['column']);
@@ -200,14 +192,24 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends Tx_F
 	protected function getRenderedRecords(array $rows) {
 		$elements = array();
 		foreach ($rows as $row) {
-			$conf = array(
-				'tables' => 'tt_content',
-				'source' => $row['uid'],
-				'dontCheckPid' => 1
-			);
-			array_push($elements, $GLOBALS['TSFE']->cObj->RECORDS($conf));
+			array_push($elements, $this->renderRecord($row));
 		}
 		return $elements;
 	}
 
+	/**
+	 * This function renders a raw tt_content record into the corresponding
+	 * element by typoscript RENDER function
+	 *
+	 * @param array $row
+	 * @return string
+	 */
+	protected function renderRecord(array $row) {
+		$conf = array(
+			'tables' => 'tt_content',
+			'source' => $row['uid'],
+			'dontCheckPid' => 1
+		);
+		return $GLOBALS['TSFE']->cObj->RECORDS($conf);
+	}
 }

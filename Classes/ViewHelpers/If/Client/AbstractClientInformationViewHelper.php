@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
+ *  (c) 2014 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -24,16 +24,16 @@
  ***************************************************************/
 
 /**
- * Abstract ViewHelper around t3lib_utility_Client::getBrowserInfo().
+ * Abstract ViewHelper around \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo().
  *
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  * @subpackage ViewHelpers\If\Client
- * @see t3lib_utility_Client::getBrowserInfo() for valid values for both browsers and systems
+ * @see \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo() for valid values for both browsers and systems
  * @see Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper for an implementation of this class
  * @see Tx_Vhs_ViewHelpers_Condition_SystemViewHelper for an implementation of this class
  */
-abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * @var string
@@ -60,7 +60,7 @@ abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper 
 		if ($this->userAgent !== '') {
 			$userAgent = $this->userAgent;
 		} else {
-			$userAgent = t3lib_div::getIndpEnv('HTTP_USER_AGENT');
+			$userAgent = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
 		}
 
 		return $userAgent;
@@ -72,7 +72,7 @@ abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper 
 	 * @return array
 	 */
 	public function getBrowsers() {
-		$clientInfo = t3lib_utility_Client::getBrowserInfo($this->getUserAgent());
+		$clientInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($this->getUserAgent());
 
 		return $clientInfo['all'];
 	}
@@ -83,7 +83,7 @@ abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper 
 	 * @return array
 	 */
 	public function getSystems() {
-		$clientInfo = t3lib_utility_Client::getBrowserInfo($this->getUserAgent());
+		$clientInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($this->getUserAgent());
 
 		return $clientInfo['all_systems'];
 	}

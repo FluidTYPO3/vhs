@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -28,11 +28,11 @@
  *
  * Renders Lorem Ipsum text according to provided arguments.
  *
- * @author Claus Due, Wildside A/S
+ * @author Claus Due
  * @package Vhs
  * @subpackage ViewHelpers\Format\Placeholder
  */
-class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var string
@@ -40,12 +40,12 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 	protected $lipsum;
 
 	/**
-	 * @var	tslib_cObj
+	 * @var	\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -57,10 +57,10 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -90,11 +90,11 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 		}
 		if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
 				// argument is most likely a file reference.
-			$sourceFile = t3lib_div::getFileAbsFileName($lipsum);
+			$sourceFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($lipsum);
 			if (file_exists($sourceFile) === TRUE) {
 				$lipsum = file_get_contents($sourceFile);
 			} else {
-				t3lib_div::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
+				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
 					'The file was: ' . $sourceFile, 'Vhs');
 				$lipsum = $this->lipsum;
 			}
@@ -110,7 +110,8 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends Tx_Fluid_Co
 
 		$lipsum = implode("\n", $paragraphs);
 		if ((boolean) $this->arguments['html'] === TRUE) {
-			$lipsum = $this->contentObject->parseFunc($lipsum, array(), '< ' . $this->arguments['parseFuncTSPath']);
+			$tsParserPath = (FALSE === empty($this->arguments['parseFuncTSPath']) ? '< ' . $this->arguments['parseFuncTSPath'] : NULL);
+			$lipsum = $this->contentObject->parseFunc($lipsum, array(), $tsParserPath);
 		}
 		return $lipsum;
 	}

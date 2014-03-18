@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due, Wildside A/S <claus@wildside.dk>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -37,10 +37,11 @@
  * Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
  *
  * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
+ * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var Tx_Vhs_Service_PageSelectService
@@ -69,7 +70,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$this->registerUniversalTagAttributes();
 		$this->registerTagAttribute('target', 'string', 'Target of link', FALSE);
 		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
-		$this->registerArgument('pageUid', 'integer', 'UID of the page to create the link and fetch the title for.', FALSE);
+		$this->registerArgument('pageUid', 'integer', 'UID of the page to create the link and fetch the title for.', FALSE, 0);
 		$this->registerArgument('additionalParams', 'array', 'Query parameters to be attached to the resulting URI', FALSE, array());
 		$this->registerArgument('pageType', 'integer', 'Type of the target page. See typolink.parameter', FALSE, 0);
 		$this->registerArgument('noCache', 'boolean', 'When TRUE disables caching for the target page. You should not need this.', FALSE, FALSE);
@@ -83,21 +84,22 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to' .
 				'for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved' .
 				'AFTER page field overlays.', FALSE, 'nav_title,title');
+		$this->registerArgument('pageTitleAs', 'string', 'When rendering child content, supplies page title as variable.', FALSE, NULL);
 	}
 
 	/**
 	 * Render method
-	 * @return NULL|string Rendered page link
+	 * @return NULL|string
 	 */
 	public function render() {
-		if (FALSE === isset($this->arguments['pageUid']) || TRUE === empty($this->arguments['pageUid'])) {
-			return NULL;
-		}
+		// Check if link wizard link
 		$pageUid = $this->arguments['pageUid'];
 		$additionalParameters = $this->arguments['additionalParams'];
 		if (FALSE === is_numeric($pageUid)) {
-			$linkConfig = t3lib_div::unQuoteFilenames($pageUid, TRUE);
-			$pageUid = $linkConfig[0];
+			$linkConfig = \TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames($pageUid, TRUE);
+			if (TRUE === isset($linkConfig[0])) {
+				$pageUid = $linkConfig[0];
+			}
 			if (TRUE === isset($linkConfig[1]) && '-' !== $linkConfig[1]) {
 				$this->tag->addAttribute('target', $linkConfig[1]);
 			}
@@ -109,35 +111,52 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			}
 			if (TRUE === isset($linkConfig[4]) && '-' !== $linkConfig[4]) {
 				$additionalParametersString = trim($linkConfig[4], '&');
-				$additionalParametersArray = t3lib_div::trimExplode('&', $additionalParametersString);
+				$additionalParametersArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('&', $additionalParametersString);
 				foreach ($additionalParametersArray as $parameter) {
-					list($key, $value) = t3lib_div::trimExplode('=', $parameter);
+					list($key, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $parameter);
 					$additionalParameters[$key] = $value;
 				}
 			}
 		}
+
+		// Get page via pageUid argument or current id
+		$pageUid = intval($pageUid);
+		if (0 === $pageUid) {
+			 $pageUid = $GLOBALS['TSFE']->id;
+		}
+
 		$page = $this->pageSelect->getPage($pageUid);
 		if (TRUE === empty($page)) {
 			return NULL;
 		}
 
-		// Render child-contents to see if an alternative title content should be used
-		$title = $this->renderChildren();
+		// Do not render the link, if the page should be hidden
+		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+		$hidePage = $this->pageSelect->hidePageForLanguageUid($pageUid, $currentLanguageUid);
+		if (TRUE === $hidePage) {
+			return NULL;
+		}
 
-		$getLL = $GLOBALS['TSFE']->sys_language_uid;
-		$l18nConfig = $page['l18n_cfg'];
-		if (0 < $getLL) {
-			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $getLL);
-			if (TRUE === (boolean) t3lib_div::hideIfNotTranslated($l18nConfig) && TRUE === empty($pageOverlay)) {
-				return NULL;
-			}
-			if (NULL === $title && NULL !== ($overlayTitle = $this->getTitleValue($pageOverlay))) {
-				$title = $overlayTitle;
-			}
+		// Get the title from the page or page overlay
+		if (0 < $currentLanguageUid) {
+			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $currentLanguageUid);
+			$title = $this->getTitleValue($pageOverlay);
 		} else {
-			if (NULL === $title) {
-				$title = $this->getTitleValue($page);
-			}
+			$title = $this->getTitleValue($page);
+		}
+
+		// Check if we should assign page title to the template variable container
+		$pageTitleAs = $this->arguments['pageTitleAs'];
+		if (FALSE === empty($pageTitleAs)) {
+			$variables = array($pageTitleAs => $title);
+		} else {
+			$variables = array();
+		}
+
+		// Render childs to see if an alternative title content should be used
+		$renderedTitle = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		if (FALSE === empty($renderedTitle)) {
+			$title = $renderedTitle;
 		}
 
 		$uriBuilder = $this->controllerContext->getUriBuilder();
@@ -148,10 +167,9 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 				->setUseCacheHash(!$this->arguments['noCacheHash'])
 				->setSection($this->arguments['section'])
 				->setLinkAccessRestrictedPages($this->arguments['linkAccessRestrictedPages'])
-				->setArguments($this->arguments['additionalParams'])
+				->setArguments($additionalParameters)
 				->setCreateAbsoluteUri($this->arguments['absolute'])
 				->setAddQueryString($this->arguments['addQueryString'])
-				->setArguments($additionalParameters)
 				->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
 				->build();
 		$this->tag->addAttribute('href', $uri);
@@ -164,14 +182,12 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @return string
 	 */
 	private function getTitleValue($record) {
-		$title = NULL;
-		$titleFieldList = t3lib_div::trimExplode(',', $this->arguments['titleFields']);
+		$titleFieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
 			if (FALSE === empty($record[$titleFieldName])) {
-				$title = $record[$titleFieldName];
-				break;
+				return $record[$titleFieldName];
 			}
 		}
-		return $title;
+		return '';
 	}
 }

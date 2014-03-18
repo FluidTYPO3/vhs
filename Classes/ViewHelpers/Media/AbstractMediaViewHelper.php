@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
+ *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  *
  *  All rights reserved
  *
@@ -30,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 *
@@ -57,8 +57,10 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends Tx_Fluid
 	 * @return string
 	 */
 	public function preprocessSourceUri($src) {
-		if (TYPO3_MODE === 'BE' || FALSE === (boolean) $this->arguments['relative']) {
-			$src = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $src;
+		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+			$src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
+		} elseif (TYPO3_MODE === 'BE' || FALSE === (boolean) $this->arguments['relative']) {
+			$src = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $src;
 		}
 		return $src;
 	}
@@ -75,7 +77,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends Tx_Fluid
 		if ($src instanceof Traversable) {
 			$src = iterator_to_array($src);
 		} elseif (is_string($src)) {
-			$src = t3lib_div::trimExplode(',', $src, TRUE);
+			$src = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $src, TRUE);
 		}
 		return $src;
 	}

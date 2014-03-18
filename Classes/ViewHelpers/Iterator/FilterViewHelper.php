@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@namelesscoder.net>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -37,7 +37,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Render method
@@ -55,7 +55,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Vhs_ViewHelpers_It
 		if (NULL === $subject || (FALSE === is_array($subject) && FALSE === $subject instanceof Traversable)) {
 			return array();
 		}
-		if (TRUE === empty($filter)) {
+		if (TRUE === is_null($filter) || '' === $filter) {
 			return $subject;
 		}
 		if (TRUE === $subject instanceof Traversable) {
@@ -82,7 +82,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends Tx_Vhs_ViewHelpers_It
 	 */
 	protected function filter($item, $filter, $propertyName) {
 		if (FALSE === empty($propertyName) && (TRUE === is_object($item) || TRUE === is_array($item))) {
-			$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($item, $propertyName);
+			$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($item, $propertyName);
 		} else {
 			$value = $item;
 		}

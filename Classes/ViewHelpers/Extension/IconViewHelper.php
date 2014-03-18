@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -29,7 +29,7 @@
  * Outputs the icon of the extension key. Supports both
  * extension key and extension name arguments.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Extension
  */
@@ -42,7 +42,7 @@ class Tx_Vhs_ViewHelpers_Extension_IconViewHelper extends Tx_Vhs_ViewHelpers_Ext
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return t3lib_extMgm::extPath($extensionKey, 'ext_icon.gif');
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, 'ext_icon.gif');
 	}
 
 }

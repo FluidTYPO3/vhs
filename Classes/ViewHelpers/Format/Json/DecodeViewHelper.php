@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
+ *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  *
  *  All rights reserved
  *
@@ -30,24 +30,24 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format\Json
  */
-class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param string $json
 	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 * @return mixed
 	 */
-	public function render($json = '') {
-		if ('' === $json) {
+	public function render($json = NULL) {
+		if (NULL === $json) {
 			$json = $this->renderChildren();
-			if ('' === $json) {
-				return;
+			if (TRUE === empty($json)) {
+				return NULL;
 			}
 		}
 
 		$value = json_decode($json, TRUE);
 
-		if (json_last_error() !== JSON_ERROR_NONE) {
+		if (JSON_ERROR_NONE !== json_last_error()) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument is invalid JSON.', 1358440054);
 		}
 

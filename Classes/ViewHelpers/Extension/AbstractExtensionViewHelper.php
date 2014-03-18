@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -26,11 +26,11 @@
 /**
  * Base class: Extension ViewHelpers
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Extension\Path
  */
-abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @return void
@@ -44,7 +44,7 @@ abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends 
 	 */
 	protected function getExtensionKey() {
 		$extensionName = $this->getExtensionName();
-		return t3lib_div::camelCaseToLowerCaseUnderscored($extensionName);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 	}
 
 	/**

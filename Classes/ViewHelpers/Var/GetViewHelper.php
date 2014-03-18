@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -40,11 +40,11 @@
  *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
  *     {v:var.get(name: 'dynamic{variableName}')}
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * ### Variable: Get
@@ -93,7 +93,7 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 			if ($this->templateVariableContainer->exists($templateVariableRootName)) {
 				$templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
 				if (TRUE === $useRawKeys) {
-					return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
+					return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
 				}
 				try {
 					$value = $templateVariableRoot;
@@ -112,7 +112,7 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 							}
 							continue;
 						}
-						$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $segment);
+						$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $segment);
 					}
 					return $value;
 				} catch (Exception $e) {

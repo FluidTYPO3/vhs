@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
+ *  (c) 2014 Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  *
  *  All rights reserved
  *
@@ -24,7 +24,8 @@
  ***************************************************************/
 
 /**
- * Repeats rendering of children with a typical for loop: starting at index $from it will loop until the index has reached $to.
+ * Repeats rendering of children with a typical for loop: starting at
+ * index $from it will loop until the index has reached $to.
  *
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
@@ -33,19 +34,17 @@
 class Tx_Vhs_ViewHelpers_Iterator_ForViewHelper extends Tx_Vhs_ViewHelpers_Iterator_AbstractLoopViewHelper {
 
 	/**
-	 * Initialize
-	 *
 	 * @return void
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-
 		$this->registerArgument('to', 'integer', 'Number that the index needs to reach before stopping', TRUE);
 		$this->registerArgument('from', 'integer', 'Starting number for the index', FALSE, 0);
 		$this->registerArgument('step', 'integer', 'Stepping number that the index is increased by after each loop', FALSE, 1);
 	}
 
 	/**
+	 * @throws RuntimeException
 	 * @return string
 	 */
 	public function render() {

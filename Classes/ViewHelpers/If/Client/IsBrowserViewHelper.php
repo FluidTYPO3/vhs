@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
+ *  (c) 2014 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -24,6 +24,10 @@
  ***************************************************************/
 
 /**
+ * ### Will be removed in 2.0
+ *
+ * Please don't do user agent sniffing. This is bad practice.
+ *
  * ### Condition: Client's Browser
  *
  * Condition ViewHelper which renders the `then` child if client's
@@ -49,6 +53,7 @@
  *         </f:else>
  *     </v:if.client.isBrowser>
  *
+ * @deprecated
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  * @subpackage ViewHelpers\If\Client

@@ -23,7 +23,7 @@ before_script:
   - git clone git://github.com/squizlabs/PHP_CodeSniffer.git build-environment/CodeSniffer
   - git clone --single-branch --branch $TYPO3 --depth 1 https://github.com/TYPO3/TYPO3.CMS.git core
   - source build-environment/install-helper.sh
-  - git clone --single-branch --branch $TYPO3 --depth 1 git://git.typo3.org/TYPO3v4/Distributions/Introduction.git build-environment/Introduction
+  - git clone --single-branch --branch $TYPO3 --depth 1 git://git.typo3.org/TYPO3CMS/Distributions/Introduction.git build-environment/Introduction
   - mv core/typo3 .
   - if [[ -d core/t3lib ]]; then mv core/t3lib . ; fi
   - mv build-environment/typo3conf .
@@ -31,7 +31,7 @@ before_script:
   - mkdir uploads
   - mkdir typo3temp
 
-  - git clone --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit
+  - git clone --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit
   - git clone --depth 1 git://github.com/FluidTYPO3/builder.git typo3conf/ext/builder
   - mv vhs ./typo3conf/ext/
 

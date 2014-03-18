@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
+ *  (c) 2014 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -29,13 +29,13 @@
  *
  * Will be removed in 2.0
  *
- * Abstract ViewHelper around t3lib_utility_Client::getBrowserInfo().
+ * Abstract ViewHelper around \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo().
  *
  * @deprecated
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  * @subpackage ViewHelpers\Condition
- * @see t3lib_utility_Client::getBrowserInfo() for valid values for both browsers and systems
+ * @see \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo() for valid values for both browsers and systems
  * @see Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper for an implementation of this class
  * @see Tx_Vhs_ViewHelpers_Condition_SystemViewHelper for an implementation of this class
  */

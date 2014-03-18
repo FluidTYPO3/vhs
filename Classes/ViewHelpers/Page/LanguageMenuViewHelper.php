@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2012 Dominic Garms <djgarms@gmail.com>, DMFmedia GmbH
+*  (c) 2014 Dominic Garms <djgarms@gmail.com>, DMFmedia GmbH
 *
 *  All rights reserved
 *
@@ -31,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers/Page
  */
-class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var array
@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	protected $tagName = 'ul';
 
 	/**
-	 * @var	tslib_cObj
+	 * @var	\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $cObj;
 
@@ -84,7 +84,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 		if (FALSE === is_object($GLOBALS['TSFE']->sys_page)) {
 			return NULL;
 		}
-		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
+		$this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 		$this->tagName = $this->arguments['tagName'];
 
 		// to set the tagName we should call initialize()
@@ -216,8 +216,8 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	 * @return array
 	 */
 	protected function parseLanguageMenu() {
-		$order = ($this->arguments['order']) ? t3lib_div::trimExplode(',', $this->arguments['order']) : '';
-		$labelOverwrite = ($this->arguments['labelOverwrite']) ? t3lib_div::trimExplode(',', $this->arguments['labelOverwrite']) : '';
+		$order = ($this->arguments['order']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
+		$labelOverwrite = ($this->arguments['labelOverwrite']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']) : '';
 
 		$tempArray = $languageMenu = array();
 
@@ -274,7 +274,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 			$inactive = ($pageArray[$key] || $key == $this->defaultLangUid) ? 0 : 1;
 			$languageMenu[$key]['current'] = $current;
 			$languageMenu[$key]['inactive'] = $inactive;
-			$languageMenu[$key]['url'] = ($current) ? t3lib_div::getIndpEnv('REQUEST_URI') : $this->getLanguageUrl($key, $inactive);
+			$languageMenu[$key]['url'] = ($current) ? \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') : $this->getLanguageUrl($key, $inactive);
 			$languageMenu[$key]['flagSrc'] = $this->getLanguageFlagSrc($value['flag']);
 			if ($this->arguments['hideNotTranslated'] && $inactive) {
 				unset($languageMenu[$key]);
@@ -291,7 +291,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends Tx_Fluid_Core_ViewH
 	 * @return string
 	 */
 	protected function getLanguageUrl($uid) {
-		$getValues = t3lib_div::_GET();
+		$getValues = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 		$getValues['L'] = $uid;
 		$currentPage =  $GLOBALS['TSFE']->id;
 		unset($getValues['id']);

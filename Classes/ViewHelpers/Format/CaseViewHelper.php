@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -28,11 +28,11 @@
  *
  * Formats string case according to provided arguments
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	const CASE_UPPER = 'upper';
 	const CASE_LOWER = 'lower';
@@ -58,9 +58,9 @@ class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends Tx_Fluid_Core_ViewHelper_
 			case self::CASE_UCWORDS: $string = ucwords($string); break;
 			case self::CASE_UCFIRST: $string{0} = strtoupper($string{0}); break;
 			case self::CASE_LCFIRST: $string{0} = strtolower($string{0}); break;
-			case self::CASE_CAMELCASE: $string = t3lib_div::underscoredToUpperCamelCase($string); break;
-			case self::CASE_LOWERCAMELCASE: $string = t3lib_div::underscoredToLowerCamelCase($string); break;
-			case self::CASE_UNDERSCORED: $string = t3lib_div::camelCaseToLowerCaseUnderscored($string); break;
+			case self::CASE_CAMELCASE: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($string); break;
+			case self::CASE_LOWERCAMELCASE: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($string); break;
+			case self::CASE_UNDERSCORED: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($string); break;
 			default: break;
 		}
 		return $string;

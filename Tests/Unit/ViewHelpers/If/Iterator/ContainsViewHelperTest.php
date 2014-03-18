@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@wildside.dk>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -25,7 +25,7 @@
 
 /**
  * @protection off
- * @author Claus Due <claus@wildside.dk>
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
@@ -45,7 +45,7 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelperTest extends Tx_Vhs_ViewH
 	 */
 	public function supportsObjectStorage() {
 		$needle = new Tx_Extbase_Domain_Model_FrontendUser();
-		Tx_Extbase_Reflection_ObjectAccess::setProperty($needle, 'uid', 1);
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($needle, 'uid', 1);
 		$with = new Tx_Extbase_Persistence_ObjectStorage();
 		$without = new Tx_Extbase_Persistence_ObjectStorage();
 		$with->attach($needle);

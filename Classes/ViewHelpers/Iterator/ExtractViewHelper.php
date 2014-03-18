@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
+ *  (c) 2014 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -83,7 +83,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param string $key
@@ -102,7 +102,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 				$result = $this->extractByKey($content, $key);
 			}
 		} catch (Exception $error) {
-			t3lib_div::sysLog($error->getMessage(), 'vhs', t3lib_div::SYSLOG_SEVERITY_WARNING);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($error->getMessage(), 'vhs', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			$result = array();
 		}
 
@@ -122,7 +122,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 			throw new Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
 		}
 
-		$result = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($iterator, $key);
+		$result = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($iterator, $key);
 
 		return $result;
 	}
@@ -140,7 +140,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends Tx_Fluid_Core_ViewHe
 
 		foreach ($iterator as $k => $v) {
 			// Lets see if we find something directly:
-			$result = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($v, $key);
+			$result = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($v, $key);
 			if (NULL !== $result) {
 				$content[] = $result;
 			} elseif (TRUE === is_array($v) || TRUE === $v instanceof Traversable) {

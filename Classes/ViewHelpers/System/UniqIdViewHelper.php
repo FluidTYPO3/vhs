@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Cedric Ziel, <cedric@cedric-ziel.com>
+ *  (c) 2014 Cedric Ziel, <cedric@cedric-ziel.com>
  *
  *  All rights reserved
  *
@@ -35,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\System
  */
-class Tx_Vhs_ViewHelpers_System_UniqIdViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Vhs_ViewHelpers_System_UniqIdViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param string $prefix An optional prefix for making sure it's unique across environments

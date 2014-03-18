@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
+ *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  *
  *  All rights reserved
  *
@@ -26,49 +26,49 @@
 /**
  * Page Select Service
  *
- * Wrapper service for t3lib_pageSelect including static caches for
+ * Wrapper service for \TYPO3\CMS\Frontend\Page\PageRepository including static caches for
  * menus, rootlines, pages and page overlays to be implemented in
- * viewhelpers by replacing calls to t3lib_pageSelect::getMenu()
+ * viewhelpers by replacing calls to \TYPO3\CMS\Frontend\Page\PageRepository::getMenu()
  * and the like.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage Service
  */
-class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
+class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var t3lib_pageSelect
+	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
-	private static $pageSelect;
+	protected static $pageSelect;
 
 	/**
-	 * @var t3lib_pageSelect
+	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
-	private static $pageSelectHidden;
+	protected static $pageSelectHidden;
 
 	/**
 	 * @var array
 	 */
-	private static $cachedPages = array();
+	protected static $cachedPages = array();
 
 	/**
 	 * @var array
 	 */
-	private static $cachedOverlays = array();
+	protected static $cachedOverlays = array();
 
 	/**
 	 * @var array
 	 */
-	private static $cachedMenus = array();
+	protected static $cachedMenus = array();
 
 	/**
 	 * @var array
 	 */
-	private static $cachedRootLines = array();
+	protected static $cachedRootLines = array();
 
 	/**
-	 * Initialize t3lib_pageSelect objects
+	 * Initialize \TYPO3\CMS\Frontend\Page\PageRepository objects
 	 */
 	public function initializeObject() {
 		self::$pageSelect = $this->createPageSelectInstance(FALSE);
@@ -77,7 +77,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 
 	/**
 	 * @param boolean $showHidden
-	 * @return t3lib_pageSelect
+	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
 	private function createPageSelectInstance($showHidden = FALSE) {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
@@ -86,7 +86,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 		} else {
 			$groups = array(-1, 0);
 		}
-		$pageSelect = new t3lib_pageSelect();
+		$pageSelect = new \TYPO3\CMS\Frontend\Page\PageRepository();
 		$pageSelect->init((boolean) $showHidden);
 		$clauses = array();
 		foreach ($groups as $group) {
@@ -100,7 +100,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	}
 
 	/**
-	 * Wrapper for t3lib_pageSelect::getPage()
+	 * Wrapper for \TYPO3\CMS\Frontend\Page\PageRepository::getPage()
 	 *
 	 * @param integer $pageUid
 	 * @return array
@@ -116,7 +116,7 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	}
 
 	/**
-	 * Wrapper for t3lib_pageSelect::getPageOverlay()
+	 * Wrapper for \TYPO3\CMS\Frontend\Page\PageRepository::getPageOverlay()
 	 *
 	 * @param mixed $pageInput
 	 * @param integer $languageUid
@@ -131,21 +131,28 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	}
 
 	/**
-	 * Wrapper for t3lib_pageSelect::getMenu()
+	 * Wrapper for \TYPO3\CMS\Frontend\Page\PageRepository::getMenu()
 	 * Caution: different signature
 	 *
 	 * @param integer $pageUid
 	 * @param boolean $showHidden
 	 * @param array $excludePages
 	 * @param string $where
+	 * @param boolean $showHiddenInMenu
 	 * @param boolean $checkShortcuts
 	 * @return array
 	 */
-	public function getMenu($pageUid = NULL, $showHidden = FALSE, $excludePages = array(), $where = '', $checkShortcuts = FALSE) {
+	public function getMenu($pageUid = NULL, $showHidden = FALSE, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$addWhere = 0 < count($excludePages) ? 'AND uid NOT IN (' . implode(',', $excludePages) . ')' : '';
+		$addWhere = 'AND doktype!=254';
+		if (0 < count($excludePages)) {
+			$addWhere .= ' AND uid NOT IN (' . implode(',', $excludePages) . ')';
+		}
+		if (FALSE === (boolean) $showHiddenInMenu) {
+			$addWhere .= ' AND nav_hide=0';
+		}
 		if ('' !== $where) {
 			$addWhere = $where . ' ' . $addWhere;
 		}
@@ -161,19 +168,30 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	}
 
 	/**
-	 * Wrapper for t3lib_pageSelect::getRootline()
+	 * Wrapper for \TYPO3\CMS\Frontend\Page\PageRepository::getRootLine()
 	 *
 	 * @param integer $pageUid
 	 * @param string $MP
+	 * @param boolean $reverse
 	 * @return array
 	 */
-	public function getRootline($pageUid = NULL, $MP = '') {
+	public function getRootLine($pageUid = NULL, $MP = NULL, $reverse = FALSE) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
+		if (NULL === $MP) {
+			$MP = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP');
+			if (TRUE === empty($MP)) {
+				$MP = '';
+			}
+		}
 		$key = md5($pageUid . $MP);
 		if (FALSE === isset(self::$cachedRootLines[$key])) {
-			self::$cachedRootLines[$key] = self::$pageSelect->getRootLine($pageUid, $MP);
+			$rootLine = self::$pageSelect->getRootLine($pageUid, $MP);
+			if (TRUE === $reverse) {
+				$rootLine = array_reverse($rootLine);
+			}
+			self::$cachedRootLines[$key] = $rootLine;
 		}
 		return self::$cachedRootLines[$key];
 	}
@@ -186,11 +204,17 @@ class Tx_Vhs_Service_PageSelectService implements t3lib_Singleton {
 	 * @param boolean $normalWhenNoLanguage
 	 * @return boolean
 	 */
-	public function hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage = TRUE) {
+	public function hidePageForLanguageUid($pageUid = 0, $languageUid = -1, $normalWhenNoLanguage = TRUE) {
+		if (0 === $pageUid) {
+			$pageUid = $pageUid = $GLOBALS['TSFE']->id;
+		}
+		if (-1 === $languageUid) {
+			$languageUid = $GLOBALS['TSFE']->sys_language_uid;
+		}
 		$page = $this->getPage($pageUid);
 		$l18nCfg = TRUE === isset($page['l18n_cfg']) ? $page['l18n_cfg'] : 0;
-		$hideIfNotTranslated = (boolean) t3lib_div::hideIfNotTranslated($l18nCfg);
-		$hideIfDefaultLanguage = (boolean) t3lib_div::hideIfDefaultLanguage($l18nCfg);
+		$hideIfNotTranslated = (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($l18nCfg);
+		$hideIfDefaultLanguage = (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($l18nCfg);
 		$pageOverlay = 0 !== $languageUid ? $this->getPageOverlay($pageUid, $languageUid) : array();
 		$translationAvailable = 0 !== count($pageOverlay);
 		return

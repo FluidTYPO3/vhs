@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -28,11 +28,11 @@
  *
  * Condition to check if an extension is loaded.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Extension
  */
-class Tx_Vhs_ViewHelpers_Extension_LoadedViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class Tx_Vhs_ViewHelpers_Extension_LoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -49,8 +49,8 @@ class Tx_Vhs_ViewHelpers_Extension_LoadedViewHelper extends Tx_Fluid_Core_ViewHe
 	 */
 	public function render() {
 		$extensionName = $this->arguments['extensionName'];
-		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($extensionName);
-		$isLoaded = t3lib_extMgm::isLoaded($extensionKey);
+		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+		$isLoaded = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
 		if ($isLoaded !== FALSE) {
 			return $this->renderThenChild();
 		} else {

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
+ *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  *
  *  All rights reserved
  *
@@ -27,6 +27,12 @@
  * Renders HTML code to embed a HTML5 video player. NOTICE: This is
  * all HTML5 and won't work on browsers like IE8 and below. Include
  * some helper library like videojs.com if you need to suport those.
+ * Source can be a single file, a CSV of files or an array of arrays
+ * with multiple sources for different video formats. In the latter
+ * case provide array keys 'src' and 'type'. Providing an array of
+ * sources (even for a single source) is preferred as you can set
+ * the correct mime type of the video which is otherwise guessed
+ * from the filename's extension.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
@@ -76,22 +82,35 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 	 */
 	public function render() {
 		$sources = $this->getSourcesFromArgument();
-		if (0 == count($sources)) {
+		if (0 === count($sources)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('No video sources provided.', 1359382189);
 		}
 		foreach ($sources as $source) {
-			if (FALSE === isset($source['src'])) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "src" in sources array.', 1359381250);
+			if (TRUE === is_string($source)) {
+				if (TRUE === strpos($source, 'http')) {
+					$src = $source;
+					$type = substr($source, strrpos($source, '.') + 1);
+				} else {
+					$src = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($source), strlen(PATH_site));
+					$type = pathinfo($src, PATHINFO_EXTENSION);
+				}
+			} elseif (TRUE === is_array($source)) {
+				if (FALSE === isset($source['src'])) {
+					throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "src" in sources array.', 1359381250);
+				}
+				$src = $source['src'];
+				if (FALSE === isset($source['type'])) {
+					throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "type" in sources array.', 1359381255);
+				}
+				$type = $source['type'];
+				if (FALSE === in_array(strtolower($type), $this->validTypes)) {
+					throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $type . '".', 1359381260);
+				}
+			} else {
+				// skip invalid source
+				continue;
 			}
-			$src = $source['src'];
-
-			if (FALSE === isset($source['type'])) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "type" in sources array.', 1359381255);
-			}
-			if (FALSE === in_array(strtolower($source['type']), $this->validTypes)) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $source['type'] . '".', 1359381260);
-			}
-			$type = 'video/' . strtolower($source['type']);
+			$type = 'video/' . strtolower($type);
 			$src = $this->preprocessSourceUri($src);
 			$this->renderChildTag('source', array('src' => $src, 'type' => $type), FALSE, 'append');
 		}

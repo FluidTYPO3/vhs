@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -66,7 +66,7 @@
  * completely isolated rendering identical to that which takes
  * place when rendering an Extbase plugin's content object.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
@@ -85,7 +85,7 @@ class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Re
 		if ($file === NULL) {
 			$file = $this->renderChildren();
 		}
-		$file = t3lib_div::getFileAbsFileName($file);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($file);
 		$view = $this->getPreparedView();
 		$view->setTemplatePathAndFilename($file);
 		$view->assignMultiple($variables);
@@ -94,11 +94,11 @@ class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Re
 		}
 		if (is_array($paths) === TRUE) {
 			if (isset($paths['layoutRootPath']) === TRUE) {
-				$paths['layoutRootPath'] = 0===strpos($paths['layoutRootPath'], 'EXT:') ? t3lib_div::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
+				$paths['layoutRootPath'] = 0===strpos($paths['layoutRootPath'], 'EXT:') ? \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
 				$view->setLayoutRootPath($paths['layoutRootPath']);
 			}
 			if (isset($paths['partialRootPath']) === TRUE) {
-				$paths['partialRootPath'] = 0===strpos($paths['partialRootPath'], 'EXT:') ? t3lib_div::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
+				$paths['partialRootPath'] = 0===strpos($paths['partialRootPath'], 'EXT:') ? \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
 				$view->setPartialRootPath($paths['partialRootPath']);
 			}
 		}

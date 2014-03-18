@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -80,17 +80,35 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 	 * of each existing variable, restoring it after rendering.
 	 * Returns the output of the renderChildren() method on $viewHelper.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
 	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
 	 * @param array $variables
 	 * @return mixed
 	 */
-	public static function renderChildrenWithVariables(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables) {
+	public static function renderChildrenWithVariables(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables) {
 		$backups = self::backupVariables($variableContainer, $variables);
 		$content = $viewHelper->renderChildren();
 		self::restoreVariables($variableContainer, $variables, $backups);
 
 		return $content;
+	}
+
+	/**
+	 * @param mixed $candidate
+	 * @param boolean $useKeys
+	 * @return array
+	 */
+	public static function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = TRUE) {
+		if (TRUE === $candidate instanceof Traversable) {
+			return iterator_to_array($candidate, $useKeys);
+		}
+		if (TRUE === is_string($candidate)) {
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $candidate, TRUE);
+		}
+		if (FALSE === is_array($candidate)) {
+			return array($candidate);
+		}
+		return (array) $candidate;
 	}
 
 }

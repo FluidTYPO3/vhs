@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -28,7 +28,7 @@
  *
  * Returns the site relative path to an extension folder.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Extension\Path
  */
@@ -41,7 +41,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_SiteRelativeViewHelper extends Tx_Vhs_Vi
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return t3lib_extMgm::siteRelPath($extensionKey);
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($extensionKey);
 	}
 
 }

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -26,11 +26,11 @@
 /**
  * ### Base class: Security ViewHelpers
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository

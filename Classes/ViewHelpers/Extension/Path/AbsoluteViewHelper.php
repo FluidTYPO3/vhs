@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Claus Due <claus@wildside.dk>, Wildside A/S
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -28,7 +28,7 @@
  *
  * Returns the absolute path to an extension folder.
  *
- * @author Claus Due <claus@wildside.dk>, Wildside A/S
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Extension\Path
  */
@@ -39,7 +39,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_AbsoluteViewHelper extends Tx_Vhs_ViewHe
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('path', 'string', 'Optional path to append, second argument when calling t3libextMgm::extPath');
+		$this->registerArgument('path', 'string', 'Optional path to append, second argument when calling \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath');
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_AbsoluteViewHelper extends Tx_Vhs_ViewHe
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return t3lib_extMgm::extPath($extensionKey, isset($this->arguments['path']) === TRUE ? $this->arguments['path'] : NULL);
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, isset($this->arguments['path']) === TRUE ? $this->arguments['path'] : NULL);
 	}
 
 }
