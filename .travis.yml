@@ -15,8 +15,6 @@ matrix:
        env: DB=mysql TYPO3=master INTEGRATION=master
 
 before_script:
-  # Get latest git version cause of travis issues (https://github.com/travis-ci/travis-ci/issues/1710)
-  - sudo apt-get update && sudo apt-get install git
   - cd ..
   - git clone --single-branch --branch $INTEGRATION --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - git clone --depth 1 git://github.com/FluidTYPO3/FluidTYPO3-CodingStandards.git build-environment/FluidTYPO3-CodingStandards
