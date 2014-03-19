@@ -54,4 +54,4 @@ script:
 # PHPCodeSniffer code inspection with only errors displayed (no warnings)
   - build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/vhs
 # PHPUnit tests from overridden phpunit tests configuration file
-  - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then typo3/cli_dispatch.phpsh phpunit -c phpunit.xml --coverage-text; fi
+  - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then typo3/cli_dispatch.phpsh phpunit -c phpunit.xml; fi
