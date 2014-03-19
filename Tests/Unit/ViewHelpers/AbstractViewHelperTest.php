@@ -30,6 +30,17 @@
 abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
+	 * @param string $name
+	 * @param array $data
+	 * @param string $dataName
+	 */
+	public function __construct($name = NULL, array $data = array(), $dataName = '') {
+		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$this->objectManager = clone $objectManager;
+		parent::__construct($name, $data, $dataName);
+	}
+
+	/**
 	 * @test
 	 */
 	public function canCreateViewHelperInstance() {
