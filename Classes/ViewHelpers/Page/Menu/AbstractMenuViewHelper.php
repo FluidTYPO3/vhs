@@ -471,6 +471,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 				continue;
 			} elseif (in_array($page['doktype'], $allowedDocumentTypes)) {
 				$page = $this->getMenuItemEntry($page, $rootLine);
+				if (TRUE === (boolean) $page['nav_hide'] && FALSE === (boolean) $this->arguments['showHidden']) {
+					continue;
+				}
 				$filtered[$page['uid']] = $page;
 			}
 		}
