@@ -383,7 +383,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		foreach ($assets as $name => $asset) {
 			$assetSettings = $this->extractAssetSettings($asset);
 			$groupName = $assetSettings['group'];
-			$removed = (TRUE === isset($assetSettings['removed']) ? $assetSettings['removed'] : FALSE);
+			$removed = (boolean) (TRUE === isset($assetSettings['removed']) ? $assetSettings['removed'] : FALSE);
 			if (TRUE === $removed) {
 				continue;
 			}
