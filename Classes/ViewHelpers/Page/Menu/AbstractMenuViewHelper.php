@@ -648,6 +648,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$menuData = $this->getMenu($pageUid);
 		$menu = $this->parseMenu($menuData, $rootLineData);
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
+		$this->cleanupSubmenuVariables();
 		$this->cleanTemplateVariableContainer();
 		$this->backupVariables();
 		$this->templateVariableContainer->add($this->arguments['as'], $menu);
