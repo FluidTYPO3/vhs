@@ -356,12 +356,12 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$pageUid = $page['uid'];
 		// keep a backup of the original page UID to determine 'active' state
 		$originalPageUid = $page['uid'];
-		$argumentCount = 0;
-		$argumentCount += intval($this->arguments['useShortcutData']);
-		$argumentCount += intval($this->arguments['useShortcutTarget']);
-		$argumentCount += intval($this->arguments['useShortcutUid']);
-		if (1 < $argumentCount) {
-			throw new Exception('Arguments useShortcutData, useShortcutTarget and useShortcutUid are mutually exclusive. Please use only one at a time.', 1371069824);
+		if (TRUE === (boolean) $this->arguments['useShortcutData']) {
+			$useShortcutUid = TRUE;
+			$useShortcutTarget = TRUE;
+		} else {
+			$useShortcutUid = (boolean) $this->arguments['useShortcutUid'];
+			$useShortcutTarget = (boolean) $this->arguments['useShortcutTarget'];
 		}
 		// first, ensure the complete data array is present
 		$page = $this->pageSelect->getPage($pageUid);
@@ -389,15 +389,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 				default:
 					$targetPage = $this->pageSelect->getPage($page['shortcut']);
 			}
-			if (TRUE === (boolean) $this->arguments['useShortcutData']) {
+			if (TRUE === $useShortcutTarget) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
-				// overwrite current page UID
-				$pageUid = $targetPage['uid'];
-			} elseif (TRUE === (boolean) $this->arguments['useShortcutTarget']) {
-				// overwrite current page data with shortcut page data
-				$page = $targetPage;
-			} elseif (TRUE === (boolean) $this->arguments['useShortcutUid']) {
+			}
+			if (TRUE === $useShortcutUid) {
 				// overwrite current page UID
 				$pageUid = $targetPage['uid'];
 			}
