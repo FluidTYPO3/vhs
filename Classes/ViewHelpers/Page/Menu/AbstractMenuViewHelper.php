@@ -81,9 +81,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$this->registerArgument('classActive', 'string', 'Optional class name to add to active links', FALSE, 'active');
 		$this->registerArgument('classCurrent', 'string', 'Optional class name to add to current link', FALSE, 'current');
 		$this->registerArgument('classHasSubpages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
-		$this->registerArgument('useShortcutTarget', 'boolean', 'Optional param for using shortcut target instead of shortcut itself for current link', FALSE, FALSE);
-		$this->registerArgument('useShortcutData', 'boolean', 'If TRUE, fetches ALL data from the shortcut target before any additional processing takes place. Note that this overrides everything, including the UID, effectively substituting the shortcut for the target', FALSE, FALSE);
 		$this->registerArgument('useShortcutUid', 'boolean', 'If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.', FALSE, TRUE);
+		$this->registerArgument('useShortcutTarget', 'boolean', 'Optional param for using shortcut target instead of shortcut itself for current link', FALSE, NULL);
+		$this->registerArgument('useShortcutData', 'boolean', 'Shortcut to set useShortcutTarget and useShortcutData simultaneously', FALSE, NULL);
 		$this->registerArgument('classFirst', 'string', 'Optional class name for the first menu elment', FALSE, '');
 		$this->registerArgument('classLast', 'string', 'Optional class name for the last menu elment', FALSE, '');
 		$this->registerArgument('substElementUid', 'boolean', 'Optional parameter for wrapping the link with the uid of the page', FALSE, '');
@@ -190,6 +190,28 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 			return $this->arguments->toArray();
 		}
 		return $this->arguments;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function shouldUseShortcutTarget() {
+		$useShortcutTarget = (boolean) $this->arguments['useShortcutData'];
+		if (TRUE === $this->hasArgument('useShortcutTarget')) {
+			$useShortcutTarget = (boolean) $this->arguments['useShortcutTarget'];
+		}
+		return $useShortcutTarget;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function shouldUseShortcutUid() {
+		$useShortcutUid = (boolean) $this->arguments['useShortcutData'];
+		if (TRUE === $this->hasArgument('useShortcutUid')) {
+			$useShortcutUid = (boolean) $this->arguments['useShortcutUid'];
+		}
+		return $useShortcutUid;
 	}
 
 	/**
@@ -356,13 +378,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$pageUid = $page['uid'];
 		// keep a backup of the original page UID to determine 'active' state
 		$originalPageUid = $page['uid'];
-		$argumentCount = 0;
-		$argumentCount += intval($this->arguments['useShortcutData']);
-		$argumentCount += intval($this->arguments['useShortcutTarget']);
-		$argumentCount += intval($this->arguments['useShortcutUid']);
-		if (1 < $argumentCount) {
-			throw new Exception('Arguments useShortcutData, useShortcutTarget and useShortcutUid are mutually exclusive. Please use only one at a time.', 1371069824);
-		}
 		// first, ensure the complete data array is present
 		$page = $this->pageSelect->getPage($pageUid);
 		$targetPage = NULL;
@@ -389,15 +404,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 				default:
 					$targetPage = $this->pageSelect->getPage($page['shortcut']);
 			}
-			if (TRUE === (boolean) $this->arguments['useShortcutData']) {
+			if (TRUE === (boolean) $this->shouldUseShortcutTarget()) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
-				// overwrite current page UID
-				$pageUid = $targetPage['uid'];
-			} elseif (TRUE === (boolean) $this->arguments['useShortcutTarget']) {
-				// overwrite current page data with shortcut page data
-				$page = $targetPage;
-			} elseif (TRUE === (boolean) $this->arguments['useShortcutUid']) {
+			}
+			if (TRUE === (boolean) $this->shouldUseShortcutUid()) {
 				// overwrite current page UID
 				$pageUid = $targetPage['uid'];
 			}
