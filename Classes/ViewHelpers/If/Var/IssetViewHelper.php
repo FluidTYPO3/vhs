@@ -33,10 +33,10 @@
  *
  * Combines well with dynamic variable names:
  *
- *     <!-- if {variableContainingVariableName} is "foo" this checkx existence of {foo} -->
- *     <v:if.var.isset name="{variableContainingVariableName}">...</v:var.isset>
+ *     <!-- if {variableContainingVariableName} is "foo" this checks existence of {foo} -->
+ *     <v:if.var.isset name="{variableContainingVariableName}">...</v:if.var.isset>
  *     <!-- if {suffix} is "Name" this checks existence of "variableName" -->
- *     <v:if.var.isset name="variable{suffix}">...</v:var.isset>
+ *     <v:if.var.isset name="variable{suffix}">...</v:if.var.isset>
  *     <!-- outputs value of {foo} if {bar} is defined -->
  *     {foo -> v:if.var.isset(name: bar)}
  *
