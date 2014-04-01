@@ -52,13 +52,13 @@ class Tx_Vhs_ViewHelpers_CallViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	 * @return mixed
 	 */
 	public function render($method, $object = NULL, array $arguments = array()) {
-		if ($object === NULL) {
+		if (NULL === $object) {
 			$object = $this->renderChildren();
-			if (is_object($object) === FALSE) {
+			if (FALSE === is_object($object)) {
 				throw new RuntimeException('Using v:call requires an object either as "object" attribute, tag content or inline argument', 1356849652);
 			}
 		}
-		if (!method_exists($object, $method)) {
+		if (FALSE === method_exists($object, $method)) {
 			throw new RuntimeException('Method "' . $method . '" does not exist on object of type ' . get_class($object), 1356834755);
 		}
 		return call_user_func_array(array($object, $method), $arguments);

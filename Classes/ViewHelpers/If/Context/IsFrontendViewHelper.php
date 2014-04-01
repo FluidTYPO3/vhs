@@ -57,7 +57,7 @@ class Tx_Vhs_ViewHelpers_If_Context_IsFrontendViewHelper extends \TYPO3\CMS\Flui
 	 * @return string
 	 */
 	public function render() {
-		if (TYPO3_MODE === 'FE') {
+		if ('FE' === TYPO3_MODE) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();

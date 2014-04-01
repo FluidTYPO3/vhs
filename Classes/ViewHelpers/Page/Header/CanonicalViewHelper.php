@@ -65,7 +65,7 @@ class Tx_Vhs_ViewHelpers_Page_Header_CanonicalViewHelper extends  \TYPO3\CMS\Flu
 	 * @return string
 	 */
 	public function render() {
-		if (TYPO3_MODE == 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return;
 		}
 

@@ -48,4 +48,5 @@ class Tx_Vhs_ViewHelpers_If_Type_IsQueryResultViewHelper extends \TYPO3\CMS\Flui
 			return $this->renderElseChild();
 		}
 	}
+
 }

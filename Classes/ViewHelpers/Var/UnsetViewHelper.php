@@ -58,7 +58,7 @@ class Tx_Vhs_ViewHelpers_Var_UnsetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewH
 	 * @return void
 	 */
 	public function render($name) {
-		if ($this->templateVariableContainer->exists($name) === TRUE) {
+		if (TRUE === $this->templateVariableContainer->exists($name)) {
 			$this->templateVariableContainer->remove($name);
 		}
 	}

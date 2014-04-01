@@ -57,7 +57,7 @@ class Tx_Vhs_ViewHelpers_If_Context_IsBackendViewHelper extends \TYPO3\CMS\Fluid
 	 * @return string
 	 */
 	public function render() {
-		if (TYPO3_MODE === 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();

@@ -48,4 +48,5 @@ class Tx_Vhs_ViewHelpers_If_Type_IsObjectViewHelper extends \TYPO3\CMS\Fluid\Cor
 			return $this->renderElseChild();
 		}
 	}
+
 }

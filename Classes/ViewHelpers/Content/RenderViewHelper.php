@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Content_RenderViewHelper extends Tx_Vhs_ViewHelpers_Con
 	 * @return string
 	 */
 	public function render() {
-		if (TYPO3_MODE == 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return '';
 		}
 

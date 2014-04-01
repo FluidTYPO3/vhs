@@ -50,22 +50,22 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends \TYPO3\CMS\Fluid\Core\View
 
 		$path = $this->arguments['path'];
 
-		if ($path === NULL) {
+		if (NULL === $path) {
 			$path = $this->renderChildren();
-			if ($path === NULL) {
+			if (NULL === $path) {
 				return 0;
 			}
 		}
 
 		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 
-		if (!file_exists($file) || is_dir($file)) {
+		if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $file . '". File does not exist or is a directory.', 1356953963);
 		}
 
 		$size = filesize($file);
 
-		if ($size === FALSE) {
+		if (FALSE === $size) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $file . '".', 1356954032);
 		}
 

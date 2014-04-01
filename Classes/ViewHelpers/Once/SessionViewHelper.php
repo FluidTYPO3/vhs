@@ -46,7 +46,7 @@ class Tx_Vhs_ViewHelpers_Once_SessionViewHelper extends Tx_Vhs_ViewHelpers_Once_
 	 * @return string
 	 */
 	public function render() {
-		if (!session_id()) {
+		if ('' === session_id()) {
 			session_start();
 		}
 		return parent::render();
@@ -58,7 +58,7 @@ class Tx_Vhs_ViewHelpers_Once_SessionViewHelper extends Tx_Vhs_ViewHelpers_Once_
 	protected function storeIdentifier() {
 		$identifier = $this->getIdentifier();
 		$index = get_class($this);
-		if (is_array($_SESSION[$index]) === FALSE) {
+		if (FALSE === is_array($_SESSION[$index])) {
 			$_SESSION[$index] = array();
 		}
 		$_SESSION[$index][$identifier] = TRUE;
@@ -70,7 +70,7 @@ class Tx_Vhs_ViewHelpers_Once_SessionViewHelper extends Tx_Vhs_ViewHelpers_Once_
 	protected function assertShouldSkip() {
 		$identifier = $this->getIdentifier();
 		$index = get_class($this);
-		return (isset($_SESSION[$index][$identifier]) === TRUE);
+		return (boolean) (TRUE === isset($_SESSION[$index][$identifier]));
 	}
 
 	/**
@@ -79,8 +79,8 @@ class Tx_Vhs_ViewHelpers_Once_SessionViewHelper extends Tx_Vhs_ViewHelpers_Once_
 	protected function removeIfExpired() {
 		$identifier = $this->getIdentifier();
 		$index = get_class($this);
-		$existsInSession = (isset($_SESSION[$index]) === TRUE && isset($_SESSION[$index][$identifier]) === TRUE);
-		if ($existsInSession === TRUE && $_SESSION[$index][$identifier] <= time() - $this->arguments['ttl']) {
+		$existsInSession = (boolean) (TRUE === isset($_SESSION[$index]) && TRUE === isset($_SESSION[$index][$identifier]));
+		if (TRUE === $existsInSession && time() - $this->arguments['ttl'] >= $_SESSION[$index][$identifier]) {
 			unset($_SESSION[$index][$identifier]);
 		}
 	}

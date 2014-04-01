@@ -60,7 +60,7 @@ class Tx_Vhs_ViewHelpers_Page_BreadCrumbViewHelper extends Tx_Vhs_ViewHelpers_Pa
 		$rootLineData = array_reverse($rootLineData);
 		$rootLineData = array_slice($rootLineData, $entryLevel, $endLevel);
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
-		if (count($rootLine) === 0) {
+		if (0 === count($rootLine)) {
 			return NULL;
 		}
 		$this->backupVariables();

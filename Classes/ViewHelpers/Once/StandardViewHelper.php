@@ -42,5 +42,4 @@
  * @subpackage ViewHelpers\Once
  */
 class Tx_Vhs_ViewHelpers_Once_StandardViewHelper extends Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper {
-
 }

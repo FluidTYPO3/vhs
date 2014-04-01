@@ -48,4 +48,5 @@ class Tx_Vhs_ViewHelpers_If_String_IsNumericViewHelper extends \TYPO3\CMS\Fluid\
 			return $this->renderElseChild();
 		}
 	}
+
 }

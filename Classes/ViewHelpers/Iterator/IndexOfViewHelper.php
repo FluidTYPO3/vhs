@@ -40,7 +40,7 @@ class Tx_Vhs_ViewHelpers_Iterator_IndexOfViewHelper extends Tx_Vhs_ViewHelpers_I
 	 */
 	public function render() {
 		parent::render();
-		if ($this->evaluation !== FALSE) {
+		if (FALSE !== $this->evaluation) {
 			return intval($this->evaluation);
 		}
 		return - 1;

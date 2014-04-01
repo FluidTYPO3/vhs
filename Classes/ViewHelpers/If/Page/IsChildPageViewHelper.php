@@ -59,4 +59,5 @@ class Tx_Vhs_ViewHelpers_If_Page_IsChildPageViewHelper extends \TYPO3\CMS\Fluid\
 			return $this->renderElseChild();
 		}
 	}
+
 }

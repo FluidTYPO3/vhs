@@ -67,10 +67,8 @@ abstract class Tx_Vhs_ViewHelpers_Resource_Record_AbstractRecordResourceViewHelp
 	public function initializeArguments() {
 		$this->registerArgument('table', 'string', 'The table to lookup records.', TRUE);
 		$this->registerArgument('field', 'string', 'The field of the table associated to resources.', TRUE);
-
 		$this->registerArgument('record', 'array', 'The actual record. Alternatively you can use the "uid" argument.', FALSE, NULL);
 		$this->registerArgument('uid', 'integer', 'The uid of the record. Alternatively you can use the "record" argument.', FALSE, NULL);
-
 		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
 	}
 

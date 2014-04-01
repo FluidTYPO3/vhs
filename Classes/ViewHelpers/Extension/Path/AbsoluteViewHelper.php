@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_AbsoluteViewHelper extends Tx_Vhs_ViewHe
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, isset($this->arguments['path']) === TRUE ? $this->arguments['path'] : NULL);
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, TRUE === isset($this->arguments['path']) ? $this->arguments['path'] : NULL);
 	}
 
 }

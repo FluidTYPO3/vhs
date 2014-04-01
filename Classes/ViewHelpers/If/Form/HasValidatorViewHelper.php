@@ -71,27 +71,27 @@ class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends \TYPO3\CMS\Fluid
 	 * @return string
 	 */
 	public function render($property, $validatorName = NULL, Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
-		if ($object === NULL) {
+		if (NULL === $object) {
 			$object = $this->getFormObject();
 			$className = get_class($object);
 		}
-		if (strpos($property, '.') !== FALSE) {
+		if (FALSE !== strpos($property, '.')) {
 			$pathSegments = explode('.', $property);
 			foreach ($pathSegments as $property) {
-				if (ctype_digit($property)) {
+				if (TRUE === ctype_digit($property)) {
 					continue;
 				}
 				$annotations = $this->ownReflectionService->getPropertyTagValues($className, $property, 'var');
 				$possibleClassName = array_pop($annotations);
-				if (strpos($possibleClassName, '<') !== FALSE) {
+				if (FALSE !== strpos($possibleClassName, '<')) {
 					$className = array_pop(explode('<', trim($possibleClassName, '>')));
-				} elseif (class_exists($possibleClassName) === TRUE) {
+				} elseif (TRUE === class_exists($possibleClassName)) {
 					$className = $possibleClassName;
 				}
 			}
 		}
 		$annotations = $this->ownReflectionService->getPropertyTagValues($className, $property, 'validate');
-		if (0 < count($annotations) && (NULL === $validatorName || in_array($validatorName, $annotations) === TRUE)) {
+		if (0 < count($annotations) && (NULL === $validatorName || TRUE === in_array($validatorName, $annotations))) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();
@@ -102,10 +102,10 @@ class Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper extends \TYPO3\CMS\Fluid
 	 * @return Tx_Extbase_DomainObject_DomainObjectInterface|NULL
 	 */
 	protected function getFormObject($formClassName = 'Tx_Fluid_ViewHelpers_FormViewHelper') {
-		if ($this->viewHelperVariableContainer->exists($formClassName, 'formObject')) {
+		if (TRUE === $this->viewHelperVariableContainer->exists($formClassName, 'formObject')) {
 			return $this->viewHelperVariableContainer->get($formClassName, 'formObject');
 		}
-		if ($formClassName !== self::ALTERNATE_FORM_VIEWHELPER_CLASSNAME) {
+		if (self::ALTERNATE_FORM_VIEWHELPER_CLASSNAME !== $formClassName) {
 			return $this->getFormObject(self::ALTERNATE_FORM_VIEWHELPER_CLASSNAME);
 		}
 		return NULL;

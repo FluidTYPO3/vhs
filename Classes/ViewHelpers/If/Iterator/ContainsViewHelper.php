@@ -70,26 +70,26 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	 * @return mixed
 	 */
 	protected function getNeedleAtIndex($index) {
-		if ($index < 0) {
+		if (0 > $index) {
 			return NULL;
 		}
 		$haystack = $this->arguments['haystack'];
 		$asArray = array();
-		if (is_array($haystack)) {
+		if (TRUE === is_array($haystack)) {
 			$asArray = $haystack;
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
+		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
 			/** @var $haystack Tx_Extbase_Persistence_ObjectStorage */
 			$asArray = $haystack->toArray();
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
 			/** @var $haystack Tx_Extbase_Persistence_LazyObjectStorage */
 			$asArray = $haystack->toArray();
-		} elseif ($haystack instanceof Tx_Extbase_Persistence_QueryResult) {
+		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_QueryResult) {
 			/** @var $haystack Tx_Extbase_Persistence_QueryResult */
 			$asArray = $haystack->toArray();
-		} elseif (is_string($haystack)) {
+		} elseif (TRUE === is_string($haystack)) {
 			$asArray = str_split($haystack);
 		}
-		return isset($asArray[$index]) ? $asArray[$index] : FALSE;
+		return (TRUE === isset($asArray[$index]) ? $asArray[$index] : FALSE);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	 * @return boolean|integer
 	 */
 	protected function assertHaystackHasNeedle($haystack, $needle) {
-		if (is_array($haystack)) {
+		if (TRUE === is_array($haystack)) {
 			return $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
 			return $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
@@ -106,7 +106,7 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 			return $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_QueryResult) {
 			return $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
-		} elseif (is_string($haystack)) {
+		} elseif (TRUE === is_string($haystack)) {
 			return strpos($haystack, $needle);
 		}
 		return FALSE;
@@ -118,13 +118,13 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	 * @return boolean|integer
 	 */
 	protected function assertHaystackIsQueryResultAndHasNeedle($haystack, $needle) {
-		if ($needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+		if (TRUE === $needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
 			$needle = $needle->getUid();
 		}
 		foreach ($haystack as $index => $candidate) {
 			/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
-			if ($candidate->getUid() == $needle) {
+			if ((integer) $candidate->getUid() === (integer) $needle) {
 				return $index;
 			}
 		}
@@ -139,11 +139,11 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	protected function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle) {
 		$index = 0;
 		/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
-		if ($needle instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+		if (TRUE === $needle instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
 			$needle = $needle->getUid();
 		}
 		foreach ($haystack as $candidate) {
-			if ($candidate->getUid() == $needle) {
+			if ((integer) $candidate->getUid() === (integer) $needle) {
 				return $index;
 			}
 			$index++;
@@ -157,9 +157,9 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	 * @return boolean|integer
 	 */
 	protected function assertHaystackIsArrayAndHasNeedle($haystack, $needle) {
-		if ($needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface === FALSE) {
-			if (isset($this->arguments['considerKeys']) && $this->arguments['considerKeys']) {
-				$result = array_search($needle, $haystack) || isset($haystack[$needle]);
+		if (FALSE === $needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			if (TRUE === (boolean) $this->arguments['considerKeys']) {
+				$result = (boolean) (FALSE !== array_search($needle, $haystack) || TRUE === isset($haystack[$needle]));
 			} else {
 				$result = array_search($needle, $haystack);
 			}
@@ -168,7 +168,7 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
 			foreach ($haystack as $index => $straw) {
 				/** @var $straw Tx_Extbase_DomainObject_DomainObjectInterface */
-				if ($straw->getUid() == $needle->getUid()) {
+				if ((integer) $straw->getUid() === (integer) $needle->getUid()) {
 					return $index;
 				}
 			}

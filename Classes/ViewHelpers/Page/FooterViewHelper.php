@@ -37,7 +37,7 @@ class Tx_Vhs_ViewHelpers_Page_FooterViewHelper extends Tx_Vhs_ViewHelpers_Asset_
 	 * @return void
 	*/
 	public function render() {
-		if (TYPO3_MODE == 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return;
 		}
 		$content = $this->getContent();

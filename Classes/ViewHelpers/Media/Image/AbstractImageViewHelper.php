@@ -99,7 +99,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		$quality = $this->arguments['quality'];
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
-		if (TYPO3_MODE === 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			$this->simulateFrontendEnvironment();
 		}
 		$setup = array(
@@ -118,18 +118,18 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 			$quality = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($quality, 10, 100, 75);
 			$setup['params'] = '-quality ' . $quality;
 		}
-		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
+		if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
 			$src = substr($src, 3);
 		}
 		$this->imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
-		if (!is_array($this->imageInfo)) {
+		if (FALSE === is_array($this->imageInfo)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
 		}
 		$this->imageInfo[3] = \TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($this->imageInfo[3]);
 		$GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
 		$this->mediaSource = $GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($this->imageInfo[3]);
-		if (TYPO3_MODE === 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			$this->resetFrontendEnvironment();
 		}
 	}
@@ -141,7 +141,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 	 * @return void
 	 */
 	protected function simulateFrontendEnvironment() {
-		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+		$this->tsfeBackup = TRUE === isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$this->workingDirectoryBackup = getcwd();
 		chdir(constant('PATH_site'));
 		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);

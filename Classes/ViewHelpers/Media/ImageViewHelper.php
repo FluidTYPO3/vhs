@@ -67,7 +67,7 @@ class Tx_Vhs_ViewHelpers_Media_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_
 		$this->tag->addAttribute('src', $src);
 		$this->tag->addAttribute('width', $this->imageInfo[0]);
 		$this->tag->addAttribute('height', $this->imageInfo[1]);
-		if ($this->arguments['title'] === '') {
+		if ('' === $this->arguments['title']) {
 			$this->tag->addAttribute('title', $this->arguments['alt']);
 		}
 		return $this->tag->render();

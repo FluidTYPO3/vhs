@@ -58,17 +58,18 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_ImageViewHelper extends \TYPO3\CMS\F
 	 * @return string
 	 */
 	public function render($text = NULL) {
-		if ($text === NULL) {
+		if (NULL === $text) {
 			$text = $this->renderChildren();
 		}
-		$height =  ($this->arguments['height'] != $this->arguments['width'] ? $this->arguments['height'] : NULL);
+		$height = $this->arguments['height'] != $this->arguments['width'] ? $this->arguments['height'] : NULL;
+		$addHeight = FALSE === empty($height) ? 'x' . $height : NULL;
 		$url = array(
 			'http://placehold.it',
-			$this->arguments['width'] . ($height ? 'x' . $height : NULL),
+			$this->arguments['width'] . $addHeight,
 			$this->arguments['backgroundColor'],
 			$this->arguments['textColor'],
 		);
-		if ($text) {
+		if (FALSE === empty($text)) {
 			array_push($url, '&text=' . urlencode($text));
 		}
 		$imageUrl = implode('/', $url);
@@ -76,7 +77,8 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_ImageViewHelper extends \TYPO3\CMS\F
 		$this->tag->addAttribute('src', $imageUrl);
 		$this->tag->addAttribute('alt', $imageUrl);
 		$this->tag->addAttribute('width', $this->arguments['width']);
-		$this->tag->addAttribute('height', $height ? $height : $this->arguments['width']);
+		$this->tag->addAttribute('height', FALSE === empty($height) ? $height : $this->arguments['width']);
 		return $this->tag->render();
 	}
+
 }

@@ -49,10 +49,10 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends \TYPO3\CMS\Fluid\Core
 
 		$filePath = $this->arguments['file'];
 
-		if ($filePath === NULL) {
+		if (NULL === $filePath) {
 			$filePath = $this->renderChildren();
 
-			if ($filePath === NULL) {
+			if (NULL === $filePath) {
 				return '';
 			}
 		}
@@ -62,7 +62,7 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends \TYPO3\CMS\Fluid\Core
 		$parts = explode('.', basename($file));
 
 		// file has no extension
-		if (count($parts) == 1) {
+		if (1 === count($parts)) {
 			return '';
 		}
 

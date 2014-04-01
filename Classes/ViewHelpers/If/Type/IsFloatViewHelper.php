@@ -48,4 +48,5 @@ class Tx_Vhs_ViewHelpers_If_Type_IsFloatViewHelper extends \TYPO3\CMS\Fluid\Core
 			return $this->renderElseChild();
 		}
 	}
+
 }

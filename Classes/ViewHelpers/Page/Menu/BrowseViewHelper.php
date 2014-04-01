@@ -80,7 +80,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		$firstUid = $pageUids[0];
 		$lastUid = $pageUids[$uidCount - 1];
 		for ($i = 0; $i < $uidCount; $i++) {
-			if ($pageUids[$i] == $pageUid) {
+			if ((integer) $pageUids[$i] === (integer) $pageUid) {
 				if ($i > 0) {
 					$prevUid = $pageUids[$i - 1];
 				}
@@ -141,7 +141,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 	 */
 	protected function getCustomLabelOrPageTitle($labelName, $pageRecord) {
 		$title = $this->arguments[$labelName];
-		if ($this->arguments['usePageTitles']) {
+		if (TRUE === $this->arguments['usePageTitles']) {
 			$title = $this->getItemTitle($pageRecord);
 		}
 		return $title;

@@ -62,9 +62,9 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 */
 	public function render() {
 		$variableNameSpace = $this->getVariableNameSpace();
-		if ($this->isObjectAccessorMode()) {
+		if (TRUE === $this->isObjectAccessorMode()) {
 			$formObjectName = $this->viewHelperVariableContainer->get($variableNameSpace, 'formObjectName');
-			if (!empty($formObjectName)) {
+			if (FALSE === empty($formObjectName)) {
 				$propertySegments = explode('.', $this->arguments['property']);
 				$propertyPath = '';
 				foreach ($propertySegments as $segment) {
@@ -77,7 +77,7 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends \TYPO3\CMS\Fluid\Core\
 		} else {
 			$name = $this->arguments['name'];
 		}
-		if ($this->hasArgument('value') && is_object($this->arguments['value'])) {
+		if (TRUE === $this->hasArgument('value') && TRUE === is_object($this->arguments['value'])) {
 			if (NULL !== $this->persistenceManager->getIdentifierByObject($this->arguments['value'])) {
 				$name .= '[__identity]';
 			}
@@ -94,10 +94,10 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends \TYPO3\CMS\Fluid\Core\
 		}
 		$fieldNameSegments = explode('[', $name, 2);
 		$name = $fieldNamePrefix . '[' . $fieldNameSegments[0] . ']';
-		if (count($fieldNameSegments) > 1) {
+		if (1 < count($fieldNameSegments)) {
 			$name .= '[' . $fieldNameSegments[1];
 		}
-		if ($this->viewHelperVariableContainer->exists($variableNameSpace, 'formFieldNames')) {
+		if (TRUE === $this->viewHelperVariableContainer->exists($variableNameSpace, 'formFieldNames')) {
 			$formFieldNames = $this->viewHelperVariableContainer->get($variableNameSpace, 'formFieldNames');
 		} else {
 			$formFieldNames = array();
@@ -112,7 +112,7 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 */
 	protected function isObjectAccessorMode() {
 		$variableNameSpace = $this->getVariableNameSpace();
-		return TRUE === $this->hasArgument('property') && TRUE === $this->viewHelperVariableContainer->exists($variableNameSpace, 'formObjectName');
+		return (boolean) (TRUE === $this->hasArgument('property') && TRUE === $this->viewHelperVariableContainer->exists($variableNameSpace, 'formObjectName'));
 	}
 
 	/**
@@ -124,4 +124,5 @@ class Tx_Vhs_ViewHelpers_Form_FieldNameViewHelper extends \TYPO3\CMS\Fluid\Core\
 		}
 		return 'Tx_Fluid_ViewHelpers_FormViewHelper';
 	}
+
 }

@@ -90,7 +90,7 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 			array $arguments = array(),
 			$pageUid = 0) {
 		$contentObjectBackup = $this->configurationManager->getContentObject();
-		if ($this->request) {
+		if (TRUE === isset($this->request)) {
 			$configurationBackup = $this->configurationManager->getConfiguration(
 				\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
 				$this->request->getControllerExtensionName(),
@@ -122,16 +122,16 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 			);
 			$this->dispatcher->dispatch($request, $response);
 			$this->configurationManager->setContentObject($contentObjectBackup);
-			if (isset($configurationBackup)) {
+			if (TRUE === isset($configurationBackup)) {
 				$this->configurationManager->setConfiguration($configurationBackup);
 			}
 			unset($pageUid);
 			return $response;
 		} catch (Exception $error) {
-			if (!$this->arguments['graceful']) {
+			if (FALSE === (boolean) $this->arguments['graceful']) {
 				throw $error;
 			}
-			if ($this->arguments['onError']) {
+			if (FALSE === empty($this->arguments['onError'])) {
 				return sprintf($this->arguments['onError'], array($error->getMessage()), $error->getCode());
 			}
 			return $error->getMessage() . ' (' . $error->getCode() . ')';
