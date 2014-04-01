@@ -336,7 +336,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 */
 	protected function getItemLink($pageUid, $doktype, $shortcut) {
 		$isShortcutOrLink = ($doktype == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT || $doktype == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK);
-		$useShortcutTarget = (boolean) $this->arguments['useShortcutTarget'];
+		$useShortcutTarget = $this->shouldUseShortcutTarget();
 		if (TRUE === $isShortcutOrLink && TRUE === $useShortcutTarget && 0 < $shortcut) {
 			$pageUid = $shortcut;
 		}
