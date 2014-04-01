@@ -203,8 +203,8 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 * @return void
 	 */
 	private function insertAssetsAtMarker($markerName, $assets) {
-		if (FALSE === strpos($GLOBALS['TSFE']->content, '<!-- VhsAssets' . $markerName . ' -->')) {
-			$assetMarker = '<!-- VhsAssets' . $markerName . ' -->';
+		$assetMarker = '<!-- VhsAssets' . $markerName . ' -->';
+		if (FALSE === strpos($GLOBALS['TSFE']->content, $assetMarker)) {
 			$inFooter = FALSE !== strpos($markerName, 'Footer');
 			$tag = TRUE === $inFooter ? '</body>' : '</head>';
 			$GLOBALS['TSFE']->content = str_replace($tag, $assetMarker . LF . $tag, $GLOBALS['TSFE']->content);
@@ -214,7 +214,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		} else {
 			$chunk = $assets;
 		}
-		$GLOBALS['TSFE']->content = str_replace('<!-- VhsAssets' . $markerName . ' -->', $chunk, $GLOBALS['TSFE']->content);
+		$GLOBALS['TSFE']->content = str_replace($assetMarker, $chunk, $GLOBALS['TSFE']->content);
 	}
 
 	/**
