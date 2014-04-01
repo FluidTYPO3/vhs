@@ -293,6 +293,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		$fileAbsolutePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
 		if (
 				FALSE === file_exists($fileAbsolutePathAndFilename)
+				|| 0 === filemtime($fileAbsolutePathAndFilename)
 				|| TRUE === isset($GLOBALS['BE_USER'])
 				|| TRUE === (boolean) $GLOBALS['TSFE']->no_cache
 				|| TRUE === (boolean) $GLOBALS['TSFE']->page['no_cache']
@@ -677,7 +678,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 			return;
 		}
 		foreach ($assetCacheFiles as $assetCacheFile) {
-			unlink($assetCacheFile);
+			touch($assetCacheFile, 0);
 		}
 		self::$cacheCleared = TRUE;
 	}
