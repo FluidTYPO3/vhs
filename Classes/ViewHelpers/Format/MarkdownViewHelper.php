@@ -34,6 +34,8 @@
  * - accept input from STDIN
  * - output to STDOUT
  * - place errors in STDERR
+ * - be executable according to `open_basedir` and others
+ * - exist within (one or more of) TYPO3's configured executable paths
  *
  * In other words, *NIX standard behavior must be used.
  *
