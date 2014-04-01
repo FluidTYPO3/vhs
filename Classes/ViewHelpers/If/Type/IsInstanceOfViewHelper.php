@@ -43,10 +43,11 @@ class Tx_Vhs_ViewHelpers_If_Type_IsInstanceOfViewHelper extends \TYPO3\CMS\Fluid
 	 * @return string
 	 */
 	public function render($value, $class) {
-		if (TRUE === ($value instanceof $class)) {
+		if (TRUE === $value instanceof $class) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();
 		}
 	}
+
 }

@@ -36,5 +36,4 @@
  * @deprecated
  */
 class Tx_Vhs_ViewHelpers_Page_Content_FooterViewHelper extends Tx_Vhs_ViewHelpers_Page_FooterViewHelper {
-
 }

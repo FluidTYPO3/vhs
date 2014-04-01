@@ -45,7 +45,7 @@ class Tx_Vhs_ViewHelpers_Random_NumberViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	 */
 	public function render($minimum = 100000, $maximum = 999999, $minimumDecimals = 0, $maximumDecimals = 0) {
 		$natural = rand($minimum, $maximum);
-		if (!($minimumDecimals && $maximumDecimals)) {
+		if (FALSE === ($minimumDecimals && $maximumDecimals)) {
 			return $natural;
 		}
 		$decimals = array_fill(0, rand($minimumDecimals, $maximumDecimals), 0);

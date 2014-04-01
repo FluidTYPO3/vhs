@@ -98,4 +98,5 @@ class Tx_Vhs_ViewHelpers_Media_VimeoViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 
 		return $this->tag->render();
 	}
+
 }

@@ -49,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	 * @return string
 	 */
 	public function render($string = NULL, $case = NULL) {
-		if ($string === NULL) {
+		if (NULL === $string) {
 			$string = $this->renderChildren();
 		}
 		switch ($case) {

@@ -55,4 +55,5 @@ class Tx_Vhs_ViewHelpers_If_String_IsLowercaseViewHelper extends \TYPO3\CMS\Flui
 			return $this->renderElseChild();
 		}
 	}
+
 }

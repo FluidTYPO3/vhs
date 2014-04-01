@@ -74,8 +74,8 @@ class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpe
 		$maxWidth = $this->arguments['maxWidth'];
 		$maxHeight = $this->arguments['maxHeight'];
 		$filename = basename($path);
-		$pageArgument = $page > 0 ? $page - 1 : 0;
-		$colorspace = TRUE === isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace']) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'] : 'RGB';
+		$pageArgument = ($page > 0 ? $page - 1 : 0);
+		$colorspace = (TRUE === isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace']) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'] : 'RGB');
 		$destination = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/vhs-pdf-' . $filename . '-page' . $page . '.png');
 		if (FALSE === file_exists($destination) || TRUE === $forceOverwrite) {
 			$arguments = '-colorspace ' . $colorspace;

@@ -57,7 +57,7 @@ class Tx_Vhs_ViewHelpers_If_Context_IsCliViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * @return string
 	 */
 	public function render() {
-		if (defined('TYPO3_cliMode') === TRUE) {
+		if (TRUE === defined('TYPO3_cliMode')) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();

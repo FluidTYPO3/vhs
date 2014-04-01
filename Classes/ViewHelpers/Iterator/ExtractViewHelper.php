@@ -162,7 +162,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	public function flattenArray(array $content, $flattened = NULL) {
 		foreach ($content as $sub) {
-			if (is_array($sub)) {
+			if (TRUE === is_array($sub)) {
 				$flattened = $this->flattenArray($sub, $flattened);
 			} else {
 				$flattened[] = $sub;

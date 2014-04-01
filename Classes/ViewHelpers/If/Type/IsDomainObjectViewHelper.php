@@ -49,4 +49,5 @@ class Tx_Vhs_ViewHelpers_If_Type_IsDomainObjectViewHelper extends \TYPO3\CMS\Flu
 			return $this->renderElseChild();
 		}
 	}
+
 }

@@ -44,9 +44,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-class Tx_Vhs_ViewHelpers_Security_AllowViewHelper
-extends Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper
-implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Vhs_ViewHelpers_Security_AllowViewHelper extends Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 
 	/**
 	 * Render allow - i.e. render "then" child if arguments are satisfied
@@ -55,7 +53,7 @@ implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 	 */
 	public function render() {
 		$evaluation = $this->evaluateArguments();
-		if ($evaluation === TRUE) {
+		if (TRUE === $evaluation) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();

@@ -92,16 +92,16 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\C
 	 */
 	protected function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat) {
 		if (TRUE === $value instanceof Traversable) {
-				// Note: also converts Extbase ObjectStorage to Tx_Extkey_Domain_Model_ObjectType[] which are later each converted
+			// Note: also converts Extbase ObjectStorage to Tx_Extkey_Domain_Model_ObjectType[] which are later each converted
 			$value = iterator_to_array($value, $useTraversableKeys);
 		} elseif (TRUE === $value instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
-				// Convert to associative array,
+			// Convert to associative array,
 			$value = $this->recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
 		} elseif (TRUE === $value instanceof DateTime) {
 			$value = $this->dateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
 		}
 
-			// process output of initial conversion, catching any specially supported object types such as DomainObject and DateTime
+		// process output of initial conversion, catching any specially supported object types such as DomainObject and DateTime
 		if (TRUE === is_array($value)) {
 			$value = $this->recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
 			$value = $this->recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);

@@ -60,10 +60,10 @@ class Tx_Vhs_ViewHelpers_Page_Header_MetaViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * @return void
 	*/
 	public function render() {
-		if (TYPO3_MODE == 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return;
 		}
-		if (isset($this->arguments['content']) && !empty($this->arguments['content'])) {
+		if (TRUE === isset($this->arguments['content']) && FALSE === empty($this->arguments['content'])) {
 			$GLOBALS['TSFE']->getPageRenderer()->addMetaTag($this->tag->render());
 		}
 	}

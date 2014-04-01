@@ -79,11 +79,11 @@ class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 	 * @return void
 	 */
 	public function render($name, $value = NULL) {
-		if ($value === NULL) {
+		if (NULL === $value) {
 			$value = $this->renderChildren();
 		}
 		if (FALSE === strpos($name, '.')) {
-			if ($this->templateVariableContainer->exists($name) === TRUE) {
+			if (TRUE === $this->templateVariableContainer->exists($name)) {
 				$this->templateVariableContainer->remove($name);
 			}
 			$this->templateVariableContainer->add($name, $value);

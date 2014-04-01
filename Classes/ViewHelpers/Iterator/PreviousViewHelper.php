@@ -39,7 +39,7 @@ class Tx_Vhs_ViewHelpers_Iterator_PreviousViewHelper extends Tx_Vhs_ViewHelpers_
 	 */
 	public function render() {
 		parent::render();
-		return $this->getNeedleAtIndex($this->evaluation !== FALSE ? $this->evaluation - 1 : - 1);
+		return ($this->getNeedleAtIndex($this->evaluation !== FALSE ? $this->evaluation - 1 : - 1));
 	}
 
 }

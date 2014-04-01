@@ -79,23 +79,23 @@ class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 * @return mixed
 	 */
 	public function render($path = NULL) {
-		if ($path === NULL) {
+		if (NULL === $path) {
 			$path = $this->renderChildren();
 		}
-		if (!$path) {
+		if (TRUE === empty($path)) {
 			return NULL;
 		}
 		$all = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$segments = explode('.', $path);
 		$value = $all;
 		foreach ($segments as $path) {
-			if (isset($value[$path . '.'])) {
+			if (TRUE === isset($value[$path . '.'])) {
 				$value = $value[$path . '.'];
 			} else {
 				$value = $value[$path];
 			}
 		}
-		if (is_array($value)) {
+		if (TRUE === is_array($value)) {
 			$value = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($value);
 		}
 		return $value;

@@ -247,7 +247,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	 */
 	protected function getOverwrite() {
 		$assetSettings = $this->getAssetSettings();
-		return (TRUE === isset($assetSettings['overwrite']) && $assetSettings['overwrite'] > 0);
+		return (boolean) (TRUE === isset($assetSettings['overwrite']) && $assetSettings['overwrite'] > 0);
 	}
 
 	/**
@@ -325,7 +325,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 			$allTypoScript = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {
-					// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
+				// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
 				self::$settingsCache = array();
 			} else {
 				self::$settingsCache = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
@@ -354,8 +354,8 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		if (TRUE === is_array($this->assetSettingsCache)) {
 			return $this->assetSettingsCache;
 		}
-			// Note: name and group are taken directly from arguments; if they are changed through
-			// TypoScript the changed values will be returned from this function.
+		// Note: name and group are taken directly from arguments; if they are changed through
+		// TypoScript the changed values will be returned from this function.
 		$name = $this->arguments['name'];
 		$groupName = $this->arguments['group'];
 		$settings = $this->getSettings();

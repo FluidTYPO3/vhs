@@ -58,9 +58,9 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends \TYPO3\CMS\Fluid\Core
 		if (TRUE === is_array($subject)) {
 			$array = $subject;
 		} else {
-			if (TRUE === ($subject instanceof Iterator)) {
+			if (TRUE === $subject instanceof Iterator) {
 				$array = iterator_to_array($subject, TRUE);
-			} elseif (TRUE === ($subject instanceof Tx_Extbase_Persistence_QueryResultInterface) || TRUE === ($subject instanceof TYPO3\CMS\Extbase\Persistence\QueryResultInterface)) {
+			} elseif (TRUE === $subject instanceof Tx_Extbase_Persistence_QueryResultInterface || TRUE === $subject instanceof TYPO3\CMS\Extbase\Persistence\QueryResultInterface) {
 				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
 				$array = $subject->toArray();
 			} elseif (NULL !== $subject) {
@@ -76,4 +76,5 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends \TYPO3\CMS\Fluid\Core
 		}
 		return $randomElement;
 	}
+
 }
