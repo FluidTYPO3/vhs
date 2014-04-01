@@ -27,7 +27,7 @@
  * @author Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
 	/**
 	 * @var Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper

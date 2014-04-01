@@ -27,13 +27,16 @@
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Media_FilesViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_ViewHelpers_Media_FilesViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
 	/**
 	 * @var string
 	 */
 	protected $fixturesPath;
 
+	/**
+	 * Setup
+	 */
 	public function setUp() {
 		$this->fixturesPath = dirname(__FILE__) . '/../../../Fixtures/Files';
 	}
