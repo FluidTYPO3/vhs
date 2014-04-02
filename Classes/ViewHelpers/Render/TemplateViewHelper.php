@@ -34,7 +34,7 @@
  * this can be done (from any extension, not just "foo")
  *
  *     <v:render.template
- * 	    file="EXT:foo/Resources/Templates/Action/Show.html"
+ * 	    file="EXT:foo/Resources/Private/Templates/Action/Show.html"
  *      variables="{object: customLoadedObject}"
  *      paths="{v:var.typoscript(path: 'plugin.tx_foo.view')}"
  *      format="xml" />
