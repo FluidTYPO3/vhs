@@ -53,4 +53,5 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends \TYPO3\CMS\Fluid\C
 
 		return $value;
 	}
+
 }

@@ -83,14 +83,14 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 	 * @return mixed
 	 */
 	public function render($name, $useRawKeys = FALSE) {
-		if (strpos($name, '.') === FALSE) {
-			if ($this->templateVariableContainer->exists($name) === TRUE) {
+		if (FALSE === strpos($name, '.')) {
+			if (TRUE === $this->templateVariableContainer->exists($name)) {
 				return $this->templateVariableContainer->get($name);
 			}
 		} else {
 			$segments = explode('.', $name);
 			$templateVariableRootName = $lastSegment = array_shift($segments);
-			if ($this->templateVariableContainer->exists($templateVariableRootName)) {
+			if (TRUE === $this->templateVariableContainer->exists($templateVariableRootName)) {
 				$templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
 				if (TRUE === $useRawKeys) {
 					return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
@@ -98,7 +98,7 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 				try {
 					$value = $templateVariableRoot;
 					foreach ($segments as $segment) {
-						if (ctype_digit($segment)) {
+						if (TRUE === ctype_digit($segment)) {
 							$segment = intval($segment);
 							$index = 0;
 								// Note: this loop approach is not a stupid solution. If you doubt this,

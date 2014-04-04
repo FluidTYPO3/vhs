@@ -52,9 +52,9 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	public function render() {
 		$path = $this->arguments['path'];
 
-		if ($path === NULL) {
+		if (NULL === $path) {
 			$path = $this->renderChildren();
-			if ($path === NULL) {
+			if (NULL === $path) {
 				return array();
 			}
 		}

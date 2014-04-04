@@ -141,7 +141,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 	 */
 	protected function getCustomLabelOrPageTitle($labelName, $pageRecord) {
 		$title = $this->arguments[$labelName];
-		if ($this->arguments['usePageTitles']) {
+		if (TRUE === $this->arguments['usePageTitles']) {
 			$title = $this->getItemTitle($pageRecord);
 		}
 		return $title;

@@ -64,4 +64,5 @@ class Tx_Vhs_ViewHelpers_Uri_TypolinkViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 	public function render() {
 		return $GLOBALS['TSFE']->cObj->typoLink_URL($this->arguments['configuration']);
 	}
+
 }

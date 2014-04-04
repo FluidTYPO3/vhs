@@ -38,7 +38,7 @@ class Tx_Vhs_ViewHelpers_Content_Random_GetViewHelper extends Tx_Vhs_ViewHelpers
 	 * @return mixed
 	 */
 	public function render() {
-		if (TYPO3_MODE == 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return '';
 		}
 		$contentRecords = $this->getContentRecords(1, 'RAND()');

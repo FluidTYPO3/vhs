@@ -42,10 +42,11 @@ class Tx_Vhs_ViewHelpers_If_Type_IsTraversableViewHelper extends \TYPO3\CMS\Flui
 	 * @return string
 	 */
 	public function render($value) {
-		if (TRUE === ($value instanceof Traversable)) {
+		if (TRUE === $value instanceof Traversable) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();
 		}
 	}
+
 }

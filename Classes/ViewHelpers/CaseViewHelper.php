@@ -61,11 +61,11 @@ class Tx_Vhs_ViewHelpers_CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	 * @return array
 	 */
 	public function render() {
-		$matchesCase = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue') == $this->arguments['case'];
+		$matchesCase = (boolean) ($this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue') == $this->arguments['case']);
 		$mustContinue = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchContinueUntilBreak');
-		$isDefault = $this->arguments['case'] == 'default';
-		if ($matchesCase || $mustContinue || $isDefault) {
-			if ($this->arguments['break'] === TRUE) {
+		$isDefault = (boolean) ($this->arguments['case'] == 'default');
+		if (TRUE === $matchesCase || TRUE == $mustContinue || TRUE === $isDefault) {
+			if (TRUE === $this->arguments['break']) {
 				$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchBreakRequested', TRUE);
 			} else {
 				$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchContinueUntilBreak', TRUE);

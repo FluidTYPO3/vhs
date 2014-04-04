@@ -65,7 +65,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DeferredViewHelper extends Tx_Vhs_ViewHelpers
 		} elseif (TRUE === empty($as)) {
 			throw new Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
 		}
-		if ($this->templateVariableContainer->exists($as)) {
+		if (TRUE === $this->templateVariableContainer->exists($as)) {
 			$backupVariable = $this->templateVariableContainer->get($as);
 			$this->templateVariableContainer->remove($as);
 		}

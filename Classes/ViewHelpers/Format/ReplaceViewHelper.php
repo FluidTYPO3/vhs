@@ -40,7 +40,7 @@ class Tx_Vhs_ViewHelpers_Format_ReplaceViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 * @return string
 	 */
 	public function render($substring, $content = NULL, $replacement = '', $count = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 		return str_replace($substring, $replacement, $content, $count);

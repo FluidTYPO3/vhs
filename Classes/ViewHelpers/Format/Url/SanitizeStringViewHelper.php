@@ -58,7 +58,7 @@ class Tx_Vhs_ViewHelpers_Format_Url_SanitizeStringViewHelper extends \TYPO3\CMS\
 	 * @return string
 	 */
 	public function render($string = NULL) {
-		if ($string === NULL) {
+		if (NULL === $string) {
 			$string = $this->renderChildren();
 		}
 		$pattern = '/([^a-z0-9\-]){1,}/i';

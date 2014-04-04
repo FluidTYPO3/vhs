@@ -48,4 +48,5 @@ class Tx_Vhs_ViewHelpers_If_Var_IsNullViewHelper extends \TYPO3\CMS\Fluid\Core\V
 			return $this->renderElseChild();
 		}
 	}
+
 }

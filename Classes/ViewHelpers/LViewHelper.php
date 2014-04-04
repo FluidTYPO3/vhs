@@ -65,7 +65,7 @@ class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewH
 			$default = $id;
 		}
 		if (NULL === $extensionName) {
-			if (method_exists($this, 'getControllerContext')) {
+			if (TRUE === method_exists($this, 'getControllerContext')) {
 				$request = $this->getControllerContext()->getRequest();
 			} else {
     			$request = $this->controllerContext->getRequest();
@@ -75,10 +75,10 @@ class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewH
 		$value = Tx_Extbase_Utility_Localization::translate($id, $extensionName, $arguments);
 		if (NULL === $value) {
 			$value = $default;
-			if (is_array($arguments)) {
+			if (TRUE === is_array($arguments)) {
 				$value = vsprintf($value, $arguments);
 			}
-		} elseif ($htmlEscape) {
+		} elseif (TRUE == $htmlEscape) {
 			$value = htmlspecialchars($value);
 		}
 		return $value;

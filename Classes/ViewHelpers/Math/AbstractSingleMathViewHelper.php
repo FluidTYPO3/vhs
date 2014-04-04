@@ -46,7 +46,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYP
 	 * @return boolean
 	 */
 	protected function assertIsArrayOrIterator($subject) {
-		return (is_array($subject) === TRUE || $subject instanceof Iterator === TRUE);
+		return (boolean) (TRUE === is_array($subject) || TRUE === $subject instanceof Iterator);
 	}
 
 	/**
@@ -54,7 +54,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYP
 	 * @return boolean
 	 */
 	protected function assertSupportsArrayAccess($subject) {
-		return (is_array($subject) === TRUE || ($subject instanceof Iterator === TRUE && $subject instanceof ArrayAccess === TRUE));
+		return (boolean) (TRUE === is_array($subject) || (TRUE === $subject instanceof Iterator && TRUE === $subject instanceof ArrayAccess));
 	}
 
 	/**
@@ -63,7 +63,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYP
 	 * @return array
 	 */
 	protected function convertTraversableToArray($traversable) {
-		if ($this->assertIsArrayOrIterator($traversable) === FALSE) {
+		if (FALSE === $this->assertIsArrayOrIterator($traversable)) {
 			throw new Exception('Attempt to convert non-traversable object to array', 1353442738);
 		}
 		$array = array();
@@ -104,9 +104,9 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYP
 	 */
 	protected function calculate($a) {
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if ($aIsIterable === TRUE) {
+		if (TRUE === $aIsIterable) {
 			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
-			if ($aCanBeAccessed === FALSE) {
+			if (FALSE === $aCanBeAccessed) {
 				throw new Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
 			}
 			foreach ($a as $index => $value) {

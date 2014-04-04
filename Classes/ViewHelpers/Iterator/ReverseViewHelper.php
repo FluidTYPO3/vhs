@@ -57,27 +57,27 @@ class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	public function render($subject = NULL) {
 		$as = $this->arguments['as'];
-		if ($subject === NULL && !$as) {
-				// this case enables inline usage if the "as" argument
-				// is not provided. If "as" is provided, the tag content
-				// (which is where inline arguments are taken from) is
-				// expected to contain the rendering rather than the variable.
+		if (NULL === $subject && FALSE === isset($as)) {
+			// this case enables inline usage if the "as" argument
+			// is not provided. If "as" is provided, the tag content
+			// (which is where inline arguments are taken from) is
+			// expected to contain the rendering rather than the variable.
 			$subject = $this->renderChildren();
 		}
 		$array = NULL;
-		if (is_array($subject) === TRUE) {
+		if (TRUE === is_array($subject)) {
 			$array = $subject;
 		} else {
-			if ($subject instanceof Iterator) {
+			if (TRUE === $subject instanceof Iterator) {
 				/** @var Iterator $subject */
 				$array = iterator_to_array($subject, TRUE);
-			} elseif ($subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
+			} elseif (TRUE === $subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
 				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
 				$array = $subject->toArray();
-			} elseif ($subject !== NULL) {
-					// a NULL value is respected and ignored, but any
-					// unrecognized value other than this is considered a
-					// fatal error.
+			} elseif (NULL !== $subject) {
+				// a NULL value is respected and ignored, but any
+				// unrecognized value other than this is considered a
+				// fatal error.
 				throw new Exception('Invalid variable type passed to Iterator/ReverseViewHelper. Expected any of Array, QueryResult, ' .
 					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1351958941);
 			}

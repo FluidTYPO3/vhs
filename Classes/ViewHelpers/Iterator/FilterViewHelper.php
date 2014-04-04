@@ -67,7 +67,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends \TYPO3\CMS\Fluid\Core
 				$items[$key] = $item;
 			}
 		}
-		return TRUE === $preserveKeys ? $items : array_values($items);
+		return (TRUE === $preserveKeys ? $items : array_values($items));
 	}
 
 	/**

@@ -53,7 +53,7 @@ class Tx_Vhs_ViewHelpers_If_Var_IssetViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 	 * @return string
 	 */
 	public function render($name) {
-		if ($this->templateVariableContainer->exists($name) === TRUE) {
+		if (TRUE === $this->templateVariableContainer->exists($name)) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();

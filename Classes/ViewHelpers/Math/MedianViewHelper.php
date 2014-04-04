@@ -44,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Math_MedianViewHelper extends Tx_Vhs_ViewHelpers_Math_A
 	public function render() {
 		$a = $this->getInlineArgument();
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if ($aIsIterable) {
+		if (TRUE === $aIsIterable) {
 			$a = $this->convertTraversableToArray($a);
 			sort($a, SORT_NUMERIC);
 			$size = count($a);

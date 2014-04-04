@@ -67,7 +67,7 @@ class Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper extends Tx_Vhs_ViewHelper
 	 * @return string
 	 */
 	public function render($browser) {
-		if (array_key_exists($browser, $this->getBrowsers())) {
+		if (TRUE === array_key_exists($browser, $this->getBrowsers())) {
 			$content = $this->renderThenChild();
 		} else {
 			$content = $this->renderElseChild();
@@ -75,4 +75,5 @@ class Tx_Vhs_ViewHelpers_If_Client_IsBrowserViewHelper extends Tx_Vhs_ViewHelper
 
 		return $content;
 	}
+
 }

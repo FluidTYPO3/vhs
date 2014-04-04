@@ -43,7 +43,7 @@ class Tx_Vhs_ViewHelpers_Math_DivisionViewHelper extends Tx_Vhs_ViewHelpers_Math
 	 * @return mixed
 	 */
 	protected function calculateAction($a, $b) {
-		return ($b <> 0 ? $a / $b : $a);
+		return (0 <> $b ? $a / $b : $a);
 	}
 
 }

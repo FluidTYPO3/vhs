@@ -65,4 +65,5 @@ class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends \TYPO3\CMS\Fluid\Core\
 		}
 		return $content;
 	}
+
 }

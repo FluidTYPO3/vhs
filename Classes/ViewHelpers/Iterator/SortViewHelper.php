@@ -64,29 +64,29 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	public function render($subject = NULL) {
 		$as = $this->arguments['as'];
 		if (NULL === $subject && NULL === $as) {
-				// this case enables inline usage if the "as" argument
-				// is not provided. If "as" is provided, the tag content
-				// (which is where inline arguments are taken from) is
-				// expected to contain the rendering rather than the variable.
+			// this case enables inline usage if the "as" argument
+			// is not provided. If "as" is provided, the tag content
+			// (which is where inline arguments are taken from) is
+			// expected to contain the rendering rather than the variable.
 			$subject = $this->renderChildren();
 		}
 		$sorted = NULL;
-		if (is_array($subject) === TRUE) {
+		if (TRUE === is_array($subject)) {
 			$sorted = $this->sortArray($subject);
 		} else {
-			if ($subject instanceof Tx_Extbase_Persistence_ObjectStorage || $subject instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+			if (TRUE === $subject instanceof Tx_Extbase_Persistence_ObjectStorage || TRUE === $subject instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
 				$sorted = $this->sortObjectStorage($subject);
-			} elseif ($subject instanceof Iterator) {
+			} elseif (TRUE === $subject instanceof Iterator) {
 				/** @var Iterator $subject */
 				$array = iterator_to_array($subject, TRUE);
 				$sorted = $this->sortArray($array);
-			} elseif ($subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
+			} elseif (TRUE === $subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
 				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
 				$sorted = $this->sortArray($subject->toArray());
-			} elseif ($subject !== NULL) {
-					// a NULL value is respected and ignored, but any
-					// unrecognized value other than this is considered a
-					// fatal error.
+			} elseif (NULL !== $subject) {
+				// a NULL value is respected and ignored, but any
+				// unrecognized value other than this is considered a
+				// fatal error.
 				throw new Exception('Unsortable variable type passed to Iterator/SortViewHelper. Expected any of Array, QueryResult, ' .
 					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1351958941);
 			}
@@ -108,17 +108,17 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	protected function sortArray($array) {
 		$sorted = array();
 		foreach ($array as $index => $object) {
-			if ($this->arguments['sortBy']) {
+			if (TRUE === isset($this->arguments['sortBy'])) {
 				$index = $this->getSortValue($object);
 			}
 			while (isset($sorted[$index])) {
-				$index .= TRUE === is_int($index) ? '.1' : '1';
+				$index .= (TRUE === is_int($index) ? '.1' : '1');
 			}
 			$sorted[$index] = $object;
 		}
-		if ($this->arguments['order'] === 'ASC') {
+		if ('ASC' === $this->arguments['order']) {
 			ksort($sorted, constant($this->arguments['sortFlags']));
-		} elseif ($this->arguments['order'] === 'RAND') {
+		} elseif ('RAND' === $this->arguments['order']) {
 			$sortedKeys = array_keys($sorted);
 			shuffle($sortedKeys);
 			$backup = $sorted;
@@ -126,7 +126,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 			foreach ($sortedKeys as $sortedKey) {
 				$sorted[$sortedKey] = $backup[$sortedKey];
 			}
-		} elseif ($this->arguments['order'] === 'SHUFFLE') {
+		} elseif ('SHUFFLE' === $this->arguments['order']) {
 			shuffle($sorted);
 		} else {
 			krsort($sorted, constant($this->arguments['sortFlags']));
@@ -150,17 +150,17 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 		}
 		$sorted = array();
 		foreach ($storage as $index => $item) {
-			if ($this->arguments['sortBy']) {
+			if (TRUE === isset($this->arguments['sortBy'])) {
 				$index = $this->getSortValue($item);
 			}
 			while (isset($sorted[$index])) {
-				$index .= TRUE === is_int($index) ? '.1' : '1';
+				$index .= (TRUE === is_int($index) ? '.1' : '1');
 			}
 			$sorted[$index] = $item;
 		}
-		if ($this->arguments['order'] === 'ASC') {
+		if ('ASC' === $this->arguments['order']) {
 			ksort($sorted, constant($this->arguments['sortFlags']));
-		} elseif ($this->arguments['order'] === 'RAND') {
+		} elseif ('RAND' === $this->arguments['order']) {
 			$sortedKeys = array_keys($sorted);
 			shuffle($sortedKeys);
 			$backup = $sorted;
@@ -168,7 +168,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 			foreach ($sortedKeys as $sortedKey) {
 				$sorted[$sortedKey] = $backup[$sortedKey];
 			}
-		} elseif ($this->arguments['order'] === 'SHUFFLE') {
+		} elseif ('SHUFFLE' === $this->arguments['order']) {
 			shuffle($sorted);
 		} else {
 			krsort($sorted, constant($this->arguments['sortFlags']));
@@ -189,13 +189,14 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	protected function getSortValue($object) {
 		$field = $this->arguments['sortBy'];
 		$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($object, $field);
-		if ($value instanceof DateTime) {
+		if (TRUE === $value instanceof DateTime) {
 			$value = intval($value->format('U'));
-		} elseif ($value instanceof Tx_Extbase_Persistence_ObjectStorage || $value instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+		} elseif (TRUE === $value instanceof Tx_Extbase_Persistence_ObjectStorage || TRUE === $value instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
 			$value = $value->count();
 		} elseif (is_array($value)) {
 			$value = count($value);
 		}
 		return $value;
 	}
+
 }

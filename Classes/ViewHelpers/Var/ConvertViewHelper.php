@@ -112,4 +112,5 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 		}
 		return $value;
 	}
+
 }
