@@ -185,11 +185,18 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	protected function enforceDateTime($date) {
 		if (FALSE === ($date instanceof \DateTime)) {
+			$timezone = (integer) $GLOBALS['TYPO3_CONF_VARS']['SYS']['serverTimeZone'];
+			if (0 <= $timezone) {
+				$timezoneStr = 'Etc/GMT+'.strval($timezone);
+			} else {
+				$timezoneStr = 'Etc/GMT'.strval($timezone);
+			}
+			$dateTimeZone = new DateTimeZone($timezoneStr);
 			try {
 				if (is_integer($date)) {
-					$date = new \DateTime('@' . $date);
+					$date = new \DateTime('@' . $date, $dateTimeZone);
 				} else {
-					$date = new \DateTime($date);
+					$date = new \DateTime($date, $dateTimeZone);
 				}
 			} catch (\Exception $exception) {
 				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
