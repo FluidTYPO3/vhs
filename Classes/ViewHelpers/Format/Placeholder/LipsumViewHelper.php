@@ -89,7 +89,7 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends \TYPO3\CMS\
 			$lipsum = $this->lipsum;
 		}
 		if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
-				// argument is most likely a file reference.
+			// argument is most likely a file reference.
 			$sourceFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($lipsum);
 			if (file_exists($sourceFile) === TRUE) {
 				$lipsum = file_get_contents($sourceFile);
@@ -125,13 +125,13 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends \TYPO3\CMS\
 	 * @return string
 	 */
 	protected function getDefaultLoremIpsum() {
-			// Note: this MAY look suspicious but it really is just a whole lot of Lipsum
-			// in a compressed state. Just to make sure that you trust the block, we run
-			// strip_tags and htmlentities on the string before it is returned. This is not
-			// done on custom Lipsum - but it is done here at no risk, since we know the
-			// Lipsum to contain zero HTML and zero special characters, 100% ASCII. Source
-			// of the Lipsum text is http://www.lipsum.com set at 20 paragraphs, compressed
-			// through a small shell script.
+		// Note: this MAY look suspicious but it really is just a whole lot of Lipsum
+		// in a compressed state. Just to make sure that you trust the block, we run
+		// strip_tags and htmlentities on the string before it is returned. This is not
+		// done on custom Lipsum - but it is done here at no risk, since we know the
+		// Lipsum to contain zero HTML and zero special characters, 100% ASCII. Source
+		// of the Lipsum text is http://www.lipsum.com set at 20 paragraphs, compressed
+		// through a small shell script.
 		$lipsum = <<<LIPSUM
 eJy1WsuO7MYN3c9X6AOE+YGsDDsBDNhGAuNmX6PW9FSgR1tSzfeHr0Oyeu4iiOHFxe3plupBHh4esuqX/ZjXoT7Otg63fdmP4azXUNb5Godp3855uuarHUO51Uc9p7rdh3
 mp1+vw96uWdVgKvT9fw+f8Uae2lKG06dqP1+E3+vFWp4uG5ecHeYY/PPazzcfMg9/b/Dr8Pt+Ga14f7RzO8qjzNsx3enir5zLMrZ7rfhsavVyOSo/st7oPa7muer4O//wo

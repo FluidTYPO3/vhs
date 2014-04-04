@@ -55,7 +55,7 @@ class Tx_Vhs_ViewHelpers_Math_SubtractViewHelper extends Tx_Vhs_ViewHelpers_Math
 		$a = $this->getInlineArgument();
 		$b = $this->arguments['b'];
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if ($aIsIterable && $b === NULL) {
+		if (TRUE === $aIsIterable && NULL === $b) {
 			$a = $this->convertTraversableToArray($a);
 			return -array_sum($a);
 		}

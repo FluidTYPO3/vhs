@@ -57,7 +57,7 @@ abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper 
 	 * @return string
 	 */
 	public function getUserAgent() {
-		if ($this->userAgent !== '') {
+		if ('' !== $this->userAgent) {
 			$userAgent = $this->userAgent;
 		} else {
 			$userAgent = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
@@ -87,4 +87,5 @@ abstract class Tx_Vhs_ViewHelpers_If_Client_AbstractClientInformationViewHelper 
 
 		return $clientInfo['all_systems'];
 	}
+
 }

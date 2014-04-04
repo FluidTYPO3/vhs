@@ -256,7 +256,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT')
 			);
 		}
-		if ($this->arguments['includeSpacers'] && FALSE === in_array(constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER'), $types)) {
+		if (TRUE === $this->arguments['includeSpacers'] && FALSE === in_array(constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER'), $types)) {
 			array_push($types, constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER'));
 		}
 		return $types;
@@ -297,7 +297,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$title = $page['title'];
 		$titleFieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
-			if (empty($page[$titleFieldName]) === FALSE) {
+			if (FALSE === empty($page[$titleFieldName])) {
 				$title = $page[$titleFieldName];
 				break;
 			}
@@ -313,13 +313,13 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 */
 	protected function getItemClass($pageRow) {
 		$class = array();
-		if ($pageRow['active']) {
+		if (TRUE === (boolean) $pageRow['active']) {
 			$class[] = $this->arguments['classActive'];
 		}
-		if ($pageRow['current']) {
+		if (TRUE === (boolean) $pageRow['current']) {
 			$class[] = $this->arguments['classCurrent'];
 		}
-		if ($pageRow['hasSubPages']) {
+		if (TRUE === (boolean) $pageRow['hasSubPages']) {
 			$class[] = $this->arguments['classHasSubpages'];
 		}
 		return $class;
@@ -414,10 +414,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 			}
 		}
 
-		if ($getLL) {
+		if (TRUE == $getLL) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $getLL);
 			foreach ($pageOverlay as $name => $value) {
-				if (empty($value) === FALSE) {
+				if (FALSE === empty($value)) {
 					$page[$name] = $value;
 				}
 			}
@@ -427,7 +427,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$shortcut = ($doktype == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) ? $page['shortcut'] : $page['url'];
 		$page['active'] = $this->isActive($pageUid, $rootLine, $originalPageUid);
 		$page['current'] = $this->isCurrent($pageUid);
-		$page['hasSubPages'] = (count($this->getSubmenu($originalPageUid)) > 0) ? 1 : 0;
+		$page['hasSubPages'] = (boolean) (0 < count($this->getSubmenu($originalPageUid)) ? 1 : 0);
 		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
@@ -459,17 +459,17 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$filtered = array();
 		$allowedDocumentTypes = $this->allowedDoktypeList();
 		foreach ($menu as $page) {
-			if ($page['hidden'] == 1) {
+			if (TRUE === (boolean) $page['hidden']) {
 				continue;
-			} elseif ($page['nav_hide'] == 1 && $this->arguments['showHidden'] < 1) {
+			} elseif (TRUE === (boolean) $page['nav_hide'] && 1 > $this->arguments['showHidden']) {
 				continue;
-			} elseif (TRUE === isset($page['tx_realurl_exclude']) && $page['tx_realurl_exclude'] == 1 && $this->arguments['resolveExclude'] == 1) {
+			} elseif (TRUE === isset($page['tx_realurl_exclude']) && TRUE === (boolean) $page['tx_realurl_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
 				continue;
-			} elseif (TRUE === isset($page['tx_cooluri_exclude']) && $page['tx_cooluri_exclude'] == 1 && $this->arguments['resolveExclude'] == 1) {
+			} elseif (TRUE === isset($page['tx_cooluri_exclude']) && TRUE === (boolean) $page['tx_cooluri_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
 				continue;
 			} elseif (TRUE === $this->pageSelect->hidePageForLanguageUid($page['uid'], $GLOBALS['TSFE']->sys_language_uid)) {
 				continue;
-			} elseif (in_array($page['doktype'], $allowedDocumentTypes)) {
+			} elseif (TRUE === in_array($page['doktype'], $allowedDocumentTypes)) {
 				$page = $this->getMenuItemEntry($page, $rootLine);
 				if (TRUE === (boolean) $page['nav_hide'] && FALSE === (boolean) $this->arguments['showHidden']) {
 					continue;
@@ -478,7 +478,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 			}
 		}
 		$length = count($filtered);
-		if ($length > 0) {
+		if (0 < $length) {
 			$idx = 1;
 			foreach ($filtered as $uid => $page) {
 				switch ($idx) {
@@ -517,7 +517,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$numberOfItems = count($menu);
 		$includedPages = array();
 		foreach ($menu as $page) {
-			if ($page['current'] && !$showCurrent) {
+			if (TRUE === (boolean) $page['current'] && FALSE === $showCurrent) {
 				continue;
 			}
 			$class = trim($page['class']) != '' ? ' class="' . $page['class'] . '"' : '';
@@ -526,16 +526,16 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 			if (FALSE === $this->isNonWrappingMode()) {
 				$html[] = '<' . $tagName . $elementId . $class . '>';
 			}
-			if ($page['current'] && $linkCurrent === FALSE) {
+			if (TRUE === (boolean) $page['current'] && FALSE === $linkCurrent) {
 				$html[] = htmlspecialchars($page['linktext']);
-			} elseif ($page['active'] && $linkActive === FALSE) {
+			} elseif (TRUE === (boolean) $page['active'] && FALSE === $linkActive) {
 				$html[] = htmlspecialchars($page['linktext']);
 			} elseif (TRUE === $includeAnchorTitle) {
 				$html[] = sprintf('<a href="%s" title="%s"%s%s>%s</a>', $page['link'], htmlspecialchars($page['title']), $class, $target, htmlspecialchars($page['linktext']));
 			} else {
 				$html[] = sprintf('<a href="%s"%s%s>%s</a>', $page['link'], $class, $target, htmlspecialchars($page['linktext']));
 			}
-			if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $maxLevels) {
+			if ((TRUE === (boolean) $page['active'] || TRUE === $expandAll) && TRUE === (boolean) $page['hasSubPages'] && $level < $maxLevels) {
 				$pageUid = $page['uid'];
 				$rootLineData = $this->pageSelect->getRootLine();
 				$subMenuData = $this->getMenu($pageUid);
@@ -587,7 +587,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 */
 	public function backupVariables() {
 		foreach ($this->backups as $var) {
-			if ($this->templateVariableContainer->exists($var)) {
+			if (TRUE === $this->templateVariableContainer->exists($var)) {
 				$this->backupValues[$var] = $this->templateVariableContainer->get($var);
 				$this->templateVariableContainer->remove($var);
 			}
@@ -600,7 +600,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 * @return void
 	 */
 	public function restoreVariables() {
-		if (count($this->backupValues) > 0) {
+		if (0 < count($this->backupValues)) {
 			foreach ($this->backupValues as $var => $value) {
 				if (FALSE === $this->templateVariableContainer->exists($var)) {
 					$this->templateVariableContainer->add($var, $value);
@@ -652,7 +652,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$pageUid = $this->arguments['pageUid'];
 		$entryLevel = $this->arguments['entryLevel'];
 		$rootLineData = $this->pageSelect->getRootLine();
-		if (!$pageUid) {
+		if (NULL !== $pageUid) {
 			if (NULL !== $rootLineData[$entryLevel]['uid']) {
 				$pageUid = $rootLineData[$entryLevel]['uid'];
 			} else {
@@ -699,9 +699,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		if (NULL === $pages) {
 			$pages = $this->arguments['pages'];
 		}
-		if ($pages instanceof Traversable) {
+		if (TRUE === $pages instanceof Traversable) {
 			$pages = iterator_to_array($pages);
-		} elseif (is_string($pages)) {
+		} elseif (TRUE === is_string($pages)) {
 			$pages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pages, TRUE);
 		}
 		if (FALSE === is_array($pages)) {

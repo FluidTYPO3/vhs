@@ -168,4 +168,5 @@ class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends \TYPO3\CMS\Fluid\Core\V
 
 		return $childTag;
 	}
+
 }

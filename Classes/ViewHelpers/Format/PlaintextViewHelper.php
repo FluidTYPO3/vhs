@@ -45,7 +45,7 @@ class Tx_Vhs_ViewHelpers_Format_PlaintextViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * @return string
 	 */
 	public function render($content = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 		$content = trim($content);

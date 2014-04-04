@@ -50,16 +50,16 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 
 		$path = $this->arguments['path'];
 
-		if ($path === NULL) {
+		if (NULL === $path) {
 			$path = $this->renderChildren();
-			if ($path === NULL) {
+			if (NULL === $path) {
 				return array();
 			}
 		}
 
 		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 
-		if (!file_exists($file) || is_dir($file)) {
+		if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
 		}
 

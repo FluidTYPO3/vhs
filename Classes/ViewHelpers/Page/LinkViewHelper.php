@@ -190,4 +190,5 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewH
 		}
 		return '';
 	}
+
 }

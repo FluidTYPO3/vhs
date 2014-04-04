@@ -51,7 +51,7 @@ class Tx_Vhs_ViewHelpers_Extension_LoadedViewHelper extends \TYPO3\CMS\Fluid\Cor
 		$extensionName = $this->arguments['extensionName'];
 		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 		$isLoaded = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
-		if ($isLoaded !== FALSE) {
+		if (TRUE == $isLoaded) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();

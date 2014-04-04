@@ -73,4 +73,5 @@ class Tx_Vhs_ViewHelpers_If_Client_IsMobileViewHelper extends Tx_Vhs_ViewHelpers
 		}
 		return $content;
 	}
+
 }

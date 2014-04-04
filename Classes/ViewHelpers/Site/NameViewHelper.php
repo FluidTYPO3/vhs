@@ -41,4 +41,5 @@ class Tx_Vhs_ViewHelpers_Site_NameViewHelper extends \TYPO3\CMS\Fluid\Core\ViewH
 		$name = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		return $name;
 	}
+
 }

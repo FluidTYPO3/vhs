@@ -45,4 +45,5 @@ class Tx_Vhs_ViewHelpers_Render_RecordViewHelper extends Tx_Vhs_ViewHelpers_Cont
 		}
 		return $this->renderRecord($record);
 	}
+
 }

@@ -41,10 +41,10 @@ class Tx_Vhs_ViewHelpers_Format_SubstringViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * @return string
 	 */
 	public function render($content = NULL, $start = 0, $length = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-		if ($length !== NULL) {
+		if (NULL !== $length) {
 			return substr($content, $start, $length);
 		}
 		return substr($content, $start);

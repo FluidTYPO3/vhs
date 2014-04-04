@@ -38,5 +38,4 @@
  * @deprecated Will be removed in 2.0
  */
 class Tx_Vhs_ViewHelpers_Page_SiteUrlViewHelper extends Tx_Vhs_ViewHelpers_Site_UrlViewHelper {
-
 }

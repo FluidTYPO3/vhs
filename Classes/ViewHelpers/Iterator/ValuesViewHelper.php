@@ -41,12 +41,12 @@ class Tx_Vhs_ViewHelpers_Iterator_ValuesViewHelper extends \TYPO3\CMS\Fluid\Core
 	 */
 	public function render($subject = NULL) {
 		$as = $this->arguments['as'];
-		if ($subject === NULL) {
+		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
-		if ($subject instanceof Iterator) {
+		if (TRUE === $subject instanceof Iterator) {
 			$subject = iterator_to_array($subject, TRUE);
-		} elseif (is_array($subject) !== TRUE) {
+		} elseif (FALSE === is_array($subject)) {
 			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
 		$output = array_values($subject);

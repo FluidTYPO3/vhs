@@ -41,12 +41,12 @@ class Tx_Vhs_ViewHelpers_Iterator_PopViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 	 * @return array
 	 */
 	public function render($subject = NULL, $as = NULL) {
-		if ($subject === NULL) {
+		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
-		if ($subject instanceof Traversable) {
+		if (TRUE === $subject instanceof Traversable) {
 			$subject = iterator_to_array($subject, TRUE);
-		} elseif (is_array($subject) !== TRUE) {
+		} elseif (TRUE !== is_array($subject)) {
 			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
 		$output = array_pop($subject);

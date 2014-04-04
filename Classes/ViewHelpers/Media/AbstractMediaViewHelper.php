@@ -59,7 +59,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends \TYPO3\C
 	public function preprocessSourceUri($src) {
 		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
 			$src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-		} elseif (TYPO3_MODE === 'BE' || FALSE === (boolean) $this->arguments['relative']) {
+		} elseif ('BE' === TYPO3_MODE || FALSE === (boolean) $this->arguments['relative']) {
 			$src = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $src;
 		}
 		return $src;
@@ -76,7 +76,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends \TYPO3\C
 		$src = $this->arguments['src'];
 		if ($src instanceof Traversable) {
 			$src = iterator_to_array($src);
-		} elseif (is_string($src)) {
+		} elseif (TRUE === is_string($src)) {
 			$src = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $src, TRUE);
 		}
 		return $src;
