@@ -1,0 +1,28 @@
+{
+  "name": "vhs",
+  "version": "1.8.4",
+  "homepage": "http://fluidtypo3.org/",
+  "description": "The vhs package from FluidTYPO3",
+  "main": "ext_emconf.php",
+  "keywords": [
+    "TYPO3",
+    "CMS",
+    "extension",
+    "templating",
+    "Utility",
+    "ViewHelper",
+    "fedext",
+    "fluid"
+  ],
+  "authors": [
+    "FluidTYPO3 Team"
+  ],
+  "license": "GPL-2.0+",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
