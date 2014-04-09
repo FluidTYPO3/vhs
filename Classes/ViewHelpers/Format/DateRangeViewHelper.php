@@ -188,8 +188,10 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 			try {
 				if (is_integer($date)) {
 					$date = new \DateTime('@' . $date);
+					$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
 				} else {
 					$date = new \DateTime($date);
+					$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
 				}
 				$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
 			} catch (\Exception $exception) {
