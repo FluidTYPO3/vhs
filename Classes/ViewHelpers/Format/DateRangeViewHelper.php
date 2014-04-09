@@ -191,6 +191,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 				} else {
 					$date = new \DateTime($date);
 				}
+				$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
 			} catch (\Exception $exception) {
 				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
 			}
