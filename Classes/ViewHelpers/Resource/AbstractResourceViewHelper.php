@@ -85,7 +85,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 						$file = $resourceFactory->getFileObject($fileUid);
 
 						if (TRUE === $onlyProperties) {
-							$file = $file->getProperties();
+							$file = $this->getFileArray($file);
 						}
 
 						$files[] = $file;
@@ -114,7 +114,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 				}
 
 				if (TRUE === $onlyProperties) {
-					$file = $file->getProperties();
+					$file = $this->getFileArray($file);
 				}
 
 				$files[] = $file;
@@ -147,6 +147,27 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 		}
 
 		return $argument;
+	}
+
+	/**
+	 * Fixes a bug in TYPO3 6.2.0 that the properties metadata is not overlayed on localization.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\File $file
+	 * @return array
+	 */
+	protected function getFileArray(\TYPO3\CMS\Core\Resource\File $file) {
+		$properties = $file->getProperties();
+		$stat = $file->getStorage()->getFileInfo($file);
+		$array = $file->toArray();
+
+		foreach ($properties as $key => $value) {
+			$array[$key] = $value;
+		}
+		foreach ($stat as $key => $value) {
+			$array[$key] = $value;
+		}
+
+		return $array;
 	}
 
 }
