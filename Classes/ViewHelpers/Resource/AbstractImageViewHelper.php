@@ -119,7 +119,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 			$imageSource = $GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($imageInfo[3]);
 
 			if (TRUE === $onlyProperties) {
-				$file = $this->getFileArray($file);
+				$file = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
 			}
 
 			$images[] = array(

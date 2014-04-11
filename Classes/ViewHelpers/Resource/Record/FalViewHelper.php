@@ -48,8 +48,11 @@ class Tx_Vhs_ViewHelpers_Resource_Record_FalViewHelper extends Tx_Vhs_ViewHelper
 	 */
 	public function getResource($identity) {
 		$fileReference = $this->resourceFactory->getFileReferenceObject(intval($identity));
+		$file = $fileReference->getOriginalFile();
+		$fileReferenceProperties = $fileReference->getProperties();
+		$fileProperties = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
 
-		return $fileReference->getProperties();
+		return array_merge($fileProperties, $fileReferenceProperties);
 	}
 
 	/**
