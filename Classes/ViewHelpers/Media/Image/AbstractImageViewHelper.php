@@ -79,6 +79,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		$this->registerArgument('width', 'string', 'Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.', FALSE);
 		$this->registerArgument('height', 'string', 'Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.', FALSE);
 		$this->registerArgument('format', 'string', 'Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.', FALSE, NULL);
+		$this->registerArgument('quality', 'integer', 'Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.', FALSE, NULL);
 		$this->registerArgument('treatIdAsReference', 'boolean', 'When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.', FALSE, FALSE);
 	}
 
@@ -95,6 +96,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		$maxW = $this->arguments['maxW'];
 		$maxH = $this->arguments['maxH'];
 		$format = $this->arguments['format'];
+		$quality = $this->arguments['quality'];
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
 		if (TYPO3_MODE === 'BE') {
@@ -111,6 +113,10 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		);
 		if (FALSE === empty($format)) {
 			$setup['ext'] = $format;
+		}
+		if (0 < intval($quality)) {
+			$quality = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($quality, 10, 100, 75);
+			$setup['params'] = '-quality ' . $quality;
 		}
 		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
 			$src = substr($src, 3);
