@@ -95,19 +95,19 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	/**
 	 * @param mixed $haystack
 	 * @param mixed $needle
-	 * @return boolean
+	 * @return boolean|integer
 	 */
 	protected function assertHaystackHasNeedle($haystack, $needle) {
 		if (is_array($haystack)) {
-			return FALSE !== $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
+			return $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			return FALSE !== $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+			return $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
-			return FALSE !== $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+			return $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof Tx_Extbase_Persistence_QueryResult) {
-			return FALSE !== $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
+			return $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
 		} elseif (is_string($haystack)) {
-			return FALSE !== strpos($haystack, $needle);
+			return strpos($haystack, $needle);
 		}
 		return FALSE;
 	}
@@ -115,7 +115,7 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	/**
 	 * @param mixed $haystack
 	 * @param mixed $needle
-	 * @return mixed
+	 * @return boolean|integer
 	 */
 	protected function assertHaystackIsQueryResultAndHasNeedle($haystack, $needle) {
 		if ($needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
@@ -134,7 +134,7 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	/**
 	 * @param mixed $haystack
 	 * @param mixed $needle
-	 * @return mixed
+	 * @return boolean|integer
 	 */
 	protected function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle) {
 		$index = 0;
@@ -154,7 +154,7 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	/**
 	 * @param mixed $haystack
 	 * @param mixed $needle
-	 * @return boolean
+	 * @return boolean|integer
 	 */
 	protected function assertHaystackIsArrayAndHasNeedle($haystack, $needle) {
 		if ($needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface === FALSE) {
@@ -179,7 +179,7 @@ class Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper extends \TYPO3\CMS\Fluid
 	/**
 	 * @param mixed $haystack
 	 * @param mixed $needle
-	 * @return boolean
+	 * @return boolean|integer
 	 */
 	protected function assertHaystackIsStringAndHasNeedle($haystack, $needle) {
 		return strpos($haystack, $needle);
