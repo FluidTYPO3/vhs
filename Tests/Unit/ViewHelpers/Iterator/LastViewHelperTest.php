@@ -30,4 +30,73 @@
  */
 class Tx_Vhs_ViewHelpers_Iterator_LastViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
+	/**
+	 * @test
+	 */
+	public function returnsFirstElement() {
+		$array = array('a', 'b', 'c');
+		$arguments = array(
+			'haystack' => $array
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertEquals('c', $output);
+	}
+
+	/**
+	 * @test
+	 */
+	public function supportsIterators() {
+		$array = new \ArrayIterator(array('a', 'b', 'c'));
+		$arguments = array(
+			'haystack' => $array
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertEquals('c', $output);
+	}
+
+	/**
+	 * @test
+	 */
+	public function supportsTagContent() {
+		$array = array('a', 'b', 'c');
+		$arguments = array(
+			'haystack' => NULL
+		);
+		$output = $this->executeViewHelperUsingTagContent('Array', $array, $arguments);
+		$this->assertEquals('c', $output);
+	}
+
+	/**
+	 * @test
+	 */
+	public function returnsNullIfHaystackIsNull() {
+		$arguments = array(
+			'haystack' => NULL
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertEquals(NULL, $output);
+	}
+
+	/**
+	 * @test
+	 */
+	public function returnsNullIfHaystackIsEmptyArray() {
+		$arguments = array(
+			'haystack' => array()
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertEquals(NULL, $output);
+	}
+
+	/**
+	 * @test
+	 */
+	public function throwsExceptionOnUnsupportedHaystacks() {
+		$arguments = array(
+			'haystack' => new \DateTime('now')
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertStringStartsWith('Invalid argument supplied to Iterator/LastViewHelper - expected array, Iterator or NULL but got', $output);
+	}
+
 }

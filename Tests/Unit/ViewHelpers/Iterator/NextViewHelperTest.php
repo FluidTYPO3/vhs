@@ -30,4 +30,18 @@
  */
 class Tx_Vhs_ViewHelpers_Iterator_NextViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
+	/**
+	 * @test
+	 */
+	public function returnsNextElement() {
+		$array = array('a', 'b', 'c');
+		next($array);
+		$arguments = array(
+			'haystack' => $array,
+			'needle' => 'b',
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertEquals('c', $output);
+	}
+
 }
