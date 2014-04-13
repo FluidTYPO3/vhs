@@ -53,7 +53,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FirstViewHelper extends \TYPO3\CMS\Fluid\Core\
 			$haystack = $this->renderChildren();
 		}
 		if (is_array($haystack) === FALSE && $haystack instanceof Iterator === FALSE && is_null($haystack) === FALSE) {
-			throw new Exception('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
 				gettype($haystack), 1351958398);
 		}
 		if (NULL === $haystack) {
