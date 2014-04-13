@@ -3,16 +3,12 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
 
 env:
   - DB=mysql TYPO3=master INTEGRATION=master
   - DB=mysql TYPO3=TYPO3_6-1 INTEGRATION=master
   - DB=mysql TYPO3=TYPO3_6-0 INTEGRATION=master
-
-matrix:
-   include:
-     - php: 5.5
-       env: DB=mysql TYPO3=master INTEGRATION=master
 
 before_script:
   - cd ..
