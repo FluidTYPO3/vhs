@@ -41,4 +41,15 @@ class Tx_Vhs_ViewHelpers_Iterator_IntersectViewHelperTest extends Tx_Vhs_ViewHel
 		$this->assertEquals(array('a' => 'green', 0 => 'red'), $result);
 	}
 
+	/**
+	 * @test
+	 */
+	public function intersectTestWithTagContent() {
+		$array1 = array('a' => 'green', 'red', 'blue');
+		$array2 = array('b' => 'green', 'yellow', 'red');
+		$arguments = array('b' => $array2);
+		$result = $this->executeViewHelperUsingTagContent('Array', $array1, $arguments);
+		$this->assertEquals(array('a' => 'green', 0 => 'red'), $result);
+	}
+
 }

@@ -30,4 +30,30 @@
  */
 class Tx_Vhs_ViewHelpers_Iterator_IndexOfViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
+	/**
+	 * @test
+	 */
+	public function returnsIndexOfElement() {
+		$array = array('a', 'b', 'c');
+		$arguments = array(
+			'haystack' => $array,
+			'needle' => 'c',
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertEquals(2, $output);
+	}
+
+	/**
+	 * @test
+	 */
+	public function returnsNegativeOneIfNeedleDoesNotExist() {
+		$array = array('a', 'b', 'c');
+		$arguments = array(
+			'haystack' => $array,
+			'needle' => 'd',
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertEquals(-1, $output);
+	}
+
 }
