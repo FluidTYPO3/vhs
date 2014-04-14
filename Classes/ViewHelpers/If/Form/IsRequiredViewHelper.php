@@ -34,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Form
  */
-class Tx_Vhs_ViewHelpers_If_Form_IsRequiredViewHelper extends Tx_Vhs_ViewHelpers_Form_HasValidatorViewHelper {
+class Tx_Vhs_ViewHelpers_If_Form_IsRequiredViewHelper extends Tx_Vhs_ViewHelpers_If_Form_HasValidatorViewHelper {
 
 	/**
 	 * Render
