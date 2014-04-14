@@ -64,7 +64,7 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	const ID_SEPARATOR = '-';
 
 	/**
-	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\StringFrontend
 	 */
 	protected $cache;
 
@@ -72,7 +72,7 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 * @return void
 	 */
 	public function initialize() {
-		$this->cache = $GLOBALS['typo3CacheManager']->getCache('extbase_object');
+		$this->cache = $GLOBALS['typo3CacheManager']->getCache('vhs_main');
 	}
 
 	/**
