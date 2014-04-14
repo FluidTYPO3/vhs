@@ -1,0 +1,19 @@
+{
+  "name": "fluidtypo3-vhs",
+  "homepage": "http://fluidtypo3.org/",
+  "description": "The vhs package from FluidTYPO3",
+  "keywords": [
+    "TYPO3",
+    "CMS",
+    "extension",
+    "templating",
+    "Utility",
+    "ViewHelper",
+    "fedext",
+    "fluid"
+  ],
+  "authors": [
+    "FluidTYPO3 Team"
+  ],
+  "license": "GPL-2.0+"
+}
