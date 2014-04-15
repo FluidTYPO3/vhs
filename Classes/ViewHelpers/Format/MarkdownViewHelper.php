@@ -86,7 +86,7 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends \TYPO3\CMS\Fluid\Core
 		}
 
 		$cacheIdentifier = sha1($text);
-		if ($this->cache->has($cacheIdentifier)) {
+		if (TRUE === $this->cache->has($cacheIdentifier)) {
 			return $this->cache->get($cacheIdentifier);
 		}
 
