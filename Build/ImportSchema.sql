@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `cf_extbase_typo3dbbackend_tablecolumns_tags` (
   KEY `cache_tag` (`tag`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `cf_extbase_typo3dbbackend_queries` (
+CREATE TABLE IF NOT EXISTS  `cf_extbase_typo3dbbackend_queries` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `identifier` varchar(250) NOT NULL DEFAULT '',
   `expires` int(11) unsigned NOT NULL DEFAULT '0',
@@ -158,7 +158,43 @@ CREATE TABLE `cf_extbase_typo3dbbackend_queries` (
   KEY `cache_id` (`identifier`,`expires`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `cf_extbase_typo3dbbackend_queries_tags` (
+CREATE TABLE IF NOT EXISTS  `cf_extbase_typo3dbbackend_queries_tags` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(250) NOT NULL DEFAULT '',
+  `tag` varchar(250) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `cache_id` (`identifier`),
+  KEY `cache_tag` (`tag`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  `cf_vhs_main` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(250) NOT NULL DEFAULT '',
+  `expires` int(11) unsigned NOT NULL DEFAULT '0',
+  `content` mediumblob,
+  PRIMARY KEY (`id`),
+  KEY `cache_id` (`identifier`,`expires`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  `cf_vhs_main_tags` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(250) NOT NULL DEFAULT '',
+  `tag` varchar(250) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `cache_id` (`identifier`),
+  KEY `cache_tag` (`tag`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  `cf_vhs_markdown` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(250) NOT NULL DEFAULT '',
+  `expires` int(11) unsigned NOT NULL DEFAULT '0',
+  `content` mediumblob,
+  PRIMARY KEY (`id`),
+  KEY `cache_id` (`identifier`,`expires`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  `cf_vhs_markdown_tags` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `identifier` varchar(250) NOT NULL DEFAULT '',
   `tag` varchar(250) NOT NULL DEFAULT '',
