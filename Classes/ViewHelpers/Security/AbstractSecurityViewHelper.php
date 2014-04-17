@@ -78,46 +78,46 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \T
 	protected function evaluateArguments() {
 		$evaluationType = $this->arguments['evaluationType'];
 		$evaluations = array();
-		if ($this->arguments['anyFrontendUser']) {
+		if (TRUE === (boolean) $this->arguments['anyFrontendUser']) {
 			$evaluations['anyFrontendUser'] = intval($this->assertFrontendUserLoggedIn());
 		}
-		if ($this->arguments['anyFrontendUserGroup']) {
+		if (TRUE === (boolean) $this->arguments['anyFrontendUserGroup']) {
 			$evaluations['anyFrontendUserGroup'] = intval($this->assertFrontendUserGroupLoggedIn());
 		}
-		if ($this->arguments['frontendUser']) {
+		if (TRUE === isset($this->arguments['frontendUser'])) {
 			$evaluations['frontendUser'] = intval($this->assertFrontendUserLoggedIn($this->arguments['frontendUser']));
 		}
-		if ($this->arguments['frontendUserGroup']) {
+		if (TRUE === isset($this->arguments['frontendUserGroup'])) {
 			$evaluations['frontendUserGroup'] = intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroup']));
 		}
-		if ($this->arguments['frontendUserGroups']) {
+		if (TRUE === isset($this->arguments['frontendUserGroups'])) {
 			$evaluations['frontendUserGroups'] = intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroups']));
 		}
-		if ($this->arguments['anyBackendUser']) {
+		if (TRUE === (boolean) $this->arguments['anyBackendUser']) {
 			$evaluations['anyBackendUser'] = intval($this->assertBackendUserLoggedIn());
 		}
-		if ($this->arguments['anyBackendUserGroup']) {
+		if (TRUE === (boolean) $this->arguments['anyBackendUserGroup']) {
 			$evaluations['anyBackendUserGroup'] = intval($this->assertBackendUserGroupLoggedIn());
 		}
-		if ($this->arguments['backendUser']) {
+		if (TRUE === isset($this->arguments['backendUser'])) {
 			$evaluations['backendUser'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUser']));
 		}
-		if ($this->arguments['backendUsers']) {
+		if (TRUE === isset($this->arguments['backendUsers'])) {
 			$evaluations['backendUsers'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUsers']));
 		}
-		if ($this->arguments['backendUserGroup']) {
+		if (TRUE === isset($this->arguments['backendUserGroup'])) {
 			$evaluations['backendUserGroup'] = intval($this->assertBackendUserGroupLoggedIn($this->arguments['backendUserGroup']));
 		}
-		if ($this->arguments['backendUserGroups']) {
+		if (TRUE === isset($this->arguments['backendUserGroups'])) {
 			$evaluations['backendUserGroups'] = intval($this->assertBackendUserGroupLoggedIn($this->arguments['backendUserGroups']));
 		}
-		if ($this->arguments['admin']) {
+		if (TRUE === (boolean) $this->arguments['admin']) {
 			$evaluations['admin'] = intval($this->assertAdminLoggedIn());
 		}
-		if ($evaluationType === 'AND') {
-			return (count($evaluations) === array_sum($evaluations));
+		if ('AND' === $evaluationType) {
+			return (boolean) (count($evaluations) === array_sum($evaluations));
 		} else {
-			return (array_sum($evaluations) > 0);
+			return (boolean) (array_sum($evaluations) > 0);
 		}
 	}
 
@@ -131,17 +131,17 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \T
 	 */
 	public function assertFrontendUserLoggedIn(Tx_Extbase_Domain_Model_FrontendUser $frontendUser = NULL) {
 		$currentFrontendUser = $this->getCurrentFrontendUser();
-		if (!$currentFrontendUser) {
+		if (FALSE === $currentFrontendUser instanceof Tx_Extbase_Domain_Model_FrontendUser) {
 			return FALSE;
 		}
-		if ($frontendUser && $currentFrontendUser) {
+		if (TRUE === $frontendUser instanceof Tx_Extbase_Domain_Model_FrontendUser && TRUE === $currentFrontendUser instanceof Tx_Extbase_Domain_Model_FrontendUser) {
 			if ($currentFrontendUser->getUid() === $frontendUser->getUid()) {
 				return TRUE;
 			} else {
 				return FALSE;
 			}
 		}
-		return is_object($currentFrontendUser);
+		return (boolean) (TRUE === is_object($currentFrontendUser));
 	}
 
 	/**
@@ -153,20 +153,20 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \T
 	 */
 	public function assertFrontendUserGroupLoggedIn($groups = NULL) {
 		$currentFrontendUser = $this->getCurrentFrontendUser();
-		if (!$currentFrontendUser) {
+		if (FALSE === $currentFrontendUser instanceof Tx_Extbase_Domain_Model_FrontendUser) {
 			return FALSE;
 		}
 		$currentFrontendUserGroups = $currentFrontendUser->getUsergroup();
-		if ($groups) {
-			if ($groups instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) {
+		if (NULL !== $groups) {
+			if (TRUE === $groups instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) {
 				return $currentFrontendUserGroups->contains($groups);
-			} elseif ($groups instanceof Tx_Extbase_Persistence_ObjectStorage) {
+			} elseif (TRUE === $groups instanceof Tx_Extbase_Persistence_ObjectStorage) {
 				$currentFrontendUserGroupsClone = clone $currentFrontendUserGroups;
 				$currentFrontendUserGroupsClone->removeAll($groups);
 				return ($currentFrontendUserGroups->count() !== $currentFrontendUserGroupsClone->count());
 			}
 		}
-		return ($currentFrontendUserGroups->count() > 0);
+		return (boolean) (0 < $currentFrontendUserGroups->count());
 	}
 
 	/**
@@ -179,14 +179,14 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \T
 	 */
 	public function assertBackendUserLoggedIn($backendUser = NULL) {
 		$currentBackendUser = $this->getCurrentBackendUser();
-		if ($backendUser) {
+		if (NULL !== $backendUser) {
 			if ($currentBackendUser['uid'] === $backendUser) {
 				return TRUE;
 			} else {
 				return FALSE;
 			}
 		}
-		return is_array($currentBackendUser);
+		return (boolean) (TRUE === is_array($currentBackendUser));
 	}
 
 	/**
@@ -199,19 +199,19 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \T
 	 * @api
 	 */
 	public function assertBackendUserGroupLoggedIn($groups = NULL) {
-		if (!$this->assertBackendUserLoggedIn()) {
+		if (FALSE === $this->assertBackendUserLoggedIn()) {
 			return FALSE;
 		}
 		$currentBackendUser = $this->getCurrentBackendUser();
 		$userGroups = explode(',', $currentBackendUser['usergroup']);
-		if (count($userGroups) === 0) {
+		if (0 === count($userGroups)) {
 			return FALSE;
 		}
-		if (is_string($groups)) {
+		if (TRUE === is_string($groups)) {
 			$groups = explode(',', $groups);
 		}
-		if (count($groups) > 0) {
-			return (count(array_intersect($userGroups, $groups)) > 0);
+		if (0 < count($groups)) {
+			return (boolean) (0 < count(array_intersect($userGroups, $groups)));
 		}
 		return FALSE;
 	}
@@ -224,7 +224,7 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \T
 	 * @api
 	 */
 	public function assertAdminLoggedIn() {
-		if (!$this->assertBackendUserLoggedIn()) {
+		if (FALSE === $this->assertBackendUserLoggedIn()) {
 			return FALSE;
 		}
 		$currentBackendUser = $this->getCurrentBackendUser();

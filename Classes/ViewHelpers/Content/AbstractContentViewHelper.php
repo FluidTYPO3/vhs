@@ -212,4 +212,5 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends \TYP
 		);
 		return $GLOBALS['TSFE']->cObj->RECORDS($conf);
 	}
+
 }

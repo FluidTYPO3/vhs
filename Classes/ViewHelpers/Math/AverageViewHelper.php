@@ -57,18 +57,18 @@ class Tx_Vhs_ViewHelpers_Math_AverageViewHelper extends Tx_Vhs_ViewHelpers_Math_
 		$b = $this->arguments['b'];
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		$bIsIterable = $this->assertIsArrayOrIterator($b);
-		if ($aIsIterable && $b === NULL) {
+		if (TRUE === $aIsIterable && NULL === $b) {
 			$a = $this->convertTraversableToArray($a);
 			$sum = array_sum($a);
 			$distribution = count($a);
 			return $sum / $distribution;
-		} elseif ($aIsIterable && $bIsIterable === FALSE) {
+		} elseif (TRUE === $aIsIterable && FALSE === $bIsIterable) {
 			$a = $this->convertTraversableToArray($a);
 			foreach ($a as $index => $value) {
 				$a[$index] = $this->calculateAction($value, $b);
 			}
 			return $a;
-		} elseif ($a && $b === NULL) {
+		} elseif (TRUE === isset($a) && NULL === $b) {
 			return $a;
 		}
 		return $this->calculate($a, $b);

@@ -37,13 +37,13 @@ class Tx_Vhs_ViewHelpers_Page_HeaderViewHelper extends Tx_Vhs_ViewHelpers_Asset_
 	 * @return void
 	 */
 	public function render() {
-		if (TYPO3_MODE == 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return;
 		}
 		$content = $this->getContent();
 		$name = $this->getName();
 		$overwrite = $this->getOverwrite();
-		if (isset($GLOBALS['TSFE']->additionalHeaderData[$name]) === TRUE && !$overwrite) {
+		if (TRUE === isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && FALSE === $overwrite) {
 			return;
 		}
 		$GLOBALS['TSFE']->additionalHeaderData[$name] = $content;

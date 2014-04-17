@@ -47,7 +47,7 @@ class Tx_Vhs_ViewHelpers_Format_HideViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	 * @return string
 	 */
 	public function render() {
-		if ($this->arguments['disabled'] === TRUE) {
+		if (TRUE === (boolean) $this->arguments['disabled']) {
 			return $this->renderChildren();
 		} else {
 			$this->renderChildren();

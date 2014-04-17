@@ -84,10 +84,10 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 * @throws RuntimeException
 	 */
 	public function render($identity, $content = NULL) {
-		if (ctype_alnum(preg_replace('/[\-_]/i', '', $identity)) === FALSE) {
-			if ($identity instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+		if (FALSE === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
+			if (TRUE === $identity instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 				$identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
-			} elseif (method_exists($identity, '__toString')) {
+			} elseif (TRUE === method_exists($identity, '__toString')) {
 				$identity = (string) $identity;
 			} else {
 				throw new RuntimeException(
@@ -96,10 +96,10 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 				);
 			}
 		}
-		if ($this->has($identity)) {
+		if (TRUE === $this->has($identity)) {
 			return $this->retrieve($identity);
 		}
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 		$this->store($content, $identity);
@@ -111,7 +111,7 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 * @return boolean
 	 */
 	protected function has($id) {
-		return $this->cache->has(get_class($this) . self::ID_SEPARATOR . $id);
+		return (boolean) $this->cache->has(get_class($this) . self::ID_SEPARATOR . $id);
 	}
 
 	/**

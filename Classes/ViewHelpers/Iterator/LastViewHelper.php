@@ -61,10 +61,10 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends \TYPO3\CMS\Fluid\Core\V
 		}
 		$needle = NULL;
 		foreach ($haystack as $needle) {
-				// do nothing; but use foreach in order to a) reset pointer
-				// before iteration and b) make sure any Iterator/array is
-				// supported without the need for any special tricks. The
-				// isset() call is here only to prevent code style violations
+			// do nothing; but use foreach in order to a) reset pointer
+			// before iteration and b) make sure any Iterator/array is
+			// supported without the need for any special tricks. The
+			// isset() call is here only to prevent code style violations
 			isset($needle);
 		}
 		return $needle;

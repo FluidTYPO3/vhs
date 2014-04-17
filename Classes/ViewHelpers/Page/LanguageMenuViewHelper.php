@@ -94,7 +94,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 		$this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
 		$content = $this->renderChildren();
 		$this->templateVariableContainer->remove($this->arguments['as']);
-		if (strlen(trim($content)) === 0) {
+		if (0 === strlen(trim($content))) {
 			$content = $this->autoRender($this->languageMenu);
 		}
 		return $content;
@@ -180,13 +180,13 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 				break;
 			case 'name,flag':
 				$html = $label;
-				if ($flagImage) {
+				if ('' !== $flagImage) {
 					$html .= '&nbsp;' . $flagImage;
 				}
 				break;
 			case 'flag,name':
 			default:
-				if ($flagImage) {
+				if ('' !== $flagImage) {
 					$html = $flagImage . '&nbsp;' . $label;
 				} else {
 					$html = $label;
@@ -216,8 +216,8 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 	 * @return array
 	 */
 	protected function parseLanguageMenu() {
-		$order = ($this->arguments['order']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
-		$labelOverwrite = ($this->arguments['labelOverwrite']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']) : '';
+		$order = $this->arguments['order'] ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
+		$labelOverwrite = $this->arguments['labelOverwrite'] ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']) : '';
 
 		$tempArray = $languageMenu = array();
 
@@ -239,7 +239,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 		}
 
 			// reorders languageMenu
-		if (!empty($order)) {
+		if (FALSE === empty($order)) {
 			foreach ($order as $value) {
 				$languageMenu[$value] = $tempArray[$value];
 			}
@@ -248,7 +248,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 		}
 
 			// overwrite of label
-		if (!empty($labelOverwrite)) {
+		if (FALSE === empty($labelOverwrite)) {
 			$i = 0;
 			foreach ($languageMenu as $key => $value) {
 				$languageMenu[$key]['label'] = $labelOverwrite[$i];
@@ -263,20 +263,20 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 		$whereClause .= $GLOBALS['TSFE']->sys_page->enableFields($table);
 		$sysLang = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('DISTINCT sys_language_uid', $table, $whereClause);
 
-		if (!empty($sysLang)) {
+		if (FALSE === empty($sysLang)) {
 			foreach ($sysLang as $val) {
 				$pageArray[$val['sys_language_uid']] = $val['sys_language_uid'];
 			}
 		}
 
 		foreach ($languageMenu as $key => $value) {
-			$current = ($GLOBALS['TSFE']->sys_language_uid == $key) ? 1 : 0;
-			$inactive = ($pageArray[$key] || $key == $this->defaultLangUid) ? 0 : 1;
+			$current = $GLOBALS['TSFE']->sys_language_uid === (integer) $key ? 1 : 0;
+			$inactive = $pageArray[$key] || (integer) $key === $this->defaultLangUid ? 0 : 1;
 			$languageMenu[$key]['current'] = $current;
 			$languageMenu[$key]['inactive'] = $inactive;
-			$languageMenu[$key]['url'] = ($current) ? \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') : $this->getLanguageUrl($key, $inactive);
+			$languageMenu[$key]['url'] = TRUE === (boolean) $current ? \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') : $this->getLanguageUrl($key, $inactive);
 			$languageMenu[$key]['flagSrc'] = $this->getLanguageFlagSrc($value['flag']);
-			if ($this->arguments['hideNotTranslated'] && $inactive) {
+			if (TRUE === (boolean) $this->arguments['hideNotTranslated'] && TRUE === (boolean) $inactive) {
 				unset($languageMenu[$key]);
 			}
 		}

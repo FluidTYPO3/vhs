@@ -42,4 +42,5 @@ class Tx_Vhs_ViewHelpers_Uri_RequestViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		return $url;
 	}
+
 }

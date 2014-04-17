@@ -82,23 +82,23 @@ class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Re
 	 * @return string
 	 */
 	public function render($file = NULL, $variables = array(), $format = NULL, $paths = NULL) {
-		if ($file === NULL) {
+		if (NULL === $file) {
 			$file = $this->renderChildren();
 		}
 		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($file);
 		$view = $this->getPreparedView();
 		$view->setTemplatePathAndFilename($file);
 		$view->assignMultiple($variables);
-		if ($format !== NULL) {
+		if (NULL !== $format) {
 			$view->setFormat($format);
 		}
-		if (is_array($paths) === TRUE) {
-			if (isset($paths['layoutRootPath']) === TRUE) {
-				$paths['layoutRootPath'] = 0===strpos($paths['layoutRootPath'], 'EXT:') ? \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
+		if (TRUE === is_array($paths)) {
+			if (TRUE === isset($paths['layoutRootPath'])) {
+				$paths['layoutRootPath'] = 0 === strpos($paths['layoutRootPath'], 'EXT:') ? \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
 				$view->setLayoutRootPath($paths['layoutRootPath']);
 			}
-			if (isset($paths['partialRootPath']) === TRUE) {
-				$paths['partialRootPath'] = 0===strpos($paths['partialRootPath'], 'EXT:') ? \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
+			if (TRUE === isset($paths['partialRootPath'])) {
+				$paths['partialRootPath'] = 0 === strpos($paths['partialRootPath'], 'EXT:') ? \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
 				$view->setPartialRootPath($paths['partialRootPath']);
 			}
 		}

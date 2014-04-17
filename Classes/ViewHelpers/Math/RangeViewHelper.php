@@ -43,10 +43,10 @@ class Tx_Vhs_ViewHelpers_Math_RangeViewHelper extends Tx_Vhs_ViewHelpers_Math_Ab
 	public function render() {
 		$a = $this->getInlineArgument();
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if ($aIsIterable) {
+		if (TRUE === $aIsIterable) {
 			$a = $this->convertTraversableToArray($a);
 			sort($a, SORT_NUMERIC);
-			if (count($a) === 1) {
+			if (1 === count($a)) {
 				return array(reset($a), reset($a));
 			} else {
 				return array(array_shift($a), array_pop($a));

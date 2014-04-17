@@ -205,7 +205,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	private function insertAssetsAtMarker($markerName, $assets) {
 		$assetMarker = '<!-- VhsAssets' . $markerName . ' -->';
 		if (FALSE === strpos($GLOBALS['TSFE']->content, $assetMarker)) {
-			$inFooter = FALSE !== strpos($markerName, 'Footer');
+			$inFooter = (boolean) (FALSE !== strpos($markerName, 'Footer'));
 			$tag = TRUE === $inFooter ? '</body>' : '</head>';
 			$GLOBALS['TSFE']->content = str_replace($tag, $assetMarker . LF . $tag, $GLOBALS['TSFE']->content);
 		}
@@ -292,11 +292,11 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.' . $type;
 		$fileAbsolutePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
 		if (
-				FALSE === file_exists($fileAbsolutePathAndFilename)
-				|| 0 === filemtime($fileAbsolutePathAndFilename)
-				|| TRUE === isset($GLOBALS['BE_USER'])
-				|| TRUE === (boolean) $GLOBALS['TSFE']->no_cache
-				|| TRUE === (boolean) $GLOBALS['TSFE']->page['no_cache']
+			FALSE === file_exists($fileAbsolutePathAndFilename)
+			|| 0 === filemtime($fileAbsolutePathAndFilename)
+			|| TRUE === isset($GLOBALS['BE_USER'])
+			|| TRUE === (boolean) $GLOBALS['TSFE']->no_cache
+			|| TRUE === (boolean) $GLOBALS['TSFE']->page['no_cache']
 		) {
 			foreach ($assets as $name => $asset) {
 				$assetSettings = $this->extractAssetSettings($asset);
@@ -562,7 +562,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 			$match = trim($match, '\'" ');
 			if (FALSE === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
 				$checksum = md5($match);
-				if (preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
+				if (0 < preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
 					list(, $path, $suffix) = $items;
 				} else {
 					$path = $match;

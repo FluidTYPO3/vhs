@@ -54,7 +54,7 @@ class Tx_Vhs_ViewHelpers_If_Page_IsLanguageViewHelper extends \TYPO3\CMS\Fluid\C
 			if (FALSE !== $row) {
 				$languageUid = intval($row['uid']);
 			} else {
-				if ($language == $defaultTitle) {
+				if ((string) $language === $defaultTitle) {
 					$languageUid = $currentLanguageUid;
 				} else {
 					$languageUid = -1;

@@ -36,9 +36,7 @@ class Tx_Vhs_ViewHelpers_Media_Image_MimetypeViewHelper extends Tx_Vhs_ViewHelpe
 	 * @return string
 	 */
 	public function render() {
-
 		$info = $this->getInfo();
-
 		return TRUE === isset($info['type']) ? $info['type'] : '';
 	}
 

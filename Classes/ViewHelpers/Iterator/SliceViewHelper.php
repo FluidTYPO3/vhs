@@ -43,12 +43,12 @@ class Tx_Vhs_ViewHelpers_Iterator_SliceViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 * @return array
 	 */
 	public function render($haystack = NULL, $start = 0, $length = NULL, $as = NULL) {
-		if ($haystack === NULL) {
+		if (NULL === $haystack) {
 			$haystack = $this->renderChildren();
 		}
-		if ($haystack instanceof Iterator) {
+		if (TRUE === $haystack instanceof Iterator) {
 			$haystack = iterator_to_array($haystack, TRUE);
-		} elseif (is_array($haystack) !== TRUE) {
+		} elseif (FALSE === is_array($haystack)) {
 			throw new Exception('Cannot slice unsupported type: ' . gettype($haystack), 1353812601);
 		}
 		$output = array_slice($haystack, $start, $length, TRUE);

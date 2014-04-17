@@ -184,9 +184,9 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * @throws Tx_Fluid_Core_ViewHelper_Exception
 	 */
 	protected function enforceDateTime($date) {
-		if (FALSE === ($date instanceof \DateTime)) {
+		if (FALSE === $date instanceof \DateTime) {
 			try {
-				if (is_integer($date)) {
+				if (TRUE === is_integer($date)) {
 					$date = new \DateTime('@' . $date);
 				} else {
 					$date = new \DateTime($date);
@@ -205,10 +205,11 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * @return string
 	 */
 	protected function formatDate($date, $format = 'Y-m-d') {
-		if (strpos($format, '%') !== FALSE) {
+		if (FALSE !== strpos($format, '%')) {
 			return strftime($format, $date->format('U'));
 		} else {
 			return $date->format($format);
 		}
 	}
+
 }

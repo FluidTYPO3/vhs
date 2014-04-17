@@ -42,4 +42,5 @@ class Tx_Vhs_ViewHelpers_Site_UrlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHe
 		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		return $url;
 	}
+
 }

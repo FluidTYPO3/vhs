@@ -140,13 +140,13 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 	 * @return array
 	 */
 	protected function getOptions() {
-		if (FALSE === is_array($this->arguments['options']) && FALSE === ($this->arguments['options'] instanceof Traversable)) {
+		if (FALSE === is_array($this->arguments['options']) && FALSE === $this->arguments['options'] instanceof Traversable) {
 			return array();
 		}
 		$options = array();
 		$optionsArgument = $this->arguments['options'];
 		foreach ($optionsArgument as $key => $value) {
-			if (is_object($value)) {
+			if (TRUE === is_object($value)) {
 
 				if (TRUE === isset($this->arguments['optionValueField']) && FALSE === empty($this->arguments['optionValueField'])) {
 					$key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
@@ -219,7 +219,7 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 		if (FALSE === isset($this->arguments['optionValueField']) || TRUE === empty($this->arguments['optionValueField'])) {
 			return $value;
 		}
-		if (FALSE === is_array($value) && FALSE === ($value instanceof Iterator)) {
+		if (FALSE === is_array($value) && FALSE === $value instanceof Iterator) {
 			if (TRUE === is_object($value)) {
 				return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 			} else {
@@ -254,4 +254,5 @@ class Tx_Vhs_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form
 
 		return $output;
 	}
+
 }

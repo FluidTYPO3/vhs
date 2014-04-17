@@ -56,5 +56,4 @@ class Tx_Vhs_ViewHelpers_Content_Resources_FalViewHelper extends Tx_Vhs_ViewHelp
 		$this->overrideArgument('field', 'string', 'The field of the table associated to resources.', FALSE, self::defaultField);
 	}
 
-
 }

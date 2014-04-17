@@ -41,10 +41,10 @@ class Tx_Vhs_ViewHelpers_Format_TrimViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	 * @return string
 	 */
 	public function render($content = NULL, $characters = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-		if ($characters !== NULL) {
+		if (FALSE === empty($characters)) {
 			$content = trim($content, $characters);
 		} else {
 			$content = trim($content);

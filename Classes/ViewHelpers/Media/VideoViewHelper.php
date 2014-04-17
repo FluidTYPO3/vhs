@@ -140,4 +140,5 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 		$this->tag->addAttributes($tagAttributes);
 		return $this->tag->render();
 	}
+
 }
