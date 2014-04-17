@@ -332,20 +332,27 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 * @param integer $pageUid
 	 * @param integer $doktype
 	 * @param integer $shortcut
+	 * @param string $mpParam
 	 * @return string
 	 */
-	protected function getItemLink($pageUid, $doktype, $shortcut) {
+	protected function getItemLink($pageUid, $doktype, $shortcut, $mpParam) {
 		$isShortcutOrLink = \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT === $doktype || \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK === $doktype;
 		$useShortcutTarget = $this->shouldUseShortcutTarget();
 		if (TRUE === $isShortcutOrLink && TRUE === $useShortcutTarget && 0 < $shortcut) {
 			$pageUid = $shortcut;
 		}
+		if (FALSE === empty($mpParam)) {
+			$mpUrlParam = $mpParam ? '"&MP=' . rawurlencode($mpParam) . '"' : '';
+		}
+
+		$parameter = TRUE === isset($mpUrlParam) ? $pageUid . ' - - - '.$mpUrlParam : $pageUid;
 		$config = array(
-			'parameter' => $pageUid,
+			'parameter' => $parameter,
 			'returnLast' => 'url',
 			'additionalParams' => '',
 			'useCacheHash' => FALSE
 		);
+
 		return $GLOBALS['TSFE']->cObj->typoLink('', $config);
 	}
 
@@ -379,7 +386,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		// keep a backup of the original page UID to determine 'active' state
 		$originalPageUid = $page['uid'];
 		// first, ensure the complete data array is present
+		$mpParam = $page['_MP_PARAM'];
 		$page = $this->pageSelect->getPage($pageUid);
+		if (FALSE === empty($mpParam)) {
+			$page['_MP_PARAM'] = $mpParam;
+		}
 		$targetPage = NULL;
 		if (\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT === (integer) $page['doktype']) {
 			switch ($page['shortcut_mode']) {
@@ -425,10 +436,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 
 		$doktype = (integer) $page['doktype'];
 		$shortcut = (\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT === $doktype ? $page['shortcut'] : $page['url']);
+		$mpParam = $page['_MP_PARAM'];
 		$page['active'] = $this->isActive($pageUid, $rootLine, $originalPageUid);
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (boolean) (0 < count($this->getSubmenu($originalPageUid)) ? TRUE : FALSE);
-		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
+		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut, $mpParam);
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['doktype'] = $doktype;
