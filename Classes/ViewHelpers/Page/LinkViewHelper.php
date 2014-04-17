@@ -145,6 +145,11 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewH
 			$title = $this->getTitleValue($page);
 		}
 
+		// Add title attribute
+		if (FALSE === $this->tag->hasAttribute('title') && TRUE === empty($this->arguments['title'])) {
+			$this->tag->addAttribute('title', $title);
+		}
+
 		// Check if we should assign page title to the template variable container
 		$pageTitleAs = $this->arguments['pageTitleAs'];
 		if (FALSE === empty($pageTitleAs)) {
