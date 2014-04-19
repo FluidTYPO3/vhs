@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\Service\PageSelectService;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns the all alternate urls.
@@ -30,15 +38,15 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
-class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class AlternateViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @var Tx_Vhs_Service_PageSelectService
+	 * @var PageSelectService
 	 */
 	protected $pageSelect;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @var ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -48,18 +56,18 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends \TYPO3\CMS\Flui
 	protected $tagBuilder;
 
 	/**
-	 * @param Tx_Vhs_Service_PageSelectService $pageSelectService
+	 * @param PageSelectService $pageSelectService
 	 * @return void
 	 */
-	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelectService) {
+	public function injectPageSelectService(PageSelectService $pageSelectService) {
 		$this->pageSelect = $pageSelectService;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 * @param ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
 	}
@@ -84,10 +92,10 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends \TYPO3\CMS\Flui
 		}
 
 		$languages = $this->arguments['languages'];
-		if (TRUE === $languages instanceof Traversable) {
+		if (TRUE === $languages instanceof \Traversable) {
 			$languages = iterator_to_array($languages);
 		} elseif (TRUE === is_string($languages)) {
-			$languages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $languages, TRUE);
+			$languages = GeneralUtility::trimExplode(',', $languages, TRUE);
 		} else {
 			$languages = (array) $languages;
 		}
@@ -102,6 +110,7 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends \TYPO3\CMS\Flui
 		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
 		unset($languages[$currentLanguageUid]);
 
+		/** @var UriBuilder $uriBuilder */
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uriBuilder = $uriBuilder->reset()
 			->setTargetPageUid($pageUid)
@@ -111,6 +120,7 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends \TYPO3\CMS\Flui
 		$this->tagBuilder->setTagName('link');
 		$this->tagBuilder->addAttribute('rel', 'alternate');
 
+		/** @var PageRenderer $pageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$usePageRenderer = (1 !== intval($GLOBALS['TSFE']->config['config']['disableAllHeaderCode']));
 		$output = '';
@@ -134,5 +144,4 @@ class Tx_Vhs_ViewHelpers_Page_Header_AlternateViewHelper extends \TYPO3\CMS\Flui
 			return trim($output);
 		}
 	}
-
 }

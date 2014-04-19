@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Formats or gets detected substrings by regular expression.
  * Returns matches if `return="TRUE"`, otherwise replaces any
@@ -33,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_RegularExpressionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RegularExpressionViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param string $pattern The regular expression pattern to search for

@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,10 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode;
+
+class IfViewHelper extends AbstractConditionViewHelper {
 
 	const OPERATOR_IS_EQUAL = '==';
 	const OPERATOR_IS_NOT_EQUAL = '!=';
@@ -99,7 +104,7 @@ class Tx_Vhs_ViewHelpers_IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 	}
 
 	/**
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @param array $stack
 	 * @return boolean
 	 */
@@ -109,12 +114,12 @@ class Tx_Vhs_ViewHelpers_IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 		if (0 === $stackCount) {
 			return FALSE;
 		} elseif (1 === $stackCount) {
-			return Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(reset($stack));
+			return BooleanNode::convertToBoolean(reset($stack));
 		} elseif (3 === $stackCount) {
 			list ($leftSide, $operator, $rightSide) = array_values($stack);
 			if (TRUE === is_string($operator) && TRUE === isset($this->comparisonOperators[$operator])) {
 				$operator = $this->comparisonOperators[$operator];
-				return Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::evaluateComparator($operator, $leftSide, $rightSide);
+				return BooleanNode::evaluateComparator($operator, $leftSide, $rightSide);
 			}
 		}
 
@@ -135,12 +140,12 @@ class Tx_Vhs_ViewHelpers_IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 		}
 
 		if (FALSE === $operator) {
-			throw new RuntimeException('The stack was not comparable and did not include any logical operators.', 1385071197);
+			throw new \RuntimeException('The stack was not comparable and did not include any logical operators.', 1385071197);
 		}
 
 		$operatorIndex = array_search($operatorIndex, array_keys($stack));
 		if (0 === $operatorIndex || $operatorIndex + 1 >= $stackCount) {
-			throw new RuntimeException('The stack may not contain a logical operator at the first or last element.', 1385072228);
+			throw new \RuntimeException('The stack may not contain a logical operator at the first or last element.', 1385072228);
 		}
 
 		$leftSide = array_slice($stack, 0, $operatorIndex);
@@ -150,7 +155,7 @@ class Tx_Vhs_ViewHelpers_IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 	}
 
 	/**
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @param array $leftSide
 	 * @param string $operator
 	 * @param array $rightSide
@@ -166,7 +171,7 @@ class Tx_Vhs_ViewHelpers_IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 			return $leftCondition || $rightCondition;
 		}
 
-		throw new RuntimeException('The stack could not be evaluated (internal error).', 1385072357);
+		throw new \RuntimeException('The stack could not be evaluated (internal error).', 1385072357);
 	}
 
 	/**

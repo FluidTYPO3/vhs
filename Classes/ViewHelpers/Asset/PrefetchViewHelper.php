@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
 /***************************************************************
  *  Copyright notice
  *
@@ -53,9 +54,9 @@
  * See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
  *
  * @package Vhs
- * @subpackage ViewHelpers
+ * @subpackage ViewHelpers\Asset
  */
-class Tx_Vhs_ViewHelpers_Asset_PrefetchViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
+class PrefetchViewHelper extends AbstractAssetViewHelper {
 
 	/**
 	 * @var string

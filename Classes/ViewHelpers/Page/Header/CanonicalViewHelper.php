@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\Service\PageSelectService;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Returns the current canonical url in a link tag.
@@ -30,18 +34,18 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
-class Tx_Vhs_ViewHelpers_Page_Header_CanonicalViewHelper extends  \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
-	 * @var Tx_Vhs_Service_PageSelectService
+	 * @var PageSelectService
 	 */
 	protected $pageSelect;
 
 	/**
-	 * @param Tx_Vhs_Service_PageSelectService $pageSelectService
+	 * @param PageSelectService $pageSelectService
 	 * @return void
 	 */
-	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelectService) {
+	public function injectPageSelectService(PageSelectService $pageSelectService) {
 		$this->pageSelect = $pageSelectService;
 	}
 

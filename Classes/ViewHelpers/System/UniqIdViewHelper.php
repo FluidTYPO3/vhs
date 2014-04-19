@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\System;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +37,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\System
  */
-class Tx_Vhs_ViewHelpers_System_UniqIdViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class UniqIdViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param string $prefix An optional prefix for making sure it's unique across environments

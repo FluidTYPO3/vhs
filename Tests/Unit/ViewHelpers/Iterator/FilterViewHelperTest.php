@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class FilterViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test
@@ -47,7 +50,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelperTest extends Tx_Vhs_ViewHelper
 	 */
 	public function filteringEmptySubjectReturnsEmptyArrayOnInvalidSubject() {
 		$arguments = array(
-			'subject' => new DateTime('now')
+			'subject' => new \DateTime('now')
 		);
 		$result = $this->executeViewHelper($arguments);
 		$this->assertSame($result, array());
@@ -58,7 +61,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelperTest extends Tx_Vhs_ViewHelper
 	 */
 	public function supportsIterators() {
 		$array = array('test' => 'test');
-		$iterator = new ArrayIterator($array);
+		$iterator = new \ArrayIterator($array);
 		$arguments = array(
 			'subject' => $iterator,
 			'filter' => 'test',
@@ -73,7 +76,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelperTest extends Tx_Vhs_ViewHelper
 	 */
 	public function supportsPropertyName() {
 		$array = array(array('test' => 'test'));
-		$iterator = new ArrayIterator($array);
+		$iterator = new \ArrayIterator($array);
 		$arguments = array(
 			'subject' => $iterator,
 			'filter' => 'test',

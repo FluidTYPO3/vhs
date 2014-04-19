@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,10 +31,15 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
+use \TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+
+class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface {
 
 	/**
-	 * @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode[]
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode[]
 	 */
 	protected $childViewHelperNodes = array();
 
@@ -45,7 +52,7 @@ class Tx_Vhs_ViewHelpers_DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 			$viewHelper = $viewHelperNode->getUninitializedViewHelper();
 			$arguments = $viewHelper->prepareArguments();
 			$givenArguments = $viewHelperNode->getArguments();
-			$viewHelperReflection = new ReflectionClass($viewHelper);
+			$viewHelperReflection = new \ReflectionClass($viewHelper);
 			$viewHelperDescription = $viewHelperReflection->getDocComment();
 			$viewHelperDescription = htmlentities($viewHelperDescription);
 			$viewHelperDescription = '[CLASS DOC]' . LF . $viewHelperDescription . LF;
@@ -56,12 +63,12 @@ class Tx_Vhs_ViewHelpers_DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 			$argumentDefinitions = array();
 			foreach ($arguments as &$argument) {
 				$name = $argument->getName();
-				$argumentDefinitions[$name] = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($argument);
+				$argumentDefinitions[$name] = ObjectAccess::getGettableProperties($argument);
 			}
 			$sections = array(
 				$viewHelperDescription,
-				Tx_Extbase_Utility_Debugger::var_dump($argumentDefinitions, '[ARGUMENTS]', 4, TRUE, FALSE, TRUE),
-				Tx_Extbase_Utility_Debugger::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, TRUE, FALSE, TRUE),
+				DebuggerUtility::var_dump($argumentDefinitions, '[ARGUMENTS]', 4, TRUE, FALSE, TRUE),
+				DebuggerUtility::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, TRUE, FALSE, TRUE),
 				$renderMethodDescription
 			);
 			array_push($nodes, implode(LF, $sections));
@@ -73,12 +80,12 @@ class Tx_Vhs_ViewHelpers_DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 	/**
 	 * Sets the direct child nodes of the current syntax tree node.
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode[] $childNodes
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode[] $childNodes
 	 * @return void
 	 */
 	public function setChildNodes(array $childNodes) {
 		foreach ($childNodes as $childNode) {
-			if (TRUE === $childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+			if (TRUE === $childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 				array_push($this->childViewHelperNodes, $childNode);
 			}
 		}

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -28,11 +29,11 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-abstract class Tx_Vhs_ViewHelpers_Math_AbstractMathViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+abstract class AbstractMathViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 	/**
 	 * @param mixed $a
-	 * @oaram mixed $expected
+	 * @param mixed $expected
 	 * @return void
 	 */
 	protected function executeSingleArgumentTest($a, $expected) {

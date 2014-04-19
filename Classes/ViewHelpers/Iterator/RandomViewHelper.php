@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns random element from array
@@ -30,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RandomViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -45,7 +50,7 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends \TYPO3\CMS\Fluid\Core
 	 * Render method
 	 *
 	 * @param mixed $subject
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return mixed
 	 */
 	public function render($subject = NULL) {
@@ -60,18 +65,18 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends \TYPO3\CMS\Fluid\Core
 		} else {
 			if (TRUE === $subject instanceof Iterator) {
 				$array = iterator_to_array($subject, TRUE);
-			} elseif (TRUE === $subject instanceof Tx_Extbase_Persistence_QueryResultInterface || TRUE === $subject instanceof TYPO3\CMS\Extbase\Persistence\QueryResultInterface) {
-				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
+			} elseif (TRUE === $subject instanceof \Tx_Extbase_Persistence_QueryResultInterface || TRUE === $subject instanceof QueryResultInterface) {
+				/** @var QueryResultInterface $subject */
 				$array = $subject->toArray();
 			} elseif (NULL !== $subject) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
-				' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1370966821);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
+					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1370966821);
 			}
 		}
 		$randomElement = $array[array_rand($array)];
 		if (TRUE === isset($as) && FALSE === empty($as)) {
 			$variables = array($as => $randomElement);
-			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 			return $content;
 		}
 		return $randomElement;

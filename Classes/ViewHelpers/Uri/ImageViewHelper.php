@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
 
 /**
  * ### Uri: Image
@@ -33,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Uri
  */
-class Tx_Vhs_ViewHelpers_Uri_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper {
+class ImageViewHelper extends AbstractImageViewHelper {
 
 	/**
 	 * Render method

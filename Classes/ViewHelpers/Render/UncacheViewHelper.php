@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Render;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,10 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class Tx_Vhs_ViewHelpers_Render_UncacheViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class UncacheViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize
@@ -60,7 +65,7 @@ class Tx_Vhs_ViewHelpers_Render_UncacheViewHelper extends \TYPO3\CMS\Fluid\Core\
 
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 		$content = '<!--' . $substKey . '-->';
-		$templateView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Vhs_View_UncacheTemplateView');
+		$templateView = GeneralUtility::makeInstance('FluidTYPO3\Vhs\View\UncacheTemplateView');
 
 		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
 			'type' => 'POSTUSERFUNC',

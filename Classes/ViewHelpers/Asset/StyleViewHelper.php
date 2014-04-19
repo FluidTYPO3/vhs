@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
 /***************************************************************
  *  Copyright notice
  *
@@ -30,9 +31,9 @@
  * specify where to insert the Asset and how to treat it.
  *
  * @package Vhs
- * @subpackage ViewHelpers
+ * @subpackage ViewHelpers\Asset
  */
-class Tx_Vhs_ViewHelpers_Asset_StyleViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
+class StyleViewHelper extends AbstractAssetViewHelper {
 
 	/**
 	 * @return void

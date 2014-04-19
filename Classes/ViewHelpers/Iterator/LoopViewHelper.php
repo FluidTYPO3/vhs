@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_LoopViewHelper extends Tx_Vhs_ViewHelpers_Iterator_AbstractLoopViewHelper {
+class LoopViewHelper extends AbstractLoopViewHelper {
 
 	/**
 	 * Initialize

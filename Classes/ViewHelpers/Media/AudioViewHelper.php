@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Renders HTML code to embed a HTML5 audio player. NOTICE: This is
@@ -38,7 +41,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_AudioViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper {
+class AudioViewHelper extends AbstractMediaTagViewHelper {
 
 	/**
 	 * @var string
@@ -83,13 +86,13 @@ class Tx_Vhs_ViewHelpers_Media_AudioViewHelper extends Tx_Vhs_ViewHelpers_Media_
 	/**
 	 * Render method
 	 *
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return string
 	 */
 	public function render() {
 		$sources = $this->getSourcesFromArgument();
 		if (0 === count($sources)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('No audio sources provided.', 1359382189);
+			throw new Exception('No audio sources provided.', 1359382189);
 		}
 
 		foreach ($sources as $source) {
@@ -98,16 +101,16 @@ class Tx_Vhs_ViewHelpers_Media_AudioViewHelper extends Tx_Vhs_ViewHelpers_Media_
 					$src = $source;
 					$type = substr($source, strrpos($source, '.') + 1);
 				} else {
-					$src = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($source), strlen(PATH_site));
+					$src = substr(GeneralUtility::getFileAbsFileName($source), strlen(PATH_site));
 					$type = pathinfo($src, PATHINFO_EXTENSION);
 				}
 			} elseif (TRUE === is_array($source)) {
 				if (FALSE === isset($source['src'])) {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "src" in sources array.', 1359381250);
+					throw new Exception('Missing value for "src" in sources array.', 1359381250);
 				}
 				$src = $source['src'];
 				if (FALSE === isset($source['type'])) {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "type" in sources array.', 1359381255);
+					throw new Exception('Missing value for "type" in sources array.', 1359381255);
 				}
 				$type = $source['type'];
 			} else {
@@ -115,7 +118,7 @@ class Tx_Vhs_ViewHelpers_Media_AudioViewHelper extends Tx_Vhs_ViewHelpers_Media_
 				continue;
 			}
 			if (FALSE === in_array(strtolower($type), $this->validTypes)) {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid audio type "' . $type . '".', 1359381260);
+					throw new Exception('Invalid audio type "' . $type . '".', 1359381260);
 			}
 			$type = $this->mimeTypesMap[$type];
 			$src = $this->preprocessSourceUri($src);

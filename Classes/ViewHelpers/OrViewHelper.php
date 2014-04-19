@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,10 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_OrViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
+class OrViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize
@@ -79,7 +84,7 @@ class Tx_Vhs_ViewHelpers_OrViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 			$extensionName = $request->getControllerExtensionName();
 		}
 
-		$content = Tx_Extbase_Utility_Localization::translate($translate, $extensionName, $arguments);
+		$content = LocalizationUtility::translate($translate, $extensionName, $arguments);
 		if (NULL === $content) {
 			$content = $alternative;
 		}

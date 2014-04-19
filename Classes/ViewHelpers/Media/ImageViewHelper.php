@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
 
 /**
  * Renders an image tag for the given resource including all valid
@@ -32,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_ImageViewHelper extends Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper {
+class ImageViewHelper extends AbstractImageViewHelper {
 
 	/**
 	 * name of the tag to be created by this view helper

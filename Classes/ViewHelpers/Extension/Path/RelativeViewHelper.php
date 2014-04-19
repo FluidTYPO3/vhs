@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Extension\Path;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\ViewHelpers\Extension\AbstractExtensionViewHelper;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * ### Path: Relative Extension Folder Path
@@ -32,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Extension\Path
  */
-class Tx_Vhs_ViewHelpers_Extension_Path_RelativeViewHelper extends Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper {
+class RelativeViewHelper extends AbstractExtensionViewHelper {
 
 	/**
 	 * Render method
@@ -41,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_RelativeViewHelper extends Tx_Vhs_ViewHe
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey);
+		return ExtensionManagementUtility::extRelPath($extensionKey);
 	}
 
 }

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
 /***************************************************************
  *  Copyright notice
  *
@@ -27,7 +28,8 @@
  * @protection off
  * @author Cedric Ziel <cedric@cedric-ziel.com>
  * @package Vhs
+ * @subpackage ViewHelpers\Asset
  */
-class Tx_Vhs_ViewHelpers_Asset_StyleViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class StyleViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 }

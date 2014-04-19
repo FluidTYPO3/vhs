@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-interface Tx_Vhs_ViewHelpers_Resource_Record_RecordResourceViewHelperInterface extends Tx_Vhs_ViewHelpers_Resource_ResourceViewHelperInterface {
+use \FluidTYPO3\Vhs\ViewHelpers\Resource\ResourceViewHelperInterface;
+
+interface RecordResourceViewHelperInterface extends ResourceViewHelperInterface {
 
 	/**
 	 * @param array $record

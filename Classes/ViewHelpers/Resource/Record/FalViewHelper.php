@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,10 @@
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-class Tx_Vhs_ViewHelpers_Resource_Record_FalViewHelper extends Tx_Vhs_ViewHelpers_Resource_Record_AbstractRecordResourceViewHelper {
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \FluidTYPO3\Vhs\Utility\ResourceUtility;
+
+class FalViewHelper extends AbstractRecordResourceViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
@@ -39,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Resource_Record_FalViewHelper extends Tx_Vhs_ViewHelper
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$this->resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 	}
 
 	/**
@@ -50,7 +55,7 @@ class Tx_Vhs_ViewHelpers_Resource_Record_FalViewHelper extends Tx_Vhs_ViewHelper
 		$fileReference = $this->resourceFactory->getFileReferenceObject(intval($identity));
 		$file = $fileReference->getOriginalFile();
 		$fileReferenceProperties = $fileReference->getProperties();
-		$fileProperties = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
+		$fileProperties = ResourceUtility::getFileArray($file);
 
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($fileProperties, $fileReferenceProperties, TRUE, FALSE, FALSE);
 		return $fileProperties;

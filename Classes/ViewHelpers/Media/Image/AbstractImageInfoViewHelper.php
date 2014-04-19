@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Media\Image view helpers
@@ -30,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media\Image
  */
-abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -43,7 +47,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 	}
 
 	/**
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return array
 	 */
 	public function getInfo() {
@@ -57,10 +61,10 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 			}
 		}
 
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+		$file = GeneralUtility::getFileAbsFileName($path);
 
 		if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
+			throw new Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
 		}
 
 		$info = getimagesize($file);

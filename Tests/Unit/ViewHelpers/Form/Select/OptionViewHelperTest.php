@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Form\Select;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,12 +23,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
+ * @subpackage ViewHelpers\Form\Select
  */
-class Tx_Vhs_ViewHelpers_Form_Select_OptionViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class OptionViewHelperTest extends AbstractViewHelperTest {
 
 }

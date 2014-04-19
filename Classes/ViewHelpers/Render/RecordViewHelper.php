@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Render;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class Tx_Vhs_ViewHelpers_Render_RecordViewHelper extends Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper {
+use \FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
+
+class RecordViewHelper extends AbstractContentViewHelper {
 
 	/**
 	 * Render method

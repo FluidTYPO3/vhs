@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -40,7 +42,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
+class BrowseViewHelper extends AbstractMenuViewHelper {
 
 	/**
 	 * @var array
@@ -80,7 +82,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		$firstUid = $pageUids[0];
 		$lastUid = $pageUids[$uidCount - 1];
 		for ($i = 0; $i < $uidCount; $i++) {
-			if ((integer) $pageUids[$i] === (integer) $pageUid) {
+			if ((integer)$pageUids[$i] === (integer)$pageUid) {
 				if ($i > 0) {
 					$prevUid = $pageUids[$i - 1];
 				}
@@ -91,15 +93,15 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 			}
 		}
 		$pages = array();
-		if (TRUE === (boolean) $this->arguments['renderFirst']) {
+		if (TRUE === (boolean)$this->arguments['renderFirst']) {
 			$pages['first'] = $menuData[$firstUid];
 		}
 		$pages['prev'] = $menuData[$prevUid];
-		if (TRUE === (boolean) $this->arguments['renderUp']) {
+		if (TRUE === (boolean)$this->arguments['renderUp']) {
 			$pages['up'] = $parentPage;
 		}
 		$pages['next'] = $menuData[$nextUid];
-		if (TRUE === (boolean) $this->arguments['renderLast']) {
+		if (TRUE === (boolean)$this->arguments['renderLast']) {
 			$pages['last'] = $menuData[$lastUid];
 		}
 		$menuItems = $this->parseMenu($pages, $rootLineData);

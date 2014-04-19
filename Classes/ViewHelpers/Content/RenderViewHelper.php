@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Content;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-class Tx_Vhs_ViewHelpers_Content_RenderViewHelper extends Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper {
+use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
+class RenderViewHelper extends AbstractContentViewHelper {
 
 	/**
 	 * @return void
@@ -61,7 +65,7 @@ class Tx_Vhs_ViewHelpers_Content_RenderViewHelper extends Tx_Vhs_ViewHelpers_Con
 		}
 
 		$variables = array($as => $content);
-		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		return $output;
 	}
 

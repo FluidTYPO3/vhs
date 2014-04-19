@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /**
  * Lipsum ViewHelper
  *
@@ -32,7 +38,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format\Placeholder
  */
-class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class LipsumViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var string
@@ -40,12 +46,12 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends \TYPO3\CMS\
 	protected $lipsum;
 
 	/**
-	 * @var	\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @var	ContentObjectRenderer
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @var ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -57,10 +63,10 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends \TYPO3\CMS\
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @param ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -90,11 +96,11 @@ class Tx_Vhs_ViewHelpers_Format_Placeholder_LipsumViewHelper extends \TYPO3\CMS\
 		}
 		if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
 			// argument is most likely a file reference.
-			$sourceFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($lipsum);
+			$sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
 			if (file_exists($sourceFile) === TRUE) {
 				$lipsum = file_get_contents($sourceFile);
 			} else {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
+				GeneralUtility::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
 					'The file was: ' . $sourceFile, 'Vhs');
 				$lipsum = $this->lipsum;
 			}

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -98,7 +99,10 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_TryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
+class TryViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * @return mixed
@@ -109,9 +113,9 @@ class Tx_Vhs_ViewHelpers_TryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\
 			if (TRUE === empty($content)) {
 				$content = $this->renderChildren();
 			}
-		} catch (Exception $error) {
+		} catch (\Exception $error) {
 			$variables = array('exception' => $error);
-			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $content;
 	}

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ### Date range calculation/formatting ViewHelper
@@ -75,7 +79,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DateRangeViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var boolean
@@ -101,7 +105,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 	/**
 	 * Render method
 	 *
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public function render() {
@@ -123,21 +127,21 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 		}
 
 		if (NULL === $intervalFormat && NULL === $endDateTime) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Either end or intervalFormat has to be provided.', 1369573110);
+			throw new Exception('Either end or intervalFormat has to be provided.', 1369573110);
 		}
 
 		if (TRUE === isset($intervalFormat) && NULL !== $intervalFormat) {
 			try {
 				$interval = new \DateInterval($intervalFormat);
 			} catch (\Exception $exception) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.', 1369573111);
+				throw new Exception('"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.', 1369573111);
 			}
 		} else {
 			$interval = $endDateTime->diff($startDateTime);
 		}
 
 		if (NULL !== $interval && NULL === $endDateTime) {
-			$endDateTime = new DateTime();
+			$endDateTime = new \DateTime();
 			$endDateTime->add($endDateTime->diff($startDateTime));
 			$endDateTime->add($interval);
 		}
@@ -181,7 +185,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 	/**
 	 * @param mixed $date
 	 * @return \DateTime
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 */
 	protected function enforceDateTime($date) {
 		if (FALSE === $date instanceof \DateTime) {
@@ -191,9 +195,9 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelper extends \TYPO3\CMS\Fluid\Cor
 				} else {
 					$date = new \DateTime($date);
 				}
-				$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
+				$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 			} catch (\Exception $exception) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
+				throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
 			}
 		}
 		return $date;

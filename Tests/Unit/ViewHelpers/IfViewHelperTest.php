@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_IfViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class IfViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test

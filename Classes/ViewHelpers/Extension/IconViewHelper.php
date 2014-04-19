@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * ### Extension: Icon ViewHelper
@@ -33,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Extension
  */
-class Tx_Vhs_ViewHelpers_Extension_IconViewHelper extends Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper {
+class IconViewHelper extends AbstractExtensionViewHelper {
 
 	/**
 	 * Render method
@@ -42,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Extension_IconViewHelper extends Tx_Vhs_ViewHelpers_Ext
 	 */
 	public function render() {
 		$extensionKey = $this->getExtensionKey();
-		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, 'ext_icon.gif');
+		return ExtensionManagementUtility::extPath($extensionKey, 'ext_icon.gif');
 	}
 
 }

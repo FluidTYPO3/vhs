@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Content;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,18 +32,22 @@
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-class Tx_Vhs_ViewHelpers_Content_InfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
+class InfoViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface An instance of the Configuration Manager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface An instance of the Configuration Manager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -82,7 +88,7 @@ class Tx_Vhs_ViewHelpers_Content_InfoViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 		}
 
 		if (FALSE === $record && FALSE === isset($record)) {
-			throw new Exception(sprintf('Either record with uid %d or field %s do not exist.', $contentUid, $selectFields), 1358679983);
+			throw new \Exception(sprintf('Either record with uid %d or field %s do not exist.', $contentUid, $selectFields), 1358679983);
 		}
 
 		// Check if single field or whole record should be returned
@@ -100,7 +106,7 @@ class Tx_Vhs_ViewHelpers_Content_InfoViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 		}
 
 		$variables = array($as => $content);
-		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 
 		return $output;
 	}

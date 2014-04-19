@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Content\Random
  */
-class Tx_Vhs_ViewHelpers_Content_Random_RenderViewHelper extends Tx_Vhs_ViewHelpers_Content_Random_GetViewHelper {
+class RenderViewHelper extends GetViewHelper {
 
 	/**
 	 * Render method

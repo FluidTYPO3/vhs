@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,12 +24,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class DateRangeViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @var array
@@ -58,7 +61,7 @@ class Tx_Vhs_ViewHelpers_Format_DateRangeViewHelperTest extends Tx_Vhs_ViewHelpe
 	public function usesNowAsStart() {
 		$arguments = $this->arguments;
 		unset($arguments['start']);
-		$now = new DateTime('now');
+		$now = new \DateTime('now');
 		$expected = $now->format($arguments['startFormat']);
 		$test = $this->executeViewHelper($arguments);
 		$this->assertSame($expected . ' - 1970-01-02', $test);

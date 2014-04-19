@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Page\Resources
  */
-class Tx_Vhs_ViewHelpers_Page_Resources_FalViewHelper extends Tx_Vhs_ViewHelpers_Resource_Record_FalViewHelper {
+class FalViewHelper extends ResourcesFalViewHelper {
 
 	const defaultTable = 'pages';
 	const defaultField = 'media';

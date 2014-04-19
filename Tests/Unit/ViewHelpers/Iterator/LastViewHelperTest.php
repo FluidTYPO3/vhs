@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Iterator_LastViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class LastViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test

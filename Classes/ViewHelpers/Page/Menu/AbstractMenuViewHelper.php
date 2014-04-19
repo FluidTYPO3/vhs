@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Base class for menu rendering ViewHelpers
@@ -31,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Menu
  */
-abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -54,15 +59,15 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	private $original = TRUE;
 
 	/**
-	 * @var Tx_Vhs_Service_PageSelectService
+	 * @var \FluidTYPO3\Vhs\Service\PageSelectService
 	 */
 	protected $pageSelect;
 
 	/**
-	 * @param Tx_Vhs_Service_PageSelectService $pageSelectService
+	 * @param \FluidTYPO3\Vhs\Service\PageSelectService $pageSelectService
 	 * @return void
 	 */
-	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelectService) {
+	public function injectPageSelectService(\FluidTYPO3\Vhs\Service\PageSelectService $pageSelectService) {
 		$this->pageSelect = $pageSelectService;
 	}
 
@@ -118,8 +123,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 			return NULL;
 		}
 		$variables = $this->templateVariableContainer->getAll();
-		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance', $this);
-		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables', $variables);
+		$this->viewHelperVariableContainer->addOrUpdate('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance', $this);
+		$this->viewHelperVariableContainer->addOrUpdate('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables', $variables);
 	}
 
 	/**
@@ -137,11 +142,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		if (FALSE === $this->original) {
 			return NULL;
 		}
-		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
-		$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance');
-		$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables');
+		$this->viewHelperVariableContainer->remove('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
+		$this->viewHelperVariableContainer->remove('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
 	}
 
 	/**
@@ -151,14 +156,14 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 * forced to implement their own variable retrieval or subclass Page / Menu / Sub.
 	 * Returns NULL if no parent exists.
 	 * @param integer $pageUid UID of page that's the new parent page, overridden in arguments of cloned and recycled menu ViewHelper instance
-	 * @return Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper|NULL
+	 * @return \FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper|NULL
 	 */
 	protected function retrieveReconfiguredParentMenuInstance($pageUid) {
-		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
-		/** @var $parentInstance Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper */
-		$parentInstance = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'parentInstance');
+		/** @var $parentInstance '\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper' */
+		$parentInstance = $this->viewHelperVariableContainer->get('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
 		$arguments = $parentInstance->getArguments();
 		$arguments['pageUid'] = $pageUid;
 		$parentInstance->setArguments($arguments);
@@ -169,10 +174,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 * @return void
 	 */
 	protected function cleanTemplateVariableContainer() {
-		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables')) {
 			return;
 		}
-		$storedVariables = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables');
+		$storedVariables = $this->viewHelperVariableContainer->get('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
 		foreach ($this->templateVariableContainer->getAll() as $variableName => $value) {
 			$this->backupValues[$variableName] = $value;
 			$this->templateVariableContainer->remove($variableName);
@@ -273,7 +278,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		if (TRUE === is_array($doktypes)) {
 			$types = $doktypes;
 		} else {
-			$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $doktypes);
+			$types = GeneralUtility::trimExplode(',', $doktypes);
 		}
 		$parsed = array();
 		foreach ($types as $index => $type) {
@@ -295,7 +300,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 */
 	protected function getItemTitle($page) {
 		$title = $page['title'];
-		$titleFieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
+		$titleFieldList = GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
 			if (FALSE === empty($page[$titleFieldName])) {
 				$title = $page[$titleFieldName];
@@ -335,7 +340,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 * @return string
 	 */
 	protected function getItemLink($pageUid, $doktype, $shortcut) {
-		$isShortcutOrLink = \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT === $doktype || \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK === $doktype;
+		$isShortcutOrLink = PageRepository::DOKTYPE_SHORTCUT === $doktype || PageRepository::DOKTYPE_LINK === $doktype;
 		$useShortcutTarget = $this->shouldUseShortcutTarget();
 		if (TRUE === $isShortcutOrLink && TRUE === $useShortcutTarget && 0 < $shortcut) {
 			$pageUid = $shortcut;
@@ -370,7 +375,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	/**
 	 * @param array $page
 	 * @param array $rootLine
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return array
 	 */
 	protected function getMenuItemEntry($page, $rootLine) {
@@ -381,7 +386,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		// first, ensure the complete data array is present
 		$page = $this->pageSelect->getPage($pageUid);
 		$targetPage = NULL;
-		if (\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT === (integer) $page['doktype']) {
+		if (PageRepository::DOKTYPE_SHORTCUT === (integer) $page['doktype']) {
 			switch ($page['shortcut_mode']) {
 				case 3:
 					// mode: parent page of current page (using PID of current page)
@@ -424,7 +429,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		}
 
 		$doktype = (integer) $page['doktype'];
-		$shortcut = (\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT === $doktype ? $page['shortcut'] : $page['url']);
+		$shortcut = (PageRepository::DOKTYPE_SHORTCUT === $doktype ? $page['shortcut'] : $page['url']);
 		$page['active'] = $this->isActive($pageUid, $rootLine, $originalPageUid);
 		$page['current'] = $this->isCurrent($pageUid);
 		$page['hasSubPages'] = (boolean) (0 < count($this->getSubmenu($originalPageUid)) ? TRUE : FALSE);
@@ -433,7 +438,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['doktype'] = $doktype;
 
-		if (\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK === $doktype) {
+		if (PageRepository::DOKTYPE_LINK === $doktype) {
 			$urlTypes = array(
 				'1' => 'http://',
 				'4' => 'https://',
@@ -620,8 +625,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 			$tagContent = $this->autoRender($menu);
 			$this->tag->setContent($tagContent);
 			$deferredContent = $this->tag->render();
-			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString', $deferredContent);
-			$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray', $menu);
+			$this->viewHelperVariableContainer->addOrUpdate('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString', $deferredContent);
+			$this->viewHelperVariableContainer->addOrUpdate('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray', $menu);
 			$output = $this->renderChildren();
 			$this->unsetDeferredVariableStorage();
 		} else {
@@ -697,10 +702,10 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		if (NULL === $pages) {
 			$pages = $this->arguments['pages'];
 		}
-		if (TRUE === $pages instanceof Traversable) {
+		if (TRUE === $pages instanceof \Traversable) {
 			$pages = iterator_to_array($pages);
 		} elseif (TRUE === is_string($pages)) {
-			$pages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pages, TRUE);
+			$pages = GeneralUtility::trimExplode(',', $pages, TRUE);
 		}
 		if (FALSE === is_array($pages)) {
 			return array();
@@ -712,9 +717,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 * @return void
 	 */
 	protected function unsetDeferredVariableStorage() {
-		if (TRUE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString')) {
-			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
-			$this->viewHelperVariableContainer->remove('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray');
+		if (TRUE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString')) {
+			$this->viewHelperVariableContainer->remove('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString');
+			$this->viewHelperVariableContainer->remove('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray');
 		}
 	}
 

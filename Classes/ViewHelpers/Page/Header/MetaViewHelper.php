@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper used to render a meta tag
@@ -33,10 +36,10 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
-class Tx_Vhs_ViewHelpers_Page_Header_MetaViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class MetaViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
-	 * @var	string
+	 * @var    string
 	 */
 	protected $tagName = 'meta';
 
@@ -58,7 +61,7 @@ class Tx_Vhs_ViewHelpers_Page_Header_MetaViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * Render method
 	 *
 	 * @return void
-	*/
+	 */
 	public function render() {
 		if ('BE' === TYPO3_MODE) {
 			return;

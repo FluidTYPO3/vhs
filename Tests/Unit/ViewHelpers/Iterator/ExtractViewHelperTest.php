@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,20 +24,24 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * @author Andreas Lappe <nd@kaeufli.ch>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class ExtractViewHelperTest extends AbstractViewHelperTest {
 
 	/**
-	 * @var Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper
+	 * @var \Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper', array('hasArgument'));
+		$this->fixture = $this->getAccessibleMock('\FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper', array('hasArgument'));
 	}
 
 	public function tearDown() {
@@ -67,10 +73,10 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Vhs_ViewHelpe
 	}
 
 	public function constructObjectStorageContainingFrontendUser() {
-		$storage = new Tx_Extbase_Persistence_ObjectStorage();
-		$user1 = new Tx_Extbase_Domain_Model_FrontendUser();
-		$user2 = new Tx_Extbase_Domain_Model_FrontendUser();
-		$user3 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$storage = new ObjectStorage();
+		$user1 = new FrontendUser();
+		$user2 = new FrontendUser();
+		$user3 = new FrontendUser();
 		$user1->setFirstName('Peter');
 		$user2->setFirstName('Paul');
 		$user3->setFirstName('Marry');
@@ -82,11 +88,11 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Vhs_ViewHelpe
 	}
 
 	public function constructObjectStorageContainingFrontendUsersWithUserGroups() {
-		$storage = new Tx_Extbase_Persistence_ObjectStorage();
-		$userGroup1 = new Tx_Extbase_Domain_Model_FrontendUserGroup('my first group');
-		$userGroup2 = new Tx_Extbase_Domain_Model_FrontendUserGroup('my second group');
-		$user1 = new Tx_Extbase_Domain_Model_FrontendUser();
-		$user2 = new Tx_Extbase_Domain_Model_FrontendUser();
+		$storage = new ObjectStorage();
+		$userGroup1 = new FrontendUserGroup('my first group');
+		$userGroup2 = new FrontendUserGroup('my second group');
+		$user1 = new FrontendUser();
+		$user2 = new FrontendUser();
 		$user1->addUsergroup($userGroup1);
 		$user2->addUsergroup($userGroup2);
 		$storage->attach($user1);

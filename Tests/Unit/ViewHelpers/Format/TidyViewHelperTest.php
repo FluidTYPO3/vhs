@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,19 +24,22 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_TidyViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class TidyViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test
 	 */
 	public function throwsErrorWhenNoTidyIsInstalled() {
 		$instance = $this->createInstance();
-		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($instance, 'hasTidy', FALSE, TRUE);
+		ObjectAccess::setProperty($instance, 'hasTidy', FALSE, TRUE);
 		$this->setExpectedException('RuntimeException', NULL, 1352059753);
 		$instance->render('test');
 	}
@@ -45,7 +49,7 @@ class Tx_Vhs_ViewHelpers_Format_TidyViewHelperTest extends Tx_Vhs_ViewHelpers_Ab
 	 */
 	public function canTidySourceFromTagContent() {
 		$instance = $this->createInstance();
-		if (FALSE === \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($instance, 'hasTidy', TRUE)) {
+		if (FALSE === ObjectAccess::getProperty($instance, 'hasTidy', TRUE)) {
 			return;
 		}
 		$source = '<foo> <bar>
@@ -59,7 +63,7 @@ class Tx_Vhs_ViewHelpers_Format_TidyViewHelperTest extends Tx_Vhs_ViewHelpers_Ab
 	 */
 	public function canTidySourceFromArgument() {
 		$instance = $this->createInstance();
-		if (FALSE === \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($instance, 'hasTidy', TRUE)) {
+		if (FALSE === ObjectAccess::getProperty($instance, 'hasTidy', TRUE)) {
 			return;
 		}
 		$source = '<foo> <bar>

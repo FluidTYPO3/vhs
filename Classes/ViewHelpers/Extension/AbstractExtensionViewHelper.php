@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,15 +23,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: Extension ViewHelpers
  *
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
- * @subpackage ViewHelpers\Extension\Path
+ * @subpackage ViewHelpers\Extension
  */
-abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+abstract class AbstractExtensionViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return void
@@ -44,11 +47,11 @@ abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends 
 	 */
 	protected function getExtensionKey() {
 		$extensionName = $this->getExtensionName();
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+		return GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws \RuntimeException
 	 * @return mixed
 	 */
 	protected function getExtensionName() {
@@ -58,7 +61,7 @@ abstract class Tx_Vhs_ViewHelpers_Extension_AbstractExtensionViewHelper extends 
 		$request = $this->controllerContext->getRequest();
 		$extensionName = $request->getControllerExtensionName();
 		if (TRUE === empty($extensionName)) {
-			throw new RuntimeException('Unable to read extension name from ControllerContext and value not manually specified', 1364167519);
+			throw new \RuntimeException('Unable to read extension name from ControllerContext and value not manually specified', 1364167519);
 		}
 		return $extensionName;
 	}

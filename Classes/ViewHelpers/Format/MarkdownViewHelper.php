@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,7 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+
 use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Markdown Transformation ViewHelper
@@ -46,7 +50,7 @@ use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class MarkdownViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var boolean
@@ -92,7 +96,7 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends \TYPO3\CMS\Fluid\Core
 
 		$this->markdownExecutablePath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('markdown');
 		if (FALSE === is_executable($this->markdownExecutablePath)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
+			throw new Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
 				'and accessible; this binary could not be found in any of your configured paths available to this script', 1350511561);
 		}
 		if (TRUE === (boolean) $trim) {

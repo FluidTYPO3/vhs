@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,18 +24,20 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+
 /**
  * @protection on
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class DecodeViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test
 	 */
 	public function returnsNullForEmptyArguments() {
-		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(''));
 
 		$this->assertNull($viewHelper->render());
@@ -54,7 +57,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Vhs_ViewHel
 			'foobar' => NULL,
 		);
 
-		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
 
 		$this->assertEquals($expected, $viewHelper->render());
@@ -66,10 +69,10 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Vhs_ViewHel
 	public function throwsExceptionForInvalidArgument() {
 		$invalidJson = "{'foo': 'bar'}";
 
-		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($invalidJson));
 
-		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
 		$this->assertEquals('null', $viewHelper->render());
 	}
 }
