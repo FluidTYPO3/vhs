@@ -41,23 +41,39 @@ class Tx_Vhs_View_UncacheTemplateView extends Tx_Fluid_View_TemplateView {
 	public function callUserFunction($postUserFunc, $conf, $content) {
 		$partial = $conf['partial'];
 		$section = $conf['section'];
-		$arguments = $conf['arguments'];
+		$arguments = TRUE === is_array($conf['arguments']) ? $conf['arguments'] : array();
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
 		$controllerContext = $conf['controllerContext'];
+		if (TRUE === empty($partial)) {
+			return '';
+		}
+		$this->prepareContextsForUncachedRendering($controllerContext);
+		return $this->renderPartialUncached($partial, $section, $arguments);
+	}
 
+	/**
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+	 * @return void
+	 */
+	protected function prepareContextsForUncachedRendering(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
 		$renderingContext = $this->objectManager->get('Tx_Fluid_Core_Rendering_RenderingContext');
 		$renderingContext->setControllerContext($controllerContext);
 		$this->setRenderingContext($renderingContext);
-
 		$this->templateParser = \TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder::build();
 		$this->templateCompiler = $this->objectManager->get('Tx_Fluid_Core_Compiler_TemplateCompiler');
 		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
+	}
 
-		$rendered = NULL;
-		if (NULL !== $partial) {
-			array_push($this->renderingStack, array('type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => NULL, 'renderingContext' => $renderingContext));
-			$rendered = $this->renderPartial($partial, $section, $arguments);
-			array_pop($this->renderingStack);
-		}
+	/**
+	 * @param string $partial
+	 * @param string $section
+	 * @param array $arguments
+	 * @return string
+	 */
+	protected function renderPartialUncached($partial, $section = NULL, $arguments = array()) {
+		array_push($this->renderingStack, array('type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => NULL, 'renderingContext' => $this->getCurrentRenderingContext()));
+		$rendered = $this->renderPartial($partial, $section, $arguments);
+		array_pop($this->renderingStack);
 		return $rendered;
 	}
 
