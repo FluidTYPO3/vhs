@@ -85,7 +85,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 						$file = $resourceFactory->getFileObject($fileUid);
 
 						if (TRUE === $onlyProperties) {
-							$file = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
+							$file = \FluidTYPO3\Vhs\Utility\ResourceUtility::getFileArray($file);
 						}
 
 						$files[] = $file;
@@ -114,7 +114,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 				}
 
 				if (TRUE === $onlyProperties) {
-					$file = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
+					$file = \FluidTYPO3\Vhs\Utility\ResourceUtility::getFileArray($file);
 				}
 
 				$files[] = $file;

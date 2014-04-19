@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\Utility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,11 +24,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /**
  * @protection on
  * @package Vhs
  */
-class Tx_Vhs_Utility_ResourceUtilityTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ResourceUtilityTest extends UnitTestCase {
 
 	/**
 	 * @test
@@ -41,7 +44,7 @@ class Tx_Vhs_Utility_ResourceUtilityTest extends Tx_Extbase_Tests_Unit_BaseTestC
 		$mockFile->expects($this->once())->method('getProperties')->will($this->returnValue($propertiesFromFile));
 		$mockFile->expects($this->once())->method('getStorage')->will($this->returnValue($mockStorage));
 		$mockStorage->expects($this->once())->method('getFileInfo')->will($this->returnValue($propertiesFromStorage));
-		$result = Tx_Vhs_Utility_ResourceUtility::getFileArray($mockFile);
+		$result = ResourceUtility::getFileArray($mockFile);
 		$this->assertEquals($expectation, $result);
 	}
 
