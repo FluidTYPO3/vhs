@@ -52,7 +52,7 @@ class Tx_Vhs_ViewHelpers_Iterator_PopViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 		$output = array_pop($subject);
 		if (NULL !== $as) {
 			$variables = array($as => $output);
-			$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$output = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $output;
 	}

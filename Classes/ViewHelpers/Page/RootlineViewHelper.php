@@ -74,7 +74,7 @@ class Tx_Vhs_ViewHelpers_Page_RootlineViewHelper extends \TYPO3\CMS\Fluid\Core\V
 		}
 
 		$variables = array($as => $rootLineData);
-		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		$output = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		return $output;
 	}
 

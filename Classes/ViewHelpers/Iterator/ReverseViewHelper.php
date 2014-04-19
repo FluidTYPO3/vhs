@@ -85,7 +85,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends \TYPO3\CMS\Fluid\Cor
 		$array = array_reverse($array, TRUE);
 		if (NULL !== $as) {
 			$variables = array($as => $array);
-			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 			return $content;
 		}
 		return $array;

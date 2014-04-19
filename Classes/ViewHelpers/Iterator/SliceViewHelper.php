@@ -54,7 +54,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SliceViewHelper extends \TYPO3\CMS\Fluid\Core\
 		$output = array_slice($haystack, $start, $length, TRUE);
 		if (NULL !== $as) {
 			$variables = array($as => $output);
-			$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$output = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $output;
 	}

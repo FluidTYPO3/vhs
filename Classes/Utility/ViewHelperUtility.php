@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\Utility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
+
 /**
  * ViewHelper Utility
  *
@@ -34,16 +39,16 @@
  * @package Vhs
  * @subpackage Utility
  */
-class Tx_Vhs_Utility_ViewHelperUtility {
+class ViewHelperUtility {
 
 	/**
 	 * Returns a backup of all $variables from $variableContainer and removes them.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param TemplateVariableContainer $variableContainer
 	 * @param array $variables
 	 * @return array
 	 */
-	public static function backupVariables(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables) {
+	public static function backupVariables(TemplateVariableContainer $variableContainer, array $variables) {
 		$backups = array();
 
 		foreach ($variables as $variableName => $variableValue) {
@@ -60,12 +65,12 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 	/**
 	 * Restores $variables in $variableContainer
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param TemplateVariableContainer $variableContainer
 	 * @param array $variables
 	 * @param array $backups
 	 * @return void
 	 */
-	public static function restoreVariables(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables, array $backups) {
+	public static function restoreVariables(TemplateVariableContainer $variableContainer, array $variables, array $backups) {
 		foreach ($variables as $variableName => $variableValue) {
 			$variableContainer->remove($variableName);
 			if (TRUE === isset($backups[$variableName])) {
@@ -80,12 +85,12 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 	 * of each existing variable, restoring it after rendering.
 	 * Returns the output of the renderChildren() method on $viewHelper.
 	 *
-	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param AbstractViewHelper $viewHelper
+	 * @param TemplateVariableContainer $variableContainer
 	 * @param array $variables
 	 * @return mixed
 	 */
-	public static function renderChildrenWithVariables(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer, array $variables) {
+	public static function renderChildrenWithVariables(AbstractViewHelper $viewHelper, TemplateVariableContainer $variableContainer, array $variables) {
 		$backups = self::backupVariables($variableContainer, $variables);
 		$content = $viewHelper->renderChildren();
 		self::restoreVariables($variableContainer, $variables, $backups);
@@ -99,11 +104,11 @@ class Tx_Vhs_Utility_ViewHelperUtility {
 	 * @return array
 	 */
 	public static function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = TRUE) {
-		if (TRUE === $candidate instanceof Traversable) {
+		if (TRUE === $candidate instanceof \Traversable) {
 			return iterator_to_array($candidate, $useKeys);
 		}
 		if (TRUE === is_string($candidate)) {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $candidate, TRUE);
+			return GeneralUtility::trimExplode(',', $candidate, TRUE);
 		}
 		if (FALSE === is_array($candidate)) {
 			return array($candidate);

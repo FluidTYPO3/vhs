@@ -42,8 +42,8 @@ class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 */
 	public function render($a, $b, $useKeys = TRUE) {
 		$this->useKeys = (boolean) $useKeys;
-		$a = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
-		$b = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
+		$a = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
+		$b = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
 		$merged = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($a, $b);
 		return $merged;
 	}

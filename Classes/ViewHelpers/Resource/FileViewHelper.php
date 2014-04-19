@@ -59,7 +59,7 @@ class Tx_Vhs_ViewHelpers_Resource_FileViewHelper extends Tx_Vhs_ViewHelpers_Reso
 			return $files;
 		}
 		$variables = array($as => $files);
-		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		$output = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		return $output;
 	}
 

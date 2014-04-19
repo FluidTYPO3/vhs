@@ -71,7 +71,7 @@ class Tx_Vhs_ViewHelpers_Iterator_RandomViewHelper extends \TYPO3\CMS\Fluid\Core
 		$randomElement = $array[array_rand($array)];
 		if (TRUE === isset($as) && FALSE === empty($as)) {
 			$variables = array($as => $randomElement);
-			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 			return $content;
 		}
 		return $randomElement;

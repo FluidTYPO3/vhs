@@ -55,7 +55,7 @@ class Tx_Vhs_ViewHelpers_If_String_PregViewHelper extends \TYPO3\CMS\Fluid\Core\
 		}
 		if (FALSE === empty($as)) {
 			$variables = array($as => $matches);
-			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		} else {
 			if (0 < count($matches)) {
 				$content = $this->renderThenChild();

@@ -154,7 +154,7 @@ class Tx_Vhs_ViewHelpers_Page_LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewH
 		}
 
 		// Render childs to see if an alternative title content should be used
-		$renderedTitle = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		$renderedTitle = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		if (FALSE === empty($renderedTitle)) {
 			$title = $renderedTitle;
 		}

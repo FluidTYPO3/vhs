@@ -178,7 +178,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_Record_AbstractRecordResourceViewHelp
 		}
 
 		$variables = array($as => $resources);
-		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		$output = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		return $output;
 	}
 

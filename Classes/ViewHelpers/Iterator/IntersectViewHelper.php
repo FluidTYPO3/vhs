@@ -53,8 +53,8 @@ class Tx_Vhs_ViewHelpers_Iterator_IntersectViewHelper extends \TYPO3\CMS\Fluid\C
 			$a = $this->renderChildren();
 		}
 
-		$a = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
-		$b = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
+		$a = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
+		$b = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
 
 		return array_intersect($a, $b);
 	}
