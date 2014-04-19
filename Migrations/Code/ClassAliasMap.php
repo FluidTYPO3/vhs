@@ -12,7 +12,7 @@ return array(
 	'FluidTYPO3\Vhs\ViewHelpers\Asset\StyleViewHelper' => 'Tx_Vhs_ViewHelpers_Asset_StyleViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Content\Random\GetViewHelper' => 'Tx_Vhs_ViewHelpers_Content_Random_RenderViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Content\Random\RenderViewHelper' => 'Tx_Vhs_ViewHelpers_Content_Random_RenderViewHelper',
-	'FluidTYPO3\Vhs\ViewHelpers\Content\Resources\FalViewHelper' => 'Tx_Vhs_ViewHelpers_Content_Random_Resources_FalViewHelper',
+	'FluidTYPO3\Vhs\ViewHelpers\Content\Resources\FalViewHelper' => 'Tx_Vhs_ViewHelpers_Content_Resources_FalViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Content\GetViewHelper' => 'Tx_Vhs_ViewHelpers_Content_GetViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Content\InfoViewHelper' => 'Tx_Vhs_ViewHelpers_Content_InfoViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Content\RenderViewHelper' => 'Tx_Vhs_ViewHelpers_Content_RenderViewHelper',
