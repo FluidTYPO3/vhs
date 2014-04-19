@@ -52,13 +52,13 @@ class Tx_Vhs_View_UncacheTemplateView extends Tx_Fluid_View_TemplateView {
 		$this->templateCompiler = $this->objectManager->get('Tx_Fluid_Core_Compiler_TemplateCompiler');
 		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
 
+		$rendered = NULL;
 		if (NULL !== $partial) {
 			array_push($this->renderingStack, array('type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => NULL, 'renderingContext' => $renderingContext));
-			return $this->renderPartial($partial, $section, $arguments);
+			$rendered = $this->renderPartial($partial, $section, $arguments);
 			array_pop($this->renderingStack);
 		}
-
-		return '';
+		return $rendered;
 	}
 
 }
