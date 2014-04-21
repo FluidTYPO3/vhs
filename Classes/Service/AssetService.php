@@ -144,6 +144,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		}
 		$GLOBALS['TSFE']->content = $content;
 		$this->buildAll($parameters, $caller, FALSE);
+		header('Content-length: ' . strlen($GLOBALS['TSFE']->content));
 	}
 
 	/**
