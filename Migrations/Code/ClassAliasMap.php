@@ -185,6 +185,6 @@ return array(
 	'FluidTYPO3\Vhs\ViewHelpers\LViewHelper' => 'Tx_Vhs_ViewHelpers_LViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\OrViewHelper' => 'Tx_Vhs_ViewHelpers_OrViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper' => 'Tx_Vhs_ViewHelpers_SwitchViewHelper',
-	'FluidTYPO3\Vhs\ViewHelpers\TryViewHelper' => 'Tx_Vhs_ViewHelpers_TryViewHelper',
+	'Tx_Vhs_ViewHelpers_TryViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\TryViewHelper',
 	'FluidTYPO3\Vhs\Asset' => 'Tx_Vhs_Asset',
 );
