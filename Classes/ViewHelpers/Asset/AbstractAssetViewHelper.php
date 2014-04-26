@@ -28,7 +28,7 @@
  * which will be included when rendering the page.
  *
  * Note: building of all Assets takes place in the class
- * Tx_Vhs_ViewHelpers_AssetViewHelper with two reasons:
+ * FluidTYPO3\Vhs\Service\AssetService with two reasons:
  *
  * - A "buildAll" method should never be possible to call
  *   from any Asset ViewHelper; it should only be possible
