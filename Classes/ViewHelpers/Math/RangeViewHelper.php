@@ -34,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class Tx_Vhs_ViewHelpers_Math_RangeViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper {
+class Tx_Vhs_ViewHelpers_Math_RangeViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Math\AbstractSingleMathViewHelper {
 
 	/**
 	 * @return mixed
