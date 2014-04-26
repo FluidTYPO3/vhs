@@ -89,7 +89,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$this->registerArgument('substElementUid', 'boolean', 'Optional parameter for wrapping the link with the uid of the page', FALSE, '');
 		$this->registerArgument('includeSpacers', 'boolean', 'Wether or not to include menu spacers in the page select query', FALSE, FALSE);
 		$this->registerArgument('resolveExclude', 'boolean', 'Exclude link if realurl/cooluri flag tx_realurl_exclude is set', FALSE, FALSE);
-		$this->registerArgument('showHidden', 'boolean', 'Include disabled pages into the menu', FALSE, FALSE);
+		$this->registerArgument('showHidden', 'boolean', 'DEPRECATED - IGNORED. FIELD IS AN ENABLE-FIELD WHICH MUST BE RESPECTED. Include disabled pages into the menu', FALSE, FALSE);
 		$this->registerArgument('showHiddenInMenu', 'boolean', 'Include pages that are set to be hidden in menus', FALSE, FALSE);
 		$this->registerArgument('showCurrent', 'boolean', 'If FALSE, does not display the current page', FALSE, TRUE);
 		$this->registerArgument('linkCurrent', 'boolean', 'If FALSE, does not wrap the current page in a link', FALSE, TRUE);
@@ -459,11 +459,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$filtered = array();
 		$allowedDocumentTypes = $this->allowedDoktypeList();
 		foreach ($menu as $page) {
-			if (TRUE === (boolean) $page['hidden']) {
-				continue;
-			} elseif (TRUE === (boolean) $page['nav_hide'] && FALSE === (boolean) $this->arguments['showHidden']) {
-				continue;
-			} elseif (TRUE === isset($page['tx_realurl_exclude']) && TRUE === (boolean) $page['tx_realurl_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
+			if (TRUE === isset($page['tx_realurl_exclude']) && TRUE === (boolean) $page['tx_realurl_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
 				continue;
 			} elseif (TRUE === isset($page['tx_cooluri_exclude']) && TRUE === (boolean) $page['tx_cooluri_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
 				continue;
@@ -471,9 +467,6 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 				continue;
 			} elseif (TRUE === in_array($page['doktype'], $allowedDocumentTypes)) {
 				$page = $this->getMenuItemEntry($page, $rootLine);
-				if (TRUE === (boolean) $page['nav_hide'] && FALSE === (boolean) $this->arguments['showHidden']) {
-					continue;
-				}
 				$filtered[$page['uid']] = $page;
 			}
 		}
@@ -685,7 +678,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$excludePages = $this->processPagesArgument($this->arguments['excludePages']);
 		$showHidden = (boolean) $this->arguments['showHidden'];
 		$showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
-		$menuData = $this->pageSelect->getMenu($pageUid, $showHidden, $excludePages, $where, $showHiddenInMenu, FALSE);
+		$menuData = $this->pageSelect->getMenu($pageUid, $excludePages, $where, $showHiddenInMenu, FALSE);
 		return $menuData;
 	}
 

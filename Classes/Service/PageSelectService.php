@@ -43,11 +43,6 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 	protected static $pageSelect;
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
-	 */
-	protected static $pageSelectHidden;
-
-	/**
 	 * @var array
 	 */
 	protected static $cachedPages = array();
@@ -71,15 +66,13 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 	 * Initialize \TYPO3\CMS\Frontend\Page\PageRepository objects
 	 */
 	public function initializeObject() {
-		self::$pageSelect = $this->createPageSelectInstance(FALSE);
-		self::$pageSelectHidden = $this->createPageSelectInstance(TRUE);
+		self::$pageSelect = $this->createPageSelectInstance();
 	}
 
 	/**
-	 * @param boolean $showHidden
 	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
-	private function createPageSelectInstance($showHidden = FALSE) {
+	private function createPageSelectInstance() {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
 			$groups = array(-2, 0);
 			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
@@ -87,7 +80,6 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 			$groups = array(-1, 0);
 		}
 		$pageSelect = new \TYPO3\CMS\Frontend\Page\PageRepository();
-		$pageSelect->init((boolean) $showHidden);
 		$clauses = array();
 		foreach ($groups as $group) {
 			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
@@ -135,14 +127,13 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 	 * Caution: different signature
 	 *
 	 * @param integer $pageUid
-	 * @param boolean $showHidden
 	 * @param array $excludePages
 	 * @param string $where
 	 * @param boolean $showHiddenInMenu
 	 * @param boolean $checkShortcuts
 	 * @return array
 	 */
-	public function getMenu($pageUid = NULL, $showHidden = FALSE, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE) {
+	public function getMenu($pageUid = NULL, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
@@ -156,13 +147,9 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 		if ('' !== $where) {
 			$addWhere = $where . ' ' . $addWhere;
 		}
-		$key = md5(intval($showHidden) . $pageUid . $addWhere . intval($checkShortcuts));
+		$key = md5(intval($showHiddenInMenu) . $pageUid . $addWhere . intval($checkShortcuts));
 		if (FALSE === isset(self::$cachedMenus[$key])) {
-			if (TRUE === $showHidden) {
-				self::$cachedMenus[$key] = self::$pageSelectHidden->getMenu($pageUid, '*', 'sorting', $addWhere, $checkShortcuts);
-			} else {
-				self::$cachedMenus[$key] = self::$pageSelect->getMenu($pageUid, '*', 'sorting', $addWhere, $checkShortcuts);
-			}
+			self::$cachedMenus[$key] = self::$pageSelect->getMenu($pageUid, '*', 'sorting', $addWhere, $checkShortcuts);
 		}
 		return self::$cachedMenus[$key];
 	}
