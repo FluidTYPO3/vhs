@@ -29,7 +29,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-abstract class AbstractMathViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+abstract class AbstractMathViewHelperTest extends \Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
 
 	/**
 	 * @param mixed $a
