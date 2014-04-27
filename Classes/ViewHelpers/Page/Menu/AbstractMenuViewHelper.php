@@ -233,7 +233,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 			$pageUid = $originalPageUid;
 		}
 		foreach ($rootLine as $page) {
-			if ((integer) $page['uid'] === $pageUid) {
+			if ((integer) $page['uid'] === (integer) $pageUid) {
 				return TRUE;
 			}
 		}
