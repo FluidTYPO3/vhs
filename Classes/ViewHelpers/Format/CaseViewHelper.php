@@ -53,11 +53,11 @@ class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 			$string = $this->renderChildren();
 		}
 		switch ($case) {
-			case self::CASE_LOWER: $string = mb_strtolower($string); break;
-			case self::CASE_UPPER: $string = mb_strtoupper($string); break;
+			case self::CASE_LOWER: $string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toLower'); break;
+			case self::CASE_UPPER: $string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toUpper'); break;
 			case self::CASE_UCWORDS: $string = ucwords($string); break;
-			case self::CASE_UCFIRST: $string{0} = strtoupper($string{0}); break;
-			case self::CASE_LCFIRST: $string{0} = strtolower($string{0}); break;
+			case self::CASE_UCFIRST: $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $string, 'toUpper'); break;
+			case self::CASE_LCFIRST: $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $string, 'toLower'); break;
 			case self::CASE_CAMELCASE: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($string); break;
 			case self::CASE_LOWERCAMELCASE: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($string); break;
 			case self::CASE_UNDERSCORED: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($string); break;
