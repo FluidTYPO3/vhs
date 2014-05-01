@@ -138,7 +138,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends \TYP
 
 		$content = array();
 		$hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
-		$currentLanguage = $GLOBALS['TSFE']->sys_language_uid;
+		$currentLanguage = $GLOBALS['TSFE']->sys_language_content;
 		$languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
 		if (0 < $currentLanguage) {
 			if (TRUE === $hideUntranslated) {
