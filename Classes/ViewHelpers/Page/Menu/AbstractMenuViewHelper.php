@@ -678,7 +678,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$excludePages = $this->processPagesArgument($this->arguments['excludePages']);
 		$showHidden = (boolean) $this->arguments['showHidden'];
 		$showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
-		$menuData = $this->pageSelect->getMenu($pageUid, $excludePages, $where, $showHiddenInMenu, FALSE);
+		$allowedDoktypeList = $this->allowedDoktypeList();
+		$menuData = $this->pageSelect->getMenu($pageUid, $excludePages, $where, $showHiddenInMenu, FALSE, $allowedDoktypeList);
 		return $menuData;
 	}
 
