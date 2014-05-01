@@ -270,7 +270,9 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 * @return array
 	 */
 	protected function parseDoktypeList($doktypes) {
-		if (TRUE === is_array($doktypes)) {
+		if (TRUE === empty($doktypes)) {
+			return array();
+		} elseif (TRUE === is_array($doktypes)) {
 			$types = $doktypes;
 		} else {
 			$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $doktypes);
@@ -678,7 +680,8 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		$excludePages = $this->processPagesArgument($this->arguments['excludePages']);
 		$showHidden = (boolean) $this->arguments['showHidden'];
 		$showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
-		$menuData = $this->pageSelect->getMenu($pageUid, $excludePages, $where, $showHiddenInMenu, FALSE);
+		$excludeSubpageTypes = $this->parseDoktypeList($this->arguments['excludeSubpageTypes']);
+		$menuData = $this->pageSelect->getMenu($pageUid, $excludePages, $where, $showHiddenInMenu, FALSE, $excludeSubpageTypes);
 		return $menuData;
 	}
 
