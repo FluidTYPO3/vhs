@@ -144,7 +144,9 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		}
 		$GLOBALS['TSFE']->content = $content;
 		$this->buildAll($parameters, $caller, FALSE);
-		header('Content-length: ' . strlen($GLOBALS['TSFE']->content));
+		if (TRUE === isset($GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['debug']) && FALSE === (boolean) $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['debug']) {
+			header('Content-length: ' . strlen($GLOBALS['TSFE']->content));
+		}
 	}
 
 	/**
