@@ -46,3 +46,11 @@ script:
   - build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/vhs
 # PHPUnit tests from overridden phpunit tests configuration file
   - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then typo3/cli_dispatch.phpsh phpunit -c phpunit.xml; fi
+notifications:
+  irc:
+    - "chat.freenode.net#fluidtypo3"
+    - "chat.freenode.net#fedext"
+  template:
+    - "%{repository} (%{branch}) (%{commit}) : %{message} "
+    - "Build details: %{build_url}"
+  skip_join: true
