@@ -131,13 +131,18 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 	 * @param string $where
 	 * @param boolean $showHiddenInMenu
 	 * @param boolean $checkShortcuts
+	 * @param array $allowedDoktypeList
 	 * @return array
 	 */
-	public function getMenu($pageUid = NULL, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE) {
+	public function getMenu($pageUid = NULL, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE, $allowedDoktypeList = array()) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$addWhere = 'AND doktype!=254';
+		if (0 < count($allowedDoktypeList)) {
+			$addWhere = ' AND doktype IN (' . implode(',', $allowedDoktypeList) . ')';
+		} else {
+			$addWhere = ' AND doktype != ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER;
+		}
 		if (0 < count($excludePages)) {
 			$addWhere .= ' AND uid NOT IN (' . implode(',', $excludePages) . ')';
 		}
