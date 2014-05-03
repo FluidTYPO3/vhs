@@ -415,7 +415,7 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 		}
 
 		if (0 < $getLL) {
-			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $getLL);
+			$pageOverlay = $this->pageSelect->getPageOverlay($page['uid'], $getLL);
 			foreach ($pageOverlay as $name => $value) {
 				if (empty($value) === FALSE) {
 					$page[$name] = $value;
