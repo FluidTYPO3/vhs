@@ -24,14 +24,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use FluidTYPO3\Vhs\ViewHelpers\Math\AbstractMathViewHelperTest;
-
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Math_RoundViewHelperTest extends AbstractMathViewHelperTest {
+class RoundViewHelperTest extends AbstractMathViewHelperTest {
 
 	/**
 	 * @test
