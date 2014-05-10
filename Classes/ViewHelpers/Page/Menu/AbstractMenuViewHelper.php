@@ -617,12 +617,13 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 * @return string
 	 */
 	public function renderContent($menu) {
-		if (0 === count($menu)) {
+		$deferredRendering = (boolean) $this->arguments['deferred'];
+		if (0 === count($menu) && FALSE === $deferredRendering) {
 			return NULL;
 		}
 		$this->tag->setTagName($this->getWrappingTagName());
 		$this->tag->forceClosingTag(TRUE);
-		if (TRUE === (boolean) $this->arguments['deferred']) {
+		if (TRUE === $deferredRendering) {
 			$tagContent = $this->autoRender($menu);
 			$this->tag->setContent($tagContent);
 			$deferredContent = $this->tag->render();
