@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class Tx_Vhs_ViewHelpers_Math_CubicRootViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper {
+class CubicRootViewHelper extends AbstractSingleMathViewHelper {
 
 	/**
 	 * @param mixed $a

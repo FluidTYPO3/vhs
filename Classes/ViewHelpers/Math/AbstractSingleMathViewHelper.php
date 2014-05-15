@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Base class: Math ViewHelpers operating on one number or an
  * array of numbers.
@@ -31,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return void

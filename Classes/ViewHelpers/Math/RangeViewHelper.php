@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class Tx_Vhs_ViewHelpers_Math_RangeViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper {
+class RangeViewHelper extends AbstractSingleMathViewHelper {
 
 	/**
 	 * @return mixed
