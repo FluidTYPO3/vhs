@@ -238,6 +238,10 @@ abstract class Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper extends \T
 	 * @api
 	 */
 	public function getCurrentFrontendUser() {
+		if (!$GLOBALS['TSFE']->loginUser) {
+			return NULL;
+		}
+
 		return $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
 	}
 
