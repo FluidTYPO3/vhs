@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Site;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Site
  */
-class Tx_Vhs_ViewHelpers_Site_NameViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class NameViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return string

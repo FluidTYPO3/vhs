@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Site;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,13 +35,16 @@
  * @package Vhs
  * @subpackage ViewHelpers\Site
  */
-class Tx_Vhs_ViewHelpers_Site_UrlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class UrlViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return string
 	 */
 	public function render() {
-		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+		$url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		return $url;
 	}
 
