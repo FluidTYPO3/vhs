@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Security;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -36,7 +38,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-class Tx_Vhs_ViewHelpers_Security_DenyViewHelper extends Tx_Vhs_ViewHelpers_Security_AbstractSecurityViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
+
+class DenyViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface {
 
 	/**
 	 * Render deny - i.e. render "else" child only if arguments are satisfied,
