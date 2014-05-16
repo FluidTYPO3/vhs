@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Var;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -44,7 +46,10 @@
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
+class GetViewHelper extends AbstractViewHelper {
 
 	/**
 	 * ### Variable: Get
@@ -93,7 +98,7 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 			if (TRUE === $this->templateVariableContainer->exists($templateVariableRootName)) {
 				$templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
 				if (TRUE === $useRawKeys) {
-					return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
+					return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
 				}
 				try {
 					$value = $templateVariableRoot;
@@ -112,10 +117,10 @@ class Tx_Vhs_ViewHelpers_Var_GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 							}
 							continue;
 						}
-						$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($value, $segment);
+						$value = ObjectAccess::getProperty($value, $segment);
 					}
 					return $value;
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					return NULL;
 				}
 			}

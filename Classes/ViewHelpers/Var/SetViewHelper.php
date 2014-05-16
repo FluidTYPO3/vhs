@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Var;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -69,7 +71,10 @@
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
+class SetViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Set (override) the variable in $name.
@@ -96,11 +101,11 @@ class Tx_Vhs_ViewHelpers_Var_SetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 			}
 			$object = $this->templateVariableContainer->get($objectName);
 			try {
-				\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($object, $path, $value);
+				ObjectAccess::setProperty($object, $path, $value);
 				// Note: re-insert the variable to ensure unreferenced values like arrays also get updated
 				$this->templateVariableContainer->remove($objectName);
 				$this->templateVariableContainer->add($objectName, $object);
-			} catch (Exception $error) {
+			} catch (\Exception $error) {
 				return NULL;
 			}
 		}

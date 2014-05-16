@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Var;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +37,10 @@
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class ConvertViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -49,7 +54,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	/**
 	 * Render method
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function render() {
@@ -64,13 +69,13 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 		}
 		if (NULL !== $value) {
 			if ('ObjectStorage' === $type && 'array' === gettype($value)) {
-				$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-				$storage = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+				$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+				$storage = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
 				foreach ($value as $item) {
 					$storage->attach($item);
 				}
 				$value = $storage;
-			} elseif ('array' === $type && TRUE === $value instanceof Traversable) {
+			} elseif ('array' === $type && TRUE === $value instanceof \Traversable) {
 				$value = iterator_to_array($value, FALSE);
 			} elseif ('array' === $type) {
 				$value = array($value);
@@ -81,7 +86,7 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 			if (TRUE === isset($this->arguments['default'])) {
 				$default = $this->arguments['default'];
 				if (gettype($default) !== $type) {
-					throw new RuntimeException('Supplied argument "default" is not of the type "' . $type .'"', 1364542576);
+					throw new \RuntimeException('Supplied argument "default" is not of the type "' . $type .'"', 1364542576);
 				}
 				$value = $default;
 			} else {
@@ -102,11 +107,11 @@ class Tx_Vhs_ViewHelpers_Var_ConvertViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 						$value = array();
 						break;
 					case 'ObjectStorage':
-						$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-						$value = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+						$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+						$value = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
 						break;
 					default:
-						throw new RuntimeException('Provided argument "type" is not valid', 1364542884);
+						throw new \RuntimeException('Provided argument "type" is not valid', 1364542884);
 				}
 			}
 		}

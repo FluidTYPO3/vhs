@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Var;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -57,7 +59,11 @@
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class TyposcriptViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -68,7 +74,7 @@ class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -85,7 +91,7 @@ class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends \TYPO3\CMS\Fluid\Core\
 		if (TRUE === empty($path)) {
 			return NULL;
 		}
-		$all = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$all = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$segments = explode('.', $path);
 		$value = $all;
 		foreach ($segments as $path) {
@@ -96,7 +102,7 @@ class Tx_Vhs_ViewHelpers_Var_TyposcriptViewHelper extends \TYPO3\CMS\Fluid\Core\
 			}
 		}
 		if (TRUE === is_array($value)) {
-			$value = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($value);
+			$value = GeneralUtility::removeDotsFromTS($value);
 		}
 		return $value;
 	}

@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Var;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -49,7 +51,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-class Tx_Vhs_ViewHelpers_Var_UnsetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class UnsetViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Unsets variable $name if it exists in the container
