@@ -60,7 +60,7 @@ class Tx_Vhs_ViewHelpers_Render_UncacheViewHelper extends \TYPO3\CMS\Fluid\Core\
 
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 		$content = '<!--' . $substKey . '-->';
-		$templateView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Vhs_View_UncacheTemplateView');
+		$templateView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('FluidTYPO3\Vhs\View\UncacheTemplateView');
 
 		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
 			'type' => 'POSTUSERFUNC',

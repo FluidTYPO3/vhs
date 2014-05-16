@@ -6,7 +6,7 @@ return array(
 	'Tx_Vhs_Service_PageSelectService' => 'FluidTYPO3\Vhs\Service\PageSelectService',
 	'Tx_Vhs_Utility_ResourceUtility' => 'FluidTYPO3\Vhs\Utility\ResourceUtility',
 	'Tx_Vhs_Utility_ViewHelperUtility' => 'FluidTYPO3\Vhs\Utility\ViewHelperUtility',
-	'FluidTYPO3\Vhs\View\UncacheTemplate' => 'Tx_Vhs_View_UncacheTemplateView',
+	'Tx_Vhs_View_UncacheTemplateView' => 'FluidTYPO3\Vhs\View\UncacheTemplateView',
 	'Tx_Vhs_ViewHelpers_Asset_PrefetchViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Asset\PrefetchViewHelper',
 	'Tx_Vhs_ViewHelpers_Asset_ScriptViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Asset\ScriptViewHelper',
 	'Tx_Vhs_ViewHelpers_Asset_StyleViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Asset\StyleViewHelper',
