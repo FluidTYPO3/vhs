@@ -99,7 +99,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class TryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
+class TryViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * @return mixed
@@ -112,7 +115,7 @@ class TryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionVi
 			}
 		} catch (\Exception $error) {
 			$variables = array('exception' => $error);
-			$content = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $content;
 	}
