@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -72,7 +73,13 @@ namespace FluidTYPO3\Vhs;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
+use \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\ArrayUtility;
+use \TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
+class Asset implements AssetInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -158,7 +165,7 @@ class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -167,7 +174,7 @@ class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 	 */
 	public static function getInstance() {
 		/** @var $asset Asset */
-		$asset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager')->get('FluidTYPO3\Vhs\Asset');
+		$asset = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager')->get('FluidTYPO3\Vhs\Asset');
 		return $asset;
 	}
 
@@ -178,7 +185,7 @@ class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 	public static function createFromSettings(array $settings) {
 		$asset = self::getInstance();
 		foreach ($settings as $propertyName => $value) {
-			\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($asset, $propertyName, $value);
+			ObjectAccess::setProperty($asset, $propertyName, $value);
 		}
 		return $asset->finalize();
 	}
@@ -375,8 +382,8 @@ class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 	 * @return string
 	 */
 	public function getContent() {
-		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->path))) {
-			return file_get_contents(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->path));
+		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists(GeneralUtility::getFileAbsFileName($this->path))) {
+			return file_get_contents(GeneralUtility::getFileAbsFileName($this->path));
 		}
 		return $this->content;
 	}
@@ -407,7 +414,7 @@ class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 			return $this;
 		}
 		if (FALSE === strpos($path, '://')) {
-			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+			$path = GeneralUtility::getFileAbsFileName($path);
 		}
 		if (NULL === $this->type) {
 			$this->setType(pathinfo($path, PATHINFO_EXTENSION));
@@ -476,10 +483,10 @@ class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 	 */
 	public function getSettings() {
 		if (NULL === self::$settingsCache) {
-			$allTypoScript = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+			$allTypoScript = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (TRUE === $settingsExist) {
-				self::$settingsCache = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
 		$settings = (array) self::$settingsCache;
@@ -487,8 +494,8 @@ class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 		foreach (array_keys($properties) as $propertyName) {
 			$properties[$propertyName] = $this->$propertyName;
 		}
-		$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $this->settings);
-		$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $properties);
+		ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
+		ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
 		return $settings;
 	}
 

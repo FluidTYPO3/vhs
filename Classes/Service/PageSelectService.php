@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -36,7 +37,10 @@ namespace FluidTYPO3\Vhs\Service;
  * @package Vhs
  * @subpackage Service
  */
-class PageSelectService implements \TYPO3\CMS\Core\SingletonInterface {
+use \TYPO3\CMS\Core\SingletonInterface;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class PageSelectService implements SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
@@ -181,7 +185,7 @@ class PageSelectService implements \TYPO3\CMS\Core\SingletonInterface {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		if (NULL === $MP) {
-			$MP = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP');
+			$MP = GeneralUtility::_GP('MP');
 			if (TRUE === empty($MP)) {
 				$MP = '';
 			}
@@ -214,8 +218,8 @@ class PageSelectService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$page = $this->getPage($pageUid);
 		$l18nCfg = TRUE === isset($page['l18n_cfg']) ? $page['l18n_cfg'] : 0;
-		$hideIfNotTranslated = (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($l18nCfg);
-		$hideIfDefaultLanguage = (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($l18nCfg);
+		$hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
+		$hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
 		$pageOverlay = 0 !== $languageUid ? $this->getPageOverlay($pageUid, $languageUid) : array();
 		$translationAvailable = 0 !== count($pageOverlay);
 		return
