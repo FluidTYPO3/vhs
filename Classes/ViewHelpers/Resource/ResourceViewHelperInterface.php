@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-interface Tx_Vhs_ViewHelpers_Resource_ResourceViewHelperInterface {
+interface ResourceViewHelperInterface {
 
 	/**
 	 * @param mixed $identity

@@ -28,7 +28,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_ResourcesViewHelper extends Tx_Vhs_ViewHelpers_Resource_RecordViewHelper {
+class Tx_Vhs_ViewHelpers_Page_ResourcesViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper {
 
 	const defaultTable = 'pages';
 	const defaultField = 'media';

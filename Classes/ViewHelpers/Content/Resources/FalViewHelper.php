@@ -28,7 +28,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Content\Resources
  */
-class Tx_Vhs_ViewHelpers_Content_Resources_FalViewHelper extends Tx_Vhs_ViewHelpers_Resource_Record_FalViewHelper {
+class Tx_Vhs_ViewHelpers_Content_Resources_FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper {
 
 	const defaultTable = 'tt_content';
 	const defaultField = 'image';
