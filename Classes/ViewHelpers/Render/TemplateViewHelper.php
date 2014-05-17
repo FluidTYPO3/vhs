@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Render;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -70,7 +72,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper {
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class TemplateViewHelper extends AbstractRenderViewHelper {
 
 	/**
 	 * Renders a template using custom variables, format and paths
@@ -85,7 +89,7 @@ class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Re
 		if (NULL === $file) {
 			$file = $this->renderChildren();
 		}
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($file);
+		$file = GeneralUtility::getFileAbsFileName($file);
 		$view = $this->getPreparedView();
 		$view->setTemplatePathAndFilename($file);
 		$view->assignMultiple($variables);
@@ -94,11 +98,11 @@ class Tx_Vhs_ViewHelpers_Render_TemplateViewHelper extends Tx_Vhs_ViewHelpers_Re
 		}
 		if (TRUE === is_array($paths)) {
 			if (TRUE === isset($paths['layoutRootPath'])) {
-				$paths['layoutRootPath'] = 0 === strpos($paths['layoutRootPath'], 'EXT:') ? \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
+				$paths['layoutRootPath'] = 0 === strpos($paths['layoutRootPath'], 'EXT:') ? GeneralUtility::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
 				$view->setLayoutRootPath($paths['layoutRootPath']);
 			}
 			if (TRUE === isset($paths['partialRootPath'])) {
-				$paths['partialRootPath'] = 0 === strpos($paths['partialRootPath'], 'EXT:') ? \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
+				$paths['partialRootPath'] = 0 === strpos($paths['partialRootPath'], 'EXT:') ? GeneralUtility::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
 				$view->setPartialRootPath($paths['partialRootPath']);
 			}
 		}

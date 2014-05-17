@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Render;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -59,7 +61,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper {
+class CacheViewHelper extends AbstractRenderViewHelper {
 
 	const ID_SEPARATOR = '-';
 
@@ -81,16 +83,16 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 * @param mixed $identity Identifier for the cached content (usage preferred)
 	 * @param mixed $content Value to be cached
 	 * @return mixed
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function render($identity, $content = NULL) {
 		if (FALSE === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
-			if (TRUE === $identity instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			if (TRUE === $identity instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				$identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
 			} elseif (TRUE === method_exists($identity, '__toString')) {
 				$identity = (string) $identity;
 			} else {
-				throw new RuntimeException(
+				throw new \RuntimeException(
 					'Parameter $identity for Render/CacheViewHelper was not a string or a string-convertible object',
 					1352581782
 				);

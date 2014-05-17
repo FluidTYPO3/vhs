@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Render;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -50,7 +52,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class Tx_Vhs_ViewHelpers_Render_AsciiViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class AsciiViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param mixed $ascii
@@ -63,7 +67,7 @@ class Tx_Vhs_ViewHelpers_Render_AsciiViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 		if (TRUE === ctype_digit($ascii)) {
 			return chr($ascii);
 		}
-		if (TRUE === is_array($ascii) || TRUE === $ascii instanceof Traversable) {
+		if (TRUE === is_array($ascii) || TRUE === $ascii instanceof \Traversable) {
 			$string = '';
 			foreach ($ascii as $characterNumber) {
 				$string .= chr($characterNumber);
