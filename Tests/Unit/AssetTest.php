@@ -27,7 +27,7 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_AssetTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Vhs_AssetTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

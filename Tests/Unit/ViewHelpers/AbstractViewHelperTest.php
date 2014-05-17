@@ -27,7 +27,7 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @param string $name
