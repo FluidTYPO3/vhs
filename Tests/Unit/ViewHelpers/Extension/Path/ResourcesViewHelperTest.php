@@ -28,7 +28,7 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Extension_Path_ResourcesViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class Tx_Vhs_ViewHelpers_Extension_Path_ResourcesViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 	/**
 	 * @test

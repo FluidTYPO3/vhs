@@ -28,6 +28,6 @@
  * @author Cedric Ziel <cedric@cedric-ziel.com>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_System_UniqIdViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class Tx_Vhs_ViewHelpers_System_UniqIdViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 }

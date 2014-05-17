@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +36,7 @@
  * @package Vhs
  * @subpackage Service
  */
-class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInterface {
+class PageSelectService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Page\PageRepository

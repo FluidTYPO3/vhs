@@ -28,7 +28,7 @@
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Iterator_IntersectViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class Tx_Vhs_ViewHelpers_Iterator_IntersectViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 	/**
 	 * @test

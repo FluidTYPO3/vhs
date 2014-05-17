@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs;
 /***************************************************************
  *  Copyright notice
  *
@@ -71,7 +72,7 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
+class Asset implements \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -162,17 +163,17 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function getInstance() {
-		/** @var $asset Tx_Vhs_Asset */
-		$asset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager')->get('Tx_Vhs_Asset');
+		/** @var $asset Asset */
+		$asset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager')->get('FluidTYPO3\Vhs\Asset');
 		return $asset;
 	}
 
 	/**
 	 * @param array $settings
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function createFromSettings(array $settings) {
 		$asset = self::getInstance();
@@ -184,7 +185,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $filePathAndFilename
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function createFromFile($filePathAndFilename) {
 		$asset = self::getInstance();
@@ -195,7 +196,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $content
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function createFromContent($content) {
 		$asset = self::getInstance();
@@ -206,7 +207,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $url
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function createFromUrl($url) {
 		$asset = self::getInstance();
@@ -219,7 +220,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	/**
 	 * Render method
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function render() {
 		return $this->build();
@@ -250,7 +251,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
-	 * @return void
+	 * @return Asset
 	 */
 	public function finalize() {
 		$name = $this->getName();
@@ -265,7 +266,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function remove() {
 		return $this->setRemoved(TRUE);
@@ -280,7 +281,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param array $dependencies
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setDependencies($dependencies) {
 		$this->dependencies = $dependencies;
@@ -296,7 +297,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $type
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setType($type) {
 		$this->type = $type;
@@ -308,7 +309,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $external
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setExternal($external) {
 		$this->external = $external;
@@ -324,7 +325,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
     /**
      * @param boolean $rewrite
-     * @return Tx_Vhs_Asset
+     * @return Asset
      */
     public function setRewrite($rewrite) {
         $this->rewrite = $rewrite;
@@ -340,7 +341,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $standalone
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setStandalone($standalone) {
 		$this->standalone = $standalone;
@@ -363,7 +364,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $name
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setName($name) {
 		$this->name = $name;
@@ -382,7 +383,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $content
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setContent($content) {
 		$this->content = $content;
@@ -398,7 +399,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $path
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setPath($path) {
 		if (NULL === $path) {
@@ -427,7 +428,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $namedChunks
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setNamedChunks($namedChunks) {
 		$this->namedChunks = $namedChunks;
@@ -443,7 +444,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $fluid
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setFluid($fluid) {
 		$this->fluid = $fluid;
@@ -459,7 +460,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param array $variables
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setVariables($variables) {
 		$this->variables = $variables;
@@ -493,7 +494,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param array $settings
-	 * @return Tx_Vhs_Assets
+	 * @return Asset
 	 */
 	public function setSettings($settings) {
 		$this->settings = $settings;
@@ -532,7 +533,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $removed
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setRemoved($removed) {
 		$this->removed = $removed;

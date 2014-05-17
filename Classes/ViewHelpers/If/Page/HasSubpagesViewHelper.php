@@ -39,15 +39,15 @@
 class Tx_Vhs_ViewHelpers_If_Page_HasSubpagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
-	 * @var Tx_Vhs_Service_PageSelectService
+	 * @var \FluidTYPO3\Vhs\Service\PageSelectService
 	 */
 	protected $pageSelect;
 
 	/**
-	 * @param Tx_Vhs_Service_PageSelectService $pageSelect
+	 * @param \FluidTYPO3\Vhs\Service\PageSelectService $pageSelect
 	 * @return void
 	 */
-	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelect) {
+	public function injectPageSelectService(\FluidTYPO3\Vhs\Service\PageSelectService $pageSelect) {
 		$this->pageSelect = $pageSelect;
 	}
 

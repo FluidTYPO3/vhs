@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +30,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_HeaderViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
+class HeaderViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper {
 
 	/**
 	 * Render method

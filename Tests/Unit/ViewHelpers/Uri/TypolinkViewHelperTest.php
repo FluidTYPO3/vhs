@@ -28,6 +28,6 @@
  * @author
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Uri_TypolinkViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class Tx_Vhs_ViewHelpers_Uri_TypolinkViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 }
