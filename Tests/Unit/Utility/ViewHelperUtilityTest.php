@@ -28,7 +28,7 @@ namespace FluidTYPO3\Vhs\Utility;
  * @protection on
  * @package Vhs
  */
-class ViewHelperUtilityTest extends \Tx_Extbase_Tests_Unit_BaseTestCase {
+class ViewHelperUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
