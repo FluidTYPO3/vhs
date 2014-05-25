@@ -28,7 +28,7 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_EliminateViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class Tx_Vhs_ViewHelpers_Format_EliminateViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 	protected $arguments = array(
 		'caseSensitive' => TRUE,

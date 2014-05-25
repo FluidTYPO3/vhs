@@ -28,7 +28,7 @@
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 	/**
 	 * @test

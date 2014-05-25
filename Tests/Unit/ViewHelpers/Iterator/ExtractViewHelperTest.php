@@ -27,7 +27,7 @@
  * @author Andreas Lappe <nd@kaeufli.ch>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 	/**
 	 * @var Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper

@@ -28,6 +28,6 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_PlaintextViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class Tx_Vhs_ViewHelpers_Format_PlaintextViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
 
 }

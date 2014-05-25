@@ -110,7 +110,7 @@ class TryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionVi
 			if (TRUE === empty($content)) {
 				$content = $this->renderChildren();
 			}
-		} catch (Exception $error) {
+		} catch (\Exception $error) {
 			$variables = array('exception' => $error);
 			$content = \FluidTYPO3\Vhs\Utility\ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}

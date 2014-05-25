@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -26,8 +27,9 @@
 /**
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
+ * @subpackage ViewHelpers
  */
-abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+abstract class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @param string $name
@@ -35,7 +37,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	 * @param string $dataName
 	 */
 	public function __construct($name = NULL, array $data = array(), $dataName = '') {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		$this->objectManager = clone $objectManager;
 		parent::__construct($name, $data, $dataName);
 	}
@@ -54,7 +56,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	public function canPrepareArguments() {
 		$instance = $this->createInstance();
 		$arguments = $instance->prepareArguments();
-		$this->assertThat($arguments, new PHPUnit_Framework_Constraint_IsType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
+		$this->assertThat($arguments, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
 	}
 
 	/**
@@ -68,14 +70,14 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	/**
 	 * @param string $type
 	 * @param mixed $value
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface
 	 */
 	protected function createNode($type, $value) {
 		if ('Boolean' === $type) {
 			$value = $this->createNode('Text', strval($value));
 		}
-		/** @var Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node */
-		$className = 'Tx_Fluid_Core_Parser_SyntaxTree_' . $type . 'Node';
+		/** @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $node */
+		$className = 'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\' . $type . 'Node';
 		$node = new $className($value);
 		return $node;
 	}
@@ -88,7 +90,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $instance */
 		$instance = $this->objectManager->get($className);
 		if (TRUE === method_exists($instance, 'injectConfigurationManager')) {
-			$cObject = new tslib_cObj();
+			$cObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
 			$cObject->start(array(), 'tt_content');
 			/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager */
 			$configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
@@ -102,53 +104,53 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	/**
 	 * @param array $arguments
 	 * @param array $variables
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $childNode
 	 * @param string $extensionName
 	 * @param string $pluginName
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 */
 	protected function buildViewHelperInstance($arguments = array(), $variables = array(), $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
 		$instance = $this->createInstance();
-		/** @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $container */
-		$container = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
-		/** @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperContainer */
-		$viewHelperContainer = $this->objectManager->get('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
+		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $container */
+		$container = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer');
+		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer $viewHelperContainer */
+		$viewHelperContainer = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer');
 		if (0 < count($variables)) {
 			\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($container, 'variables', $variables, TRUE);
 		}
-		$node = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode($instance, $arguments);
-		/** @var Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder */
-		$uriBuilder = $this->objectManager->get('Tx_Extbase_MVC_Web_Routing_UriBuilder');
-		/** @var Tx_Extbase_Mvc_Web_Request $request */
-		$request = $this->objectManager->get('Tx_Extbase_Mvc_Web_Request');
+		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($instance, $arguments);
+		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
+		$uriBuilder = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder');
+		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
+		$request = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Request');
 		if (NULL !== $extensionName) {
 			$request->setControllerExtensionName($extensionName);
 		}
 		if (NULL !== $pluginName) {
 			$request->setPluginName($pluginName);
 		}
-		/** @var Tx_Extbase_Mvc_Web_Response $response */
-		$response = $this->objectManager->get('Tx_Extbase_Mvc_Web_Response');
-		/** @var Tx_Extbase_MVC_Controller_ControllerContext $controllerContext */
-		$controllerContext = $this->objectManager->get('Tx_Extbase_MVC_Controller_ControllerContext');
+		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Response $response */
+		$response = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Response');
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
+		$controllerContext = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
 		$controllerContext->setRequest($request);
 		$controllerContext->setResponse($response);
 		$controllerContext->setUriBuilder($uriBuilder);
-		/** @var Tx_Fluid_Core_Rendering_RenderingContext $renderingContext */
-		$renderingContext = $this->objectManager->get('Tx_Fluid_Core_Rendering_RenderingContext');
+		/** @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext $renderingContext */
+		$renderingContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Rendering\RenderingContext');
 		$renderingContext->setControllerContext($controllerContext);
 		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, TRUE);
 		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($renderingContext, 'templateVariableContainer', $container, TRUE);
 		$instance->setArguments($arguments);
 		$instance->setRenderingContext($renderingContext);
-		if (TRUE === $instance instanceof Tx_Fluidwidget_Core_Widget_AbstractWidgetViewHelper) {
-			/** @var Tx_Fluid_Core_Widget_WidgetContext $widgetContext */
-			$widgetContext = $this->objectManager->get('Tx_Fluid_Core_Widget_WidgetContext');
+		if (TRUE === $instance instanceof \Tx_Fluidwidget_Core_Widget_AbstractWidgetViewHelper) {
+			/** @var \TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext */
+			$widgetContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Widget\WidgetContext');
 			\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($instance, 'widgetContext', $widgetContext, TRUE);
 		}
 		if (NULL !== $childNode) {
 			$node->addChildNode($childNode);
-			if ($instance instanceof Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface) {
+			if ($instance instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface) {
 				$instance->setChildNodes(array($childNode));
 			}
 		}
@@ -159,7 +161,7 @@ abstract class Tx_Vhs_ViewHelpers_AbstractViewHelperTest extends Tx_Extbase_Test
 	/**
 	 * @param array $arguments
 	 * @param array $variables
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $childNode
 	 * @param string $extensionName
 	 * @param string $pluginName
 	 * @return mixed
