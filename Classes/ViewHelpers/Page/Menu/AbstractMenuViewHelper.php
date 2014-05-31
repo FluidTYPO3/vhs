@@ -651,8 +651,11 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 	 */
 	public function render() {
 		$pageUid = $this->arguments['pageUid'];
-		$entryLevel = $this->arguments['entryLevel'];
 		$rootLineData = $this->pageSelect->getRootLine();
+		$entryLevel = (integer) $this->arguments['entryLevel'];
+		if (0 > $entryLevel) {
+			$entryLevel = count($rootLineData) + $entryLevel - 1;
+		}
 		if (TRUE === empty($pageUid)) {
 			if (NULL !== $rootLineData[$entryLevel]['uid']) {
 				$pageUid = $rootLineData[$entryLevel]['uid'];
