@@ -48,7 +48,12 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 	/**
 	 * @var array
 	 */
-	protected $validTypes = array('mp4', 'webm', 'ogg');
+	protected $validTypes = array('mp4', 'webm', 'ogg', 'ogv');
+
+	/**
+	 * @var array
+	 */
+	protected $mimeTypesMap = array('mp4' => 'video/mp4', 'webm' => 'video/webm', 'ogg' => 'video/ogg', 'ogv' => 'video/ogg');
 
 	/**
 	 * @var array
@@ -103,14 +108,14 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 					throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "type" in sources array.', 1359381255);
 				}
 				$type = $source['type'];
-				if (FALSE === in_array(strtolower($type), $this->validTypes)) {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $type . '".', 1359381260);
-				}
 			} else {
 				// skip invalid source
 				continue;
 			}
-			$type = 'video/' . strtolower($type);
+			if (FALSE === in_array(strtolower($type), $this->validTypes)) {
+					throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $type . '".', 1359381260);
+			}
+			$type = $this->mimeTypesMap[$type];
 			$src = $this->preprocessSourceUri($src);
 			$this->renderChildTag('source', array('src' => $src, 'type' => $type), FALSE, 'append');
 		}
