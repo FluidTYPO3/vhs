@@ -87,7 +87,7 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 		}
 		foreach ($sources as $source) {
 			if (TRUE === is_string($source)) {
-				if (TRUE === strpos($source, '//')) {
+				if (FALSE !== strpos($source, '//')) {
 					$src = $source;
 					$type = substr($source, strrpos($source, '.') + 1);
 				} else {
