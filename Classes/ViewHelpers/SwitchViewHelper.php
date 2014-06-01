@@ -86,7 +86,8 @@ class Tx_Vhs_ViewHelpers_SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 		if (TRUE === $context->getViewHelperVariableContainer()->exists('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue')) {
 			$this->storeBackup($context);
 		}
-		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue', $this->arguments['value']);
+		$value = serialize($this->arguments['value']);
+		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue', $value);
 		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchBreakRequested', FALSE);
 		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchContinueUntilBreak', FALSE);
 		foreach ($this->childNodes as $childNode) {
