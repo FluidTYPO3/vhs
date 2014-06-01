@@ -45,7 +45,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper extends \TYPO3\C
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('src', 'mixed', 'Path to the media resource(s). Can contain single or multiple paths for videos (either CSV, array or implementing Traversable).', TRUE);
+		$this->registerArgument('src', 'mixed', 'Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).', TRUE);
 		$this->registerArgument('relative', 'boolean', 'If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.', FALSE, TRUE);
 	}
 

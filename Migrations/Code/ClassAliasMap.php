@@ -114,6 +114,7 @@ return array(
 	'FluidTYPO3\Vhs\ViewHelpers\Media\Image\HeightViewHelper' => 'Tx_Vhs_ViewHelpers_Media_Image_HeightViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper' => 'Tx_Vhs_ViewHelpers_Media_Image_MimetypeViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Media\Image\WidthViewHelper' => 'Tx_Vhs_ViewHelpers_Media_Image_WidthViewHelper',
+	'FluidTYPO3\Vhs\ViewHelpers\Media\AudioViewHelper' => 'Tx_Vhs_ViewHelpers_Media_AudioViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Media\ExistsViewHelper' => 'Tx_Vhs_ViewHelpers_Media_ExistsViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Media\ExtensionViewHelper' => 'Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Media\FilesViewHelper' => 'Tx_Vhs_ViewHelpers_Media_FilesViewHelper',
