@@ -52,7 +52,7 @@ class Tx_Vhs_ViewHelpers_Resource_Record_FalViewHelper extends Tx_Vhs_ViewHelper
 		$fileReferenceProperties = $fileReference->getProperties();
 		$fileProperties = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
 
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($fileReferenceProperties, $fileProperties, TRUE, TRUE, FALSE);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($fileProperties, $fileReferenceProperties, TRUE, FALSE, FALSE);
 		return $fileReferenceProperties;
 	}
 
