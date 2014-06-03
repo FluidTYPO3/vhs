@@ -37,7 +37,7 @@ class Tx_Vhs_ViewHelpers_Page_AbsoluteUrlViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	public function render() {
 		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-		if (0 === strpos($url, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
+		if (FALSE === strpos($url, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
 			$url =  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
 		}
 		return $url;
