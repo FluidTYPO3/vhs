@@ -100,7 +100,7 @@ interface Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	public function getDebugInformation();
 
 	/**
-	 * Returns TRUE of settings specify that the source of this
+	 * Returns TRUE if settings specify that the source of this
 	 * Asset should be rendered as if it were a Fluid template,
 	 * using variables from the "arguments" attribute
 	 *
@@ -119,7 +119,7 @@ interface Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * Returns TRUE if the current Asset should be debugged as commanded
-	 * by settings in TypoScript an/ord ViewHelper attributes.
+	 * by settings in TypoScript and/or ViewHelper attributes.
 	 *
 	 * @return boolean
 	 */
