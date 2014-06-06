@@ -138,10 +138,11 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
+		$addWhere = self::$pageSelect->enableFields('pages');
 		if (0 < count($allowedDoktypeList)) {
-			$addWhere = ' AND doktype IN (' . implode(',', $allowedDoktypeList) . ')';
+			$addWhere .= ' AND doktype IN (' . implode(',', $allowedDoktypeList) . ')';
 		} else {
-			$addWhere = ' AND doktype != ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER;
+			$addWhere .= ' AND doktype != ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER;
 		}
 		if (0 < count($excludePages)) {
 			$addWhere .= ' AND uid NOT IN (' . implode(',', $excludePages) . ')';
