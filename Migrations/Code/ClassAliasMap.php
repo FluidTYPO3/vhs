@@ -71,7 +71,6 @@ return array(
 	'FluidTYPO3\Vhs\ViewHelpers\If\Type\IsTraversableViewHelper' => 'Tx_Vhs_ViewHelpers_If_Type_IsTraversableViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\If\Var\IsNullViewHelper' => 'Tx_Vhs_ViewHelpers_If_Var_IsNullViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\If\Var\IssetViewHelper' => 'Tx_Vhs_ViewHelpers_If_Var_IssetViewHelper',
-	'FluidTYPO3\Vhs\ViewHelpers\If\ConditionViewHelper' => 'Tx_Vhs_ViewHelpers_If_ConditionViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Iterator\ChunkViewHelper' => 'Tx_Vhs_ViewHelpers_Iterator_ChunkViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Iterator\ExplodeViewHelper' => 'Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper',
 	'FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper' => 'Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper',
