@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Render;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,12 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+
+abstract class AbstractRenderViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -49,7 +56,7 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends \TYPO3
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -57,7 +64,7 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends \TYPO3
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -84,7 +91,7 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends \TYPO3
 	}
 
 	/**
-	 * @return Tx_Fluid_View_StandaloneView
+	 * @return \TYPO3\CMS\Fluid\View\StandaloneView
 	 */
 	protected function getPreparedClonedView() {
 		$view = $this->getPreparedView();
@@ -95,23 +102,23 @@ abstract class Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper extends \TYPO3
 	}
 
 	/**
-	 * @return Tx_Fluid_View_StandaloneView
+	 * @return \TYPO3\CMS\Fluid\View\StandaloneView
 	 */
 	protected function getPreparedView() {
-		/** @var $view Tx_Fluid_View_StandaloneView */
-		$view = $this->objectManager->get('Tx_Fluid_View_StandaloneView');
+		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
+		$view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
 		return $view;
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_View_ViewInterface $view
-	 * @throws Exception
+	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
+	 * @throws \Exception
 	 * @return string
 	 */
-	protected function renderView(Tx_Extbase_MVC_View_ViewInterface $view) {
+	protected function renderView(ViewInterface $view) {
 		try {
 			$content = $view->render();
-		} catch (Exception $error) {
+		} catch (\Exception $error) {
 			if (!$this->arguments['graceful']) {
 				throw $error;
 			}

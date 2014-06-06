@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns a full, absolute URL to this page with all arguments
@@ -30,15 +34,15 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_AbsoluteUrlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class AbsoluteUrlViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return string
 	 */
 	public function render() {
-		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-		if (0 !== strpos($url, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
-			$url =  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+		$url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+		if (0 !== strpos($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
+			$url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
 		}
 		return $url;
 	}

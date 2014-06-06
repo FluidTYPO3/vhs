@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_ResourcesViewHelper extends Tx_Vhs_ViewHelpers_Resource_RecordViewHelper {
+class ResourcesViewHelper extends RecordViewHelper {
 
 	const defaultTable = 'pages';
 	const defaultField = 'media';

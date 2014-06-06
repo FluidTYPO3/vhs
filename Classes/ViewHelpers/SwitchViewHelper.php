@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -43,7 +45,10 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
+
+class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface {
 
 	/**
 	 * @var array
@@ -83,15 +88,15 @@ class Tx_Vhs_ViewHelpers_SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 		} else {
 			$context = $this->renderingContext;
 		}
-		if (TRUE === $context->getViewHelperVariableContainer()->exists('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue')) {
+		if (TRUE === $context->getViewHelperVariableContainer()->exists('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchCaseValue')) {
 			$this->storeBackup($context);
 		}
-		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue', $this->arguments['value']);
-		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchBreakRequested', FALSE);
-		$context->getViewHelperVariableContainer()->addOrUpdate('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchContinueUntilBreak', FALSE);
+		$context->getViewHelperVariableContainer()->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchCaseValue', $this->arguments['value']);
+		$context->getViewHelperVariableContainer()->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchBreakRequested', FALSE);
+		$context->getViewHelperVariableContainer()->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchContinueUntilBreak', FALSE);
 		foreach ($this->childNodes as $childNode) {
-			if (TRUE === $childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Vhs_ViewHelpers_CaseViewHelper') {
+			if (TRUE === $childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+				&& $childNode->getViewHelperClassName() === 'FluidTYPO3\Vhs\ViewHelpers\CaseViewHelper') {
 				$content .= $childNode->evaluate($context);
 				$shouldBreak = $this->determineBooleanOf($context, 'switchBreakRequested');
 				if (TRUE === $shouldBreak) {
@@ -99,9 +104,9 @@ class Tx_Vhs_ViewHelpers_SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 				}
 			}
 		}
-		$context->getViewHelperVariableContainer()->remove('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue');
-		$context->getViewHelperVariableContainer()->remove('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchBreakRequested');
-		$context->getViewHelperVariableContainer()->remove('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchContinueUntilBreak');
+		$context->getViewHelperVariableContainer()->remove('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchCaseValue');
+		$context->getViewHelperVariableContainer()->remove('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchBreakRequested');
+		$context->getViewHelperVariableContainer()->remove('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchContinueUntilBreak');
 		if (NULL !== $this->backup) {
 			$this->restoreBackup($context);
 		}
@@ -113,35 +118,35 @@ class Tx_Vhs_ViewHelpers_SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $context
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context
 	 * @return void
 	 */
-	protected function storeBackup(Tx_Fluid_Core_Rendering_RenderingContextInterface $context) {
+	protected function storeBackup(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context) {
 		$this->backup = array(
-			$context->getViewHelperVariableContainer()->get('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue'),
+			$context->getViewHelperVariableContainer()->get('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchCaseValue'),
 			$this->determineBooleanOf($context, 'switchBreakRequested'),
 			$this->determineBooleanOf($context, 'switchContinueUntilBreak')
 		);
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $context
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context
 	 * @return void
 	 */
-	protected function restoreBackup(Tx_Fluid_Core_Rendering_RenderingContextInterface $context) {
-		$context->getViewHelperVariableContainer()->add('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchCaseValue', $this->backup[0]);
-		$context->getViewHelperVariableContainer()->add('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchBreakRequested', $this->backup[1]);
-		$context->getViewHelperVariableContainer()->add('Tx_Vhs_ViewHelpers_SwitchViewHelper', 'switchContinueUntilBreak', $this->backup[2]);
+	protected function restoreBackup(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context) {
+		$context->getViewHelperVariableContainer()->add('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchCaseValue', $this->backup[0]);
+		$context->getViewHelperVariableContainer()->add('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchBreakRequested', $this->backup[1]);
+		$context->getViewHelperVariableContainer()->add('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchContinueUntilBreak', $this->backup[2]);
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $context
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $context
 	 * @param mixed $var
 	 * @return boolean
 	 */
 	protected function determineBooleanOf($context, $var) {
-		if (TRUE === $context->getViewHelperVariableContainer()->exists('Tx_Vhs_ViewHelpers_SwitchViewHelper', $var)) {
-			return $context->getViewHelperVariableContainer()->get('Tx_Vhs_ViewHelpers_SwitchViewHelper', $var);
+		if (TRUE === $context->getViewHelperVariableContainer()->exists('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', $var)) {
+			return $context->getViewHelperVariableContainer()->get('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', $var);
 		}
 		return FALSE;
 	}

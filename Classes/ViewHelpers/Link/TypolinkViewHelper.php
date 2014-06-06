@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Link;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * ### TypolinkViewhelper
  *
@@ -47,9 +50,9 @@
  *
  * @author Cedric Ziel <cedric@cedric-ziel.com>, Cedric Ziel - Internetdienstleistungen & EDV
  * @package Vhs
- * @subpackage ViewHelpers
+ * @subpackage ViewHelpers\Link
  */
-class Tx_Vhs_ViewHelpers_Link_TypolinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TypolinkViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initializes the arguments for the ViewHelper

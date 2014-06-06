@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
 
 /**
  * ViewHelper used to place header blocks in document header
@@ -29,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_HeaderViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
+class HeaderViewHelper extends AbstractAssetViewHelper {
 
 	/**
 	 * Render method

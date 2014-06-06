@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format\Url;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,11 +24,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Format_Url_DecodeViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class DecodeViewHelperTest extends AbstractViewHelperTest {
 
 }

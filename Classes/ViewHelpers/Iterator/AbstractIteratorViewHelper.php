@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * Provides injected services and methods for easier implementation in
@@ -30,7 +38,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+abstract class AbstractIteratorViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * @param integer $index
@@ -44,14 +52,14 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends \T
 		$asArray = array();
 		if (TRUE === is_array($haystack)) {
 			$asArray = $haystack;
-		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			/** @var $haystack Tx_Extbase_Persistence_ObjectStorage */
+		} elseif (TRUE === $haystack instanceof ObjectStorage) {
+			/** @var $haystack ObjectStorage */
 			$asArray = $haystack->toArray();
-		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
-			/** @var $haystack Tx_Extbase_Persistence_LazyObjectStorage */
+		} elseif (TRUE === $haystack instanceof LazyObjectStorage) {
+			/** @var $haystack LazyObjectStorage */
 			$asArray = $haystack->toArray();
-		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_QueryResult) {
-			/** @var $haystack Tx_Extbase_Persistence_QueryResult */
+		} elseif (TRUE === $haystack instanceof QueryResult) {
+			/** @var $haystack QueryResult */
 			$asArray = $haystack->toArray();
 		} elseif (TRUE === is_string($haystack)) {
 			$asArray = str_split($haystack);
@@ -67,11 +75,11 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends \T
 	protected function assertHaystackHasNeedle($haystack, $needle) {
 		if (TRUE === is_array($haystack)) {
 			return FALSE !== $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
-		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_ObjectStorage) {
+		} elseif (TRUE === $haystack instanceof ObjectStorage) {
 			return FALSE !== $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+		} elseif (TRUE === $haystack instanceof LazyObjectStorage) {
 			return FALSE !== $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} elseif (TRUE === $haystack instanceof Tx_Extbase_Persistence_QueryResult) {
+		} elseif (TRUE === $haystack instanceof QueryResult) {
 			return FALSE !== $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
 		} elseif (TRUE === is_string($haystack)) {
 			return FALSE !== strpos($haystack, $needle);
@@ -85,12 +93,12 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends \T
 	 * @return mixed
 	 */
 	protected function assertHaystackIsQueryResultAndHasNeedle($haystack, $needle) {
-		if (TRUE === $needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
-			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
+		if (TRUE === $needle instanceof DomainObjectInterface) {
+			/** @var $needle DomainObjectInterface */
 			$needle = $needle->getUid();
 		}
 		foreach ($haystack as $index => $candidate) {
-			/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
+			/** @var $candidate DomainObjectInterface */
 			if ($candidate->getUid() === $needle) {
 				return $index;
 			}
@@ -105,8 +113,8 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends \T
 	 */
 	protected function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle) {
 		$index = 0;
-		/** @var $candidate Tx_Extbase_DomainObject_DomainObjectInterface */
-		if (TRUE === $needle instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+		/** @var $candidate DomainObjectInterface */
+		if (TRUE === $needle instanceof AbstractDomainObject) {
 			$needle = $needle->getUid();
 		}
 		foreach ($haystack as $candidate) {
@@ -124,7 +132,7 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends \T
 	 * @return boolean
 	 */
 	protected function assertHaystackIsArrayAndHasNeedle($haystack, $needle) {
-		if ($needle instanceof Tx_Extbase_DomainObject_DomainObjectInterface === FALSE) {
+		if ($needle instanceof DomainObjectInterface === FALSE) {
 			if (TRUE === isset($this->arguments['considerKeys']) && TRUE === $this->arguments['considerKeys']) {
 				$result = (boolean) (array_search($needle, $haystack) || isset($haystack[$needle]));
 			} else {
@@ -132,9 +140,9 @@ abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractIteratorViewHelper extends \T
 			}
 			return $result;
 		} else {
-			/** @var $needle Tx_Extbase_DomainObject_DomainObjectInterface */
+			/** @var $needle DomainObjectInterface */
 			foreach ($haystack as $index => $straw) {
-				/** @var $straw Tx_Extbase_DomainObject_DomainObjectInterface */
+				/** @var $straw DomainObjectInterface */
 				if ($straw->getUid() === $needle->getUid()) {
 					return $index;
 				}

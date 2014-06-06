@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Iterator Reversal ViewHelper
@@ -33,7 +38,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ReverseViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -51,8 +56,8 @@ class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * Returns the same type as $subject. Ignores NULL values which would be
 	 * OK to use in an f:for (empty loop as result)
 	 *
-	 * @param array|Iterator $subject An array or Iterator implementation to sort
-	 * @throws Exception
+	 * @param array|\Iterator $subject An array or Iterator implementation to sort
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function render($subject = NULL) {
@@ -68,24 +73,24 @@ class Tx_Vhs_ViewHelpers_Iterator_ReverseViewHelper extends \TYPO3\CMS\Fluid\Cor
 		if (TRUE === is_array($subject)) {
 			$array = $subject;
 		} else {
-			if (TRUE === $subject instanceof Iterator) {
+			if (TRUE === $subject instanceof \Iterator) {
 				/** @var Iterator $subject */
 				$array = iterator_to_array($subject, TRUE);
-			} elseif (TRUE === $subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
-				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
+			} elseif (TRUE === $subject instanceof QueryResultInterface) {
+				/** @var QueryResultInterface $subject */
 				$array = $subject->toArray();
 			} elseif (NULL !== $subject) {
 				// a NULL value is respected and ignored, but any
 				// unrecognized value other than this is considered a
 				// fatal error.
-				throw new Exception('Invalid variable type passed to Iterator/ReverseViewHelper. Expected any of Array, QueryResult, ' .
+				throw new \Exception('Invalid variable type passed to Iterator/ReverseViewHelper. Expected any of Array, QueryResult, ' .
 					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1351958941);
 			}
 		}
 		$array = array_reverse($array, TRUE);
 		if (NULL !== $as) {
 			$variables = array($as => $array);
-			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 			return $content;
 		}
 		return $array;

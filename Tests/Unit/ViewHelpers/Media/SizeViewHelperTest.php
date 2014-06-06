@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,12 +23,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
+ * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class SizeViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @var string
@@ -45,7 +48,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Vhs_ViewHelpers_Abs
 	 * @test
 	 */
 	public function returnsZeroForEmptyArguments() {
-		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 
 		$this->assertEquals(0, $viewHelper->render());
@@ -55,7 +58,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Vhs_ViewHelpers_Abs
 	 * @test
 	 */
 	public function returnsFileSizeAsInteger() {
-		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
 
 		$this->assertEquals(7094, $size = $viewHelper->render());
@@ -65,10 +68,10 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Vhs_ViewHelpers_Abs
 	 * @test
 	 */
 	public function throwsExceptionWhenFileNotFound() {
-		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
 
-		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
 		$viewHelper->render();
 	}
 
@@ -76,10 +79,10 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelperTest extends Tx_Vhs_ViewHelpers_Abs
 	 * @test
 	 */
 	public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory() {
-		$viewHelper = $this->getMock('Tx_Vhs_ViewHelpers_Media_SizeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\SizeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
 
-		$this->setExpectedException('Tx_Fluid_Core_ViewHelper_Exception');
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
 		$viewHelper->render();
 	}
 

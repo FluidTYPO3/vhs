@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -71,7 +73,13 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
+use \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\ArrayUtility;
+use \TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
+class Asset implements AssetInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -157,34 +165,34 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
 	/**
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function getInstance() {
-		/** @var $asset Tx_Vhs_Asset */
-		$asset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager')->get('Tx_Vhs_Asset');
+		/** @var $asset Asset */
+		$asset = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager')->get('FluidTYPO3\Vhs\Asset');
 		return $asset;
 	}
 
 	/**
 	 * @param array $settings
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function createFromSettings(array $settings) {
 		$asset = self::getInstance();
 		foreach ($settings as $propertyName => $value) {
-			\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($asset, $propertyName, $value);
+			ObjectAccess::setProperty($asset, $propertyName, $value);
 		}
 		return $asset->finalize();
 	}
 
 	/**
 	 * @param string $filePathAndFilename
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function createFromFile($filePathAndFilename) {
 		$asset = self::getInstance();
@@ -195,7 +203,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $content
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function createFromContent($content) {
 		$asset = self::getInstance();
@@ -206,7 +214,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $url
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public static function createFromUrl($url) {
 		$asset = self::getInstance();
@@ -219,7 +227,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	/**
 	 * Render method
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function render() {
 		return $this->build();
@@ -250,7 +258,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
-	 * @return void
+	 * @return Asset
 	 */
 	public function finalize() {
 		$name = $this->getName();
@@ -265,7 +273,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	}
 
 	/**
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function remove() {
 		return $this->setRemoved(TRUE);
@@ -280,7 +288,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param array $dependencies
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setDependencies($dependencies) {
 		$this->dependencies = $dependencies;
@@ -296,7 +304,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $type
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setType($type) {
 		$this->type = $type;
@@ -308,7 +316,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $external
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setExternal($external) {
 		$this->external = $external;
@@ -324,7 +332,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
     /**
      * @param boolean $rewrite
-     * @return Tx_Vhs_Asset
+     * @return Asset
      */
     public function setRewrite($rewrite) {
         $this->rewrite = $rewrite;
@@ -340,7 +348,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $standalone
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setStandalone($standalone) {
 		$this->standalone = $standalone;
@@ -363,7 +371,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $name
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setName($name) {
 		$this->name = $name;
@@ -374,15 +382,15 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 * @return string
 	 */
 	public function getContent() {
-		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->path))) {
-			return file_get_contents(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->path));
+		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists(GeneralUtility::getFileAbsFileName($this->path))) {
+			return file_get_contents(GeneralUtility::getFileAbsFileName($this->path));
 		}
 		return $this->content;
 	}
 
 	/**
 	 * @param string $content
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setContent($content) {
 		$this->content = $content;
@@ -398,7 +406,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param string $path
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setPath($path) {
 		if (NULL === $path) {
@@ -406,7 +414,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 			return $this;
 		}
 		if (FALSE === strpos($path, '://')) {
-			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+			$path = GeneralUtility::getFileAbsFileName($path);
 		}
 		if (NULL === $this->type) {
 			$this->setType(pathinfo($path, PATHINFO_EXTENSION));
@@ -427,7 +435,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $namedChunks
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setNamedChunks($namedChunks) {
 		$this->namedChunks = $namedChunks;
@@ -443,7 +451,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $fluid
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setFluid($fluid) {
 		$this->fluid = $fluid;
@@ -459,7 +467,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param array $variables
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setVariables($variables) {
 		$this->variables = $variables;
@@ -475,10 +483,10 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 	 */
 	public function getSettings() {
 		if (NULL === self::$settingsCache) {
-			$allTypoScript = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+			$allTypoScript = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (TRUE === $settingsExist) {
-				self::$settingsCache = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
 		$settings = (array) self::$settingsCache;
@@ -486,14 +494,19 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 		foreach (array_keys($properties) as $propertyName) {
 			$properties[$propertyName] = $this->$propertyName;
 		}
-		$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $this->settings);
-		$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $properties);
+		if (TRUE === method_exists('TYPO3\CMS\Core\Utility\ArrayUtility', 'mergeRecursiveWithOverrule')) {
+			ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
+			ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
+		} else {
+			$settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->settings);
+			$settings = GeneralUtility::array_merge_recursive_overrule($settings, $properties);
+		}
 		return $settings;
 	}
 
 	/**
 	 * @param array $settings
-	 * @return Tx_Vhs_Assets
+	 * @return Asset
 	 */
 	public function setSettings($settings) {
 		$this->settings = $settings;
@@ -532,7 +545,7 @@ class Tx_Vhs_Asset implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
 
 	/**
 	 * @param boolean $removed
-	 * @return Tx_Vhs_Asset
+	 * @return Asset
 	 */
 	public function setRemoved($removed) {
 		$this->removed = $removed;

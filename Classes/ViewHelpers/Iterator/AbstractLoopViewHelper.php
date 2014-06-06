@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Abstract class with basic functionality for loop view helpers.
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-abstract class Tx_Vhs_ViewHelpers_Iterator_AbstractLoopViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+abstract class AbstractLoopViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize

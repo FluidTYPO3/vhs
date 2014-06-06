@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -49,7 +51,9 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_Uri_TypolinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class TypolinkViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initializes the arguments for the ViewHelper

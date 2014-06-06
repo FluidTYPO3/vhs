@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,12 @@
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper {
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\ResourceUtility;
+
+abstract class AbstractImageViewHelper extends AbstractResourceViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
@@ -57,7 +64,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -82,7 +89,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 	/**
 	 * @param array $files
 	 * @param boolean $onlyProperties
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return array|NULL
 	 */
 	public function preprocessImages($files, $onlyProperties = FALSE) {
@@ -111,15 +118,15 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 
 			$GLOBALS['TSFE']->lastImageInfo = $imageInfo;
 			if (FALSE === is_array($imageInfo)) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('Could not get image resource for "' . htmlspecialchars($file->getCombinedIdentifier()) . '".', 1253191060);
+				throw new Exception('Could not get image resource for "' . htmlspecialchars($file->getCombinedIdentifier()) . '".', 1253191060);
 			}
 
-			$imageInfo[3] = \TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($imageInfo[3]);
+			$imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($imageInfo[3]);
 			$GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
-			$imageSource = $GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($imageInfo[3]);
+			$imageSource = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($imageInfo[3]);
 
 			if (TRUE === $onlyProperties) {
-				$file = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
+				$file = ResourceUtility::getFileArray($file);
 			}
 
 			$images[] = array(
@@ -146,9 +153,9 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$this->workingDirectoryBackup = getcwd();
 		chdir(constant('PATH_site'));
-		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$GLOBALS['TSFE'] = new stdClass();
-		$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\TemplateService');
+		$template = GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\TemplateService');
 		$template->tt_track = 0;
 		$template->init();
 		$template->getFileName_backPath = constant('PATH_site');
@@ -179,7 +186,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
 			$source = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;
 		} elseif ('BE' === TYPO3_MODE || FALSE === (boolean) $this->arguments['relative']) {
-			$source = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $source;
+			$source = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $source;
 		}
 		return $source;
 	}

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * File/Directory Exists Condition ViewHelper
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+class ExistsViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -50,7 +53,7 @@ class Tx_Vhs_ViewHelpers_Media_ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 	 */
 	public function render() {
 
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->arguments['file']);
+		$file = GeneralUtility::getFileAbsFileName($this->arguments['file']);
 		$directory = $this->arguments['directory'];
 
 		$evaluation = FALSE;

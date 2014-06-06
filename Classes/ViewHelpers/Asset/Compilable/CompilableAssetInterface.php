@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,9 +33,9 @@
  *
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
- * @subpackage ViewHelpers\Asset
+ * @subpackage ViewHelpers\Asset\Compilable
  */
-interface Tx_Vhs_ViewHelpers_Asset_Compilable_CompilableAssetInterface extends Tx_Vhs_ViewHelpers_Asset_AssetInterface {
+interface CompilableAssetInterface extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
 
 	/**
 	 * @return string

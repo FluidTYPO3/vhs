@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Content;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,11 @@
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \FluidTYPO3\Vhs\Service\PageSelectService;
+
+abstract class AbstractContentViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -47,7 +53,7 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends \TYP
 	protected $configurationManager;
 
 	/**
-	 * @var Tx_Vhs_Service_PageSelectService
+	 * @var \FluidTYPO3\Vhs\Service\PageSelectService
 	 */
 	protected $pageSelect;
 
@@ -55,16 +61,16 @@ abstract class Tx_Vhs_ViewHelpers_Content_AbstractContentViewHelper extends \TYP
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $configurationManager->getContentObject();
 	}
 
 	/**
-	 * @param Tx_Vhs_Service_PageSelectService $pageSelect
+	 * @param \FluidTYPO3\Vhs\Service\PageSelectService $pageSelect
 	 * @return void
 	 */
-	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelect) {
+	public function injectPageSelectService(PageSelectService $pageSelect) {
 		$this->pageSelect = $pageSelect;
 	}
 

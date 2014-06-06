@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,11 @@
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \FluidTYPO3\Vhs\Utility\ResourceUtility;
+
+abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -59,7 +65,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
 		if (TRUE === $treatIdAsUid && TRUE === $treatIdAsReference) {
-			throw new RuntimeException('The arguments "treatIdAsUid" and "treatIdAsReference" may not both be TRUE.', 1384604695);
+			throw new \RuntimeException('The arguments "treatIdAsUid" and "treatIdAsReference" may not both be TRUE.', 1384604695);
 		}
 
 		if (TRUE === empty($identifier) && TRUE === empty($categories)) {
@@ -67,7 +73,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 		}
 
 		$files = array();
-		$resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 
 		if (FALSE === empty($categories)) {
 			$sqlCategories = implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'));
@@ -85,11 +91,11 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 						$file = $resourceFactory->getFileObject($fileUid);
 
 						if (TRUE === $onlyProperties) {
-							$file = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
+							$file = ResourceUtility::getFileArray($file);
 						}
 
 						$files[] = $file;
-					} catch (Exception $e) {
+					} catch (\Exception $e) {
 						continue;
 					}
 				}
@@ -114,11 +120,11 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 				}
 
 				if (TRUE === $onlyProperties) {
-					$file = Tx_Vhs_Utility_ResourceUtility::getFileArray($file);
+					$file = ResourceUtility::getFileArray($file);
 				}
 
 				$files[] = $file;
-			} catch (Exception $e) {
+			} catch (\Exception $e) {
 				continue;
 			}
 		}
@@ -138,10 +144,10 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractResourceViewHelper extends \T
 			$argument = $this->arguments[$name];
 		}
 
-		if (TRUE === $argument instanceof Traversable) {
+		if (TRUE === $argument instanceof \Traversable) {
 			$argument = iterator_to_array($argument);
 		} elseif (TRUE === is_string($argument)) {
-			$argument = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $argument, TRUE);
+			$argument = GeneralUtility::trimExplode(',', $argument, TRUE);
 		} else {
 			$argument = (array) $argument;
 		}

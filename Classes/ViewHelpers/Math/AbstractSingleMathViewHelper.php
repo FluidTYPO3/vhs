@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Base class: Math ViewHelpers operating on one number or an
  * array of numbers.
@@ -31,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return void
@@ -59,12 +62,12 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYP
 
 	/**
 	 * @param array|Traversable $traversable
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return array
 	 */
 	protected function convertTraversableToArray($traversable) {
 		if (FALSE === $this->assertIsArrayOrIterator($traversable)) {
-			throw new Exception('Attempt to convert non-traversable object to array', 1353442738);
+			throw new \Exception('Attempt to convert non-traversable object to array', 1353442738);
 		}
 		$array = array();
 		foreach ($traversable as $key => $value) {
@@ -83,7 +86,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYP
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	protected function getInlineArgument() {
@@ -92,14 +95,14 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYP
 			$a = $this->arguments['a'];
 		}
 		if (NULL === $a && TRUE === (boolean) $this->arguments['fail']) {
-			throw new Exception('Required argument "a" was not supplied', 1237823699);
+			throw new \Exception('Required argument "a" was not supplied', 1237823699);
 		}
 		return $a;
 	}
 
 	/**
 	 * @param mixed $a
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	protected function calculate($a) {
@@ -107,7 +110,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper extends \TYP
 		if (TRUE === $aIsIterable) {
 			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
 			if (FALSE === $aCanBeAccessed) {
-				throw new Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
+				throw new \Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
 			}
 			foreach ($a as $index => $value) {
 				$a[$index] = $this->calculateAction($value);

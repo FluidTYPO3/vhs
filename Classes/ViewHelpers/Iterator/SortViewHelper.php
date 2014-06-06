@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -29,14 +39,14 @@
  *
  * Can be used inline, i.e.:
  * <f:for each="{dataset -> vhs:iterator.sort(sortBy: 'name')}" as="item">
- * 	// iterating data which is ONLY sorted while rendering this particular loop
+ *    // iterating data which is ONLY sorted while rendering this particular loop
  * </f:for>
  *
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class SortViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -57,8 +67,8 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	 * Returns the same type as $subject. Ignores NULL values which would be
 	 * OK to use in an f:for (empty loop as result)
 	 *
-	 * @param array|Iterator $subject An array or Iterator implementation to sort
-	 * @throws Exception
+	 * @param array|\Iterator $subject An array or Iterator implementation to sort
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function render($subject = NULL) {
@@ -74,26 +84,26 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 		if (TRUE === is_array($subject)) {
 			$sorted = $this->sortArray($subject);
 		} else {
-			if (TRUE === $subject instanceof Tx_Extbase_Persistence_ObjectStorage || TRUE === $subject instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+			if (TRUE === $subject instanceof ObjectStorage || TRUE === $subject instanceof LazyObjectStorage) {
 				$sorted = $this->sortObjectStorage($subject);
-			} elseif (TRUE === $subject instanceof Iterator) {
-				/** @var Iterator $subject */
+			} elseif (TRUE === $subject instanceof \Iterator) {
+				/** @var \Iterator $subject */
 				$array = iterator_to_array($subject, TRUE);
 				$sorted = $this->sortArray($array);
-			} elseif (TRUE === $subject instanceof Tx_Extbase_Persistence_QueryResultInterface) {
-				/** @var Tx_Extbase_Persistence_QueryResultInterface $subject */
+			} elseif (TRUE === $subject instanceof QueryResultInterface) {
+				/** @var QueryResultInterface $subject */
 				$sorted = $this->sortArray($subject->toArray());
 			} elseif (NULL !== $subject) {
 				// a NULL value is respected and ignored, but any
 				// unrecognized value other than this is considered a
 				// fatal error.
-				throw new Exception('Unsortable variable type passed to Iterator/SortViewHelper. Expected any of Array, QueryResult, ' .
+				throw new \Exception('Unsortable variable type passed to Iterator/SortViewHelper. Expected any of Array, QueryResult, ' .
 					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1351958941);
 			}
 		}
 		if (NULL !== $as) {
 			$variables = array($as => $sorted);
-			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 			return $content;
 		}
 		return $sorted;
@@ -138,14 +148,14 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	/**
 	 * Sort a Tx_Extbase_Persistence_ObjectStorage instance
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $storage
-	 * @return Tx_Extbase_Persistence_ObjectStorage
+	 * @param ObjectStorage $storage
+	 * @return ObjectStorage
 	 */
 	protected function sortObjectStorage($storage) {
-		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-		/** @var Tx_Extbase_Persistence_ObjectStorage $temp */
-		$temp = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		/** @var ObjectManager $objectManager */
+		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		/** @var ObjectStorage $temp */
+		$temp = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
 		foreach ($storage as $item) {
 			$temp->attach($item);
 		}
@@ -175,7 +185,7 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 		} else {
 			krsort($sorted, constant($this->arguments['sortFlags']));
 		}
-		$storage = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$storage = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
 		foreach ($sorted as $item) {
 			$storage->attach($item);
 		}
@@ -190,10 +200,10 @@ class Tx_Vhs_ViewHelpers_Iterator_SortViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	 */
 	protected function getSortValue($object) {
 		$field = $this->arguments['sortBy'];
-		$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($object, $field);
-		if (TRUE === $value instanceof DateTime) {
+		$value = ObjectAccess::getPropertyPath($object, $field);
+		if (TRUE === $value instanceof \DateTime) {
 			$value = intval($value->format('U'));
-		} elseif (TRUE === $value instanceof Tx_Extbase_Persistence_ObjectStorage || TRUE === $value instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+		} elseif (TRUE === $value instanceof ObjectStorage || TRUE === $value instanceof LazyObjectStorage) {
 			$value = $value->count();
 		} elseif (is_array($value)) {
 			$value = count($value);

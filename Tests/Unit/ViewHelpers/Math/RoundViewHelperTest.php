@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +29,7 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Math_RoundViewHelperTest extends Tx_Vhs_ViewHelpers_Math_AbstractMathViewHelperTest {
+class RoundViewHelperTest extends AbstractMathViewHelperTest {
 
 	/**
 	 * @test

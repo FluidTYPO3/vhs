@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Returns the size of the provided file in bytes
@@ -30,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class SizeViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -43,7 +47,7 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends \TYPO3\CMS\Fluid\Core\View
 	}
 
 	/**
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return integer
 	 */
 	public function render() {
@@ -57,16 +61,16 @@ class Tx_Vhs_ViewHelpers_Media_SizeViewHelper extends \TYPO3\CMS\Fluid\Core\View
 			}
 		}
 
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+		$file = GeneralUtility::getFileAbsFileName($path);
 
 		if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $file . '". File does not exist or is a directory.', 1356953963);
+			throw new Exception('Cannot determine size of "' . $file . '". File does not exist or is a directory.', 1356953963);
 		}
 
 		$size = filesize($file);
 
 		if (FALSE === $size) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine size of "' . $file . '".', 1356954032);
+			throw new Exception('Cannot determine size of "' . $file . '".', 1356954032);
 		}
 
 		return $size;

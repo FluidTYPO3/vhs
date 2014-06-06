@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Once;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * Base class for "Render Once"-style ViewHelpers: session, cookie,
@@ -31,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Once
  */
-abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * Standard storage - static variable meaning uniqueness of $identifier

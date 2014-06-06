@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Random;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Random: Number Generator
@@ -34,7 +37,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Random
  */
-class Tx_Vhs_ViewHelpers_Random_NumberViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class NumberViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param integer $minimum Minimum number - defaults to 100000 (max is 999999 making lengths uniform with adequate entropy)
@@ -49,7 +52,7 @@ class Tx_Vhs_ViewHelpers_Random_NumberViewHelper extends \TYPO3\CMS\Fluid\Core\V
 			return $natural;
 		}
 		$decimals = array_fill(0, rand($minimumDecimals, $maximumDecimals), 0);
-		$decimals = array_map(function() {
+		$decimals = array_map(function () {
 			return rand(0, 9);
 		}, $decimals);
 		return floatval($natural . '.' . implode('', $decimals));

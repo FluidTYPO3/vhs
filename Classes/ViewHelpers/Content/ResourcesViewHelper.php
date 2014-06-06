@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Content;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-class Tx_Vhs_ViewHelpers_Content_ResourcesViewHelper extends Tx_Vhs_ViewHelpers_Resource_RecordViewHelper {
+use \FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
+
+class ResourcesViewHelper extends RecordViewHelper {
 
 	const defaultTable = 'tt_content';
 	const defaultField = 'image';

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +29,7 @@
  * which will be included when rendering the page.
  *
  * Note: building of all Assets takes place in the class
- * Tx_Vhs_ViewHelpers_AssetViewHelper with two reasons:
+ * FluidTYPO3\Vhs\Service\AssetService with two reasons:
  *
  * - A "buildAll" method should never be possible to call
  *   from any Asset ViewHelper; it should only be possible
@@ -41,9 +42,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
+abstract class AbstractAssetViewHelper
 	extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
-	implements Tx_Vhs_ViewHelpers_Asset_AssetInterface {
+	implements AssetInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -51,7 +52,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	protected $configurationManager;
 
 	/**
-	 * @var Tx_Vhs_Service_AssetService
+	 * @var \FluidTYPO3\Vhs\Service\AssetService
 	 */
 	protected $assetService;
 
@@ -107,10 +108,10 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	}
 
 	/**
-	 * @param Tx_Vhs_Service_AssetService $assetService
+	 * @param \FluidTYPO3\Vhs\Service\AssetService $assetService
 	 * @return void
 	 */
-	public function injectAssetService(Tx_Vhs_Service_AssetService $assetService) {
+	public function injectAssetService(\FluidTYPO3\Vhs\Service\AssetService $assetService) {
 		$this->assetService = $assetService;
 	}
 
@@ -224,7 +225,7 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 		$debugInformation = $this->getDebugInformation();
 		if (TRUE === $debugOutputEnabled) {
 			if (TRUE === $useDebugUtility) {
-				Tx_Extbase_Utility_Debugger::var_dump($debugInformation);
+				\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($debugInformation);
 			} else {
 				return var_export($debugInformation, TRUE);
 			}
@@ -339,10 +340,10 @@ abstract class Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper
 	}
 
 	/**
-	 * @param array|ArrayAccess $settings
+	 * @param array|\ArrayAccess $settings
 	 */
 	public function setSettings($settings) {
-		if (TRUE === is_array($settings) || TRUE === $settings instanceof ArrayAccess) {
+		if (TRUE === is_array($settings) || TRUE === $settings instanceof \ArrayAccess) {
 			$this->localSettings = $settings;
 		}
 	}

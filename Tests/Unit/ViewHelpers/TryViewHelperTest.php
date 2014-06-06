@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,11 +24,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_TryViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class TryViewHelperTest extends AbstractConditionViewHelper {
 
 }

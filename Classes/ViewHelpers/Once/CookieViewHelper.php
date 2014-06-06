@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Once;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -42,7 +44,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Once
  */
-class Tx_Vhs_ViewHelpers_Once_CookieViewHelper extends Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper {
+class CookieViewHelper extends AbstractOnceViewHelper {
 	/**
 	 * @return void
 	 */

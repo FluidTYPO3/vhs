@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,13 +35,16 @@
  * @package Vhs
  * @subpackage ViewHelpers\Uri
  */
-class Tx_Vhs_ViewHelpers_Uri_RequestViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class RequestViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return string
 	 */
 	public function render() {
-		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+		$url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		return $url;
 	}
 

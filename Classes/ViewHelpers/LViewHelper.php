@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -42,7 +44,10 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewHelper {
+use \TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
+use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
+class LViewHelper extends TranslateViewHelper {
 
 	/**
 	 * Render method
@@ -72,7 +77,7 @@ class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewH
 			}
 			$extensionName = $request->getControllerExtensionName();
 		}
-		$value = Tx_Extbase_Utility_Localization::translate($id, $extensionName, $arguments);
+		$value = LocalizationUtility::translate($id, $extensionName, $arguments);
 		if (TRUE === empty($value)) {
 			$value = $default;
 			if (TRUE === is_array($arguments)) {

@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to access data of the current page record
@@ -31,18 +37,18 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class InfoViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @var Tx_Vhs_Service_PageSelectService
+	 * @var PageSelectService
 	 */
 	protected $pageSelect;
 
 	/**
-	 * @param Tx_Vhs_Service_PageSelectService $pageSelect
+	 * @param PageSelectService $pageSelect
 	 * @return void
 	 */
-	public function injectPageSelectService(Tx_Vhs_Service_PageSelectService $pageSelect) {
+	public function injectPageSelectService(PageSelectService $pageSelect) {
 		$this->pageSelect = $pageSelect;
 	}
 
@@ -62,7 +68,7 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewH
 		// Get page via pageUid argument or current id
 		$pageUid = intval($this->arguments['pageUid']);
 		if (0 === $pageUid) {
-			 $pageUid = $GLOBALS['TSFE']->id;
+			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
 		$page = $this->pageSelect->getPage($pageUid);
@@ -72,7 +78,7 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewH
 		if (0 !== $languageUid) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $languageUid);
 			if (TRUE === is_array($pageOverlay)) {
-				$page = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
+				$page = GeneralUtility::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
 			}
 		}
 
@@ -93,7 +99,7 @@ class Tx_Vhs_ViewHelpers_Page_InfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewH
 		}
 
 		$variables = array($as => $content);
-		$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 
 		return $output;
 	}

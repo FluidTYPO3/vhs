@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class for image related view helpers adapted from FLUID
@@ -31,7 +37,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
+abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
@@ -49,7 +55,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 	protected $contentObject;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @var ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -60,10 +66,10 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 	protected $imageInfo;
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @param ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -84,7 +90,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 	}
 
 	/**
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return void
 	 */
 	public function preprocessImage() {
@@ -115,7 +121,7 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 			$setup['ext'] = $format;
 		}
 		if (0 < intval($quality)) {
-			$quality = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($quality, 10, 100, 75);
+			$quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
 			$setup['params'] = '-quality ' . $quality;
 		}
 		if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
@@ -124,11 +130,11 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		$this->imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
 		if (FALSE === is_array($this->imageInfo)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
+			throw new Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
 		}
-		$this->imageInfo[3] = \TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($this->imageInfo[3]);
+		$this->imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($this->imageInfo[3]);
 		$GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
-		$this->mediaSource = $GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($this->imageInfo[3]);
+		$this->mediaSource = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($this->imageInfo[3]);
 		if ('BE' === TYPO3_MODE) {
 			$this->resetFrontendEnvironment();
 		}
@@ -136,7 +142,9 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 
 	/**
 	 * Prepares $GLOBALS['TSFE'] for Backend mode
-	 * This somewhat hacky work around is currently needed because the getImgResource() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
+	 * This somewhat hacky work around is currently needed because the
+	 * getImgResource() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * relies on those variables to be set
 	 *
 	 * @return void
 	 */
@@ -144,9 +152,9 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 		$this->tsfeBackup = TRUE === isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$this->workingDirectoryBackup = getcwd();
 		chdir(constant('PATH_site'));
-		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		$GLOBALS['TSFE'] = new stdClass();
-		$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\TemplateService');
+		$typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$GLOBALS['TSFE'] = new \stdClass();
+		$template = GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\TemplateService');
 		$template->tt_track = 0;
 		$template->init();
 		$template->getFileName_backPath = constant('PATH_site');
@@ -156,7 +164,8 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageViewHelper extends Tx
 	}
 
 	/**
-	 * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
+	 * Resets $GLOBALS['TSFE'] if it was previously changed
+	 * by simulateFrontendEnvironment()
 	 *
 	 * @return void
 	 * @see simulateFrontendEnvironment()

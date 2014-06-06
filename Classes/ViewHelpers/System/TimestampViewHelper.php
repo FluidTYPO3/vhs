@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\System;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -36,7 +38,9 @@
  * @package Vhs
  * @subpackage ViewHelpers\System
  */
-class Tx_Vhs_ViewHelpers_System_TimestampViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class TimestampViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return integer

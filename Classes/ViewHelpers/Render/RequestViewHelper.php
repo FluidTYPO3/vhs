@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Render;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -37,28 +39,31 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper {
+use \TYPO3\CMS\Extbase\Mvc\Dispatcher;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+
+class RequestViewHelper extends AbstractRenderViewHelper {
 
 	/**
-	 * @var Tx_Extbase_MVC_Dispatcher
+	 * @var \TYPO3\CMS\Extbase\Mvc\Dispatcher
 	 */
 	protected $dispatcher;
 
 	/**
 	 * @var string
 	 */
-	protected $requestType = 'Tx_Extbase_MVC_Web_Request';
+	protected $requestType = 'TYPO3\CMS\Extbase\Mvc\Web\Request';
 
 	/**
 	 * @var string
 	 */
-	protected $responseType = 'Tx_Extbase_MVC_Web_Response';
+	protected $responseType = 'TYPO3\CMS\Extbase\Mvc\Web\Response';
 
 	/**
-	 * @param Tx_Extbase_MVC_Dispatcher $dispatcher
+	 * @param \TYPO3\CMS\Extbase\Mvc\Dispatcher $dispatcher
 	 * @return void
 	 */
-	public function injectDispatcher(Tx_Extbase_MVC_Dispatcher $dispatcher) {
+	public function injectDispatcher(Dispatcher $dispatcher) {
 		$this->dispatcher = $dispatcher;
 	}
 
@@ -77,8 +82,8 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 	 * @param string|NULL $vendorName
 	 * @param array $arguments
 	 * @param integer $pageUid
-	 * @return Tx_Extbase_MVC_ResponseInterface
-	 * @throws Exception
+	 * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+	 * @throws \Exception
 	 * @api
 	 */
 	public function render(
@@ -92,13 +97,13 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 		$contentObjectBackup = $this->configurationManager->getContentObject();
 		if (TRUE === isset($this->request)) {
 			$configurationBackup = $this->configurationManager->getConfiguration(
-				\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+				ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
 				$this->request->getControllerExtensionName(),
 				$this->request->getPluginName()
 			);
 		}
 		$temporaryContentObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
-		/** @var Tx_Extbase_MVC_Web_Request $request */
+		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
 		$request = $this->objectManager->get($this->requestType);
 		$request->setControllerActionName($action);
 		$request->setControllerName($controller);
@@ -110,12 +115,12 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 			$request->setControllerVendorName($vendorName);
 		}
 		try {
-			/** @var Tx_Extbase_MVC_ResponseInterface $response */
+			/** @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response */
 			$response = $this->objectManager->get($this->responseType);
 			$this->configurationManager->setContentObject($temporaryContentObject);
 			$this->configurationManager->setConfiguration(
 				$this->configurationManager->getConfiguration(
-					\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+					ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
 					$extensionName,
 					$pluginName
 				)
@@ -127,7 +132,7 @@ class Tx_Vhs_ViewHelpers_Render_RequestViewHelper extends Tx_Vhs_ViewHelpers_Ren
 			}
 			unset($pageUid);
 			return $response;
-		} catch (Exception $error) {
+		} catch (\Exception $error) {
 			if (FALSE === (boolean) $this->arguments['graceful']) {
 				throw $error;
 			}

@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -42,24 +44,26 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_CallViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class CallViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param string $method
 	 * @param object $object
 	 * @param array $arguments
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function render($method, $object = NULL, array $arguments = array()) {
 		if (NULL === $object) {
 			$object = $this->renderChildren();
 			if (FALSE === is_object($object)) {
-				throw new RuntimeException('Using v:call requires an object either as "object" attribute, tag content or inline argument', 1356849652);
+				throw new \RuntimeException('Using v:call requires an object either as "object" attribute, tag content or inline argument', 1356849652);
 			}
 		}
 		if (FALSE === method_exists($object, $method)) {
-			throw new RuntimeException('Method "' . $method . '" does not exist on object of type ' . get_class($object), 1356834755);
+			throw new \RuntimeException('Method "' . $method . '" does not exist on object of type ' . get_class($object), 1356834755);
 		}
 		return call_user_func_array(array($object, $method), $arguments);
 	}

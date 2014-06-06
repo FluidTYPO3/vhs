@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Site;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,20 +24,22 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Site_UrlViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class UrlViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test
 	 */
 	public function rendersUrl() {
 		$test = $this->executeViewHelper();
-		$this->assertSame(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $test);
+		$this->assertSame(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $test);
 	}
 
 }

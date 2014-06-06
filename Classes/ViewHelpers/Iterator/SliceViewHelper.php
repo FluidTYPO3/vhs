@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Slice an Iterator by $start and $length
@@ -30,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_SliceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class SliceViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Render method
@@ -39,22 +43,22 @@ class Tx_Vhs_ViewHelpers_Iterator_SliceViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 * @param integer $start
 	 * @param integer $length
 	 * @param string $as
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return array
 	 */
 	public function render($haystack = NULL, $start = 0, $length = NULL, $as = NULL) {
 		if (NULL === $haystack) {
 			$haystack = $this->renderChildren();
 		}
-		if (TRUE === $haystack instanceof Iterator) {
+		if (TRUE === $haystack instanceof \Iterator) {
 			$haystack = iterator_to_array($haystack, TRUE);
 		} elseif (FALSE === is_array($haystack)) {
-			throw new Exception('Cannot slice unsupported type: ' . gettype($haystack), 1353812601);
+			throw new \Exception('Cannot slice unsupported type: ' . gettype($haystack), 1353812601);
 		}
 		$output = array_slice($haystack, $start, $length, TRUE);
 		if (NULL !== $as) {
 			$variables = array($as => $output);
-			$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $output;
 	}

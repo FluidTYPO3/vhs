@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\System;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,14 +34,16 @@
  * @package Vhs
  * @subpackage ViewHelpers\System
  */
-class Tx_Vhs_ViewHelpers_System_DateTimeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class DateTimeViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	public function render() {
 		$now = time();
-		$dateTime = DateTime::createFromFormat('U', $now);
+		$dateTime = \DateTime::createFromFormat('U', $now);
 		return $dateTime;
 	}
 

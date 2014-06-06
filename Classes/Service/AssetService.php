@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,15 @@
  * @package Vhs
  * @subpackage Service
  */
-class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface {
+use \TYPO3\CMS\Core\SingletonInterface;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\ArrayUtility;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use \FluidTYPO3\Vhs\Asset;
+
+class AssetService implements SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -69,7 +79,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -77,7 +87,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -92,7 +102,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 			return;
 		}
 		if (FALSE === $this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager) {
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+			$this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 			$this->configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
 		}
 		$settings = $this->getSettings();
@@ -103,7 +113,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 					if (FALSE === isset($typoScriptAsset['name'])) {
 						$typoScriptAsset['name'] = $name;
 					}
-					Tx_Vhs_Asset::createFromSettings($typoScriptAsset);
+					Asset::createFromSettings($typoScriptAsset);
 				}
 			}
 		}
@@ -118,7 +128,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		$useDebugUtility = (isset($settings['asset']['useDebugUtility']) && $settings['asset']['useDebugUtility'] > 0) || FALSE === isset($settings['asset']['useDebugUtility']);
 		if (TRUE === ($buildDebugRequested || $assetDebugRequested)) {
 			if (TRUE === $useDebugUtility) {
-				Tx_Extbase_Utility_Debugger::var_dump($assets);
+				DebuggerUtility::var_dump($assets);
 			} else {
 				echo var_export($assets, TRUE);
 			}
@@ -158,13 +168,13 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 */
 	public function getSettings() {
 		if (NULL === self::$settingsCache) {
-			$allTypoScript = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+			$allTypoScript = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {
 				// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
 				self::$settingsCache = array();
 			} else {
-				self::$settingsCache = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
 		$settings = (array) self::$settingsCache;
@@ -172,7 +182,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
+	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[] $assets
 	 * @param boolean $cached
 	 * @return void
 	 */
@@ -222,7 +232,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 
 	/**
 	 * @param array $assets
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	private function buildAssetsChunk($assets) {
@@ -238,7 +248,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		$chunks = array();
 		foreach ($spool as $type => $spooledAssets) {
 			$chunk = array();
-			/** @var $spooledAssets Tx_Vhs_ViewHelpers_Asset_AssetInterface[] */
+			/** @var \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[] $spooledAssets */
 			foreach ($spooledAssets as $name => $asset) {
 				$assetSettings = $this->extractAssetSettings($asset);
 				$standalone = (boolean) $assetSettings['standalone'];
@@ -280,7 +290,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
+	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[] $assets
 	 * @param string $type
 	 * @return string
 	 */
@@ -293,7 +303,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 			}
 		}
 		$fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.' . $type;
-		$fileAbsolutePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
+		$fileAbsolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
 		if (
 			FALSE === file_exists($fileAbsolutePathAndFilename)
 			|| 0 === filemtime($fileAbsolutePathAndFilename)
@@ -331,11 +341,11 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 * @param string $type
 	 * @param string $content
 	 * @param string $file
+	 * @throws \RuntimeException
 	 * @return string
-	 * @throws RuntimeException
 	 */
 	private function generateTagForAssetType($type, $content, $file = NULL) {
-		/** @var $tagBuilder \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder */
+		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
 		$tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
 		switch ($type) {
 			case 'js':
@@ -366,7 +376,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 				if (NULL === $file) {
 					return $content;
 				} else {
-					throw new RuntimeException('Attempt to include file based asset with unknown type ("' . $type . '")', 1358645219);
+					throw new \RuntimeException('Attempt to include file based asset with unknown type ("' . $type . '")', 1358645219);
 				}
 				break;
 		}
@@ -376,7 +386,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	/**
 	 * @param array $assets
 	 * @return array
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	private function manipulateAssetsByTypoScriptSetttings($assets) {
 		$settings = $this->getSettings();
@@ -384,6 +394,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 			return $assets;
 		}
 		$filtered = array();
+		/** @var \FluidTYPO3\Vhs\Asset $asset */
 		foreach ($assets as $name => $asset) {
 			$assetSettings = $this->extractAssetSettings($asset);
 			$groupName = $assetSettings['group'];
@@ -393,15 +404,15 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 			}
 			$localSettings = $assetSettings;
 			if (TRUE === isset($settings['asset'])) {
-				$localSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($localSettings, (array) $settings['asset']);
+				ArrayUtility::mergeRecursiveWithOverrule($localSettings, (array) $settings['asset']);
 			}
 			if (TRUE === isset($settings['asset'][$name])) {
-				$localSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($localSettings, (array) $settings['asset'][$name]);
+				ArrayUtility::mergeRecursiveWithOverrule($localSettings, (array) $settings['asset'][$name]);
 			}
 			if (TRUE === isset($settings['assetGroup'][$groupName])) {
-				$localSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($localSettings, (array) $settings['assetGroup'][$groupName]);
+				ArrayUtility::mergeRecursiveWithOverrule($localSettings, (array) $settings['assetGroup'][$groupName]);
 			}
-			if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
+			if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
 				$asset->setSettings($localSettings);
 				$filtered[$name] = $asset;
 			} else {
@@ -412,9 +423,9 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	}
 
 	/**
-	 * @param Tx_Vhs_ViewHelpers_Asset_AssetInterface[] $assets
-	 * @return Tx_Vhs_ViewHelpers_Asset_AssetInterface[]
-	 * @throws RuntimeException
+	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[] $assets
+	 * @throws \RuntimeException
+	 * @return \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[]
 	 */
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
@@ -422,12 +433,12 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
-			/** @var $asset Tx_Vhs_ViewHelpers_Asset_AssetInterface */
+			/** @var \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface $asset */
 			$assetSettings = $this->extractAssetSettings($asset);
 			$name = array_shift($assetNames);
 			$dependencies = $assetSettings['dependencies'];
 			if (FALSE === is_array($dependencies)) {
-				$dependencies = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $assetSettings['dependencies'], TRUE);
+				$dependencies = GeneralUtility::trimExplode(',', $assetSettings['dependencies'], TRUE);
 			}
 			foreach ($dependencies as $dependency) {
 				if (
@@ -440,7 +451,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 					// queue ensures it will be encountered before re-encountering this
 					// specific Asset
 					if (0 === count($assets)) {
-						throw new RuntimeException('Asset "' . $name . '" depends on "' . $dependency . '" but "' . $dependency . '" was not found', 1358603979);
+						throw new \RuntimeException('Asset "' . $name . '" depends on "' . $dependency . '" but "' . $dependency . '" was not found', 1358603979);
 					}
 					$assets[$name] = $asset;
 					$assetNames[$name] = $name;
@@ -448,7 +459,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 				}
 			}
 			if (FALSE === $postpone) {
-				if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_Compilable_CompilableAssetInterface) {
+				if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\CompilableAssetInterface) {
 					$compilerClassName = $asset->getCompilerClassName();
 					if (FALSE === isset($compilables[$compilerClassName])) {
 						$compilables[$compilerClassName] = array();
@@ -462,11 +473,11 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		if (0 < count($compilables)) {
 			// loop once more, this time assigning compilable assets to their compilers
 			foreach ($placed as $asset) {
-				if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_Compilable_AssetCompilerInterface) {
-					/** @var $asset Tx_Vhs_ViewHelpers_Asset_Compilable_AssetCompilerInterface */
+				if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface) {
+					/** @var \FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface */
 					$compilerClassName = get_class($asset);
 					$compilerTopInterfaceName = array_shift(class_implements($compilerClassName));
-					if ('Tx_Vhs_ViewHelpers_Asset_Compilable_AssetCompilerInterface' !== $compilerTopInterfaceName) {
+					if ('\FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface' !== $compilerTopInterfaceName) {
 						$compilerIdentity = $compilerTopInterfaceName;
 					} else {
 						$compilerIdentity = $compilerClassName;
@@ -480,7 +491,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 				}
 			}
 			if (0 < count($compilables)) {
-				throw new RuntimeException('Compilable Assets used without appropriate Compiler Assets: "' .
+				throw new \RuntimeException('Compilable Assets used without appropriate Compiler Assets: "' .
 				implode(', ', array_keys($compilables)) . '"', 1360502808);
 			}
 		}
@@ -499,12 +510,12 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		if (TRUE === $isExternal) {
 			$fileContents = file_get_contents($templateReference);
 		} else {
-			$templatePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($templateReference);
+			$templatePathAndFilename = GeneralUtility::getFileAbsFileName($templateReference);
 			$fileContents = file_get_contents($templatePathAndFilename);
 		}
-		$variables = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($variables);
-		/** @var $view Tx_Fluid_View_StandaloneView */
-		$view = $this->objectManager->get('Tx_Fluid_View_StandaloneView');
+		$variables = GeneralUtility::removeDotsFromTS($variables);
+		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
+		$view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
 		$view->setTemplateSource($fileContents);
 		$view->assignMultiple($variables);
 		$content = $view->render();
@@ -575,10 +586,10 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 				$extension = pathinfo($newPath, PATHINFO_EXTENSION);
 				$temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
 				$temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
-				$rawPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path;
+				$rawPath = GeneralUtility::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path;
 				$realPath = realpath($rawPath);
 				if (FALSE === $realPath) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Asset at path "' . $rawPath . '" not found. Processing skipped.', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+					GeneralUtility::sysLog('Asset at path "' . $rawPath . '" not found. Processing skipped.', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 				} else {
 					if (FALSE === file_exists($temporaryFile)) {
 						copy($realPath, $temporaryFile);
@@ -598,7 +609,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 * @return boolean
 	 */
 	protected function assertAssetAllowedInFooter($asset) {
-		if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
+		if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
 			return $asset->assertAllowedInFooter();
 		}
 		return (boolean) (TRUE === isset($asset['allowMoveToFooter']) ? $asset['allowMoveToFooter'] : TRUE);
@@ -609,7 +620,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 * @return array
 	 */
 	protected function extractAssetSettings($asset) {
-		if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
+		if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
 			return $asset->getAssetSettings();
 		}
 		return $asset;
@@ -620,7 +631,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 	 * @return string
 	 */
 	protected function buildAsset($asset) {
-		if (TRUE === $asset instanceof Tx_Vhs_ViewHelpers_Asset_AssetInterface) {
+		if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
 			return $asset->build();
 		}
 		if (FALSE === isset($asset['path']) || TRUE === empty($asset['path'])) {
@@ -629,7 +640,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		if (TRUE === isset($asset['external']) && TRUE === (boolean) $asset['external']) {
 			$path = $asset['path'];
 		} else {
-			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($asset['path']);
+			$path = GeneralUtility::getFileAbsFileName($asset['path']);
 		}
 		$content = file_get_contents($path);
 		return $content;
@@ -637,19 +648,19 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 
 	/**
 	 * @param mixed $asset
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	private function extractAssetContent($asset) {
 		$assetSettings = $this->extractAssetSettings($asset);
 		$fileRelativePathAndFilename = $assetSettings['path'];
 		$fileRelativePath = dirname($assetSettings['path']);
-		$absolutePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
+		$absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
 		$isExternal = TRUE === isset($assetSettings['external']) && TRUE === (boolean) $assetSettings['external'];
 		$isFluidTemplate = TRUE === isset($assetSettings['fluid']) && TRUE === (boolean) $assetSettings['fluid'];
 		if (FALSE === empty($fileRelativePathAndFilename)) {
 			if (FALSE === $isExternal && FALSE === file_exists($absolutePathAndFilename)) {
-				throw new RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
+				throw new \RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
 			}
 			if (TRUE === $isFluidTemplate) {
 				$content = $this->renderAssetAsFluidTemplate($asset);
@@ -676,7 +687,7 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		if ('all' !== $parameters['cacheCmd']) {
 			return;
 		}
-		$assetCacheFiles = glob(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/vhs-assets-*'));
+		$assetCacheFiles = glob(GeneralUtility::getFileAbsFileName('typo3temp/vhs-assets-*'));
 		if (FALSE === $assetCacheFiles) {
 			return;
 		}

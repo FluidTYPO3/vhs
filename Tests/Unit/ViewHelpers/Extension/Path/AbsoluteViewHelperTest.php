@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Extension\Path;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,20 +23,23 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
+ * @subpackage ViewHelpers\Extension\Path
  */
-class Tx_Vhs_ViewHelpers_Extension_Path_AbsoluteViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class AbsoluteViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test
 	 */
 	public function rendersUsingArgument() {
 		$test = $this->executeViewHelper(array('extensionName' => 'Vhs'));
-		$this->assertSame(t3lib_extMgm::extPath('vhs'), $test);
+		$this->assertSame(ExtensionManagementUtility::extPath('vhs'), $test);
 	}
 
 	/**
@@ -43,7 +47,7 @@ class Tx_Vhs_ViewHelpers_Extension_Path_AbsoluteViewHelperTest extends Tx_Vhs_Vi
 	 */
 	public function rendersUsingControllerContext() {
 		$test = $this->executeViewHelper(array(), array(), NULL, 'Vhs');
-		$this->assertSame(t3lib_extMgm::extPath('vhs'), $test);
+		$this->assertSame(ExtensionManagementUtility::extPath('vhs'), $test);
 	}
 
 	/**

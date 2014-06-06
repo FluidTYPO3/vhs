@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Iterator: Filter ViewHelper
@@ -37,7 +41,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class FilterViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Render method
@@ -52,13 +56,13 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends \TYPO3\CMS\Fluid\Core
 		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
-		if (NULL === $subject || (FALSE === is_array($subject) && FALSE === $subject instanceof Traversable)) {
+		if (NULL === $subject || (FALSE === is_array($subject) && FALSE === $subject instanceof \Traversable)) {
 			return array();
 		}
 		if (TRUE === is_null($filter) || '' === $filter) {
 			return $subject;
 		}
-		if (TRUE === $subject instanceof Traversable) {
+		if (TRUE === $subject instanceof \Traversable) {
 			$subject = iterator_to_array($subject);
 		}
 		$items = array();
@@ -82,7 +86,7 @@ class Tx_Vhs_ViewHelpers_Iterator_FilterViewHelper extends \TYPO3\CMS\Fluid\Core
 	 */
 	protected function filter($item, $filter, $propertyName) {
 		if (FALSE === empty($propertyName) && (TRUE === is_object($item) || TRUE === is_array($item))) {
-			$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($item, $propertyName);
+			$value = ObjectAccess::getPropertyPath($item, $propertyName);
 		} else {
 			$value = $item;
 		}
