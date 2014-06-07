@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class ExtractViewHelperTest extends AbstractViewHelperTest {
 
 	/**
-	 * @var \Tx_Vhs_ViewHelpers_Condition_BrowserViewHelper
+	 * @var ExtractViewHelper
 	 */
 	protected $fixture;
 
