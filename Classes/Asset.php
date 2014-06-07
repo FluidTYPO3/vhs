@@ -32,15 +32,15 @@ namespace FluidTYPO3\Vhs;
  *
  * ### Examples:
  *
- *     $asset = $this->objectManager->get('Tx_Vhs_Asset');
+ *     $asset = $this->objectManager->get('FluidTYPO3\Vhs\Asset');
  *     // OR you can use the static factory method which works anywhere
  *     // including outside of Extbase.
- *     $asset = Tx_Vhs_Asset::getInstance();
+ *     $asset = \FluidTYPO3\Vhs\Asset::getInstance();
  *     $asset->setPath('fileadmin/test.js')->setStandalone(TRUE)->finalize();
  *
  * Or simply:
  *
- *     $this->objectManager->get('Tx_Vhs_Asset')->setPath('...')->finalize();
+ *     $this->objectManager->get('FluidTYPO3\Vhs\Asset')->setPath('...')->finalize();
  *
  * And you can create clean instances:
  *
@@ -51,14 +51,14 @@ namespace FluidTYPO3\Vhs;
  * Or if you have all settings in an array (with members named according to
  * the properties on this class:
  *
- *     Tx_Vhs_Asset::createFromSettings($settings)->finalize();
+ *     \FluidTYPO3\Vhs\Asset::createFromSettings($settings)->finalize();
  *
  * Finally, if your Asset is file based, VHS can perform a few detections to
  * set initial attributes like standalone, external (if file contains protocol),
  * type (based on extension) and name (base name of file).
  *
- *     Tx_Vhs_Asset::createFromFile($filePathAndFilename);
- *     Tx_Vhs_Asset::createFromUrl($urlToExternalFile);
+ *     \FluidTYPO3\Vhs\Asset::createFromFile($filePathAndFilename);
+ *     \FluidTYPO3\Vhs\Asset::createFromUrl($urlToExternalFile);
  *
  * You can chain all setters on the class before finally calling finalize() to
  * register the Asset (you can still modify the Asset afterwards, but an Asset
@@ -73,11 +73,11 @@ namespace FluidTYPO3\Vhs;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-use \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
-use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\ArrayUtility;
-use \TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 class Asset implements AssetInterface {
 
