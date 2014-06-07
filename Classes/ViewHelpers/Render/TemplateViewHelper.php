@@ -38,7 +38,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  *     <v:render.template
  * 	    file="EXT:foo/Resources/Private/Templates/Action/Show.html"
  *      variables="{object: customLoadedObject}"
- *      paths="{v:var.typoscript(path: 'plugin.tx_foo.view')}"
+ *      paths="{v:variable.typoscript(path: 'plugin.tx_foo.view')}"
  *      format="xml" />
  *
  * Which would render the "show" action's template from

@@ -31,10 +31,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * Sets a single variable in the TemplateVariableContainer
  * scope. The variable then becomes accessible as {var}.
  *
- * Combines well with `v:var.get` to set shorter variable
+ * Combines well with `v:variable.get` to set shorter variable
  * names referencing dynamic variables, such as:
  *
- *     <v:var.set name="myObject" value="{v:var.get(name: 'arrayVariable.{offset}')}" />
+ *     <v:variable.set name="myObject" value="{v:var.get(name: 'arrayVariable.{offset}')}" />
  *     <!-- If {index} == 4 then {myObject} is now == {arrayVariable.4} -->
  *     {myObject.name} <!-- corresponds to {arrayVariable.4.name} -->
  *
@@ -46,14 +46,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  *
  * In many ways this ViewHelper works like `f:alias`
  * with one exception: in `f:alias` the variable only
- * becomes accessible in the tag content, whereas `v:var.set`
+ * becomes accessible in the tag content, whereas `v:variable.set`
  * inserts the variable in the template and leaves it there
  * (it "leaks" the variable).
  *
  * If $name contains a dot, VHS will attempt to load the object
  * stored under the named used as the first segment part and
  * set the value at the remaining path. E.g.
- * `{value -> v:var.set(name: 'object.property.subProperty')}`
+ * `{value -> v:variable.set(name: 'object.property.subProperty')}`
  * would attempt to load `{object}` first, then set
  * `property.subProperty` on that object/array using
  * ObjectAccess::setPropertyPath(). If `{object}` is not
@@ -64,7 +64,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * must first extract the second-level object then set the
  * value on that object.
  *
- * Using as `{value -> v:var.set(name: 'myVar')}` makes `{myVar}` contain
+ * Using as `{value -> v:variable.set(name: 'myVar')}` makes `{myVar}` contain
  * `{value}`.
  *
  * @author Claus Due <claus@namelesscoder.net>

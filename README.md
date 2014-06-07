@@ -162,7 +162,7 @@ the image path but manually creating an `<img />` tag and using `f:uri.image` as
 To use the ViewHelpers in your Fluid templates simply add the namespace:
 
 ```xml
-{namespace v=Tx_Vhs_ViewHelpers}
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
 ```
 
 Using the namespace name "v" is not required but it is recommended. It's a single character
