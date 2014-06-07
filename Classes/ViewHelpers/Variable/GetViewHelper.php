@@ -31,16 +31,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * ViewHelper used to read the value of a current template
  * variable. Can be used with dynamic indices in arrays:
  *
- *     <v:var.get name="array.{dynamicIndex}" />
- *     <v:var.get name="array.{v:var.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
- *     <f:for each="{v:var.get(name: 'object.arrayProperty.{dynamicIndex}')}" as="nestedObject">
+ *     <v:variable.get name="array.{dynamicIndex}" />
+ *     <v:variable.get name="array.{v:var.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
+ *     <f:for each="{v:variable.get(name: 'object.arrayProperty.{dynamicIndex}')}" as="nestedObject">
  *         ...
  *     </f:for>
  *
  * Or to read names of variables which contain dynamic parts:
  *
  *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
- *     {v:var.get(name: 'dynamic{variableName}')}
+ *     {v:variable.get(name: 'dynamic{variableName}')}
  *
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
@@ -58,12 +58,12 @@ class GetViewHelper extends AbstractViewHelper {
 	 *
 	 * Can be used to access dynamic variables such as:
 	 *
-	 *     {v:var.get(name: 'object.arrayProperty.{index}')}
+	 *     {v:variable.get(name: 'object.arrayProperty.{index}')}
 	 *
-	 * And can be chained with `v:var.set` to reassign the
+	 * And can be chained with `v:variable.set` to reassign the
 	 * output to another variable:
 	 *
-	 *     {v:var.get(name: 'myArray.{index}') -> v:var.set(name: 'myVar')}
+	 *     {v:variable.get(name: 'myArray.{index}') -> v:var.set(name: 'myVar')}
 	 *
 	 * If your target object is an array with unsequential yet
 	 * numeric indices (e.g. {123: 'value1', 513: 'value2'},

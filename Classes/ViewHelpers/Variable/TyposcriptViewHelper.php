@@ -46,8 +46,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * into two variables usable for a menu item:
  *
  *     <!-- This piece to be added as far up as possible in order to prevent multiple executions -->
- *     <v:var.set name="menuSettings" value="{v:var.typoscript(path: 'lib.menu.main.stdWrap')}" />
- *     <v:var.set name="wrap" value="{menuSettings.wrap -> v:iterator.explode(glue: '|')}" />
+ *     <v:variable.set name="menuSettings" value="{v:var.typoscript(path: 'lib.menu.main.stdWrap')}" />
+ *     <v:variable.set name="wrap" value="{menuSettings.wrap -> v:iterator.explode(glue: '|')}" />
  *
  *     <!-- This in the loop which renders the menu (see "VHS: manual menu rendering" in FAQ): -->
  *     {wrap.0}{menuItem.title}{wrap.1}

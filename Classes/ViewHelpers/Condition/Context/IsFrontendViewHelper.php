@@ -35,18 +35,18 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * ### Examples
  *
  *     <!-- simple usage, content becomes then-child -->
- *     <v:if.context.isFrontend>
+ *     <v:condition.context.isFrontend>
  *         Hooray for BE contexts!
- *     </v:if.context.isFrontend>
+ *     </v:condition.context.isFrontend>
  *     <!-- extended use combined with f:then and f:else -->
- *     <v:if.context.isFrontend>
+ *     <v:condition.context.isFrontend>
  *         <f:then>
  *            Hooray for BE contexts!
  *         </f:then>
  *         <f:else>
  *            Maybe BE, maybe CLI.
  *         </f:else>
- *     </v:if.context.isFrontend>
+ *     </v:condition.context.isFrontend>
  *
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
