@@ -56,13 +56,13 @@ The following Fluid usage:
 Is the exact same as ths PHP:
 
 ```
-Tx_Vhs_Asset::createFromFile('fileadmin/demo.js');
+\FluidTYPO3\Vhs\Asset::createFromFile('fileadmin/demo.js');
 ```
 
 Which is a short form of:
 
 ```
-Tx_Vhs_Asset::createFromSettings(array(
+\FluidTYPO3\Vhs\Asset::createFromSettings(array(
 	'name' => 'demo',
 	'path' => 'fileadmin/demo.js'
 ));
@@ -71,9 +71,9 @@ Tx_Vhs_Asset::createFromSettings(array(
 Which is itself a short form of:
 
 ```
-$asset = Tx_Vhs_Asset::getInstance();
+$asset = \FluidTYPO3\Vhs\Asset::getInstance();
 // or alternatively, if this fits better in your other code:
-$asset = $objectManager->get('Tx_Vhs_Asset');
+$asset = $objectManager->get('FluidTYPO3\Vhs\Asset');
 // then:
 $asset->setName('demo');
 $asset->setPath('fileadmin/demo.js');
