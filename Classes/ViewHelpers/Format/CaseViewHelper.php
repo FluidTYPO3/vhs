@@ -25,6 +25,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * ************************************************************* */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 
 /**
  * Case Formatting ViewHelper
@@ -55,6 +56,9 @@ class CaseViewHelper extends AbstractViewHelper {
 		if (NULL === $string) {
 			$string = $this->renderChildren();
 		}
+		if ('BE' === TYPO3_MODE) {
+			$tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
+		}
 		switch ($case) {
 			case self::CASE_LOWER: $string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toLower'); break;
 			case self::CASE_UPPER: $string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toUpper'); break;
@@ -65,6 +69,9 @@ class CaseViewHelper extends AbstractViewHelper {
 			case self::CASE_LOWERCAMELCASE: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($string); break;
 			case self::CASE_UNDERSCORED: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($string); break;
 			default: break;
+		}
+		if ('BE' === TYPO3_MODE) {
+			FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 		}
 		return $string;
 	}
