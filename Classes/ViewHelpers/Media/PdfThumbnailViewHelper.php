@@ -44,8 +44,6 @@ class PdfThumbnailViewHelper extends ImageViewhelper {
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerArgument('path', 'string', 'Path to PDF source file');
-		$this->registerArgument('width', 'integer', 'Width of resulting thumbnail image. See imgResource.width for possible options', FALSE, NULL);
-		$this->registerArgument('height', 'integer', 'Height of resulting thumbnail image. See imgResource.width for possible options', FALSE, NULL);
 		$this->registerArgument('minWidth', 'integer', 'Minimum width of resulting thumbnail image', FALSE, NULL);
 		$this->registerArgument('minHeight', 'integer', 'Minimum height of resulting thumbnail image', FALSE, NULL);
 		$this->registerArgument('maxWidth', 'integer', 'Maximum width of resulting thumbnail image', FALSE, NULL);
