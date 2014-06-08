@@ -32,7 +32,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * variable. Can be used with dynamic indices in arrays:
  *
  *     <v:variable.get name="array.{dynamicIndex}" />
- *     <v:variable.get name="array.{v:var.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
+ *     <v:variable.get name="array.{v:variable.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
  *     <f:for each="{v:variable.get(name: 'object.arrayProperty.{dynamicIndex}')}" as="nestedObject">
  *         ...
  *     </f:for>
@@ -63,7 +63,7 @@ class GetViewHelper extends AbstractViewHelper {
 	 * And can be chained with `v:variable.set` to reassign the
 	 * output to another variable:
 	 *
-	 *     {v:variable.get(name: 'myArray.{index}') -> v:var.set(name: 'myVar')}
+	 *     {v:variable.get(name: 'myArray.{index}') -> v:variable.set(name: 'myVar')}
 	 *
 	 * If your target object is an array with unsequential yet
 	 * numeric indices (e.g. {123: 'value1', 513: 'value2'},
