@@ -32,7 +32,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
  * @package Vhs
  * @subpackage ViewHelpers\Content\Random
  */
-use \FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
+use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
 class GetViewHelper extends AbstractContentViewHelper {
 

@@ -52,7 +52,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class AsciiViewHelper extends AbstractViewHelper {
 

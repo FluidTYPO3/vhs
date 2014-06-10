@@ -35,13 +35,13 @@ namespace FluidTYPO3\Vhs\Service;
  * @package Vhs
  * @subpackage Service
  */
-use \TYPO3\CMS\Core\SingletonInterface;
-use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\ArrayUtility;
-use \TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use \FluidTYPO3\Vhs\Asset;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use FluidTYPO3\Vhs\Asset;
 
 class AssetService implements SingletonInterface {
 

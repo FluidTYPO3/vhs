@@ -35,7 +35,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 class RenderViewHelper extends AbstractContentViewHelper {
 

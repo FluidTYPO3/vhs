@@ -31,10 +31,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
-use \TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use \TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface {
 

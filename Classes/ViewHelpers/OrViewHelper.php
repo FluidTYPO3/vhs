@@ -32,8 +32,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class OrViewHelper extends AbstractViewHelper {
 

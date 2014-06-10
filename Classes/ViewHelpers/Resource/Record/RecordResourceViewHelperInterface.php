@@ -30,7 +30,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-use \FluidTYPO3\Vhs\ViewHelpers\Resource\ResourceViewHelperInterface;
+use FluidTYPO3\Vhs\ViewHelpers\Resource\ResourceViewHelperInterface;
 
 interface RecordResourceViewHelperInterface extends ResourceViewHelperInterface {
 

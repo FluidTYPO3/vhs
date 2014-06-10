@@ -72,8 +72,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * @subpackage ViewHelpers\Var
  */
 
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 class SetViewHelper extends AbstractViewHelper {
 

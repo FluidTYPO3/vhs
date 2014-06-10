@@ -51,7 +51,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class TypolinkViewHelper extends AbstractViewHelper {
 

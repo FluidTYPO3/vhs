@@ -45,7 +45,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class CaseViewHelper extends AbstractViewHelper {
 

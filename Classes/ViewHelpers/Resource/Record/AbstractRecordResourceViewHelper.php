@@ -30,11 +30,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface {
 

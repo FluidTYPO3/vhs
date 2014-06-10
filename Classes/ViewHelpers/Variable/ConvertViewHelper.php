@@ -37,8 +37,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConvertViewHelper extends AbstractViewHelper {
 

@@ -30,7 +30,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-use \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\AbstractRecordResourceViewHelper;
+use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\AbstractRecordResourceViewHelper;
 
 class RecordViewHelper extends AbstractRecordResourceViewHelper {
 

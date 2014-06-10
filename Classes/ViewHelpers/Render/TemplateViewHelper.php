@@ -72,7 +72,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TemplateViewHelper extends AbstractRenderViewHelper {
 

@@ -37,8 +37,8 @@ namespace FluidTYPO3\Vhs\Service;
  * @package Vhs
  * @subpackage Service
  */
-use \TYPO3\CMS\Core\SingletonInterface;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PageSelectService implements SingletonInterface {
 
