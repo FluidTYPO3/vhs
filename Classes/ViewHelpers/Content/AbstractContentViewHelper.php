@@ -36,9 +36,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use \FluidTYPO3\Vhs\Service\PageSelectService;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use FluidTYPO3\Vhs\Service\PageSelectService;
 
 abstract class AbstractContentViewHelper extends AbstractViewHelper {
 

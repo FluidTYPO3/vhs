@@ -30,8 +30,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
 
 class FalViewHelper extends AbstractRecordResourceViewHelper {
 

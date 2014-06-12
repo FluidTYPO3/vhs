@@ -37,7 +37,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  * @package Vhs
  * @subpackage ViewHelpers\System
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class UniqIdViewHelper extends AbstractViewHelper {
 

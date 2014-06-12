@@ -99,8 +99,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 class TryViewHelper extends AbstractConditionViewHelper {
 

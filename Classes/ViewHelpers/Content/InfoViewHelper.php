@@ -32,9 +32,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 class InfoViewHelper extends AbstractViewHelper {
 

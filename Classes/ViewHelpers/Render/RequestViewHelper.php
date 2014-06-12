@@ -39,8 +39,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-use \TYPO3\CMS\Extbase\Mvc\Dispatcher;
-use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Dispatcher;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 class RequestViewHelper extends AbstractRenderViewHelper {
 

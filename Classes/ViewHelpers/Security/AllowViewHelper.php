@@ -46,7 +46,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
 
 class AllowViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface {
 

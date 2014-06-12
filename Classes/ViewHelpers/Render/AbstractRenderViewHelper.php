@@ -35,10 +35,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use \TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 abstract class AbstractRenderViewHelper extends AbstractViewHelper {
 

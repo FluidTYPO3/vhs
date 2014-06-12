@@ -32,9 +32,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use \TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 
 abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 

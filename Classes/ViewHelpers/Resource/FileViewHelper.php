@@ -32,7 +32,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-use \FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 class FileViewHelper extends AbstractResourceViewHelper {
 

@@ -30,8 +30,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode;
 
 class IfViewHelper extends AbstractConditionViewHelper {
 

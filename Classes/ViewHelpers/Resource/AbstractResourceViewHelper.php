@@ -32,9 +32,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
 
 abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper {
 
