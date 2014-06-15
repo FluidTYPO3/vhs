@@ -37,7 +37,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper {
 	/**
 	 * Base URL for Vimeo video player
 	 */
-	const VIMEO_BASEURL = 'http://player.vimeo.com/video/';
+	const VIMEO_BASEURL = '//player.vimeo.com/video/';
 
 	/**
 	 * @var string
