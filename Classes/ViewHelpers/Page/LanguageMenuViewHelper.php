@@ -77,6 +77,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', FALSE, TRUE);
 		$this->registerArgument('classCurrent', 'string', 'Sets the class, by which the current language will be marked', FALSE, 'current');
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'languageMenu');
+		$this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', FALSE, 0);
 	}
 
 	/**
@@ -263,7 +264,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		// Select all pages_language_overlay records on the current page. Each represents a possibility for a language.
 		$pageArray = array();
 		$table = 'pages_language_overlay';
-		$whereClause = 'pid=' . $GLOBALS['TSFE']->id . ' ';
+		$whereClause = 'pid=' . $this->getPageUid() . ' ';
 		$whereClause .= $GLOBALS['TSFE']->sys_page->enableFields($table);
 		$sysLang = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('DISTINCT sys_language_uid', $table, $whereClause);
 
@@ -297,17 +298,30 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 	protected function getLanguageUrl($uid) {
 		$getValues = GeneralUtility::_GET();
 		$getValues['L'] = $uid;
-		$currentPage = $GLOBALS['TSFE']->id;
 		unset($getValues['id']);
 		unset($getValues['cHash']);
 		$addParams = http_build_query($getValues);
 		$config = array(
-			'parameter' => $currentPage,
+			'parameter' => $this->getPageUid(),
 			'returnLast' => 'url',
 			'additionalParams' => '&' . $addParams,
 			'useCacheHash' => $this->arguments['useCHash']
 		);
 		return $this->cObj->typoLink('', $config);
+	}
+
+	/**
+	 * Get page via pageUid argument or current id
+	 *
+	 * @return integer
+	 */
+	protected function getPageUid() {
+		$pageUid = (integer) $this->arguments['pageUid'];
+		if (0 === $pageUid) {
+			$pageUid = $GLOBALS['TSFE']->id;
+		}
+
+		return (integer) $pageUid;
 	}
 
 }
