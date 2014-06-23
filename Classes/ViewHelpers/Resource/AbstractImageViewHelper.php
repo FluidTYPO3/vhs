@@ -147,7 +147,7 @@ abstract class Tx_Vhs_ViewHelpers_Resource_AbstractImageViewHelper extends Tx_Vh
 		$this->workingDirectoryBackup = getcwd();
 		chdir(constant('PATH_site'));
 		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		$GLOBALS['TSFE'] = new stdClass();
+		$GLOBALS['TSFE'] = new \stdClass();
 		$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\TemplateService');
 		$template->tt_track = 0;
 		$template->init();
