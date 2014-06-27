@@ -541,11 +541,18 @@ abstract class Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper extends \TYPO
 				$subMenuData = $this->getMenu($pageUid);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
+				$parentTagId = $this->tag->getAttribute('id');
+				if (FALSE === empty($parentTagId)) {
+					$this->tag->addAttribute('id', $parentTagId . '-lvl-' . strval($level));
+				}
 				$this->tag->setTagName($this->getWrappingTagName());
 				$this->tag->setContent($renderedSubMenu);
 				$this->tag->addAttribute('class', ($this->arguments['class'] ? $this->arguments['class'] . ' lvl-' : 'lvl-') . strval($level));
 				$html[] = $this->tag->render();
 				$this->tag->addAttribute('class', $this->arguments['class']);
+				if (FALSE === empty($parentTagId)) {
+					$this->tag->addAttribute('id', $parentTagId);
+				}
 				array_push($includedPages, $page);
 			}
 			if (FALSE === $this->isNonWrappingMode()) {
