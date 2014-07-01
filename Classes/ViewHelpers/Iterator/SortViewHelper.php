@@ -49,6 +49,21 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class SortViewHelper extends AbstractViewHelper {
 
 	/**
+	 * Contains all flags that are allowed to be used
+	 * with the sorting functions
+	 *
+	 * @var array
+	 */
+	protected $allowedSortFlags = array(
+		'SORT_REGULAR',
+		'SORT_STRING',
+		'SORT_NUMERIC',
+		'SORT_NATURAL',
+		'SORT_LOCALE_STRING',
+		'SORT_FLAG_CASE'
+	);
+
+	/**
 	 * Initialize arguments
 	 *
 	 * @return void
@@ -57,7 +72,7 @@ class SortViewHelper extends AbstractViewHelper {
 		$this->registerArgument('as', 'string', 'Which variable to update in the TemplateVariableContainer. If left out, returns sorted data instead of updating the variable (i.e. reference or copy)');
 		$this->registerArgument('sortBy', 'string', 'Which property/field to sort by - leave out for numeric sorting based on indexes(keys)');
 		$this->registerArgument('order', 'string', 'ASC, DESC, RAND or SHUFFLE. RAND preserves keys, SHUFFLE does not - but SHUFFLE is faster', FALSE, 'ASC');
-		$this->registerArgument('sortFlags', 'string', 'Constant name from PHP for SORT_FLAGS: SORT_REGULAR, SORT_STRING, SORT_NUMERIC, SORT_NATURAL, SORT_LOCALE_STRING or SORT_FLAG_CASE', FALSE, 'SORT_REGULAR');
+		$this->registerArgument('sortFlags', 'string', 'Constant name from PHP for SORT_FLAGS: SORT_REGULAR, SORT_STRING, SORT_NUMERIC, SORT_NATURAL, SORT_LOCALE_STRING or SORT_FLAG_CASE. You can provide a comma seperated list or array to use a combination of flags.', FALSE, 'SORT_REGULAR');
 	}
 
 	/**
@@ -122,13 +137,12 @@ class SortViewHelper extends AbstractViewHelper {
 				$index = $this->getSortValue($object);
 			}
 			while (isset($sorted[$index])) {
-				$indexSuffix = TRUE === is_int($index) ? '.1' : '1';
-				$index .= $indexSuffix;
+				$index .= '.1';
 			}
 			$sorted[$index] = $object;
 		}
 		if ('ASC' === $this->arguments['order']) {
-			ksort($sorted, constant($this->arguments['sortFlags']));
+			ksort($sorted, $this->getSortFlags());
 		} elseif ('RAND' === $this->arguments['order']) {
 			$sortedKeys = array_keys($sorted);
 			shuffle($sortedKeys);
@@ -140,7 +154,7 @@ class SortViewHelper extends AbstractViewHelper {
 		} elseif ('SHUFFLE' === $this->arguments['order']) {
 			shuffle($sorted);
 		} else {
-			krsort($sorted, constant($this->arguments['sortFlags']));
+			krsort($sorted, $this->getSortFlags());
 		}
 		return $sorted;
 	}
@@ -165,13 +179,12 @@ class SortViewHelper extends AbstractViewHelper {
 				$index = $this->getSortValue($item);
 			}
 			while (isset($sorted[$index])) {
-				$indexSuffix = TRUE === is_int($index) ? '.1' : '1';
-				$index .= $indexSuffix;
+				$index .= '.1';
 			}
 			$sorted[$index] = $item;
 		}
 		if ('ASC' === $this->arguments['order']) {
-			ksort($sorted, constant($this->arguments['sortFlags']));
+			ksort($sorted, $this->getSortFlags());
 		} elseif ('RAND' === $this->arguments['order']) {
 			$sortedKeys = array_keys($sorted);
 			shuffle($sortedKeys);
@@ -183,7 +196,7 @@ class SortViewHelper extends AbstractViewHelper {
 		} elseif ('SHUFFLE' === $this->arguments['order']) {
 			shuffle($sorted);
 		} else {
-			krsort($sorted, constant($this->arguments['sortFlags']));
+			krsort($sorted, $this->getSortFlags());
 		}
 		$storage = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
 		foreach ($sorted as $item) {
@@ -209,6 +222,24 @@ class SortViewHelper extends AbstractViewHelper {
 			$value = count($value);
 		}
 		return $value;
+	}
+
+	/**
+	 * Parses the supplied flags into the proper value for the sorting
+	 * function.
+	 *
+	 * @return integer
+	 */
+	protected function getSortFlags() {
+		$constants = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($this->arguments['sortFlags']);
+		$flags = 0;
+		foreach ($constants as $constant) {
+			if (FALSE === in_array($constant, $this->allowedSortFlags)) {
+				throw new \Exception('The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed constants are: ' . implode(', ', $this->allowedSortFlags) . '.', 1404220538);
+			}
+			$flags = $flags | constant(trim($constant));
+		}
+		return $flags;
 	}
 
 }
