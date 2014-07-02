@@ -24,6 +24,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\Service\PageSelectService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -59,15 +60,15 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	private $original = TRUE;
 
 	/**
-	 * @var \FluidTYPO3\Vhs\Service\PageSelectService
+	 * @var PageSelectService
 	 */
 	protected $pageSelect;
 
 	/**
-	 * @param \FluidTYPO3\Vhs\Service\PageSelectService $pageSelectService
+	 * @param PageSelectService $pageSelectService
 	 * @return void
 	 */
-	public function injectPageSelectService(\FluidTYPO3\Vhs\Service\PageSelectService $pageSelectService) {
+	public function injectPageSelectService(PageSelectService $pageSelectService) {
 		$this->pageSelect = $pageSelectService;
 	}
 
@@ -123,8 +124,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			return NULL;
 		}
 		$variables = $this->templateVariableContainer->getAll();
-		$this->viewHelperVariableContainer->addOrUpdate('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance', $this);
-		$this->viewHelperVariableContainer->addOrUpdate('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables', $variables);
+		$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance', $this);
+		$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables', $variables);
 	}
 
 	/**
@@ -142,11 +143,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === $this->original) {
 			return NULL;
 		}
-		if (FALSE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
-		$this->viewHelperVariableContainer->remove('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
-		$this->viewHelperVariableContainer->remove('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
+		$this->viewHelperVariableContainer->remove('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
+		$this->viewHelperVariableContainer->remove('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
 	}
 
 	/**
@@ -156,14 +157,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * forced to implement their own variable retrieval or subclass Page / Menu / Sub.
 	 * Returns NULL if no parent exists.
 	 * @param integer $pageUid UID of page that's the new parent page, overridden in arguments of cloned and recycled menu ViewHelper instance
-	 * @return \FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper|NULL
+	 * @return AbstractMenuViewHelper|NULL
 	 */
 	protected function retrieveReconfiguredParentMenuInstance($pageUid) {
-		if (FALSE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
-		/** @var $parentInstance '\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper' */
-		$parentInstance = $this->viewHelperVariableContainer->get('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
+		$parentInstance = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
 		$arguments = $parentInstance->getArguments();
 		$arguments['pageUid'] = $pageUid;
 		$parentInstance->setArguments($arguments);
@@ -174,10 +174,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return void
 	 */
 	protected function cleanTemplateVariableContainer() {
-		if (FALSE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables')) {
 			return;
 		}
-		$storedVariables = $this->viewHelperVariableContainer->get('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
+		$storedVariables = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
 		foreach ($this->templateVariableContainer->getAll() as $variableName => $value) {
 			$this->backupValues[$variableName] = $value;
 			$this->templateVariableContainer->remove($variableName);
@@ -255,14 +255,14 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			$types = $this->parseDoktypeList($this->arguments['doktypes']);
 		} else {
 			$types = array(
-				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT'),
-				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK'),
-				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT'),
-				constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT')
+				PageRepository::DOKTYPE_DEFAULT,
+				PageRepository::DOKTYPE_LINK,
+				PageRepository::DOKTYPE_SHORTCUT,
+				PageRepository::DOKTYPE_MOUNTPOINT,
 			);
 		}
-		if (TRUE === (boolean) $this->arguments['includeSpacers'] && FALSE === in_array(constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER'), $types)) {
-			array_push($types, constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER'));
+		if (TRUE === (boolean) $this->arguments['includeSpacers'] && FALSE === in_array(PageRepository::DOKTYPE_SPACER, $types)) {
+			array_push($types, PageRepository::DOKTYPE_SPACER);
 		}
 		return $types;
 	}
@@ -331,26 +331,41 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	}
 
 	/**
-	 * Create the href of a link for page $pageUid respecting
-	 * a possible shortcut UID
+	 * Create the href of a link for a page record respecting
+	 * a possible shortcut UID or mountpoint
 	 *
-	 * @param integer $pageUid
-	 * @param integer $doktype
-	 * @param integer $shortcut
+	 * @param array $page
 	 * @return string
 	 */
-	protected function getItemLink($pageUid, $doktype, $shortcut) {
+	protected function getItemLink($page) {
+		$doktype = (integer) $page['doktype'];
+		$shortcut = (PageRepository::DOKTYPE_SHORTCUT === $doktype ? $page['shortcut'] : $page['url']);
 		$isShortcutOrLink = PageRepository::DOKTYPE_SHORTCUT === $doktype || PageRepository::DOKTYPE_LINK === $doktype;
 		$useShortcutTarget = $this->shouldUseShortcutTarget();
+		$pageUid = $page['uid'];
 		if (TRUE === $isShortcutOrLink && TRUE === $useShortcutTarget && 0 < $shortcut) {
 			$pageUid = $shortcut;
+		}
+		if (TRUE === (PageRepository::DOKTYPE_MOUNTPOINT === $doktype)) {
+			$pageUid = $page['mountedPageUid'];
 		}
 		$config = array(
 			'parameter' => $pageUid,
 			'returnLast' => 'url',
 			'additionalParams' => '',
-			'useCacheHash' => FALSE
+			'useCacheHash' => FALSE,
 		);
+		// Append mountpoint parameter to urls of pages of a mounted subtree
+		$mountPointParameter = NULL;
+		if (FALSE === empty($page['mountPointParameter'])) {
+			$mountPointParameter = $page['mountPointParameter'];
+		}
+		if (FALSE === empty($page['_MP_PARAM'])) {
+			$mountPointParameter = $page['_MP_PARAM'];
+		}
+		if (NULL !== $mountPointParameter) {
+			$config['additionalParams'] = '&MP=' . $mountPointParameter;
+		}
 		return $GLOBALS['TSFE']->cObj->typoLink('', $config);
 	}
 
@@ -375,18 +390,24 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	/**
 	 * @param array $page
 	 * @param array $rootLine
-	 * @throws \Exception
+	 * @param array $parentPage
 	 * @return array
 	 */
-	protected function getMenuItemEntry($page, $rootLine) {
+	protected function getMenuItemEntry($page, $rootLine, array $parentPage = NULL) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
-		$pageUid = $page['uid'];
-		// keep a backup of the original page UID to determine 'active' state
-		$originalPageUid = $page['uid'];
-		// first, ensure the complete data array is present
-		$page = $this->pageSelect->getPage($pageUid);
+		$pageUid = $originalPageUid = $submenuPid = $page['uid'];
 		$targetPage = NULL;
-		if (PageRepository::DOKTYPE_SHORTCUT === (integer) $page['doktype']) {
+		$doktype = (integer) $page['doktype'];
+		if (NULL !== $parentPage && TRUE === isset($parentPage['_MP_PARAM'])) {
+			$page['mountPointParameter'] = $parentPage['_MP_PARAM'];
+		}
+		if (PageRepository::DOKTYPE_MOUNTPOINT === $doktype) {
+			$mountInfo = $GLOBALS['TSFE']->sys_page->getMountPointInfo($page['uid'], $page);
+			$mountedPageUid = $mountInfo['mount_pid'];
+			$submenuPid = $mountedPageUid;
+			$page['mountedPageUid'] = $mountedPageUid;
+			$page['mountPointParameter'] = $mountInfo['MPvar'];
+		} elseif (PageRepository::DOKTYPE_SHORTCUT === $doktype) {
 			switch ($page['shortcut_mode']) {
 				case 3:
 					// mode: parent page of current page (using PID of current page)
@@ -428,12 +449,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			}
 		}
 
-		$doktype = (integer) $page['doktype'];
-		$shortcut = (PageRepository::DOKTYPE_SHORTCUT === $doktype ? $page['shortcut'] : $page['url']);
+		$page['hasSubPages'] = (0 < count($this->getSubmenu($submenuPid)));
 		$page['active'] = $this->isActive($pageUid, $rootLine, $originalPageUid);
 		$page['current'] = $this->isCurrent($pageUid);
-		$page['hasSubPages'] = (boolean) (0 < count($this->getSubmenu($originalPageUid)) ? TRUE : FALSE);
-		$page['link'] = $this->getItemLink($pageUid, $doktype, $shortcut);
+		$page['link'] = $this->getItemLink($page);
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
 		$page['doktype'] = $doktype;
@@ -456,14 +475,15 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 *
 	 * @param array $menu
 	 * @param array $rootLine
+	 * @param array $parentPage
 	 * @return array
 	 */
-	protected function parseMenu($menu, $rootLine) {
+	protected function parseMenu($menu, $rootLine, array $parentPage = NULL) {
 		$classFirst = $this->arguments['classFirst'];
 		$classLast = $this->arguments['classLast'];
 		$filtered = array();
 		$allowedDocumentTypes = $this->allowedDoktypeList();
-		foreach ($menu as $page) {
+		foreach ($menu as $uid => $page) {
 			if (TRUE === isset($page['tx_realurl_exclude']) && TRUE === (boolean) $page['tx_realurl_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
 				continue;
 			} elseif (TRUE === isset($page['tx_cooluri_exclude']) && TRUE === (boolean) $page['tx_cooluri_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
@@ -471,8 +491,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			} elseif (TRUE === $this->pageSelect->hidePageForLanguageUid($page['uid'], $GLOBALS['TSFE']->sys_language_uid)) {
 				continue;
 			} elseif (TRUE === in_array($page['doktype'], $allowedDocumentTypes)) {
-				$page = $this->getMenuItemEntry($page, $rootLine);
-				$filtered[$page['uid']] = $page;
+				$filtered[$uid] = $this->getMenuItemEntry($page, $rootLine, $parentPage);
 			}
 		}
 		$length = count($filtered);
@@ -534,10 +553,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 				$html[] = sprintf('<a href="%s"%s%s>%s</a>', $page['link'], $class, $target, htmlspecialchars($page['linktext']));
 			}
 			if ((TRUE === (boolean) $page['active'] || TRUE === $expandAll) && TRUE === (boolean) $page['hasSubPages'] && $level < $maxLevels) {
-				$pageUid = $page['uid'];
+				$pageUid = (TRUE === isset($page['mountedPageUid'])) ? $page['mountedPageUid'] : $page['uid'];
 				$rootLineData = $this->pageSelect->getRootLine();
 				$subMenuData = $this->getMenu($pageUid);
-				$subMenu = $this->parseMenu($subMenuData, $rootLineData);
+				$subMenu = $this->parseMenu($subMenuData, $rootLineData, $page);
 				$renderedSubMenu = $this->autoRender($subMenu, $level + 1);
 				$parentTagId = $this->tag->getAttribute('id');
 				if (FALSE === empty($parentTagId)) {
@@ -632,8 +651,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			$tagContent = $this->autoRender($menu);
 			$this->tag->setContent($tagContent);
 			$deferredContent = $this->tag->render();
-			$this->viewHelperVariableContainer->addOrUpdate('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString', $deferredContent);
-			$this->viewHelperVariableContainer->addOrUpdate('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray', $menu);
+			$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString', $deferredContent);
+			$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray', $menu);
 			$output = $this->renderChildren();
 			$this->unsetDeferredVariableStorage();
 		} else {
@@ -692,7 +711,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	public function getMenu($pageUid, $where = '') {
 		$excludePages = $this->processPagesArgument($this->arguments['excludePages']);
-		$showHidden = (boolean) $this->arguments['showHidden'];
 		$showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
 		$allowedDoktypeList = $this->allowedDoktypeList();
 		$menuData = $this->pageSelect->getMenu($pageUid, $excludePages, $where, $showHiddenInMenu, FALSE, $allowedDoktypeList);
@@ -724,9 +742,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return void
 	 */
 	protected function unsetDeferredVariableStorage() {
-		if (TRUE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString')) {
-			$this->viewHelperVariableContainer->remove('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString');
-			$this->viewHelperVariableContainer->remove('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray');
+		if (TRUE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString')) {
+			$this->viewHelperVariableContainer->remove('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString');
+			$this->viewHelperVariableContainer->remove('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray');
 		}
 	}
 
