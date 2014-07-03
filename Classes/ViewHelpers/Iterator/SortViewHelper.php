@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -235,7 +236,7 @@ class SortViewHelper extends AbstractViewHelper {
 		$flags = 0;
 		foreach ($constants as $constant) {
 			if (FALSE === in_array($constant, $this->allowedSortFlags)) {
-				throw new \Exception('The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed constants are: ' . implode(', ', $this->allowedSortFlags) . '.', 1404220538);
+				throw new Exception('The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed constants are: ' . implode(', ', $this->allowedSortFlags) . '.', 1404220538);
 			}
 			$flags = $flags | constant(trim($constant));
 		}

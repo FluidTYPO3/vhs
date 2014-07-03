@@ -33,4 +33,13 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  */
 class SortViewHelperTest extends AbstractViewHelperTest {
 
+	/**
+	 * @test
+	 */
+	public function throwsExceptionOnUnsupportedSortFlag() {
+		$arguments = array('sortFlags' => 'FOOBAR');
+		$output = $this->executeViewHelperUsingTagContent('Array', array('a', 'b', 'c'), $arguments);
+		$this->assertStringStartsWith('The constant "FOOBAR" you\'re trying to use as a sortFlag is not allowed.', $output);
+	}
+
 }
