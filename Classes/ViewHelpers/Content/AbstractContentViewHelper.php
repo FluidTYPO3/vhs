@@ -131,7 +131,13 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 
 		$slide = intval($this->arguments['slide']);
 		$slideCollect = intval($this->arguments['slideCollect']);
-		$slide = min($slide, $slideCollect);
+
+		if (-1 === $slideCollect || -1 === $slide) {
+			$slide = -1;
+		} else {
+			$slide = max($slide, $slideCollect);
+		}
+
 		$slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
 
 		$rootLine = NULL;
