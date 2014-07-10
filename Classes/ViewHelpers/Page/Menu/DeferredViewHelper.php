@@ -50,28 +50,28 @@ class DeferredViewHelper extends AbstractMenuViewHelper {
 
 	/**
 	 * @return string
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function render() {
 		$as = $this->arguments['as'];
-		if (FALSE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray')) {
 			return NULL;
 		}
-		if (FALSE === $this->viewHelperVariableContainer->exists('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString')) {
 			return NULL;
 		}
 		if (NULL === $as) {
-			$content = $this->viewHelperVariableContainer->get('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString');
+			$content = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString');
 			$this->unsetDeferredVariableStorage();
 			return $content;
 		} elseif (TRUE === empty($as)) {
-			throw new Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
+			throw new \Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
 		}
 		if (TRUE === $this->templateVariableContainer->exists($as)) {
 			$backupVariable = $this->templateVariableContainer->get($as);
 			$this->templateVariableContainer->remove($as);
 		}
-		$this->templateVariableContainer->add($as, $this->viewHelperVariableContainer->get('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray'));
+		$this->templateVariableContainer->add($as, $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray'));
 		$this->unsetDeferredVariableStorage();
 		$content = $this->renderChildren();
 		$this->templateVariableContainer->remove($as);
