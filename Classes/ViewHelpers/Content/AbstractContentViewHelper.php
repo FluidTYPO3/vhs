@@ -85,7 +85,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		$this->registerArgument('pageUid', 'integer', 'If set, selects only content from this page UID', FALSE, 0);
 		$this->registerArgument('contentUids', 'array', 'If used, replaces all conditions with an "uid IN (1,2,3)" style condition using the UID values from this array');
 		$this->registerArgument('slide', 'integer', 'Enables Content Sliding - amount of levels which shall get walked up the rootline. For infinite sliding (till the rootpage) set to -1)', FALSE, 0);
-		$this->registerArgument('slideCollect', 'integer', 'Enables collecting of Content Elements - amount of levels which shall get walked up the rootline. For infinite sliding (till the rootpage) set to -1 (lesser value for slide and slide.collect applies))', FALSE, 0);
 		$this->registerArgument('slideCollectReverse', 'boolean', 'Normally when collecting content elements the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))', FALSE, 0);
 		$this->registerArgument('loadRegister', 'array', 'List of LOAD_REGISTER variable');
 		$this->registerArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, TRUE);
@@ -130,8 +129,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		}
 
 		$slide = intval($this->arguments['slide']);
-		$slideCollect = intval($this->arguments['slideCollect']);
-		$slide = min($slide, $slideCollect);
 		$slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
 
 		$rootLine = NULL;
@@ -175,9 +172,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 				$content = $this->getRenderedRecords($rows);
 			} else {
 				$content = $rows;
-			}
-			if (0 !== count($content) && 0 === $slideCollect) {
-				break;
 			}
 		} while (--$slide !== -1);
 
