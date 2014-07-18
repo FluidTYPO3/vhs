@@ -50,15 +50,20 @@ class ChunkViewHelper extends AbstractViewHelper {
 		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
-		if (TRUE === $subject instanceof Traversable) {
+		if (TRUE === $subject instanceof \Traversable) {
 			$subject = iterator_to_array($subject, TRUE);
 		} elseif (FALSE === is_array($subject)) {
 			throw new \Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
-		if (TRUE === $fixed) {
+		if (TRUE === (boolean) $fixed) {
 			$subjectSize = count($subject);
 			$chunkSize = ceil($subjectSize / $count);
 			$output = array_chunk($subject, $chunkSize);
+			// Fill the resulting array with empty items to get the desired element count
+			$elementCount = count($output);
+			if ($elementCount < $count) {
+				$output += array_fill($elementCount, $count - $elementCount, NULL);
+			}
 		} else {
 			$output = array_chunk($subject, $count);
 		}
