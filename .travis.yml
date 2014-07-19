@@ -7,6 +7,7 @@ php:
 
 env:
   - DB=mysql TYPO3=master INTEGRATION=master
+  - DB=mysql TYPO3=TYPO3_6-2 INTEGRATION=master
   - DB=mysql TYPO3=TYPO3_6-1 INTEGRATION=master
 
 matrix:
@@ -14,6 +15,8 @@ matrix:
    include:
      - php: 5.6
        env: DB=mysql TYPO3=master INTEGRATION=master
+     - php: 5.6
+       env: DB=mysql TYPO3=TYPO3_6-2 INTEGRATION=master
 
 before_script:
   - cd ..
