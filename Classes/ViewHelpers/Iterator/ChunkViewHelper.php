@@ -55,10 +55,16 @@ class ChunkViewHelper extends AbstractViewHelper {
 		} elseif (FALSE === is_array($subject)) {
 			throw new \Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
+		$output = array();
+		if (0 >= $count) {
+			return $output;
+		}
 		if (TRUE === (boolean) $fixed) {
 			$subjectSize = count($subject);
-			$chunkSize = ceil($subjectSize / $count);
-			$output = array_chunk($subject, $chunkSize);
+			if (0 < $subjectSize) {
+				$chunkSize = ceil($subjectSize / $count);
+				$output = array_chunk($subject, $chunkSize);
+			}
 			// Fill the resulting array with empty items to get the desired element count
 			$elementCount = count($output);
 			if ($elementCount < $count) {
