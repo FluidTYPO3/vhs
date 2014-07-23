@@ -564,8 +564,8 @@ class Tx_Vhs_Service_AssetService implements \TYPO3\CMS\Core\SingletonInterface 
 		foreach ($matches[2] as $matchCount => $match) {
 			$match = trim($match, '\'" ');
 			if (FALSE === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
-				$checksum = md5($match);
-				if (preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
+				$checksum = md5($originalDirectory . $match);
+				if (0 < preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
 					list(, $path, $suffix) = $items;
 				} else {
 					$path = $match;
