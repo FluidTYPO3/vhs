@@ -95,4 +95,19 @@ class ChunkViewHelperTest extends AbstractViewHelperTest {
 		$this->assertCount(0, $result);
 	}
 
+	/**
+	 * @test
+	 */
+	public function preservesArrayKeysIfRequested() {
+		$arguments = array(
+			'count' => 2,
+			'subject' => array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5),
+			'preserveKeys' => TRUE,
+		);
+		$result = $this->executeViewHelper($arguments);
+
+		$expected = array(array('a' => 1, 'b' => 2), array('c' => 3, 'd' => 4), array('e' => 5));
+		$this->assertEquals($expected, $result);
+	}
+
 }

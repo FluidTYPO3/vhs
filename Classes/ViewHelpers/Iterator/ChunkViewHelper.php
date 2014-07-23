@@ -43,10 +43,11 @@ class ChunkViewHelper extends AbstractViewHelper {
 	 * @param boolean $fixed Whether to allocate items to a fixed number of chunks or not
 	 * @param mixed $subject The subject Traversable/Array instance to shift
 	 * @param string $as If specified, inserts a template variable with this name, then renders the child content, then removes the variable
+	 * @param boolean $preserveKeys If set to true, the original array keys will be preserved in the chunks
 	 * @throws \Exception
 	 * @return array
 	 */
-	public function render($count, $fixed = FALSE, $subject = NULL, $as = NULL) {
+	public function render($count, $fixed = FALSE, $subject = NULL, $as = NULL, $preserveKeys = FALSE) {
 		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
@@ -63,7 +64,7 @@ class ChunkViewHelper extends AbstractViewHelper {
 			$subjectSize = count($subject);
 			if (0 < $subjectSize) {
 				$chunkSize = ceil($subjectSize / $count);
-				$output = array_chunk($subject, $chunkSize);
+				$output = array_chunk($subject, $chunkSize, $preserveKeys);
 			}
 			// Fill the resulting array with empty items to get the desired element count
 			$elementCount = count($output);
@@ -71,7 +72,7 @@ class ChunkViewHelper extends AbstractViewHelper {
 				$output += array_fill($elementCount, $count - $elementCount, NULL);
 			}
 		} else {
-			$output = array_chunk($subject, $count);
+			$output = array_chunk($subject, $count, $preserveKeys);
 		}
 		if (NULL !== $as) {
 			$variables = array($as => $output);
