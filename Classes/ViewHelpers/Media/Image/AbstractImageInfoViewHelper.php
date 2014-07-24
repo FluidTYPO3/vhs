@@ -53,7 +53,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('path', 'string', 'Path to the image file to determine info for.', TRUE);
+		$this->registerArgument('src', 'string', 'Path to or id of the image file to determine info for.', TRUE);
 		$this->registerArgument('treatIdAsUid', 'boolean', 'If TRUE, the path argument is treated as a resource uid.', FALSE, FALSE);
 		$this->registerArgument('treatIdAsReference', 'boolean', 'If TRUE, the path argument is treated as a reference uid and will be resolved to a resource via sys_file_reference.', FALSE, FALSE);
 	}
@@ -63,19 +63,19 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 	 * @return array
 	 */
 	public function getInfo() {
-		$path = $this->arguments['path'];
+		$src = $this->arguments['src'];
 		$treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
-		if (NULL === $path) {
-			$path = $this->renderChildren();
-			if (NULL === $path) {
+		if (NULL === $src) {
+			$src = $this->renderChildren();
+			if (NULL === $src) {
 				return array();
 			}
 		}
 
 		if (TRUE === $treatIdAsUid || TRUE === $treatIdAsReference) {
-			$id = (integer) $path;
+			$id = (integer) $src;
 			$info = array();
 			if (TRUE === $treatIdAsUid) {
 				$info = $this->getInfoByUid($id);
@@ -83,7 +83,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 				$info = $this->getInfoByReference($id);
 			}
 		} else {
-			$file = GeneralUtility::getFileAbsFileName($path);
+			$file = GeneralUtility::getFileAbsFileName($src);
 			if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
 				throw new Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
 			}
