@@ -26,6 +26,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
 
 /**
  * Base class: Media\Image view helpers
@@ -37,6 +38,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 
 	/**
+	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+	 */
+	protected $resourceFactory;
+
+	public function __construct() {
+		$this->resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+	}
+
+	/**
 	 * Initialize arguments.
 	 *
 	 * @return void
@@ -44,6 +54,8 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 	 */
 	public function initializeArguments() {
 		$this->registerArgument('path', 'string', 'Path to the image file to determine info for.', TRUE);
+		$this->registerArgument('treatIdAsUid', 'boolean', 'If TRUE, the path argument is treated as a resource uid.', FALSE, FALSE);
+		$this->registerArgument('treatIdAsReference', 'boolean', 'If TRUE, the path argument is treated as a reference uid and will be resolved to a resource via sys_file_reference.', FALSE, FALSE);
 	}
 
 	/**
@@ -51,8 +63,9 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 	 * @return array
 	 */
 	public function getInfo() {
-
 		$path = $this->arguments['path'];
+		$treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
+		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
 		if (NULL === $path) {
 			$path = $this->renderChildren();
@@ -61,19 +74,47 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 			}
 		}
 
-		$file = GeneralUtility::getFileAbsFileName($path);
-
-		if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
-			throw new Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
+		if (TRUE === $treatIdAsUid || TRUE === $treatIdAsReference) {
+			$id = (integer) $path;
+			$info = array();
+			if (TRUE === $treatIdAsUid) {
+				$info = $this->getInfoByUid($id);
+			} elseif (TRUE === $treatIdAsReference) {
+				$info = $this->getInfoByReference($id);
+			}
+		} else {
+			$file = GeneralUtility::getFileAbsFileName($path);
+			if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
+				throw new Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
+			}
+			$imageSize = getimagesize($file);
+			$info = array(
+				'width'  => $imageSize[0],
+				'height' => $imageSize[1],
+				'type'   => $imageSize['mime'],
+			);
 		}
 
-		$info = getimagesize($file);
+		return $info;
+	}
 
-		return array(
-			'width'  => $info[0],
-			'height' => $info[1],
-			'type'   => $info['mime'],
-		);
+	/**
+	 * @param integer $id
+	 * @return array
+	 */
+	public function getInfoByReference($id) {
+		$fileReference = $this->resourceFactory->getFileReferenceObject($id);
+		$file = $fileReference->getOriginalFile();
+		return ResourceUtility::getFileArray($file);
+	}
+
+	/**
+	 * @param integer $uid
+	 * @return array
+	 */
+	public function getInfoByUid($uid) {
+		$file = $this->resourceFactory->getFileObject($uid);
+		return ResourceUtility::getFileArray($file);
 	}
 
 }
