@@ -339,6 +339,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	protected function getItemLink($page) {
 		$doktype = (integer) $page['doktype'];
+		if (PageRepository::DOKTYPE_SPACER === $doktype) {
+			return '';
+		}
 		$shortcut = (PageRepository::DOKTYPE_SHORTCUT === $doktype ? $page['shortcut'] : $page['url']);
 		$isShortcutOrLink = PageRepository::DOKTYPE_SHORTCUT === $doktype || PageRepository::DOKTYPE_LINK === $doktype;
 		$useShortcutTarget = $this->shouldUseShortcutTarget();
@@ -543,9 +546,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			if (FALSE === $this->isNonWrappingMode()) {
 				$html[] = '<' . $tagName . $elementId . $class . '>';
 			}
-			if (TRUE === (boolean) $page['current'] && FALSE === $linkCurrent) {
-				$html[] = htmlspecialchars($page['linktext']);
-			} elseif (TRUE === (boolean) $page['active'] && FALSE === $linkActive) {
+			$isSpacer = ($page['doktype'] === PageRepository::DOKTYPE_SPACER);
+			$isCurrent = (boolean) $page['current'];
+			$isActive = (boolean) $page['active'];
+			if (TRUE === $isSpacer || (TRUE === $isCurrent && FALSE === $linkCurrent) || (TRUE === $isActive && FALSE === $linkActive)) {
 				$html[] = htmlspecialchars($page['linktext']);
 			} elseif (TRUE === $includeAnchorTitle) {
 				$html[] = sprintf('<a href="%s" title="%s"%s%s>%s</a>', $page['link'], htmlspecialchars($page['title']), $class, $target, htmlspecialchars($page['linktext']));
