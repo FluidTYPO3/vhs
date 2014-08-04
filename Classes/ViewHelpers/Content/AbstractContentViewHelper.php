@@ -112,14 +112,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 			$loadRegister = TRUE;
 		}
 
-		$pageUid = $GLOBALS['TSFE']->id;
-		if (FALSE === empty($this->arguments['pageUid'])) {
-			$pageUid = $this->arguments['pageUid'];
-		} elseif (FALSE === empty($GLOBALS['TSFE']->page['content_from_pid'])) {
-			$pageUid = $GLOBALS['TSFE']->page['content_from_pid'];
-		}
-		$pageUid = intval($pageUid);
-
+		$pageUid = $this->getPageUid();
 		if (FALSE === empty($order)) {
 			$sortDirection = strtoupper(trim($this->arguments['sortDirection']));
 			if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
@@ -180,6 +173,24 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Gets the configured, or the current page UID if
+	 * none is configured in arguments and no content_from_pid
+	 * value exists in the current page record's attributes.
+	 *
+	 * @return integer
+	 */
+	protected function getPageUid() {
+		$pageUid = (integer) $this->arguments['pageUid'];
+		if (1 > $pageUid) {
+			$pageUid = (integer) $GLOBALS['TSFE']->page['content_from_pid'];
+		}
+		if (1 > $pageUid) {
+			$pageUid = (integer) $GLOBALS['TSFE']->id;
+		}
+		return $pageUid;
 	}
 
 	/**
