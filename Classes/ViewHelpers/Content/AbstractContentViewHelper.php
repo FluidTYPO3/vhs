@@ -100,7 +100,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 	 */
 	protected function getContentRecords($limit = NULL, $order = NULL) {
 		if (NULL === $limit && FALSE === empty($this->arguments['limit'])) {
-			$limit = intval($this->arguments['limit']);
+			$limit = (integer) $this->arguments['limit'];
 		}
 		if (NULL === $order && FALSE === empty($this->arguments['order'])) {
 			$order = $this->arguments['order'];
@@ -121,15 +121,23 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 			$order = $order . ' ' . $sortDirection;
 		}
 
-		$slide = intval($this->arguments['slide']);
+		$slide = (integer) $this->arguments['slide'];
 		$slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
 
-		$rootLine = NULL;
+		$storagePageUids = array();
 		if (0 !== $slide) {
 			$rootLine = $this->pageSelect->getRootLine($pageUid, NULL, $slideCollectReverse);
+			if (-1 !== $slide) {
+				$rootLine = array_slice($rootLine, 0, $slide);
+			}
+			foreach ($rootLine as $page) {
+				$storagePageUids[] = (integer) $page['uid'];
+			}
+		} else {
+			$storagePageUids[] = $pageUid;
 		}
 
-		$colPos = intval($this->arguments['column']);
+		$colPos = (integer) $this->arguments['column'];
 		$contentUids = $this->arguments['contentUids'];
 
 		$content = array();
@@ -145,28 +153,22 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		}
 		$languageCondition .= ')';
 
-		do {
-			if (0 !== $slide) {
-				$page = array_shift($rootLine);
-				if (TRUE === empty($page)) {
-					break;
-				}
-				$pageUid = $page['uid'];
-			}
-			if (TRUE === is_array($contentUids)) {
-				$conditions = 'uid IN (' . implode(',', $contentUids) . ')';
-			} else {
-				$conditions = "pid = '" . $pageUid ."' AND colPos = '" . $colPos . "'" .
-					$GLOBALS['TSFE']->cObj->enableFields('tt_content') .
-					' AND ' . $languageCondition;
-			}
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'uid', $order, $limit);
-			if (TRUE === (boolean) $this->arguments['render'] && FALSE === empty($rows)) {
-				$content = $this->getRenderedRecords($rows);
-			} else {
-				$content = $rows;
-			}
-		} while (--$slide !== -1);
+		if (TRUE === is_array($contentUids)) {
+			$conditions = 'uid IN (' . implode(',', $contentUids) . ')';
+		} else {
+			$conditions = 'pid IN (' . implode(',', $storagePageUids) . ") AND colPos = '" . $colPos . "'" .
+				$GLOBALS['TSFE']->cObj->enableFields('tt_content') .
+				' AND ' . $languageCondition;
+		}
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'pid', $order, $limit);
+		if (FALSE === is_array($rows)) {
+			return $content;
+		}
+		if (TRUE === (boolean) $this->arguments['render']) {
+			$content = $this->getRenderedRecords($rows);
+		} else {
+			$content = $rows;
+		}
 
 		if (TRUE === $loadRegister) {
 			$this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
