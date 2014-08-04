@@ -204,7 +204,7 @@ class PageSelectService implements SingletonInterface {
 	 */
 	public function hidePageForLanguageUid($pageUid = 0, $languageUid = -1, $normalWhenNoLanguage = TRUE) {
 		if (0 === $pageUid) {
-			$pageUid = $pageUid = $GLOBALS['TSFE']->id;
+			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		if (-1 === $languageUid) {
 			$languageUid = $GLOBALS['TSFE']->sys_language_uid;
