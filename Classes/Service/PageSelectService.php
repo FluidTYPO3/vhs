@@ -183,7 +183,7 @@ class PageSelectService implements SingletonInterface {
 				$MP = '';
 			}
 		}
-		$key = md5($pageUid . $MP);
+		$key = md5($pageUid . $MP . (string) $reverse);
 		if (FALSE === isset(self::$cachedRootLines[$key])) {
 			$rootLine = self::$pageSelect->getRootLine($pageUid, $MP);
 			if (TRUE === $reverse) {
