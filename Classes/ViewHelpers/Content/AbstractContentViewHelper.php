@@ -160,7 +160,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 				$GLOBALS['TSFE']->cObj->enableFields('tt_content') .
 				' AND ' . $languageCondition;
 		}
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'pid', $order, $limit);
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'uid', $order, $limit);
 		if (FALSE === is_array($rows)) {
 			return $content;
 		}
