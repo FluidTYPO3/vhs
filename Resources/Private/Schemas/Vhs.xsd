@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:php="http://www.php.net/" targetNamespace="http://typo3.org/ns/vhs/ViewHelpers"><xsd:element name="asset"><xsd:annotation><xsd:documentation><![CDATA[### Basic Asset ViewHelper
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:php="http://www.php.net/" targetNamespace="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"><xsd:element name="asset"><xsd:annotation><xsd:documentation><![CDATA[### Basic Asset ViewHelper
 
 Places the contents of the asset (the tag body) directly
 in the additional header content of the page. This most
