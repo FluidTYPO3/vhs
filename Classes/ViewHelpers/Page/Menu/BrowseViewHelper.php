@@ -63,6 +63,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 		$this->registerArgument('renderLast', 'boolean', 'If set to FALSE the "last" link will not be rendered', FALSE, TRUE);
 		$this->registerArgument('renderUp', 'boolean', 'If set to FALSE the "up" link will not be rendered', FALSE, TRUE);
 		$this->registerArgument('usePageTitles', 'boolean', 'If set to TRUE, uses target page titles instead of "next", "previous" etc. labels', FALSE, FALSE);
+		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If unspecified, current page UID is used', FALSE, NULL);
 	}
 
 	/**
@@ -71,10 +72,10 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 	 * @return string
 	 */
 	public function render() {
-		$pageUid = $GLOBALS['TSFE']->id;
-		$rootLineData = $this->pageSelect->getRootLine();
-		$currentPage = $this->pageSelect->getPage($pageUid);
-		$parentUid = $currentPage['pid'];
+		$pageUid = (integer) (NULL !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id);
+		$currentPage = $this->pageSelect->getPage($GLOBALS['TSFE']->id);
+		$rootLineData = $this->pageSelect->getRootLine($currentPage);
+		$parentUid = (integer) (NULL !== $this->arguments['pageUid'] ? $pageUid : $currentPage['pid']);
 		$parentPage = $this->pageSelect->getPage($parentUid);
 		$menuData = $this->getMenu($parentUid);
 		$pageUids = array_keys($menuData);
