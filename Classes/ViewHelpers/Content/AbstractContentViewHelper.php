@@ -84,6 +84,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		$this->registerArgument('sortDirection', 'string', 'Optional sort direction of content elements', FALSE, 'ASC');
 		$this->registerArgument('pageUid', 'integer', 'If set, selects only content from this page UID', FALSE, 0);
 		$this->registerArgument('contentUids', 'array', 'If used, replaces all conditions with an "uid IN (1,2,3)" style condition using the UID values from this array');
+		$this->registerArgument('sectionIndexOnly', 'boolean', 'If TRUE, only renders/gets content that is marked as "include in section index"', FALSE, FALSE);
 		$this->registerArgument('slide', 'integer', 'Enables Content Sliding - amount of levels which shall get walked up the rootline. For infinite sliding (till the rootpage) set to -1)', FALSE, 0);
 		$this->registerArgument('slideCollectReverse', 'boolean', 'Normally when collecting content elements the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))', FALSE, 0);
 		$this->registerArgument('loadRegister', 'array', 'List of LOAD_REGISTER variable');
@@ -160,6 +161,10 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 				$GLOBALS['TSFE']->cObj->enableFields('tt_content') .
 				' AND ' . $languageCondition;
 		}
+		if (TRUE === (boolean) $this->arguments['sectionIndexOnly']) {
+			$conditions .= ' AND sectionIndex = 1';
+		}
+
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'uid', $order, $limit);
 		if (FALSE === is_array($rows)) {
 			return $content;
