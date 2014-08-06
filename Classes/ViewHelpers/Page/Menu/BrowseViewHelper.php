@@ -74,7 +74,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 	public function render() {
 		$pageUid = (integer) (NULL !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id);
 		$currentPage = $this->pageSelect->getPage($GLOBALS['TSFE']->id);
-		$rootLineData = $this->pageSelect->getRootLine($currentPage);
+		$rootLineData = $this->pageSelect->getRootLine($pageUid);
 		$parentUid = (integer) (NULL !== $this->arguments['pageUid'] ? $pageUid : $currentPage['pid']);
 		$parentPage = $this->pageSelect->getPage($parentUid);
 		$menuData = $this->getMenu($parentUid);
@@ -108,23 +108,23 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 		$menuItems = $this->parseMenu($pages, $rootLineData);
 		$menu = array();
 		if (TRUE === isset($pages['first'])) {
-			$menu['first'] = $menuItems[$firstUid];
+			$menu['first'] = $menuItems['first'];
 			$menu['first']['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menuItems[$firstUid]);
 		}
 		if (TRUE === isset($pages['prev'])) {
-			$menu['prev'] = $menuItems[$prevUid];
+			$menu['prev'] = $menuItems['prev'];
 			$menu['prev']['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menuItems[$prevUid]);
 		}
 		if (TRUE === isset($pages['up'])) {
-			$menu['up'] = $menuItems[$parentUid];
+			$menu['up'] = $menuItems['up'];
 			$menu['up']['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menuItems[$parentUid]);
 		}
 		if (TRUE === isset($pages['next'])) {
-			$menu['next'] = $menuItems[$nextUid];
+			$menu['next'] = $menuItems['next'];
 			$menu['next']['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menuItems[$nextUid]);
 		}
 		if (TRUE === isset($pages['last'])) {
-			$menu['last'] = $menuItems[$lastUid];
+			$menu['last'] = $menuItems['last'];
 			$menu['last']['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menuItems[$lastUid]);
 		}
 		$this->backupVariables();
