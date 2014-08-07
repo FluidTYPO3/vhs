@@ -299,15 +299,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return string
 	 */
 	protected function getItemTitle($page) {
-		$title = $page['title'];
 		$titleFieldList = GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
 			if (FALSE === empty($page[$titleFieldName])) {
-				$title = $page[$titleFieldName];
-				break;
+				return $page[$titleFieldName];
 			}
 		}
-		return $title;
+		return $page['title'];
 	}
 
 	/**
