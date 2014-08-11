@@ -154,9 +154,6 @@ class AssetService implements SingletonInterface {
 		}
 		$GLOBALS['TSFE']->content = $content;
 		$this->buildAll($parameters, $caller, FALSE);
-		if (TRUE === empty($GLOBALS['BE_USER'])) {
-			header('Content-length: ' . strlen($GLOBALS['TSFE']->content));
-		}
 	}
 
 	/**
