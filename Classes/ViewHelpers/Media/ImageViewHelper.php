@@ -56,6 +56,7 @@ class ImageViewHelper extends AbstractImageViewHelper {
 		$this->registerTagAttribute('usemap', 'string', 'A hash-name reference to a map element with which to associate the image.', FALSE);
 		$this->registerTagAttribute('ismap', 'string', 'Specifies that its img element provides access to a server-side image map.', FALSE, '');
 		$this->registerTagAttribute('alt', 'string', 'Equivalent content for those who cannot process images or who have image loading disabled.', TRUE);
+		$this->registerTagAttribute('srcset', 'string', 'Attribute to provide multiple images that only vary in their size', FALSE, NULL);
 	}
 
 	/**
@@ -72,6 +73,7 @@ class ImageViewHelper extends AbstractImageViewHelper {
 		if ('' === $this->arguments['title']) {
 			$this->tag->addAttribute('title', $this->arguments['alt']);
 		}
+		$this->tag->addAttribute('srcset', $this->arguments['srcset']);
 		return $this->tag->render();
 	}
 

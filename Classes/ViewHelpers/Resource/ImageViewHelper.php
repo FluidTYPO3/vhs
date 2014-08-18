@@ -56,6 +56,7 @@ class ImageViewHelper extends AbstractImageViewHelper {
 		$this->registerTagAttribute('usemap', 'string', 'A hash-name reference to a map element with which to associate the image.', FALSE, NULL);
 		$this->registerTagAttribute('ismap', 'string', 'Specifies that its img element provides access to a server-side image map.', FALSE, NULL);
 		$this->registerTagAttribute('alt', 'string', 'Equivalent content for those who cannot process images or who have image loading disabled.', FALSE, NULL);
+		$this->registerTagAttribute('srcset', 'string', 'Attribute to provide multiple images that only vary in their size', FALSE, NULL);
 		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
 	}
 
@@ -88,6 +89,7 @@ class ImageViewHelper extends AbstractImageViewHelper {
 			$this->tag->addAttribute('width', $width);
 			$this->tag->addAttribute('height', $height);
 			$this->tag->addAttribute('alt', $alt);
+			$this->tag->addAttribute('srcset', $this->arguments['srcset']);
 
 			$tag = $this->tag->render();
 			$image['tag'] = $tag;
