@@ -86,6 +86,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		$this->registerArgument('contentUids', 'array', 'If used, replaces all conditions with an "uid IN (1,2,3)" style condition using the UID values from this array');
 		$this->registerArgument('sectionIndexOnly', 'boolean', 'If TRUE, only renders/gets content that is marked as "include in section index"', FALSE, FALSE);
 		$this->registerArgument('slide', 'integer', 'Enables Content Sliding - amount of levels which shall get walked up the rootline. For infinite sliding (till the rootpage) set to -1)', FALSE, 0);
+		$this->registerArgument('slideCollect', 'boolean', 'Enables Content Sliding with collecting - Normally when collecting content elements the elements from the actual page get shown on the top and those from the parent pages below those.)', FALSE, 0);
 		$this->registerArgument('slideCollectReverse', 'boolean', 'Normally when collecting content elements the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))', FALSE, 0);
 		$this->registerArgument('loadRegister', 'array', 'List of LOAD_REGISTER variable');
 		$this->registerArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, TRUE);
@@ -123,22 +124,43 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		}
 
 		$slide = (integer) $this->arguments['slide'];
+		$slideCollect = (boolean) $this->arguments['slideCollect'];
 		$slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
+		$colPos = (integer) $this->arguments['column'];
 
 		$storagePageUids = array();
 		if (0 !== $slide) {
-			$rootLine = $this->pageSelect->getRootLine($pageUid, NULL, $slideCollectReverse);
-			if (-1 !== $slide) {
-				$rootLine = array_slice($rootLine, 0, $slide);
-			}
-			foreach ($rootLine as $page) {
-				$storagePageUids[] = (integer) $page['uid'];
+			if (TRUE === $slideCollect) {
+				$rootLine = $this->pageSelect->getRootLine($pageUid, NULL, $slideCollectReverse);
+				if (-1 !== $slide) {
+					$rootLine = array_slice($rootLine, 0, $slide);
+				}
+				foreach ($rootLine as $page) {
+					$storagePageUids[] = (integer) $page['uid'];
+				}
+			} else {
+				$rootLine = $this->pageSelect->getRootLine($pageUid, NULL, FALSE);
+				$slideContentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+				foreach ($rootLine as $page) {
+					$slideContentConfig = array(
+						'table'   => 'tt_content',
+						'select.' => array(
+							'pidInList'     => $page['uid'],
+							'where'         => 'colPos = '.$colPos,
+							'languageField' => 'sys_language_uid'
+						)
+					);
+					$slideContentFound = (boolean) $slideContentObject->CONTENT($slideContentConfig);
+					if (TRUE === $slideContentFound) {
+						$storagePageUids[] = $page['uid'];
+						break;
+					}
+				}
 			}
 		} else {
 			$storagePageUids[] = $pageUid;
 		}
 
-		$colPos = (integer) $this->arguments['column'];
 		$contentUids = $this->arguments['contentUids'];
 
 		$content = array();
