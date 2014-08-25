@@ -68,11 +68,6 @@ class AssetService implements SingletonInterface {
 	/**
 	 * @var boolean
 	 */
-	private static $buildComplete = FALSE;
-
-	/**
-	 * @var boolean
-	 */
 	private static $cacheCleared = FALSE;
 
 	/**
@@ -92,15 +87,21 @@ class AssetService implements SingletonInterface {
 	}
 
 	/**
+	 * @param object $caller
+	 * @param integer $timeout
+	 * @return void
+	 */
+	public function insertPageIncache($caller, $timeout) {
+		$this->buildAll(array(), $caller);
+	}
+
+	/**
 	 * @param array $parameters
 	 * @param object $caller
 	 * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
 	 * @return void
 	 */
 	public function buildAll(array $parameters, $caller, $cached = TRUE) {
-		if (TRUE === self::$buildComplete) {
-			return;
-		}
 		if (FALSE === $this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager) {
 			$this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 			$this->configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
@@ -134,7 +135,6 @@ class AssetService implements SingletonInterface {
 			}
 		}
 		$this->placeAssetsInHeaderAndFooter($assets, $cached);
-		self::$buildComplete = TRUE;
 	}
 
 	/**
@@ -143,8 +143,7 @@ class AssetService implements SingletonInterface {
 	 * @return void
 	 */
 	public function buildAllUncached(array $parameters, $caller) {
-		self::$buildComplete = FALSE;
-		$content = $GLOBALS['TSFE']->content;
+		$content = $caller->content;
 		$matches = array();
 		preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
 		foreach ($matches[1] as $key => $match) {
@@ -152,7 +151,7 @@ class AssetService implements SingletonInterface {
 			self::$cachedDependencies = array_merge(self::$cachedDependencies, $extractedDependencies);
 			$content = str_replace($matches[0][$key], '', $content);
 		}
-		$GLOBALS['TSFE']->content = $content;
+		$caller->content = $content;
 		$this->buildAll($parameters, $caller, FALSE);
 	}
 
