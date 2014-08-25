@@ -88,11 +88,12 @@ class AssetService implements SingletonInterface {
 
 	/**
 	 * @param object $caller
-	 * @param integer $timeout
-	 * @return void
+	 * @param boolean $shouldUsePageCache
+	 * @return boolean
 	 */
-	public function insertPageIncache($caller, $timeout) {
+	public function usePageCache($caller, $shouldUsePageCache) {
 		$this->buildAll(array(), $caller);
+		return $shouldUsePageCache;
 	}
 
 	/**
