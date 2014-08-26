@@ -93,6 +93,9 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 		if (TRUE === isset($this->arguments['frontendUser'])) {
 			$evaluations['frontendUser'] = intval($this->assertFrontendUserLoggedIn($this->arguments['frontendUser']));
 		}
+		if (TRUE === isset($this->arguments['frontendUsers'])) {
+			$evaluations['frontendUsers'] = intval($this->assertFrontendUsersLoggedIn($this->arguments['frontendUsers']));
+		}
 		if (TRUE === isset($this->arguments['frontendUserGroup'])) {
 			$evaluations['frontendUserGroup'] = intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroup']));
 		}
@@ -148,6 +151,23 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 			}
 		}
 		return (boolean) (TRUE === is_object($currentFrontendUser));
+	}
+
+	/**
+	 * Returns TRUE only if a FrontendUser is currently logged in. Use argument
+	 * to return TRUE only if the FrontendUser logged in must be that specific user.
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $frontendUsers
+	 * @return boolean
+	 * @api
+	 */
+	public function assertFrontendUsersLoggedIn(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $frontendUsers = NULL) {
+		foreach ($frontendUsers as $frontendUser) {
+			if (TRUE === $this->assertFrontendUserLoggedIn($frontendUser)) {
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 
 	/**
