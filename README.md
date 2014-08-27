@@ -6,17 +6,11 @@ VHS: Fluid ViewHelpers
 
 [![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs)
 
-## Wiki
-
-A quick explanation can be read in this README.
-
-Examples, tips and tricks can be found in the Wiki: https://github.com/FluidTYPO3/vhs/wiki
-
 ## ViewHelper argument reference
 
 Can be found online at:
 
-http://fedext.net/viewhelpers/vhs.html
+http://fluidtypo3.org/viewhelpers/vhs.html
 
 ## Installation
 
