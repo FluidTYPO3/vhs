@@ -64,6 +64,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 		$this->registerArgument('renderUp', 'boolean', 'If set to FALSE the "up" link will not be rendered', FALSE, TRUE);
 		$this->registerArgument('usePageTitles', 'boolean', 'If set to TRUE, uses target page titles instead of "next", "previous" etc. labels', FALSE, FALSE);
 		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If unspecified, current page UID is used', FALSE, NULL);
+		$this->registerArgument('currentPageUid', 'integer', 'Optional page UID to use as current page. If unspecified, current page UID from globals is used', FALSE, NULL);
 	}
 
 	/**
@@ -73,7 +74,8 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 	 */
 	public function render() {
 		$pageUid = (integer) (NULL !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id);
-		$currentPage = $this->pageSelect->getPage($GLOBALS['TSFE']->id);
+		$currentUid = (integer) (NULL !== $this->arguments['currentPageUid'] ? $this->arguments['currentPageUid'] : $GLOBALS['TSFE']->id);
+		$currentPage = $this->pageSelect->getPage($currentUid);
 		$rootLineData = $this->pageSelect->getRootLine($pageUid);
 		$parentUid = (integer) (NULL !== $this->arguments['pageUid'] ? $pageUid : $currentPage['pid']);
 		$parentPage = $this->pageSelect->getPage($parentUid);
@@ -82,8 +84,10 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 		$uidCount = count($pageUids);
 		$firstUid = $pageUids[0];
 		$lastUid = $pageUids[$uidCount - 1];
+		$nextUid = NULL;
+		$prevUid = NULL;
 		for ($i = 0; $i < $uidCount; $i++) {
-			if ((integer)$pageUids[$i] === (integer)$pageUid) {
+			if ((integer)$pageUids[$i] === $currentUid) {
 				if ($i > 0) {
 					$prevUid = $pageUids[$i - 1];
 				}
@@ -97,11 +101,15 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 		if (TRUE === (boolean)$this->arguments['renderFirst']) {
 			$pages['first'] = $menuData[$firstUid];
 		}
-		$pages['prev'] = $menuData[$prevUid];
+		if (NULL !== $prevUid) {
+			$pages['prev'] = $menuData[$prevUid];
+		}
 		if (TRUE === (boolean)$this->arguments['renderUp']) {
 			$pages['up'] = $parentPage;
 		}
-		$pages['next'] = $menuData[$nextUid];
+		if (NULL !== $nextUid) {
+			$pages['next'] = $menuData[$nextUid];
+		}
 		if (TRUE === (boolean)$this->arguments['renderLast']) {
 			$pages['last'] = $menuData[$lastUid];
 		}
