@@ -124,7 +124,7 @@ class AssetService implements SingletonInterface {
 		}
 		$assets = $GLOBALS['VhsAssets'];
 		$assets = $this->sortAssetsByDependency($assets);
-		$assets = $this->manipulateAssetsByTypoScriptSetttings($assets);
+		$assets = $this->manipulateAssetsByTypoScriptSettings($assets);
 		$buildDebugRequested = (isset($settings['asset']['debugBuild']) && $settings['asset']['debugBuild'] > 0);
 		$assetDebugRequested = (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0);
 		$useDebugUtility = (isset($settings['asset']['useDebugUtility']) && $settings['asset']['useDebugUtility'] > 0) || FALSE === isset($settings['asset']['useDebugUtility']);
@@ -385,7 +385,7 @@ class AssetService implements SingletonInterface {
 	 * @return array
 	 * @throws \RuntimeException
 	 */
-	private function manipulateAssetsByTypoScriptSetttings($assets) {
+	private function manipulateAssetsByTypoScriptSettings($assets) {
 		$settings = $this->getSettings();
 		if (FALSE === (isset($settings['asset']) || isset($settings['assetGroup']))) {
 			return $assets;
