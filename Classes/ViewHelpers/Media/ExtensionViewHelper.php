@@ -42,7 +42,7 @@ class ExtensionViewHelper extends AbstractViewHelper {
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('file', 'string', 'Path to the file to determine extension for.', TRUE);
+		$this->registerArgument('file', 'string', 'Path to the file to determine extension for.', FALSE);
 	}
 
 	/**
@@ -52,7 +52,7 @@ class ExtensionViewHelper extends AbstractViewHelper {
 
 		$filePath = $this->arguments['file'];
 
-		if (NULL === $filePath) {
+		if (TRUE === empty($filePath)) {
 			$filePath = $this->renderChildren();
 
 			if (NULL === $filePath) {
