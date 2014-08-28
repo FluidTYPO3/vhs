@@ -537,6 +537,15 @@ class Asset implements AssetInterface {
 	}
 
 	/**
+	 * @param boolean $allowMoveToFooter
+	 * @return $this
+	 */
+	public function setAllowMoveToFooter($allowMoveToFooter) {
+		$this->movable = $allowMoveToFooter;
+		return $this;
+	}
+
+	/**
 	 * @return boolean
 	 */
 	public function getRemoved() {
