@@ -183,6 +183,13 @@ class Asset implements AssetInterface {
 	 * @return Asset
 	 */
 	public static function createFromSettings(array $settings) {
+		if (TRUE === isset($settings['allowMoveToFooter'])) {
+			// @TODO: remove in 2.2 or 3.0 whichever comes first.
+			GeneralUtility::deprecationLog('Deprecated property "allowMoveToFooter" was used in VHS Asset settings ' .
+				'for asset named "' . $settings['name'] . '". Please correct this to use the proper "movable" attribute');
+			$settings['movable'] = $settings['allowMoveToFooter'];
+			unset($settings['allowMoveToFooter']);
+		}
 		$asset = self::getInstance();
 		foreach ($settings as $propertyName => $value) {
 			ObjectAccess::setProperty($asset, $propertyName, $value);
