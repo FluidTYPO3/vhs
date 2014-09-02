@@ -93,6 +93,8 @@ class PageSelectService implements SingletonInterface {
 		}
 		array_push($clauses, "fe_group = '' OR fe_group = '0'");
 		$pageSelect->where_groupAccess = ' AND (' . implode(' OR ', $clauses) .  ')';
+		$pageSelect->versioningPreview = (boolean) 0 < $GLOBALS['BE_USER']->workspace;
+		$pageSelect->versioningWorkspaceId = (integer) $GLOBALS['BE_USER']->workspace;
 		return $pageSelect;
 	}
 
