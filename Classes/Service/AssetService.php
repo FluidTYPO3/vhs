@@ -46,6 +46,11 @@ use FluidTYPO3\Vhs\Asset;
 class AssetService implements SingletonInterface {
 
 	/**
+	 * @var boolean
+	 */
+	protected static $typoScriptAssetsBuilt = FALSE;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
@@ -109,7 +114,7 @@ class AssetService implements SingletonInterface {
 		}
 		$settings = $this->getSettings();
 		$cached = (boolean) $cached;
-		if (TRUE === $cached && TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
+		if (FALSE === self::$typoScriptAssetsBuilt && TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
 			foreach ($settings['asset'] as $name => $typoScriptAsset) {
 				if (FALSE === isset($GLOBALS['VhsAssets'][$name]) && TRUE === is_array($typoScriptAsset)) {
 					if (FALSE === isset($typoScriptAsset['name'])) {
@@ -118,6 +123,7 @@ class AssetService implements SingletonInterface {
 					Asset::createFromSettings($typoScriptAsset);
 				}
 			}
+			self::$typoScriptAssetsBuilt = TRUE;
 		}
 		if (FALSE === isset($GLOBALS['VhsAssets']) || FALSE === is_array($GLOBALS['VhsAssets'])) {
 			return;
