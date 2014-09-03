@@ -142,21 +142,21 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		$contentUids = $this->arguments['contentUids'];
 
 		$content = array();
-		$hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
-		$currentLanguage = $GLOBALS['TSFE']->sys_language_content;
-		$languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
-		if (0 < $currentLanguage) {
-			if (TRUE === $hideUntranslated) {
-				$languageCondition .= ' AND l18n_parent > 0';
-			}
-			$nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' . $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
-			$languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
-		}
-		$languageCondition .= ')';
 
 		if (TRUE === is_array($contentUids)) {
 			$conditions = 'uid IN (' . implode(',', $contentUids) . ')';
 		} else {
+			$hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
+			$currentLanguage = $GLOBALS['TSFE']->sys_language_content;
+			$languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
+			if (0 < $currentLanguage) {
+				if (TRUE === $hideUntranslated) {
+					$languageCondition .= ' AND l18n_parent > 0';
+				}
+				$nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' . $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
+				$languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
+			}
+			$languageCondition .= ')';
 			$conditions = 'pid IN (' . implode(',', $storagePageUids) . ") AND colPos = '" . $colPos . "'" .
 				$GLOBALS['TSFE']->cObj->enableFields('tt_content') .
 				' AND ' . $languageCondition;
@@ -180,6 +180,15 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * @param integer $pageUid
+	 * @param integer $column
+	 * @return array[]
+	 */
+	protected function getContentRecordsFromPageAndColumn($pageUid, $column) {
+
 	}
 
 	/**
@@ -217,18 +226,34 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 
 	/**
 	 * This function renders a raw tt_content record into the corresponding
-	 * element by typoscript RENDER function
+	 * element by typoscript RENDER function. We keep track of already
+	 * rendered records to avoid rendering the same record twice inside the
+	 * same nested stack of content elements.
 	 *
 	 * @param array $row
-	 * @return string
+	 * @return string|NULL
 	 */
 	protected function renderRecord(array $row) {
+		if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
+			return NULL;
+		}
 		$conf = array(
 			'tables' => 'tt_content',
 			'source' => $row['uid'],
 			'dontCheckPid' => 1
 		);
-		return $GLOBALS['TSFE']->cObj->RECORDS($conf);
+		$parent = $GLOBALS['TSFE']->currentRecord;
+		// If the currentRecord is set, we register, that this record has invoked this function.
+		// It's should not be allowed to do this again then!!
+		if (FALSE === empty($parent)) {
+			++$GLOBALS['TSFE']->recordRegister[$parent];
+		}
+		$html = $GLOBALS['TSFE']->cObj->RECORDS($conf);
+		$GLOBALS['TSFE']->currentRecord = $parent;
+		if (FALSE === empty($parent)) {
+			--$GLOBALS['TSFE']->recordRegister[$parent];
+		}
+		return $html;
 	}
 
 }
