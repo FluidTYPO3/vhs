@@ -508,7 +508,15 @@ class AssetService implements SingletonInterface {
 	private function renderAssetAsFluidTemplate($asset) {
 		$settings = $this->extractAssetSettings($asset);
 		$templateReference = $settings['path'];
-		$variables = (TRUE === (isset($settings['arguments']) && is_array($settings['arguments'])) ? $settings['arguments'] : array());
+
+		if(TRUE === isset($settings['arguments']) && TRUE === is_array($settings['arguments'])) {
+			$variables = $settings['arguments'];
+		} elseif(TRUE === isset($settings['variables']) && TRUE === is_array($settings['variables'])) {
+			$variables = $settings['variables'];
+		} else {
+			$variables = array();
+		}
+
 		$isExternal = (TRUE === (isset($settings['external']) && $settings['external'] > 0));
 		if (TRUE === $isExternal) {
 			$fileContents = file_get_contents($templateReference);
