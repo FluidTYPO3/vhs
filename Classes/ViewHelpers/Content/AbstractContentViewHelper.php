@@ -86,6 +86,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		$this->registerArgument('contentUids', 'array', 'If used, replaces all conditions with an "uid IN (1,2,3)" style condition using the UID values from this array');
 		$this->registerArgument('sectionIndexOnly', 'boolean', 'If TRUE, only renders/gets content that is marked as "include in section index"', FALSE, FALSE);
 		$this->registerArgument('slide', 'integer', 'Enables Content Sliding - amount of levels which shall get walked up the rootline. For infinite sliding (till the rootpage) set to -1)', FALSE, 0);
+		$this->registerArgument('slideCollect', 'integer', 'If TRUE, content is collected up the root line. If FALSE, only the first PID which has content is used. If greater than zero, this value overrides $slide', FALSE, 0);
 		$this->registerArgument('slideCollectReverse', 'boolean', 'Normally when collecting content elements the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))', FALSE, 0);
 		$this->registerArgument('loadRegister', 'array', 'List of LOAD_REGISTER variable');
 		$this->registerArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, TRUE);
@@ -100,33 +101,21 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 	 * @return array
 	 */
 	protected function getContentRecords($limit = NULL, $order = NULL) {
-		if (NULL === $limit && FALSE === empty($this->arguments['limit'])) {
-			$limit = (integer) $this->arguments['limit'];
-		}
-		if (NULL === $order && FALSE === empty($this->arguments['order'])) {
-			$order = $this->arguments['order'];
-		}
-
-		$loadRegister = FALSE;
-		if (FALSE === empty($this->arguments['loadRegister'])) {
-			$this->contentObject->cObjGetSingle('LOAD_REGISTER', $this->arguments['loadRegister']);
-			$loadRegister = TRUE;
-		}
-
 		$pageUid = $this->getPageUid();
-		if (FALSE === empty($order)) {
-			$sortDirection = strtoupper(trim($this->arguments['sortDirection']));
-			if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
-				$sortDirection = 'ASC';
-			}
-			$order = $order . ' ' . $sortDirection;
-		}
-
 		$slide = (integer) $this->arguments['slide'];
 		$slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
+		$slideCollect = (integer) $this->arguments['slideCollect'];
+		if (0 < $slideCollect) {
+			// $slideCollect overrides $slide to automatically start sliding if
+			// collection is enabled.
+			$slide = $slideCollect;
+		}
 
+		// find out which storage page UIDs to read from, respecting slide depth
 		$storagePageUids = array();
-		if (0 !== $slide) {
+		if (0 === $slide) {
+			$storagePageUids[] = $pageUid;
+		} else {
 			$rootLine = $this->pageSelect->getRootLine($pageUid, NULL, $slideCollectReverse);
 			if (-1 !== $slide) {
 				$rootLine = array_slice($rootLine, 0, $slide);
@@ -134,15 +123,52 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 			foreach ($rootLine as $page) {
 				$storagePageUids[] = (integer) $page['uid'];
 			}
+		}
+		// select content elements, respecting slide and slideCollect.
+		$contentRecords = array();
+		do {
+			$storagePageUid = array_shift($storagePageUids);
+			$contentFromPageUid = $this->getContentRecordsFromPage($storagePageUid, $limit, $order);
+			if (0 < count($contentFromPageUid)) {
+				$contentRecords = array_merge($contentRecords, $contentFromPageUid);
+				if (0 === $slideCollect) {
+					// stop collecting because argument said so and we've gotten at least one record now.
+					break;
+				}
+			}
+		} while (0 < count($storagePageUids));
+
+		if (TRUE === (boolean) $this->arguments['render']) {
+			$contentRecords = $this->getRenderedRecords($contentRecords);
 		} else {
-			$storagePageUids[] = $pageUid;
+			$contentRecords = $contentRecords;
 		}
 
-		$colPos = (integer) $this->arguments['column'];
+		return $contentRecords;
+	}
+
+	/**
+	 * @param integer $pageUid
+	 * @param integer $limit
+	 * @param string $order
+	 * @return array[]
+	 */
+	protected function getContentRecordsFromPage($pageUid, $limit, $order) {
+		$column = (integer) $this->arguments['column'];
+		if (NULL === $limit && FALSE === empty($this->arguments['limit'])) {
+			$limit = (integer) $this->arguments['limit'];
+		}
+		if (NULL === $order && FALSE === empty($this->arguments['order'])) {
+			$order = $this->arguments['order'];
+		}
+		if (FALSE === empty($order)) {
+			$sortDirection = strtoupper(trim($this->arguments['sortDirection']));
+			if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
+				$sortDirection = 'ASC';
+			}
+			$order = $order . ' ' . $sortDirection;
+		}
 		$contentUids = $this->arguments['contentUids'];
-
-		$content = array();
-
 		if (TRUE === is_array($contentUids)) {
 			$conditions = 'uid IN (' . implode(',', $contentUids) . ')';
 		} else {
@@ -153,42 +179,20 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 				if (TRUE === $hideUntranslated) {
 					$languageCondition .= ' AND l18n_parent > 0';
 				}
-				$nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' . $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
+				$nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' .
+					$currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
 				$languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
 			}
 			$languageCondition .= ')';
-			$conditions = 'pid IN (' . implode(',', $storagePageUids) . ") AND colPos = '" . $colPos . "'" .
-				$GLOBALS['TSFE']->cObj->enableFields('tt_content') .
-				' AND ' . $languageCondition;
+			$conditions = "pid = '" . (integer) $pageUid . "' AND colPos = '" . (integer) $column . "'" .
+				$GLOBALS['TSFE']->cObj->enableFields('tt_content') . ' AND ' . $languageCondition;
 		}
 		if (TRUE === (boolean) $this->arguments['sectionIndexOnly']) {
 			$conditions .= ' AND sectionIndex = 1';
 		}
 
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'uid', $order, $limit);
-		if (FALSE === is_array($rows)) {
-			return $content;
-		}
-		if (TRUE === (boolean) $this->arguments['render']) {
-			$content = $this->getRenderedRecords($rows);
-		} else {
-			$content = $rows;
-		}
-
-		if (TRUE === $loadRegister) {
-			$this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
-		}
-
-		return $content;
-	}
-
-	/**
-	 * @param integer $pageUid
-	 * @param integer $column
-	 * @return array[]
-	 */
-	protected function getContentRecordsFromPageAndColumn($pageUid, $column) {
-
+		return $rows;
 	}
 
 	/**
@@ -217,9 +221,15 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 	 * @return array
 	 */
 	protected function getRenderedRecords(array $rows) {
+		if (FALSE === empty($this->arguments['loadRegister'])) {
+			$this->contentObject->cObjGetSingle('LOAD_REGISTER', $this->arguments['loadRegister']);
+		}
 		$elements = array();
 		foreach ($rows as $row) {
 			array_push($elements, $this->renderRecord($row));
+		}
+		if (FALSE === empty($this->arguments['loadRegister'])) {
+			$this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
 		}
 		return $elements;
 	}
