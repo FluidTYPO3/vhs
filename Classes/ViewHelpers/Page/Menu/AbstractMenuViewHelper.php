@@ -499,13 +499,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (0 < $length) {
 			$idx = 1;
 			foreach ($filtered as $uid => $page) {
-				switch ($idx) {
-					case 1:
-						$filtered[$uid]['class'] = trim($filtered[$uid]['class'] . ' ' . $classFirst);
-						break;
-					case $length:
-						$filtered[$uid]['class'] = trim($filtered[$uid]['class'] . ' ' . $classLast);
-						break;
+				if (1 === $idx) {
+					$filtered[$uid]['class'] = trim($filtered[$uid]['class'] . ' ' . $classFirst);
+				}
+				if ($length === $idx) {
+					$filtered[$uid]['class'] = trim($filtered[$uid]['class'] . ' ' . $classLast);
 				}
 				$idx++;
 			}
