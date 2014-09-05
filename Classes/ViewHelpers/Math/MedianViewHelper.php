@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class Tx_Vhs_ViewHelpers_Math_MedianViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper {
+class MedianViewHelper extends AbstractSingleMathViewHelper {
 
 	/**
 	 * @return mixed
@@ -44,7 +45,7 @@ class Tx_Vhs_ViewHelpers_Math_MedianViewHelper extends Tx_Vhs_ViewHelpers_Math_A
 	public function render() {
 		$a = $this->getInlineArgument();
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if ($aIsIterable) {
+		if (TRUE === $aIsIterable) {
 			$a = $this->convertTraversableToArray($a);
 			sort($a, SORT_NUMERIC);
 			$size = count($a);

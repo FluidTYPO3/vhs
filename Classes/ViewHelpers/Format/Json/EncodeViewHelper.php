@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ### JSON Encoding ViewHelper
@@ -55,7 +61,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format\Json
  */
-class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class EncodeViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var array
@@ -87,28 +93,28 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\C
 	 * @param boolean $preventRecursion
 	 * @param string $recursionMarker
 	 * @param string $dateTimeFormat
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return mixed
 	 */
 	protected function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat) {
-		if (TRUE === $value instanceof Traversable) {
-				// Note: also converts Extbase ObjectStorage to Tx_Extkey_Domain_Model_ObjectType[] which are later each converted
+		if (TRUE === $value instanceof \Traversable) {
+			// Note: also converts Extbase ObjectStorage to \YourVendor\Extname\Domain\Model\ObjectType[] which are later each converted
 			$value = iterator_to_array($value, $useTraversableKeys);
-		} elseif (TRUE === $value instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
-				// Convert to associative array,
+		} elseif (TRUE === $value instanceof DomainObjectInterface) {
+			// Convert to associative array,
 			$value = $this->recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
-		} elseif (TRUE === $value instanceof DateTime) {
+		} elseif (TRUE === $value instanceof \DateTime) {
 			$value = $this->dateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
 		}
 
-			// process output of initial conversion, catching any specially supported object types such as DomainObject and DateTime
+		// process output of initial conversion, catching any specially supported object types such as DomainObject and DateTime
 		if (TRUE === is_array($value)) {
 			$value = $this->recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
 			$value = $this->recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
 		};
 		$json = json_encode($value);
 		if (JSON_ERROR_NONE !== json_last_error()) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument cannot be converted into JSON.', 1358440181);
+			throw new Exception('The provided argument cannot be converted into JSON.', 1358440181);
 		}
 		return $json;
 	}
@@ -127,7 +133,7 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\C
 	 */
 	protected function recursiveDateTimeToUnixtimeMiliseconds(array $array, $dateTimeFormat) {
 		foreach ($array as $key => $possibleDateTime) {
-			if (TRUE === $possibleDateTime instanceof DateTime) {
+			if (TRUE === $possibleDateTime instanceof \DateTime) {
 				$array[$key] = $this->dateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
 			} elseif (TRUE === is_array($possibleDateTime)) {
 				$array[$key] = $this->recursiveDateTimeToUnixtimeMiliseconds($array[$key], $dateTimeFormat);
@@ -141,11 +147,11 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\C
 	 * the format specified in $dateTimeFormat (DateTime::format syntax).
 	 * Default format is NULL a JS UNIXTIME (time()*1000) is produced.
 	 *
-	 * @param DateTime $dateTime
+	 * @param \DateTime $dateTime
 	 * @param string $dateTimeFormat
 	 * @return integer
 	 */
-	protected function dateTimeToUnixtimeMiliseconds(DateTime $dateTime, $dateTimeFormat) {
+	protected function dateTimeToUnixtimeMiliseconds(\DateTime $dateTime, $dateTimeFormat) {
 		if (NULL === $dateTimeFormat) {
 			return intval($dateTime->format('U')) * 1000;
 		}
@@ -167,9 +173,9 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\C
 	 */
 	protected function recursiveArrayOfDomainObjectsToArray(array $domainObjects, $preventRecursion, $recursionMarker) {
 		foreach ($domainObjects as $key => $possibleDomainObject) {
-			if (TRUE === $possibleDomainObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			if (TRUE === $possibleDomainObject instanceof DomainObjectInterface) {
 				$domainObjects[$key] = $this->recursiveDomainObjectToArray($possibleDomainObject, $preventRecursion, $recursionMarker);
-			} elseif (TRUE === $possibleDomainObject instanceof Traversable) {
+			} elseif (TRUE === $possibleDomainObject instanceof \Traversable) {
 				$traversableAsArray = iterator_to_array($possibleDomainObject);
 				$domainObjects[$key] = $this->recursiveArrayOfDomainObjectsToArray($traversableAsArray, $preventRecursion, $recursionMarker);
 			}
@@ -182,17 +188,17 @@ class Tx_Vhs_ViewHelpers_Format_Json_EncodeViewHelper extends \TYPO3\CMS\Fluid\C
 	 * that array through recursive DomainObject detection. This will convert
 	 * any 1:1, 1:n, n:1 and m:n relations.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $domainObject
+	 * @param DomainObjectInterface $domainObject
 	 * @param boolean $preventRecursion
 	 * @param mixed $recursionMarker
 	 * @return array
 	 */
-	protected function recursiveDomainObjectToArray(Tx_Extbase_DomainObject_DomainObjectInterface $domainObject, $preventRecursion, $recursionMarker) {
+	protected function recursiveDomainObjectToArray(DomainObjectInterface $domainObject, $preventRecursion, $recursionMarker) {
 		$hash = spl_object_hash($domainObject);
 		if (TRUE === $preventRecursion && TRUE === in_array($hash, $this->encounteredClasses)) {
 			return $recursionMarker;
 		}
-		$converted = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($domainObject);
+		$converted = ObjectAccess::getGettableProperties($domainObject);
 		array_push($this->encounteredClasses, $hash);
 		$converted = $this->recursiveArrayOfDomainObjectsToArray($converted, $preventRecursion, $recursionMarker);
 		return $converted;

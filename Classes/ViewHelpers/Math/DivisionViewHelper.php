@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class Tx_Vhs_ViewHelpers_Math_DivisionViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper {
+class DivisionViewHelper extends AbstractMultipleMathViewHelper {
 
 	/**
 	 * @param mixed $a
@@ -43,7 +44,7 @@ class Tx_Vhs_ViewHelpers_Math_DivisionViewHelper extends Tx_Vhs_ViewHelpers_Math
 	 * @return mixed
 	 */
 	protected function calculateAction($a, $b) {
-		return ($b <> 0 ? $a / $b : $a);
+		return (0 <> $b ? $a / $b : $a);
 	}
 
 }

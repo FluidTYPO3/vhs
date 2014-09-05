@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -32,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ImplodeViewHelper extends Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelper {
+class ImplodeViewHelper extends ExplodeViewHelper {
 
 	/**
 	 * @var string

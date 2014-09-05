@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+
 /**
  * Markdown Transformation ViewHelper
  *
@@ -45,7 +50,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class MarkdownViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var boolean
@@ -58,6 +63,18 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends \TYPO3\CMS\Fluid\Core
 	protected $markdownExecutablePath;
 
 	/**
+	 * @var StringFrontend
+	 */
+	protected $cache;
+
+	/**
+	 * @return void
+	 */
+	public function initialize() {
+		$this->cache = $GLOBALS['typo3CacheManager']->getCache('vhs_markdown');
+	}
+
+	/**
 	 * @param string $text
 	 * @param boolean $trim
 	 * @param boolean $htmlentities
@@ -65,13 +82,22 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends \TYPO3\CMS\Fluid\Core
 	 * @return string
 	 */
 	public function render($text = NULL, $trim = TRUE, $htmlentities = FALSE) {
-		$this->markdownExecutablePath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('markdown');
-		if (FALSE === is_executable($this->markdownExecutablePath)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
-				'and accessible; this binary could not be found in any of your configured paths available to this script', 1350511561);
-		}
 		if (NULL === $text) {
 			$text = $this->renderChildren();
+		}
+		if (NULL === $text) {
+			return NULL;
+		}
+
+		$cacheIdentifier = sha1($text);
+		if (TRUE === $this->cache->has($cacheIdentifier)) {
+			return $this->cache->get($cacheIdentifier);
+		}
+
+		$this->markdownExecutablePath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('markdown');
+		if (FALSE === is_executable($this->markdownExecutablePath)) {
+			throw new Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
+				'and accessible; this binary could not be found in any of your configured paths available to this script', 1350511561);
 		}
 		if (TRUE === (boolean) $trim) {
 			$text = trim($text);
@@ -80,6 +106,7 @@ class Tx_Vhs_ViewHelpers_Format_MarkdownViewHelper extends \TYPO3\CMS\Fluid\Core
 			$text = htmlentities($text);
 		}
 		$transformed = $this->transform($text);
+		$this->cache->set($cacheIdentifier, $transformed);
 		return $transformed;
 	}
 

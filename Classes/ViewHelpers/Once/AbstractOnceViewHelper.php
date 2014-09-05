@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Once;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * Base class for "Render Once"-style ViewHelpers: session, cookie,
@@ -31,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Once
  */
-abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * Standard storage - static variable meaning uniqueness of $identifier
@@ -64,7 +67,7 @@ abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends \TYPO3\CMS
 	public function render() {
 		$this->removeIfExpired();
 		$evaluation = $this->assertShouldSkip();
-		if ($evaluation === FALSE) {
+		if (FALSE === $evaluation) {
 			$content = $this->renderThenChild();
 		} else {
 			$content = $this->renderElseChild();
@@ -77,7 +80,7 @@ abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends \TYPO3\CMS
 	 * @return string
 	 */
 	protected function getIdentifier() {
-		if (isset($this->arguments['identifier']) === TRUE) {
+		if (TRUE === isset($this->arguments['identifier'])) {
 			return $this->arguments['identifier'];
 		}
 		return get_class($this);
@@ -88,7 +91,7 @@ abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends \TYPO3\CMS
 	 */
 	protected function storeIdentifier() {
 		$identifier = $this->getIdentifier();
-		if (isset(self::$identifiers[$identifier]) === FALSE) {
+		if (FALSE === isset(self::$identifiers[$identifier])) {
 			self::$identifiers[$identifier] = time();
 		}
 	}
@@ -98,7 +101,7 @@ abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends \TYPO3\CMS
 	 */
 	protected function removeIfExpired() {
 		$identifier = $this->getIdentifier();
-		if (isset(self::$identifiers[$identifier]) === TRUE && self::$identifiers[$identifier] <= time() - $this->arguments['ttl']) {
+		if (TRUE === isset(self::$identifiers[$identifier]) && self::$identifiers[$identifier] <= time() - $this->arguments['ttl']) {
 			unset(self::$identifiers[$identifier]);
 		}
 	}
@@ -108,7 +111,7 @@ abstract class Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper extends \TYPO3\CMS
 	 */
 	protected function assertShouldSkip() {
 		$identifier = $this->getIdentifier();
-		return (isset(self::$identifiers[$identifier]) === TRUE);
+		return (TRUE === isset(self::$identifiers[$identifier]));
 	}
 
 	/**

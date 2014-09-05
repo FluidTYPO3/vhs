@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
 
 /**
  * ViewHelper used to place header blocks in document header
@@ -29,7 +31,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_HeaderViewHelper extends Tx_Vhs_ViewHelpers_Asset_AbstractAssetViewHelper {
+class HeaderViewHelper extends AbstractAssetViewHelper {
 
 	/**
 	 * Render method
@@ -37,13 +39,13 @@ class Tx_Vhs_ViewHelpers_Page_HeaderViewHelper extends Tx_Vhs_ViewHelpers_Asset_
 	 * @return void
 	 */
 	public function render() {
-		if (TYPO3_MODE == 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return;
 		}
 		$content = $this->getContent();
 		$name = $this->getName();
 		$overwrite = $this->getOverwrite();
-		if (isset($GLOBALS['TSFE']->additionalHeaderData[$name]) === TRUE && !$overwrite) {
+		if (TRUE === isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && FALSE === $overwrite) {
 			return;
 		}
 		$GLOBALS['TSFE']->additionalHeaderData[$name] = $content;

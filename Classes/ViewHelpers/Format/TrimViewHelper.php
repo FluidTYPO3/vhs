@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Trims $content by stripping off $characters (string list
  * of individual chars to strip off, default is all whitespaces).
@@ -31,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_TrimViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TrimViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Trims content by stripping off $characters
@@ -41,10 +44,10 @@ class Tx_Vhs_ViewHelpers_Format_TrimViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	 * @return string
 	 */
 	public function render($content = NULL, $characters = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-		if ($characters !== NULL) {
+		if (FALSE === empty($characters)) {
 			$content = trim($content, $characters);
 		} else {
 			$content = trim($content);

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
 
 /**
  * Base class: Media\Image view helpers
@@ -30,7 +35,16 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media\Image
  */
-abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
+
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+	 */
+	protected $resourceFactory;
+
+	public function __construct() {
+		$this->resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+	}
 
 	/**
 	 * Initialize arguments.
@@ -39,37 +53,68 @@ abstract class Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper extend
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('path', 'string', 'Path to the image file to determine info for.', TRUE);
+		$this->registerArgument('src', 'string', 'Path to or id of the image file to determine info for.', TRUE);
+		$this->registerArgument('treatIdAsUid', 'boolean', 'If TRUE, the path argument is treated as a resource uid.', FALSE, FALSE);
+		$this->registerArgument('treatIdAsReference', 'boolean', 'If TRUE, the path argument is treated as a reference uid and will be resolved to a resource via sys_file_reference.', FALSE, FALSE);
 	}
 
 	/**
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return array
 	 */
 	public function getInfo() {
+		$src = $this->arguments['src'];
+		$treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
+		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
-		$path = $this->arguments['path'];
-
-		if ($path === NULL) {
-			$path = $this->renderChildren();
-			if ($path === NULL) {
+		if (NULL === $src) {
+			$src = $this->renderChildren();
+			if (NULL === $src) {
 				return array();
 			}
 		}
 
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
-
-		if (!file_exists($file) || is_dir($file)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
+		if (TRUE === $treatIdAsUid || TRUE === $treatIdAsReference) {
+			$id = (integer) $src;
+			$info = array();
+			if (TRUE === $treatIdAsUid) {
+				$info = $this->getInfoByUid($id);
+			} elseif (TRUE === $treatIdAsReference) {
+				$info = $this->getInfoByReference($id);
+			}
+		} else {
+			$file = GeneralUtility::getFileAbsFileName($src);
+			if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
+				throw new Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
+			}
+			$imageSize = getimagesize($file);
+			$info = array(
+				'width'  => $imageSize[0],
+				'height' => $imageSize[1],
+				'type'   => $imageSize['mime'],
+			);
 		}
 
-		$info = getimagesize($file);
+		return $info;
+	}
 
-		return array(
-			'width'  => $info[0],
-			'height' => $info[1],
-			'type'   => $info['mime'],
-		);
+	/**
+	 * @param integer $id
+	 * @return array
+	 */
+	public function getInfoByReference($id) {
+		$fileReference = $this->resourceFactory->getFileReferenceObject($id);
+		$file = $fileReference->getOriginalFile();
+		return ResourceUtility::getFileArray($file);
+	}
+
+	/**
+	 * @param integer $uid
+	 * @return array
+	 */
+	public function getInfoByUid($uid) {
+		$file = $this->resourceFactory->getFileObject($uid);
+		return ResourceUtility::getFileArray($file);
 	}
 
 }

@@ -6,17 +6,11 @@ VHS: Fluid ViewHelpers
 
 [![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs)
 
-## Wiki
-
-A quick explanation can be read in this README.
-
-Examples, tips and tricks can be found in the Wiki: https://github.com/FluidTYPO3/vhs/wiki
-
 ## ViewHelper argument reference
 
 Can be found online at:
 
-http://fedext.net/viewhelpers/vhs.html
+http://fluidtypo3.org/viewhelpers/vhs.html
 
 ## Installation
 
@@ -56,13 +50,13 @@ The following Fluid usage:
 Is the exact same as ths PHP:
 
 ```
-Tx_Vhs_Asset::createFromFile('fileadmin/demo.js');
+\FluidTYPO3\Vhs\Asset::createFromFile('fileadmin/demo.js');
 ```
 
 Which is a short form of:
 
 ```
-Tx_Vhs_Asset::createFromSettings(array(
+\FluidTYPO3\Vhs\Asset::createFromSettings(array(
 	'name' => 'demo',
 	'path' => 'fileadmin/demo.js'
 ));
@@ -71,9 +65,9 @@ Tx_Vhs_Asset::createFromSettings(array(
 Which is itself a short form of:
 
 ```
-$asset = Tx_Vhs_Asset::getInstance();
+$asset = \FluidTYPO3\Vhs\Asset::getInstance();
 // or alternatively, if this fits better in your other code:
-$asset = $objectManager->get('Tx_Vhs_Asset');
+$asset = $objectManager->get('FluidTYPO3\Vhs\Asset');
 // then:
 $asset->setName('demo');
 $asset->setPath('fileadmin/demo.js');
@@ -121,7 +115,7 @@ plugin.tx_vhs.settings.asset.ASSETNAME {
 	group = Text a-zA-Z0-9_ # Group name, default "fluid". By grouping Assets the settings used on the group will apply to Assets
 	debug = Integer 0/1 # If `1` enables debug output of each asset
 	standalone = Integer 0/1 # If `1` instructs VHS to process this Asset as standalone, excluding it from merging
-	allowMoveToFooter = Integer 0/1 # If `0` prevents Assets from being included in the page footer. Used by style-type Assets.
+	movable = Integer 0/1 # If `0` prevents Assets from being included in the page footer. Used by style-type Assets. Default is `1` unless type is CSS which forces movable=0
 	trim = Integer 0/1 # If `1` enables trimming of whitespace from beginning and end of lines when merging Assets
 	namedChunks = Integer 0/1 # If `0` prevents Asset name from being inserted as comment above the Asset body in merged files
 }
@@ -162,7 +156,7 @@ the image path but manually creating an `<img />` tag and using `f:uri.image` as
 To use the ViewHelpers in your Fluid templates simply add the namespace:
 
 ```xml
-{namespace v=Tx_Vhs_ViewHelpers}
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
 ```
 
 Using the namespace name "v" is not required but it is recommended. It's a single character
@@ -218,13 +212,3 @@ type before being output. Which is exactly the case when working with the v:math
 
 * PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent
   version. PHP 5.3.7 is recommended at least
-
-## Code Quality
-
-![Abstraction Instability Chart](Documentation/ComplexityChart.png)
-![Inheritance and dependency risk](Documentation/PyramidChart.png)
-
-_Understanding the [Abstraction Instability Chart](http://pdepend.org/documentation/handbook/reports/abstraction-instability-chart.html)
-and [Pyramid Chart](http://pdepend.org/documentation/handbook/reports/overview-pyramid.html)._
-
-![Please forgive the tracking - your data is in good hands!](https://fedext.net/bigbrother.php?repository=vhs)

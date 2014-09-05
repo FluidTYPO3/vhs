@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaViewHelper {
+abstract class AbstractMediaTagViewHelper extends AbstractMediaViewHelper {
 
 	/**
 	 * Registers all standard and HTML5 universal attributes.
@@ -70,9 +71,9 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper extends Tx_Vh
 		$tagBuilder->forceClosingTag($forceClosingTag);
 		$childTag = $tagBuilder->render();
 		unset($tagBuilder);
-		if ($mode === 'append' || $mode === 'prepend') {
+		if ('append' === $mode || 'prepend' === $mode) {
 			$content = $this->tag->getContent();
-			if ($mode === 'append') {
+			if ('append' === $mode) {
 				$content = $content . $childTag;
 			} else {
 				$content = $childTag . $content;
@@ -81,4 +82,5 @@ abstract class Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper extends Tx_Vh
 		}
 		return $childTag;
 	}
+
 }

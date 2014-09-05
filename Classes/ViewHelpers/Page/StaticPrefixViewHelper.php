@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Page: Static Prefix
@@ -36,7 +39,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_StaticPrefixViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class StaticPrefixViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return string

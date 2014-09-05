@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,17 +37,15 @@
  * @package Vhs
  * @subpackage Service
  */
-class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInterface {
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class PageSelectService implements SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
 	protected static $pageSelect;
-
-	/**
-	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
-	 */
-	protected static $pageSelectHidden;
 
 	/**
 	 * @var array
@@ -71,15 +71,13 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 	 * Initialize \TYPO3\CMS\Frontend\Page\PageRepository objects
 	 */
 	public function initializeObject() {
-		self::$pageSelect = $this->createPageSelectInstance(FALSE);
-		self::$pageSelectHidden = $this->createPageSelectInstance(TRUE);
+		self::$pageSelect = $this->createPageSelectInstance();
 	}
 
 	/**
-	 * @param boolean $showHidden
 	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
-	private function createPageSelectInstance($showHidden = FALSE) {
+	private function createPageSelectInstance() {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
 			$groups = array(-2, 0);
 			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
@@ -87,7 +85,6 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 			$groups = array(-1, 0);
 		}
 		$pageSelect = new \TYPO3\CMS\Frontend\Page\PageRepository();
-		$pageSelect->init((boolean) $showHidden);
 		$clauses = array();
 		foreach ($groups as $group) {
 			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
@@ -96,6 +93,8 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 		}
 		array_push($clauses, "fe_group = '' OR fe_group = '0'");
 		$pageSelect->where_groupAccess = ' AND (' . implode(' OR ', $clauses) .  ')';
+		$pageSelect->versioningPreview = (boolean) 0 < $GLOBALS['BE_USER']->workspace;
+		$pageSelect->versioningWorkspaceId = (integer) $GLOBALS['BE_USER']->workspace;
 		return $pageSelect;
 	}
 
@@ -135,18 +134,23 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 	 * Caution: different signature
 	 *
 	 * @param integer $pageUid
-	 * @param boolean $showHidden
 	 * @param array $excludePages
 	 * @param string $where
 	 * @param boolean $showHiddenInMenu
 	 * @param boolean $checkShortcuts
+	 * @param array $allowedDoktypeList
 	 * @return array
 	 */
-	public function getMenu($pageUid = NULL, $showHidden = FALSE, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE) {
+	public function getMenu($pageUid = NULL, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE, $allowedDoktypeList = array()) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$addWhere = 'AND doktype!=254';
+		$addWhere = self::$pageSelect->enableFields('pages');
+		if (0 < count($allowedDoktypeList)) {
+			$addWhere .= ' AND doktype IN (' . implode(',', $allowedDoktypeList) . ')';
+		} else {
+			$addWhere .= ' AND doktype != ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER;
+		}
 		if (0 < count($excludePages)) {
 			$addWhere .= ' AND uid NOT IN (' . implode(',', $excludePages) . ')';
 		}
@@ -156,13 +160,9 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 		if ('' !== $where) {
 			$addWhere = $where . ' ' . $addWhere;
 		}
-		$key = md5(intval($showHidden) . $pageUid . $addWhere . intval($checkShortcuts));
+		$key = md5(intval($showHiddenInMenu) . $pageUid . $addWhere . intval($checkShortcuts));
 		if (FALSE === isset(self::$cachedMenus[$key])) {
-			if (TRUE === $showHidden) {
-				self::$cachedMenus[$key] = self::$pageSelectHidden->getMenu($pageUid, '*', 'sorting', $addWhere, $checkShortcuts);
-			} else {
-				self::$cachedMenus[$key] = self::$pageSelect->getMenu($pageUid, '*', 'sorting', $addWhere, $checkShortcuts);
-			}
+			self::$cachedMenus[$key] = self::$pageSelect->getMenu($pageUid, '*', 'sorting', $addWhere, $checkShortcuts);
 		}
 		return self::$cachedMenus[$key];
 	}
@@ -180,12 +180,12 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		if (NULL === $MP) {
-			$MP = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP');
+			$MP = GeneralUtility::_GP('MP');
 			if (TRUE === empty($MP)) {
 				$MP = '';
 			}
 		}
-		$key = md5($pageUid . $MP);
+		$key = md5($pageUid . $MP . (string) $reverse);
 		if (FALSE === isset(self::$cachedRootLines[$key])) {
 			$rootLine = self::$pageSelect->getRootLine($pageUid, $MP);
 			if (TRUE === $reverse) {
@@ -206,15 +206,15 @@ class Tx_Vhs_Service_PageSelectService implements \TYPO3\CMS\Core\SingletonInter
 	 */
 	public function hidePageForLanguageUid($pageUid = 0, $languageUid = -1, $normalWhenNoLanguage = TRUE) {
 		if (0 === $pageUid) {
-			$pageUid = $pageUid = $GLOBALS['TSFE']->id;
+			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		if (-1 === $languageUid) {
 			$languageUid = $GLOBALS['TSFE']->sys_language_uid;
 		}
 		$page = $this->getPage($pageUid);
 		$l18nCfg = TRUE === isset($page['l18n_cfg']) ? $page['l18n_cfg'] : 0;
-		$hideIfNotTranslated = (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($l18nCfg);
-		$hideIfDefaultLanguage = (boolean) \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($l18nCfg);
+		$hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
+		$hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
 		$pageOverlay = 0 !== $languageUid ? $this->getPageOverlay($pageUid, $languageUid) : array();
 		$translationAvailable = 0 !== count($pageOverlay);
 		return

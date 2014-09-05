@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
 /***************************************************************
  *  Copyright notice
  *
@@ -30,15 +31,13 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media\Image
  */
-class Tx_Vhs_ViewHelpers_Media_Image_MimetypeViewHelper extends Tx_Vhs_ViewHelpers_Media_Image_AbstractImageInfoViewHelper {
+class MimetypeViewHelper extends AbstractImageInfoViewHelper {
 
 	/**
 	 * @return string
 	 */
 	public function render() {
-
 		$info = $this->getInfo();
-
 		return TRUE === isset($info['type']) ? $info['type'] : '';
 	}
 

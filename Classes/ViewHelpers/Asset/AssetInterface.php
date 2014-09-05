@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-interface Tx_Vhs_ViewHelpers_Asset_AssetInterface {
+interface AssetInterface {
 
 	/**
 	 * Render method

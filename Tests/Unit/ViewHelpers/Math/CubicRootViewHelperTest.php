@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +29,7 @@
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Math_CubicRootViewHelperTest extends Tx_Vhs_ViewHelpers_Math_AbstractMathViewHelperTest {
+class CubicRootViewHelperTest extends AbstractMathViewHelperTest {
 
 	/**
 	 * @test

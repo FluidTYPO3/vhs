@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
+
 /**
  * Case Formatting ViewHelper
  *
@@ -32,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CaseViewHelper extends AbstractViewHelper {
 
 	const CASE_UPPER = 'upper';
 	const CASE_LOWER = 'lower';
@@ -49,8 +53,11 @@ class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	 * @return string
 	 */
 	public function render($string = NULL, $case = NULL) {
-		if ($string === NULL) {
+		if (NULL === $string) {
 			$string = $this->renderChildren();
+		}
+		if ('BE' === TYPO3_MODE) {
+			$tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 		}
 		switch ($case) {
 			case self::CASE_LOWER: $string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toLower'); break;
@@ -62,6 +69,9 @@ class Tx_Vhs_ViewHelpers_Format_CaseViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 			case self::CASE_LOWERCAMELCASE: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($string); break;
 			case self::CASE_UNDERSCORED: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($string); break;
 			default: break;
+		}
+		if ('BE' === TYPO3_MODE) {
+			FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 		}
 		return $string;
 	}

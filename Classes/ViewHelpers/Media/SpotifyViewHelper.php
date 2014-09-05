@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders HTML code to embed a Spotify play button
@@ -30,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_SpotifyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class SpotifyViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
 	 * Play button base url
@@ -67,13 +69,13 @@ class Tx_Vhs_ViewHelpers_Media_SpotifyViewHelper extends \TYPO3\CMS\Fluid\Core\V
 		$width      = (integer) $this->arguments['width'];
 		$height     = (integer) $this->arguments['height'];
 
-		if (in_array($this->arguments['theme'], array('black', 'white'))) {
+		if (TRUE === in_array($this->arguments['theme'], array('black', 'white'))) {
 			$theme = $this->arguments['theme'];
 		} else {
 			$theme = 'black';
 		}
 
-		if (in_array($this->arguments['view'], array('coverart', 'list'))) {
+		if (TRUE === in_array($this->arguments['view'], array('coverart', 'list'))) {
 			$view = $this->arguments['view'];
 		} else {
 			$view = 'list';
@@ -94,4 +96,5 @@ class Tx_Vhs_ViewHelpers_Media_SpotifyViewHelper extends \TYPO3\CMS\Fluid\Core\V
 
 		return $this->tag->render();
 	}
+
 }

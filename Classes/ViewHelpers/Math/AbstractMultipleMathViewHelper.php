@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-abstract class Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractSingleMathViewHelper {
+abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelper {
 
 	/**
 	 * @return void
@@ -43,7 +44,7 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper extends Tx
 
 	/**
 	 * @return mixed
-	 * @throw Exception
+	 * @throw \Exception
 	 */
 	public function render() {
 		$a = $this->getInlineArgument();
@@ -55,28 +56,28 @@ abstract class Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper extends Tx
 	 * @param mixed $a
 	 * @param mixed $b
 	 * @return mixed
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	protected function calculate($a, $b) {
 		if ($b === NULL) {
-			throw new Exception('Required argument "b" was not supplied', 1237823699);
+			throw new \Exception('Required argument "b" was not supplied', 1237823699);
 		}
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		$bIsIterable = $this->assertIsArrayOrIterator($b);
-		if ($aIsIterable === TRUE) {
+		if (TRUE === $aIsIterable) {
 			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
 			$bCanBeAccessed = $this->assertSupportsArrayAccess($b);
-			if ($aCanBeAccessed === FALSE || ($bIsIterable === TRUE && $bCanBeAccessed === FALSE)) {
-				throw new Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
+			if (FALSE === $aCanBeAccessed || (TRUE === $bIsIterable && FALSE === $bCanBeAccessed)) {
+				throw new \Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
 			}
 			foreach ($a as $index => $value) {
-				$bSideValue = ($bIsIterable === TRUE ? $b[$index] : $b);
+				$bSideValue = TRUE === $bIsIterable ? $b[$index] : $b;
 				$a[$index] = $this->calculateAction($value, $bSideValue);
 			}
 			return $a;
-		} elseif ($bIsIterable === TRUE) {
+		} elseif (TRUE === $bIsIterable) {
 			// condition matched if $a is not iterable but $b is.
-			throw new Exception('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator', 1351890876);
+			throw new \Exception('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator', 1351890876);
 		}
 		return $this->calculateAction($a, $b);
 	}

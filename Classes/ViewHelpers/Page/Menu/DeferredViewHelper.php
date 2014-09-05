@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +37,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_Menu_DeferredViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
+class DeferredViewHelper extends AbstractMenuViewHelper {
 
 	/**
 	 * Initialize
@@ -48,28 +50,28 @@ class Tx_Vhs_ViewHelpers_Page_Menu_DeferredViewHelper extends Tx_Vhs_ViewHelpers
 
 	/**
 	 * @return string
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function render() {
 		$as = $this->arguments['as'];
-		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray')) {
 			return NULL;
 		}
-		if (FALSE === $this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString')) {
 			return NULL;
 		}
 		if (NULL === $as) {
-			$content = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredString');
+			$content = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString');
 			$this->unsetDeferredVariableStorage();
 			return $content;
 		} elseif (TRUE === empty($as)) {
-			throw new Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
+			throw new \Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
 		}
-		if ($this->templateVariableContainer->exists($as)) {
+		if (TRUE === $this->templateVariableContainer->exists($as)) {
 			$backupVariable = $this->templateVariableContainer->get($as);
 			$this->templateVariableContainer->remove($as);
 		}
-		$this->templateVariableContainer->add($as, $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'deferredArray'));
+		$this->templateVariableContainer->add($as, $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray'));
 		$this->unsetDeferredVariableStorage();
 		$content = $this->renderChildren();
 		$this->templateVariableContainer->remove($as);

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns an array of files found in the provided path
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class FilesViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -52,9 +55,9 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	public function render() {
 		$path = $this->arguments['path'];
 
-		if ($path === NULL) {
+		if (NULL === $path) {
 			$path = $this->renderChildren();
-			if ($path === NULL) {
+			if (NULL === $path) {
 				return array();
 			}
 		}
@@ -64,7 +67,7 @@ class Tx_Vhs_ViewHelpers_Media_FilesViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 		$order          = $this->arguments['order'];
 		$excludePattern = $this->arguments['excludePattern'];
 
-		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($path, $extensionList, $prependPath, $order, $excludePattern);
+		$files = GeneralUtility::getFilesInDir($path, $extensionList, $prependPath, $order, $excludePattern);
 
 		return $files;
 	}

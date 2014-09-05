@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class ExplodeViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test
@@ -93,7 +97,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExplodeViewHelperTest extends Tx_Vhs_ViewHelpe
 		$mockContainer->expects($this->exactly(2))->method('add')->with('test', $array);
 		$mockContainer->expects($this->once())->method('get')->with('test')->will($this->returnValue($array));
 		$mockContainer->expects($this->exactly(2))->method('remove')->with('test');
-		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($mock, 'templateVariableContainer', $mockContainer, TRUE);
+		ObjectAccess::setProperty($mock, 'templateVariableContainer', $mockContainer, TRUE);
 		$mock->render();
 	}
 

@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -40,7 +42,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
+class BrowseViewHelper extends AbstractMenuViewHelper {
 
 	/**
 	 * @var array
@@ -61,6 +63,8 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 		$this->registerArgument('renderLast', 'boolean', 'If set to FALSE the "last" link will not be rendered', FALSE, TRUE);
 		$this->registerArgument('renderUp', 'boolean', 'If set to FALSE the "up" link will not be rendered', FALSE, TRUE);
 		$this->registerArgument('usePageTitles', 'boolean', 'If set to TRUE, uses target page titles instead of "next", "previous" etc. labels', FALSE, FALSE);
+		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If unspecified, current page UID is used', FALSE, NULL);
+		$this->registerArgument('currentPageUid', 'integer', 'Optional page UID to use as current page. If unspecified, current page UID from globals is used', FALSE, NULL);
 	}
 
 	/**
@@ -69,18 +73,21 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 	 * @return string
 	 */
 	public function render() {
-		$pageUid = $GLOBALS['TSFE']->id;
-		$rootLineData = $this->pageSelect->getRootLine();
-		$currentPage = $this->pageSelect->getPage($pageUid);
-		$parentUid = $currentPage['pid'];
+		$pageUid = (integer) (NULL !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id);
+		$currentUid = (integer) (NULL !== $this->arguments['currentPageUid'] ? $this->arguments['currentPageUid'] : $GLOBALS['TSFE']->id);
+		$currentPage = $this->pageSelect->getPage($currentUid);
+		$rootLineData = $this->pageSelect->getRootLine($pageUid);
+		$parentUid = (integer) (NULL !== $this->arguments['pageUid'] ? $pageUid : $currentPage['pid']);
 		$parentPage = $this->pageSelect->getPage($parentUid);
 		$menuData = $this->getMenu($parentUid);
 		$pageUids = array_keys($menuData);
 		$uidCount = count($pageUids);
 		$firstUid = $pageUids[0];
 		$lastUid = $pageUids[$uidCount - 1];
+		$nextUid = NULL;
+		$prevUid = NULL;
 		for ($i = 0; $i < $uidCount; $i++) {
-			if ($pageUids[$i] == $pageUid) {
+			if ((integer)$pageUids[$i] === $currentUid) {
 				if ($i > 0) {
 					$prevUid = $pageUids[$i - 1];
 				}
@@ -91,37 +98,41 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 			}
 		}
 		$pages = array();
-		if (TRUE === (boolean) $this->arguments['renderFirst']) {
+		if (TRUE === (boolean)$this->arguments['renderFirst']) {
 			$pages['first'] = $menuData[$firstUid];
 		}
-		$pages['prev'] = $menuData[$prevUid];
-		if (TRUE === (boolean) $this->arguments['renderUp']) {
+		if (NULL !== $prevUid) {
+			$pages['prev'] = $menuData[$prevUid];
+		}
+		if (TRUE === (boolean)$this->arguments['renderUp']) {
 			$pages['up'] = $parentPage;
 		}
-		$pages['next'] = $menuData[$nextUid];
-		if (TRUE === (boolean) $this->arguments['renderLast']) {
+		if (NULL !== $nextUid) {
+			$pages['next'] = $menuData[$nextUid];
+		}
+		if (TRUE === (boolean)$this->arguments['renderLast']) {
 			$pages['last'] = $menuData[$lastUid];
 		}
 		$menuItems = $this->parseMenu($pages, $rootLineData);
 		$menu = array();
 		if (TRUE === isset($pages['first'])) {
-			$menu['first'] = $menuItems[$firstUid];
+			$menu['first'] = $menuItems['first'];
 			$menu['first']['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menuItems[$firstUid]);
 		}
 		if (TRUE === isset($pages['prev'])) {
-			$menu['prev'] = $menuItems[$prevUid];
+			$menu['prev'] = $menuItems['prev'];
 			$menu['prev']['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menuItems[$prevUid]);
 		}
 		if (TRUE === isset($pages['up'])) {
-			$menu['up'] = $menuItems[$parentUid];
+			$menu['up'] = $menuItems['up'];
 			$menu['up']['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menuItems[$parentUid]);
 		}
 		if (TRUE === isset($pages['next'])) {
-			$menu['next'] = $menuItems[$nextUid];
+			$menu['next'] = $menuItems['next'];
 			$menu['next']['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menuItems[$nextUid]);
 		}
 		if (TRUE === isset($pages['last'])) {
-			$menu['last'] = $menuItems[$lastUid];
+			$menu['last'] = $menuItems['last'];
 			$menu['last']['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menuItems[$lastUid]);
 		}
 		$this->backupVariables();
@@ -141,7 +152,7 @@ class Tx_Vhs_ViewHelpers_Page_Menu_BrowseViewHelper extends Tx_Vhs_ViewHelpers_P
 	 */
 	protected function getCustomLabelOrPageTitle($labelName, $pageRecord) {
 		$title = $this->arguments[$labelName];
-		if ($this->arguments['usePageTitles']) {
+		if (TRUE === $this->arguments['usePageTitles']) {
 			$title = $this->getItemTitle($pageRecord);
 		}
 		return $title;

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -60,7 +61,7 @@
  *         <!-- assume that the variable {badJson} contains the string "DontDecodeMe"
  *              which if course is invalid JSON and cannot be decoded. The default
  *              behavior is to simply output a simple "cannot decode" string. -->
- *         <v:var.set name="decodedBadJson" value="{badJson -> v:format.json.decode()}" />
+ *         <v:variable.set name="decodedBadJson" value="{badJson -> v:format.json.decode()}" />
  *         Displayed only if the JSON decode worked. Much more code and many more
  *         ViewHelpers can go here. Now, imagine that this block spans so much code
  *         that potentially there could come an Exception from many additional places
@@ -98,7 +99,10 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_TryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
+class TryViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * @return mixed
@@ -109,9 +113,9 @@ class Tx_Vhs_ViewHelpers_TryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\
 			if (TRUE === empty($content)) {
 				$content = $this->renderChildren();
 			}
-		} catch (Exception $error) {
+		} catch (\Exception $error) {
 			$variables = array('exception' => $error);
-			$content = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $content;
 	}

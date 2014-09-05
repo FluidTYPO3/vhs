@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Creates chunks from an input Array/Traversable with option to allocate items to a fixed number of chunks
@@ -30,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ChunkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ChunkViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Render method
@@ -39,28 +43,40 @@ class Tx_Vhs_ViewHelpers_Iterator_ChunkViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 * @param boolean $fixed Whether to allocate items to a fixed number of chunks or not
 	 * @param mixed $subject The subject Traversable/Array instance to shift
 	 * @param string $as If specified, inserts a template variable with this name, then renders the child content, then removes the variable
-	 * @throws Exception
+	 * @param boolean $preserveKeys If set to true, the original array keys will be preserved in the chunks
+	 * @throws \Exception
 	 * @return array
 	 */
-	public function render($count, $fixed = FALSE, $subject = NULL, $as = NULL) {
+	public function render($count, $fixed = FALSE, $subject = NULL, $as = NULL, $preserveKeys = FALSE) {
 		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
-		if (TRUE === $subject instanceof Traversable) {
+		if (TRUE === $subject instanceof \Traversable) {
 			$subject = iterator_to_array($subject, TRUE);
 		} elseif (FALSE === is_array($subject)) {
-			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
+			throw new \Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
-		if (TRUE === $fixed) {
+		$output = array();
+		if (0 >= $count) {
+			return $output;
+		}
+		if (TRUE === (boolean) $fixed) {
 			$subjectSize = count($subject);
-			$chunkSize = ceil($subjectSize / $count);
-			$output = array_chunk($subject, $chunkSize);
+			if (0 < $subjectSize) {
+				$chunkSize = ceil($subjectSize / $count);
+				$output = array_chunk($subject, $chunkSize, $preserveKeys);
+			}
+			// Fill the resulting array with empty items to get the desired element count
+			$elementCount = count($output);
+			if ($elementCount < $count) {
+				$output += array_fill($elementCount, $count - $elementCount, NULL);
+			}
 		} else {
-			$output = array_chunk($subject, $count);
+			$output = array_chunk($subject, $count, $preserveKeys);
 		}
 		if (NULL !== $as) {
 			$variables = array($as => $output);
-			$output = Tx_Vhs_Utility_ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
 		}
 		return $output;
 	}

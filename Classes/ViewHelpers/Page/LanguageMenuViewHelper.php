@@ -1,27 +1,31 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2014 Dominic Garms <djgarms@gmail.com>, DMFmedia GmbH
-*
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-* ************************************************************* */
+ *  Copyright notice
+ *
+ *  (c) 2014 Dominic Garms <djgarms@gmail.com>, DMFmedia GmbH
+ *
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper for rendering TYPO3 menus in Fluid
@@ -31,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers/Page
  */
-class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
 	 * @var array
@@ -49,7 +53,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 	protected $tagName = 'ul';
 
 	/**
-	 * @var	\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $cObj;
 
@@ -73,6 +77,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 		$this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', FALSE, TRUE);
 		$this->registerArgument('classCurrent', 'string', 'Sets the class, by which the current language will be marked', FALSE, 'current');
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'languageMenu');
+		$this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', FALSE, 0);
 	}
 
 	/**
@@ -84,7 +89,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 		if (FALSE === is_object($GLOBALS['TSFE']->sys_page)) {
 			return NULL;
 		}
-		$this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+		$this->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 		$this->tagName = $this->arguments['tagName'];
 
 		// to set the tagName we should call initialize()
@@ -94,7 +99,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 		$this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
 		$content = $this->renderChildren();
 		$this->templateVariableContainer->remove($this->arguments['as']);
-		if (strlen(trim($content)) === 0) {
+		if (0 === strlen(trim($content))) {
 			$content = $this->autoRender($this->languageMenu);
 		}
 		return $content;
@@ -118,7 +123,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 	/**
 	 * Get layout 0 (default): list
 	 *
-	 * @return	string
+	 * @return    string
 	 */
 	protected function getLanguageMenu() {
 		$tagName = $this->arguments['tagNameChildren'];
@@ -138,7 +143,7 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 				$classes[] = 'last';
 			}
 			if (0 < count($classes)) {
-				$class = ' class="' . implode(' ', $classes) .'" ';
+				$class = ' class="' . implode(' ', $classes) . '" ';
 			}
 			if (TRUE === (boolean) $var['current'] && FALSE === (boolean) $this->arguments['linkCurrent']) {
 				$html[] = '<' . $tagName . $class . '>' . $this->getLayout($var) . '</' . $tagName . '>';
@@ -180,13 +185,13 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 				break;
 			case 'name,flag':
 				$html = $label;
-				if ($flagImage) {
+				if ('' !== $flagImage) {
 					$html .= '&nbsp;' . $flagImage;
 				}
 				break;
 			case 'flag,name':
 			default:
-				if ($flagImage) {
+				if ('' !== $flagImage) {
 					$html = $flagImage . '&nbsp;' . $label;
 				} else {
 					$html = $label;
@@ -216,8 +221,8 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 	 * @return array
 	 */
 	protected function parseLanguageMenu() {
-		$order = ($this->arguments['order']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
-		$labelOverwrite = ($this->arguments['labelOverwrite']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']) : '';
+		$order = $this->arguments['order'] ? GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
+		$labelOverwrite = $this->arguments['labelOverwrite'] ? GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']) : '';
 
 		$tempArray = $languageMenu = array();
 
@@ -238,8 +243,8 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 			);
 		}
 
-			// reorders languageMenu
-		if (!empty($order)) {
+		// reorders languageMenu
+		if (FALSE === empty($order)) {
 			foreach ($order as $value) {
 				$languageMenu[$value] = $tempArray[$value];
 			}
@@ -247,8 +252,8 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 			$languageMenu = $tempArray;
 		}
 
-			// overwrite of label
-		if (!empty($labelOverwrite)) {
+		// overwrite of label
+		if (FALSE === empty($labelOverwrite)) {
 			$i = 0;
 			foreach ($languageMenu as $key => $value) {
 				$languageMenu[$key]['label'] = $labelOverwrite[$i];
@@ -256,27 +261,27 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 			}
 		}
 
-			// Select all pages_language_overlay records on the current page. Each represents a possibility for a language.
+		// Select all pages_language_overlay records on the current page. Each represents a possibility for a language.
 		$pageArray = array();
 		$table = 'pages_language_overlay';
-		$whereClause = 'pid=' . $GLOBALS['TSFE']->id . ' ';
+		$whereClause = 'pid=' . $this->getPageUid() . ' ';
 		$whereClause .= $GLOBALS['TSFE']->sys_page->enableFields($table);
 		$sysLang = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('DISTINCT sys_language_uid', $table, $whereClause);
 
-		if (!empty($sysLang)) {
+		if (FALSE === empty($sysLang)) {
 			foreach ($sysLang as $val) {
 				$pageArray[$val['sys_language_uid']] = $val['sys_language_uid'];
 			}
 		}
 
 		foreach ($languageMenu as $key => $value) {
-			$current = ($GLOBALS['TSFE']->sys_language_uid == $key) ? 1 : 0;
-			$inactive = ($pageArray[$key] || $key == $this->defaultLangUid) ? 0 : 1;
+			$current = $GLOBALS['TSFE']->sys_language_uid === (integer) $key ? 1 : 0;
+			$inactive = $pageArray[$key] || (integer) $key === $this->defaultLangUid ? 0 : 1;
 			$languageMenu[$key]['current'] = $current;
 			$languageMenu[$key]['inactive'] = $inactive;
-			$languageMenu[$key]['url'] = ($current) ? \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') : $this->getLanguageUrl($key, $inactive);
+			$languageMenu[$key]['url'] = TRUE === (boolean) $current ? GeneralUtility::getIndpEnv('REQUEST_URI') : $this->getLanguageUrl($key, $inactive);
 			$languageMenu[$key]['flagSrc'] = $this->getLanguageFlagSrc($value['flag']);
-			if ($this->arguments['hideNotTranslated'] && $inactive) {
+			if (TRUE === (boolean) $this->arguments['hideNotTranslated'] && TRUE === (boolean) $inactive) {
 				unset($languageMenu[$key]);
 			}
 		}
@@ -291,19 +296,32 @@ class Tx_Vhs_ViewHelpers_Page_LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Co
 	 * @return string
 	 */
 	protected function getLanguageUrl($uid) {
-		$getValues = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+		$getValues = GeneralUtility::_GET();
 		$getValues['L'] = $uid;
-		$currentPage =  $GLOBALS['TSFE']->id;
 		unset($getValues['id']);
 		unset($getValues['cHash']);
 		$addParams = http_build_query($getValues);
 		$config = array(
-			'parameter' => $currentPage,
+			'parameter' => $this->getPageUid(),
 			'returnLast' => 'url',
 			'additionalParams' => '&' . $addParams,
 			'useCacheHash' => $this->arguments['useCHash']
 		);
 		return $this->cObj->typoLink('', $config);
+	}
+
+	/**
+	 * Get page via pageUid argument or current id
+	 *
+	 * @return integer
+	 */
+	protected function getPageUid() {
+		$pageUid = (integer) $this->arguments['pageUid'];
+		if (0 === $pageUid) {
+			$pageUid = $GLOBALS['TSFE']->id;
+		}
+
+		return (integer) $pageUid;
 	}
 
 }

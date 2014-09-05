@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Renders HTML code to embed a HTML5 video player. NOTICE: This is
@@ -38,7 +41,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_AbstractMediaTagViewHelper {
+class VideoViewHelper extends AbstractMediaTagViewHelper {
 
 	/**
 	 * @var string
@@ -77,18 +80,19 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 		$this->registerArgument('muted', 'boolean', 'Specifies that the audio output of the video should be muted.', FALSE, FALSE);
 		$this->registerArgument('poster', 'string', 'Specifies an image to be shown while the video is downloading, or until the user hits the play button.', FALSE, NULL);
 		$this->registerArgument('preload', 'string', 'Specifies if and how the author thinks the video should be loaded when the page loads. Can be "auto", "metadata" or "none".', FALSE, 'auto');
+		$this->registerArgument('unsupported', 'string', 'Add a message for old browsers like Internet Explorer 9 without video support.', FALSE);
 	}
 
 	/**
 	 * Render method
 	 *
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return string
 	 */
 	public function render() {
 		$sources = $this->getSourcesFromArgument();
 		if (0 === count($sources)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('No video sources provided.', 1359382189);
+			throw new Exception('No video sources provided.', 1359382189);
 		}
 		foreach ($sources as $source) {
 			if (TRUE === is_string($source)) {
@@ -96,16 +100,16 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 					$src = $source;
 					$type = substr($source, strrpos($source, '.') + 1);
 				} else {
-					$src = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($source), strlen(PATH_site));
+					$src = substr(GeneralUtility::getFileAbsFileName($source), strlen(PATH_site));
 					$type = pathinfo($src, PATHINFO_EXTENSION);
 				}
 			} elseif (TRUE === is_array($source)) {
 				if (FALSE === isset($source['src'])) {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "src" in sources array.', 1359381250);
+					throw new Exception('Missing value for "src" in sources array.', 1359381250);
 				}
 				$src = $source['src'];
 				if (FALSE === isset($source['type'])) {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('Missing value for "type" in sources array.', 1359381255);
+					throw new Exception('Missing value for "type" in sources array.', 1359381255);
 				}
 				$type = $source['type'];
 			} else {
@@ -113,7 +117,7 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 				continue;
 			}
 			if (FALSE === in_array(strtolower($type), $this->validTypes)) {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid video type "' . $type . '".', 1359381260);
+					throw new Exception('Invalid video type "' . $type . '".', 1359381260);
 			}
 			$type = $this->mimeTypesMap[$type];
 			$src = $this->preprocessSourceUri($src);
@@ -143,6 +147,10 @@ class Tx_Vhs_ViewHelpers_Media_VideoViewHelper extends Tx_Vhs_ViewHelpers_Media_
 			$tagAttributes['poster'] = $this->arguments['poster'];
 		}
 		$this->tag->addAttributes($tagAttributes);
+		if (NULL !== $this->arguments['unsupported']) {
+			$this->tag->setContent($this->tag->getContent() . LF . $this->arguments['unsupported']);
+		}
 		return $this->tag->render();
 	}
+
 }

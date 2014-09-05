@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+
 /**
  * Converts the JSON encoded argument into a PHP variable
  *
@@ -30,11 +34,11 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format\Json
  */
-class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DecodeViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param string $json
-	 * @throws Tx_Fluid_Core_ViewHelper_Exception
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public function render($json = NULL) {
@@ -48,9 +52,10 @@ class Tx_Vhs_ViewHelpers_Format_Json_DecodeViewHelper extends \TYPO3\CMS\Fluid\C
 		$value = json_decode($json, TRUE);
 
 		if (JSON_ERROR_NONE !== json_last_error()) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('The provided argument is invalid JSON.', 1358440054);
+			throw new Exception('The provided argument is invalid JSON.', 1358440054);
 		}
 
 		return $value;
 	}
+
 }

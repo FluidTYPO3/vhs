@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns the extension of the provided file
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ExtensionViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments.
@@ -39,7 +42,7 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends \TYPO3\CMS\Fluid\Core
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('file', 'string', 'Path to the file to determine extension for.', TRUE);
+		$this->registerArgument('file', 'string', 'Path to the file to determine extension for.', FALSE);
 	}
 
 	/**
@@ -49,20 +52,20 @@ class Tx_Vhs_ViewHelpers_Media_ExtensionViewHelper extends \TYPO3\CMS\Fluid\Core
 
 		$filePath = $this->arguments['file'];
 
-		if ($filePath === NULL) {
+		if (TRUE === empty($filePath)) {
 			$filePath = $this->renderChildren();
 
-			if ($filePath === NULL) {
+			if (NULL === $filePath) {
 				return '';
 			}
 		}
 
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($filePath);
+		$file = GeneralUtility::getFileAbsFileName($filePath);
 
 		$parts = explode('.', basename($file));
 
 		// file has no extension
-		if (count($parts) == 1) {
+		if (1 === count($parts)) {
 			return '';
 		}
 

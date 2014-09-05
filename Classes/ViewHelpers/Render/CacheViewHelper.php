@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Render;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -59,12 +61,12 @@
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Render_AbstractRenderViewHelper {
+class CacheViewHelper extends AbstractRenderViewHelper {
 
 	const ID_SEPARATOR = '-';
 
 	/**
-	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\StringFrontend
 	 */
 	protected $cache;
 
@@ -72,7 +74,7 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 * @return void
 	 */
 	public function initialize() {
-		$this->cache = $GLOBALS['typo3CacheManager']->getCache('extbase_object');
+		$this->cache = $GLOBALS['typo3CacheManager']->getCache('vhs_main');
 	}
 
 	/**
@@ -81,25 +83,25 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 * @param mixed $identity Identifier for the cached content (usage preferred)
 	 * @param mixed $content Value to be cached
 	 * @return mixed
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function render($identity, $content = NULL) {
-		if (ctype_alnum(preg_replace('/[\-_]/i', '', $identity)) === FALSE) {
-			if ($identity instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+		if (FALSE === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
+			if (TRUE === $identity instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				$identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
-			} elseif (method_exists($identity, '__toString')) {
+			} elseif (TRUE === method_exists($identity, '__toString')) {
 				$identity = (string) $identity;
 			} else {
-				throw new RuntimeException(
+				throw new \RuntimeException(
 					'Parameter $identity for Render/CacheViewHelper was not a string or a string-convertible object',
 					1352581782
 				);
 			}
 		}
-		if ($this->has($identity)) {
+		if (TRUE === $this->has($identity)) {
 			return $this->retrieve($identity);
 		}
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 		$this->store($content, $identity);
@@ -111,7 +113,7 @@ class Tx_Vhs_ViewHelpers_Render_CacheViewHelper extends Tx_Vhs_ViewHelpers_Rende
 	 * @return boolean
 	 */
 	protected function has($id) {
-		return $this->cache->has(get_class($this) . self::ID_SEPARATOR . $id);
+		return (boolean) $this->cache->has(get_class($this) . self::ID_SEPARATOR . $id);
 	}
 
 	/**

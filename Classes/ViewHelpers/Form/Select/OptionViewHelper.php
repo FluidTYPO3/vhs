@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Form\Select;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
  * Option ViewHelper to use under vhs:form.select
@@ -30,7 +32,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Form\Select
  */
-class Tx_Vhs_ViewHelpers_Form_Select_OptionViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class OptionViewHelper extends AbstractFormFieldViewHelper {
 
 	/**
 	 * @var string
@@ -49,39 +51,39 @@ class Tx_Vhs_ViewHelpers_Form_Select_OptionViewHelper extends Tx_Fluid_ViewHelpe
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return string
 	 */
 	public function render() {
-		if (!$this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'options')) {
-			throw new Exception('Options can only be added inside select tags, optionally inside optgroup tag(s) inside the select tag', 1313937196);
+		if (!$this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options')) {
+			throw new \Exception('Options can only be added inside select tags, optionally inside optgroup tag(s) inside the select tag', 1313937196);
 		}
-		if ($this->arguments['selected']) {
+		if (TRUE === (boolean) $this->arguments['selected']) {
 			$selected = 'selected';
-		} else if ($this->viewHelperVariableContainer->exists('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'value')) {
-			$value = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'value');
-			if (is_object($this->arguments['value']) === FALSE && is_array($this->arguments['value']) === FALSE) {
-				if (is_array($value)) {
-					$selected = in_array($this->arguments['value'], $value) ? 'selected' : '';
+		} else if (TRUE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value')) {
+			$value = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value');
+			if (FALSE === is_object($this->arguments['value']) && FALSE === is_array($this->arguments['value'])) {
+				if (TRUE === is_array($value)) {
+					$selected = TRUE === in_array($this->arguments['value'], $value) ? 'selected' : '';
 				} else {
 					$selected = (string) $this->arguments['value'] == (string) $value ? 'selected' : '';
 				}
 			}
-			if (is_array($this->arguments['value'])) {
-				$selected = in_array($this->arguments['value'], $value) ? 'selected' : '';
+			if (TRUE === is_array($this->arguments['value'])) {
+				$selected = TRUE === in_array($this->arguments['value'], $value) ? 'selected' : '';
 			}
 		}
 		$tagContent = $this->renderChildren();
-		$options = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'options');
+		$options = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options');
 		$options[$tagContent] = $this->arguments['value'];
-		$this->viewHelperVariableContainer->addOrUpdate('Tx_Vhs_ViewHelpers_Form_SelectViewHelper', 'options', $options);
-		if ($selected) {
+		$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', $options);
+		if (FALSE === empty($selected)) {
 			$this->tag->addAttribute('selected', 'selected');
 		} else {
 			$this->tag->removeAttribute('selected');
 		}
 		$this->tag->setContent($tagContent);
-		if (isset($this->arguments['value'])) {
+		if (TRUE === isset($this->arguments['value'])) {
 			$this->tag->addAttribute('value', $this->arguments['value']);
 		}
 		return $this->tag->render();

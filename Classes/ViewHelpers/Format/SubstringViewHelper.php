@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Gets a substring from a string or string-compatible value
  *
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_SubstringViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class SubstringViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Substrings a string or string-compatible value
@@ -41,10 +44,10 @@ class Tx_Vhs_ViewHelpers_Format_SubstringViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * @return string
 	 */
 	public function render($content = NULL, $start = 0, $length = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-		if ($length !== NULL) {
+		if (NULL !== $length) {
 			return substr($content, $start, $length);
 		}
 		return substr($content, $start);

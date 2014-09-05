@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * File/Directory Exists Condition ViewHelper
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+class ExistsViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -50,17 +53,17 @@ class Tx_Vhs_ViewHelpers_Media_ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\Vi
 	 */
 	public function render() {
 
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->arguments['file']);
+		$file = GeneralUtility::getFileAbsFileName($this->arguments['file']);
 		$directory = $this->arguments['directory'];
 
 		$evaluation = FALSE;
-		if (isset($this->arguments['file'])) {
-			$evaluation = (file_exists($file) || file_exists(constant('PATH_site') . $file)) && is_file($file);
-		} elseif (isset($this->arguments['directory'])) {
-			$evaluation = (is_dir($directory) || is_dir(constant('PATH_site') . $directory));
+		if (TRUE === isset($this->arguments['file'])) {
+			$evaluation = (boolean) ((TRUE === file_exists($file) || TRUE === file_exists(constant('PATH_site') . $file)) && TRUE === is_file($file));
+		} elseif (TRUE === isset($this->arguments['directory'])) {
+			$evaluation = (boolean) (TRUE === is_dir($directory) || TRUE === is_dir(constant('PATH_site') . $directory));
 		}
 
-		if ($evaluation !== FALSE) {
+		if (FALSE !== $evaluation) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();

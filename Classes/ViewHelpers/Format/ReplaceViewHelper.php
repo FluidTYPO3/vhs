@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Replaces $substring in $content with $replacement.
  *
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_ReplaceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ReplaceViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param string $substring
@@ -40,7 +43,7 @@ class Tx_Vhs_ViewHelpers_Format_ReplaceViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 * @return string
 	 */
 	public function render($substring, $content = NULL, $replacement = '', $count = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 		return str_replace($substring, $replacement, $content, $count);

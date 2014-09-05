@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,28 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class Tx_Vhs_ViewHelpers_Iterator_NextViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class NextViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @test
+	 */
+	public function returnsNextElement() {
+		$array = array('a', 'b', 'c');
+		next($array);
+		$arguments = array(
+			'haystack' => $array,
+			'needle' => 'b',
+		);
+		$output = $this->executeViewHelper($arguments);
+		$this->assertEquals('c', $output);
+	}
 
 	/**
 	 * @test

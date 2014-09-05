@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +41,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class Tx_Vhs_ViewHelpers_Page_Menu_SubViewHelper extends Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper {
+class SubViewHelper extends AbstractMenuViewHelper {
 
 	/**
 	 * @return void
@@ -67,18 +69,18 @@ class Tx_Vhs_ViewHelpers_Page_Menu_SubViewHelper extends Tx_Vhs_ViewHelpers_Page
 		// rendered - which is expected for example if using a page setting to render a different page in menus.
 		// This means that the following check although it appears redundant, it is in fact not.
 		$isCurrent = $this->isCurrent($pageUid);
-		$isExpanded = (TRUE === isset($parentArguments['expandAll']) && 0 < $parentArguments['expandAll']);
-		$shouldRender = (TRUE === $isActive || TRUE === $isCurrent || TRUE === $isExpanded);
+		$isExpanded = (boolean) (TRUE === (boolean) $parentArguments['expandAll']);
+		$shouldRender = (boolean) (TRUE === $isActive || TRUE === $isCurrent || TRUE === $isExpanded);
 		if (FALSE === $shouldRender) {
 			return '';
 		}
 		// retrieve the set of template variables which were in play when the parent menu VH started rendering.
-		$variables = $this->viewHelperVariableContainer->get('Tx_Vhs_ViewHelpers_Page_Menu_AbstractMenuViewHelper', 'variables');
+		$variables = $this->viewHelperVariableContainer->get('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
 		$parentInstance->setOriginal(FALSE);
 		$content = $parentInstance->render();
 		// restore the previous set of variables after they most likely have changed during the render() above.
 		foreach ($variables as $name => $value) {
-			if ($this->templateVariableContainer->exists($name)) {
+			if (TRUE === $this->templateVariableContainer->exists($name)) {
 				$this->templateVariableContainer->remove($name);
 				$this->templateVariableContainer->add($name, $value);
 			}

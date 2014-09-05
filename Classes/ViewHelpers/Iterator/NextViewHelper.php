@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
 
 /**
  * Returns next element in array $haystack from position of $needle
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_NextViewHelper extends Tx_Vhs_ViewHelpers_If_Iterator_ContainsViewHelper {
+class NextViewHelper extends ContainsViewHelper {
 
 	/**
 	 * Render method
@@ -39,7 +42,7 @@ class Tx_Vhs_ViewHelpers_Iterator_NextViewHelper extends Tx_Vhs_ViewHelpers_If_I
 	 */
 	public function render() {
 		parent::render();
-		return $this->getNeedleAtIndex($this->evaluation !== FALSE ? $this->evaluation + 1 : - 1);
+		return $this->getNeedleAtIndex($this->evaluation !== FALSE ? $this->evaluation + 1 : -1);
 	}
 
 }

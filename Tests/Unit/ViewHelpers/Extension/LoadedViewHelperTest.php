@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
+ * @subpackage ViewHelpers\Extension
  */
-class Tx_Vhs_ViewHelpers_Extension_LoadedViewHelperTest extends Tx_Vhs_ViewHelpers_AbstractViewHelperTest {
+class LoadedViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test

@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Merges arrays/Traversables $a and $b into an array
@@ -30,7 +35,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class MergeViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Merges arrays/Traversables $a and $b into an array
@@ -42,9 +47,9 @@ class Tx_Vhs_ViewHelpers_Iterator_MergeViewHelper extends \TYPO3\CMS\Fluid\Core\
 	 */
 	public function render($a, $b, $useKeys = TRUE) {
 		$this->useKeys = (boolean) $useKeys;
-		$a = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
-		$b = Tx_Vhs_Utility_ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
-		$merged = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($a, $b);
+		$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
+		$b = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
+		$merged = GeneralUtility::array_merge_recursive_overrule($a, $b);
 		return $merged;
 	}
 

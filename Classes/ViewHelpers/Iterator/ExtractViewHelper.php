@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Iterator / Extract VieWHelper
@@ -38,7 +43,7 @@
  * #### Input from extbase version of indexed_search">
  *
  *     array(
- *	       0 => array(
+ *           0 => array(
  *             'sword' => 'firstWord',
  *             'oper' => 'AND'
  *         ),
@@ -83,11 +88,11 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ExtractViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param string $key
-	 * @param Traversable $content
+	 * @param \Traversable $content
 	 * @param boolean $recursive
 	 * @return array
 	 */
@@ -101,8 +106,8 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends \TYPO3\CMS\Fluid\Cor
 			} else {
 				$result = $this->extractByKey($content, $key);
 			}
-		} catch (Exception $error) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($error->getMessage(), 'vhs', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+		} catch (\Exception $error) {
+			GeneralUtility::sysLog($error->getMessage(), 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			$result = array();
 		}
 
@@ -112,17 +117,17 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends \TYPO3\CMS\Fluid\Cor
 	/**
 	 * Extract by key
 	 *
-	 * @param Traversable $iterator
+	 * @param \Traversable $iterator
 	 * @param string $key
 	 * @return mixed NULL or whatever we found at $key
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function extractByKey($iterator, $key) {
-		if (FALSE === is_array($iterator) && FALSE === $iterator instanceof Traversable) {
-			throw new Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
+		if (FALSE === is_array($iterator) && FALSE === $iterator instanceof \Traversable) {
+			throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
 		}
 
-		$result = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($iterator, $key);
+		$result = ObjectAccess::getPropertyPath($iterator, $key);
 
 		return $result;
 	}
@@ -130,20 +135,20 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends \TYPO3\CMS\Fluid\Cor
 	/**
 	 * Recursively extract the key
 	 *
-	 * @param Traversable $iterator
+	 * @param \Traversable $iterator
 	 * @param string $key
 	 * @return string
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function recursivelyExtractKey($iterator, $key) {
 		$content = array();
 
 		foreach ($iterator as $k => $v) {
 			// Lets see if we find something directly:
-			$result = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($v, $key);
+			$result = ObjectAccess::getPropertyPath($v, $key);
 			if (NULL !== $result) {
 				$content[] = $result;
-			} elseif (TRUE === is_array($v) || TRUE === $v instanceof Traversable) {
+			} elseif (TRUE === is_array($v) || TRUE === $v instanceof \Traversable) {
 				$content[] = $this->recursivelyExtractKey($v, $key);
 			}
 		}
@@ -162,7 +167,7 @@ class Tx_Vhs_ViewHelpers_Iterator_ExtractViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	public function flattenArray(array $content, $flattened = NULL) {
 		foreach ($content as $sub) {
-			if (is_array($sub)) {
+			if (TRUE === is_array($sub)) {
 				$flattened = $this->flattenArray($sub, $flattened);
 			} else {
 				$flattened[] = $sub;

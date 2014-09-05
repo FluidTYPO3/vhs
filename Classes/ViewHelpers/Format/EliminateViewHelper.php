@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Character/string/whitespace elimination ViewHelper
  *
@@ -33,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class EliminateViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -58,34 +61,34 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 * @return string
 	 */
 	public function render($content = NULL) {
-		if ($content === NULL) {
+		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-		if ($this->arguments['characters']) {
+		if (TRUE === isset($this->arguments['characters'])) {
 			$content = $this->eliminateCharacters($content, $this->arguments['characters']);
 		}
-		if ($this->arguments['strings']) {
+		if (TRUE === isset($this->arguments['strings'])) {
 			$content = $this->eliminateStrings($content, $this->arguments['strings']);
 		}
-		if ($this->arguments['whitespace']) {
+		if (TRUE === $this->arguments['whitespace']) {
 			$content = $this->eliminateWhitespace($content);
 		}
-		if ($this->arguments['tabs']) {
+		if (TRUE === $this->arguments['tabs']) {
 			$content = $this->eliminateTabs($content);
 		}
-		if ($this->arguments['unixBreaks']) {
+		if (TRUE === $this->arguments['unixBreaks']) {
 			$content = $this->eliminateUnixBreaks($content);
 		}
-		if ($this->arguments['windowsBreaks']) {
+		if (TRUE === $this->arguments['windowsBreaks']) {
 			$content = $this->eliminateWindowsCarriageReturns($content);
 		}
-		if ($this->arguments['digits']) {
+		if (TRUE === $this->arguments['digits']) {
 			$content = $this->eliminateDigits($content);
 		}
-		if ($this->arguments['letters']) {
+		if (TRUE === $this->arguments['letters']) {
 			$content = $this->eliminateLetters($content);
 		}
-		if ($this->arguments['nonAscii']) {
+		if (TRUE === $this->arguments['nonAscii']) {
 			$content = $this->eliminateNonAscii($content);
 		}
 		return $content;
@@ -98,13 +101,13 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	protected function eliminateCharacters($content, $characters) {
 		$caseSensitive = (boolean) $this->arguments['caseSensitive'];
-		if (is_array($characters)) {
+		if (TRUE === is_array($characters)) {
 			$subjects = $characters;
 		} else {
 			$subjects = str_split($characters);
 		}
 		foreach ($subjects as $subject) {
-			if ($caseSensitive) {
+			if (TRUE === $caseSensitive) {
 				$content = str_replace($subject, '', $content);
 			} else {
 				$content = str_ireplace($subject, '', $content);
@@ -120,13 +123,13 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	protected function eliminateStrings($content, $strings) {
 		$caseSensitive = (boolean) $this->arguments['caseSensitive'];
-		if (is_array($strings)) {
+		if (TRUE === is_array($strings)) {
 			$subjects = $strings;
 		} else {
 			$subjects = explode(',', $strings);
 		}
 		foreach ($subjects as $subject) {
-			if ($caseSensitive) {
+			if (TRUE === $caseSensitive) {
 				$content = str_replace($subject, '', $content);
 			} else {
 				$content = str_ireplace($subject, '', $content);
@@ -186,7 +189,7 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	protected function eliminateLetters($content) {
 		$caseSensitive = (boolean) $this->arguments['caseSensitive'];
-		if ($caseSensitive) {
+		if (TRUE === $caseSensitive) {
 			$content = preg_replace('#[a-z]#', '', $content);
 		} else {
 			$content = preg_replace('/[a-z]/i', '', $content);
@@ -200,7 +203,8 @@ class Tx_Vhs_ViewHelpers_Format_EliminateViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	protected function eliminateNonAscii($content) {
 		$caseSensitive = (boolean) $this->arguments['caseSensitive'];
-		$content = preg_replace('/[^(\x20-\x7F)]*/' . ($caseSensitive ? 'i' : ''), '', $content);
+		$caseSensitiveIndicator = TRUE === $caseSensitive ? 'i' : '';
+		$content = preg_replace('/[^(\x20-\x7F)]*/' . $caseSensitiveIndicator, '', $content);
 		return $content;
 	}
 

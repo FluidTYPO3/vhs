@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders HTML code to embed a video from YouTube
@@ -30,21 +32,21 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class YoutubeViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
 	 * Base url
 	 *
 	 * @var string
 	 */
-	const YOUTUBE_BASEURL = 'http://www.youtube.com';
+	const YOUTUBE_BASEURL = '//www.youtube.com';
 
 	/**
 	 * Base url for extended privacy
 	 *
 	 * @var string
 	 */
-	const YOUTUBE_PRIVACY_BASEURL = 'http://www.youtube-nocookie.com';
+	const YOUTUBE_PRIVACY_BASEURL = '//www.youtube-nocookie.com';
 
 	/**
 	 * @var string
@@ -168,4 +170,5 @@ class Tx_Vhs_ViewHelpers_Media_YoutubeViewHelper extends \TYPO3\CMS\Fluid\Core\V
 
 		return $childTag;
 	}
+
 }

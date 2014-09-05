@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -42,7 +44,10 @@
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewHelper {
+use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
+class LViewHelper extends TranslateViewHelper {
 
 	/**
 	 * Render method
@@ -55,30 +60,30 @@ class Tx_Vhs_ViewHelpers_LViewHelper extends Tx_Fluid_ViewHelpers_TranslateViewH
 			$id = $this->arguments['key'];
 		}
 		$default = $this->arguments['default'];
-		$htmlEscape = $this->arguments['htmlEscape'];
+		$htmlEscape = (boolean) $this->arguments['htmlEscape'];
 		$arguments = $this->arguments['arguments'];
 		$extensionName = $this->arguments['extensionName'];
-		if (NULL === $id) {
+		if (TRUE === empty($id)) {
 			$id = $this->renderChildren();
 		}
-		if (NULL === $default) {
+		if (TRUE === empty($default)) {
 			$default = $id;
 		}
-		if (NULL === $extensionName) {
-			if (method_exists($this, 'getControllerContext')) {
+		if (TRUE === empty($extensionName)) {
+			if (TRUE === method_exists($this, 'getControllerContext')) {
 				$request = $this->getControllerContext()->getRequest();
 			} else {
     			$request = $this->controllerContext->getRequest();
 			}
 			$extensionName = $request->getControllerExtensionName();
 		}
-		$value = Tx_Extbase_Utility_Localization::translate($id, $extensionName, $arguments);
-		if (NULL === $value) {
+		$value = LocalizationUtility::translate($id, $extensionName, $arguments);
+		if (TRUE === empty($value)) {
 			$value = $default;
-			if (is_array($arguments)) {
+			if (TRUE === is_array($arguments)) {
 				$value = vsprintf($value, $arguments);
 			}
-		} elseif ($htmlEscape) {
+		} elseif (TRUE === $htmlEscape) {
 			$value = htmlspecialchars($value);
 		}
 		return $value;

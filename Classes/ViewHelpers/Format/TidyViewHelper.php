@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Tidy-processes a string (HTML source), applying proper
  * indentation.
@@ -31,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class Tx_Vhs_ViewHelpers_Format_TidyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TidyViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var boolean
@@ -49,7 +52,7 @@ class Tx_Vhs_ViewHelpers_Format_TidyViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 	 * Trims content, then trims each line of content
 	 *
 	 * @param string $content
-	 * @throws Exception
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	public function render($content = NULL) {
@@ -61,7 +64,7 @@ class Tx_Vhs_ViewHelpers_Format_TidyViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 			$tidy->cleanRepair();
 			return (string) $tidy;
 		}
-		throw new RuntimeException('TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.', 1352059753);
+		throw new \RuntimeException('TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.', 1352059753);
 	}
 
 }

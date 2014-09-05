@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Extension: Loaded (Condition) ViewHelper
@@ -32,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Extension
  */
-class Tx_Vhs_ViewHelpers_Extension_LoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+class LoadedViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -49,9 +53,9 @@ class Tx_Vhs_ViewHelpers_Extension_LoadedViewHelper extends \TYPO3\CMS\Fluid\Cor
 	 */
 	public function render() {
 		$extensionName = $this->arguments['extensionName'];
-		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-		$isLoaded = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
-		if ($isLoaded !== FALSE) {
+		$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+		$isLoaded = ExtensionManagementUtility::isLoaded($extensionKey);
+		if (TRUE === $isLoaded) {
 			return $this->renderThenChild();
 		} else {
 			return $this->renderElseChild();

@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Once;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -43,13 +45,13 @@
  * @package Vhs
  * @subpackage ViewHelpers\Once
  */
-class Tx_Vhs_ViewHelpers_Once_InstanceViewHelper extends Tx_Vhs_ViewHelpers_Once_AbstractOnceViewHelper {
+class InstanceViewHelper extends AbstractOnceViewHelper {
 
 	/**
 	 * @return string
 	 */
 	protected function getIdentifier() {
-		if (isset($this->arguments['identifier']) === TRUE && $this->arguments['identifier'] !== NULL) {
+		if (TRUE === isset($this->arguments['identifier']) && NULL !== $this->arguments['identifier']) {
 			return $this->arguments['identifier'];
 		}
 		$request = $this->controllerContext->getRequest();
@@ -68,7 +70,7 @@ class Tx_Vhs_ViewHelpers_Once_InstanceViewHelper extends Tx_Vhs_ViewHelpers_Once
 	protected function storeIdentifier() {
 		$index = get_class($this);
 		$identifier = $this->getIdentifier();
-		if (is_array($GLOBALS[$index]) === FALSE) {
+		if (FALSE === is_array($GLOBALS[$index])) {
 			$GLOBALS[$index] = array();
 		}
 		$GLOBALS[$index][$identifier] = TRUE;

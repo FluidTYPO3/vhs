@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\Utility;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +33,7 @@
  * @package Vhs
  * @subpackage Utility
  */
-class Tx_Vhs_Utility_ResourceUtility {
+class ResourceUtility {
 
 	/**
 	 * Fixes a bug in TYPO3 6.2.0 that the properties metadata is not overlayed on localization.

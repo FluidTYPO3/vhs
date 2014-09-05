@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders HTML code to embed a video from Vimeo
@@ -30,12 +32,12 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_VimeoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class VimeoViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
 	 * Base URL for Vimeo video player
 	 */
-	const VIMEO_BASEURL = 'http://player.vimeo.com/video/';
+	const VIMEO_BASEURL = '//player.vimeo.com/video/';
 
 	/**
 	 * @var string
@@ -98,4 +100,5 @@ class Tx_Vhs_ViewHelpers_Media_VimeoViewHelper extends \TYPO3\CMS\Fluid\Core\Vie
 
 		return $this->tag->render();
 	}
+
 }

@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Converts the provided PDF file into a PNG thumbnail and renders
@@ -33,7 +36,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpers_ImageViewhelper {
+class PdfThumbnailViewHelper extends ImageViewhelper {
 
 	/**
 	 * @return void
@@ -41,8 +44,6 @@ class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpe
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerArgument('path', 'string', 'Path to PDF source file');
-		$this->registerArgument('width', 'integer', 'Width of resulting thumbnail image. See imgResource.width for possible options', FALSE, NULL);
-		$this->registerArgument('height', 'integer', 'Height of resulting thumbnail image. See imgResource.width for possible options', FALSE, NULL);
 		$this->registerArgument('minWidth', 'integer', 'Minimum width of resulting thumbnail image', FALSE, NULL);
 		$this->registerArgument('minHeight', 'integer', 'Minimum height of resulting thumbnail image', FALSE, NULL);
 		$this->registerArgument('maxWidth', 'integer', 'Maximum width of resulting thumbnail image', FALSE, NULL);
@@ -58,7 +59,7 @@ class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpe
 	 * @return string
 	 */
 	public function render() {
-		$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->arguments['path']);
+		$path = GeneralUtility::getFileAbsFileName($this->arguments['path']);
 		if (FALSE === file_exists($path)) {
 			return NULL;
 		}
@@ -76,7 +77,7 @@ class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpe
 		$filename = basename($path);
 		$pageArgument = $page > 0 ? $page - 1 : 0;
 		$colorspace = TRUE === isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace']) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'] : 'RGB';
-		$destination = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/vhs-pdf-' . $filename . '-page' . $page . '.png');
+		$destination = GeneralUtility::getFileAbsFileName('typo3temp/vhs-pdf-' . $filename . '-page' . $page . '.png');
 		if (FALSE === file_exists($destination) || TRUE === $forceOverwrite) {
 			$arguments = '-colorspace ' . $colorspace;
 			if (0 < intval($density)) {
@@ -90,8 +91,8 @@ class Tx_Vhs_ViewHelpers_Media_PdfThumbnailViewHelper extends Tx_Fluid_ViewHelpe
 				$arguments .= ' -background "' . $background . '" -flatten';
 			}
 			$arguments .= ' "' . $destination . '"';
-			$command = \TYPO3\CMS\Core\Utility\CommandUtility::imageMagickCommand('convert', $arguments);
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($command);
+			$command = CommandUtility::imageMagickCommand('convert', $arguments);
+			CommandUtility::exec($command);
 		}
 		$image = substr($destination, strlen(PATH_site));
 		return parent::render($image, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);

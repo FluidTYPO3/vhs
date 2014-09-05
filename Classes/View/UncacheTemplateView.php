@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\View;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,9 +24,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use \TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
+use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
 
 /**
  * Uncache Template View
@@ -34,7 +36,8 @@ use \TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
  * @package Vhs
  * @subpackage View
  */
-class Tx_Vhs_View_UncacheTemplateView extends Tx_Fluid_View_TemplateView {
+
+class UncacheTemplateView extends TemplateView {
 
 	/**
 	 * @param string $postUserFunc
@@ -51,7 +54,7 @@ class Tx_Vhs_View_UncacheTemplateView extends Tx_Fluid_View_TemplateView {
 		if (TRUE === empty($partial)) {
 			return '';
 		}
-		$renderingContext = $this->objectManager->get('Tx_Fluid_Core_Rendering_RenderingContext');
+		$renderingContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Rendering\RenderingContext');
 		$this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
 		return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
 	}
@@ -65,7 +68,7 @@ class Tx_Vhs_View_UncacheTemplateView extends Tx_Fluid_View_TemplateView {
 		$renderingContext->setControllerContext($controllerContext);
 		$this->setRenderingContext($renderingContext);
 		$this->templateParser = TemplateParserBuilder::build();
-		$this->templateCompiler = $this->objectManager->get('Tx_Fluid_Core_Compiler_TemplateCompiler');
+		$this->templateCompiler = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler');
 		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
 	}
 

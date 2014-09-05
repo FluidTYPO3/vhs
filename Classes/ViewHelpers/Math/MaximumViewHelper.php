@@ -1,4 +1,5 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +34,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class Tx_Vhs_ViewHelpers_Math_MaximumViewHelper extends Tx_Vhs_ViewHelpers_Math_AbstractMultipleMathViewHelper {
+class MaximumViewHelper extends AbstractMultipleMathViewHelper {
 
 	/**
 	 * @return void
@@ -51,7 +52,7 @@ class Tx_Vhs_ViewHelpers_Math_MaximumViewHelper extends Tx_Vhs_ViewHelpers_Math_
 		$a = $this->getInlineArgument();
 		$b = $this->arguments['b'];
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if ($aIsIterable && $b === NULL) {
+		if (TRUE === $aIsIterable && NULL === $b) {
 			$a = $this->convertTraversableToArray($a);
 			return max($a);
 		}

@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns the last element of $haystack
@@ -30,7 +33,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class LastViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Initialize arguments
@@ -44,7 +47,7 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends \TYPO3\CMS\Fluid\Core\V
 	/**
 	 * Render method
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return mixed|NULL
 	 */
 	public function render() {
@@ -52,8 +55,8 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends \TYPO3\CMS\Fluid\Core\V
 		if (NULL === $haystack) {
 			$haystack = $this->renderChildren();
 		}
-		if (FALSE === is_array($haystack) && FALSE === $haystack instanceof Iterator && FALSE === is_null($haystack)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid argument supplied to Iterator/LastViewHelper - expected array, Iterator or NULL but got ' .
+		if (FALSE === is_array($haystack) && FALSE === $haystack instanceof \Iterator && FALSE === is_null($haystack)) {
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid argument supplied to Iterator/LastViewHelper - expected array, Iterator or NULL but got ' .
 				gettype($haystack), 1351958398);
 		}
 		if (NULL === $haystack) {
@@ -61,10 +64,10 @@ class Tx_Vhs_ViewHelpers_Iterator_LastViewHelper extends \TYPO3\CMS\Fluid\Core\V
 		}
 		$needle = NULL;
 		foreach ($haystack as $needle) {
-				// do nothing; but use foreach in order to a) reset pointer
-				// before iteration and b) make sure any Iterator/array is
-				// supported without the need for any special tricks. The
-				// isset() call is here only to prevent code style violations
+			// do nothing; but use foreach in order to a) reset pointer
+			// before iteration and b) make sure any Iterator/array is
+			// supported without the need for any special tricks. The
+			// isset() call is here only to prevent code style violations
 			isset($needle);
 		}
 		return $needle;

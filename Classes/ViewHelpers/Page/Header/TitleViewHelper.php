@@ -1,4 +1,6 @@
 <?php
+namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### ViewHelper used to override page title
@@ -57,7 +60,7 @@
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
-class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TitleViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Arguments initialization
@@ -76,15 +79,15 @@ class Tx_Vhs_ViewHelpers_Page_Header_TitleViewHelper extends \TYPO3\CMS\Fluid\Co
 	 * @return void
 	 */
 	public function render() {
-		if (TYPO3_MODE == 'BE') {
+		if ('BE' === TYPO3_MODE) {
 			return;
 		}
-		if (!empty($this->arguments['title'])) {
+		if (FALSE === empty($this->arguments['title'])) {
 			$title = $this->arguments['title'];
 		} else {
 			$title = $this->renderChildren();
 		}
-		$title = trim(preg_replace( '/\s+/', $this->arguments['whitespaceString'], $title), $this->arguments['whitespaceString']);
+		$title = trim(preg_replace('/\s+/', $this->arguments['whitespaceString'], $title), $this->arguments['whitespaceString']);
 		$GLOBALS['TSFE']->getPageRenderer()->setTitle($title);
 		if (TRUE === $this->arguments['setIndexedDocTitle']) {
 			$GLOBALS['TSFE']->indexedDocTitle = $title;
