@@ -36,7 +36,7 @@ class LastViewHelperTest extends AbstractViewHelperTest {
 	/**
 	 * @test
 	 */
-	public function returnsFirstElement() {
+	public function returnsLastElement() {
 		$array = array('a', 'b', 'c');
 		$arguments = array(
 			'haystack' => $array
