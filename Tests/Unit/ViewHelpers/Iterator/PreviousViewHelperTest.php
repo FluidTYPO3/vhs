@@ -47,18 +47,4 @@ class PreviousViewHelperTest extends AbstractViewHelperTest {
 		$this->assertEquals('b', $output);
 	}
 
-	/**
-	 * @test
-	 */
-	public function returnsPreviousElement() {
-		$array = array('a', 'b', 'c');
-		next($array);
-		$arguments = array(
-			'haystack' => $array,
-			'needle' => 'c',
-		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertEquals('b', $output);
-	}
-
 }
