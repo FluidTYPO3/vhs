@@ -84,6 +84,12 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *     {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')->v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')->v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
  *
+ * #### Single return value
+ *
+ *     Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
+ *     one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().
+ *     {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
+ *
  * @author Andreas Lappe <nd@kaeufli.ch>
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
@@ -91,16 +97,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class ExtractViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @param string $key
-	 * @param \Traversable $content
-	 * @param boolean $recursive
+	 * @param string $key The name of the key from which you wish to extract the value
+	 * @param mixed $content The array or Iterator that contains either the value or arrays of values
+	 * @param boolean $recursive If TRUE, attempts to extract the key from deep nested arrays
+	 * @param boolean $single If TRUE, returns only one value - always the first one - instead of an array of values
 	 * @return array
 	 */
-	public function render($key, $content = NULL, $recursive = TRUE) {
+	public function render($key, $content = NULL, $recursive = TRUE, $single = FALSE) {
 		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 		try {
+			// extraction from Iterators could potentially use a getter method which throws
+			// exceptions - although this would be bad practice. Catch the exception here
+			// and turn it into a WARNING log message so that output does not break.
 			if (TRUE === (boolean) $recursive) {
 				$result = $this->recursivelyExtractKey($content, $key);
 			} else {
@@ -109,6 +119,10 @@ class ExtractViewHelper extends AbstractViewHelper {
 		} catch (\Exception $error) {
 			GeneralUtility::sysLog($error->getMessage(), 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			$result = array();
+		}
+
+		if (TRUE === (boolean) $single) {
+			return reset($result);
 		}
 
 		return $result;
@@ -143,7 +157,7 @@ class ExtractViewHelper extends AbstractViewHelper {
 	public function recursivelyExtractKey($iterator, $key) {
 		$content = array();
 
-		foreach ($iterator as $k => $v) {
+		foreach ($iterator as $v) {
 			// Lets see if we find something directly:
 			$result = ObjectAccess::getPropertyPath($v, $key);
 			if (NULL !== $result) {
