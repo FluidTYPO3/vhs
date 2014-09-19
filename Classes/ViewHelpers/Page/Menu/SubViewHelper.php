@@ -75,7 +75,7 @@ class SubViewHelper extends AbstractMenuViewHelper {
 			return '';
 		}
 		// retrieve the set of template variables which were in play when the parent menu VH started rendering.
-		$variables = $this->viewHelperVariableContainer->get('\FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
+		$variables = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
 		$parentInstance->setOriginal(FALSE);
 		$content = $parentInstance->render();
 		// restore the previous set of variables after they most likely have changed during the render() above.

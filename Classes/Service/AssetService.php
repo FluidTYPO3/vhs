@@ -405,15 +405,15 @@ class AssetService implements SingletonInterface {
 			if (TRUE === $removed) {
 				continue;
 			}
-			$localSettings = $assetSettings;
+			$localSettings = (array) $assetSettings;
 			if (TRUE === isset($settings['asset'])) {
-				ArrayUtility::mergeRecursiveWithOverrule($localSettings, (array) $settings['asset']);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['asset']);
 			}
 			if (TRUE === isset($settings['asset'][$name])) {
-				ArrayUtility::mergeRecursiveWithOverrule($localSettings, (array) $settings['asset'][$name]);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['asset'][$name]);
 			}
 			if (TRUE === isset($settings['assetGroup'][$groupName])) {
-				ArrayUtility::mergeRecursiveWithOverrule($localSettings, (array) $settings['assetGroup'][$groupName]);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
 			}
 			if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
 				$asset->setSettings($localSettings);
@@ -423,6 +423,20 @@ class AssetService implements SingletonInterface {
 			}
 		}
 		return $filtered;
+	}
+
+	/**
+	 * @param $array1
+	 * @param $array2
+	 * @return array
+	 */
+	protected function mergeArrays(&$array1, $array2) {
+		if (6.2 <= (float) substr(TYPO3_version, 3)) {
+			ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
+			return $array1;
+		} else {
+			return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
+		}
 	}
 
 	/**
@@ -508,7 +522,7 @@ class AssetService implements SingletonInterface {
 	private function renderAssetAsFluidTemplate($asset) {
 		$settings = $this->extractAssetSettings($asset);
 		$templateReference = $settings['path'];
-		$variables = (TRUE === (isset($settings['arguments']) && is_array($settings['arguments'])) ? $settings['arguments'] : array());
+		$variables = (TRUE === (isset($settings['variables']) && is_array($settings['variables'])) ? $settings['variables'] : array());
 		$isExternal = (TRUE === (isset($settings['external']) && $settings['external'] > 0));
 		if (TRUE === $isExternal) {
 			$fileContents = file_get_contents($templateReference);

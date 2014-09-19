@@ -190,6 +190,13 @@ class Asset implements AssetInterface {
 			$settings['movable'] = $settings['allowMoveToFooter'];
 			unset($settings['allowMoveToFooter']);
 		}
+		if (TRUE === isset($settings['arguments'])) {
+			// @TODO: remove in 2.2 or 3.0 whichever comes first.
+			GeneralUtility::deprecationLog('Deprecated property "arguments" was used in VHS Asset settings ' .
+				'for asset named "' . $settings['name'] . '". Please correct this to use the proper "variables" attribute');
+			$settings['variables'] = $settings['arguments'];
+			unset($settings['arguments']);
+		}
 		$asset = self::getInstance();
 		foreach ($settings as $propertyName => $value) {
 			ObjectAccess::setProperty($asset, $propertyName, $value);

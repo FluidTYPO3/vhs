@@ -73,7 +73,7 @@ class SortViewHelper extends AbstractViewHelper {
 		$this->registerArgument('as', 'string', 'Which variable to update in the TemplateVariableContainer. If left out, returns sorted data instead of updating the variable (i.e. reference or copy)');
 		$this->registerArgument('sortBy', 'string', 'Which property/field to sort by - leave out for numeric sorting based on indexes(keys)');
 		$this->registerArgument('order', 'string', 'ASC, DESC, RAND or SHUFFLE. RAND preserves keys, SHUFFLE does not - but SHUFFLE is faster', FALSE, 'ASC');
-		$this->registerArgument('sortFlags', 'string', 'Constant name from PHP for SORT_FLAGS: SORT_REGULAR, SORT_STRING, SORT_NUMERIC, SORT_NATURAL, SORT_LOCALE_STRING or SORT_FLAG_CASE. You can provide a comma seperated list or array to use a combination of flags.', FALSE, 'SORT_REGULAR');
+		$this->registerArgument('sortFlags', 'string', 'Constant name from PHP for `SORT_FLAGS`: `SORT_REGULAR`, `SORT_STRING`, `SORT_NUMERIC`, `SORT_NATURAL`, `SORT_LOCALE_STRING` or `SORT_FLAG_CASE`. You can provide a comma seperated list or array to use a combination of flags.', FALSE, 'SORT_REGULAR');
 	}
 
 	/**

@@ -277,9 +277,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		foreach ($languageMenu as $key => $value) {
 			$current = $GLOBALS['TSFE']->sys_language_uid === (integer) $key ? 1 : 0;
 			$inactive = $pageArray[$key] || (integer) $key === $this->defaultLangUid ? 0 : 1;
+			$url = $this->getLanguageUrl($key, $inactive);
+			if (TRUE === empty($url)) {
+				$url = GeneralUtility::getIndpEnv('REQUEST_URI');
+			}
 			$languageMenu[$key]['current'] = $current;
 			$languageMenu[$key]['inactive'] = $inactive;
-			$languageMenu[$key]['url'] = TRUE === (boolean) $current ? GeneralUtility::getIndpEnv('REQUEST_URI') : $this->getLanguageUrl($key, $inactive);
+			$languageMenu[$key]['url'] = $url;
 			$languageMenu[$key]['flagSrc'] = $this->getLanguageFlagSrc($value['flag']);
 			if (TRUE === (boolean) $this->arguments['hideNotTranslated'] && TRUE === (boolean) $inactive) {
 				unset($languageMenu[$key]);
