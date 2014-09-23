@@ -294,7 +294,9 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	 * @api
 	 */
 	protected function renderThenChild() {
-		$GLOBALS['TSFE']->no_cache = 1;
+		if ('FE' === TYPO3_MODE) {
+			$GLOBALS['TSFE']->no_cache = 1;
+		}
 		return parent::renderThenChild();
 	}
 
