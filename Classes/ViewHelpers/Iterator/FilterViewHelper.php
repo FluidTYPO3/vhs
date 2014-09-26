@@ -72,7 +72,7 @@ class FilterViewHelper extends AbstractViewHelper {
 		}
 		$items = array();
 		foreach ($subject as $key => $item) {
-			if ($invert === $this->filter($item, $filter, $propertyName)) {
+			if (!$invert === $this->filter($item, $filter, $propertyName)) {
 				$items[$key] = $item;
 			}
 		}
