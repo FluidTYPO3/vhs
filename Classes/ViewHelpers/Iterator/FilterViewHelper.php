@@ -50,9 +50,11 @@ class FilterViewHelper extends AbstractViewHelper {
 	 * @param mixed $filter The comparison value
 	 * @param string $propertyName Optional property name to extract and use for comparison instead of the object; use on ObjectStorage etc. Note: supports dot-path expressions.
 	 * @param boolean $preserveKeys If TRUE, keys in the array are preserved - even if they are numeric
+	 * @param boolean $invert Invert the behavior of the view helper
+	 *
 	 * @return mixed
 	 */
-	public function render($subject = NULL, $filter = NULL, $propertyName = NULL, $preserveKeys = FALSE) {
+	public function render($subject = NULL, $filter = NULL, $propertyName = NULL, $preserveKeys = FALSE, $invert = FALSE) {
 		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
@@ -66,8 +68,10 @@ class FilterViewHelper extends AbstractViewHelper {
 			$subject = iterator_to_array($subject);
 		}
 		$items = array();
+		$invert = (boolean) $invert;
+		$invertFlag = TRUE === $invert ? FALSE : TRUE;
 		foreach ($subject as $key => $item) {
-			if (TRUE === $this->filter($item, $filter, $propertyName)) {
+			if ($invertFlag === $this->filter($item, $filter, $propertyName)) {
 				$items[$key] = $item;
 			}
 		}
