@@ -35,7 +35,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
 class GetViewHelper extends AbstractContentViewHelper {
-
+	
+	/**
+	 * Override limit argument default value
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->overrideArgument('limit', 'integer', 'Optional limit to the total number of records to render', FALSE, 1);
+	}
+	
 	/**
 	 * Render method
 	 *
@@ -45,7 +53,21 @@ class GetViewHelper extends AbstractContentViewHelper {
 		if ('BE' === TYPO3_MODE) {
 			return '';
 		}
-		$contentRecords = $this->getContentRecords(1, 'RAND()');
+		// Remove limit for getContentRecords()
+		$limit = $this->arguments['limit'];
+		$this->arguments['limit'] = NULL;
+		// Just using getContentRecords with a limit of 1 would not support
+		// using slideCollect as collecting would stop as soon as one record
+		// was found. Using $render = FALSE with getContentRecords will save us
+		// rendering all content elements that end up unused anyway.
+		$contentRecords = $this->getContentRecords(NULL, NULL, FALSE);
+		if (FALSE === empty($contentRecords)) {
+			shuffle($contentRecords);
+			$contentRecords = array_slice($contentRecords, 0, $limit);
+			if (TRUE === (boolean) $this->arguments['render']) {
+				$contentRecords = $this->getRenderedRecords($contentRecords);
+			}
+		}
 		return $contentRecords;
 	}
 
