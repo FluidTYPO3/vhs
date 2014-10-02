@@ -304,7 +304,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		$getValues['L'] = $uid;
 		unset($getValues['id']);
 		unset($getValues['cHash']);
-		$addParams = http_build_query($getValues);
+		$addParams = http_build_query($getValues, '', '&');
 		$config = array(
 			'parameter' => $this->getPageUid(),
 			'returnLast' => 'url',
