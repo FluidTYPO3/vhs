@@ -24,6 +24,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -313,7 +314,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 			'useCacheHash' => $this->arguments['useCHash']
 		);
 		if (TRUE === is_array($this->arguments['configuration'])) {
-			$config = GeneralUtility::array_merge_recursive_overrule($config, $this->arguments['configuration']);
+			$config = ViewHelperUtility::mergeArrays($config, $this->arguments['configuration']);
 		}
 		return $this->cObj->typoLink('', $config);
 	}

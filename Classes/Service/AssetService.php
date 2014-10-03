@@ -35,6 +35,7 @@ namespace FluidTYPO3\Vhs\Service;
  * @package Vhs
  * @subpackage Service
  */
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -407,13 +408,13 @@ class AssetService implements SingletonInterface {
 			}
 			$localSettings = (array) $assetSettings;
 			if (TRUE === isset($settings['asset'])) {
-				$localSettings = $this->mergeArrays($localSettings, (array) $settings['asset']);
+				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['asset']);
 			}
 			if (TRUE === isset($settings['asset'][$name])) {
-				$localSettings = $this->mergeArrays($localSettings, (array) $settings['asset'][$name]);
+				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['asset'][$name]);
 			}
 			if (TRUE === isset($settings['assetGroup'][$groupName])) {
-				$localSettings = $this->mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
+				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
 			}
 			if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
 				$asset->setSettings($localSettings);
@@ -423,20 +424,6 @@ class AssetService implements SingletonInterface {
 			}
 		}
 		return $filtered;
-	}
-
-	/**
-	 * @param $array1
-	 * @param $array2
-	 * @return array
-	 */
-	protected function mergeArrays(&$array1, $array2) {
-		if (6.2 <= (float) substr(TYPO3_version, 3)) {
-			ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
-			return $array1;
-		} else {
-			return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
-		}
 	}
 
 	/**
