@@ -78,6 +78,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('classCurrent', 'string', 'Sets the class, by which the current language will be marked', FALSE, 'current');
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'languageMenu');
 		$this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', FALSE, 0);
+		$this->registerArgument('configuration', 'array', 'Additional typoLink configuration', FALSE, array());
 	}
 
 	/**
@@ -311,6 +312,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 			'additionalParams' => '&' . $addParams,
 			'useCacheHash' => $this->arguments['useCHash']
 		);
+		if (TRUE === is_array($this->arguments['configuration'])) {
+			$config = GeneralUtility::array_merge_recursive_overrule($config, $this->arguments['configuration']);
+		}
 		return $this->cObj->typoLink('', $config);
 	}
 
