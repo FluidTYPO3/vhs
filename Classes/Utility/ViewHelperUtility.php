@@ -24,6 +24,7 @@ namespace FluidTYPO3\Vhs\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
@@ -114,6 +115,20 @@ class ViewHelperUtility {
 			return array($candidate);
 		}
 		return (array) $candidate;
+	}
+
+	/**
+	 * @param $array1
+	 * @param $array2
+	 * @return array
+	 */
+	public static function mergeArrays(&$array1, $array2) {
+		if (6.2 <= (float) substr(TYPO3_version, 3)) {
+			ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
+			return $array1;
+		} else {
+			return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
+		}
 	}
 
 }

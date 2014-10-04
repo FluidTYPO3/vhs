@@ -67,4 +67,19 @@ class ViewHelperUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($array, $result);
 	}
 
+	/**
+	 * @test
+	 */
+	public function mergesArraysAndOverridesValuesWithIdenticalKeys() {
+		$array1 = array('a' => 'a', 'b' => 'b', 'c' => 'c');
+		$array2 = array('d' => 'd', 'e' => 'e', 'f' => 'f');
+		$result = ViewHelperUtility::mergeArrays($array1, $array2);
+		$this->assertCount(6, $result);
+
+		$array1 = array('a' => 'a', 'b' => 'b', 'c' => 'c', 'd' => 'd');
+		$array2 = array('a' => 'd', 'b' => 'b', 'c' => 'f', 'e' => 'e');
+		$result = ViewHelperUtility::mergeArrays($array1, $array2);
+		$this->assertEquals(array('a' => 'd', 'b' => 'b', 'c' => 'f', 'd' => 'd', 'e' => 'e'), $result);
+	}
+
 }
