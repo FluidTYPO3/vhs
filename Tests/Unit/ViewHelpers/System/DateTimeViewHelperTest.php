@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\System;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,13 +23,22 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+
 use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
+ * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 class DateTimeViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @test
+	 */
+	public function returnsDateTimeInstance() {
+		$result = $this->executeViewHelper();
+		$this->assertInstanceOf('DateTime', $result);
+	}
 
 }

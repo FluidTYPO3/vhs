@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\System;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * ### System: UNIX Timestamp
  *
@@ -38,8 +39,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  * @package Vhs
  * @subpackage ViewHelpers\System
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-
 class TimestampViewHelper extends AbstractViewHelper {
 
 	/**

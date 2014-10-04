@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Random;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Random;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+
 use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
