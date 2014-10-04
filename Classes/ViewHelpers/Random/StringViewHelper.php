@@ -54,13 +54,10 @@ class StringViewHelper extends AbstractViewHelper {
 		$maximumLength = intval($maximumLength);
 		$length = ($minimumLength != $maximumLength ? rand($minimumLength, $maximumLength) : ($length !== NULL ? $length : $minimumLength));
 		$string = '';
-		for ($i = 0; $i < $length && $length > 0; $i++) {
+		while ($length > strlen($string)) {
 			$randomIndex = rand(0, strlen($characters));
 			$string .= $characters{$randomIndex};
 		}
-		$characters = preg_replace('/([^a-z]+)/i', '', $characters);
-		$randomIndex = rand(0, strlen($characters) - 1);
-		$string{0} = $characters{$randomIndex};
 		return $string;
 	}
 
