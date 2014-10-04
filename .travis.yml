@@ -29,7 +29,7 @@ before_script:
   - mkdir fileadmin
   - mkdir uploads
   - mkdir typo3temp
-  - mkdir -p flux/build/logs
+  - mkdir -p vhs/build/logs
 
   - git clone --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit
   - git clone --depth 1 git://github.com/FluidTYPO3/builder.git typo3conf/ext/builder
@@ -51,7 +51,7 @@ script:
 # PHPCodeSniffer code inspection with only errors displayed (no warnings)
   - build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/vhs
 # PHPUnit tests from overridden phpunit tests configuration file
-  - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then typo3/cli_dispatch.phpsh phpunit -c phpunit.xml --coverage-clover flux/build/logs/clover.xml; fi
+  - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then typo3/cli_dispatch.phpsh phpunit -c phpunit.xml --coverage-clover vhs/build/logs/clover.xml; fi
 
 after_script:
   - cd vhs
