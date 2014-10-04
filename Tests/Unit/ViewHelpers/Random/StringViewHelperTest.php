@@ -33,4 +33,14 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  */
 class StringViewHelperTest extends AbstractViewHelperTest {
 
+	/**
+	 * @test
+	 */
+	public function generatesRandomStringWithDesiredCharactersOnlyAndOfDesiredLength() {
+		$arguments = array('minimumLength' => 32, 'maximumLength' => 32, 'characters' => 'abcdef');
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals(32, strlen($result));
+		$this->assertEquals(0, preg_match('/[^a-f]+/', $result), 'Random string contained unexpected characters');
+	}
+
 }
