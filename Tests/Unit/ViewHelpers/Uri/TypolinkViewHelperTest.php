@@ -1,10 +1,9 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
-
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2014
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -24,13 +23,28 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+
 use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * @protection off
- * @author
+ * @protection on
  * @package Vhs
  */
 class TypolinkViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @test
+	 */
+	public function renderCallsTypoLinkFunctionOnContentObject() {
+		$class = $this->getViewHelperClassName();
+		$mock = new $class();
+		$mock->setArguments(array('configuration' => array('foo' => 'bar')));
+		$GLOBALS['TSFE'] = new TypoScriptFrontendController(array(), 1, 0);
+		$GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('typoLink_URL'));
+		$GLOBALS['TSFE']->cObj->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar'))->will($this->returnValue('foobar'));
+		$result = $this->callInaccessibleMethod($mock, 'render');
+		$this->assertEquals('foobar', $result);
+	}
 
 }

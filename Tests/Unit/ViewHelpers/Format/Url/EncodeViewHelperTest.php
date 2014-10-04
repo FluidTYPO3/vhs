@@ -33,4 +33,15 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  */
 class EncodeViewHelperTest extends AbstractViewHelperTest {
 
+	/**
+	 * @test
+	 */
+	public function encodesUrlDecodedStrings() {
+		$decoded = 'Url Decoded';
+		$result1 = $this->executeViewHelper(array('content' => $decoded));
+		$result2 = $this->executeViewHelperUsingTagContent('Text', $decoded);
+		$this->assertEquals(rawurlencode($decoded), $result1);
+		$this->assertEquals($result1, $result2);
+	}
+
 }
