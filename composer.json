@@ -9,5 +9,8 @@
     "support": {
         "irc": "irc://irc.freenode.org/fedext",
         "issues": "https://github.com/FluidTYPO3/vhs/issues"
-    }
+    },
+	"require-dev": {
+		"satooshi/php-coveralls": "dev-master"
+	}
 }
