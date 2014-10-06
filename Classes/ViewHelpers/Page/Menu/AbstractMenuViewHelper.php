@@ -437,7 +437,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			}
 			if (TRUE === (boolean) $this->shouldUseShortcutUid()) {
 				// overwrite current page UID
-				$pageUid = $targetPage['uid'];
+				$page['uid'] = $targetPage['uid'];
 			}
 		}
 
@@ -451,8 +451,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		$page['hasSubPages'] = (0 < count($this->getSubmenu($submenuPid)));
-		$page['active'] = $this->isActive($pageUid, $rootLine, $originalPageUid);
-		$page['current'] = $this->isCurrent($pageUid);
+		$page['active'] = $this->isActive($page['uid'], $rootLine, $originalPageUid);
+		$page['current'] = $this->isCurrent($page['uid']);
 		$page['link'] = $this->getItemLink($page);
 		$page['linktext'] = $this->getItemTitle($page);
 		$page['class'] = implode(' ', $this->getItemClass($page));
