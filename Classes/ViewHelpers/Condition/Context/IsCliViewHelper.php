@@ -60,10 +60,17 @@ class IsCliViewHelper extends AbstractConditionViewHelper {
 	 * @return string
 	 */
 	public function render() {
-		if (TRUE === defined('TYPO3_cliMode')) {
+		if (TRUE === $this->isCliContext()) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isCliContext() {
+		return defined('TYPO3_climode');
 	}
 
 }

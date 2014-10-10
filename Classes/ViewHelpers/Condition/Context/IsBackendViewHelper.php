@@ -60,10 +60,17 @@ class IsBackendViewHelper extends AbstractConditionViewHelper {
 	 * @return string
 	 */
 	public function render() {
-		if ('BE' === TYPO3_MODE) {
+		if (TRUE === $this->isBackendContext()) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isBackendContext() {
+		return ('BE' === TYPO3_MODE);
 	}
 
 }

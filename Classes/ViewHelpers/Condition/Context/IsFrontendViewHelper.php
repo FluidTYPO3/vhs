@@ -60,10 +60,17 @@ class IsFrontendViewHelper extends AbstractConditionViewHelper {
 	 * @return string
 	 */
 	public function render() {
-		if ('FE' === TYPO3_MODE) {
+		if ($this->isFrontendContext()) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isFrontendContext() {
+		return ('FE' === TYPO3_MODE);
 	}
 
 }
