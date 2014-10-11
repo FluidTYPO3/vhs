@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +23,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Shifts the first value off $subject (but does not change $subject itself as array_shift would)
@@ -51,7 +52,7 @@ class ShiftViewHelper extends AbstractViewHelper {
 		if (TRUE === $subject instanceof \Traversable) {
 			$subject = iterator_to_array($subject, TRUE);
 		} elseif (TRUE !== is_array($subject)) {
-			throw new \Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
+			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
 		}
 		$output = array_shift($subject);
 		if (NULL !== $as) {

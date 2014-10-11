@@ -33,4 +33,15 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  */
 class MergeViewHelperTest extends AbstractViewHelperTest {
 
+	/**
+	 * @test
+	 */
+	public function testMergesArraysWithOverrule() {
+		$array1 = array('foo');
+		$array2 = array('bar');
+		$expected = array('bar');
+		$result = $this->executeViewHelper(array('a' => $array1, 'b' => $array2, 'useKeys' => FALSE));
+		$this->assertEquals($expected, $result);
+	}
+
 }

@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,9 +23,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Returns random element from array
@@ -50,28 +51,27 @@ class RandomViewHelper extends AbstractViewHelper {
 	 * Render method
 	 *
 	 * @param mixed $subject
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public function render($subject = NULL) {
 		if (NULL === $subject && (FALSE === isset($as) || TRUE === empty($as))) {
 			$subject = $this->renderChildren();
 		}
-
 		$as = $this->arguments['as'];
 		$array = NULL;
 		if (TRUE === is_array($subject)) {
 			$array = $subject;
-		} else {
-			if (TRUE === $subject instanceof Iterator) {
-				$array = iterator_to_array($subject, TRUE);
-			} elseif (TRUE === $subject instanceof \Tx_Extbase_Persistence_QueryResultInterface || TRUE === $subject instanceof QueryResultInterface) {
-				/** @var QueryResultInterface $subject */
-				$array = $subject->toArray();
-			} elseif (NULL !== $subject) {
-				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
-					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1370966821);
-			}
+		} elseif (TRUE === $subject instanceof QueryResultInterface) {
+			/** @var QueryResultInterface $subject */
+			$array = $subject->toArray();
+		} elseif (TRUE === $subject instanceof \Traversable) {
+			$array = iterator_to_array($subject, TRUE);
+		} elseif (NULL !== $subject) {
+			throw new Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
+				' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1370966821);
+		} elseif (NULL === $subject) {
+			return NULL;
 		}
 		$randomElement = $array[array_rand($array)];
 		if (TRUE === isset($as) && FALSE === empty($as)) {

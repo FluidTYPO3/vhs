@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,9 +23,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ### Iterator Reversal ViewHelper
@@ -83,7 +84,7 @@ class ReverseViewHelper extends AbstractViewHelper {
 				// a NULL value is respected and ignored, but any
 				// unrecognized value other than this is considered a
 				// fatal error.
-				throw new \Exception('Invalid variable type passed to Iterator/ReverseViewHelper. Expected any of Array, QueryResult, ' .
+				throw new Exception('Invalid variable type passed to Iterator/ReverseViewHelper. Expected any of Array, QueryResult, ' .
 					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1351958941);
 			}
 		}

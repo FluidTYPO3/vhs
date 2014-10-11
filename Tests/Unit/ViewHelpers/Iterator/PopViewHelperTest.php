@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +22,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ ***************************************************************/
+
 use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
@@ -32,5 +32,59 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  * @package Vhs
  */
 class PopViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @test
+	 * @dataProvider getRenderTestValues
+	 * @param array $arguments
+	 * @param mixed $expectedValue
+	 */
+	public function testRender(array $arguments, $expectedValue) {
+		if (TRUE === isset($arguments['as'])) {
+			$value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
+		} else {
+			$value = $this->executeViewHelper($arguments);
+			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array(), array('v' => $arguments['subject']));
+			$this->assertEquals($value, $value2);
+		}
+		$this->assertEquals($value, $expectedValue);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getRenderTestValues() {
+		return array(
+			array(array('subject' => array()), NULL),
+			array(array('subject' => array('foo', 'bar')), 'bar'),
+			array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), 'bar'),
+			array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), 'bar'),
+			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), 'bar'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getErrorTestValues
+	 * @param mixed $subject
+	 */
+	public function testThrowsErrorsOnInvalidSubjectType($subject) {
+		$expected = 'Cannot get values of unsupported type: ' . gettype($subject);
+		$result = $this->executeViewHelper(array('subject' => $subject));
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getErrorTestValues() {
+		return array(
+			array(0),
+			array(NULL),
+			array(new \DateTime()),
+			array('invalid'),
+			array(new \stdClass()),
+		);
+	}
 
 }
