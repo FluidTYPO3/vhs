@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +23,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Slice an Iterator by $start and $length
@@ -50,10 +51,10 @@ class SliceViewHelper extends AbstractViewHelper {
 		if (NULL === $haystack) {
 			$haystack = $this->renderChildren();
 		}
-		if (TRUE === $haystack instanceof \Iterator) {
+		if (TRUE === $haystack instanceof \Traversable) {
 			$haystack = iterator_to_array($haystack, TRUE);
 		} elseif (FALSE === is_array($haystack)) {
-			throw new \Exception('Cannot slice unsupported type: ' . gettype($haystack), 1353812601);
+			throw new Exception('Cannot slice unsupported type: ' . gettype($haystack), 1353812601);
 		}
 		$output = array_slice($haystack, $start, $length, TRUE);
 		if (NULL !== $as) {

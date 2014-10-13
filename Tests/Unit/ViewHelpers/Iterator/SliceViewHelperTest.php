@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +22,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ ***************************************************************/
+
 use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
@@ -32,5 +32,59 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  * @package Vhs
  */
 class SliceViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @test
+	 * @dataProvider getRenderTestValues
+	 * @param array $arguments
+	 * @param mixed $expectedValue
+	 */
+	public function testRender(array $arguments, $expectedValue) {
+		if (TRUE === isset($arguments['as'])) {
+			$value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
+		} else {
+			$value = $this->executeViewHelper($arguments);
+			$haystack = $arguments['haystack'];
+			unset($arguments['haystack']);
+			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', $arguments, array('v' => $haystack));
+			$this->assertEquals($value, $value2);
+		}
+		$this->assertEquals($value, $expectedValue);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getRenderTestValues() {
+		return array(
+			array(array('haystack' => array(), 'length' => 0, 'start' => 0), array()),
+			array(array('haystack' => array('foo', 'bar'), 'length' => 1, 'start' => 0), array('foo')),
+			array(array('haystack' => array('foo', 'bar'), 'length' => 1, 'start' => 0, 'as' => 'variable'), array('foo')),
+			array(array('haystack' => new \ArrayIterator(array('foo', 'bar')), 'start' => 1, 'length' => 1), array(1 => 'bar')),
+			array(array('haystack' => new \ArrayIterator(array('foo', 'bar')), 'start' => 1, 'length' => 1, 'as' => 'variable'), array(1 => 'bar')),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getErrorTestValues
+	 * @param mixed $subject
+	 */
+	public function testThrowsErrorsOnInvalidSubjectType($subject) {
+		$expected = 'Cannot slice unsupported type: ' . gettype($subject);
+		$result = $this->executeViewHelper(array('haystack' => $subject));
+		$this->assertEquals($expected, $result, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getErrorTestValues() {
+		return array(
+			array(new \DateTime()),
+			array('invalid'),
+			array(new \stdClass()),
+		);
+	}
 
 }
