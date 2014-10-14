@@ -22,15 +22,27 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ ***************************************************************/
 
 use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
+ * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 class PlaintextViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @test
+	 */
+	public function formatsToPlaintext() {
+		$input = "	This string\n	is plain-text formatted";
+		$expected = "This string\nis plain-text formatted";
+		$result = $this->executeViewHelper(array('content' => $input));
+		$result2 = $this->executeViewHelperUsingTagContent('Text', $input);
+		$this->assertEquals($expected, $result);
+		$this->assertEquals($result, $result2);
+	}
 
 }
