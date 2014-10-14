@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +22,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ ***************************************************************/
+
 use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**

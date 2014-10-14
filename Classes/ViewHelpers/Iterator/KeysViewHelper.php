@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +24,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
