@@ -138,6 +138,14 @@ php:type="boolean">
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
 <![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
 </xsd:documentation>
 </xsd:annotation>
@@ -304,6 +312,14 @@ php:type="boolean">
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
 <![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
 </xsd:documentation>
 </xsd:annotation>
@@ -459,6 +475,14 @@ php:type="boolean">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="arguments" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
@@ -652,6 +676,14 @@ php:type="boolean">
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
 <![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
 </xsd:documentation>
 </xsd:annotation>
@@ -819,6 +851,14 @@ php:type="boolean">
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
 <![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
 </xsd:documentation>
 </xsd:annotation>
@@ -954,6 +994,14 @@ php:type="boolean">
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
 <![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
 </xsd:documentation>
 </xsd:annotation>
@@ -1089,6 +1137,14 @@ php:type="boolean">
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
 <![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
 </xsd:documentation>
 </xsd:annotation>
@@ -1221,6 +1277,14 @@ php:type="boolean">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="arguments" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
@@ -2841,6 +2905,84 @@ php:type="mixed" use="required">
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is array.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:mixed" name="then" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="else" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if not met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="value" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="condition.type.isBoolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Condition: Type of value is a boolean
+
+Condition ViewHelper which renders the `then` child if type of
+provided value is a boolean.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:mixed" name="then" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="else" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if not met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="value" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="condition.type.isBoolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Condition: Type of value is a boolean
+
+Condition ViewHelper which renders the `then` child if type of
+provided value is a boolean.]]>
 </xsd:documentation>
 </xsd:annotation>
 <xsd:complexType mixed="true">
@@ -8268,7 +8410,13 @@ their firstname combined into a string:
 
 #### Complex example
 
-    {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')->v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')->v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}]]>
+    {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')->v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')->v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
+
+#### Single return value
+
+    Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
+    one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().
+    {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}]]>
 </xsd:documentation>
 </xsd:annotation>
 <xsd:complexType mixed="true">
@@ -8279,15 +8427,15 @@ their firstname combined into a string:
 php:type="string" use="required">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[]]>
+<![CDATA[The name of the key from which you wish to extract the value]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:anySimpleType" name="content"
-default="NULL" php:type="Traversable">
+<xsd:attribute type="xsd:mixed" name="content" default="NULL"
+php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[]]>
+<![CDATA[The array or Iterator that contains either the value or arrays of values]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -8295,7 +8443,15 @@ default="NULL" php:type="Traversable">
 php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[]]>
+<![CDATA[If TRUE, attempts to extract the key from deep nested arrays]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="single" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, returns only one value - always the first one - instead of an array of values]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -8347,6 +8503,14 @@ default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, keys in the array are preserved - even if they are numeric]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="invert" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Invert the behavior of the view helper]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -9420,7 +9584,7 @@ php:type="string">
 default="'SORT_REGULAR'" php:type="string">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Constant name from PHP for SORT_FLAGS: SORT_REGULAR, SORT_STRING, SORT_NUMERIC, SORT_NATURAL, SORT_LOCALE_STRING or SORT_FLAG_CASE. You can provide a comma seperated list or array to use a combination of flags.]]>
+<![CDATA[Constant name from PHP for `SORT_FLAGS`: `SORT_REGULAR`, `SORT_STRING`, `SORT_NUMERIC`, `SORT_NATURAL`, `SORT_LOCALE_STRING` or `SORT_FLAG_CASE`. You can provide a comma seperated list or array to use a combination of flags.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -18420,6 +18584,14 @@ php:type="boolean">
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
 <![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
 </xsd:documentation>
 </xsd:annotation>
@@ -18552,135 +18724,11 @@ php:type="boolean">
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="allowMoveToFooter"
-default="true" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="trim" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn't do anything.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="namedChunks"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="page.header">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[ViewHelper used to place header blocks in document header]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:string" name="content" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Content to insert in header/footer]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="path" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If not using tag content, specify path to file here]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="external" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="name" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="overwrite" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dependencies" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="group" default="'fluid'"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="debug" default="NULL"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="standalone" default="NULL"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE, excludes this Asset from any concatenation which may be applied]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="rewrite" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE, this Asset will be included as is without any processing of contained urls]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="fluid" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
@@ -18813,6 +18861,154 @@ php:type="boolean">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="arguments" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[An optional array of arguments which you use inside the Asset, be it standalon or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="allowMoveToFooter"
+default="true" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="trim" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn't do anything.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="namedChunks"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="page.header">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[ViewHelper used to place header blocks in document header]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:string" name="content" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Content to insert in header/footer]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="path" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If not using tag content, specify path to file here]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="external" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="name" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="overwrite" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dependencies" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="group" default="'fluid'"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="debug" default="NULL"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="standalone" default="NULL"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, excludes this Asset from any concatenation which may be applied]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="rewrite" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE, this Asset will be included as is without any processing of contained urls]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="fluid" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="arguments" default="false"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[DEPRECATED. Use argument `variables` instead]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
 <xsd:documentation>
@@ -19670,6 +19866,14 @@ php:type="integer">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="configuration"
+default="array ( )" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional typoLink configuration]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 </xsd:complexType>
 </xsd:element>
 <xsd:element name="page.languageMenu">
@@ -19880,6 +20084,14 @@ php:type="integer">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Optional page uid to use.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="configuration"
+default="array ( )" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional typoLink configuration]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -29767,6 +29979,230 @@ default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Add some pseudo random strings. Refer to uniqid()'s Reference.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="tag">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Tag building ViewHelper
+
+Creates one HTML tag of any type, with various properties
+like class and ID applied only if arguments are not empty,
+rather than apply them always - empty or not - if provided.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="name" default="NULL"
+php:type="string" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tag name]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="hideIfEmpty"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Hide the tag completely if there is no tag content]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="tag">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Tag building ViewHelper
+
+Creates one HTML tag of any type, with various properties
+like class and ID applied only if arguments are not empty,
+rather than apply them always - empty or not - if provided.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="name" default="NULL"
+php:type="string" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tag name]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="hideIfEmpty"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Hide the tag completely if there is no tag content]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
