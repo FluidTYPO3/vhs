@@ -34,7 +34,18 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
  */
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
+/**
+ * Class GetViewHelper
+ */
 class GetViewHelper extends AbstractContentViewHelper {
+
+	/**
+	 * Initialize ViewHelper arguments
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->overrideArgument('limit', 'integer', 'Optional limit to the number of content elements to render', FALSE, 1);
+	}
 
 	/**
 	 * Render method
@@ -45,7 +56,8 @@ class GetViewHelper extends AbstractContentViewHelper {
 		if ('BE' === TYPO3_MODE) {
 			return '';
 		}
-		$contentRecords = $this->getContentRecords(1, 'RAND()');
+		$limit = (integer) $this->arguments['limit'];
+		$contentRecords = $this->getContentRecords($limit, 'RAND()');
 		return $contentRecords;
 	}
 
