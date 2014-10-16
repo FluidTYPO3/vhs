@@ -25,6 +25,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /**
  * If content is empty use alternative text (can also be LLL:labelname shortcut or LLL:EXT: file paths).
  *
@@ -32,9 +35,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
 class OrViewHelper extends AbstractViewHelper {
 
 	/**
@@ -54,33 +54,29 @@ class OrViewHelper extends AbstractViewHelper {
 	 */
 	public function render($content = NULL) {
 		$alternative = $this->arguments['alternative'];
+		$arguments = (array) $this->arguments['arguments'];
 
 		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 
 		if (FALSE === empty($content)) {
-			return $content;
+			return TRUE === is_array($arguments) ? vsprintf($content, $arguments) : $content;
 		}
 
 		if (FALSE === is_string($alternative) || 0 !== strpos($alternative, 'LLL:')) {
 			return $alternative;
 		}
 
-		if (0 !== strpos($alternative, 'LLL:EXT:')) {
-			// Trim off LLL: from shorthand LLL:labelname syntax so only label is passed to translate function
-			$translate = substr($alternative, 4);
+		if (0 === strpos($alternative, 'LLL:EXT:')) {
+			return LocalizationUtility::translate($alternative, NULL, $arguments);
 		}
 
-		$arguments = $this->arguments['arguments'];
+		$translate = substr($alternative, 4);
 		$extensionName = $this->arguments['extensionName'];
 
 		if (NULL === $extensionName) {
-			if (TRUE === method_exists($this, 'getControllerContext')) {
-				$request = $this->getControllerContext()->getRequest();
-			} else {
-				$request = $this->controllerContext->getRequest();
-			}
+			$request = $this->controllerContext->getRequest();
 			$extensionName = $request->getControllerExtensionName();
 		}
 
