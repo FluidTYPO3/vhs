@@ -138,7 +138,8 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		}
 		$this->imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($this->imageInfo[3]);
 		$GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
-		$this->mediaSource = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($this->imageInfo[3]);
+		$publicUrl = rawurldecode($this->imageInfo[3]);
+		$this->mediaSource = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($publicUrl);
 		if ('BE' === TYPO3_MODE) {
 			$this->resetFrontendEnvironment();
 		}
