@@ -100,7 +100,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 	public function render() {
 		// Check if link wizard link
 		$pageUid = $this->arguments['pageUid'];
-		$additionalParameters = $this->arguments['additionalParams'];
+		$additionalParameters = (array) $this->arguments['additionalParams'];
 		if (FALSE === is_numeric($pageUid)) {
 			$linkConfig = GeneralUtility::unQuoteFilenames($pageUid, TRUE);
 			if (TRUE === isset($linkConfig[0])) {
@@ -176,7 +176,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 			->setArguments($additionalParameters)
 			->setCreateAbsoluteUri($this->arguments['absolute'])
 			->setAddQueryString($this->arguments['addQueryString'])
-			->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
+			->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
 			->build();
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($title);

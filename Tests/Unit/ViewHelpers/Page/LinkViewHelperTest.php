@@ -1,6 +1,5 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,14 +22,50 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ ***************************************************************/
+
 use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Cedric Ziel <cedric@cedric-ziel.com>
+ * @protection on
  * @package Vhs
  */
 class LinkViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @test
+	 */
+	public function generatesPageLinks() {
+		$arguments = array('pageUid' => 1);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertNotEmpty($result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function generatesNullLinkOnZeroPageUid() {
+		$arguments = array('pageUid' => 0);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertNull($result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function generatesPageLinksWithCustomTitle() {
+		$arguments = array('pageUid' => 1, 'pageTitleAs' => 'title');
+		$result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments);
+		$this->assertContains('customtitle', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function generatesPageWizardLinks() {
+		$arguments = array('pageUid' => '1 2 3 4 5 foo=bar&baz=123');
+		$result = $this->executeViewHelper($arguments);
+		$this->assertNotEmpty($result);
+	}
 
 }
