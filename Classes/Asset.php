@@ -427,7 +427,7 @@ class Asset implements AssetInterface {
 			$this->path = NULL;
 			return $this;
 		}
-		if (FALSE === strpos($path, '://')) {
+		if (FALSE === strpos($path, '://') && 0 !== strpos($path, '//')) {
 			$path = GeneralUtility::getFileAbsFileName($path);
 		}
 		if (NULL === $this->type) {
