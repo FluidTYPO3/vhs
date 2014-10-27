@@ -28,12 +28,34 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 class AssetTest extends UnitTestCase {
+
+	/**
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * @var ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
+	 * Setup global
+	 */
+	public function setUp() {
+		$generator = new \PHPUnit_Framework_MockObject_Generator();
+		$GLOBALS['TYPO3_DB'] = $generator->generate('TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
+			array('connect')
+		);
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+	}
 
 	/**
 	 * @test

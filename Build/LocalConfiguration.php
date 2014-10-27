@@ -97,5 +97,16 @@ return array(
 		'UTF8filesystem' => '1',
 		'debugExceptionHandler' => '',
 		'setMemoryLimit' => 1024,
+		'trustedHostsPattern' => '.*',
+		'caching' => array(
+			'cacheConfigurations' => array(
+				'extbase_reflection' => array(
+					'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\TransientMemoryBackend'
+				),
+				'extbase_object' => array(
+					'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\TransientMemoryBackend'
+				),
+			)
+		)
 	),
 );

@@ -26,6 +26,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * @author Claus Due <claus@namelesscoder.net>
@@ -35,14 +36,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractViewHelperTest extends UnitTestCase {
 
 	/**
-	 * @param string $name
-	 * @param array $data
-	 * @param string $dataName
+	 * @var ObjectManagerInterface
 	 */
-	public function __construct($name = NULL, array $data = array(), $dataName = '') {
-		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-		$this->objectManager = clone $objectManager;
-		parent::__construct($name, $data, $dataName);
+	protected $objectManager;
+
+	/**
+	 * Setup global
+	 */
+	public function setUp() {
+		parent::setUp();
+		$generator = new \PHPUnit_Framework_MockObject_Generator();
+		$GLOBALS['TYPO3_DB'] = $generator->generate('TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
+			array('connect')
+		);
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
 	/**
