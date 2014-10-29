@@ -678,7 +678,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$rootLineData = $this->pageSelect->getRootLine();
 		$entryLevel = (integer) $this->arguments['entryLevel'];
 		if (0 > $entryLevel) {
-			$entryLevel = count($rootLineData) + $entryLevel - 1;
+			$entryLevel = count($rootLineData) + $entryLevel;
 		}
 		if (TRUE === empty($pageUid)) {
 			if (NULL !== $rootLineData[$entryLevel]['uid']) {
