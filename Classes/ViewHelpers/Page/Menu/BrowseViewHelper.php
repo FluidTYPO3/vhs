@@ -117,23 +117,23 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 		$menu = array();
 		if (TRUE === isset($pages['first'])) {
 			$menu['first'] = $menuItems['first'];
-			$menu['first']['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menuItems[$firstUid]);
+			$menu['first']['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menuItems['first']);
 		}
 		if (TRUE === isset($pages['prev'])) {
 			$menu['prev'] = $menuItems['prev'];
-			$menu['prev']['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menuItems[$prevUid]);
+			$menu['prev']['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menuItems['prev']);
 		}
 		if (TRUE === isset($pages['up'])) {
 			$menu['up'] = $menuItems['up'];
-			$menu['up']['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menuItems[$parentUid]);
+			$menu['up']['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menuItems['up']);
 		}
 		if (TRUE === isset($pages['next'])) {
 			$menu['next'] = $menuItems['next'];
-			$menu['next']['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menuItems[$nextUid]);
+			$menu['next']['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menuItems['next']);
 		}
 		if (TRUE === isset($pages['last'])) {
 			$menu['last'] = $menuItems['last'];
-			$menu['last']['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menuItems[$lastUid]);
+			$menu['last']['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menuItems['last']);
 		}
 		$this->backupVariables();
 		$this->templateVariableContainer->add($this->arguments['as'], $menu);
