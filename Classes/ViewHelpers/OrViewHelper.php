@@ -56,12 +56,16 @@ class OrViewHelper extends AbstractViewHelper {
 		$alternative = $this->arguments['alternative'];
 		$arguments = (array) $this->arguments['arguments'];
 
+		if (0 === count($arguments)) {
+			$arguments = NULL;
+		}
+
 		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 
 		if (FALSE === empty($content)) {
-			return TRUE === is_array($arguments) ? vsprintf($content, $arguments) : $content;
+			return NULL !== $arguments ? vsprintf($content, $arguments) : $content;
 		}
 
 		if (FALSE === is_string($alternative) || 0 !== strpos($alternative, 'LLL:')) {
