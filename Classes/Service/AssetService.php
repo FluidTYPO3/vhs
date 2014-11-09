@@ -98,7 +98,7 @@ class AssetService implements SingletonInterface {
 	 * @return boolean
 	 */
 	public function usePageCache($caller, $shouldUsePageCache) {
-		$this->buildAll(array(), $caller);
+		$this->buildAll(array(), $caller, TRUE, FALSE);
 		return $shouldUsePageCache;
 	}
 
@@ -106,9 +106,10 @@ class AssetService implements SingletonInterface {
 	 * @param array $parameters
 	 * @param object $caller
 	 * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
+	 * @param boolean $placeAssetsInSource If TRUE assets are placed in header/footer
 	 * @return void
 	 */
-	public function buildAll(array $parameters, $caller, $cached = TRUE) {
+	public function buildAll(array $parameters, $caller, $cached = TRUE, $placeAssetsInSource = TRUE) {
 		if (FALSE === $this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager) {
 			$this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 			$this->configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
@@ -142,7 +143,9 @@ class AssetService implements SingletonInterface {
 				echo var_export($assets, TRUE);
 			}
 		}
-		$this->placeAssetsInHeaderAndFooter($assets, $cached);
+		if (TRUE === $placeAssetsInSource) {
+			$this->placeAssetsInHeaderAndFooter($assets, $cached);
+		}
 	}
 
 	/**
