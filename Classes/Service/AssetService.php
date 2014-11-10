@@ -115,7 +115,8 @@ class AssetService implements SingletonInterface {
 		}
 		$settings = $this->getSettings();
 		$cached = (boolean) $cached;
-		if (FALSE === self::$typoScriptAssetsBuilt && TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
+		$buildTypoScriptAssets = (FALSE === self::$typoScriptAssetsBuilt && (TRUE === $cached || TRUE === (boolean) $GLOBALS['TSFE']->no_cache));
+		if (TRUE === $buildTypoScriptAssets && TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
 			foreach ($settings['asset'] as $name => $typoScriptAsset) {
 				if (FALSE === isset($GLOBALS['VhsAssets'][$name]) && TRUE === is_array($typoScriptAsset)) {
 					if (FALSE === isset($typoScriptAsset['name'])) {
