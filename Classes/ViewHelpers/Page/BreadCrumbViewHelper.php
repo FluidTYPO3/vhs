@@ -59,9 +59,17 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper {
 		$pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
 		$entryLevel = $this->arguments['entryLevel'];
 		$endLevel = $this->arguments['endLevel'];
-		$rootLineData = $this->pageSelect->getRootLine($pageUid);
-		$rootLineData = array_reverse($rootLineData);
-		$rootLineData = array_slice($rootLineData, $entryLevel, $endLevel);
+		$rawRootLineData = $this->pageSelect->getRootLine($pageUid);
+		$rawRootLineData = array_reverse($rawRootLineData);
+		$rootLineData = $rawRootLineData = array_slice($rawRootLineData, $entryLevel, $endLevel);
+		if (FALSE === (boolean) $this->arguments['showHiddenInMenu']) {
+			$rootLineData = array();
+			foreach ($rawRootLineData as $record) {
+				if (FALSE === (boolean) $record['nav_hide']) {
+					array_push($rootLineData, $record);
+				}
+			}
+		}
 		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
 		if (0 === count($rootLine)) {
 			return NULL;
