@@ -7981,6 +7981,28 @@ php:type="boolean">
 </xsd:attribute>
 </xsd:complexType>
 </xsd:element>
+<xsd:element name="format.removeXss">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Removes XSS from $string
+
+Class RemoveXssViewHelper]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:string" name="string" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
 <xsd:element name="format.replace">
 <xsd:annotation>
 <xsd:documentation>
