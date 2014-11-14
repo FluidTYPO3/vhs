@@ -33,7 +33,7 @@ use \TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  * http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Index.html#collections-api
  * 
  * ### Example
- * {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
+ * {v:resource.collection(uid:'123') -> v:variable.set(name: 'someCollection')}
  *
  * @category ViewHelpers
  * @package Vhs
