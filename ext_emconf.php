@@ -19,23 +19,23 @@ $EM_CONF[$_EXTKEY] = array (
   'clearCacheOnLoad' => 0,
   'lockType' => '',
   'version' => '2.1.4',
-  'constraints' => 
+  'constraints' =>
   array (
-    'depends' => 
+    'depends' =>
     array (
       'typo3' => '6.0.0-6.2.99',
       'cms' => '',
       'extbase' => '',
       'fluid' => '',
     ),
-    'conflicts' => 
+    'conflicts' =>
     array (
     ),
-    'suggests' => 
+    'suggests' =>
     array (
     ),
   ),
-  'suggests' => 
+  'suggests' =>
   array (
   ),
   '_md5_values_when_last_written' => '',
