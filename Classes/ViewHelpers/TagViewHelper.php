@@ -55,10 +55,10 @@ class TagViewHelper extends AbstractTagBasedViewHelper {
 		$this->arguments['class'] = trim($this->arguments['class']);
 		$content = $this->renderChildren();
 		$trimmedContent = trim($content);
-		if (TRUE === empty($trimmedContent)) {
+		if (TRUE === empty($trimmedContent) && FALSE === empty($this->arguments['hideIfEmpty'])) {
 			return '';
 		}
-		if ('none' === $this->arguments['name'] || TRUE === empty($this->arguments['name'])) {
+		if ('none' === $this->arguments['name'] || TRUE === (boolean) empty($this->arguments['name'])) {
 			// skip building a tag if special keyword "none" is used, or tag name is empty
 			return $content;
 		}
