@@ -4,57 +4,32 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - 5.6
 
 env:
-  - DB=mysql TYPO3=TYPO3_6-2 INTEGRATION=master INTRODUCTION=master
-  - DB=mysql TYPO3=TYPO3_6-1 INTEGRATION=master INTRODUCTION=TYPO3_6-1
+  - TYPO3=6.2.*
+  - TYPO3=dev-master
 
-# We need to work around that soon!
-#matrix:
-#   fast_finish: true
-#   include:
-#     - php: 5.6
-#       env: DB=mysql TYPO3=master INTEGRATION=master
+matrix:
+  fast_finish: true
+  exclude:
+    - php: 5.3
+      env: TYPO3=dev-master
+    - php: 5.4
+      env: TYPO3=dev-master
+    - php: 5.5
+      env: TYPO3=dev-master
 
 before_script:
-  - cd ..
-  - git clone --single-branch --branch $INTEGRATION --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
-  - git clone --depth 1 git://github.com/FluidTYPO3/FluidTYPO3-CodingStandards.git build-environment/FluidTYPO3-CodingStandards
-  - git clone git://github.com/squizlabs/PHP_CodeSniffer.git build-environment/CodeSniffer
-  - git clone --single-branch --branch $TYPO3 --depth 1 https://github.com/TYPO3/TYPO3.CMS.git core
-  - source build-environment/install-helper.sh
-  - git clone --single-branch --branch $INTRODUCTION --depth 1 git://git.typo3.org/TYPO3CMS/Distributions/Introduction.git build-environment/Introduction
-  - mv core/typo3 .
-  - if [[ -d core/t3lib ]]; then mv core/t3lib . ; fi
-  - mv build-environment/typo3conf .
-  - mkdir fileadmin
-  - mkdir uploads
-  - mkdir typo3temp
-  - mkdir -p vhs/build/logs
-
-  - git clone --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit
-  - git clone --depth 1 git://github.com/FluidTYPO3/builder.git typo3conf/ext/builder
-  - ln -s ../../vhs ./typo3conf/ext/vhs
-
-  - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS typo3_test;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/Introduction/typo3conf/ext/introduction/Resources/Private/Subpackages/Introduction/Database/introduction.sql; fi
-
-  # post core schema import of extension schemas and state file from this and dependency extensions
-  - if [[ "$DB" == "mysql" && -f typo3conf/ext/vhs/Build/ImportSchema.sql ]]; then mysql -uroot typo3_test < typo3conf/ext/vhs/Build/ImportSchema.sql; fi
-  - if [[ -f typo3conf/LocalConfiguration.php && -f typo3conf/ext/vhs/Build/LocalConfiguration.php ]]; then cp typo3conf/ext/vhs/Build/LocalConfiguration.php typo3conf/LocalConfiguration.php; fi
-  - if [[ -f typo3conf/ext/vhs/Build/PackageStates.php ]]; then cp typo3conf/ext/vhs/Build/PackageStates.php typo3conf/PackageStates.php; fi
-  - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then cp typo3conf/ext/vhs/Tests/phpunit.xml phpunit.xml; fi
+  - composer selfupdate
+  - composer require typo3/cms:$TYPO3
+  - composer install --prefer-dist
+  - mkdir -p build/logs
 
 script:
-# phplint checking on all PHP source files in extension
-  - typo3/cli_dispatch.phpsh extbase builder:phpsyntax --extension vhs
-# PHPCodeSniffer code inspection with only errors displayed (no warnings)
-  - build-environment/CodeSniffer/scripts/phpcs -n --standard=$PWD/build-environment/FluidTYPO3-CodingStandards/ruleset.xml $PWD/typo3conf/ext/vhs
-# PHPUnit tests from overridden phpunit tests configuration file
-  - if [[ -f typo3conf/ext/vhs/Tests/phpunit.xml ]]; then typo3/cli_dispatch.phpsh phpunit -c phpunit.xml --coverage-clover vhs/build/logs/clover.xml; fi
+  - ./vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover=build/logs/clover.xml
 
 after_script:
-  - cd vhs
-  - composer install
-  - php vendor/bin/coveralls -v
+  - mkdir -p src/FluidTYPO3/Vhs
+  - ln -s Classes src/FluidTYPO3/Vhs
+  - vendor/bin/coveralls
