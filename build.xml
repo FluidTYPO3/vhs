@@ -15,6 +15,13 @@
 
 	<target name="testrewrite" depends="clean,prepare,phpunit"/>
 
+	<target name="install-hooks" description="Installs git hooks">
+		<echo message="Installing pre-commit hook.."/>
+		<copy file="Build/Hooks/pre-commit" todir="${basedir}/.git/hooks"/>
+		<echo message="Making pre-commit hook executable.."/>
+		<chmod file="${basedir}/.git/hooks/pre-commit" perm="+x"/>
+	</target>
+
 	<target name="tools-parallel" description="Run tools in parallel">
 		<parallel threadCount="2">
 			<sequential>

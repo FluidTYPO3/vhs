@@ -172,6 +172,14 @@ Regarding nesting of ViewHelpers you should note that v:format.trim does remove 
 
 It is highly recommended to use the inline annotation when your return values have a specific type before being output. Which is exactly the case when working with the v:math.* ViewHelpers.
 
+## Development tools
+
+While development, a Ant build script offers some comfort in that it does allow for example automatic checking of your coding style so you can check *before* you make that commit that would break the build.
+
+### Initializing your environment
+
+``ant install-hooks`` installs the pre-commit hooks that we use in development.
+
 ## Known issues
 
 * PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent
