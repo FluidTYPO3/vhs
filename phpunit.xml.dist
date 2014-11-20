@@ -1,4 +1,4 @@
-<phpunit bootstrap="./bootstrap.php"
+<phpunit bootstrap="./TestsRewrite/bootstrap.php"
         backupGlobals="false"
         backupStaticAttributes="false"
         colors="true"

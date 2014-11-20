@@ -165,7 +165,7 @@
 	<target name="phpunit" description="Run unit tests with PHPUnit">
 		<exec executable="${basedir}/vendor/bin/phpunit" failonerror="true">
 			<redirector output="${output}/logs/phpunit.txt" alwayslog="true"/>
-			<arg line="-c TestsRewrite/phpunit.xml"/>
+			<arg line="-c phpunit.xml.dist"/>
 		</exec>
 		<echo message="##teamcity[publishArtifacts '${output}/logs/junit.xml']"/>
 		<echo message="##teamcity[publishArtifacts '${output}/logs/junit.txt']"/>
