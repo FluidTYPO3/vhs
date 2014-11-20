@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="FluidTYPO3/vhs" default="build-parallel" basedir=".">
-
-	<!-- Note, this build script requires your extension to be linked and installed in a typo3 installation properly! -->
+<project name="FluidTYPO3/vhs" default="testrewrite" basedir=".">
 
 	<property name="output" location="${basedir}/Build/"/>
 
@@ -16,6 +14,8 @@
 					depends="prepare,getcomposer,import-checkstyleset,lint,tools-parallel"/>
 
 	<target name="metrics" depends="phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpcb"/>
+
+	<target name="testrewrite" depends="clean,prepare,phpunit"/>
 
 	<target name="tools-parallel" description="Run tools in parallel">
 		<parallel threadCount="2">
@@ -34,16 +34,18 @@
 	</target>
 
 	<target name="getcomposer" description="Get Composer and Deps">
-		<get src="http://getcomposer.org/composer.phar" dest="${output}/tools/"/>
-		<chmod file="${output}/tools/composer.phar" perm="+x"/>
-		<exec executable="${output}/tools/composer.phar" dir="${basedir}/Build">
-			<arg value="update"/>
-			<arg value="--dev"/>
-			<arg value="--prefer-dist"/>
+		<echo message="Self-installing composer" level="debug"/>
+		<exec executable="/bin/bash">
+			<arg value="-c"/>
+			<arg value="curl -s https://getcomposer.org/installer | php"/>
 		</exec>
+		<echo message="composer self-install complete" level="debug"/>
+		<chmod file="${basedir}/composer.phar" perm="+x"/>
+		<echo message="set executable bit on composer.phar" level="debug"/>
 	</target>
 
 	<target name="clean" description="Cleanup build artifacts">
+		<delete dir="${basedir}/vendor"/>
 		<delete dir="${output}/api"/>
 		<delete dir="${output}/code-browser"/>
 		<delete dir="${output}/coverage"/>
@@ -53,7 +55,7 @@
 		<delete dir="${output}/Libraries"/>
 	</target>
 
-	<target name="prepare" depends="clean" description="Prepare for build">
+	<target name="prepare" depends="clean,getcomposer" description="Prepare for build">
 		<mkdir dir="${output}/api"/>
 		<mkdir dir="${output}/code-browser"/>
 		<mkdir dir="${output}/coverage"/>
@@ -61,6 +63,11 @@
 		<mkdir dir="${output}/pdepend"/>
 		<mkdir dir="${output}/tools"/>
 		<mkdir dir="${output}/Libraries"/>
+
+		<echo message="installing composer dependencies" level="info"/>
+		<exec executable="php">
+			<arg line="composer.phar install --dev --prefer-dist"/>
+		</exec>
 	</target>
 
 	<target name="lint" description="Perform syntax check of sourcecode files">
@@ -156,16 +163,9 @@
 	</target>
 
 	<target name="phpunit" description="Run unit tests with PHPUnit">
-		<exec executable="php" failonerror="true" output="${output}/logs/phpunit.txt">
-			<arg
-				line="-d include_path='.;${typo3path-61}/typo3;${typo3path-61}/t3lib;${basedir}/Resources/Private/Php/andrewsville/php-token-reflection/TokenReflection/Exception'"/>
-			<arg line="-d memory_limit='1024M'"/>
-			<arg path="${typo3path-61}/typo3/cli_dispatch.phpsh"/>
-			<arg value="phpunit"/>
-			<arg line="--log-junit ${output}/logs/junit.xml"/>
-			<arg line="--verbose"/>
-			<arg line="--configuration ${basedir}/Tests/phpunit.xml"/>
-			<arg path="${basedir}/Tests"/>
+		<exec executable="${basedir}/vendor/bin/phpunit" failonerror="true">
+			<redirector output="${output}/logs/phpunit.txt" alwayslog="true"/>
+			<arg line="-c TestsRewrite/phpunit.xml"/>
 		</exec>
 		<echo message="##teamcity[publishArtifacts '${output}/logs/junit.xml']"/>
 		<echo message="##teamcity[publishArtifacts '${output}/logs/junit.txt']"/>

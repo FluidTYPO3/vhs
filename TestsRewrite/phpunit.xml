@@ -15,12 +15,12 @@
 
         <testsuites>
                 <testsuite name="EXT:vhs">
-                        <directory>typo3conf/ext/vhs/Tests</directory>
+                        <directory>Tests</directory>
                 </testsuite>
         </testsuites>
 		<filter>
 				<whitelist>
-						<directory>typo3conf/ext/vhs/Classes</directory>
+						<directory>Classes</directory>
 				</whitelist>
 		</filter>
 </phpunit>
