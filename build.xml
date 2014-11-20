@@ -7,11 +7,9 @@
 
 	<property file="${basedir}/build.properties"/>
 
-	<target name="build"
-					depends="prepare,getcomposer,import-checkstyleset,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpcb"/>
+	<target name="build" depends="prepare,import-checkstyleset,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpcb"/>
 
-	<target name="build-parallel"
-					depends="prepare,getcomposer,import-checkstyleset,lint,tools-parallel"/>
+	<target name="build-parallel" depends="prepare,import-checkstyleset,lint,tools-parallel"/>
 
 	<target name="metrics" depends="phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpcb"/>
 
@@ -80,8 +78,19 @@
 		</apply>
 	</target>
 
-	<target name="phploc" description="Measure project size using PHPLOC">
-		<exec executable="${tooldir}/phploc" output="${output}/logs/phploc.txt">
+	<target name="install-phploc" description="Downloads and installs the phploc phar">
+		<echo message="Downloading PHPLOC" level="info"/>
+		<get dest="${output}/tools">
+			<url url="https://phar.phpunit.de/phploc.phar"/>
+		</get>
+		<echo message="Success. Setting executable bit" level="info"/>
+		<chmod file="${output}/tools/phploc.phar" perm="+x"/>
+		<echo message="Done. Proceeding" level="info"/>
+	</target>
+
+	<target name="phploc" depends="install-phploc" description="Measure project size using PHPLOC">
+		<exec executable="${output}/tools/phploc.phar">
+			<redirector output="${output}/logs/phploc.txt" alwayslog="true"/>
 			<arg line="--log-xml ${output}/logs/phploc.xml"/>
 			<arg line="--log-csv ${output}/logs/phploc.csv"/>
 			<arg path="${basedir}/Classes"/>
@@ -140,8 +149,18 @@
 		</exec>
 	</target>
 
-	<target name="phpcpd" description="Find duplicate code using PHPCPD">
-		<exec executable="${tooldir}/phpcpd" output="${output}/logs/pmd-cpd.txt">
+	<target name="install-phpcpd" description="Downloads the PHPCPD phar">
+		<echo message="Downloading PHPCPD" level="info"/>
+		<get dest="${output}/tools">
+			<url url="https://phar.phpunit.de/phpcpd.phar"/>
+		</get>
+		<echo message="Succes. Download phpcpd" level="info"/>
+		<chmod file="${output}/tools/phpcpd.phar" perm="+x"/>
+	</target>
+
+	<target name="phpcpd" depends="install-phpcpd" description="Find duplicate code using PHPCPD">
+		<exec executable="${output}/tools/phpcpd.phar">
+			<redirector output="${output}/logs/pmd-cpd.txt" alwayslog="true"/>
 			<arg value="--log-pmd"/>
 			<arg value="${output}/logs/pmd-cpd.xml"/>
 			<arg path="${basedir}/Classes"/>
