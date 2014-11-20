@@ -1,11 +1,11 @@
-<phpunit bootstrap="./TestsRewrite/bootstrap.php"
-         backupGlobals="false"
+<phpunit backupGlobals="false"
          backupStaticAttributes="false"
+         bootstrap="vendor/typo3/cms/typo3/sysext/core/Build/FunctionalTestsBootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertWarningsToExceptions="true"
          forceCoversAnnotation="false"
-         processIsolation="false"
+         processIsolation="true"
          stopOnError="false"
          stopOnFailure="false"
          stopOnIncomplete="false"
@@ -14,8 +14,8 @@
          verbose="false">
 
     <testsuites>
-        <testsuite name="unit">
-            <directory>TestsRewrite/Unit</directory>
+        <testsuite name="functional">
+            <directory>TestsRewrite/Functional</directory>
         </testsuite>
     </testsuites>
     <filter>
