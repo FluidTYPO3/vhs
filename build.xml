@@ -5,7 +5,7 @@
 
 	<property name="tooldir" location="${basedir}/Build/Libraries/bin"/>
 
-	<property file="${basedir}/build.properties"/>
+	<property file="build.properties"/>
 
 	<target name="build" depends="prepare,import-checkstyleset,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpcb"/>
 
@@ -138,23 +138,34 @@
 		<echo message="##teamcity[importData type='pmd' path='${output}/logs/pmd.xml']"/>
 	</target>
 
-	<target name="phpcs-ci"
-					description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-		<exec executable="${tooldir}/phpcs" output="${output}/logs/phpcs-ci.txt">
-			<arg line="--report=checkstyle"/>
-			<arg line="--report-file=${output}/logs/checkstyle.xml"/>
+	<target name="install-phpcs" description="Downloads the phpcs phar file">
+		<echo message="Downloading phpcs phar" level="info"/>
+		<echo message="Downloading phpcs phar" level="info"/>
+		<get dest="${output}/tools" skipexisting="1">
+			<url url="https://github.com/squizlabs/PHP_CodeSniffer/releases/download/${phpcs.version}/phpcs.phar"/>
+		</get>
+		<echo message="Success. Setting executable bit"/>
+		<chmod file="${output}/tools/phpcs.phar" perm="+x"/>
+	</target>
+
+	<target name="phpcs-ci" depends="install-phpcs,import-checkstyleset"
+					description="Find coding standard violations using PHP_CodeSniffer and print human readable output.">
+		<exec executable="${output}/tools/phpcs.phar">
+			<redirector output="${output}/logs/phpcs-ci.txt" alwayslog="true"/>
+			<arg line="--report-checkstyle ${output}/logs/checkstyle.xml"/>
 			<arg line="--extensions=php"/>
 			<arg line="--standard=Build/tools/CodingStandards/ruleset.xml"/>
+			<arg line="--report-summary"/>
 			<arg line="Classes"/>
 		</exec>
 	</target>
 
 	<target name="install-phpcpd" description="Downloads the PHPCPD phar">
 		<echo message="Downloading PHPCPD" level="info"/>
-		<get dest="${output}/tools">
+		<get dest="${output}/tools" skipexisting="1">
 			<url url="https://phar.phpunit.de/phpcpd.phar"/>
 		</get>
-		<echo message="Succes. Download phpcpd" level="info"/>
+		<echo message="Success. Download phpcpd" level="info"/>
 		<chmod file="${output}/tools/phpcpd.phar" perm="+x"/>
 	</target>
 
