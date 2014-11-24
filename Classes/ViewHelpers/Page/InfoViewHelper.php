@@ -24,6 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+
+use FluidTYPO3\Flux\Utility\RecursiveArrayUtility;
 use FluidTYPO3\Vhs\Service\PageSelectService;
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -78,7 +80,7 @@ class InfoViewHelper extends AbstractViewHelper {
 		if (0 !== $languageUid) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $languageUid);
 			if (TRUE === is_array($pageOverlay)) {
-				$page = GeneralUtility::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
+				$page = RecursiveArrayUtility::mergeRecursiveOverrule($page, $pageOverlay, FALSE, FALSE);
 			}
 		}
 

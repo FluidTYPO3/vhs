@@ -73,6 +73,8 @@ namespace FluidTYPO3\Vhs;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
+
+use FluidTYPO3\Flux\Utility\RecursiveArrayUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -512,8 +514,8 @@ class Asset implements AssetInterface {
 			ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
 			ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
 		} else {
-			$settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->settings);
-			$settings = GeneralUtility::array_merge_recursive_overrule($settings, $properties);
+			$settings = RecursiveArrayUtility::mergeRecursiveOverrule($settings, $this->settings);
+			$settings = RecursiveArrayUtility::mergeRecursiveOverrule($settings, $properties);
 		}
 		return $settings;
 	}
