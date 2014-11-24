@@ -24,8 +24,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use FluidTYPO3\Flux\Utility\RecursiveArrayUtility;
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -49,7 +50,7 @@ class MergeViewHelper extends AbstractViewHelper {
 		$this->useKeys = (boolean) $useKeys;
 		$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
 		$b = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
-		$merged = GeneralUtility::array_merge_recursive_overrule($a, $b);
+		$merged = RecursiveArrayUtility::mergeRecursiveOverrule($a, $b);
 		return $merged;
 	}
 
