@@ -45,7 +45,8 @@ class GetViewHelper extends AbstractContentViewHelper {
 		if ('BE' === TYPO3_MODE) {
 			return '';
 		}
-		$contentRecords = $this->getContentRecords(1, 'RAND()');
+		$limit = $this->arguments['limit'] ? (integer)$this->arguments['limit'] : 1;
+		$contentRecords = $this->getContentRecords($limit, 'RAND()');
 		return $contentRecords;
 	}
 
