@@ -63,6 +63,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 class CacheViewHelper extends AbstractRenderViewHelper {
 
+	const ID_PREFIX = 'vhs-render-cache-viewhelper';
+
 	const ID_SEPARATOR = '-';
 
 	/**
@@ -113,7 +115,7 @@ class CacheViewHelper extends AbstractRenderViewHelper {
 	 * @return boolean
 	 */
 	protected function has($id) {
-		return (boolean) $this->cache->has(get_class($this) . self::ID_SEPARATOR . $id);
+		return (boolean) $this->cache->has(self::ID_PREFIX . self::ID_SEPARATOR . $id);
 	}
 
 	/**
@@ -122,7 +124,7 @@ class CacheViewHelper extends AbstractRenderViewHelper {
 	 * @return void
 	 */
 	protected function store($value, $id) {
-		$this->cache->set(get_class($this) . self::ID_SEPARATOR . $id, $value);
+		$this->cache->set(self::ID_PREFIX . self::ID_SEPARATOR . $id, $value);
 	}
 
 	/**
@@ -130,8 +132,8 @@ class CacheViewHelper extends AbstractRenderViewHelper {
 	 * @return mixed
 	 */
 	protected function retrieve($id) {
-		if ($this->cache->has(get_class($this) . self::ID_SEPARATOR . $id)) {
-			return $this->cache->get(get_class($this) . self::ID_SEPARATOR . $id);
+		if ($this->cache->has(self::ID_PREFIX . self::ID_SEPARATOR . $id)) {
+			return $this->cache->get(self::ID_PREFIX . self::ID_SEPARATOR . $id);
 		}
 		return NULL;
 	}
