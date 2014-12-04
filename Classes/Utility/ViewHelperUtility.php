@@ -123,7 +123,7 @@ class ViewHelperUtility {
 	 * @return array
 	 */
 	public static function mergeArrays(&$array1, $array2) {
-		if (6.2 <= (float) substr(TYPO3_version, 3)) {
+		if (6.2 <= (float) substr(TYPO3_version, 0, 3)) {
 			ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
 			return $array1;
 		} else {
