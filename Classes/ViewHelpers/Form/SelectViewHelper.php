@@ -151,7 +151,6 @@ class SelectViewHelper extends AbstractFormFieldViewHelper {
 		$optionsArgument = $this->arguments['options'];
 		foreach ($optionsArgument as $key => $value) {
 			if (TRUE === is_object($value)) {
-
 				if (TRUE === isset($this->arguments['optionValueField']) && FALSE === empty($this->arguments['optionValueField'])) {
 					$key = ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 					if (TRUE === is_object($key)) {
