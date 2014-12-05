@@ -47,14 +47,30 @@ class SanitizeStringViewHelperTest extends AbstractViewHelperTest {
 	}
 
 	/**
+	 * @test
+	 */
+	public function respectsCustomMap() {
+		$result = $this->executeViewHelper(array(
+			'string' => '$ and ß',
+			'customMap' => array(
+				'$' => 'Dollar',
+				'ß' => 'sz',
+			))
+		);
+		$this->assertEquals('dollar-and-sz', $result);
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getInputsAndExpectedOutputs() {
 		return array(
 			array('this string needs dashes', 'this-string-needs-dashes'),
 			array('THIS SHOULD BE LOWERCASE', 'this-should-be-lowercase'),
-			array('THESE øæå chars are not allowed', 'these-chars-are-not-allowed'),
-			array('many           spaces become one dash', 'many-spaces-become-one-dash')
+			array('THESE øæå chars are transliterated', 'these-oeaeaa-chars-are-transliterated'),
+			array('many           spaces become one dash', 'many-spaces-become-one-dash'),
+			array('Äh, Öl oder Umlaute wären schön', 'aeh-oel-oder-umlaute-waeren-schoen'),
+			array('other characters ¹²³°@€', 'other-characters-1230ateur'),
 		);
 	}
 
