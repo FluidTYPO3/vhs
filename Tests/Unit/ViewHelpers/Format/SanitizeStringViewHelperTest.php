@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Format\Url;
+namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
