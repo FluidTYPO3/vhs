@@ -48,6 +48,7 @@ return array(
 	'Tx_Vhs_ViewHelpers_Format_PrependViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Format\PrependViewHelper',
 	'Tx_Vhs_ViewHelpers_Format_RegularExpressionViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Format\RegularExpressionViewHelper',
 	'Tx_Vhs_ViewHelpers_Format_ReplaceViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Format\ReplaceViewHelper',
+	'Tx_Vhs_ViewHelpers_Format_SanitizeStringViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper',
 	'Tx_Vhs_ViewHelpers_Format_SubstringViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Format\SubstringViewHelper',
 	'Tx_Vhs_ViewHelpers_Format_TidyViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Format\TidyViewHelper',
 	'Tx_Vhs_ViewHelpers_Format_TrimViewHelper' => 'FluidTYPO3\Vhs\ViewHelpers\Format\TrimViewHelper',
