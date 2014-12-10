@@ -268,10 +268,6 @@ abstract class AbstractAssetViewHelper
 		} else {
 			$name = md5(serialize($assetSettings));
 		}
-		$variables = $this->getVariables();
-		if (0 < count($variables)) {
-			$name .= '-' . md5(serialize($variables));
-		}
 		return $name;
 	}
 

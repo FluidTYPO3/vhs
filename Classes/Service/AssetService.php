@@ -197,6 +197,10 @@ class AssetService implements SingletonInterface {
 		$footer = array();
 		$footerRelocationEnabled = (TRUE === isset($settings['enableFooterRelocation']) && $settings['relocateToFooter'] > 0) || FALSE === isset($settings['enableFooterRelocation']);
 		foreach ($assets as $name => $asset) {
+			$variables = $asset->getVariables();
+			if (0 < count($variables)) {
+				$name .= '-' . md5(serialize($variables));
+			}
 			if (TRUE === ($this->assertAssetAllowedInFooter($asset) && $footerRelocationEnabled)) {
 				$footer[$name] = $asset;
 			} else {
