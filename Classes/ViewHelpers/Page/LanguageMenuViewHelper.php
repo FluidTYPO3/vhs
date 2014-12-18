@@ -80,6 +80,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'languageMenu');
 		$this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', FALSE, 0);
 		$this->registerArgument('configuration', 'array', 'Additional typoLink configuration', FALSE, array());
+		$this->registerArgument('excludeQueryVars', 'string', 'Comma-separate list of variables to exclude', FALSE, '');
 	}
 
 	/**
@@ -302,16 +303,16 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return string
 	 */
 	protected function getLanguageUrl($uid) {
-		$getValues = GeneralUtility::_GET();
-		$getValues['L'] = $uid;
-		unset($getValues['id']);
-		unset($getValues['cHash']);
-		$addParams = http_build_query($getValues, '', '&');
+		$excludedVars = trim((string) $this->arguments['excludeQueryVars']);
 		$config = array(
 			'parameter' => $this->getPageUid(),
 			'returnLast' => 'url',
-			'additionalParams' => '&' . $addParams,
-			'useCacheHash' => $this->arguments['useCHash']
+			'additionalParams' => '&L=' . $uid,
+			'useCacheHash' => $this->arguments['useCHash'],
+			'addQueryString' => 'GET',
+			'addQueryString.' => array(
+				'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
+			)
 		);
 		if (TRUE === is_array($this->arguments['configuration'])) {
 			$config = ViewHelperUtility::mergeArrays($config, $this->arguments['configuration']);
