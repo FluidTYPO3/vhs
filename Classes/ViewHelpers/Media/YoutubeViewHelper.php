@@ -160,7 +160,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper {
 	 * @return string
 	 */
 	private function renderChildTag($tagName, $attributes = array(), $forceClosingTag = FALSE) {
-		$tagBuilder = clone($this->tag);
+		$tagBuilder = clone $this->tag;
 		$tagBuilder->reset();
 		$tagBuilder->setTagName($tagName);
 		$tagBuilder->addAttributes($attributes);
