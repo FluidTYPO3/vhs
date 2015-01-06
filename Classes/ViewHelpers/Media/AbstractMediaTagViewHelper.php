@@ -64,7 +64,7 @@ abstract class AbstractMediaTagViewHelper extends AbstractMediaViewHelper {
 	 * @return string
 	 */
 	public function renderChildTag($tagName, $attributes = array(), $forceClosingTag = FALSE, $mode = 'none') {
-		$tagBuilder = clone($this->tag);
+		$tagBuilder = clone $this->tag;
 		$tagBuilder->reset();
 		$tagBuilder->setTagName($tagName);
 		$tagBuilder->addAttributes($attributes);
