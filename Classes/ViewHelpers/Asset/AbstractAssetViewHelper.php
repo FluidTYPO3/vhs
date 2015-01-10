@@ -24,6 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
 /**
  * Base class for ViewHelpers capable of registering assets
  * which will be included when rendering the page.
@@ -359,13 +361,13 @@ abstract class AbstractAssetViewHelper
 		$assetSettings = $this->arguments;
 		$assetSettings['type'] = $this->getType();
 		if (TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
-			$assetSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($assetSettings, $settings['asset']);
+			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['asset']);
 		}
 		if (TRUE === (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName]))) {
-			$assetSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($assetSettings, $settings['assetGroup'][$groupName]);
+			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['assetGroup'][$groupName]);
 		}
 		if (TRUE === (isset($settings['asset'][$name]) && is_array($settings['asset'][$name]))) {
-			$assetSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($assetSettings, $settings['asset'][$name]);
+			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['asset'][$name]);
 		}
 		if (FALSE === empty($assetSettings['path']) && FALSE === (boolean) $assetSettings['external']) {
 			$assetSettings['path'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($assetSettings['path']);
