@@ -84,7 +84,7 @@ class FilterViewHelper extends AbstractViewHelper {
 	 * simply does a weak comparison (==) for sameness.
 	 *
 	 * @param mixed $item
-	 * @param mixed $filter
+	 * @param mixed $filter Could be a single value or an Array. If so the function returns TRUE when $item matches with any value in it.
 	 * @param string $propertyName
 	 * @return boolean
 	 */
@@ -94,7 +94,7 @@ class FilterViewHelper extends AbstractViewHelper {
 		} else {
 			$value = $item;
 		}
-		return ($value == $filter);
+		return is_array($filter) ? in_array($value, $filter) : ($value == $filter);
 	}
 
 }
