@@ -1,4 +1,4 @@
-<phpunit bootstrap="./TestsRewrite/bootstrap.php"
+<phpunit bootstrap="./Tests/bootstrap.php"
          backupGlobals="false"
          backupStaticAttributes="false"
          colors="true"
@@ -15,7 +15,7 @@
 
     <testsuites>
         <testsuite name="unit">
-            <directory>TestsRewrite/Unit</directory>
+            <directory>Tests/Unit</directory>
         </testsuite>
     </testsuites>
     <filter>
