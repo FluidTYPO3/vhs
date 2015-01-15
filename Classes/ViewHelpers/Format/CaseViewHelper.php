@@ -24,6 +24,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 
@@ -65,9 +66,9 @@ class CaseViewHelper extends AbstractViewHelper {
 			case self::CASE_UCWORDS: $string = ucwords($string); break;
 			case self::CASE_UCFIRST: $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $string, 'toUpper'); break;
 			case self::CASE_LCFIRST: $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $string, 'toLower'); break;
-			case self::CASE_CAMELCASE: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($string); break;
-			case self::CASE_LOWERCAMELCASE: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($string); break;
-			case self::CASE_UNDERSCORED: $string = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($string); break;
+			case self::CASE_CAMELCASE: $string = GeneralUtility::underscoredToUpperCamelCase($string); break;
+			case self::CASE_LOWERCAMELCASE: $string = GeneralUtility::underscoredToLowerCamelCase($string); break;
+			case self::CASE_UNDERSCORED: $string = GeneralUtility::camelCaseToLowerCaseUnderscored($string); break;
 			default: break;
 		}
 		if ('BE' === TYPO3_MODE) {

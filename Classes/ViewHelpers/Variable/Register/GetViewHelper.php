@@ -25,6 +25,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * ### Variable\Register: Get
  *
@@ -38,9 +42,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-
 class GetViewHelper extends AbstractViewHelper {
 
 	/**
@@ -54,7 +55,7 @@ class GetViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render() {
-		if (FALSE === $GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController) {
+		if (FALSE === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
 			return NULL;
 		}
 		$name = $this->arguments['name'];
