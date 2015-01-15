@@ -396,8 +396,9 @@ class Asset implements AssetInterface {
 	 * @return string
 	 */
 	public function getContent() {
-		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists(GeneralUtility::getFileAbsFileName($this->path))) {
-			return file_get_contents(GeneralUtility::getFileAbsFileName($this->path));
+		$path = (0 === strpos($this->path, '/') ? $this->path : GeneralUtility::getFileAbsFileName($this->path));
+		if (TRUE === empty($this->content) && NULL !== $this->path && file_exists($path)) {
+			return file_get_contents($path);
 		}
 		return $this->content;
 	}
@@ -427,7 +428,7 @@ class Asset implements AssetInterface {
 			$this->path = NULL;
 			return $this;
 		}
-		if (FALSE === strpos($path, '://') && 0 !== strpos($path, '//')) {
+		if (FALSE === strpos($path, '://') && 0 !== strpos($path, '/')) {
 			$path = GeneralUtility::getFileAbsFileName($path);
 		}
 		if (NULL === $this->type) {
