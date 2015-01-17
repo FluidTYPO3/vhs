@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Math;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *
@@ -24,12 +24,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-abstract class AbstractMathViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
+abstract class AbstractMathViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @param mixed $a

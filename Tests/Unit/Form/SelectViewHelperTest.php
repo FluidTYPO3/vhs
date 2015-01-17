@@ -1,10 +1,9 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
-
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 Cornel Boppart <cornel@bopp-art.com>
+ *  (c) 2014 Claus Due <claus@namelesscoder.net>
  *
  *  All rights reserved
  *
@@ -25,13 +24,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection off
- * @author Cornel Boppart <cornel@bopp-art.com>
+ * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
+ * @subpackage ViewHelpers\Form
  */
-class LanguageViewHelperTest extends AbstractViewHelperTest {
+class SelectViewHelperTest extends AbstractViewHelperTest {
 
 }

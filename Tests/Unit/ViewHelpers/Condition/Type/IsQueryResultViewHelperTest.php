@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Type;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
 
 /***************************************************************
  *  Copyright notice
@@ -24,7 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Type;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
 /**
@@ -38,7 +39,7 @@ class IsQueryResultViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$query = $this->objectManager->get('Tx_Extbase_Domain_Repository_FrontendUserRepository')->createQuery();
+		$query = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository')->createQuery();
 		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new QueryResult($query))));
 	}
 

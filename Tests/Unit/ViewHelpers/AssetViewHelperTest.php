@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -30,6 +30,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class AssetViewHelperTest extends \FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest {
+class AssetViewHelperTest extends AbstractViewHelperTest {
 
 }

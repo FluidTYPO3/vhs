@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Context;
 
 /***************************************************************
  *  Copyright notice
@@ -24,7 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection off
@@ -49,7 +50,7 @@ class IsBackendViewHelperTest extends AbstractViewHelperTest {
 	 * @param boolean $expected
 	 */
 	public function testRender($verdict, $expected) {
-		$instance = $this->getMock(substr(get_class($this), 0, -4), array('isBackendContext'));
+		$instance = $this->getMock($this->getViewHelperClassName(), array('isBackendContext'));
 		$instance->expects($this->once())->method('isBackendContext')->will($this->returnValue($verdict));
 		$arguments = array('then' => TRUE, 'else' => FALSE);
 		$instance->setArguments($arguments);

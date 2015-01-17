@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs;
+namespace FluidTYPO3\Vhs\Tests\Unit;
 /***************************************************************
  *  Copyright notice
  *
@@ -24,16 +24,25 @@ namespace FluidTYPO3\Vhs;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\Asset;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
 class AssetTest extends UnitTestCase {
+
+	/**
+	 * @return void
+	 */
+	public function setUp() {
+		$GLOBALS['VhsAssets'] = array();
+	}
 
 	/**
 	 * @test
@@ -129,9 +138,9 @@ class AssetTest extends UnitTestCase {
 	 * @test
 	 */
 	public function assetsCanBeAdded() {
-		$name = 'dummy';
 		$file = $this->getAbsoluteAssetFixturePath();
 		$asset = Asset::createFromFile($file);
+		$name = $asset->getName();
 		$this->assertSame($asset, $GLOBALS['VhsAssets'][$name]);
 	}
 

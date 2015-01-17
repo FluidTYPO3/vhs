@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 
 /***************************************************************
  *  Copyright notice

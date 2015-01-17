@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
 /***************************************************************
  *  Copyright notice
  *
@@ -25,7 +25,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
  * ************************************************************* */
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection on

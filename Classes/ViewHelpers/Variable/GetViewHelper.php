@@ -25,6 +25,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
 /**
  * ### Variable: Get
  *
@@ -42,47 +45,31 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
  *     {v:variable.get(name: 'dynamic{variableName}')}
  *
+ * If your target object is an array with unsequential yet
+ * numeric indices (e.g. {123: 'value1', 513: 'value2'},
+ * commonly seen in reindexed UID map arrays) use
+ * `useRawIndex="TRUE"` to indicate you do not want your
+ * array/QueryResult/Iterator to be accessed by locating
+ * the Nth element - which is the default behavior.
+ *
+ * ```warning
+ * Do not try `useRawKeys="TRUE"` on QueryResult or
+ * ObjectStorage unless you are fully aware what you are
+ * doing. These particular types require an unpredictable
+ * index value - the SPL object hash value - when accessing
+ * members directly. This SPL indexing and the very common
+ * occurrences of QueryResult and ObjectStorage variables
+ * in templates is the very reason why `useRawKeys` by
+ * default is set to `FALSE`.
+ * ```
+ *
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Var
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-
 class GetViewHelper extends AbstractViewHelper {
 
 	/**
-	 * ### Variable: Get
-	 *
-	 * Get the variable in $name. Supports dotted-path syntax.
-	 *
-	 * Can be used to access dynamic variables such as:
-	 *
-	 *     {v:variable.get(name: 'object.arrayProperty.{index}')}
-	 *
-	 * And can be chained with `v:variable.set` to reassign the
-	 * output to another variable:
-	 *
-	 *     {v:variable.get(name: 'myArray.{index}') -> v:variable.set(name: 'myVar')}
-	 *
-	 * If your target object is an array with unsequential yet
-	 * numeric indices (e.g. {123: 'value1', 513: 'value2'},
-	 * commonly seen in reindexed UID map arrays) use
-	 * `useRawIndex="TRUE"` to indicate you do not want your
-	 * array/QueryResult/Iterator to be accessed by locating
-	 * the Nth element - which is the default behavior.
-	 *
-	 * ```warning
-	 * Do not try `useRawKeys="TRUE"` on QueryResult or
-	 * ObjectStorage unless you are fully aware what you are
-	 * doing. These particular types require an unpredictable
-	 * index value - the SPL object hash value - when accessing
-	 * members directly. This SPL indexing and the very common
-	 * occurrences of QueryResult and ObjectStorage variables
-	 * in templates is the very reason why `useRawKeys` by
-	 * default is set to `FALSE`.
-	 * ```
-	 *
 	 * @param string $name
 	 * @param boolean $useRawKeys
 	 * @return mixed

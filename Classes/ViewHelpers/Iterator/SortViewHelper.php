@@ -161,7 +161,7 @@ class SortViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * Sort a Tx_Extbase_Persistence_ObjectStorage instance
+	 * Sort an ObjectStorage instance
 	 *
 	 * @param ObjectStorage $storage
 	 * @return ObjectStorage

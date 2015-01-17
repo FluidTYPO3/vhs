@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Form\Select;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Url;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,14 +23,39 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Form\Select;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
- * @subpackage ViewHelpers\Form\Select
  */
-class OptgroupViewHelperTest extends AbstractViewHelperTest {
+class SanitizeStringViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @test
+	 * @dataProvider getInputsAndExpectedOutputs
+	 * @param string $input
+	 * @param string $expectedOutput
+	 */
+	public function sanitizesString($input, $expectedOutput) {
+		$result1 = $this->executeViewHelper(array('string' => $input));
+		$result2 = $this->executeViewHelperUsingTagContent('Text', $input);
+		$this->assertEquals($expectedOutput, $result1);
+		$this->assertEquals($result1, $result2);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getInputsAndExpectedOutputs() {
+		return array(
+			array('this string needs dashes', 'this-string-needs-dashes'),
+			array('THIS SHOULD BE LOWERCASE', 'this-should-be-lowercase'),
+			array('THESE øæå chars are not allowed', 'these-oeaeaa-chars-are-not-allowed'),
+			array('many           spaces become one dash', 'many-spaces-become-one-dash')
+		);
+	}
 
 }

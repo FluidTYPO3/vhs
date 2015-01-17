@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Math;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /***************************************************************
  *  Copyright notice
  *

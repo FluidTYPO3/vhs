@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 
 /***************************************************************
  *  Copyright notice
@@ -24,7 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -40,14 +41,24 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 	 */
 	protected $fixture;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('\FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper', array('hasArgument'));
+		parent::setUp();
+		$this->fixture = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper', array('hasArgument'));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tearDown() {
 		unset($this->fixture);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function simpleStructures() {
 		$structures = array(
 			// structure, key, expected
@@ -72,6 +83,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 		return $structures;
 	}
 
+	/**
+	 * @return ObjectStorage
+	 */
 	public function constructObjectStorageContainingFrontendUser() {
 		$storage = new ObjectStorage();
 		$user1 = new FrontendUser();
@@ -87,6 +101,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 		return $storage;
 	}
 
+	/**
+	 * @return ObjectStorage
+	 */
 	public function constructObjectStorageContainingFrontendUsersWithUserGroups() {
 		$storage = new ObjectStorage();
 		$userGroup1 = new FrontendUserGroup('my first group');
@@ -101,6 +118,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 		return $storage;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function nestedStructures() {
 		$structures = array(
 			// structure, key, expected

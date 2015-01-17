@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable\Register;
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +24,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection off
@@ -37,6 +37,7 @@ class SetViewHelperTest extends AbstractViewHelperTest {
 	 * Set up this testcase
 	 */
 	public function setUp() {
+		parent::setUp();
 		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(array(), 1, 1));
 	}
 

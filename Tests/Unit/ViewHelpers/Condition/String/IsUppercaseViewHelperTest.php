@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Condition\String;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\String;
 
 /***************************************************************
  *  Copyright notice
@@ -24,7 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\String;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection off
