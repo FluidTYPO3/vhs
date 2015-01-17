@@ -24,7 +24,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-use \TYPO3\CMS\Core\Collection\RecordCollectionRepository;
+use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
 
 /**
  * ### Collection ViewHelper
