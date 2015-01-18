@@ -25,6 +25,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use FluidTYPO3\Vhs\Service\PageSelectService;
+
 /**
  * ### Base class: Content ViewHelpers
  *
@@ -36,10 +40,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use FluidTYPO3\Vhs\Service\PageSelectService;
-
 abstract class AbstractContentViewHelper extends AbstractViewHelper {
 
 	/**
@@ -140,8 +140,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 
 		if (TRUE === (boolean) $this->arguments['render']) {
 			$contentRecords = $this->getRenderedRecords($contentRecords);
-		} else {
-			$contentRecords = $contentRecords;
 		}
 
 		return $contentRecords;

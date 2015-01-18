@@ -25,6 +25,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * ************************************************************* */
 
 use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -94,7 +95,7 @@ class MarkdownViewHelper extends AbstractViewHelper {
 			return $this->cache->get($cacheIdentifier);
 		}
 
-		$this->markdownExecutablePath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('markdown');
+		$this->markdownExecutablePath = CommandUtility::getCommand('markdown');
 		if (FALSE === is_executable($this->markdownExecutablePath)) {
 			throw new Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
 				'and accessible; this binary could not be found in any of your configured paths available to this script', 1350511561);

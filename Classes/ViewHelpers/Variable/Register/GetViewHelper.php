@@ -26,7 +26,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  ***************************************************************/
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**

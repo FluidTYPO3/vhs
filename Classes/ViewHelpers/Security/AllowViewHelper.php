@@ -25,6 +25,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
+
 /**
  * ### Security: Allow
  *
@@ -46,8 +48,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
-
 class AllowViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface {
 
 	/**

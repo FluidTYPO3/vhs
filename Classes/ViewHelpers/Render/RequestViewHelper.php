@@ -25,6 +25,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Mvc\Dispatcher;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /**
  * ### Render: Request
  *
@@ -39,9 +43,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-use TYPO3\CMS\Extbase\Mvc\Dispatcher;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-
 class RequestViewHelper extends AbstractRenderViewHelper {
 
 	/**
@@ -102,7 +103,7 @@ class RequestViewHelper extends AbstractRenderViewHelper {
 				$this->request->getPluginName()
 			);
 		}
-		$temporaryContentObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
+		$temporaryContentObject = new ContentObjectRenderer();
 		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
 		$request = $this->objectManager->get($this->requestType);
 		$request->setControllerActionName($action);

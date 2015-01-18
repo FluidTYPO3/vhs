@@ -25,13 +25,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
+
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
-
 class ResourcesViewHelper extends RecordViewHelper {
 
 	const defaultTable = 'tt_content';

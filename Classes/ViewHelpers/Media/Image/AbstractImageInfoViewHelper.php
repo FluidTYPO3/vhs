@@ -42,6 +42,9 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 	 */
 	protected $resourceFactory;
 
+	/**
+	 * Construct resource factory
+	 */
 	public function __construct() {
 		$this->resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 	}

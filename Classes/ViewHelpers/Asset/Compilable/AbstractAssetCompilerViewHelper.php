@@ -23,6 +23,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 
 /**
  * Base class for ViewHelpers capable of compiling Assets,
@@ -34,7 +36,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  * @subpackage ViewHelpers\Asset\Compilable
  */
 abstract class AbstractAssetCompilerViewHelper
-	extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper
+	extends AbstractAssetViewHelper
 	implements AssetCompilerInterface {
 
 	/**
@@ -43,16 +45,16 @@ abstract class AbstractAssetCompilerViewHelper
 	protected $assets = array();
 
 	/**
-	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface $asset
+	 * @param AssetInterface $asset
 	 * @return void
 	 */
-	public function addAsset(\FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface $asset) {
+	public function addAsset(AssetInterface $asset) {
 		$name = $asset->getName();
 		$this->assets[$name] = $asset;
 	}
 
 	/**
-	 * @return \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[]
+	 * @return AssetInterface[]
 	 */
 	public function getAssets() {
 		return $this->assets;

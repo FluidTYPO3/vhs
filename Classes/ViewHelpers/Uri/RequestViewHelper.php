@@ -25,6 +25,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * ### Uri: Request
  *
@@ -35,9 +38,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  * @package Vhs
  * @subpackage ViewHelpers\Uri
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 class RequestViewHelper extends AbstractViewHelper {
 
 	/**

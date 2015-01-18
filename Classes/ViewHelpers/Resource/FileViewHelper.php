@@ -25,6 +25,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
 /**
  * ViewHelper to output or assign FAL sys_file records
  *
@@ -32,8 +34,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-
 class FileViewHelper extends AbstractResourceViewHelper {
 
 	/**

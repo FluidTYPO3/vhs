@@ -25,13 +25,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\AbstractRecordResourceViewHelper;
+
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\AbstractRecordResourceViewHelper;
-
 class RecordViewHelper extends AbstractRecordResourceViewHelper {
 
 }

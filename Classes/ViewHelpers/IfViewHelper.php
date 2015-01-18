@@ -25,14 +25,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode;
+
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode;
-
 class IfViewHelper extends AbstractConditionViewHelper {
 
 	const OPERATOR_IS_EQUAL = '==';

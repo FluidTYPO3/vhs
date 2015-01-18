@@ -24,6 +24,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * ### TypolinkViewhelper
  *
@@ -51,8 +54,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-
 class TypolinkViewHelper extends AbstractViewHelper {
 
 	/**

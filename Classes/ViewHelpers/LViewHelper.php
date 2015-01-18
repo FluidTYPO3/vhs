@@ -25,6 +25,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /**
  * ### L (localisation) ViewHelper
  *
@@ -44,9 +47,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
 class LViewHelper extends TranslateViewHelper {
 
 	/**

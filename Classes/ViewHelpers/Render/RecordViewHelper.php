@@ -25,6 +25,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
+
 /**
  * ViewHelper used to render raw content records typically fetched
  * with <v:content.get(column: '0', render: FALSE) />
@@ -33,8 +35,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
-
 class RecordViewHelper extends AbstractContentViewHelper {
 
 	/**

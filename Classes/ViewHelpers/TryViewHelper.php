@@ -24,6 +24,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
 /**
  * ### Try ViewHelper
  *
@@ -99,9 +102,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-
 class TryViewHelper extends AbstractConditionViewHelper {
 
 	/**

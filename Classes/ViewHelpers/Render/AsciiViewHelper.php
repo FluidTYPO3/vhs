@@ -25,6 +25,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * ### Render: ASCII Character
  *
@@ -52,8 +54,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-
 class AsciiViewHelper extends AbstractViewHelper {
 
 	/**

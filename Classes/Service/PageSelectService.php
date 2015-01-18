@@ -25,6 +25,10 @@ namespace FluidTYPO3\Vhs\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+
 /**
  * Page Select Service
  *
@@ -37,13 +41,10 @@ namespace FluidTYPO3\Vhs\Service;
  * @package Vhs
  * @subpackage Service
  */
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 class PageSelectService implements SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
+	 * @var PageRepository
 	 */
 	protected static $pageSelect;
 
@@ -75,7 +76,7 @@ class PageSelectService implements SingletonInterface {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
+	 * @return PageRepository
 	 */
 	private function createPageSelectInstance() {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
@@ -84,7 +85,7 @@ class PageSelectService implements SingletonInterface {
 		} else {
 			$groups = array(-1, 0);
 		}
-		$pageSelect = new \TYPO3\CMS\Frontend\Page\PageRepository();
+		$pageSelect = new PageRepository();
 		$clauses = array();
 		foreach ($groups as $group) {
 			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
@@ -149,7 +150,7 @@ class PageSelectService implements SingletonInterface {
 		if (0 < count($allowedDoktypeList)) {
 			$addWhere .= ' AND doktype IN (' . implode(',', $allowedDoktypeList) . ')';
 		} else {
-			$addWhere .= ' AND doktype != ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER;
+			$addWhere .= ' AND doktype != ' . PageRepository::DOKTYPE_SYSFOLDER;
 		}
 		if (0 < count($excludePages)) {
 			$addWhere .= ' AND uid NOT IN (' . implode(',', $excludePages) . ')';

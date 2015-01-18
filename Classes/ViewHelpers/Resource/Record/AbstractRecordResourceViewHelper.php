@@ -25,17 +25,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-/**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource\Record
- */
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
+/**
+ * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
+ * @package Vhs
+ * @subpackage ViewHelpers\Resource\Record
+ */
 abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface {
 
 	/**
@@ -91,6 +91,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 	/**
 	 * @param array $record
 	 * @return array
+	 * @throws Exception
 	 */
 	public function getResources($record) {
 		$field = $this->getField();
@@ -108,6 +109,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
 	/**
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getTable() {
 		$table = $this->arguments['table'];
@@ -124,6 +126,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
 	/**
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getField() {
 		$field = $this->arguments['field'];
@@ -161,6 +164,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
 	/**
 	 * @return mixed
+	 * @throws Exception
 	 */
 	public function render() {
 		$record = $this->arguments['record'];

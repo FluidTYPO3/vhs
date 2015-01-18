@@ -25,6 +25,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
 /**
  * ViewHelper used to render content elements in Fluid page templates
  *
@@ -35,8 +37,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-
 class RenderViewHelper extends AbstractContentViewHelper {
 
 	/**
