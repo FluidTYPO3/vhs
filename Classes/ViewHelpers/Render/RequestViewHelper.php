@@ -141,7 +141,6 @@ class RequestViewHelper extends AbstractRenderViewHelper {
 			}
 			return $error->getMessage() . ' (' . $error->getCode() . ')';
 		}
-		return NULL;
 	}
 
 }
