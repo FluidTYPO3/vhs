@@ -24,6 +24,8 @@ namespace FluidTYPO3\Vhs\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Resource\File;
+
 /**
  * ViewHelper Utility
  *
@@ -38,10 +40,10 @@ class ResourceUtility {
 	/**
 	 * Fixes a bug in TYPO3 6.2.0 that the properties metadata is not overlayed on localization.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $file
+	 * @param File $file
 	 * @return array
 	 */
-	public static function getFileArray(\TYPO3\CMS\Core\Resource\File $file) {
+	public static function getFileArray(File $file) {
 		$properties = $file->getProperties();
 		$stat = $file->getStorage()->getFileInfo($file);
 		$array = $file->toArray();

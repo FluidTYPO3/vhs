@@ -25,6 +25,18 @@ namespace FluidTYPO3\Vhs\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
+use FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface;
+use FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\CompilableAssetInterface;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use FluidTYPO3\Vhs\Asset;
+
 /**
  * Asset Handling Service
  *
@@ -35,15 +47,6 @@ namespace FluidTYPO3\Vhs\Service;
  * @package Vhs
  * @subpackage Service
  */
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use FluidTYPO3\Vhs\Asset;
-
 class AssetService implements SingletonInterface {
 
 	/**
@@ -109,7 +112,7 @@ class AssetService implements SingletonInterface {
 	 * @return void
 	 */
 	public function buildAll(array $parameters, $caller, $cached = TRUE) {
-		if (FALSE === $this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager) {
+		if (FALSE === $this->objectManager instanceof ObjectManager) {
 			$this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 			$this->configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
 		}
@@ -187,7 +190,7 @@ class AssetService implements SingletonInterface {
 	}
 
 	/**
-	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[] $assets
+	 * @param AssetInterface[] $assets
 	 * @param boolean $cached
 	 * @return void
 	 */
@@ -257,7 +260,7 @@ class AssetService implements SingletonInterface {
 		$chunks = array();
 		foreach ($spool as $type => $spooledAssets) {
 			$chunk = array();
-			/** @var \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[] $spooledAssets */
+			/** @var AssetInterface[] $spooledAssets */
 			foreach ($spooledAssets as $name => $asset) {
 				$assetSettings = $this->extractAssetSettings($asset);
 				$standalone = (boolean) $assetSettings['standalone'];
@@ -299,7 +302,7 @@ class AssetService implements SingletonInterface {
 	}
 
 	/**
-	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[] $assets
+	 * @param AssetInterface[] $assets
 	 * @param string $type
 	 * @return string
 	 */
@@ -421,7 +424,7 @@ class AssetService implements SingletonInterface {
 			if (TRUE === isset($settings['assetGroup'][$groupName])) {
 				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
 			}
-			if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
+			if (TRUE === $asset instanceof AssetInterface) {
 				$asset->setSettings($localSettings);
 				$filtered[$name] = $asset;
 			} else {
@@ -432,9 +435,9 @@ class AssetService implements SingletonInterface {
 	}
 
 	/**
-	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[] $assets
+	 * @param AssetInterface[] $assets
 	 * @throws \RuntimeException
-	 * @return \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[]
+	 * @return AssetInterface[]
 	 */
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
@@ -442,7 +445,7 @@ class AssetService implements SingletonInterface {
 		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
-			/** @var \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface $asset */
+			/** @var AssetInterface $asset */
 			$assetSettings = $this->extractAssetSettings($asset);
 			$name = array_shift($assetNames);
 			$dependencies = $assetSettings['dependencies'];
@@ -468,7 +471,7 @@ class AssetService implements SingletonInterface {
 				}
 			}
 			if (FALSE === $postpone) {
-				if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\CompilableAssetInterface) {
+				if (TRUE === $asset instanceof CompilableAssetInterface) {
 					$compilerClassName = $asset->getCompilerClassName();
 					if (FALSE === isset($compilables[$compilerClassName])) {
 						$compilables[$compilerClassName] = array();
@@ -482,8 +485,8 @@ class AssetService implements SingletonInterface {
 		if (0 < count($compilables)) {
 			// loop once more, this time assigning compilable assets to their compilers
 			foreach ($placed as $asset) {
-				if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface) {
-					/** @var \FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface */
+				if (TRUE === $asset instanceof AssetCompilerInterface) {
+					/** @var AssetCompilerInterface */
 					$compilerClassName = get_class($asset);
 					$compilerTopInterfaceName = array_shift(class_implements($compilerClassName));
 					if ('\FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface' !== $compilerTopInterfaceName) {
@@ -618,7 +621,7 @@ class AssetService implements SingletonInterface {
 	 * @return boolean
 	 */
 	protected function assertAssetAllowedInFooter($asset) {
-		if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
+		if (TRUE === $asset instanceof AssetInterface) {
 			return $asset->assertAllowedInFooter();
 		}
 		return (boolean) (TRUE === isset($asset['allowMoveToFooter']) ? $asset['allowMoveToFooter'] : TRUE);
@@ -629,7 +632,7 @@ class AssetService implements SingletonInterface {
 	 * @return array
 	 */
 	protected function extractAssetSettings($asset) {
-		if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
+		if (TRUE === $asset instanceof AssetInterface) {
 			return $asset->getAssetSettings();
 		}
 		return $asset;
@@ -640,7 +643,7 @@ class AssetService implements SingletonInterface {
 	 * @return string
 	 */
 	protected function buildAsset($asset) {
-		if (TRUE === $asset instanceof \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface) {
+		if (TRUE === $asset instanceof AssetInterface) {
 			return $asset->build();
 		}
 		if (FALSE === isset($asset['path']) || TRUE === empty($asset['path'])) {

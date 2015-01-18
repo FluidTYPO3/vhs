@@ -25,17 +25,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
+
+
 /**
  * ViewHelper for fetching a random content element in Fluid page templates
  *
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
  * @subpackage ViewHelpers\Content\Random
- */
-use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
-
-/**
- * Class GetViewHelper
  */
 class GetViewHelper extends AbstractContentViewHelper {
 

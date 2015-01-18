@@ -25,6 +25,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
+
 /**
  * ### Base class: Security ViewHelpers
  *
@@ -32,10 +38,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
-
 abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 
 	/**
@@ -134,16 +136,16 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	 * Returns TRUE only if a FrontendUser is currently logged in. Use argument
 	 * to return TRUE only if the FrontendUser logged in must be that specific user.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $frontendUser
+	 * @param FrontendUser $frontendUser
 	 * @return boolean
 	 * @api
 	 */
 	public function assertFrontendUserLoggedIn(FrontendUser $frontendUser = NULL) {
 		$currentFrontendUser = $this->getCurrentFrontendUser();
-		if (FALSE === $currentFrontendUser instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
+		if (FALSE === $currentFrontendUser instanceof FrontendUser) {
 			return FALSE;
 		}
-		if (TRUE === $frontendUser instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser && TRUE === $currentFrontendUser instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
+		if (TRUE === $frontendUser instanceof FrontendUser && TRUE === $currentFrontendUser instanceof FrontendUser) {
 			if ($currentFrontendUser->getUid() === $frontendUser->getUid()) {
 				return TRUE;
 			} else {
@@ -157,11 +159,11 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	 * Returns TRUE only if a FrontendUser is currently logged in. Use argument
 	 * to return TRUE only if the FrontendUser logged in must be that specific user.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $frontendUsers
+	 * @param ObjectStorage $frontendUsers
 	 * @return boolean
 	 * @api
 	 */
-	public function assertFrontendUsersLoggedIn(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $frontendUsers = NULL) {
+	public function assertFrontendUsersLoggedIn(ObjectStorage $frontendUsers = NULL) {
 		foreach ($frontendUsers as $frontendUser) {
 			if (TRUE === $this->assertFrontendUserLoggedIn($frontendUser)) {
 				return TRUE;
@@ -179,14 +181,14 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	 */
 	public function assertFrontendUserGroupLoggedIn($groups = NULL) {
 		$currentFrontendUser = $this->getCurrentFrontendUser();
-		if (FALSE === $currentFrontendUser instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
+		if (FALSE === $currentFrontendUser instanceof FrontendUser) {
 			return FALSE;
 		}
 		$currentFrontendUserGroups = $currentFrontendUser->getUsergroup();
 		if (NULL !== $groups) {
-			if (TRUE === $groups instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup) {
+			if (TRUE === $groups instanceof FrontendUserGroup) {
 				return $currentFrontendUserGroups->contains($groups);
-			} elseif (TRUE === $groups instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
+			} elseif (TRUE === $groups instanceof ObjectStorage) {
 				$currentFrontendUserGroupsClone = clone $currentFrontendUserGroups;
 				$currentFrontendUserGroupsClone->removeAll($groups);
 				return ($currentFrontendUserGroups->count() !== $currentFrontendUserGroupsClone->count());
@@ -260,7 +262,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	/**
 	 * Gets the currently logged in Frontend User
 	 *
-	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+	 * @return FrontendUser
 	 * @api
 	 */
 	public function getCurrentFrontendUser() {

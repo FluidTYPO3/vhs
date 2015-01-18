@@ -25,6 +25,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
+
 /**
  * Base class for resource related view helpers
  *
@@ -32,10 +36,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use FluidTYPO3\Vhs\Utility\ResourceUtility;
-
 abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
@@ -56,6 +56,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper {
 	 *
 	 * @param boolean $onlyProperties
 	 * @param mixed $identifier
+	 * @param mixed $categories
 	 * @return array|NULL
 	 */
 	public function getFiles($onlyProperties = FALSE, $identifier = NULL, $categories = NULL) {

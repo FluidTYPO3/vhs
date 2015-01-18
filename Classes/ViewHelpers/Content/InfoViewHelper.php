@@ -25,6 +25,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
 /**
  * ViewHelper to access data of the current content element record
  *
@@ -32,10 +36,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-
 class InfoViewHelper extends AbstractViewHelper {
 
 	/**
@@ -62,6 +62,7 @@ class InfoViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @return mixed
+	 * @throws \Exception
 	 */
 	public function render() {
 		$contentUid = intval($this->arguments['contentUid']);

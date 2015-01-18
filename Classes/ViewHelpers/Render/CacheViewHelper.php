@@ -25,6 +25,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+
 /**
  * ### Cache Rendering ViewHelper
  *
@@ -89,7 +91,7 @@ class CacheViewHelper extends AbstractRenderViewHelper {
 	 */
 	public function render($identity, $content = NULL) {
 		if (FALSE === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
-			if (TRUE === $identity instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
+			if (TRUE === $identity instanceof DomainObjectInterface) {
 				$identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
 			} elseif (TRUE === method_exists($identity, '__toString')) {
 				$identity = (string) $identity;

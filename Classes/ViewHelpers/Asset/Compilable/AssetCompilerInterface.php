@@ -23,6 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 
 /**
  * Basic interface for ViewHelpers whose purpose it is to
@@ -35,16 +36,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  * @package Vhs
  * @subpackage ViewHelpers\Asset\Compilable
  */
-interface AssetCompilerInterface extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
+interface AssetCompilerInterface extends AssetInterface {
 
 	/**
-	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface $asset
+	 * @param AssetInterface $asset
 	 * @return void
 	 */
-	public function addAsset(\FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface $asset);
+	public function addAsset(AssetInterface $asset);
 
 	/**
-	 * @return \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[]
+	 * @return AssetInterface[]
 	 */
 	public function getAssets();
 

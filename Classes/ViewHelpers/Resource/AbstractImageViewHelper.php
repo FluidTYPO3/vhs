@@ -25,6 +25,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
+
 /**
  * Base class for image related view helpers adapted from FLUID
  * original image viewhelper.
@@ -33,11 +38,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use FluidTYPO3\Vhs\Utility\ResourceUtility;
-
 abstract class AbstractImageViewHelper extends AbstractResourceViewHelper {
 
 	/**

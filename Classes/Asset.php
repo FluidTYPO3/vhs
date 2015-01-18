@@ -25,6 +25,12 @@ namespace FluidTYPO3\Vhs;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
 /**
  * ### Asset
  *
@@ -73,12 +79,6 @@ namespace FluidTYPO3\Vhs;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-
 class Asset implements AssetInterface {
 
 	/**

@@ -23,6 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
 
 /**
  * Base class for Assets which must be compiled by an
@@ -33,7 +34,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  * @subpackage ViewHelpers\Asset\Compilable
  */
 abstract class AbstractCompilableAssetViewHelper
-	extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper
+	extends AbstractAssetViewHelper
 	implements CompilableAssetInterface {
 
 	/**

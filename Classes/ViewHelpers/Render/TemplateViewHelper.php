@@ -25,6 +25,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * ### Render: Template
  *
@@ -72,8 +74,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 class TemplateViewHelper extends AbstractRenderViewHelper {
 
 	/**

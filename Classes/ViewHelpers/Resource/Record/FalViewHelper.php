@@ -25,14 +25,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
+
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use FluidTYPO3\Vhs\Utility\ResourceUtility;
-
 class FalViewHelper extends AbstractRecordResourceViewHelper {
 
 	/**
@@ -57,7 +58,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 		$fileReferenceProperties = $fileReference->getProperties();
 		$fileProperties = ResourceUtility::getFileArray($file);
 
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($fileProperties, $fileReferenceProperties, TRUE, FALSE, FALSE);
+		ArrayUtility::mergeRecursiveWithOverrule($fileProperties, $fileReferenceProperties, TRUE, FALSE, FALSE);
 		return $fileProperties;
 	}
 

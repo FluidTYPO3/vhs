@@ -228,8 +228,8 @@ class SortViewHelper extends AbstractViewHelper {
 	/**
 	 * Parses the supplied flags into the proper value for the sorting
 	 * function.
-	 *
-	 * @return integer
+	 * @return int
+	 * @throws Exception
 	 */
 	protected function getSortFlags() {
 		$constants = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($this->arguments['sortFlags']);

@@ -23,6 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
 
 /**
  * ### Basic Asset ViewHelper
@@ -64,7 +65,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class AssetViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper {
+class AssetViewHelper extends AbstractAssetViewHelper {
 
 	/**
 	 * @return void

@@ -23,6 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ### Asset DNS Prefetching ViewHelper
@@ -94,7 +95,7 @@ class PrefetchViewHelper extends AbstractAssetViewHelper {
 	public function build() {
 		$domains = $this->arguments['domains'];
 		if (FALSE === is_array($domains)) {
-			$domains = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $domains, TRUE);
+			$domains = GeneralUtility::trimExplode(',', $domains, TRUE);
 		}
 		$headerCode = '';
 		if (TRUE === (boolean) $this->arguments['force']) {

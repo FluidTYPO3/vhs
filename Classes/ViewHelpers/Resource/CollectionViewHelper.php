@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  * @package Vhs
  * @author Dmitri Pisarev <dimaip@gmail.com>
 */
-
 class CollectionViewHelper extends AbstractResourceViewHelper {
 
 	/**

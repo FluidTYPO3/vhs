@@ -23,6 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 
 /**
  * Basic interface for compilable Assets, which are a sub
@@ -35,7 +36,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  * @package Vhs
  * @subpackage ViewHelpers\Asset\Compilable
  */
-interface CompilableAssetInterface extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
+interface CompilableAssetInterface extends AssetInterface {
 
 	/**
 	 * @return string

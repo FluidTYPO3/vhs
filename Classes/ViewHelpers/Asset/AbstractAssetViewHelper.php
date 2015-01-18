@@ -24,7 +24,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\Service\AssetService;
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class for ViewHelpers capable of registering assets
@@ -45,16 +51,16 @@ use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
  * @subpackage ViewHelpers\Asset
  */
 abstract class AbstractAssetViewHelper
-	extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+	extends AbstractViewHelper
 	implements AssetInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @var ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @var \FluidTYPO3\Vhs\Service\AssetService
+	 * @var AssetService
 	 */
 	protected $assetService;
 
@@ -79,7 +85,7 @@ abstract class AbstractAssetViewHelper
 	protected $content;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @var ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -102,26 +108,26 @@ abstract class AbstractAssetViewHelper
 
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @param ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
 	/**
-	 * @param \FluidTYPO3\Vhs\Service\AssetService $assetService
+	 * @param AssetService $assetService
 	 * @return void
 	 */
-	public function injectAssetService(\FluidTYPO3\Vhs\Service\AssetService $assetService) {
+	public function injectAssetService(AssetService $assetService) {
 		$this->assetService = $assetService;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 * @param ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
 	}
@@ -185,7 +191,7 @@ abstract class AbstractAssetViewHelper
 		if (TRUE === isset($this->arguments['external']) && TRUE === (boolean) $this->arguments['external']) {
 			$path = $this->arguments['path'];
 		} else {
-			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->arguments['path']);
+			$path = GeneralUtility::getFileAbsFileName($this->arguments['path']);
 		}
 		$content = file_get_contents($path);
 		return $content;
@@ -227,7 +233,7 @@ abstract class AbstractAssetViewHelper
 		$debugInformation = $this->getDebugInformation();
 		if (TRUE === $debugOutputEnabled) {
 			if (TRUE === $useDebugUtility) {
-				\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($debugInformation);
+				DebuggerUtility::var_dump($debugInformation);
 			} else {
 				return var_export($debugInformation, TRUE);
 			}
@@ -240,7 +246,7 @@ abstract class AbstractAssetViewHelper
 	public function getDependencies() {
 		$assetSettings = $this->getAssetSettings();
 		if (TRUE === isset($assetSettings['dependencies'])) {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $assetSettings['dependencies'], TRUE);
+			return GeneralUtility::trimExplode(',', $assetSettings['dependencies'], TRUE);
 		}
 		return array();
 	}
@@ -321,18 +327,18 @@ abstract class AbstractAssetViewHelper
 	 */
 	public function getSettings() {
 		if (TRUE === is_null(self::$settingsCache)) {
-			$allTypoScript = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+			$allTypoScript = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {
 				// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
 				self::$settingsCache = array();
 			} else {
-				self::$settingsCache = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
+				self::$settingsCache = GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
 		}
 		$settings = self::$settingsCache;
 		if (TRUE === is_array($this->localSettings)) {
-			$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
+			$settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
 		}
 		return $settings;
 	}
@@ -370,7 +376,7 @@ abstract class AbstractAssetViewHelper
 			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['asset'][$name]);
 		}
 		if (FALSE === empty($assetSettings['path']) && FALSE === (boolean) $assetSettings['external']) {
-			$assetSettings['path'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($assetSettings['path']);
+			$assetSettings['path'] = GeneralUtility::getFileAbsFileName($assetSettings['path']);
 		}
 		$assetSettings['name'] = $name;
 		$this->assetSettingsCache = $assetSettings;
