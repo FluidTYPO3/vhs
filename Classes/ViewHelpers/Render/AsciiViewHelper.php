@@ -47,8 +47,8 @@ class AsciiViewHelper extends AbstractViewHelper {
 		if (NULL === $ascii) {
 			$ascii = $this->renderChildren();
 		}
-		if (TRUE === ctype_digit($ascii)) {
-			return chr($ascii);
+		if (TRUE === is_numeric($ascii)) {
+			return chr((integer) $ascii);
 		}
 		if (TRUE === is_array($ascii) || TRUE === $ascii instanceof \Traversable) {
 			$string = '';
