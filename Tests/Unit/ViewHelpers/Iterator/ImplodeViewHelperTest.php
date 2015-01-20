@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * @protection on
@@ -80,7 +81,7 @@ class ImplodeViewHelperTest extends AbstractViewHelperTest {
 		$mockContainer->expects($this->exactly(2))->method('add')->with('test', '1,2,3');
 		$mockContainer->expects($this->once())->method('get')->with('test')->will($this->returnValue($array));
 		$mockContainer->expects($this->exactly(2))->method('remove')->with('test');
-		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($mock, 'templateVariableContainer', $mockContainer, TRUE);
+		ObjectAccess::setProperty($mock, 'templateVariableContainer', $mockContainer, TRUE);
 		$mock->render();
 	}
 
