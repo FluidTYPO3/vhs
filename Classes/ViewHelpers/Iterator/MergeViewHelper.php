@@ -24,13 +24,15 @@ class MergeViewHelper extends AbstractViewHelper {
 	/**
 	 * Merges arrays/Traversables $a and $b into an array
 	 *
-	 * @param mixed $a First array/Traversable
 	 * @param mixed $b Second array/Traversable
+	 * @param mixed $a First array/Traversable - if not set, the ViewHelper can be in a chain (inline-notation)
 	 * @param boolean $useKeys If TRUE, comparison is done while also observing (and merging) the keys used in each array
 	 * @return array
 	 */
-	public function render($a, $b, $useKeys = TRUE) {
-		$this->useKeys = (boolean) $useKeys;
+	public function render($b, $a = NULL, $useKeys = TRUE) {
+		if (NULL === $a) {
+		    $a = $this->renderChildren();
+		}
 		$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
 		$b = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
 		$merged = GeneralUtility::array_merge_recursive_overrule($a, $b);
