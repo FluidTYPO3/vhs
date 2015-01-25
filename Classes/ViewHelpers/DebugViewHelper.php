@@ -98,7 +98,7 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
 			$renderMethodDescription = implode(LF, array_map('trim', explode(LF, $renderMethodDescription)));
 			$renderMethodDescription = '[RENDER METHOD DOC]' . LF . $renderMethodDescription . LF;
 			$argumentDefinitions = array();
-			foreach ($arguments as &$argument) {
+			foreach ($arguments as $argument) {
 				$name = $argument->getName();
 				$argumentDefinitions[$name] = ObjectAccess::getGettableProperties($argument);
 			}
