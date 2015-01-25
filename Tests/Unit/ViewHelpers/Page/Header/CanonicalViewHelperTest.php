@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Page\Header;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -15,11 +15,6 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class TemplateViewHelperTest extends AbstractViewHelperTest {
-
-	public function testRenderThrowsExceptionWithoutTemplatePath() {
-		$this->setExpectedException('TYPO3\\CMS\\Fluid\\View\\Exception\\InvalidTemplateResourceException');
-		$this->executeViewHelper(array('variables' => array()));
-	}
+class CanonicalViewHelperTest extends AbstractViewHelperTest {
 
 }

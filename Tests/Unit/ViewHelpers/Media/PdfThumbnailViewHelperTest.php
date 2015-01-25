@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,14 +11,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
+ * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
+ * @subpackage ViewHelpers\Media
  */
-class FooterViewHelperTest extends AbstractViewHelperTest {
-
-	public function testRender() {
-		$this->assertEmpty($this->executeViewHelper());
-	}
+class PdfThumbnailViewHelperTest extends AbstractViewHelperTest {
 
 }

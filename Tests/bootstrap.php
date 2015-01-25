@@ -24,6 +24,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = array(
 	'extbase_typo3dbbackend_tablecolumns' => $nullCache,
 	'extbase_typo3dbbackend_queries' => $nullCache,
 	'extbase_datamapfactory_datamap' => $nullCache,
+	'cache_rootline' => $nullCache,
 	'cache_pages' => $nullCache,
 	'cache_core' => $nullPhpCache,
 	'extbase_object' => $nullCache,

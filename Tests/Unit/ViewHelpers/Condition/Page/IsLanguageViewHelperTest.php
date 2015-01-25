@@ -17,4 +17,10 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class IsLanguageViewHelperTest extends AbstractViewHelperTest {
 
+	public function testRender() {
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTgetSingleRow'), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue(FALSE));
+		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'language' => 0)));
+	}
+
 }

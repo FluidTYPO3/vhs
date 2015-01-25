@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Context;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -15,11 +15,10 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class TemplateViewHelperTest extends AbstractViewHelperTest {
+class IsDevelopmentViewHelperTest extends AbstractViewHelperTest {
 
-	public function testRenderThrowsExceptionWithoutTemplatePath() {
-		$this->setExpectedException('TYPO3\\CMS\\Fluid\\View\\Exception\\InvalidTemplateResourceException');
-		$this->executeViewHelper(array('variables' => array()));
+	public function testRender() {
+		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else')));
 	}
 
 }
