@@ -62,8 +62,8 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper {
 	public function render($property, $validatorName = NULL, DomainObjectInterface $object = NULL) {
 		if (NULL === $object) {
 			$object = $this->getFormObject();
-			$className = get_class($object);
 		}
+		$className = get_class($object);
 		if (FALSE !== strpos($property, '.')) {
 			$pathSegments = explode('.', $property);
 			foreach ($pathSegments as $property) {
