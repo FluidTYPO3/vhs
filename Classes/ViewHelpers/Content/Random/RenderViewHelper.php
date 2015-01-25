@@ -23,7 +23,7 @@ class RenderViewHelper extends GetViewHelper {
 	 * @return mixed
 	 */
 	public function render() {
-		$contentRecords = parent::render();
+		$contentRecords = (array) parent::render();
 		$html = implode(LF, $contentRecords);
 		return $html;
 	}
