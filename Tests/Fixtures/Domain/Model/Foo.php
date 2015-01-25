@@ -19,6 +19,7 @@ class Foo extends AbstractEntity {
 
     /**
      * @var string
+     * @validate NotEmpty
      */
     protected $bar;
 
