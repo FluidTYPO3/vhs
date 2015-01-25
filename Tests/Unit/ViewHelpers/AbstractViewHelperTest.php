@@ -108,38 +108,38 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 	 */
 	protected function buildViewHelperInstance($arguments = array(), $variables = array(), $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
 		$instance = $this->createInstance();
+		$node = new ViewHelperNode($instance, $arguments);
+		/** @var RenderingContext $renderingContext */
+		$renderingContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Rendering\RenderingContext');
 		/** @var TemplateVariableContainer $container */
 		$container = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer');
-		/** @var ViewHelperVariableContainer $viewHelperContainer */
-		$viewHelperContainer = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer');
 		if (0 < count($variables)) {
 			ObjectAccess::setProperty($container, 'variables', $variables, TRUE);
 		}
-		$node = new ViewHelperNode($instance, $arguments);
-		/** @var UriBuilder $uriBuilder */
-		$uriBuilder = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder');
-		/** @var Request $request */
-		$request = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Request');
-		if (NULL !== $extensionName) {
-			$request->setControllerExtensionName($extensionName);
-		}
-		if (NULL !== $pluginName) {
-			$request->setPluginName($pluginName);
-		}
-		/** @var Response $response */
-		$response = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Response');
-		/** @var ControllerContext $controllerContext */
-		$controllerContext = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
-		$controllerContext->setRequest($request);
-		$controllerContext->setResponse($response);
-		$controllerContext->setUriBuilder($uriBuilder);
-		/** @var RenderingContext $renderingContext */
-		$renderingContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Rendering\RenderingContext');
-		$renderingContext->setControllerContext($controllerContext);
-		ObjectAccess::setProperty($renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, TRUE);
 		ObjectAccess::setProperty($renderingContext, 'templateVariableContainer', $container, TRUE);
-		$instance->setArguments($arguments);
-		$instance->setRenderingContext($renderingContext);
+		if (NULL !== $extensionName || NULL !== $pluginName) {
+			/** @var ViewHelperVariableContainer $viewHelperContainer */
+			$viewHelperContainer = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer');
+			/** @var UriBuilder $uriBuilder */
+			$uriBuilder = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder');
+			/** @var Request $request */
+			$request = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Request');
+			if (NULL !== $extensionName) {
+				$request->setControllerExtensionName($extensionName);
+			}
+			if (NULL !== $pluginName) {
+				$request->setPluginName($pluginName);
+			}
+			/** @var Response $response */
+			$response = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Response');
+			/** @var ControllerContext $controllerContext */
+			$controllerContext = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
+			$controllerContext->setRequest($request);
+			$controllerContext->setResponse($response);
+			$controllerContext->setUriBuilder($uriBuilder);
+			ObjectAccess::setProperty($renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, TRUE);
+			$renderingContext->setControllerContext($controllerContext);
+		}
 		if (TRUE === $instance instanceof \Tx_Fluidwidget_Core_Widget_AbstractWidgetViewHelper) {
 			/** @var WidgetContext $widgetContext */
 			$widgetContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Widget\WidgetContext');
@@ -151,6 +151,8 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 				$instance->setChildNodes(array($childNode));
 			}
 		}
+		$instance->setArguments($arguments);
+		$instance->setRenderingContext($renderingContext);
 		$instance->setViewHelperNode($node);
 		return $instance;
 	}

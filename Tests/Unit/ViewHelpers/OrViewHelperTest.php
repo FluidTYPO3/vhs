@@ -37,25 +37,31 @@ class OrViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function getRenderTestValues() {
 		return array(
-			array(array('content' => 'alt', 'alternative' => 'alternative'), 'alt'),
-			array(array('content' => '', 'alternative' => 'alternative'), 'alternative'),
-			array(array('content' => NULL, 'alternative' => 'alternative'), 'alternative'),
-			array(array('content' => 0, 'alternative' => 'alternative'), 'alternative'),
+			array(array('extensionName' => 'Vhs', 'content' => 'alt', 'alternative' => 'alternative'), 'alt'),
+			array(array('extensionName' => 'Vhs', 'content' => '', 'alternative' => 'alternative'), 'alternative'),
+			array(array('extensionName' => 'Vhs', 'content' => NULL, 'alternative' => 'alternative'), 'alternative'),
+			array(array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'alternative'), 'alternative'),
 			/*
 			array(
 				array(
+					'extensionName' => 'Vhs',
 					'content' => 0,
 					'alternative' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionManager'
 				),
 				'Extension Manager'
 			),
 			array(
-				array('content' => 0, 'alternative' => 'LLL:extensionManager', 'extensionName' => 'extensionmanager'),
+				array(
+					'extensionName' => 'Vhs',
+					'content' => 0,
+					'alternative' => 'LLL:extensionManager',
+					'extensionName' => 'extensionmanager'
+				),
 				'Extension Manager'
 			),
 			*/
 			array(
-				array('content' => 0, 'alternative' => 'LLL:notfound'),
+				array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'LLL:notfound'),
 				'LLL:notfound'
 			),
 		);

@@ -40,7 +40,7 @@ class IconViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function throwsErrorWhenUnableToDetectExtensionName() {
 		$this->setExpectedException('RuntimeException', NULL, 1364167519);
-		$this->executeViewHelper();
+		$this->executeViewHelper(array(), array(), NULL, NULL, 'FakePlugin');
 	}
 
 }

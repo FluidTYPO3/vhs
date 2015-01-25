@@ -39,9 +39,10 @@ class ReverseViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function getRenderTestValues() {
 		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-			array('toArray', 'initialize', 'rewind', 'valid'), array(), '', FALSE);
+			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
 		$queryResult->expects($this->any())->method('toArray')->will($this->returnValue(array('foo', 'bar')));
 		$queryResult->expects($this->any())->method('valid')->will($this->returnValue(FALSE));
+		$queryResult->expects($this->any())->method('count')->will($this->returnValue(0));
 		return array(
 			array(array('subject' => array()), array()),
 			array(array('subject' => array('foo', 'bar')), array(1 => 'bar', 0 => 'foo')),

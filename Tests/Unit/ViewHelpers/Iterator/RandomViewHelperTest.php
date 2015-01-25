@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
-use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
 /**
  * @protection on
@@ -45,8 +44,9 @@ class RandomViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function getRenderTestValues() {
 		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-			array('toArray', 'initialize', 'rewind', 'valid'), array(), '', FALSE);
+			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
 		$queryResult->expects($this->any())->method('toArray')->will($this->returnValue(array('foo', 'bar')));
+		$queryResult->expects($this->any())->method('count')->will($this->returnValue(0));
 		$queryResult->expects($this->any())->method('valid')->will($this->returnValue(FALSE));
 		return array(
 			array(array('subject' => NULL), array('foo', 'bar')),

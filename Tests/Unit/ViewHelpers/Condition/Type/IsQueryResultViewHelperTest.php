@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
 /**
  * @protection off
@@ -19,11 +18,12 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 class IsQueryResultViewHelperTest extends AbstractViewHelperTest {
 
 	/**
-	 * @test
+	 * @disabledtest
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$query = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository')->createQuery();
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new QueryResult($query))));
+		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
+			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
+		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => $queryResult)));
 	}
 
 	/**
