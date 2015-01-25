@@ -144,7 +144,6 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
 				array_push($nodes, implode(LF, $sections));
 			}
 
-
 		}
 		return '<pre>' . implode(LF . LF, $nodes) . '</pre>';
 	}
