@@ -69,11 +69,11 @@ class ContainsViewHelper extends AbstractConditionViewHelper {
 		$asArray = array();
 		if (TRUE === is_array($haystack)) {
 			$asArray = $haystack;
-		} elseif (TRUE === $haystack instanceof ObjectStorage) {
-			/** @var $haystack ObjectStorage */
-			$asArray = $haystack->toArray();
 		} elseif (TRUE === $haystack instanceof LazyObjectStorage) {
 			/** @var $haystack LazyObjectStorage */
+			$asArray = $haystack->toArray();
+		} elseif (TRUE === $haystack instanceof ObjectStorage) {
+			/** @var $haystack ObjectStorage */
 			$asArray = $haystack->toArray();
 		} elseif (TRUE === $haystack instanceof QueryResult) {
 			/** @var $haystack QueryResult */
@@ -92,9 +92,9 @@ class ContainsViewHelper extends AbstractConditionViewHelper {
 	protected function assertHaystackHasNeedle($haystack, $needle) {
 		if (TRUE === is_array($haystack)) {
 			return $this->assertHaystackIsArrayAndHasNeedle($haystack, $needle);
-		} elseif ($haystack instanceof ObjectStorage) {
-			return $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof LazyObjectStorage) {
+			return $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+		} elseif ($haystack instanceof ObjectStorage) {
 			return $this->assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
 		} elseif ($haystack instanceof QueryResult) {
 			return $this->assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
