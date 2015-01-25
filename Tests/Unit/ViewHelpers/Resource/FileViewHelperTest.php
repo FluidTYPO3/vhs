@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -8,15 +8,17 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+
 /**
- * @protection off
+ * @protection on
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class LViewHelperTest extends AbstractViewHelperTest {
+class FileViewHelperTest extends AbstractViewHelperTest {
 
 	public function testRender() {
-		$this->assertEmpty($this->executeViewHelper(array('extensionName' => 'Vhs')));
+		$this->assertEmpty($this->executeViewHelper());
 	}
 
 }

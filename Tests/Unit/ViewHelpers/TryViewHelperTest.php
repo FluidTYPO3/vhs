@@ -15,4 +15,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  */
 class TryViewHelperTest extends AbstractViewHelperTest {
 
+	public function testRender() {
+		$this->assertEmpty($this->executeViewHelper());
+	}
+
 }

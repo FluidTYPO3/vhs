@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -15,10 +15,10 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class DenyViewHelperTest extends AbstractViewHelperTest {
+class LanguageViewHelperTest extends AbstractViewHelperTest {
 
-	public function testRender() {
-		$this->assertEmpty($this->executeViewHelper());
+	public function testRenderFailsWhenUnableToResolveExtensionName() {
+		$this->assertEquals('Unable to read extension name from ControllerContext and value not manually specified', $this->executeViewHelper());
 	}
 
 }
