@@ -78,11 +78,7 @@ class TyposcriptViewHelper extends AbstractViewHelper {
 		$segments = explode('.', $path);
 		$value = $all;
 		foreach ($segments as $path) {
-			if (TRUE === isset($value[$path . '.'])) {
-				$value = $value[$path . '.'];
-			} else {
-				$value = $value[$path];
-			}
+			$value = (TRUE === isset($value[$path . '.']) ? $value[$path . '.'] : $value[$path]);
 		}
 		if (TRUE === is_array($value)) {
 			$value = GeneralUtility::removeDotsFromTS($value);
