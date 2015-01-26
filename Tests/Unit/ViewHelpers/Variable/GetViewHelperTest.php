@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
@@ -41,15 +42,22 @@ class GetViewHelperTest extends AbstractViewHelperTest {
 	/**
 	 * @test
 	 */
+	public function returnsNestedValueUsingRawKeysIfRootExists() {
+		$this->assertEquals(1, $this->executeViewHelper(array('name' => 'test.test', 'useRawKeys' => TRUE), array('test' => array('test' => 1))));
+	}
+
+	/**
+	 * @test
+	 */
 	public function returnsNestedValueIfRootExistsAndMembersAreNumeric() {
 		$this->assertEquals(2, $this->executeViewHelper(array('name' => 'test.1'), array('test' => array(1, 2))));
 	}
 
 	/**
-	 * @disabledtest
+	 * @test
 	 */
 	public function returnsNullAndSuppressesExceptionOnInvalidPropertyGetting() {
-		$user = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
+		$user = new Foo();
 		$this->assertEquals(NULL, $this->executeViewHelper(array('name' => 'test.void'), array('test' => $user)));
 	}
 

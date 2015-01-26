@@ -18,25 +18,27 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 class GetViewHelperTest extends AbstractViewHelperTest {
 
 	/**
-	 * Set up this testcase
+	 * @test
 	 */
-	public function setUp() {
-		parent::setUp();
-		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
+	public function silentlyIgnoresMissingFrontendController() {
+		$result = $this->executeViewHelper(array('name' => 'name'));
+		$this->assertNull($result);
 	}
 
 	/**
-	 * @disabledtest
+	 * @test
 	 */
 	public function returnsNullIfRegisterDoesNotExist() {
+		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$name = uniqid();
 		$this->assertEquals(NULL, $this->executeViewHelper(array('name' => $name)));
 	}
 
 	/**
-	 * @disabledtest
+	 * @test
 	 */
 	public function returnsValueIfRegisterExists() {
+		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$name = uniqid();
 		$value = uniqid();
 		$GLOBALS['TSFE']->register[$name] = $value;

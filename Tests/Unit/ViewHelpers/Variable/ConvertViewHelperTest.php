@@ -8,7 +8,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
@@ -86,21 +88,21 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	}
 
 	/**
-	 * @disabledtest
+	 * @test
 	 */
 	public function convertArrayToObjectStorage() {
-		$dummy = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$dummy = new Foo();
+		$storage = new ObjectStorage();
 		$storage->attach($dummy);
 		$this->executeConversion(array($dummy), 'ObjectStorage', $storage);
 	}
 
 	/**
-	 * @disabledtest
+	 * @test
 	 */
 	public function convertObjectStorageToArray() {
-		$dummy = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$dummy = new Foo();
+		$storage = new ObjectStorage();
 		$storage->attach($dummy);
 		$this->executeConversion($storage, 'array', array($dummy));
 	}
@@ -151,23 +153,23 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	}
 
 	/**
-	 * @disabledtest
+	 * @test
 	 */
 	public function returnsObjectStorageForTypeArrayAndValueNull() {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$viewHelper->setArguments(array('type' => 'ObjectStorage'));
 		$converted = $viewHelper->render();
-		$this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $converted);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $converted);
 		$this->assertEquals(0, $converted->count());
 	}
 
 	/**
-	 * @disabledtest
+	 * @test
 	 */
 	public function returnsArrayForTypeObjectStorage() {
-		$domainObject = $this->objectManager->get('FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$domainObject = new Foo();
+		$storage = new ObjectStorage();
 		$storage->attach($domainObject);
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($storage));

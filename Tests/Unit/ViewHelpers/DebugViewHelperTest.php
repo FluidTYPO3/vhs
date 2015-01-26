@@ -48,4 +48,20 @@ class DebugViewHelperTest extends AbstractViewHelperTest {
 		$this->assertContains('[RENDER METHOD DOC]', $result);
 	}
 
+	/**
+	 * @test
+	 */
+	public function debugsChildNodeObjectAccessors() {
+		$viewHelper = $this->createInstance();
+		$viewHelperNode = new ViewHelperNode($viewHelper, array());
+		$result = $this->executeViewHelperUsingTagContent(
+			'ObjectAccessor',
+			'test.test',
+			array('test' => array('test' => 'test')),
+			array(),
+			$viewHelperNode
+		);
+		$this->assertContains('[VARIABLE ACCESSORS]', $result);
+	}
+
 }
