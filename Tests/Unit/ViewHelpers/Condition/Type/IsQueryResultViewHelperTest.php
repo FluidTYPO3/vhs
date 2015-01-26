@@ -18,7 +18,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 class IsQueryResultViewHelperTest extends AbstractViewHelperTest {
 
 	/**
-	 * @disabledtest
+	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
 		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
