@@ -134,14 +134,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -308,14 +300,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -471,14 +455,6 @@ php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -672,14 +648,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -847,14 +815,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -990,14 +950,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -1133,14 +1085,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -1273,14 +1217,6 @@ php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -1595,6 +1531,82 @@ php:type="mixed">
 </xsd:attribute>
 </xsd:complexType>
 </xsd:element>
+<xsd:element name="condition.context.isDevelopment">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Context: IsDevelopment
+
+Returns true if current root application context is development otherwise false.
+If no application context has been set, then the default context is production.
+
+#### Note about how to set the application context
+
+The context TYPO3 CMS runs in is specified through the environment variable TYPO3_CONTEXT.
+It can be set by .htaccess or in the server configuration
+
+See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:mixed" name="then" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="else" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if not met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="condition.context.isDevelopment">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Context: IsDevelopment
+
+Returns true if current root application context is development otherwise false.
+If no application context has been set, then the default context is production.
+
+#### Note about how to set the application context
+
+The context TYPO3 CMS runs in is specified through the environment variable TYPO3_CONTEXT.
+It can be set by .htaccess or in the server configuration
+
+See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:mixed" name="then" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="else" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if not met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
 <xsd:element name="condition.context.isFrontend">
 <xsd:annotation>
 <xsd:documentation>
@@ -1665,6 +1677,158 @@ current context being rendered is FE.
            Maybe BE, maybe CLI.
         </f:else>
     </v:condition.context.isFrontend>]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:mixed" name="then" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="else" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if not met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="condition.context.isProduction">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Context: IsProduction
+
+Returns true if current root application context is production otherwise false.
+If no application context has been set, then this is the default context.
+
+#### Note about how to set the application context
+
+The context TYPO3 CMS runs in is specified through the environment variable TYPO3_CONTEXT.
+It can be set by .htaccess or in the server configuration
+
+See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:mixed" name="then" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="else" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if not met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="condition.context.isProduction">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Context: IsProduction
+
+Returns true if current root application context is production otherwise false.
+If no application context has been set, then this is the default context.
+
+#### Note about how to set the application context
+
+The context TYPO3 CMS runs in is specified through the environment variable TYPO3_CONTEXT.
+It can be set by .htaccess or in the server configuration
+
+See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:mixed" name="then" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="else" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if not met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="condition.context.isTesting">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Context: IsProduction
+
+Returns true if current root application context is testing otherwise false.
+If no application context has been set, then the default context is production.
+
+#### Note about how to set the application context
+
+The context TYPO3 CMS runs in is specified through the environment variable TYPO3_CONTEXT.
+It can be set by .htaccess or in the server configuration
+
+See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:mixed" name="then" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="else" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value to be returned if the condition if not met.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="condition.context.isTesting">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Context: IsProduction
+
+Returns true if current root application context is testing otherwise false.
+If no application context has been set, then the default context is production.
+
+#### Note about how to set the application context
+
+The context TYPO3 CMS runs in is specified through the environment variable TYPO3_CONTEXT.
+It can be set by .htaccess or in the server configuration
+
+See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context]]>
 </xsd:documentation>
 </xsd:annotation>
 <xsd:complexType mixed="true">
@@ -4121,7 +4285,7 @@ php:type="integer">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:integer" name="limit" default="NULL"
+<xsd:attribute type="xsd:integer" name="limit" default="1"
 php:type="integer">
 <xsd:annotation>
 <xsd:documentation>
@@ -4237,7 +4401,7 @@ php:type="integer">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:integer" name="limit" default="NULL"
+<xsd:attribute type="xsd:integer" name="limit" default="1"
 php:type="integer">
 <xsd:annotation>
 <xsd:documentation>
@@ -4353,7 +4517,7 @@ php:type="integer">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:integer" name="limit" default="NULL"
+<xsd:attribute type="xsd:integer" name="limit" default="1"
 php:type="integer">
 <xsd:annotation>
 <xsd:documentation>
@@ -4469,7 +4633,7 @@ php:type="integer">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:integer" name="limit" default="NULL"
+<xsd:attribute type="xsd:integer" name="limit" default="1"
 php:type="integer">
 <xsd:annotation>
 <xsd:documentation>
@@ -4585,7 +4749,7 @@ php:type="integer">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:integer" name="limit" default="NULL"
+<xsd:attribute type="xsd:integer" name="limit" default="1"
 php:type="integer">
 <xsd:annotation>
 <xsd:documentation>
@@ -5241,12 +5405,77 @@ php:type="string">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="context.get">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Context: Get
+
+Returns the current application context which may include possible sub-contexts.
+The application context can be 'Production', 'Development' or 'Testing'.
+Additionally each context can be extended with custom sub-contexts like: 'Production/Staging' or ' Production/Staging/Server1'.
+If no application context has been set by the configuration, then the default context is 'Production'.
+
+#### Note about how to set the application context
+
+The context TYPO3 CMS runs in is specified through the environment variable TYPO3_CONTEXT.
+It can be set by .htaccess or in the server configuration
+
+See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
 </xsd:complexType>
 </xsd:element>
 <xsd:element name="debug">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[### ViewHelper Debug ViewHelper (sic)]]>
+<![CDATA[### ViewHelper Debug ViewHelper (sic)
+
+Debugs instances of other ViewHelpers and language
+structures. Use in conjunction with other ViewHelpers
+to inspect their current and possible arguments and
+render their documentation:
+
+    <v:debug><f:format.html>{variable}</f:format.html></v:debug>
+
+Or the same expression in inline syntax:
+
+    {variable -> f:format.html() -> v:debug()}
+
+Can also be used to inspect `ObjectAccessor` instances
+(e.g. variables you try to access) and rather than just
+dumping the entire contents of the variable as is done
+by `<f:debug />`, this ViewHelper makes a very simple
+dump with a warning if the variable is not defined. If
+an object is encountered (for example a domain object)
+this ViewHelper will not dump the object but instead
+will scan it for accessible properties (e.g. properties
+which have a getter method!) and only present those
+properties which can be accessed, along with the type
+of variable that property currently contains:
+
+    {domainObject -> v:debug()}
+
+Assuming that `{domainObject}` is an instance of an
+object which has two methods: `getUid()` and `getTitle()`,
+debugging that instance will render something like this
+in plain text:
+
+    Path: {domainObject}
+    Value type: object
+    Accessible properties on {domainObject}:
+       {form.uid} (integer)
+       {form.title} (string)
+
+The class itself can contain any number of protected
+properties, but only those which have a getter method
+can be accessed by Fluid and as therefore we only dump
+those properties which you **can in fact access**.]]>
 </xsd:documentation>
 </xsd:annotation>
 <xsd:complexType mixed="true">
@@ -5635,6 +5864,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="name" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -5823,6 +6060,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="name" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -6011,6 +6256,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="name" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -6196,6 +6449,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -6387,6 +6648,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -6487,6 +6756,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -6587,127 +6864,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:string" name="name" default="NULL"
-php:type="string">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Name of input tag]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="value" default="NULL"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Value of input tag]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="property" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Name of Object Property. If used in conjunction with <f:form object="...">, "name" and "value" properties will be ignored.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="class" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[CSS class(es) for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dir" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="id" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Unique (in this file) identifier for this HTML element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="lang" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="style" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Individual CSS styles for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="title" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Tooltip text of element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Keyboard shortcut to access this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies the tab order of this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="onclick" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[JavaScript evaluated for the onclick event]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="selected" default="NULL"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Set to "selected" to mark field as selected. If not present, selected status will be determined by select value]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="form.select.option">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Option ViewHelper to use under vhs:form.select]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -6835,6 +6996,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="name" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -6956,6 +7125,146 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="name" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Name of input tag]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="value" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Value of input tag]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="property" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Name of Object Property. If used in conjunction with <f:form object="...">, "name" and "value" properties will be ignored.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="selected" default="NULL"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Set to "selected" to mark field as selected. If not present, selected status will be determined by select value]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="form.select.option">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Option ViewHelper to use under vhs:form.select]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -7566,6 +7875,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="text" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -7697,6 +8014,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -8047,6 +8372,58 @@ php:type="integer">
 </xsd:attribute>
 </xsd:complexType>
 </xsd:element>
+<xsd:element name="format.sanitizeString">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[URL text segment sanitizer. Sanitizes the content into a
+valid URL segment value which is usable in an URL without
+further processing. For example, the text "I am Mr. Brown,
+how are you?" becomes "i-am-mr-brown-how-are-you". Special
+characters like diacritics or umlauts are transliterated.
+The built-in character map can be overriden or extended by
+providing an associative array of custom mappings.
+
+Also useful when creating anchor link names, for example
+for news entries in your custom EXT:news list template, in
+which case each news item's title would become an anchor:
+
+<a name="{newsItem.title -> v:format.url.sanitizeString()}"></a>
+
+And links would look much like the detail view links:
+
+/news/#this-is-a-newsitem-title
+
+When used with list views it has the added benefit of not
+breaking if the item referenced is removed, it can be read
+by Javascript (for example to dynamically expand the news
+item being referenced). The sanitized urls are also ideal
+to use for AJAX based detail views - and in almot all cases
+the sanitized string will be 100% identical to the one used
+by Realurl when translating using table lookups.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:string" name="string" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[The string to sanitize.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="customMap" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Associative array of additional characters to replace or use to override built-in mappings.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
 <xsd:element name="format.substring">
 <xsd:annotation>
 <xsd:documentation>
@@ -8176,28 +8553,7 @@ php:type="string">
 <xsd:element name="format.url.sanitizeString">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[URL text segment sanitizer. Sanitizes the content into a
-valid URL segment value which is usable in an URL without
-further processing. For example, the text "I am Mr. Brown,
-how are you?" becomes "i-am-mr-brown-how-are-you".
-
-Also useful when creating anchor link names, for example
-for news entries in your custom EXT:news list template, in
-which case each news item's title would become an anchor:
-
-<a name="{newsItem.title -> v:format.url.sanitizeString()}"></a>
-
-And links would look much like the detail view links:
-
-/news/#this-is-a-newsitem-title
-
-When used with list views it has the added benefit of not
-breaking if the item referenced is removed, it can be read
-by Javascript (for example to dynamically expand the news
-item being referenced). The sanitized urls are also ideal
-to use for AJAX based detail views - and in almot all cases
-the sanitized string will be 100% identical to the one used
-by Realurl when translating using table lookups.]]>
+<![CDATA[]]>
 </xsd:documentation>
 </xsd:annotation>
 <xsd:complexType mixed="true">
@@ -8208,7 +8564,43 @@ by Realurl when translating using table lookups.]]>
 php:type="string">
 <xsd:annotation>
 <xsd:documentation>
+<![CDATA[The string to sanitize.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="customMap" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Associative array of additional characters to replace or use to override built-in mappings.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="format.url.sanitizeString">
+<xsd:annotation>
+<xsd:documentation>
 <![CDATA[]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:string" name="string" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[The string to sanitize.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="customMap" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Associative array of additional characters to replace or use to override built-in mappings.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -9057,19 +9449,19 @@ default="9223372036854775807" php:type="integer">
 <xsd:sequence>
 <xsd:any minOccurs="0" maxOccurs="1" />
 </xsd:sequence>
-<xsd:attribute type="xsd:mixed" name="a" default="NULL"
-php:type="mixed" use="required">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[First array/Traversable]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="b" default="NULL"
 php:type="mixed" use="required">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Second array/Traversable]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="a" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[First array/Traversable - if not set, the ViewHelper can be in a chain (inline-notation)]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -11557,247 +11949,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="src" default="NULL"
-php:type="mixed" use="required">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="relative" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="class" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[CSS class(es) for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dir" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="id" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Unique (in this file) identifier for this HTML element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="lang" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="style" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Individual CSS styles for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="title" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Tooltip text of element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Keyboard shortcut to access this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies the tab order of this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="onclick" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[JavaScript evaluated for the onclick event]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="contenteditable"
-default="NULL" php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies whether the contents of the element are editable.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="contextmenu" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="draggable" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies whether the element is draggable.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dropzone" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="translate" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="spellcheck" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="hidden" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="width" default="NULL"
-php:type="integer" use="required">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Sets the width of the audio player in pixels.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="height" default="NULL"
-php:type="integer" use="required">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Sets the height of the audio player in pixels.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="autoplay" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that the audio will start playing as soon as it is ready.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="controls" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that audio controls should be displayed (such as a play/pause button etc).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="loop" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that the audio will start over again, every time it is finished.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="muted" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that the audio output of the audio should be muted.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="poster" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies an image to be shown while the audio is downloading, or until the user hits the play button.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="preload" default="'auto'"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies if and how the author thinks the audio should be loaded when the page loads. Can be "auto", "metadata" or "none".]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="unsupported" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Add a message for old browsers like Internet Explorer 9 without audio support.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="media.audio">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Renders HTML code to embed a HTML5 audio player. NOTICE: This is
-all HTML5 and won't work on browsers like IE8 and below. Include
-some helper library like kolber.github.io/audiojs/ if you need to suport those.
-Source can be a single file, a CSV of files or an array of arrays
-with multiple sources for different audio formats. In the latter
-case provide array keys 'src' and 'type'. Providing an array of
-sources (even for a single source) is preferred as you can set
-the correct mime type of the audio which is otherwise guessed
-from the filename's extension.]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -12045,6 +12201,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="src" default="NULL"
 php:type="mixed" use="required">
 <xsd:annotation>
@@ -12286,6 +12450,266 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="src" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="relative" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="contenteditable"
+default="NULL" php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies whether the contents of the element are editable.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="contextmenu" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="draggable" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies whether the element is draggable.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dropzone" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="translate" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="spellcheck" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="hidden" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="width" default="NULL"
+php:type="integer" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Sets the width of the audio player in pixels.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="height" default="NULL"
+php:type="integer" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Sets the height of the audio player in pixels.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="autoplay" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that the audio will start playing as soon as it is ready.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="controls" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that audio controls should be displayed (such as a play/pause button etc).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="loop" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that the audio will start over again, every time it is finished.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="muted" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that the audio output of the audio should be muted.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="poster" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies an image to be shown while the audio is downloading, or until the user hits the play button.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="preload" default="'auto'"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies if and how the author thinks the audio should be loaded when the page loads. Can be "auto", "metadata" or "none".]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="unsupported" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Add a message for old browsers like Internet Explorer 9 without audio support.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="media.audio">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Renders HTML code to embed a HTML5 audio player. NOTICE: This is
+all HTML5 and won't work on browsers like IE8 and below. Include
+some helper library like kolber.github.io/audiojs/ if you need to suport those.
+Source can be a single file, a CSV of files or an array of arrays
+with multiple sources for different audio formats. In the latter
+case provide array keys 'src' and 'type'. Providing an array of
+sources (even for a single source) is preferred as you can set
+the correct mime type of the audio which is otherwise guessed
+from the filename's extension.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -12687,209 +13111,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="src" default="NULL"
-php:type="mixed" use="required">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="relative" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="width" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="height" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxW" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum Width of the image. (no upscaling)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxH" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum Height of the image. (no upscaling)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minW" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum Width of the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minH" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum Height of the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="format" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="quality" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="class" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[CSS class(es) for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dir" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="id" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Unique (in this file) identifier for this HTML element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="lang" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="style" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Individual CSS styles for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="title" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Tooltip text of element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Keyboard shortcut to access this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies the tab order of this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="onclick" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[JavaScript evaluated for the onclick event]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="usemap" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[A hash-name reference to a map element with which to associate the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="ismap" default="''"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that its img element provides access to a server-side image map.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="alt" default="NULL"
-php:type="string" use="required">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="media.image">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Renders an image tag for the given resource including all valid
-HTML5 attributes. Derivates of the original image are rendered
-if the provided (optional) dimensions differ.]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -13099,6 +13325,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="src" default="NULL"
 php:type="mixed" use="required">
 <xsd:annotation>
@@ -13302,6 +13536,228 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="src" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="relative" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="width" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="height" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxW" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum Width of the image. (no upscaling)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxH" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum Height of the image. (no upscaling)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minW" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum Width of the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minH" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum Height of the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="format" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="quality" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="usemap" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[A hash-name reference to a map element with which to associate the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="ismap" default="''"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that its img element provides access to a server-side image map.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="alt" default="NULL"
+php:type="string" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="media.image">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Renders an image tag for the given resource including all valid
+HTML5 attributes. Derivates of the original image are rendered
+if the provided (optional) dimensions differ.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -13728,290 +14184,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="src" default="NULL"
-php:type="mixed" use="required">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="relative" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="width" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="height" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxW" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum Width of the image. (no upscaling)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxH" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum Height of the image. (no upscaling)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minW" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum Width of the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minH" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum Height of the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="format" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="quality" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="class" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[CSS class(es) for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dir" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="id" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Unique (in this file) identifier for this HTML element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="lang" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="style" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Individual CSS styles for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="title" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Tooltip text of element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Keyboard shortcut to access this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies the tab order of this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="onclick" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[JavaScript evaluated for the onclick event]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="usemap" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[A hash-name reference to a map element with which to associate the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="ismap" default="''"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that its img element provides access to a server-side image map.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="alt" default="NULL"
-php:type="string" use="required">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="path" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Path to PDF source file]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minWidth" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum width of resulting thumbnail image]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minHeight" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum height of resulting thumbnail image]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxWidth" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum width of resulting thumbnail image]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxHeight" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum height of resulting thumbnail image]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="density" default="100"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Canvas resolution for rendering the PDF in dpi (higher means better quality)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="background" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Fill background of resulting image with this color (for transparent source files)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="rotate" default="0"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Number of degress to rotate resulting image by (caution: very slow if not multiple of 90)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="page" default="1"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Optional page number to render as thumbnail for PDF documents with multiple pages]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="forceOverwrite"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Forcibly overwrite existing converted PDF files]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="media.pdfThumbnail">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Converts the provided PDF file into a PNG thumbnail and renders
-the according image tag using Fluid's standard image ViewHelper
-thus implementing its arguments. For PDF documents with multiple
-pages the first page is rendered by default unless specified.]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -14302,290 +14479,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="src" default="NULL"
-php:type="mixed" use="required">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="relative" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="width" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="height" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxW" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum Width of the image. (no upscaling)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxH" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum Height of the image. (no upscaling)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minW" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum Width of the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minH" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum Height of the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="format" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="quality" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="class" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[CSS class(es) for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dir" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="id" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Unique (in this file) identifier for this HTML element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="lang" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="style" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Individual CSS styles for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="title" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Tooltip text of element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Keyboard shortcut to access this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies the tab order of this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="onclick" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[JavaScript evaluated for the onclick event]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="usemap" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[A hash-name reference to a map element with which to associate the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="ismap" default="''"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that its img element provides access to a server-side image map.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="alt" default="NULL"
-php:type="string" use="required">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="path" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Path to PDF source file]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minWidth" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum width of resulting thumbnail image]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minHeight" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum height of resulting thumbnail image]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxWidth" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum width of resulting thumbnail image]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxHeight" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum height of resulting thumbnail image]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="density" default="100"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Canvas resolution for rendering the PDF in dpi (higher means better quality)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="background" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Fill background of resulting image with this color (for transparent source files)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="rotate" default="0"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Number of degress to rotate resulting image by (caution: very slow if not multiple of 90)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="page" default="1"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Optional page number to render as thumbnail for PDF documents with multiple pages]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="forceOverwrite"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Forcibly overwrite existing converted PDF files]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="media.pdfThumbnail">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Converts the provided PDF file into a PNG thumbnail and renders
-the according image tag using Fluid's standard image ViewHelper
-thus implementing its arguments. For PDF documents with multiple
-pages the first page is rendered by default unless specified.]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -14873,6 +14771,604 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="src" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="relative" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="width" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="height" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxW" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum Width of the image. (no upscaling)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxH" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum Height of the image. (no upscaling)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minW" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum Width of the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minH" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum Height of the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="format" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="quality" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="usemap" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[A hash-name reference to a map element with which to associate the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="ismap" default="''"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that its img element provides access to a server-side image map.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="alt" default="NULL"
+php:type="string" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="path" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Path to PDF source file]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minWidth" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum width of resulting thumbnail image]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minHeight" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum height of resulting thumbnail image]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxWidth" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum width of resulting thumbnail image]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxHeight" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum height of resulting thumbnail image]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="density" default="100"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Canvas resolution for rendering the PDF in dpi (higher means better quality)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="background" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Fill background of resulting image with this color (for transparent source files)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="rotate" default="0"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Number of degress to rotate resulting image by (caution: very slow if not multiple of 90)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="page" default="1"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Optional page number to render as thumbnail for PDF documents with multiple pages]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="forceOverwrite"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Forcibly overwrite existing converted PDF files]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="media.pdfThumbnail">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Converts the provided PDF file into a PNG thumbnail and renders
+the according image tag using Fluid's standard image ViewHelper
+thus implementing its arguments. For PDF documents with multiple
+pages the first page is rendered by default unless specified.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="src" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="relative" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="width" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="height" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxW" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum Width of the image. (no upscaling)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxH" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum Height of the image. (no upscaling)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minW" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum Width of the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minH" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum Height of the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="format" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="quality" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="usemap" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[A hash-name reference to a map element with which to associate the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="ismap" default="''"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that its img element provides access to a server-side image map.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="alt" default="NULL"
+php:type="string" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="path" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Path to PDF source file]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minWidth" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum width of resulting thumbnail image]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minHeight" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum height of resulting thumbnail image]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxWidth" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum width of resulting thumbnail image]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxHeight" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum height of resulting thumbnail image]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="density" default="100"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Canvas resolution for rendering the PDF in dpi (higher means better quality)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="background" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Fill background of resulting image with this color (for transparent source files)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="rotate" default="0"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Number of degress to rotate resulting image by (caution: very slow if not multiple of 90)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="page" default="1"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Optional page number to render as thumbnail for PDF documents with multiple pages]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="forceOverwrite"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Forcibly overwrite existing converted PDF files]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="media.pdfThumbnail">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Converts the provided PDF file into a PNG thumbnail and renders
+the according image tag using Fluid's standard image ViewHelper
+thus implementing its arguments. For PDF documents with multiple
+pages the first page is rendered by default unless specified.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -15180,6 +15676,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="spotifyUri" default="NULL"
 php:type="string" use="required">
 <xsd:annotation>
@@ -15248,6 +15752,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="spotifyUri" default="NULL"
 php:type="string" use="required">
 <xsd:annotation>
@@ -15324,247 +15836,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="src" default="NULL"
-php:type="mixed" use="required">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="relative" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="class" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[CSS class(es) for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dir" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="id" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Unique (in this file) identifier for this HTML element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="lang" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="style" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Individual CSS styles for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="title" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Tooltip text of element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Keyboard shortcut to access this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies the tab order of this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="onclick" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[JavaScript evaluated for the onclick event]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="contenteditable"
-default="NULL" php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies whether the contents of the element are editable.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="contextmenu" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="draggable" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies whether the element is draggable.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dropzone" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="translate" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="spellcheck" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="hidden" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="width" default="NULL"
-php:type="integer" use="required">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Sets the width of the video player in pixels.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="height" default="NULL"
-php:type="integer" use="required">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Sets the height of the video player in pixels.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="autoplay" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that the video will start playing as soon as it is ready.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="controls" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that video controls should be displayed (such as a play/pause button etc).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="loop" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that the video will start over again, every time it is finished.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="muted" default="false"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that the audio output of the video should be muted.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="poster" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies an image to be shown while the video is downloading, or until the user hits the play button.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="preload" default="'auto'"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies if and how the author thinks the video should be loaded when the page loads. Can be "auto", "metadata" or "none".]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="unsupported" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Add a message for old browsers like Internet Explorer 9 without video support.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="media.video">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Renders HTML code to embed a HTML5 video player. NOTICE: This is
-all HTML5 and won't work on browsers like IE8 and below. Include
-some helper library like videojs.com if you need to suport those.
-Source can be a single file, a CSV of files or an array of arrays
-with multiple sources for different video formats. In the latter
-case provide array keys 'src' and 'type'. Providing an array of
-sources (even for a single source) is preferred as you can set
-the correct mime type of the video which is otherwise guessed
-from the filename's extension.]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -15812,6 +16088,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="src" default="NULL"
 php:type="mixed" use="required">
 <xsd:annotation>
@@ -16053,6 +16337,266 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="src" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="relative" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="contenteditable"
+default="NULL" php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies whether the contents of the element are editable.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="contextmenu" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="draggable" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies whether the element is draggable.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dropzone" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="translate" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="spellcheck" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="hidden" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="width" default="NULL"
+php:type="integer" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Sets the width of the video player in pixels.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="height" default="NULL"
+php:type="integer" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Sets the height of the video player in pixels.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="autoplay" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that the video will start playing as soon as it is ready.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="controls" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that video controls should be displayed (such as a play/pause button etc).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="loop" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that the video will start over again, every time it is finished.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="muted" default="false"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that the audio output of the video should be muted.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="poster" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies an image to be shown while the video is downloading, or until the user hits the play button.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="preload" default="'auto'"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies if and how the author thinks the video should be loaded when the page loads. Can be "auto", "metadata" or "none".]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="unsupported" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Add a message for old browsers like Internet Explorer 9 without video support.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="media.video">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Renders HTML code to embed a HTML5 video player. NOTICE: This is
+all HTML5 and won't work on browsers like IE8 and below. Include
+some helper library like videojs.com if you need to suport those.
+Source can be a single file, a CSV of files or an array of arrays
+with multiple sources for different video formats. In the latter
+case provide array keys 'src' and 'type'. Providing an array of
+sources (even for a single source) is preferred as you can set
+the correct mime type of the video which is otherwise guessed
+from the filename's extension.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -16289,6 +16833,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -16397,6 +16949,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -16505,6 +17065,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -16581,6 +17149,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -17478,6 +18054,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -17623,7 +18207,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -17826,6 +18410,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -17971,7 +18563,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -18174,6 +18766,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -18319,7 +18919,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -18602,14 +19202,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -18742,14 +19334,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -18882,14 +19466,6 @@ php:type="boolean">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="variables" default="false"
 php:type="mixed">
 <xsd:annotation>
@@ -19019,14 +19595,6 @@ php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="arguments" default="false"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[DEPRECATED. Use argument `variables` instead]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -19118,6 +19686,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -19226,6 +19802,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -19334,6 +19918,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="rel" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -19391,6 +19983,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -19454,6 +20054,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -19525,6 +20133,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -19696,6 +20312,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -19893,6 +20517,14 @@ default="array ( )" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional typoLink configuration]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="excludeQueryVars"
+default="''" php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Comma-separate list of variables to exclude]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -19917,6 +20549,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -20114,6 +20754,14 @@ default="array ( )" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional typoLink configuration]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="excludeQueryVars"
+default="''" php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Comma-separate list of variables to exclude]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -20183,6 +20831,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -20398,6 +21054,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -20611,6 +21275,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -20756,7 +21428,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -20959,6 +21631,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -21104,7 +21784,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -21307,6 +21987,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -21452,7 +22140,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -21657,6 +22345,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -21802,7 +22498,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -22087,6 +22783,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -22232,7 +22936,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -22517,6 +23221,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -22662,7 +23374,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -22942,6 +23654,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -23087,7 +23807,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -23279,6 +23999,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -23424,7 +24152,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -23616,6 +24344,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -23761,7 +24497,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -23956,6 +24692,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -24101,7 +24845,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -24304,6 +25048,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -24449,7 +25201,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -24652,6 +25404,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -24797,7 +25557,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -25000,6 +25760,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -25145,7 +25913,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -25348,6 +26116,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -25493,7 +26269,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -25696,6 +26472,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -25841,7 +26625,7 @@ default="'sub'" php:type="string">
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute type="xsd:boolean" name="useShortcutUid"
-default="true" php:type="boolean">
+default="false" php:type="boolean">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]>
@@ -26045,40 +26829,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="pageUid" default="NULL"
-php:type="mixed" use="required">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Page UID to be overridden in the recycled rendering of the parent instance, if one exists]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="page.menu.sub">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[### Page: Auto Sub Menu ViewHelper
-
-Recycles the parent menu ViewHelper instance, resetting the
-page UID used as starting point and repeating rendering of
-the exact same tag content.
-
-Used in custom menu rendering to indicate where a submenu is
-to be rendered; accepts only a single argument called `pageUid`
-which defines the new starting page UID that is used in the
-recycled parent menu instance.]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -26116,6 +26871,59 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="pageUid" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Page UID to be overridden in the recycled rendering of the parent instance, if one exists]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="page.menu.sub">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Page: Auto Sub Menu ViewHelper
+
+Recycles the parent menu ViewHelper instance, resetting the
+page UID used as starting point and repeating rendering of
+the exact same tag content.
+
+Used in custom menu rendering to indicate where a submenu is
+to be rendered; accepts only a single argument called `pageUid`
+which defines the new starting page UID that is used in the
+recycled parent menu instance.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -27554,7 +28362,7 @@ php:type="array">
 <xsd:documentation>
 <![CDATA[### Collection ViewHelper
 This viewhelper returns a collection referenced by uid.
-For more information look here: 
+For more information look here:
 http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Index.html#collections-api
 
 ### Example
@@ -27570,6 +28378,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -27620,7 +28436,7 @@ default="false" php:type="boolean">
 <xsd:documentation>
 <![CDATA[### Collection ViewHelper
 This viewhelper returns a collection referenced by uid.
-For more information look here: 
+For more information look here:
 http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Index.html#collections-api
 
 ### Example
@@ -27636,6 +28452,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -27686,7 +28510,7 @@ default="false" php:type="boolean">
 <xsd:documentation>
 <![CDATA[### Collection ViewHelper
 This viewhelper returns a collection referenced by uid.
-For more information look here: 
+For more information look here:
 http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Index.html#collections-api
 
 ### Example
@@ -27702,6 +28526,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -27765,63 +28597,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="identifier" default="NULL"
-php:type="mixed">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[The FAL combined identifiers (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="categories" default="NULL"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[The sys_category records to select the resources from (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="treatIdAsUid"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE, the identifier argument is treated as resource uids.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE, the identifier argument is treated as reference uids and will be resolved to resources via sys_file_reference.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="as" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If specified, a template variable with this name containing the requested data will be inserted instead of returning it.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="resource.file">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[ViewHelper to output or assign FAL sys_file records]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -27885,6 +28665,82 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="identifier" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[The FAL combined identifiers (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="categories" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[The sys_category records to select the resources from (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="treatIdAsUid"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, the identifier argument is treated as resource uids.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, the identifier argument is treated as reference uids and will be resolved to resources via sys_file_reference.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="as" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If specified, a template variable with this name containing the requested data will be inserted instead of returning it.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="resource.file">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[ViewHelper to output or assign FAL sys_file records]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="identifier" default="NULL"
 php:type="mixed">
 <xsd:annotation>
@@ -27942,6 +28798,14 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -28157,215 +29021,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="identifier" default="NULL"
-php:type="mixed">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[The FAL combined identifiers (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="categories" default="NULL"
-php:type="mixed">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[The sys_category records to select the resources from (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="treatIdAsUid"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE, the identifier argument is treated as resource uids.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If TRUE, the identifier argument is treated as reference uids and will be resolved to resources via sys_file_reference.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="relative" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE resource URIs are rendered absolute. URIs in backend mode are always absolute.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="width" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Width of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="height" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="minWidth" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum width of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="minHeight" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="maxWidth" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum width of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="maxHeight" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="class" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[CSS class(es) for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="dir" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="id" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Unique (in this file) identifier for this HTML element.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="lang" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="style" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Individual CSS styles for this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="title" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Tooltip text of element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Keyboard shortcut to access this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies the tab order of this element]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="onclick" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[JavaScript evaluated for the onclick event]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="usemap" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[A hash-name reference to a map element with which to associate the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="ismap" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Specifies that its img element provides access to a server-side image map.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="alt" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="as" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If specified, a template variable with this name containing the requested data will be inserted instead of returning it.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="resource.image">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[ViewHelper to output or assign a image from FAL]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -28581,6 +29241,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="identifier" default="NULL"
 php:type="mixed">
 <xsd:annotation>
@@ -28762,6 +29430,281 @@ php:type="string">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="as" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If specified, a template variable with this name containing the requested data will be inserted instead of returning it.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="resource.image">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[ViewHelper to output or assign a image from FAL]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="identifier" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[The FAL combined identifiers (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="categories" default="NULL"
+php:type="mixed">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[The sys_category records to select the resources from (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="treatIdAsUid"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, the identifier argument is treated as resource uids.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, the identifier argument is treated as reference uids and will be resolved to resources via sys_file_reference.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="relative" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE resource URIs are rendered absolute. URIs in backend mode are always absolute.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="width" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Width of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="height" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="minWidth" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum width of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="minHeight" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="maxWidth" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum width of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="maxHeight" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="class" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[CSS class(es) for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="dir" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="id" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Unique (in this file) identifier for this HTML element.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="lang" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Language for this element. Use short names specified in RFC 1766]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="style" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Individual CSS styles for this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="title" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Tooltip text of element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="accesskey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Keyboard shortcut to access this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="tabindex" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies the tab order of this element]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="onclick" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[JavaScript evaluated for the onclick event]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="usemap" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[A hash-name reference to a map element with which to associate the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="ismap" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Specifies that its img element provides access to a server-side image map.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="alt" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Equivalent content for those who cannot process images or who have image loading disabled.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="as" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If specified, a template variable with this name containing the requested data will be inserted instead of returning it.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="resource.language">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Resource: Language
+
+Reads a certain language file with returning not just one single label,
+but all the translated labels.
+
+### Examples
+
+   <!-- Tag usage for force getting labels in a specific language (different to current is possible too) -->
+   <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf" languageKey="en"/>
+
+   <!-- Tag usage for getting labels of current language -->
+   <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf"/>]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:string" name="extensionName"
+default="NULL" php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Name of the extension]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="path"
+default="'locallang.xlf'" php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Absolute or relative path to the locallang file]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="languageKey" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Key for getting translation of a different than current initialized language]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -30028,6 +30971,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -30140,6 +31091,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:string" name="class" default="NULL"
 php:type="string">
 <xsd:annotation>
@@ -30443,114 +31402,11 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute type="xsd:mixed" name="src" default="NULL"
-php:type="mixed" use="required">
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
 <xsd:annotation>
 <xsd:documentation>
-<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="relative" default="true"
-php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="width" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="height" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxW" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum Width of the image. (no upscaling)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="maxH" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Maximum Height of the image. (no upscaling)]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minW" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum Width of the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="minH" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Minimum Height of the image.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:string" name="format" default="NULL"
-php:type="string">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:integer" name="quality" default="NULL"
-php:type="integer">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
-default="false" php:type="boolean">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.]]>
-</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="uri.image">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[### Uri: Image
-
-Returns the relative or absolute URI for the image resource
-or it's derivate if differing dimesions are provided.]]>
-</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType mixed="true">
-<xsd:sequence>
-<xsd:any minOccurs="0" maxOccurs="1" />
-</xsd:sequence>
-<xsd:attribute type="xsd:array" name="additionalAttributes"
-default="NULL" php:type="array">
-<xsd:annotation>
-<xsd:documentation>
-<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -30665,6 +31521,14 @@ default="NULL" php:type="array">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute type="xsd:mixed" name="src" default="NULL"
 php:type="mixed" use="required">
 <xsd:annotation>
@@ -30773,6 +31637,133 @@ default="NULL" php:type="array">
 <xsd:annotation>
 <xsd:documentation>
 <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:mixed" name="src" default="NULL"
+php:type="mixed" use="required">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="relative" default="true"
+php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="width" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="height" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxW" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum Width of the image. (no upscaling)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="maxH" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Maximum Height of the image. (no upscaling)]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minW" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum Width of the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="minH" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Minimum Height of the image.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:string" name="format" default="NULL"
+php:type="string">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:integer" name="quality" default="NULL"
+php:type="integer">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="treatIdAsReference"
+default="false" php:type="boolean">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="uri.image">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[### Uri: Image
+
+Returns the relative or absolute URI for the image resource
+or it's derivate if differing dimesions are provided.]]>
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType mixed="true">
+<xsd:sequence>
+<xsd:any minOccurs="0" maxOccurs="1" />
+</xsd:sequence>
+<xsd:attribute type="xsd:array" name="additionalAttributes"
+default="NULL" php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute type="xsd:array" name="data" default="NULL"
+php:type="array">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]>
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -30979,7 +31970,25 @@ variable. Can be used with dynamic indices in arrays:
 Or to read names of variables which contain dynamic parts:
 
     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
-    {v:variable.get(name: 'dynamic{variableName}')}]]>
+    {v:variable.get(name: 'dynamic{variableName}')}
+
+If your target object is an array with unsequential yet
+numeric indices (e.g. {123: 'value1', 513: 'value2'},
+commonly seen in reindexed UID map arrays) use
+`useRawIndex="TRUE"` to indicate you do not want your
+array/QueryResult/Iterator to be accessed by locating
+the Nth element - which is the default behavior.
+
+```warning
+Do not try `useRawKeys="TRUE"` on QueryResult or
+ObjectStorage unless you are fully aware what you are
+doing. These particular types require an unpredictable
+index value - the SPL object hash value - when accessing
+members directly. This SPL indexing and the very common
+occurrences of QueryResult and ObjectStorage variables
+in templates is the very reason why `useRawKeys` by
+default is set to `FALSE`.
+```]]>
 </xsd:documentation>
 </xsd:annotation>
 <xsd:complexType mixed="true">
