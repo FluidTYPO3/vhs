@@ -32,7 +32,6 @@
         ]
     },
     "require-dev": {
-        "typo3/cms": "6.2.7",
         "fluidtypo3/development": "*"
     },
     "repositories": [
