@@ -4,7 +4,7 @@ VHS: Fluid ViewHelpers
 > Collection of general purpose ViewHelpers usable in the Fluid templating engine
 > that's bundled with the TYPO3 CMS.
 
-[![Build Status](https://img.shields.io/jenkins/s/https/jenkins.fluidtypo3.org/vhs.svg?style=flat-square)](https://jenkins.fluidtypo3.org/job/vhs/) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/vhs/development.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/vhs)
+[![Build Status](https://img.shields.io/jenkins/s/https/jenkins.fluidtypo3.org/vhs.svg?style=flat-square)](https://jenkins.fluidtypo3.org/job/vhs/) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/vhs/development.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/vhs) [![Documentation](http://img.shields.io/badge/documentation-online-blue.svg?style=flat-square)](https://fluidtypo3.org/viewhelpers/vhs/master.html)
 
 ## ViewHelper argument reference
 
