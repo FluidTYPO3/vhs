@@ -17,10 +17,14 @@
     "homepage": "http://fluidtypo3.org",
     "license": "GPL-2.0+",
     "version": "2.1.4",
+    "autoload": {
+        "psr-4": {
+            "FluidTYPO3\\Vhs\\": "Classes/"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
-            "FluidTYPO3\\Vhs\\Tests\\": "Tests/",
-            "FluidTYPO3\\Vhs\\": "Classes/"
+            "FluidTYPO3\\Vhs\\Tests\\": "Tests/"
         },
         "classmap": [
             "vendor/typo3/cms/typo3/sysext/extbase",
