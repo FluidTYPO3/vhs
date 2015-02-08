@@ -165,7 +165,18 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 			throw new Exception('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
 		}
 
-		$resources = $this->getResources($record);
+		// attempt to load resources. If any Exceptions happen, transform them to
+		// ViewHelperExceptions which render as an inline text error message.
+		try {
+			$resources = $this->getResources($record);
+		} catch (\Exception $error) {
+			// we are doing the pokemon-thing and catching the very top level
+			// of Exception because the range of Exceptions that are possibly
+			// thrown by the getResources() method in subclasses are not
+			// extended from a shared base class like RuntimeException. Thus,
+			// we are forced to "catch them all" - but we also output them.
+			throw new Exception($error->getMessage(), $error->getCode());
+		}
 
 		$as = $this->arguments['as'];
 		if (TRUE === empty($as)) {
