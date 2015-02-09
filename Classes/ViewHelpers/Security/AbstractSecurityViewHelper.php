@@ -174,16 +174,17 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 			return FALSE;
 		}
 		$currentFrontendUserGroups = $currentFrontendUser->getUsergroup();
-		if (NULL !== $groups) {
-			if (TRUE === $groups instanceof FrontendUserGroup) {
-				return $currentFrontendUserGroups->contains($groups);
-			} elseif (TRUE === $groups instanceof ObjectStorage) {
-				$currentFrontendUserGroupsClone = clone $currentFrontendUserGroups;
-				$currentFrontendUserGroupsClone->removeAll($groups);
-				return ($currentFrontendUserGroups->count() !== $currentFrontendUserGroupsClone->count());
-			}
+		if (NULL === $groups) {
+			return (boolean) (0 < $currentFrontendUserGroups->count());
+		} elseif (TRUE === $groups instanceof FrontendUserGroup) {
+			return $currentFrontendUserGroups->contains($groups);
+		} elseif (TRUE === $groups instanceof ObjectStorage) {
+			$currentFrontendUserGroupsClone = clone $currentFrontendUserGroups;
+			$currentFrontendUserGroupsClone->removeAll($groups);
+			return ($currentFrontendUserGroups->count() !== $currentFrontendUserGroupsClone->count());
+		} else {
+			return FALSE;
 		}
-		return (boolean) (0 < $currentFrontendUserGroups->count());
 	}
 
 	/**
