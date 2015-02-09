@@ -9,6 +9,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * @protection on
@@ -16,5 +19,61 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  * @package Vhs
  */
 class InstanceViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @dataProvider getIdentifierTestValues
+	 * @param string|NULL $identifierArgument
+	 * @param string $expectedIdentifier
+	 */
+	public function testGetIdentifier($identifierArgument, $expectedIdentifier) {
+		$instance = $this->createInstance();
+		$instance->setArguments(array('identifier' => $identifierArgument));
+		$renderingContext = new RenderingContext();
+		$controllerContext = new ControllerContext();
+		$request = new Request();
+		$request->setControllerActionName('p1');
+		$request->setControllerName('p2');
+		$request->setPluginName('p3');
+		$request->setControllerExtensionName('p4');
+		$controllerContext->setRequest($request);
+		$renderingContext->setControllerContext($controllerContext);
+		$instance->setRenderingContext($renderingContext);
+		$result = $this->callInaccessibleMethod($instance, 'getIdentifier');
+		$this->assertEquals($expectedIdentifier, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getIdentifierTestValues() {
+		return array(
+			array(NULL, 'p1_p2_p3_p4'),
+			array('test', 'test'),
+			array('test2', 'test2'),
+		);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testStoreIdentifier() {
+		$instance = $this->createInstance();
+		$instance->setArguments(array('identifier' => 'test'));
+		$this->callInaccessibleMethod($instance, 'storeIdentifier');
+		$this->assertTrue($GLOBALS[get_class($instance)]['test']);
+		unset($GLOBALS[get_class($instance)]['test']);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testAssertShouldSkip() {
+		$instance = $this->createInstance();
+		$instance->setArguments(array('identifier' => 'test'));
+		$this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
+		$GLOBALS[get_class($instance)]['test'] = TRUE;
+		$this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
+		unset($GLOBALS[get_class($instance)]['test']);
+	}
 
 }
