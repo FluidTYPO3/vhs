@@ -40,7 +40,7 @@ class InstanceViewHelper extends AbstractOnceViewHelper {
 		$request = $this->controllerContext->getRequest();
 		$identifier = implode('_', array(
 			$request->getControllerActionName(),
-			$request->getControllerObjectName(),
+			$request->getControllerName(),
 			$request->getPluginName(),
 			$request->getControllerExtensionName()
 		));
