@@ -52,9 +52,17 @@ class CookieViewHelper extends AbstractOnceViewHelper {
 		$identifier = $this->getIdentifier();
 		$existsInCookie = (boolean) (TRUE === isset($_COOKIE[$identifier]));
 		if (TRUE === $existsInCookie) {
-			unset($_SESSION[$identifier]);
-			setcookie($identifier, NULL, time() - 1);
+			$this->removeCookie();
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function removeCookie() {
+		$identifier = $this->getIdentifier();
+		unset($_SESSION[$identifier], $_COOKIE[$identifier]);
+		setcookie($identifier, NULL, time() - 1);
 	}
 
 }
