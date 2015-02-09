@@ -46,7 +46,7 @@ class SessionViewHelper extends AbstractOnceViewHelper {
 		if (FALSE === is_array($_SESSION[$index])) {
 			$_SESSION[$index] = array();
 		}
-		$_SESSION[$index][$identifier] = TRUE;
+		$_SESSION[$index][$identifier] = time();
 	}
 
 	/**
