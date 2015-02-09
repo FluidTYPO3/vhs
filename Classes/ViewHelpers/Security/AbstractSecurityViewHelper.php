@@ -146,8 +146,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	}
 
 	/**
-	 * Returns TRUE only if a FrontendUser is currently logged in. Use argument
-	 * to return TRUE only if the FrontendUser logged in must be that specific user.
+	 * Returns TRUE only if currently logged in frontend user is in list.
 	 *
 	 * @param ObjectStorage $frontendUsers
 	 * @return boolean
