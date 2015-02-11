@@ -380,7 +380,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	protected function getMenuItemEntry($page, $rootLine, array $parentPage = NULL) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
-		$pageUid = $page['originalPageUid'] = $page['uid'];
+		$pageUid = $overlayPageUid = $page['originalPageUid'] = $page['uid'];
 		$targetPage = NULL;
 		$doktype = (integer) $page['doktype'];
 		if (NULL !== $parentPage && TRUE === isset($parentPage['_MP_PARAM'])) {
@@ -416,6 +416,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			if (TRUE === (boolean) $this->shouldUseShortcutTarget()) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
+				$overlayPageUid = $targetPage['uid'];
 			}
 			if (TRUE === (boolean) $this->shouldUseShortcutUid()) {
 				// overwrite current page UID
@@ -424,7 +425,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		if (0 < $getLL) {
-			$pageOverlay = $this->pageSelect->getPageOverlay($page['uid'], $getLL);
+			$pageOverlay = $this->pageSelect->getPageOverlay($overlayPageUid, $getLL);
 			foreach ($pageOverlay as $name => $value) {
 				if (FALSE === empty($value)) {
 					$page[$name] = $value;
