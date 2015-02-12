@@ -75,11 +75,11 @@ class SelectViewHelper extends AbstractFormFieldViewHelper {
 			$this->viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', array());
 			$this->viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value', $this->getValue());
 			$tagContent = $this->renderChildren();
-			$options = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options');
+			$options = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'options');
 			$this->tag->setContent($tagContent);
-			$this->viewHelperVariableContainer->remove('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options');
-			if (TRUE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value')) {
-				$this->viewHelperVariableContainer->remove('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value');
+			$this->viewHelperVariableContainer->remove('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'options');
+			if (TRUE === $this->viewHelperVariableContainer->exists('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'value')) {
+				$this->viewHelperVariableContainer->remove('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'value');
 			}
 		}
 

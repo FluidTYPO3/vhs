@@ -150,7 +150,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
-		$parentInstance = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
+		$parentInstance = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'parentInstance');
 		$arguments = $parentInstance->getArguments();
 		$arguments['pageUid'] = $pageUid;
 		$parentInstance->setArguments($arguments);
@@ -161,10 +161,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return void
 	 */
 	protected function cleanTemplateVariableContainer() {
-		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'variables')) {
 			return;
 		}
-		$storedVariables = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
+		$storedVariables = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'variables');
 		foreach ($this->templateVariableContainer->getAll() as $variableName => $value) {
 			$this->backupValues[$variableName] = $value;
 			$this->templateVariableContainer->remove($variableName);
@@ -270,7 +270,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$parsed = array();
 		foreach ($types as $index => $type) {
 			if (FALSE === ctype_digit($type)) {
-				$typeNumber = constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
+				$typeNumber = constant('TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
 				if (NULL !== $typeNumber) {
 					$parsed[$index] = $typeNumber;
 				}

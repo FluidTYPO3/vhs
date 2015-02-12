@@ -78,7 +78,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === is_object($GLOBALS['TSFE']->sys_page)) {
 			return NULL;
 		}
-		$this->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->tagName = $this->arguments['tagName'];
 
 		// to set the tagName we should call initialize()

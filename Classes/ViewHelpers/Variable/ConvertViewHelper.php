@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -53,9 +54,10 @@ class ConvertViewHelper extends AbstractViewHelper {
 		}
 		if (NULL !== $value) {
 			if ('ObjectStorage' === $type && 'array' === gettype($value)) {
-				$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+				/** @var ObjectManager $objectManager */
+				$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 				/** @var ObjectStorage $storage */
-				$storage = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+				$storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 				foreach ($value as $item) {
 					$storage->attach($item);
 				}
@@ -92,8 +94,8 @@ class ConvertViewHelper extends AbstractViewHelper {
 						$value = array();
 						break;
 					case 'ObjectStorage':
-						$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-						$value = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+						$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+						$value = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 						break;
 					default:
 						throw new \RuntimeException('Provided argument "type" is not valid', 1364542884);

@@ -54,10 +54,10 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	public function initializeArguments() {
 		$this->registerArgument('anyFrontendUser', 'boolean', 'If TRUE, allows any FrontendUser unless other arguments disallows each specific FrontendUser', FALSE, FALSE);
 		$this->registerArgument('anyFrontendUserGroup', 'boolean', 'If TRUE, allows any FrontendUserGroup unless other arguments disallows each specific FrontendUser', FALSE, FALSE);
-		$this->registerArgument('frontendUser', '\TYPO3\CMS\Extbase\Domain\Model\FrontendUser', 'The FrontendUser to allow/deny');
-		$this->registerArgument('frontendUsers', '<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>\TYPO3\CMS\Extbase\Domain\Model\FrontendUser', 'The FrontendUsers ObjectStorage to allow/deny');
-		$this->registerArgument('frontendUserGroup', '\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup', 'The FrontendUserGroup to allow/deny');
-		$this->registerArgument('frontendUserGroups', '<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup', 'The FrontendUserGroups ObjectStorage to allow/deny');
+		$this->registerArgument('frontendUser', 'TYPO3\CMS\Extbase\Domain\Model\FrontendUser', 'The FrontendUser to allow/deny');
+		$this->registerArgument('frontendUsers', '<TYPO3\CMS\Extbase\Persistence\ObjectStorage>\TYPO3\CMS\Extbase\Domain\Model\FrontendUser', 'The FrontendUsers ObjectStorage to allow/deny');
+		$this->registerArgument('frontendUserGroup', 'TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup', 'The FrontendUserGroup to allow/deny');
+		$this->registerArgument('frontendUserGroups', '<TYPO3\CMS\Extbase\Persistence\ObjectStorage>\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup', 'The FrontendUserGroups ObjectStorage to allow/deny');
 		$this->registerArgument('anyBackendUser', 'boolean', 'If TRUE, allows any backend user unless other arguments disallows each specific backend user', FALSE, FALSE);
 		$this->registerArgument('backendUser', 'integer', 'The uid of a backend user to allow/deny');
 		$this->registerArgument('backendUsers', 'mixed', 'The backend users list to allow/deny. If string, CSV of uids is assumed, if array, array of uids is assumed');
