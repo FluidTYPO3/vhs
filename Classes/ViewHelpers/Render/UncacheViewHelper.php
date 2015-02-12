@@ -48,7 +48,7 @@ class UncacheViewHelper extends AbstractViewHelper {
 
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 		$content = '<!--' . $substKey . '-->';
-		$templateView = GeneralUtility::makeInstance('FluidTYPO3\Vhs\View\UncacheTemplateView');
+		$templateView = GeneralUtility::makeInstance('FluidTYPO3\\Vhs\\View\\UncacheTemplateView');
 
 		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
 			'type' => 'POSTUSERFUNC',

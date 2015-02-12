@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  *
  * ### Examples:
  *
- *     $asset = $this->objectManager->get('FluidTYPO3\Vhs\Asset');
+ *     $asset = $this->objectManager->get('FluidTYPO3\\Vhs\\Asset');
  *     // OR you can use the static factory method which works anywhere
  *     // including outside of Extbase.
  *     $asset = \FluidTYPO3\Vhs\Asset::getInstance();
@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  *
  * Or simply:
  *
- *     $this->objectManager->get('FluidTYPO3\Vhs\Asset')->setPath('...')->finalize();
+ *     $this->objectManager->get('FluidTYPO3\\Vhs\\Asset')->setPath('...')->finalize();
  *
  * And you can create clean instances:
  *
@@ -157,7 +157,7 @@ class Asset implements AssetInterface {
 	 */
 	public static function getInstance() {
 		/** @var $asset Asset */
-		$asset = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager')->get('FluidTYPO3\Vhs\Asset');
+		$asset = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('FluidTYPO3\\Vhs\\Asset');
 		return $asset;
 	}
 
@@ -492,7 +492,7 @@ class Asset implements AssetInterface {
 		foreach (array_keys($properties) as $propertyName) {
 			$properties[$propertyName] = $this->$propertyName;
 		}
-		if (TRUE === method_exists('TYPO3\CMS\Core\Utility\ArrayUtility', 'mergeRecursiveWithOverrule')) {
+		if (TRUE === method_exists('TYPO3\\CMS\\Core\\Utility\\ArrayUtility', 'mergeRecursiveWithOverrule')) {
 			ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
 			ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
 		} else {

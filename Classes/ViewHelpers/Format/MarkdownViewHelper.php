@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
 use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -56,7 +57,8 @@ class MarkdownViewHelper extends AbstractViewHelper {
 	 * @return void
 	 */
 	public function initialize() {
-		$this->cache = $GLOBALS['typo3CacheManager']->getCache('vhs_markdown');
+		$cacheManager = isset($GLOBALS['typo3CacheManager']) ? $GLOBALS['typo3CacheManager'] : GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$this->cache = $cacheManager->getCache('vhs_markdown');
 	}
 
 	/**

@@ -94,8 +94,8 @@ class AssetService implements SingletonInterface {
 	 */
 	public function buildAll(array $parameters, $caller, $cached = TRUE) {
 		if (FALSE === $this->objectManager instanceof ObjectManager) {
-			$this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-			$this->configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
+			$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			$this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		}
 		$settings = $this->getSettings();
 		$cached = (boolean) $cached;
@@ -339,7 +339,7 @@ class AssetService implements SingletonInterface {
 	 */
 	private function generateTagForAssetType($type, $content, $file = NULL) {
 		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
-		$tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+		$tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 		switch ($type) {
 			case 'js':
 				$tagBuilder->setTagName('script');
@@ -467,7 +467,7 @@ class AssetService implements SingletonInterface {
 		$contents = $this->buildAsset($asset);
 		$variables = GeneralUtility::removeDotsFromTS($variables);
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-		$view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
+		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$view->setTemplateSource($contents);
 		$view->assignMultiple($variables);
 		$content = $view->render();

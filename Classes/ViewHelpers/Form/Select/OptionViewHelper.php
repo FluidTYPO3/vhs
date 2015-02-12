@@ -45,8 +45,8 @@ class OptionViewHelper extends AbstractFormFieldViewHelper {
 		}
 		if (TRUE === (boolean) $this->arguments['selected']) {
 			$selected = 'selected';
-		} else if (TRUE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value')) {
-			$value = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value');
+		} else if (TRUE === $this->viewHelperVariableContainer->exists('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'value')) {
+			$value = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'value');
 			if (FALSE === is_object($this->arguments['value']) && FALSE === is_array($this->arguments['value'])) {
 				if (TRUE === is_array($value)) {
 					$selected = TRUE === in_array($this->arguments['value'], $value) ? 'selected' : '';
@@ -59,9 +59,9 @@ class OptionViewHelper extends AbstractFormFieldViewHelper {
 			}
 		}
 		$tagContent = $this->renderChildren();
-		$options = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options');
+		$options = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'options');
 		$options[$tagContent] = $this->arguments['value'];
-		$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', $options);
+		$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'options', $options);
 		if (FALSE === empty($selected)) {
 			$this->tag->addAttribute('selected', 'selected');
 		} else {
