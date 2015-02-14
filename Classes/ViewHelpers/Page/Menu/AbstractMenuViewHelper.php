@@ -380,7 +380,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	protected function getMenuItemEntry($page, $rootLine, array $parentPage = NULL) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
-		$pageUid = $originalPageUid = $submenuPid = $page['uid'];
+		$pageUid = $overlayPageUid = $page['originalPageUid'] = $page['uid'];
 		$targetPage = NULL;
 		$doktype = (integer) $page['doktype'];
 		if (NULL !== $parentPage && TRUE === isset($parentPage['_MP_PARAM'])) {
@@ -388,9 +388,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		}
 		if (PageRepository::DOKTYPE_MOUNTPOINT === $doktype) {
 			$mountInfo = $GLOBALS['TSFE']->sys_page->getMountPointInfo($page['uid'], $page);
-			$mountedPageUid = $mountInfo['mount_pid'];
-			$submenuPid = $mountedPageUid;
-			$page['mountedPageUid'] = $mountedPageUid;
+			$page['mountedPageUid'] = $mountInfo['mount_pid'];
 			$page['mountPointParameter'] = $mountInfo['MPvar'];
 		} elseif (PageRepository::DOKTYPE_SHORTCUT === $doktype) {
 			switch ($page['shortcut_mode']) {
@@ -418,6 +416,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			if (TRUE === (boolean) $this->shouldUseShortcutTarget()) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
+				$overlayPageUid = $targetPage['uid'];
 			}
 			if (TRUE === (boolean) $this->shouldUseShortcutUid()) {
 				// overwrite current page UID
@@ -426,7 +425,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		if (0 < $getLL) {
-			$pageOverlay = $this->pageSelect->getPageOverlay($page['uid'], $getLL);
+			$pageOverlay = $this->pageSelect->getPageOverlay($overlayPageUid, $getLL);
 			foreach ($pageOverlay as $name => $value) {
 				if (FALSE === empty($value)) {
 					$page[$name] = $value;
@@ -434,8 +433,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			}
 		}
 
-		$page['hasSubPages'] = (0 < count($this->getSubmenu($submenuPid)));
-		$page['active'] = $this->isActive($page['uid'], $rootLine, $originalPageUid);
+		$page['hasSubPages'] = (0 < count($this->getSubmenu($page['originalPageUid'])));
+		$page['active'] = $this->isActive($page['uid'], $rootLine, $page['originalPageUid']);
 		$page['current'] = $this->isCurrent($page['uid']);
 		$page['link'] = $this->getItemLink($page);
 		$page['linktext'] = $this->getItemTitle($page);
@@ -537,7 +536,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 				$html[] = sprintf('<a href="%s"%s%s>%s</a>', $page['link'], $class, $target, htmlspecialchars($page['linktext']));
 			}
 			if ((TRUE === (boolean) $page['active'] || TRUE === $expandAll) && TRUE === (boolean) $page['hasSubPages'] && $level < $maxLevels) {
-				$pageUid = (TRUE === isset($page['mountedPageUid'])) ? $page['mountedPageUid'] : $page['uid'];
+				$pageUid = (TRUE === isset($page['mountedPageUid'])) ? $page['mountedPageUid'] : $page['originalPageUid'];
 				$rootLineData = $this->pageSelect->getRootLine();
 				$subMenuData = $this->getMenu($pageUid);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData, $page);
