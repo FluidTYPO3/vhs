@@ -8,6 +8,9 @@
   - got *'customMap'* attribute - allows to override built-in replacement mapping with custom one
   - [v:format.sanitizeString](https://fluidtypo3.org/viewhelpers/vhs/master/Format/SanitizeStringViewHelper.html)
 
+- :exclamation: CompilableAsset concept removed
+  - [Details](https://github.com/FluidTYPO3/vhs/commit/c56b224d83886539112e0ee5e270218ad0bee8ad)
+
 - [#735](https://github.com/FluidTYPO3/vhs/pull/735) Context ViewHelpers added:  **v:condition.context.isDevelopment**,  **v:condition.context.isProduction**, **v:condition.context.isTesting** and **v:context.get**
   - [v:condition.context.isDevelopment](https://fluidtypo3.org/viewhelpers/vhs/master/Condition/Context/IsDevelopmentViewHelper.html) - returns TRUE if application context is 'Development' or a sub-context of it
   - [v:condition.context.isProduction](https://fluidtypo3.org/viewhelpers/vhs/master/Condition/Context/IsProductionViewHelper.html) - returns TRUE if application context is 'Production' or a sub-context of it
