@@ -52,6 +52,14 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('legacyCode', 'boolean', 'Whether to use the legacy flash video code.', FALSE, FALSE);
 		$this->registerArgument('showRelated', 'boolean', 'Whether to show related videos after playing.', FALSE, FALSE);
 		$this->registerArgument('extendedPrivacy', 'boolean', 'Whether to use cookie-less video player.', FALSE, TRUE);
+		$this->registerArgument('hideControl', 'boolean', 'Hide video player\'s control bar.', FALSE, FALSE);
+		$this->registerArgument('hideInfo', 'boolean', 'Hide video player\'s info bar.', FALSE, FALSE);
+		$this->registerArgument('playlist', 'string', 'Comma seperated list of video IDs to be played.', FALSE);
+		$this->registerArgument('loop', 'boolean', 'Play the video in a loop.', FALSE, FALSE);
+		$this->registerArgument('start', 'integer', 'Start playing after seconds.', FALSE);
+		$this->registerArgument('end', 'integer', 'Stop playing after seconds.', FALSE);
+		$this->registerArgument('lightTheme', 'boolean', 'Use the YouTube player\'s light theme.', FALSE, FALSE);
+		$this->registerArgument('videoQuality', 'string', 'Set the YouTube player\'s video quality (hd1080,hd720,highres,large,medium,small).', FALSE);
 	}
 
 	/**
@@ -112,25 +120,50 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	private function getSourceUrl($videoId) {
 		$src = (boolean) TRUE === $this->arguments['extendedPrivacy'] ? self::YOUTUBE_PRIVACY_BASEURL : self::YOUTUBE_BASEURL;
+
+		$params = array();
+
+		if (FALSE === (boolean) $this->arguments['showRelated']) {
+			$params[] = 'rel=0';
+		}
+		if (TRUE === (boolean) $this->arguments['autoplay']) {
+			$params[] = 'autoplay=1';
+		}
+		if (TRUE === (boolean) $this->arguments['hideControl']) {
+			$params[] = 'controls=0';
+		}
+		if (TRUE === (boolean) $this->arguments['hideInfo']) {
+			$params[] = 'showinfo=0';
+		}
+		if (FALSE === empty($this->arguments['playlist'])) {
+			$params[] = 'playlist=' . $this->arguments['playlist'];
+		}
+		if (TRUE === (boolean) $this->arguments['loop']) {
+			$params[] = 'loop=1';
+		}
+		if (FALSE === empty($this->arguments['start'])) {
+			$params[] = 'start=' . $this->arguments['start'];
+		}
+		if (FALSE === empty($this->arguments['end'])) {
+			$params[] = 'end=' . $this->arguments['end'];
+		}
+		if (TRUE === (boolean) $this->arguments['lightTheme']) {
+			$params[] = 'theme=light';
+		}
+		if (FALSE === empty($this->arguments['videoQuality'])) {
+			$params[] = 'vq=' . $this->arguments['videoQuality'];
+		}
+
 		if (FALSE === $this->arguments['legacyCode']) {
 			$src .= '/embed/'. $videoId;
-			if (FALSE === (boolean) $this->arguments['showRelated'] || TRUE === (boolean) $this->arguments['autoplay']) {
-				$src .= '?';
-			}
-			if (FALSE === (boolean) $this->arguments['showRelated']) {
-				$src .= 'rel=0&';
-			}
-			if (TRUE === (boolean) $this->arguments['autoplay']) {
-				$src .= 'autoplay=1';
-			}
+			$seperator = '?';
 		} else {
-			$src .= '/v/' . $this->arguments['videoId'] . '?version=3';
-			if (FALSE === (boolean) $this->arguments['showRelated']) {
-				$src .= '&rel=0';
-			}
-			if (TRUE === (boolean) $this->arguments['autoplay']) {
-				$src .= '&autoplay=1';
-			}
+			$src .= '/v/' . $videoId . '?version=3';
+			$seperator = '&';
+		}
+
+		if (FALSE === empty($params)) {
+			$src .= $seperator . implode('&', $params);
 		}
 
 		return $src;
