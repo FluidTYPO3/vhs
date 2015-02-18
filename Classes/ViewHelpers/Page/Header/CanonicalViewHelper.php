@@ -46,6 +46,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
 		$this->registerArgument('pageUid', 'integer', 'The page uid to check', FALSE, 0);
+		$this->registerArgument('uri', 'string', 'URI', FALSE, 0);
 		$this->registerArgument('normalWhenNoLanguage', 'boolean', 'If TRUE, a missing page overlay should be ignored', FALSE, FALSE);
 	}
 
@@ -57,29 +58,32 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 			return;
 		}
 
-		$pageUid = $this->arguments['pageUid'];
 		$normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
 
-		if (0 === $pageUid) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
-
-		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-		$languageUid = 0;
-		if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
-			$languageUid = $currentLanguageUid;
-		} else if (0 !== $currentLanguageUid) {
-			if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
-				return;
+		if ($this->arguments['uri'] and $this->arguments['uri'] != "") {
+			$uri = $this->arguments['uri'];
+		} else {
+			$pageUid = $this->arguments['pageUid'];
+			if (0 === $pageUid) {
+				$pageUid = $GLOBALS['TSFE']->id;
 			}
-		}
+			$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+			$languageUid = 0;
+			if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
+				$languageUid = $currentLanguageUid;
+			} else if (0 !== $currentLanguageUid) {
+				if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
+					return;
+				}
+			}
 
-		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder->reset()
-			->setTargetPageUid($pageUid)
-			->setCreateAbsoluteUri(TRUE)
-			->setArguments(array('L' => $languageUid))
-			->build();
+			$uriBuilder = $this->controllerContext->getUriBuilder();
+			$uri = $uriBuilder->reset()
+				->setTargetPageUid($pageUid)
+				->setCreateAbsoluteUri(TRUE)
+				->setArguments(array('L' => $languageUid))
+				->build();
+		}
 
 		$this->tag->addAttribute('rel', 'canonical');
 		$this->tag->addAttribute('href', $uri);
