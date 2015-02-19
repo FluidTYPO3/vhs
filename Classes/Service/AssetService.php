@@ -315,7 +315,7 @@ class AssetService implements SingletonInterface {
 				// Put a return carriage between assets preventing broken content.
 				$source .= "\n";
 			}
-			file_put_contents($fileAbsolutePathAndFilename, $source);
+			$this->writeFile($fileAbsolutePathAndFilename, $source);
 		}
 		if (FALSE === empty($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'])) {
 			$timestampMode = $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'];
@@ -690,6 +690,14 @@ class AssetService implements SingletonInterface {
 			touch($assetCacheFile, 0);
 		}
 		self::$cacheCleared = TRUE;
+	}
+
+	/**
+	 * @param string $file
+	 * @param string $contents
+	 */
+	protected function writeFile($file, $contents) {
+		file_put_contents($file, $contents);
 	}
 
 }
