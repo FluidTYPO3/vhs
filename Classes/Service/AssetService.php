@@ -502,16 +502,11 @@ class AssetService implements SingletonInterface {
 		$templateReference = $settings['path'];
 		$variables = (TRUE === (isset($settings['variables']) && is_array($settings['variables'])) ? $settings['variables'] : array());
 		$isExternal = (TRUE === (isset($settings['external']) && $settings['external'] > 0));
-		if (TRUE === $isExternal) {
-			$fileContents = file_get_contents($templateReference);
-		} else {
-			$templatePathAndFilename = GeneralUtility::getFileAbsFileName($templateReference);
-			$fileContents = file_get_contents($templatePathAndFilename);
-		}
+		$contents = $this->buildAsset($asset);
 		$variables = GeneralUtility::removeDotsFromTS($variables);
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
 		$view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
-		$view->setTemplateSource($fileContents);
+		$view->setTemplateSource($contents);
 		$view->assignMultiple($variables);
 		$content = $view->render();
 		return $content;
