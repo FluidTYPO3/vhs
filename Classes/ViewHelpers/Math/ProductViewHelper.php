@@ -7,6 +7,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 /**
  * ### Math: Product (multiplication)
@@ -33,7 +34,7 @@ class ProductViewHelper extends AbstractMultipleMathViewHelper {
 		$b = $this->arguments['b'];
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		if (TRUE === $aIsIterable && NULL === $b) {
-			$a = $this->convertTraversableToArray($a);
+			$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
 			return array_product($a);
 		}
 		return $this->calculate($a, $b);

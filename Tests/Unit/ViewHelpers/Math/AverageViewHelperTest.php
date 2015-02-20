@@ -50,4 +50,12 @@ class AverageViewHelperTest extends AbstractMathViewHelperTest {
 		$this->executeDualArgumentTest(array(1, 5), array(3, 3), array(2, 4));
 	}
 
+	/**
+	 * @test
+	 */
+	public function executeMissingArgumentTest() {
+		$result = $this->executeViewHelper(array());
+		$this->assertEquals('Required argument "b" was not supplied', $result);
+	}
+
 }

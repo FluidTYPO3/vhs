@@ -29,4 +29,20 @@ class SubtractViewHelperTest extends AbstractMathViewHelperTest {
 		$this->executeDualArgumentTest(8, 2, 6);
 	}
 
+	/**
+	 * @test
+	 */
+	public function executeMissingArgumentTest() {
+		$result = $this->executeViewHelper(array());
+		$this->assertEquals('Required argument "b" was not supplied', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function executeInvalidArgumentTypeTest() {
+		$result = $this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
+		$this->assertEquals('Required argument "a" was not supplied', $result);
+	}
+
 }

@@ -7,6 +7,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 /**
  * Math: Range
@@ -29,7 +30,7 @@ class RangeViewHelper extends AbstractSingleMathViewHelper {
 		$a = $this->getInlineArgument();
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		if (TRUE === $aIsIterable) {
-			$a = $this->convertTraversableToArray($a);
+			$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
 			sort($a, SORT_NUMERIC);
 			if (1 === count($a)) {
 				return array(reset($a), reset($a));
