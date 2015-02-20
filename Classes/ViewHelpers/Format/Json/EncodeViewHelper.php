@@ -112,7 +112,7 @@ class EncodeViewHelper extends AbstractViewHelper {
 	 * associative arrays of values - which might be DateTime instances.
 	 *
 	 * @param array $array
-	 * @param string dateTimeFormat
+	 * @param string $dateTimeFormat
 	 * @return array
 	 */
 	protected function recursiveDateTimeToUnixtimeMiliseconds(array $array, $dateTimeFormat) {

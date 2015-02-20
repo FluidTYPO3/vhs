@@ -46,7 +46,7 @@ class ListViewHelper extends AbstractMenuViewHelper {
 	public function render() {
 		$pages = $this->processPagesArgument();
 		if (0 === count($pages)) {
-			return;
+			return '';
 		}
 		$menuData = array();
 		$rootLineData = $this->pageSelect->getRootLine();

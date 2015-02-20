@@ -31,7 +31,7 @@ class ForViewHelper extends AbstractLoopViewHelper {
 	}
 
 	/**
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	public function render() {

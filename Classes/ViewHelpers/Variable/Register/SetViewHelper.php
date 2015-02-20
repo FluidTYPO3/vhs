@@ -35,10 +35,6 @@ class SetViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Set (override) the value in register $name.
-	 *
-	 * @param string $name
-	 * @param mixed $value
-	 * @return void
 	 */
 	public function render() {
 		if (FALSE === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {

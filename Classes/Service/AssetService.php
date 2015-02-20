@@ -10,8 +10,6 @@ namespace FluidTYPO3\Vhs\Service;
 
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
-use FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface;
-use FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\CompilableAssetInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -424,7 +422,6 @@ class AssetService implements SingletonInterface {
 	 */
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
-		$compilables = array();
 		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
@@ -454,40 +451,7 @@ class AssetService implements SingletonInterface {
 				}
 			}
 			if (FALSE === $postpone) {
-				if (TRUE === $asset instanceof CompilableAssetInterface) {
-					$compilerClassName = $asset->getCompilerClassName();
-					if (FALSE === isset($compilables[$compilerClassName])) {
-						$compilables[$compilerClassName] = array();
-					}
-					array_push($compilables[$compilerClassName], $asset);
-				} else {
-					$placed[$name] = $asset;
-				}
-			}
-		}
-		if (0 < count($compilables)) {
-			// loop once more, this time assigning compilable assets to their compilers
-			foreach ($placed as $asset) {
-				if (TRUE === $asset instanceof AssetCompilerInterface) {
-					/** @var AssetCompilerInterface */
-					$compilerClassName = get_class($asset);
-					$compilerTopInterfaceName = array_shift(class_implements($compilerClassName));
-					if ('\FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface' !== $compilerTopInterfaceName) {
-						$compilerIdentity = $compilerTopInterfaceName;
-					} else {
-						$compilerIdentity = $compilerClassName;
-					}
-					if (TRUE === isset($compilables[$compilerIdentity])) {
-						foreach ($compilables[$compilerIdentity] as $compilableAsset) {
-							$asset->addAsset($compilableAsset);
-						}
-						unset($compilables[$compilerIdentity]);
-					}
-				}
-			}
-			if (0 < count($compilables)) {
-				throw new \RuntimeException('Compilable Assets used without appropriate Compiler Assets: "' .
-				implode(', ', array_keys($compilables)) . '"', 1360502808);
+				$placed[$name] = $asset;
 			}
 		}
 		return $placed;
@@ -499,9 +463,7 @@ class AssetService implements SingletonInterface {
 	 */
 	private function renderAssetAsFluidTemplate($asset) {
 		$settings = $this->extractAssetSettings($asset);
-		$templateReference = $settings['path'];
 		$variables = (TRUE === (isset($settings['variables']) && is_array($settings['variables'])) ? $settings['variables'] : array());
-		$isExternal = (TRUE === (isset($settings['external']) && $settings['external'] > 0));
 		$contents = $this->buildAsset($asset);
 		$variables = GeneralUtility::removeDotsFromTS($variables);
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */

@@ -129,7 +129,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper {
 	 * @return array
 	 */
 	protected function getOptions() {
-		if (FALSE === is_array($this->arguments['options']) && FALSE === $this->arguments['options'] instanceof Traversable) {
+		if (FALSE === is_array($this->arguments['options']) && FALSE === $this->arguments['options'] instanceof \Traversable) {
 			return array();
 		}
 		$options = array();

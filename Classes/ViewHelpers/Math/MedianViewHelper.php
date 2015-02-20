@@ -36,7 +36,12 @@ class MedianViewHelper extends AbstractSingleMathViewHelper {
 			$size = count($a);
 			$midpoint = $size / 2;
 			if (1 === $size % 2) {
-				return $a[$midpoint];
+				/*
+				 * Array indexes of float are truncated to integers,
+				 * not everybody knows, let's make it explicit for everybody
+				 * wondering.
+				 */
+				return $a[(integer) $midpoint];
 			}
 			$candidates = array_slice($a, floor($midpoint) - 1, 2);
 			return array_sum($candidates) / 2;

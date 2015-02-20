@@ -218,6 +218,7 @@ abstract class AbstractAssetViewHelper
 		if (TRUE === $debugOutputEnabled) {
 			if (TRUE === $useDebugUtility) {
 				DebuggerUtility::var_dump($debugInformation);
+				return '';
 			} else {
 				return var_export($debugInformation, TRUE);
 			}

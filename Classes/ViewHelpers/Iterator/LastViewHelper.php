@@ -53,6 +53,7 @@ class LastViewHelper extends AbstractViewHelper {
 			// before iteration and b) make sure any Iterator/array is
 			// supported without the need for any special tricks. The
 			// isset() call is here only to prevent code style violations
+			/** @noinspection PhpExpressionResultUnusedInspection */
 			isset($needle);
 		}
 		return $needle;

@@ -35,7 +35,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
 	 * @return boolean
 	 */
 	protected function assertIsArrayOrIterator($subject) {
-		return (boolean) (TRUE === is_array($subject) || TRUE === $subject instanceof Iterator);
+		return (boolean) (TRUE === is_array($subject) || TRUE === $subject instanceof \Iterator);
 	}
 
 	/**
