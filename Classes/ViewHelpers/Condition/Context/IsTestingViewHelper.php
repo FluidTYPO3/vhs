@@ -36,11 +36,7 @@ class IsTestingViewHelper extends AbstractConditionViewHelper {
 	 * @return string
 	 */
 	public function render () {
-		if (TRUE === $this->isTestingContext()) {
-			return $this->renderThenChild();
-		}
-
-		return $this->renderElseChild();
+		return (TRUE === $this->isTestingContext() ? $this->renderThenChild() : $this->renderElseChild());
 	}
 
 

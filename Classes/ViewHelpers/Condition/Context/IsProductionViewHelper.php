@@ -36,11 +36,7 @@ class IsProductionViewHelper extends AbstractConditionViewHelper {
 	 * @return string
 	 */
 	public function render () {
-		if (TRUE === $this->isProductionContext()) {
-			return $this->renderThenChild();
-		}
-
-		return $this->renderElseChild();
+		return (TRUE === $this->isProductionContext() ? $this->renderThenChild() : $this->renderElseChild());
 	}
 
 

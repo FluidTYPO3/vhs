@@ -36,11 +36,7 @@ class IsDevelopmentViewHelper extends AbstractConditionViewHelper {
 	 * @return string
 	 */
 	public function render () {
-		if (TRUE === $this->isDevelopmentContext()) {
-			return $this->renderThenChild();
-		}
-
-		return $this->renderElseChild();
+		return (TRUE === $this->isDevelopmentContext() ? $this->renderThenChild() : $this->renderElseChild());
 	}
 
 

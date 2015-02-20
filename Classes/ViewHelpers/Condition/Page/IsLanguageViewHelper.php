@@ -48,10 +48,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper {
 				}
 			}
 		}
-		if ($languageUid === $currentLanguageUid) {
-			return $this->renderThenChild();
-		}
-		return $this->renderElseChild();
+		return ($languageUid === $currentLanguageUid ? $this->renderThenChild() : $this->renderElseChild());
 	}
 
 }
