@@ -252,7 +252,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	/**
 	 * Gets the currently logged in Frontend User
 	 *
-	 * @return FrontendUser
+	 * @return FrontendUser|NULL
 	 * @api
 	 */
 	public function getCurrentFrontendUser() {
