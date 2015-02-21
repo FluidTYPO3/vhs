@@ -115,11 +115,8 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 		if (TRUE === (boolean) $this->arguments['admin']) {
 			$evaluations['admin'] = intval($this->assertAdminLoggedIn());
 		}
-		if ('AND' === $evaluationType) {
-			return (boolean) (count($evaluations) === array_sum($evaluations));
-		} else {
-			return (boolean) (array_sum($evaluations) > 0);
-		}
+		$sum = array_sum($evaluations);
+		return (boolean) ('AND' === $evaluationType ? count($evaluations) === $sum : $sum > 0);
 	}
 
 	/**
@@ -288,10 +285,17 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	 * @api
 	 */
 	protected function renderThenChild() {
-		if ('FE' === TYPO3_MODE) {
+		if (TRUE === $this->isFrontendContext()) {
 			$GLOBALS['TSFE']->no_cache = 1;
 		}
 		return parent::renderThenChild();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isFrontendContext() {
+		return 'FE' === TYPO3_MODE;
 	}
 
 }
