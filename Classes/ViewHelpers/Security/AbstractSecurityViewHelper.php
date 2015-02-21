@@ -221,12 +221,14 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 			return FALSE;
 		}
 		$currentBackendUser = $this->getCurrentBackendUser();
-		$userGroups = explode(',', $currentBackendUser['usergroup']);
+		$currentUserGroups = trim($currentBackendUser['usergroup'], ',');
+		$userGroups = FALSE === empty($currentUserGroups) ? explode(',', $currentUserGroups) : array();
 		if (0 === count($userGroups)) {
 			return FALSE;
 		}
 		if (TRUE === is_string($groups)) {
-			$groups = explode(',', $groups);
+			$groups = trim($groups, ',');
+			$groups = FALSE === empty($groups) ? explode(',', $groups) : array();
 		}
 		if (0 < count($groups)) {
 			return (boolean) (0 < count(array_intersect($userGroups, $groups)));
