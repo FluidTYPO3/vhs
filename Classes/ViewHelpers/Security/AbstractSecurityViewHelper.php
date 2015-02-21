@@ -256,7 +256,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	 * @api
 	 */
 	public function getCurrentFrontendUser() {
-		if (FALSE === $GLOBALS['TSFE']->loginUser) {
+		if (TRUE === empty($GLOBALS['TSFE']->loginUser)) {
 			return NULL;
 		}
 		return $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
