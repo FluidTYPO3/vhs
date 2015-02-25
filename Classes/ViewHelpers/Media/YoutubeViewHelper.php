@@ -60,6 +60,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('end', 'integer', 'Stop playing after seconds.', FALSE);
 		$this->registerArgument('lightTheme', 'boolean', 'Use the YouTube player\'s light theme.', FALSE, FALSE);
 		$this->registerArgument('videoQuality', 'string', 'Set the YouTube player\'s video quality (hd1080,hd720,highres,large,medium,small).', FALSE);
+		$this->registerArgument('wmode', 'string', 'Set the Window-Mode of the YouTube player (transparent,opaque). This is necessary for z-index handling in IE10/11.', FALSE);
 	}
 
 	/**
@@ -152,6 +153,9 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper {
 		}
 		if (FALSE === empty($this->arguments['videoQuality'])) {
 			$params[] = 'vq=' . $this->arguments['videoQuality'];
+		}
+		if (FALSE === empty($this->arguments['wmode'])) {
+			$params[] = 'wmode=' . $this->arguments['wmode'];
 		}
 
 		if (FALSE === $this->arguments['legacyCode']) {
