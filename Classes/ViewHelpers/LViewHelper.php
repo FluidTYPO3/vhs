@@ -39,7 +39,7 @@ class LViewHelper extends TranslateViewHelper {
 		$this->registerArgument('arguments', 'array', 'Translation Key', FALSE, NULL);
 		$this->registerArgument('defualt', 'string', 'Translation Key', FALSE, NULL);
 		$this->registerArgument('extensionName', 'string', 'Translation Key', FALSE, NULL);
-		$this->registerArgument('khtmlEscape', 'boolean', 'Translation Key');
+		$this->registerArgument('htmlEscape', 'boolean', 'Translation Key');
 		$this->registerArgument('id', 'string', 'Translation Key', FALSE, NULL);
 		$this->registerArgument('key', 'string', 'Translation Key', FALSE, NULL);
 	}
