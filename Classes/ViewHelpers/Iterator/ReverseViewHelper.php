@@ -62,7 +62,7 @@ class ReverseViewHelper extends AbstractViewHelper {
 				/** @var QueryResultInterface $subject */
 				$array = $subject->toArray();
 			} elseif (TRUE === $subject instanceof \Traversable) {
-				/** @var Iterator $subject */
+				/** @var \Iterator $subject */
 				$array = iterator_to_array($subject, TRUE);
 			} elseif (NULL !== $subject) {
 				// a NULL value is respected and ignored, but any

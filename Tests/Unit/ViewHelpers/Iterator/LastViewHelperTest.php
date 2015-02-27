@@ -78,12 +78,12 @@ class LastViewHelperTest extends AbstractViewHelperTest {
 	/**
 	 * @test
 	 */
-	public function throwsExceptionOnUnsupportedHaystacks() {
+	public function returnsGivenObjectOnUnsupportedHaystacks() {
 		$arguments = array(
 			'haystack' => new \DateTime('now')
 		);
 		$output = $this->executeViewHelper($arguments);
-		$this->assertStringStartsWith('Invalid argument supplied to Iterator/LastViewHelper - expected array, Iterator or NULL but got', $output);
+		$this->assertSame($arguments['haystack'], $output);
 	}
 
 }

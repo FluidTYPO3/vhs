@@ -72,7 +72,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		if ('BE' === TYPO3_MODE) {
-			return;
+			return '';
 		}
 
 		$languages = $this->arguments['languages'];
@@ -127,5 +127,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 		if (FALSE === $usePageRenderer) {
 			return trim($output);
 		}
+
+		return '';
 	}
 }

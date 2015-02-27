@@ -54,5 +54,6 @@ class CollectionViewHelper extends AbstractResourceViewHelper {
 				return NULL;
 			}
 		}
+		return NULL;
 	}
 }

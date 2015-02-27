@@ -40,8 +40,6 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
 	 * Initialize
-	 *
-	 * @return void
 	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
@@ -50,11 +48,11 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 	}
 
 	/**
-	 * @return string
+	 * @return mixed
 	 */
 	public function render() {
 		if ('BE' === TYPO3_MODE) {
-			return;
+			return '';
 		}
 
 		$pageUid = $this->arguments['pageUid'];
@@ -70,7 +68,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 			$languageUid = $currentLanguageUid;
 		} else if (0 !== $currentLanguageUid) {
 			if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
-				return;
+				return '';
 			}
 		}
 

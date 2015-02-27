@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
@@ -38,6 +39,7 @@ class UncacheTemplateView extends TemplateView {
 		if (TRUE === empty($partial)) {
 			return '';
 		}
+		/** @var RenderingContext $renderingContext */
 		$renderingContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Rendering\RenderingContext');
 		$this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
 		return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
