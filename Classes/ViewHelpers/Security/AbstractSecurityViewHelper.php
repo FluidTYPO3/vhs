@@ -1,29 +1,18 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Security;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 
 /**
  * ### Base class: Security ViewHelpers
@@ -32,16 +21,19 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
-
 abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
 	 */
 	protected $frontendUserRepository;
+
+	/**
+	 * @return NULL
+	 */
+	public function render() {
+		return NULL;
+	}
 
 	/**
 	 * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
@@ -123,45 +115,41 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 		if (TRUE === (boolean) $this->arguments['admin']) {
 			$evaluations['admin'] = intval($this->assertAdminLoggedIn());
 		}
-		if ('AND' === $evaluationType) {
-			return (boolean) (count($evaluations) === array_sum($evaluations));
-		} else {
-			return (boolean) (array_sum($evaluations) > 0);
-		}
+		$sum = array_sum($evaluations);
+		return (boolean) ('AND' === $evaluationType ? count($evaluations) === $sum : $sum > 0);
 	}
 
 	/**
 	 * Returns TRUE only if a FrontendUser is currently logged in. Use argument
 	 * to return TRUE only if the FrontendUser logged in must be that specific user.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $frontendUser
+	 * @param FrontendUser $frontendUser
 	 * @return boolean
 	 * @api
 	 */
 	public function assertFrontendUserLoggedIn(FrontendUser $frontendUser = NULL) {
 		$currentFrontendUser = $this->getCurrentFrontendUser();
-		if (FALSE === $currentFrontendUser instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
+		if (FALSE === $currentFrontendUser instanceof FrontendUser) {
 			return FALSE;
 		}
-		if (TRUE === $frontendUser instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser && TRUE === $currentFrontendUser instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
+		if (TRUE === $frontendUser instanceof FrontendUser && TRUE === $currentFrontendUser instanceof FrontendUser) {
 			if ($currentFrontendUser->getUid() === $frontendUser->getUid()) {
 				return TRUE;
 			} else {
 				return FALSE;
 			}
 		}
-		return (boolean) (TRUE === is_object($currentFrontendUser));
+		return FALSE;
 	}
 
 	/**
-	 * Returns TRUE only if a FrontendUser is currently logged in. Use argument
-	 * to return TRUE only if the FrontendUser logged in must be that specific user.
+	 * Returns TRUE only if currently logged in frontend user is in list.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $frontendUsers
+	 * @param ObjectStorage $frontendUsers
 	 * @return boolean
 	 * @api
 	 */
-	public function assertFrontendUsersLoggedIn(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $frontendUsers = NULL) {
+	public function assertFrontendUsersLoggedIn(ObjectStorage $frontendUsers = NULL) {
 		foreach ($frontendUsers as $frontendUser) {
 			if (TRUE === $this->assertFrontendUserLoggedIn($frontendUser)) {
 				return TRUE;
@@ -179,20 +167,21 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	 */
 	public function assertFrontendUserGroupLoggedIn($groups = NULL) {
 		$currentFrontendUser = $this->getCurrentFrontendUser();
-		if (FALSE === $currentFrontendUser instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
+		if (FALSE === $currentFrontendUser instanceof FrontendUser) {
 			return FALSE;
 		}
 		$currentFrontendUserGroups = $currentFrontendUser->getUsergroup();
-		if (NULL !== $groups) {
-			if (TRUE === $groups instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup) {
-				return $currentFrontendUserGroups->contains($groups);
-			} elseif (TRUE === $groups instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
-				$currentFrontendUserGroupsClone = clone $currentFrontendUserGroups;
-				$currentFrontendUserGroupsClone->removeAll($groups);
-				return ($currentFrontendUserGroups->count() !== $currentFrontendUserGroupsClone->count());
-			}
+		if (NULL === $groups) {
+			return (boolean) (0 < $currentFrontendUserGroups->count());
+		} elseif (TRUE === $groups instanceof FrontendUserGroup) {
+			return $currentFrontendUserGroups->contains($groups);
+		} elseif (TRUE === $groups instanceof ObjectStorage) {
+			$currentFrontendUserGroupsClone = clone $currentFrontendUserGroups;
+			$currentFrontendUserGroupsClone->removeAll($groups);
+			return ($currentFrontendUserGroups->count() !== $currentFrontendUserGroupsClone->count());
+		} else {
+			return FALSE;
 		}
-		return (boolean) (0 < $currentFrontendUserGroups->count());
 	}
 
 	/**
@@ -229,12 +218,14 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 			return FALSE;
 		}
 		$currentBackendUser = $this->getCurrentBackendUser();
-		$userGroups = explode(',', $currentBackendUser['usergroup']);
+		$currentUserGroups = trim($currentBackendUser['usergroup'], ',');
+		$userGroups = FALSE === empty($currentUserGroups) ? explode(',', $currentUserGroups) : array();
 		if (0 === count($userGroups)) {
 			return FALSE;
 		}
 		if (TRUE === is_string($groups)) {
-			$groups = explode(',', $groups);
+			$groups = trim($groups, ',');
+			$groups = FALSE === empty($groups) ? explode(',', $groups) : array();
 		}
 		if (0 < count($groups)) {
 			return (boolean) (0 < count(array_intersect($userGroups, $groups)));
@@ -260,11 +251,11 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	/**
 	 * Gets the currently logged in Frontend User
 	 *
-	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+	 * @return FrontendUser|NULL
 	 * @api
 	 */
 	public function getCurrentFrontendUser() {
-		if (FALSE === $GLOBALS['TSFE']->loginUser) {
+		if (TRUE === empty($GLOBALS['TSFE']->loginUser)) {
 			return NULL;
 		}
 		return $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
@@ -294,10 +285,17 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	 * @api
 	 */
 	protected function renderThenChild() {
-		if ('FE' === TYPO3_MODE) {
+		if (TRUE === $this->isFrontendContext()) {
 			$GLOBALS['TSFE']->no_cache = 1;
 		}
 		return parent::renderThenChild();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isFrontendContext() {
+		return 'FE' === TYPO3_MODE;
 	}
 
 }

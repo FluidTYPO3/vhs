@@ -1,30 +1,16 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Math;
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Math ViewHelpers operating on one number or an
@@ -53,30 +39,6 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @param $subject
-	 * @return boolean
-	 */
-	protected function assertSupportsArrayAccess($subject) {
-		return (boolean) (TRUE === is_array($subject) || (TRUE === $subject instanceof Iterator && TRUE === $subject instanceof ArrayAccess));
-	}
-
-	/**
-	 * @param array|Traversable $traversable
-	 * @throws \Exception
-	 * @return array
-	 */
-	protected function convertTraversableToArray($traversable) {
-		if (FALSE === $this->assertIsArrayOrIterator($traversable)) {
-			throw new \Exception('Attempt to convert non-traversable object to array', 1353442738);
-		}
-		$array = array();
-		foreach ($traversable as $key => $value) {
-			$array[$key] = $value;
-		}
-		return $array;
-	}
-
-	/**
 	 * @return mixed
 	 * @throw Exception
 	 */
@@ -86,7 +48,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 * @return mixed
 	 */
 	protected function getInlineArgument() {
@@ -95,23 +57,19 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
 			$a = $this->arguments['a'];
 		}
 		if (NULL === $a && TRUE === (boolean) $this->arguments['fail']) {
-			throw new \Exception('Required argument "a" was not supplied', 1237823699);
+			throw new Exception('Required argument "a" was not supplied', 1237823699);
 		}
 		return $a;
 	}
 
 	/**
 	 * @param mixed $a
-	 * @throws \Exception
 	 * @return mixed
 	 */
 	protected function calculate($a) {
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		if (TRUE === $aIsIterable) {
-			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
-			if (FALSE === $aCanBeAccessed) {
-				throw new \Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
-			}
+			$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
 			foreach ($a as $index => $value) {
 				$a[$index] = $this->calculateAction($value);
 			}

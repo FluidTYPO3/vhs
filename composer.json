@@ -2,6 +2,10 @@
     "name": "fluidtypo3/vhs",
     "description": "The vhs package from FluidTYPO3",
     "type": "typo3-cms-extension",
+    "support": {
+        "irc": "irc://irc.freenode.org/fedext",
+        "issues": "https://github.com/FluidTYPO3/vhs/issues"
+    },
     "keywords": [
         "TYPO3 CMS",
         "templating",
@@ -12,12 +16,39 @@
     ],
     "homepage": "http://fluidtypo3.org",
     "license": "GPL-2.0+",
-    "version": "2.2.0",
-    "support": {
-        "irc": "irc://irc.freenode.org/fedext",
-        "issues": "https://github.com/FluidTYPO3/vhs/issues"
+    "version": "2.1.4",
+    "autoload": {
+        "psr-4": {
+            "FluidTYPO3\\Vhs\\": "Classes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FluidTYPO3\\Vhs\\Tests\\": "Tests/"
+        },
+        "classmap": [
+            "vendor/typo3/cms/typo3/sysext/extbase",
+            "vendor/typo3/cms/typo3/sysext/fluid",
+            "vendor/typo3/cms/typo3/sysext/core",
+            "vendor/typo3/cms/typo3/sysext/backend",
+            "vendor/typo3/cms/typo3/sysext/frontend",
+            "vendor/typo3/cms/typo3/sysext/recordlist"
+        ]
     },
     "require-dev": {
-        "satooshi/php-coveralls": "dev-master"
-    }
+        "fluidtypo3/development": "*"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "typo3/cms",
+                "version": "6.2.7",
+                "dist": {
+                    "url": "https://github.com/TYPO3/TYPO3.CMS/archive/6.2.7.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ]
 }

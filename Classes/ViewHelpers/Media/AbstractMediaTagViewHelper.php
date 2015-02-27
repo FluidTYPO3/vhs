@@ -1,28 +1,12 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Media;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 /**
  * Base class for media related tag based view helpers which mostly
@@ -64,7 +48,7 @@ abstract class AbstractMediaTagViewHelper extends AbstractMediaViewHelper {
 	 * @return string
 	 */
 	public function renderChildTag($tagName, $attributes = array(), $forceClosingTag = FALSE, $mode = 'none') {
-		$tagBuilder = clone($this->tag);
+		$tagBuilder = clone $this->tag;
 		$tagBuilder->reset();
 		$tagBuilder->setTagName($tagName);
 		$tagBuilder->addAttributes($attributes);

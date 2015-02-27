@@ -1,30 +1,14 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Once;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection on
@@ -32,5 +16,46 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  * @package Vhs
  */
 class SessionViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @return void
+	 */
+	public function testStoreIdentifier() {
+		$instance = $this->createInstance();
+		$instance->setArguments(array('identifier' => 'test'));
+		$this->callInaccessibleMethod($instance, 'storeIdentifier');
+		$this->assertEquals(time(), $_SESSION[get_class($instance)]['test']);
+		unset($_SESSION[get_class($instance)]['test']);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testAssertShouldSkip() {
+		$instance = $this->createInstance();
+		$instance->setArguments(array('identifier' => 'test'));
+		$this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
+		$_SESSION[get_class($instance)]['test'] = time();
+		$this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
+		unset($_SESSION[get_class($instance)]['test']);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRemoveIfExpired() {
+		$instance = $this->createInstance();
+		$class = $this->getViewHelperClassName();
+		$time = time() - 10;
+		$_SESSION[$class]['test'] = $time;
+
+		$instance->setArguments(array('identifier' => 'test', 'ttl' => 15));
+		$this->callInaccessibleMethod($instance, 'removeIfExpired');
+		$this->assertArrayHasKey('test', $_SESSION[$class]);
+
+		$instance->setArguments(array('identifier' => 'test', 'ttl' => 5));
+		$this->callInaccessibleMethod($instance, 'removeIfExpired');
+		$this->assertArrayNotHasKey('test', $_SESSION[$class]);
+	}
 
 }

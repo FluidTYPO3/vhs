@@ -1,5 +1,6 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,21 +26,33 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  * ************************************************************* */
 
 /**
- * Basic interface for compilable Assets, which are a sub
- * class of Assets that do not get included immediate but
- * rather are collected and processed in bulk by an
- * associated AssetCompilerInterface implementation. The
- * association between CompilableAsset
- *
+ * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
- * @subpackage ViewHelpers\Asset\Compilable
  */
-interface CompilableAssetInterface extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface {
+class TagViewHelperTest extends AbstractViewHelperTest {
 
 	/**
-	 * @return string
+	 * @test
+	 * @dataProvider getRenderTagTestValues
+	 * @param array $arguments
+	 * @param mixed $content
+	 * @param string $expected
 	 */
-	public function getCompilerClassName();
+	public function renderTag(array $arguments, $content, $expected) {
+		$result = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getRenderTagTestValues() {
+		return array(
+			array(array('name' => 'div'), 'test', '<div>test</div>'),
+			array(array('name' => 'div', 'class' => 'test'), 'test', '<div class="test">test</div>'),
+			array(array('name' => 'div', 'hideIfEmpty' => TRUE), '', ''),
+		);
+	}
 
 }

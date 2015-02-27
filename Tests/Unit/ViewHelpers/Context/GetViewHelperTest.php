@@ -1,5 +1,6 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Context;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,45 +25,22 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+
 /**
- * Base class for ViewHelpers capable of compiling Assets,
- * aka. AssetCompilers. Contains a few base methods to handle
- * CompilableAssets - but there are
- *
+ * @protection off
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
- * @subpackage ViewHelpers\Asset\Compilable
  */
-abstract class AbstractAssetCompilerViewHelper
-	extends \FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper
-	implements AssetCompilerInterface {
+class GetViewHelperTest extends AbstractViewHelperTest {
 
 	/**
-	 * @var array
+	 * @test
 	 */
-	protected $assets = array();
-
-	/**
-	 * @param \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface $asset
-	 * @return void
-	 */
-	public function addAsset(\FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface $asset) {
-		$name = $asset->getName();
-		$this->assets[$name] = $asset;
-	}
-
-	/**
-	 * @return \FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface[]
-	 */
-	public function getAssets() {
-		return $this->assets;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function build() {
-		return implode("\n", $this->assets);
+	public function returnsContext() {
+		$valid = array('Development', 'Testing', 'Production');
+		$result = $this->executeViewHelper(array());
+		$this->assertContains($result, $valid);
 	}
 
 }

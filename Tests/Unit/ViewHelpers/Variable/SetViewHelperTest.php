@@ -1,30 +1,15 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection off
@@ -40,6 +25,43 @@ class SetViewHelperTest extends AbstractViewHelperTest {
 		$variables = new \ArrayObject(array('test' => TRUE));
 		$this->executeViewHelper(array('name' => 'test', 'value' => FALSE), $variables);
 		$this->assertFalse($variables['test']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canSetVariableInExistingArrayValue() {
+		$variables = new \ArrayObject(array('test' => array('test' => TRUE)));
+		$this->executeViewHelper(array('name' => 'test.test', 'value' => FALSE), $variables);
+		$this->assertFalse($variables['test']['test']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function ignoresNestedVariableIfRootDoesNotExist() {
+		$variables = new \ArrayObject(array('test' => array('test' => TRUE)));
+		$result = $this->executeViewHelper(array('name' => 'doesnotexist.test', 'value' => FALSE), $variables);
+		$this->assertNull($result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function ignoresNestedVariableIfRootDoesNotAllowSetting() {
+		$domainObject = new Foo();
+		$variables = new \ArrayObject(array('test' => $domainObject));
+		$result = $this->executeViewHelper(array('name' => 'test.propertydoesnotexist', 'value' => FALSE), $variables);
+		$this->assertNull($result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function ignoresNestedVariableIfRootPropertyNameIsInvalid() {
+		$variables = new \ArrayObject(array('test' => 'test'));
+		$result = $this->executeViewHelper(array('name' => 'test.test', 'value' => FALSE), $variables);
+		$this->assertNull($result);
 	}
 
 	/**

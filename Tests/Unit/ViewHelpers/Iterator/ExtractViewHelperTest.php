@@ -1,30 +1,14 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -40,14 +24,24 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 	 */
 	protected $fixture;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('\FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper', array('hasArgument'));
+		parent::setUp();
+		$this->fixture = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper', array('hasArgument'));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tearDown() {
 		unset($this->fixture);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function simpleStructures() {
 		$structures = array(
 			// structure, key, expected
@@ -72,6 +66,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 		return $structures;
 	}
 
+	/**
+	 * @return ObjectStorage
+	 */
 	public function constructObjectStorageContainingFrontendUser() {
 		$storage = new ObjectStorage();
 		$user1 = new FrontendUser();
@@ -87,6 +84,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 		return $storage;
 	}
 
+	/**
+	 * @return ObjectStorage
+	 */
 	public function constructObjectStorageContainingFrontendUsersWithUserGroups() {
 		$storage = new ObjectStorage();
 		$userGroup1 = new FrontendUserGroup('my first group');
@@ -101,6 +101,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 		return $storage;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function nestedStructures() {
 		$structures = array(
 			// structure, key, expected
