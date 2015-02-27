@@ -36,6 +36,8 @@ class RandomViewHelperTest extends AbstractViewHelperTest {
 		}
 		if (NULL !== $value) {
 			$this->assertContains($value, $asArray);
+		} else {
+			$this->assertNull($value);
 		}
 	}
 
