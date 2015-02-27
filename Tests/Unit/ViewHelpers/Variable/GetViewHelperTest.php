@@ -22,7 +22,7 @@ class GetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsNullIfVariableDoesNotExist() {
-		$this->executeViewHelper(array('name' => 'void', array()));
+		$this->assertNull($this->executeViewHelper(array('name' => 'void', array())));
 	}
 
 	/**

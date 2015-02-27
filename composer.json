@@ -22,33 +22,13 @@
             "FluidTYPO3\\Vhs\\": "Classes/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "FluidTYPO3\\Vhs\\Tests\\": "Tests/"
-        },
-        "classmap": [
-            "vendor/typo3/cms/typo3/sysext/extbase",
-            "vendor/typo3/cms/typo3/sysext/fluid",
-            "vendor/typo3/cms/typo3/sysext/core",
-            "vendor/typo3/cms/typo3/sysext/backend",
-            "vendor/typo3/cms/typo3/sysext/frontend",
-            "vendor/typo3/cms/typo3/sysext/recordlist"
-        ]
-    },
     "require-dev": {
         "fluidtypo3/development": "*"
     },
     "repositories": [
         {
-            "type": "package",
-            "package": {
-                "name": "typo3/cms",
-                "version": "6.2.7",
-                "dist": {
-                    "url": "https://github.com/TYPO3/TYPO3.CMS/archive/6.2.7.zip",
-                    "type": "zip"
-                }
-            }
+            "type": "vcs",
+            "url": "https://github.com/TYPO3/TYPO3.CMS"
         }
     ]
 }
