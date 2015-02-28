@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * @author Claus Due <claus@namelesscoder.net>

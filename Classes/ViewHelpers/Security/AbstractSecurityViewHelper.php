@@ -8,11 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
+use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 
 /**
  * ### Base class: Security ViewHelpers
