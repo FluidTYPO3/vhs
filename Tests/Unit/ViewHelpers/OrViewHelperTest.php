@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\ViewHelpers\OrViewHelper;
-
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>

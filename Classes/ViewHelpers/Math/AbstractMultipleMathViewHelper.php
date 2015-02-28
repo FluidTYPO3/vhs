@@ -7,8 +7,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Math ViewHelpers operating on one number or an

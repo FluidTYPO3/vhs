@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
 
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
-
 /**
  * ViewHelper for fetching a random content element in Fluid page templates
  *

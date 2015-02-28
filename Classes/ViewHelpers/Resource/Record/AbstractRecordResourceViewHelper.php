@@ -8,11 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH

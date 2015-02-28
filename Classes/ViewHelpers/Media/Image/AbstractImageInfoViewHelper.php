@@ -8,10 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use FluidTYPO3\Vhs\Utility\ResourceUtility;
 
 /**
  * Base class: Media\Image view helpers

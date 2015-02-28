@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH

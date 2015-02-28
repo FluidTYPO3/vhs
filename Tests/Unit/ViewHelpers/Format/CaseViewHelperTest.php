@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\ViewHelpers\Format\CaseViewHelper;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\ViewHelpers\Format\CaseViewHelper;
 
 /**
  * @protection off

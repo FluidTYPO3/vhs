@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 
 /**
  * ### L (localisation) ViewHelper
