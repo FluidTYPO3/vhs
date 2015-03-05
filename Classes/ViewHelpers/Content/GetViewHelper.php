@@ -21,6 +21,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 class GetViewHelper extends AbstractContentViewHelper {
 
 	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->overrideArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, FALSE);
+	}
+
+	/**
 	 * Render method
 	 *
 	 * @return mixed
