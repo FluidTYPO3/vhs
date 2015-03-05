@@ -10,6 +10,7 @@
   - [BasicViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
   - [ArrayConsumingViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
   - [TemplateVariableViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+  - [TagViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/7def7c1cb1f0cb5d125465cdd65a854851b6d7e3)
 
 - :exclamation: Minimum PHP requirement is now 5.4.0 due to the use of Traits
   - [Details](https://github.com/FluidTYPO3/vhs/commit/d1b732dbcd61fbdfd27df323265cbcb77618b4a3)
