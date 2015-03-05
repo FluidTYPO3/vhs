@@ -56,34 +56,12 @@ class LastViewHelperTest extends AbstractViewHelperTest {
 	/**
 	 * @test
 	 */
-	public function returnsNullIfHaystackIsNull() {
-		$arguments = array(
-			'haystack' => NULL
-		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertEquals(NULL, $output);
-	}
-
-	/**
-	 * @test
-	 */
 	public function returnsNullIfHaystackIsEmptyArray() {
 		$arguments = array(
 			'haystack' => array()
 		);
 		$output = $this->executeViewHelper($arguments);
 		$this->assertEquals(NULL, $output);
-	}
-
-	/**
-	 * @test
-	 */
-	public function returnsGivenObjectOnUnsupportedHaystacks() {
-		$arguments = array(
-			'haystack' => new \DateTime('now')
-		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertSame($arguments['haystack'], $output);
 	}
 
 }

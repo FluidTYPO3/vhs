@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  */
 
 use FluidTYPO3\Vhs\Service\AssetService;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -34,9 +34,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-abstract class AbstractAssetViewHelper
-	extends AbstractViewHelper
-	implements AssetInterface {
+abstract class AbstractAssetViewHelper extends AbstractViewHelper implements AssetInterface {
+
+	use ArrayConsumingViewHelperTrait;
 
 	/**
 	 * @var ConfigurationManagerInterface
@@ -352,13 +352,13 @@ abstract class AbstractAssetViewHelper
 		$assetSettings = $this->arguments;
 		$assetSettings['type'] = $this->getType();
 		if (TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
-			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['asset']);
+			$assetSettings = $this->mergeArrays($assetSettings, $settings['asset']);
 		}
 		if (TRUE === (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName]))) {
-			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['assetGroup'][$groupName]);
+			$assetSettings = $this->mergeArrays($assetSettings, $settings['assetGroup'][$groupName]);
 		}
 		if (TRUE === (isset($settings['asset'][$name]) && is_array($settings['asset'][$name]))) {
-			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['asset'][$name]);
+			$assetSettings = $this->mergeArrays($assetSettings, $settings['asset'][$name]);
 		}
 		if (FALSE === empty($assetSettings['path']) && FALSE === (boolean) $assetSettings['external']) {
 			$assetSettings['path'] = GeneralUtility::getFileAbsFileName($assetSettings['path']);

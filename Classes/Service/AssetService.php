@@ -9,9 +9,9 @@ namespace FluidTYPO3\Vhs\Service;
  */
 
 use FluidTYPO3\Vhs\Asset;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -397,13 +397,13 @@ class AssetService implements SingletonInterface {
 			}
 			$localSettings = (array) $assetSettings;
 			if (TRUE === isset($settings['asset'])) {
-				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['asset']);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['asset']);
 			}
 			if (TRUE === isset($settings['asset'][$name])) {
-				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['asset'][$name]);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['asset'][$name]);
 			}
 			if (TRUE === isset($settings['assetGroup'][$groupName])) {
-				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
 			}
 			if (TRUE === $asset instanceof AssetInterface) {
 				$asset->setSettings($localSettings);
@@ -655,6 +655,20 @@ class AssetService implements SingletonInterface {
 	 */
 	protected function writeFile($file, $contents) {
 		file_put_contents($file, $contents);
+	}
+
+	/**
+	 * @param $array1
+	 * @param $array2
+	 * @return array
+	 */
+	protected function mergeArrays($array1, $array2) {
+		if (6.2 <= (float) substr(TYPO3_version, 0, 3)) {
+			ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
+			return $array1;
+		} else {
+			return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
+		}
 	}
 
 }

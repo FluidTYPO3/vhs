@@ -42,15 +42,13 @@ class ReverseViewHelperTest extends AbstractViewHelperTest {
 			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
 		$queryResult->expects($this->any())->method('toArray')->will($this->returnValue(array('foo', 'bar')));
 		$queryResult->expects($this->any())->method('valid')->will($this->returnValue(FALSE));
-		$queryResult->expects($this->any())->method('count')->will($this->returnValue(0));
+		$queryResult->expects($this->any())->method('count')->will($this->returnValue(1));
 		return array(
 			array(array('subject' => array()), array()),
 			array(array('subject' => array('foo', 'bar')), array(1 => 'bar', 0 => 'foo')),
 			array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), array(1 => 'bar', 0 => 'foo')),
 			array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), array(1 => 'bar', 0 => 'foo')),
-			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), array(1 => 'bar', 0 => 'foo')),
-			array(array('subject' => $queryResult), array(1 => 'bar', 0 => 'foo')),
-			array(array('subject' => $queryResult, 'as' => 'variable'), array(1 => 'bar', 0 => 'foo'))
+			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), array(1 => 'bar', 0 => 'foo'))
 		);
 	}
 
@@ -60,8 +58,7 @@ class ReverseViewHelperTest extends AbstractViewHelperTest {
 	 * @param mixed $subject
 	 */
 	public function testThrowsErrorsOnInvalidSubjectType($subject) {
-		$expected = 'Invalid variable type passed to Iterator/ReverseViewHelper. Expected any of Array, QueryResult, ' .
-			'ObjectStorage or Iterator implementation but got ' . gettype($subject);
+		$expected = 'Unsupported input type; cannot convert to array!';
 		$result = $this->executeViewHelper(array('subject' => $subject));
 		$this->assertEquals($expected, $result, $result);
 	}
@@ -71,8 +68,9 @@ class ReverseViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function getErrorTestValues() {
 		return array(
+			array(0),
+			array(NULL),
 			array(new \DateTime()),
-			array('invalid'),
 			array(new \stdClass()),
 		);
 	}

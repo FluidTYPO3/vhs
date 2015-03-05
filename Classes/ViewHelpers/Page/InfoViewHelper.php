@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageSelectService;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -22,6 +22,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @subpackage ViewHelpers\Page
  */
 class InfoViewHelper extends AbstractViewHelper {
+
+	use TemplateVariableViewHelperTrait;
 
 	/**
 	 * @var PageSelectService
@@ -40,8 +42,8 @@ class InfoViewHelper extends AbstractViewHelper {
 	 * @return void
 	 */
 	public function initializeArguments() {
+		$this->registerAsArgument();
 		$this->registerArgument('pageUid', 'integer', 'If specified, this UID will be used to fetch page data instead of using the current page.', FALSE, 0);
-		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
 		$this->registerArgument('field', 'string', 'If specified, only this field will be returned/assigned instead of the complete page record.', FALSE, NULL);
 	}
 
@@ -76,16 +78,7 @@ class InfoViewHelper extends AbstractViewHelper {
 			$content = $page[$field];
 		}
 
-		// Return if no assign
-		$as = $this->arguments['as'];
-		if (TRUE === empty($as)) {
-			return $content;
-		}
-
-		$variables = array($as => $content);
-		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($content);
 	}
 
 }

@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -20,6 +20,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * @subpackage ViewHelpers\Resource\Record
  */
 abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface {
+
+	use TemplateVariableViewHelperTrait;
 
 	/**
 	 * @var string
@@ -177,15 +179,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 			// we are forced to "catch them all" - but we also output them.
 			throw new Exception($error->getMessage(), $error->getCode());
 		}
-
-		$as = $this->arguments['as'];
-		if (TRUE === empty($as)) {
-			return $resources;
-		}
-
-		$variables = array($as => $resources);
-		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($resources);
 	}
 
 }

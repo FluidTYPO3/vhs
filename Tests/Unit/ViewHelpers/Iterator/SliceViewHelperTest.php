@@ -49,26 +49,4 @@ class SliceViewHelperTest extends AbstractViewHelperTest {
 		);
 	}
 
-	/**
-	 * @test
-	 * @dataProvider getErrorTestValues
-	 * @param mixed $subject
-	 */
-	public function testThrowsErrorsOnInvalidSubjectType($subject) {
-		$expected = 'Cannot slice unsupported type: ' . gettype($subject);
-		$result = $this->executeViewHelper(array('haystack' => $subject));
-		$this->assertEquals($expected, $result, $result);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getErrorTestValues() {
-		return array(
-			array(new \DateTime()),
-			array('invalid'),
-			array(new \stdClass()),
-		);
-	}
-
 }

@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -19,6 +19,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @subpackage ViewHelpers\Iterator
  */
 class LastViewHelper extends AbstractViewHelper {
+
+	use ArrayConsumingViewHelperTrait;
 
 	/**
 	 * Initialize arguments
@@ -39,7 +41,7 @@ class LastViewHelper extends AbstractViewHelper {
 		if (NULL === $haystack) {
 			$haystack = $this->renderChildren();
 		}
-		$haystack = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($haystack);
+		$haystack = $this->arrayFromArrayOrTraversableOrCSV($haystack);
 
 		return array_pop($haystack);
 	}

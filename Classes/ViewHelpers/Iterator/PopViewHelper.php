@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -21,29 +22,25 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class PopViewHelper extends AbstractViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+	use ArrayConsumingViewHelperTrait;
+
+
 	/**
-	 * Render method
-	 *
-	 * @param mixed $subject The subject Traversable/Array instance to pop
-	 * @param string $as If specified, inserts a template variable with this name, then renders the child content, then removes the variable
-	 * @throws \Exception
-	 * @return array
+	 * @return void
 	 */
-	public function render($subject = NULL, $as = NULL) {
-		if (NULL === $subject) {
-			$subject = $this->renderChildren();
-		}
-		if (TRUE === $subject instanceof \Traversable) {
-			$subject = iterator_to_array($subject, TRUE);
-		} elseif (FALSE === is_array($subject)) {
-			throw new Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
-		}
+	public function initializeArguments() {
+		$this->registerAsArgument();
+		$this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...', FALSE, NULL);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function render() {
+		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
 		$output = array_pop($subject);
-		if (NULL !== $as) {
-			$variables = array($as => $output);
-			$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		}
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($output);
 	}
 
 }

@@ -8,7 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\BasicViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
@@ -33,6 +35,10 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class SortViewHelper extends AbstractViewHelper {
 
+	use BasicViewHelperTrait;
+	use TemplateVariableViewHelperTrait;
+	use ArrayConsumingViewHelperTrait;
+
 	/**
 	 * Contains all flags that are allowed to be used
 	 * with the sorting functions
@@ -54,7 +60,8 @@ class SortViewHelper extends AbstractViewHelper {
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('as', 'string', 'Which variable to update in the TemplateVariableContainer. If left out, returns sorted data instead of updating the variable (i.e. reference or copy)');
+		$this->registerAsArgument();
+		$this->registerArgument('subject', 'mixed', 'The array/Traversable instance to sort', FALSE, NULL);
 		$this->registerArgument('sortBy', 'string', 'Which property/field to sort by - leave out for numeric sorting based on indexes(keys)');
 		$this->registerArgument('order', 'string', 'ASC, DESC, RAND or SHUFFLE. RAND preserves keys, SHUFFLE does not - but SHUFFLE is faster', FALSE, 'ASC');
 		$this->registerArgument('sortFlags', 'string', 'Constant name from PHP for `SORT_FLAGS`: `SORT_REGULAR`, `SORT_STRING`, `SORT_NUMERIC`, `SORT_NATURAL`, `SORT_LOCALE_STRING` or `SORT_FLAG_CASE`. You can provide a comma seperated list or array to use a combination of flags.', FALSE, 'SORT_REGULAR');
@@ -67,19 +74,10 @@ class SortViewHelper extends AbstractViewHelper {
 	 * Returns the same type as $subject. Ignores NULL values which would be
 	 * OK to use in an f:for (empty loop as result)
 	 *
-	 * @param array|\Iterator $subject An array or Iterator implementation to sort
-	 * @throws \Exception
 	 * @return mixed
 	 */
-	public function render($subject = NULL) {
-		$as = $this->arguments['as'];
-		if (NULL === $subject && NULL === $as) {
-			// this case enables inline usage if the "as" argument
-			// is not provided. If "as" is provided, the tag content
-			// (which is where inline arguments are taken from) is
-			// expected to contain the rendering rather than the variable.
-			$subject = $this->renderChildren();
-		}
+	public function render() {
+		$subject = $this->getArgumentFromArgumentsOrTagContent('subject');
 		$sorted = NULL;
 		if (TRUE === is_array($subject)) {
 			$sorted = $this->sortArray($subject);
@@ -101,12 +99,7 @@ class SortViewHelper extends AbstractViewHelper {
 					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1351958941);
 			}
 		}
-		if (NULL !== $as) {
-			$variables = array($as => $sorted);
-			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-			return $content;
-		}
-		return $sorted;
+		return $this->renderChildrenWithVariableOrReturnInput($sorted);
 	}
 
 	/**
@@ -216,7 +209,7 @@ class SortViewHelper extends AbstractViewHelper {
 	 * @throws Exception
 	 */
 	protected function getSortFlags() {
-		$constants = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($this->arguments['sortFlags']);
+		$constants = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['sortFlags']);
 		$flags = 0;
 		foreach ($constants as $constant) {
 			if (FALSE === in_array($constant, $this->allowedSortFlags)) {

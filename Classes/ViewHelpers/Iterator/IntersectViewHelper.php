@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -19,6 +19,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @subpackage ViewHelpers\Iterator
  */
 class IntersectViewHelper extends AbstractViewHelper {
+
+	use ArrayConsumingViewHelperTrait;
 
 	/**
 	 * Initialize
@@ -41,8 +43,8 @@ class IntersectViewHelper extends AbstractViewHelper {
 			$a = $this->renderChildren();
 		}
 
-		$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
-		$b = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
+		$a = $this->arrayFromArrayOrTraversableOrCSV($a);
+		$b = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
 
 		return array_intersect($a, $b);
 	}

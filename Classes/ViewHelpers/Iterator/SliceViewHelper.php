@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -21,31 +22,30 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class SliceViewHelper extends AbstractViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+	use ArrayConsumingViewHelperTrait;
+
+	/**
+	 * Initialize arguments
+	 *
+	 * @return void
+	 */
+	public function initializeArguments() {
+		$this->registerAsArgument();
+		$this->registerArgument('haystack', 'mixed', 'The input array/Traversable to reverse', FALSE, NULL);
+	}
+
 	/**
 	 * Render method
 	 *
-	 * @param mixed $haystack
 	 * @param integer $start
 	 * @param integer $length
-	 * @param string $as
-	 * @throws \Exception
 	 * @return array
 	 */
-	public function render($haystack = NULL, $start = 0, $length = NULL, $as = NULL) {
-		if (NULL === $haystack) {
-			$haystack = $this->renderChildren();
-		}
-		if (TRUE === $haystack instanceof \Traversable) {
-			$haystack = iterator_to_array($haystack, TRUE);
-		} elseif (FALSE === is_array($haystack)) {
-			throw new Exception('Cannot slice unsupported type: ' . gettype($haystack), 1353812601);
-		}
+	public function render($start = 0, $length = NULL) {
+		$haystack = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('haystack');
 		$output = array_slice($haystack, $start, $length, TRUE);
-		if (NULL !== $as) {
-			$variables = array($as => $output);
-			$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		}
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($output);
 	}
 
 }

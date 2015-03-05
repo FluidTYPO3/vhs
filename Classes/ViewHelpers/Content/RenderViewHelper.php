@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 
 /**
  * ViewHelper used to render content elements in Fluid page templates
@@ -22,12 +22,14 @@ use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
  */
 class RenderViewHelper extends AbstractContentViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+
 	/**
 	 * @return void
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('as', 'string', 'If specified, adds template variable and assumes you manually iterate through {contentRecords}');
+		$this->registerAsArgument();
 	}
 
 	/**
@@ -41,15 +43,8 @@ class RenderViewHelper extends AbstractContentViewHelper {
 		}
 
 		$content = $this->getContentRecords();
-
-		$as = $this->arguments['as'];
-		if (TRUE === empty($as)) {
-			return implode(LF, $content);
-		}
-
-		$variables = array($as => $content);
-		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		return $output;
+		$content = implode(LF, $content);
+		return $this->renderChildrenWithVariableOrReturnInput($content);
 	}
 
 }

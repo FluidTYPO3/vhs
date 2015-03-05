@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\String;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -25,33 +25,29 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class PregViewHelper extends AbstractConditionViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+
 	/**
 	 * Render method
 	 *
 	 * @param string $pattern
 	 * @param string $string
 	 * @param boolean $global
-	 * @param string $as
 	 * @return string
 	 */
-	public function render($pattern, $string, $global = FALSE, $as = NULL) {
+	public function render($pattern, $string, $global = FALSE) {
 		$matches = array();
 		if (TRUE === (boolean) $global) {
 			preg_match_all($pattern, $string, $matches, PREG_SET_ORDER);
 		} else {
 			preg_match($pattern, $string, $matches);
 		}
-		if (FALSE === empty($as)) {
-			$variables = array($as => $matches);
-			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		if (0 < count($matches)) {
+			$content = $this->renderThenChild();
 		} else {
-			if (0 < count($matches)) {
-				$content = $this->renderThenChild();
-			} else {
-				$content = $this->renderElseChild();
-			}
+			$content = $this->renderElseChild();
 		}
-		return $content;
+		return $this->renderChildrenWithVariableOrReturnInput($content);
 	}
 
 }

@@ -7,7 +7,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 /**
  * Math: Average
@@ -44,12 +43,12 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper {
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		$bIsIterable = $this->assertIsArrayOrIterator($b);
 		if (TRUE === $aIsIterable && NULL === $b) {
-			$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
+			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
 			$sum = array_sum($a);
 			$distribution = count($a);
 			return $sum / $distribution;
 		} elseif (TRUE === $aIsIterable && FALSE === $bIsIterable) {
-			$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
+			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
 			foreach ($a as $index => $value) {
 				$a[$index] = $this->calculateAction($value, $b);
 			}

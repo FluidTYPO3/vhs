@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageSelectService;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -20,6 +20,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @subpackage ViewHelpers\Page
  */
 class RootlineViewHelper extends AbstractViewHelper {
+
+	use TemplateVariableViewHelperTrait;
 
 	/**
 	 * @var PageSelectService
@@ -42,8 +44,8 @@ class RootlineViewHelper extends AbstractViewHelper {
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
+		$this->registerAsArgument();
 		$this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', FALSE, 0);
-		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
 	}
 
 	/**
@@ -56,15 +58,7 @@ class RootlineViewHelper extends AbstractViewHelper {
 		}
 
 		$rootLineData = $this->pageSelect->getRootLine($pageUid);
-
-		$as = $this->arguments['as'];
-		if (TRUE === empty($as)) {
-			return $rootLineData;
-		}
-
-		$variables = array($as => $rootLineData);
-		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($rootLineData);
 	}
 
 }

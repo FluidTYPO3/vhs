@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -21,6 +21,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * @subpackage ViewHelpers
  */
 abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
+
+	use ArrayConsumingViewHelperTrait;
 
 	/**
 	 * @return void
@@ -69,7 +71,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
 	protected function calculate($a) {
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		if (TRUE === $aIsIterable) {
-			$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
+			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
 			foreach ($a as $index => $value) {
 				$a[$index] = $this->calculateAction($value);
 			}

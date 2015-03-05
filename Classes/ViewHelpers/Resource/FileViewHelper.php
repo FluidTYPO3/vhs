@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 
 /**
  * ViewHelper to output or assign FAL sys_file records
@@ -19,6 +19,8 @@ use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
  */
 class FileViewHelper extends AbstractResourceViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+
 	/**
 	 * Initialize arguments.
 	 *
@@ -27,8 +29,7 @@ class FileViewHelper extends AbstractResourceViewHelper {
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-
-		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
+		$this->registerAsArgument();
 	}
 
 	/**
@@ -39,15 +40,7 @@ class FileViewHelper extends AbstractResourceViewHelper {
 		if (1 === count($files)) {
 			$files = array_shift($files);
 		}
-
-		// Return if no assign
-		$as = $this->arguments['as'];
-		if (TRUE === empty($as)) {
-			return $files;
-		}
-		$variables = array($as => $files);
-		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($files);
 	}
 
 }
