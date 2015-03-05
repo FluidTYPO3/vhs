@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### L (localisation) ViewHelper
@@ -30,7 +31,19 @@ use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class LViewHelper extends TranslateViewHelper {
+class LViewHelper extends AbstractViewHelper {
+
+	/**
+	 * Initialize arguments
+	 */
+	public function initializeArguments() {
+		$this->registerArgument('key', 'string', 'Translation Key');
+		$this->registerArgument('id', 'string', 'Translation Key compatible to TYPO3 Flow');
+		$this->registerArgument('default', 'string', 'if the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
+		$this->registerArgument('htmlEscape', 'boolean', 'TRUE if the result should be htmlescaped. This won\'t have an effect for the default value');
+		$this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
+		$this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
+	}
 
 	/**
 	 * Render method
