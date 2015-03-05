@@ -23,6 +23,7 @@ $EM_CONF[$_EXTKEY] = array (
   array (
     'depends' =>
     array (
+      'php' => '5.4.0-5.6.99',
       'typo3' => '6.0.0-7.99.99',
       'cms' => '',
       'extbase' => '',

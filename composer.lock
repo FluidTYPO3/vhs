@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d5301633e3a789e106ae6ec1c1b42a86",
+    "hash": "ec8995bc4678e5fb1af851a8a2be4494",
     "packages": [],
     "packages-dev": [
         {
@@ -315,16 +315,16 @@
         },
         {
             "name": "namelesscoder/typo3-repository-client",
-            "version": "1.0.2",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NamelessCoder/typo3-repository-client.git",
-                "reference": "65f5827b73ea5a82b0a7c306c5a0dda5095a0e31"
+                "reference": "f099dc8c6f5a0c899498d8f92a95e0808badb689"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NamelessCoder/typo3-repository-client/zipball/65f5827b73ea5a82b0a7c306c5a0dda5095a0e31",
-                "reference": "65f5827b73ea5a82b0a7c306c5a0dda5095a0e31",
+                "url": "https://api.github.com/repos/NamelessCoder/typo3-repository-client/zipball/f099dc8c6f5a0c899498d8f92a95e0808badb689",
+                "reference": "f099dc8c6f5a0c899498d8f92a95e0808badb689",
                 "shasum": ""
             },
             "require-dev": {
@@ -340,9 +340,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "NamelessCoder\\TYPO3RepositoryClient\\Tests\\Fixtures\\": "tests/fixtures/NamelessCoder/TYPO3RepositoryClient/",
-                    "NamelessCoder\\TYPO3RepositoryClient\\Tests\\Unit\\": "tests/unit/NamelessCoder/TYPO3RepositoryClient/",
-                    "NamelessCoder\\TYPO3RepositoryClient\\": "src/NamelessCoder/TYPO3RepositoryClient/"
+                    "NamelessCoder\\TYPO3RepositoryClient\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -356,7 +354,7 @@
                 }
             ],
             "description": "Client for interacting with the official TYPO3 Extension Repository (TER). Contains API and CLI scripts.",
-            "time": "2014-12-08 00:41:33"
+            "time": "2015-03-03 20:20:31"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1159,20 +1157,21 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "b301c98f19414d836fdaa678648745fcca5aeb4f"
+                "reference": "5046b0e01c416fc2b06df961d0673c85bcdc896c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b301c98f19414d836fdaa678648745fcca5aeb4f",
-                "reference": "b301c98f19414d836fdaa678648745fcca5aeb4f",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5046b0e01c416fc2b06df961d0673c85bcdc896c",
+                "reference": "5046b0e01c416fc2b06df961d0673c85bcdc896c",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
                 "php": ">=5.1.2"
             },
             "bin": [
@@ -1180,6 +1179,11 @@
                 "scripts/phpcbf"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "CodeSniffer.php",
@@ -1223,7 +1227,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-01-21 22:44:05"
+            "time": "2015-03-04 02:07:03"
         },
         {
             "name": "symfony/config",
@@ -1734,6 +1738,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=5.4.0"
+    },
     "platform-dev": []
 }
