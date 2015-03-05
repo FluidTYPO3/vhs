@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -26,7 +27,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class VideoViewHelper extends AbstractMediaTagViewHelper {
+class VideoViewHelper extends AbstractMediaViewHelper {
+
+	use TagViewHelperTrait;
 
 	/**
 	 * @var string
