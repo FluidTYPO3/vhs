@@ -3,6 +3,18 @@
 2.3.0 - upcoming (documentation for this version may be not up to date yet)
 ------------------
 
+- :exclamation: Legacy namespace support completely removed
+  - It is no longer possible to use any of VHS classes by their legacy names. Switch to the proper vendor and namespace.
+
+- Reusable Traits implemented to extend ViewHelper capabilities, as a replacement for ViewHelperUtility:
+  - [BasicViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+  - [ArrayConsumingViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+  - [TemplateVariableViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+
+- :exclamation: Minimum PHP requirement is now 5.4.0 due to the use of Traits
+  - [Details](https://github.com/FluidTYPO3/vhs/commit/d1b732dbcd61fbdfd27df323265cbcb77618b4a3)
+  - [Reason for raising requirement](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+
 - [#734](https://github.com/FluidTYPO3/vhs/pull/734) :exclamation: **v:format.url.sanitizeString** changed
   - Became deprecated - use **v:format.sanitizeString** instead
   - Got *'customMap'* attribute - allows to override built-in replacement mapping with custom one
