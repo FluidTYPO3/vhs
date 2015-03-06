@@ -89,7 +89,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper {
 	 */
 	protected function getPreparedView() {
 		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
-		$view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
+		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		return $view;
 	}
 

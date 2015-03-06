@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
 
 use FluidTYPO3\Vhs\Service\AssetService;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -113,7 +114,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 	 */
 	public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+		$this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 	}
 
 	/**
@@ -323,7 +324,11 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 		}
 		$settings = self::$settingsCache;
 		if (TRUE === is_array($this->localSettings)) {
-			$settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
+			if (TRUE === method_exists('TYPO3\\CMS\\Core\\Utility\\ArrayUtility', 'mergeRecursiveWithOverrule')) {
+				ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
+			} else {
+				$settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
+			}
 		}
 		return $settings;
 	}

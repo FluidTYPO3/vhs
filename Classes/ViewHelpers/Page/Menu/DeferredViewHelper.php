@@ -44,7 +44,7 @@ class DeferredViewHelper extends AbstractMenuViewHelper {
 			return NULL;
 		}
 		if (NULL === $as) {
-			$content = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString');
+			$content = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'deferredString');
 			$this->unsetDeferredVariableStorage();
 			return $content;
 		} elseif (TRUE === empty($as)) {
@@ -54,7 +54,7 @@ class DeferredViewHelper extends AbstractMenuViewHelper {
 			$backupVariable = $this->templateVariableContainer->get($as);
 			$this->templateVariableContainer->remove($as);
 		}
-		$this->templateVariableContainer->add($as, $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray'));
+		$this->templateVariableContainer->add($as, $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'deferredArray'));
 		$this->unsetDeferredVariableStorage();
 		$content = $this->renderChildren();
 		$this->templateVariableContainer->remove($as);

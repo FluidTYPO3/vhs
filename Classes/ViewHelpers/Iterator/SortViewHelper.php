@@ -145,9 +145,9 @@ class SortViewHelper extends AbstractViewHelper {
 	 */
 	protected function sortObjectStorage($storage) {
 		/** @var ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		/** @var ObjectStorage $temp */
-		$temp = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+		$temp = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($storage as $item) {
 			$temp->attach($item);
 		}
@@ -176,7 +176,7 @@ class SortViewHelper extends AbstractViewHelper {
 		} else {
 			krsort($sorted, $this->getSortFlags());
 		}
-		$storage = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+		$storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($sorted as $item) {
 			$storage->attach($item);
 		}

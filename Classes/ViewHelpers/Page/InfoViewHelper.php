@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Service\PageSelectService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -64,7 +65,11 @@ class InfoViewHelper extends AbstractViewHelper {
 		if (0 !== $languageUid) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $languageUid);
 			if (TRUE === is_array($pageOverlay)) {
-				$page = GeneralUtility::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
+				if (TRUE === method_exists('TYPO3\\CMS\\Core\\Utility\\ArrayUtility', 'mergeRecursiveWithOverrule')) {
+					ArrayUtility::mergeRecursiveWithOverrule($page, $pageOverlay, FALSE, FALSE);
+				} else {
+					$page = GeneralUtility::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
+				}
 			}
 		}
 

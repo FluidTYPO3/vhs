@@ -48,14 +48,14 @@ class CaseViewHelper extends AbstractViewHelper {
 	 * @return array
 	 */
 	public function render() {
-		$matchesCase = (boolean) ($this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchCaseValue') == $this->arguments['case']);
-		$mustContinue = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchContinueUntilBreak');
+		$matchesCase = (boolean) ($this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\SwitchViewHelper', 'switchCaseValue') == $this->arguments['case']);
+		$mustContinue = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\SwitchViewHelper', 'switchContinueUntilBreak');
 		$isDefault = (boolean) ('default' === $this->arguments['case']);
 		if (TRUE === $matchesCase || TRUE == $mustContinue || TRUE === $isDefault) {
 			if (TRUE === $this->arguments['break']) {
-				$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchBreakRequested', TRUE);
+				$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\\Vhs\\ViewHelpers\\SwitchViewHelper', 'switchBreakRequested', TRUE);
 			} else {
-				$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchContinueUntilBreak', TRUE);
+				$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\\Vhs\\ViewHelpers\\SwitchViewHelper', 'switchContinueUntilBreak', TRUE);
 			}
 			return $this->renderChildren();
 		}
