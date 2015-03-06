@@ -64,11 +64,6 @@ class FieldNameViewHelper extends AbstractViewHelper {
 		} else {
 			$name = $this->arguments['name'];
 		}
-		if (TRUE === $this->hasArgument('value') && TRUE === is_object($this->arguments['value'])) {
-			if (NULL !== $this->persistenceManager->getIdentifierByObject($this->arguments['value'])) {
-				$name .= '[__identity]';
-			}
-		}
 		if (NULL === $name || '' === $name) {
 			return '';
 		}
