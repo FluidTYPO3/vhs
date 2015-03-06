@@ -32,7 +32,7 @@ class OptionViewHelper extends AbstractFormFieldViewHelper {
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerUniversalTagAttributes();
-		$this->registerArgument('selected', 'boolean', 'Set to "selected" to mark field as selected. If not present, selected status will be determined by select value');
+		$this->registerArgument('selected', 'boolean', 'Set to TRUE to mark field as selected; otherwise detected from field value');
 	}
 
 	/**
@@ -41,7 +41,10 @@ class OptionViewHelper extends AbstractFormFieldViewHelper {
 	 */
 	public function render() {
 		if (!$this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options')) {
-			throw new \Exception('Options can only be added inside select tags, optionally inside optgroup tag(s) inside the select tag', 1313937196);
+			throw new \RuntimeException(
+				'Options can only be added inside select tags, optionally inside optgroup tag(s) inside the select tag',
+				1313937196
+			);
 		}
 		if (TRUE === (boolean) $this->arguments['selected']) {
 			$selected = 'selected';

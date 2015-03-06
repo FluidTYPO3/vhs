@@ -37,7 +37,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest {
 		$object->setFoo($object);
 		$instance = $this->createInstance();
 		$test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, TRUE, TRUE, NULL, NULL);
-		$this->assertEquals('{"bar":"baz","children":[],"foo":null,"pid":null,"uid":null}', $test);
+		$this->assertEquals('{"bar":"baz","children":[],"foo":null,"name":null,"pid":null,"uid":null}', $test);
 	}
 
 	/**
