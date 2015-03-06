@@ -54,9 +54,6 @@ class OptionViewHelper extends AbstractFormFieldViewHelper {
 					$selected = (string) $this->arguments['value'] == (string) $value ? 'selected' : '';
 				}
 			}
-			if (TRUE === is_array($this->arguments['value'])) {
-				$selected = TRUE === in_array($this->arguments['value'], $value) ? 'selected' : '';
-			}
 		}
 		$tagContent = $this->renderChildren();
 		$options = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options');
