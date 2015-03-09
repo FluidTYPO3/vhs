@@ -7,7 +7,7 @@ $EM_CONF[$_EXTKEY] = array (
   'author_email' => 'claus@namelesscoder.net',
   'author_company' => '',
   'shy' => '',
-  'dependencies' => 'cms,extbase,fluid',
+  'dependencies' => 'cms',
   'conflicts' => '',
   'priority' => '',
   'module' => '',
@@ -18,16 +18,14 @@ $EM_CONF[$_EXTKEY] = array (
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '2.2.0',
+  'version' => '2.3.0',
   'constraints' =>
   array (
     'depends' =>
     array (
       'php' => '5.4.0-5.6.99',
-      'typo3' => '6.0.0-7.99.99',
-      'cms' => '',
-      'extbase' => '',
-      'fluid' => '',
+      'typo3' => '6.2.0-7.99.99',
+      'cms' => ''
     ),
     'conflicts' =>
     array (

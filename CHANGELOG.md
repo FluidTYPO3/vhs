@@ -1,6 +1,6 @@
 # VHS Change log
 
-2.3.0 - upcoming (documentation for this version may be not up to date yet)
+2.3.0 - 2015-03-09
 ------------------
 
 - :exclamation: Legacy namespace support completely removed
