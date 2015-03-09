@@ -1,28 +1,15 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Math;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Math ViewHelpers operating on one number or an
@@ -34,6 +21,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelper {
 
+	use ArrayConsumingViewHelperTrait;
+
 	/**
 	 * @return void
 	 */
@@ -44,7 +33,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
 
 	/**
 	 * @return mixed
-	 * @throw \Exception
+	 * @throw Exception
 	 */
 	public function render() {
 		$a = $this->getInlineArgument();
@@ -56,20 +45,16 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
 	 * @param mixed $a
 	 * @param mixed $b
 	 * @return mixed
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	protected function calculate($a, $b) {
 		if ($b === NULL) {
-			throw new \Exception('Required argument "b" was not supplied', 1237823699);
+			throw new Exception('Required argument "b" was not supplied', 1237823699);
 		}
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		$bIsIterable = $this->assertIsArrayOrIterator($b);
 		if (TRUE === $aIsIterable) {
-			$aCanBeAccessed = $this->assertSupportsArrayAccess($a);
-			$bCanBeAccessed = $this->assertSupportsArrayAccess($b);
-			if (FALSE === $aCanBeAccessed || (TRUE === $bIsIterable && FALSE === $bCanBeAccessed)) {
-				throw new \Exception('Math operation attempted on an inaccessible Iterator. Please implement ArrayAccess or convert the value to an array before calculation', 1351891091);
-			}
+			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
 			foreach ($a as $index => $value) {
 				$bSideValue = TRUE === $bIsIterable ? $b[$index] : $b;
 				$a[$index] = $this->calculateAction($value, $bSideValue);
@@ -77,7 +62,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
 			return $a;
 		} elseif (TRUE === $bIsIterable) {
 			// condition matched if $a is not iterable but $b is.
-			throw new \Exception('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator', 1351890876);
+			throw new Exception('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator', 1351890876);
 		}
 		return $this->calculateAction($a, $b);
 	}

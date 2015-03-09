@@ -1,30 +1,14 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2014 Cedric Ziel <cedric@cedric-ziel.com>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection on
@@ -33,11 +17,25 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
 class LinkViewHelperTest extends AbstractViewHelperTest {
 
 	/**
+	 * @return void
+	 */
+	public function setUp() {
+		parent::setUp();
+		$GLOBALS['TYPO3_DB'] = $this->getMock(
+			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
+			array('exec_SELECTquery', 'sql_fetch_assoc'),
+			array(), '', FALSE
+		);
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->willReturn(NULL);
+	}
+
+	/**
 	 * @test
 	 */
 	public function generatesPageLinks() {
 		$arguments = array('pageUid' => 1);
-		$result = $this->executeViewHelper($arguments);
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
+		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
 		$this->assertNotEmpty($result);
 	}
 
@@ -46,7 +44,8 @@ class LinkViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function generatesNullLinkOnZeroPageUid() {
 		$arguments = array('pageUid' => 0);
-		$result = $this->executeViewHelper($arguments);
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(FALSE);
+		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
 		$this->assertNull($result);
 	}
 
@@ -55,7 +54,8 @@ class LinkViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function generatesPageLinksWithCustomTitle() {
 		$arguments = array('pageUid' => 1, 'pageTitleAs' => 'title');
-		$result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments);
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
+		$result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments, array(), 'Vhs');
 		$this->assertContains('customtitle', $result);
 	}
 
@@ -64,7 +64,8 @@ class LinkViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function generatesPageWizardLinks() {
 		$arguments = array('pageUid' => '1 2 3 4 5 foo=bar&baz=123');
-		$result = $this->executeViewHelper($arguments);
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
+		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
 		$this->assertNotEmpty($result);
 	}
 

@@ -1,30 +1,16 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
@@ -105,8 +91,8 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function convertArrayToObjectStorage() {
-		$dummy = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$dummy = new Foo();
+		$storage = new ObjectStorage();
 		$storage->attach($dummy);
 		$this->executeConversion(array($dummy), 'ObjectStorage', $storage);
 	}
@@ -115,8 +101,8 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function convertObjectStorageToArray() {
-		$dummy = $this->objectManager->get('Tx_Extbase_Domain_Model_FrontendUser');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$dummy = new Foo();
+		$storage = new ObjectStorage();
 		$storage->attach($dummy);
 		$this->executeConversion($storage, 'array', array($dummy));
 	}
@@ -174,7 +160,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$viewHelper->setArguments(array('type' => 'ObjectStorage'));
 		$converted = $viewHelper->render();
-		$this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $converted);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $converted);
 		$this->assertEquals(0, $converted->count());
 	}
 
@@ -182,8 +168,8 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsArrayForTypeObjectStorage() {
-		$domainObject = $this->objectManager->get('FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo');
-		$storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$domainObject = new Foo();
+		$storage = new ObjectStorage();
 		$storage->attach($domainObject);
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($storage));

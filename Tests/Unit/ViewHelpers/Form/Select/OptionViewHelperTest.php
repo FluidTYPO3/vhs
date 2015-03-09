@@ -1,29 +1,16 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Form\Select;
-/***************************************************************
- *  Copyright notice
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form\Select;
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * @protection off
@@ -32,5 +19,64 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  * @subpackage ViewHelpers\Form\Select
  */
 class OptionViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @param mixed $content
+	 * @return mixed
+	 */
+	public static function fakeRenderChildrenClosure($content) {
+		return $content;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRenderWithoutContextThrowsException() {
+		$this->setExpectedException('RuntimeException');
+		$this->executeViewHelper();
+	}
+
+	/**
+	 * @dataProvider getRenderTestValues
+	 * @param array $arguments
+	 * @param mixed $selectedValue
+	 * @param mixed $content
+	 * @param string $expected
+	 */
+	public function testRender(array $arguments, $selectedValue, $content, $expected) {
+		$instance = $this->buildViewHelperInstance($arguments, array(), NULL, 'Vhs');
+		$viewHelperVariableContainer = new ViewHelperVariableContainer();
+		$viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', array());
+		$viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value', $selectedValue);
+		ObjectAccess::setProperty($instance, 'viewHelperVariableContainer', $viewHelperVariableContainer, TRUE);
+		$instance->setArguments($arguments);
+		$instance->setRenderChildrenClosure(function() use ($content) { return $content; });
+		$result = $instance->render();
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getRenderTestValues() {
+		return array(
+			array(array(), '', '', '<option selected="selected" />'),
+			array(array(), 'notfound', '', '<option />'),
+			array(array(), 'notfound', 'content', '<option>content</option>'),
+			array(array('selected' => TRUE), 'notfound', 'content', '<option selected="selected">content</option>'),
+			array(
+				array('value' => 'notfound'),
+				'notfound',
+				'content',
+				'<option selected="selected" value="notfound">content</option>'
+			),
+			array(
+				array('value' => 'a'),
+				array('a', 'b'),
+				'content',
+				'<option selected="selected" value="a">content</option>'
+			),
+		);
+	}
 
 }

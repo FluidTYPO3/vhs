@@ -1,42 +1,27 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2013 Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-
 abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface {
+
+	use TemplateVariableViewHelperTrait;
 
 	/**
 	 * @var string
@@ -91,6 +76,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 	/**
 	 * @param array $record
 	 * @return array
+	 * @throws Exception
 	 */
 	public function getResources($record) {
 		$field = $this->getField();
@@ -108,6 +94,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
 	/**
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getTable() {
 		$table = $this->arguments['table'];
@@ -124,6 +111,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
 	/**
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getField() {
 		$field = $this->arguments['field'];
@@ -161,6 +149,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
 	/**
 	 * @return mixed
+	 * @throws Exception
 	 */
 	public function render() {
 		$record = $this->arguments['record'];
@@ -178,16 +167,19 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 			throw new Exception('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
 		}
 
-		$resources = $this->getResources($record);
-
-		$as = $this->arguments['as'];
-		if (TRUE === empty($as)) {
-			return $resources;
+		// attempt to load resources. If any Exceptions happen, transform them to
+		// ViewHelperExceptions which render as an inline text error message.
+		try {
+			$resources = $this->getResources($record);
+		} catch (\Exception $error) {
+			// we are doing the pokemon-thing and catching the very top level
+			// of Exception because the range of Exceptions that are possibly
+			// thrown by the getResources() method in subclasses are not
+			// extended from a shared base class like RuntimeException. Thus,
+			// we are forced to "catch them all" - but we also output them.
+			throw new Exception($error->getMessage(), $error->getCode());
 		}
-
-		$variables = array($as => $resources);
-		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($resources);
 	}
 
 }

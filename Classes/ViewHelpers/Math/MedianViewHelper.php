@@ -1,28 +1,12 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Math;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 /**
  * Math: Median
@@ -46,12 +30,17 @@ class MedianViewHelper extends AbstractSingleMathViewHelper {
 		$a = $this->getInlineArgument();
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		if (TRUE === $aIsIterable) {
-			$a = $this->convertTraversableToArray($a);
+			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
 			sort($a, SORT_NUMERIC);
 			$size = count($a);
 			$midpoint = $size / 2;
 			if (1 === $size % 2) {
-				return $a[$midpoint];
+				/*
+				 * Array indexes of float are truncated to integers,
+				 * not everybody knows, let's make it explicit for everybody
+				 * wondering.
+				 */
+				return $a[(integer) $midpoint];
 			}
 			$candidates = array_slice($a, floor($midpoint) - 1, 2);
 			return array_sum($candidates) / 2;

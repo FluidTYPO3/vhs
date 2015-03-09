@@ -1,30 +1,15 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
 use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -38,6 +23,8 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * @subpackage ViewHelpers\Page\Menu
  */
 abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
+
+	use TagViewHelperTrait;
 
 	/**
 	 * @var string
@@ -163,7 +150,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
-		$parentInstance = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
+		$parentInstance = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'parentInstance');
 		$arguments = $parentInstance->getArguments();
 		$arguments['pageUid'] = $pageUid;
 		$parentInstance->setArguments($arguments);
@@ -174,10 +161,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return void
 	 */
 	protected function cleanTemplateVariableContainer() {
-		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'variables')) {
 			return;
 		}
-		$storedVariables = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
+		$storedVariables = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'variables');
 		foreach ($this->templateVariableContainer->getAll() as $variableName => $value) {
 			$this->backupValues[$variableName] = $value;
 			$this->templateVariableContainer->remove($variableName);
@@ -283,7 +270,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$parsed = array();
 		foreach ($types as $index => $type) {
 			if (FALSE === ctype_digit($type)) {
-				$typeNumber = constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
+				$typeNumber = constant('TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
 				if (NULL !== $typeNumber) {
 					$parsed[$index] = $typeNumber;
 				}
@@ -396,7 +383,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	protected function getMenuItemEntry($page, $rootLine, array $parentPage = NULL) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
-		$pageUid = $originalPageUid = $submenuPid = $page['uid'];
+		$pageUid = $overlayPageUid = $page['originalPageUid'] = $page['uid'];
 		$targetPage = NULL;
 		$doktype = (integer) $page['doktype'];
 		if (NULL !== $parentPage && TRUE === isset($parentPage['_MP_PARAM'])) {
@@ -404,9 +391,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		}
 		if (PageRepository::DOKTYPE_MOUNTPOINT === $doktype) {
 			$mountInfo = $GLOBALS['TSFE']->sys_page->getMountPointInfo($page['uid'], $page);
-			$mountedPageUid = $mountInfo['mount_pid'];
-			$submenuPid = $mountedPageUid;
-			$page['mountedPageUid'] = $mountedPageUid;
+			$page['mountedPageUid'] = $mountInfo['mount_pid'];
 			$page['mountPointParameter'] = $mountInfo['MPvar'];
 		} elseif (PageRepository::DOKTYPE_SHORTCUT === $doktype) {
 			switch ($page['shortcut_mode']) {
@@ -434,6 +419,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			if (TRUE === (boolean) $this->shouldUseShortcutTarget()) {
 				// overwrite current page data with shortcut page data
 				$page = $targetPage;
+				$overlayPageUid = $targetPage['uid'];
 			}
 			if (TRUE === (boolean) $this->shouldUseShortcutUid()) {
 				// overwrite current page UID
@@ -442,7 +428,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		if (0 < $getLL) {
-			$pageOverlay = $this->pageSelect->getPageOverlay($page['uid'], $getLL);
+			$pageOverlay = $this->pageSelect->getPageOverlay($overlayPageUid, $getLL);
 			foreach ($pageOverlay as $name => $value) {
 				if (FALSE === empty($value)) {
 					$page[$name] = $value;
@@ -450,8 +436,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			}
 		}
 
-		$page['hasSubPages'] = (0 < count($this->getSubmenu($submenuPid)));
-		$page['active'] = $this->isActive($page['uid'], $rootLine, $originalPageUid);
+		$page['hasSubPages'] = (0 < count($this->getSubmenu($page['originalPageUid'])));
+		$page['active'] = $this->isActive($page['uid'], $rootLine, $page['originalPageUid']);
 		$page['current'] = $this->isCurrent($page['uid']);
 		$page['link'] = $this->getItemLink($page);
 		$page['linktext'] = $this->getItemTitle($page);
@@ -553,7 +539,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 				$html[] = sprintf('<a href="%s"%s%s>%s</a>', $page['link'], $class, $target, htmlspecialchars($page['linktext']));
 			}
 			if ((TRUE === (boolean) $page['active'] || TRUE === $expandAll) && TRUE === (boolean) $page['hasSubPages'] && $level < $maxLevels) {
-				$pageUid = (TRUE === isset($page['mountedPageUid'])) ? $page['mountedPageUid'] : $page['uid'];
+				$pageUid = (TRUE === isset($page['mountedPageUid'])) ? $page['mountedPageUid'] : $page['originalPageUid'];
 				$rootLineData = $this->pageSelect->getRootLine();
 				$subMenuData = $this->getMenu($pageUid);
 				$subMenu = $this->parseMenu($subMenuData, $rootLineData, $page);
@@ -645,14 +631,16 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (0 === count($menu) && FALSE === $deferredRendering) {
 			return NULL;
 		}
-		$this->tag->setTagName($this->getWrappingTagName());
-		$this->tag->forceClosingTag(TRUE);
 		if (TRUE === $deferredRendering) {
 			$tagContent = $this->autoRender($menu);
 			$this->tag->setContent($tagContent);
 			$deferredContent = $this->tag->render();
-			$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString', $deferredContent);
-			$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray', $menu);
+			$this->viewHelperVariableContainer->addOrUpdate(
+				'FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString', $deferredContent
+			);
+			$this->viewHelperVariableContainer->addOrUpdate(
+				'FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray', $menu
+			);
 			$output = $this->renderChildren();
 			$this->unsetDeferredVariableStorage();
 		} else {
@@ -660,9 +648,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			if (0 < strlen(trim($content))) {
 				$output = $content;
 			} else {
-				$tagContent = $this->autoRender($menu);
-				$this->tag->setContent($tagContent);
-				$output = $this->tag->render();
+				$output = $this->renderTag($this->getWrappingTagName(), $this->autoRender($menu));
 			}
 		}
 		return $output;

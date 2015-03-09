@@ -1,30 +1,16 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\BasicViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
@@ -49,6 +35,10 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class SortViewHelper extends AbstractViewHelper {
 
+	use BasicViewHelperTrait;
+	use TemplateVariableViewHelperTrait;
+	use ArrayConsumingViewHelperTrait;
+
 	/**
 	 * Contains all flags that are allowed to be used
 	 * with the sorting functions
@@ -70,7 +60,8 @@ class SortViewHelper extends AbstractViewHelper {
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('as', 'string', 'Which variable to update in the TemplateVariableContainer. If left out, returns sorted data instead of updating the variable (i.e. reference or copy)');
+		$this->registerAsArgument();
+		$this->registerArgument('subject', 'mixed', 'The array/Traversable instance to sort', FALSE, NULL);
 		$this->registerArgument('sortBy', 'string', 'Which property/field to sort by - leave out for numeric sorting based on indexes(keys)');
 		$this->registerArgument('order', 'string', 'ASC, DESC, RAND or SHUFFLE. RAND preserves keys, SHUFFLE does not - but SHUFFLE is faster', FALSE, 'ASC');
 		$this->registerArgument('sortFlags', 'string', 'Constant name from PHP for `SORT_FLAGS`: `SORT_REGULAR`, `SORT_STRING`, `SORT_NUMERIC`, `SORT_NATURAL`, `SORT_LOCALE_STRING` or `SORT_FLAG_CASE`. You can provide a comma seperated list or array to use a combination of flags.', FALSE, 'SORT_REGULAR');
@@ -83,19 +74,10 @@ class SortViewHelper extends AbstractViewHelper {
 	 * Returns the same type as $subject. Ignores NULL values which would be
 	 * OK to use in an f:for (empty loop as result)
 	 *
-	 * @param array|\Iterator $subject An array or Iterator implementation to sort
-	 * @throws \Exception
 	 * @return mixed
 	 */
-	public function render($subject = NULL) {
-		$as = $this->arguments['as'];
-		if (NULL === $subject && NULL === $as) {
-			// this case enables inline usage if the "as" argument
-			// is not provided. If "as" is provided, the tag content
-			// (which is where inline arguments are taken from) is
-			// expected to contain the rendering rather than the variable.
-			$subject = $this->renderChildren();
-		}
+	public function render() {
+		$subject = $this->getArgumentFromArgumentsOrTagContent('subject');
 		$sorted = NULL;
 		if (TRUE === is_array($subject)) {
 			$sorted = $this->sortArray($subject);
@@ -117,12 +99,7 @@ class SortViewHelper extends AbstractViewHelper {
 					' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1351958941);
 			}
 		}
-		if (NULL !== $as) {
-			$variables = array($as => $sorted);
-			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-			return $content;
-		}
-		return $sorted;
+		return $this->renderChildrenWithVariableOrReturnInput($sorted);
 	}
 
 	/**
@@ -161,16 +138,16 @@ class SortViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * Sort a Tx_Extbase_Persistence_ObjectStorage instance
+	 * Sort an ObjectStorage instance
 	 *
 	 * @param ObjectStorage $storage
 	 * @return ObjectStorage
 	 */
 	protected function sortObjectStorage($storage) {
 		/** @var ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		/** @var ObjectStorage $temp */
-		$temp = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+		$temp = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($storage as $item) {
 			$temp->attach($item);
 		}
@@ -199,7 +176,7 @@ class SortViewHelper extends AbstractViewHelper {
 		} else {
 			krsort($sorted, $this->getSortFlags());
 		}
-		$storage = $objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+		$storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($sorted as $item) {
 			$storage->attach($item);
 		}
@@ -228,11 +205,11 @@ class SortViewHelper extends AbstractViewHelper {
 	/**
 	 * Parses the supplied flags into the proper value for the sorting
 	 * function.
-	 *
-	 * @return integer
+	 * @return int
+	 * @throws Exception
 	 */
 	protected function getSortFlags() {
-		$constants = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($this->arguments['sortFlags']);
+		$constants = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['sortFlags']);
 		$flags = 0;
 		foreach ($constants as $constant) {
 			if (FALSE === in_array($constant, $this->allowedSortFlags)) {

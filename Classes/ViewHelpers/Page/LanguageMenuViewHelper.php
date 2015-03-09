@@ -1,30 +1,14 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Dominic Garms <djgarms@gmail.com>, DMFmedia GmbH
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -37,6 +21,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * @subpackage ViewHelpers/Page
  */
 class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
+
+	use ArrayConsumingViewHelperTrait;
 
 	/**
 	 * @var array
@@ -80,6 +66,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'languageMenu');
 		$this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', FALSE, 0);
 		$this->registerArgument('configuration', 'array', 'Additional typoLink configuration', FALSE, array());
+		$this->registerArgument('excludeQueryVars', 'string', 'Comma-separate list of variables to exclude', FALSE, '');
 	}
 
 	/**
@@ -91,7 +78,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === is_object($GLOBALS['TSFE']->sys_page)) {
 			return NULL;
 		}
-		$this->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->tagName = $this->arguments['tagName'];
 
 		// to set the tagName we should call initialize()
@@ -302,19 +289,19 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return string
 	 */
 	protected function getLanguageUrl($uid) {
-		$getValues = GeneralUtility::_GET();
-		$getValues['L'] = $uid;
-		unset($getValues['id']);
-		unset($getValues['cHash']);
-		$addParams = http_build_query($getValues, '', '&');
+		$excludedVars = trim((string) $this->arguments['excludeQueryVars']);
 		$config = array(
 			'parameter' => $this->getPageUid(),
 			'returnLast' => 'url',
-			'additionalParams' => '&' . $addParams,
-			'useCacheHash' => $this->arguments['useCHash']
+			'additionalParams' => '&L=' . $uid,
+			'useCacheHash' => $this->arguments['useCHash'],
+			'addQueryString' => 'GET',
+			'addQueryString.' => array(
+				'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
+			)
 		);
 		if (TRUE === is_array($this->arguments['configuration'])) {
-			$config = ViewHelperUtility::mergeArrays($config, $this->arguments['configuration']);
+			$config = $this->mergeArrays($config, $this->arguments['configuration']);
 		}
 		return $this->cObj->typoLink('', $config);
 	}

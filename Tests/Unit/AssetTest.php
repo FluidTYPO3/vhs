@@ -1,29 +1,14 @@
 <?php
-namespace FluidTYPO3\Vhs;
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+namespace FluidTYPO3\Vhs\Tests\Unit;
 
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Asset;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,6 +19,13 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  * @package Vhs
  */
 class AssetTest extends UnitTestCase {
+
+	/**
+	 * @return void
+	 */
+	public function setUp() {
+		$GLOBALS['VhsAssets'] = array();
+	}
 
 	/**
 	 * @test
@@ -129,9 +121,9 @@ class AssetTest extends UnitTestCase {
 	 * @test
 	 */
 	public function assetsCanBeAdded() {
-		$name = 'dummy';
 		$file = $this->getAbsoluteAssetFixturePath();
 		$asset = Asset::createFromFile($file);
+		$name = $asset->getName();
 		$this->assertSame($asset, $GLOBALS['VhsAssets'][$name]);
 	}
 
@@ -207,14 +199,14 @@ class AssetTest extends UnitTestCase {
 		$file = $this->getAbsoluteAssetFixturePath();
 		$asset = Asset::createFromFile($file);
 		$gettableProperties = ObjectAccess::getGettablePropertyNames($asset);
-		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		foreach ($gettableProperties as $propertyName) {
 			if (FALSE === property_exists('FluidTYPO3\Vhs\Asset', $propertyName)) {
 				continue;
 			}
 			$propertyValue = ObjectAccess::getProperty($asset, $propertyName);
 			/** @var \TYPO3\CMS\Extbase\Reflection\PropertyReflection $propertyReflection */
-			$propertyReflection = $objectManager->get('TYPO3\CMS\Extbase\Reflection\PropertyReflection', 'FluidTYPO3\Vhs\Asset', $propertyName);
+			$propertyReflection = $objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', 'FluidTYPO3\\Vhs\\Asset', $propertyName);
 			$expectedDataType = array_pop($propertyReflection->getTagValues('var'));
 			$constraint = new \PHPUnit_Framework_Constraint_IsType($expectedDataType);
 			$this->assertThat($propertyValue, $constraint);

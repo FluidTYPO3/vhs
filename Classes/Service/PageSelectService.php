@@ -1,29 +1,16 @@
 <?php
 namespace FluidTYPO3\Vhs\Service;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Page Select Service
@@ -37,13 +24,10 @@ namespace FluidTYPO3\Vhs\Service;
  * @package Vhs
  * @subpackage Service
  */
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 class PageSelectService implements SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
+	 * @var PageRepository
 	 */
 	protected static $pageSelect;
 
@@ -75,7 +59,7 @@ class PageSelectService implements SingletonInterface {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
+	 * @return PageRepository
 	 */
 	private function createPageSelectInstance() {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
@@ -84,7 +68,7 @@ class PageSelectService implements SingletonInterface {
 		} else {
 			$groups = array(-1, 0);
 		}
-		$pageSelect = new \TYPO3\CMS\Frontend\Page\PageRepository();
+		$pageSelect = new PageRepository();
 		$clauses = array();
 		foreach ($groups as $group) {
 			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
@@ -149,7 +133,7 @@ class PageSelectService implements SingletonInterface {
 		if (0 < count($allowedDoktypeList)) {
 			$addWhere .= ' AND doktype IN (' . implode(',', $allowedDoktypeList) . ')';
 		} else {
-			$addWhere .= ' AND doktype != ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER;
+			$addWhere .= ' AND doktype != ' . PageRepository::DOKTYPE_SYSFOLDER;
 		}
 		if (0 < count($excludePages)) {
 			$addWhere .= ' AND uid NOT IN (' . implode(',', $excludePages) . ')';

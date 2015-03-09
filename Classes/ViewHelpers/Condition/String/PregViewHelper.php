@@ -1,30 +1,14 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Condition\String;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -41,33 +25,29 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class PregViewHelper extends AbstractConditionViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+
 	/**
 	 * Render method
 	 *
 	 * @param string $pattern
 	 * @param string $string
 	 * @param boolean $global
-	 * @param string $as
 	 * @return string
 	 */
-	public function render($pattern, $string, $global = FALSE, $as = NULL) {
+	public function render($pattern, $string, $global = FALSE) {
 		$matches = array();
 		if (TRUE === (boolean) $global) {
 			preg_match_all($pattern, $string, $matches, PREG_SET_ORDER);
 		} else {
 			preg_match($pattern, $string, $matches);
 		}
-		if (FALSE === empty($as)) {
-			$variables = array($as => $matches);
-			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		if (0 < count($matches)) {
+			$content = $this->renderThenChild();
 		} else {
-			if (0 < count($matches)) {
-				$content = $this->renderThenChild();
-			} else {
-				$content = $this->renderElseChild();
-			}
+			$content = $this->renderElseChild();
 		}
-		return $content;
+		return $this->renderChildrenWithVariableOrReturnInput($content);
 	}
 
 }

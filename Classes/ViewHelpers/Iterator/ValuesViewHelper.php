@@ -24,8 +24,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Gets values from an iterator, removing current keys (if any exist)
@@ -36,29 +39,28 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ValuesViewHelper extends AbstractViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+	use ArrayConsumingViewHelperTrait;
+
+	/**
+	 * Initialize arguments
+	 *
+	 * @return void
+	 */
+	public function initializeArguments() {
+		$this->registerAsArgument();
+		$this->registerArgument('subject', 'mixed', 'The array/Traversable instance from which to get values', FALSE, NULL);
+	}
+
 	/**
 	 * Render method
 	 *
-	 * @param mixed $subject
-	 * @throws \Exception
 	 * @return array
 	 */
-	public function render($subject = NULL) {
-		$as = $this->arguments['as'];
-		if (NULL === $subject) {
-			$subject = $this->renderChildren();
-		}
-		if (TRUE === $subject instanceof \Iterator) {
-			$subject = iterator_to_array($subject, TRUE);
-		} elseif (FALSE === is_array($subject)) {
-			throw new \Exception('Cannot get values of unsupported type: ' . gettype($subject), 1357098192);
-		}
+	public function render() {
+		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
 		$output = array_values($subject);
-		if (NULL !== $as) {
-			$variables = array($as => $output);
-			$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		}
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($output);
 	}
 
 }

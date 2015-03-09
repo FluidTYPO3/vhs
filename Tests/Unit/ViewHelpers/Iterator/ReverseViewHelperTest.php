@@ -1,30 +1,14 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
  * @protection on
@@ -55,17 +39,16 @@ class ReverseViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function getRenderTestValues() {
 		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-			array('toArray', 'initialize', 'rewind', 'valid'), array(), '', FALSE);
+			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
 		$queryResult->expects($this->any())->method('toArray')->will($this->returnValue(array('foo', 'bar')));
 		$queryResult->expects($this->any())->method('valid')->will($this->returnValue(FALSE));
+		$queryResult->expects($this->any())->method('count')->will($this->returnValue(1));
 		return array(
 			array(array('subject' => array()), array()),
 			array(array('subject' => array('foo', 'bar')), array(1 => 'bar', 0 => 'foo')),
 			array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), array(1 => 'bar', 0 => 'foo')),
 			array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), array(1 => 'bar', 0 => 'foo')),
-			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), array(1 => 'bar', 0 => 'foo')),
-			array(array('subject' => $queryResult), array(1 => 'bar', 0 => 'foo')),
-			array(array('subject' => $queryResult, 'as' => 'variable'), array(1 => 'bar', 0 => 'foo'))
+			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), array(1 => 'bar', 0 => 'foo'))
 		);
 	}
 
@@ -75,8 +58,7 @@ class ReverseViewHelperTest extends AbstractViewHelperTest {
 	 * @param mixed $subject
 	 */
 	public function testThrowsErrorsOnInvalidSubjectType($subject) {
-		$expected = 'Invalid variable type passed to Iterator/ReverseViewHelper. Expected any of Array, QueryResult, ' .
-			'ObjectStorage or Iterator implementation but got ' . gettype($subject);
+		$expected = 'Unsupported input type; cannot convert to array!';
 		$result = $this->executeViewHelper(array('subject' => $subject));
 		$this->assertEquals($expected, $result, $result);
 	}
@@ -86,8 +68,9 @@ class ReverseViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function getErrorTestValues() {
 		return array(
+			array(0),
+			array(NULL),
 			array(new \DateTime()),
-			array('invalid'),
 			array(new \stdClass()),
 		);
 	}

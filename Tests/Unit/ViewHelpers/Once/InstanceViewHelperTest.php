@@ -1,30 +1,17 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Once;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * @protection on
@@ -32,5 +19,61 @@ use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
  * @package Vhs
  */
 class InstanceViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @dataProvider getIdentifierTestValues
+	 * @param string|NULL $identifierArgument
+	 * @param string $expectedIdentifier
+	 */
+	public function testGetIdentifier($identifierArgument, $expectedIdentifier) {
+		$instance = $this->createInstance();
+		$instance->setArguments(array('identifier' => $identifierArgument));
+		$renderingContext = new RenderingContext();
+		$controllerContext = new ControllerContext();
+		$request = new Request();
+		$request->setControllerActionName('p1');
+		$request->setControllerName('p2');
+		$request->setPluginName('p3');
+		$request->setControllerExtensionName('p4');
+		$controllerContext->setRequest($request);
+		$renderingContext->setControllerContext($controllerContext);
+		$instance->setRenderingContext($renderingContext);
+		$result = $this->callInaccessibleMethod($instance, 'getIdentifier');
+		$this->assertEquals($expectedIdentifier, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getIdentifierTestValues() {
+		return array(
+			array(NULL, 'p1_p2_p3_p4'),
+			array('test', 'test'),
+			array('test2', 'test2'),
+		);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testStoreIdentifier() {
+		$instance = $this->createInstance();
+		$instance->setArguments(array('identifier' => 'test'));
+		$this->callInaccessibleMethod($instance, 'storeIdentifier');
+		$this->assertTrue($GLOBALS[get_class($instance)]['test']);
+		unset($GLOBALS[get_class($instance)]['test']);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testAssertShouldSkip() {
+		$instance = $this->createInstance();
+		$instance->setArguments(array('identifier' => 'test'));
+		$this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
+		$GLOBALS[get_class($instance)]['test'] = TRUE;
+		$this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
+		unset($GLOBALS[get_class($instance)]['test']);
+	}
 
 }
