@@ -16,7 +16,7 @@
     ],
     "homepage": "https://fluidtypo3.org",
     "license": "GPL-2.0+",
-    "version": "2.1.4",
+    "version": "2.3.0",
     "autoload": {
         "psr-4": {
             "FluidTYPO3\\Vhs\\": "Classes/"
