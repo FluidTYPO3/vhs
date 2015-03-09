@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Returns the last element of $haystack
@@ -19,6 +19,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * @subpackage ViewHelpers\Iterator
  */
 class LastViewHelper extends AbstractViewHelper {
+
+	use ArrayConsumingViewHelperTrait;
 
 	/**
 	 * Initialize arguments
@@ -32,7 +34,6 @@ class LastViewHelper extends AbstractViewHelper {
 	/**
 	 * Render method
 	 *
-	 * @throws \Exception
 	 * @return mixed|NULL
 	 */
 	public function render() {
@@ -40,22 +41,9 @@ class LastViewHelper extends AbstractViewHelper {
 		if (NULL === $haystack) {
 			$haystack = $this->renderChildren();
 		}
-		if (FALSE === is_array($haystack) && FALSE === $haystack instanceof \Iterator && FALSE === is_null($haystack)) {
-			throw new Exception('Invalid argument supplied to Iterator/LastViewHelper - expected array, Iterator or NULL but got ' .
-				gettype($haystack), 1351958398);
-		}
-		if (NULL === $haystack) {
-			return NULL;
-		}
-		$needle = NULL;
-		foreach ($haystack as $needle) {
-			// do nothing; but use foreach in order to a) reset pointer
-			// before iteration and b) make sure any Iterator/array is
-			// supported without the need for any special tricks. The
-			// isset() call is here only to prevent code style violations
-			isset($needle);
-		}
-		return $needle;
+		$haystack = $this->arrayFromArrayOrTraversableOrCSV($haystack);
+
+		return array_pop($haystack);
 	}
 
 }

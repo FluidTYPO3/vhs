@@ -53,7 +53,7 @@ class ShiftViewHelperTest extends AbstractViewHelperTest {
 	 * @param mixed $subject
 	 */
 	public function testThrowsErrorsOnInvalidSubjectType($subject) {
-		$expected = 'Cannot get values of unsupported type: ' . gettype($subject);
+		$expected = 'Unsupported input type; cannot convert to array!';
 		$result = $this->executeViewHelper(array('subject' => $subject));
 		$this->assertEquals($expected, $result);
 	}
@@ -66,7 +66,6 @@ class ShiftViewHelperTest extends AbstractViewHelperTest {
 			array(0),
 			array(NULL),
 			array(new \DateTime()),
-			array('invalid'),
 			array(new \stdClass()),
 		);
 	}

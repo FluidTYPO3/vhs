@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageSelectService;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -32,6 +32,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * @subpackage ViewHelpers\Page
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper {
+
+	use TemplateVariableViewHelperTrait;
 
 	/**
 	 * @var PageSelectService
@@ -144,7 +146,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		// Render childs to see if an alternative title content should be used
-		$renderedTitle = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+		$renderedTitle = $this->renderChildrenWithVariables($variables);
 		if (FALSE === empty($renderedTitle)) {
 			$title = $renderedTitle;
 		}

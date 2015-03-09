@@ -8,12 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Resource: Language
@@ -35,6 +35,8 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class LanguageViewHelper extends AbstractViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+
 	const LOCALLANG_DEFAULT = 'locallang.xlf';
 
 	/**
@@ -43,10 +45,10 @@ class LanguageViewHelper extends AbstractViewHelper {
 	 * @return void
 	 */
 	public function initializeArguments() {
+		$this->registerAsArgument();
 		$this->registerArgument('extensionName', 'string', 'Name of the extension', FALSE, NULL);
 		$this->registerArgument('path', 'string', 'Absolute or relative path to the locallang file', FALSE, self::LOCALLANG_DEFAULT);
 		$this->registerArgument('languageKey', 'string', 'Key for getting translation of a different than current initialized language', FALSE, NULL);
-		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
 	}
 
 	/**
@@ -55,21 +57,12 @@ class LanguageViewHelper extends AbstractViewHelper {
 	 * @return array|string
 	 */
 	public function render() {
-		$as = $this->arguments['as'];
 		$path = $this->getResolvedPath();
-
 		$languageKey = $this->getLanguageKey();
 		$locallang = GeneralUtility::readLLfile($path, $languageKey);
 		$labels = $this->getLabelsByLanguageKey($locallang, $languageKey);
 		$labels = $this->getLabelsFromTarget($labels);
-
-		if (TRUE === empty($as)) {
-			return $labels;
-		}
-
-		$labelsAs = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, array($as => $labels));
-
-		return $labelsAs;
+		return $this->renderChildrenWithVariableOrReturnInput($labels);
 	}
 
 	/**

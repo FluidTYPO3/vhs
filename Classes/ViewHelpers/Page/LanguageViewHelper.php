@@ -50,7 +50,7 @@ class LanguageViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		if ('BE' === TYPO3_MODE) {
-			return;
+			return '';
 		}
 
 		$languages = $this->arguments['languages'];
@@ -75,7 +75,7 @@ class LanguageViewHelper extends AbstractViewHelper {
 			$languageUid = $currentLanguageUid;
 		} elseif (0 !== $currentLanguageUid) {
 			if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
-				return;
+				return '';
 			}
 		}
 

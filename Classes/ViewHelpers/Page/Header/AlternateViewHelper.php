@@ -53,7 +53,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 	 */
 	public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+		$this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 	}
 
 	/**
@@ -72,7 +72,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		if ('BE' === TYPO3_MODE) {
-			return;
+			return '';
 		}
 
 		$languages = $this->arguments['languages'];
@@ -127,5 +127,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 		if (FALSE === $usePageRenderer) {
 			return trim($output);
 		}
+
+		return '';
 	}
 }

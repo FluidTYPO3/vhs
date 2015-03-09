@@ -49,12 +49,4 @@ class ValuesViewHelperTest extends AbstractViewHelperTest {
 		$this->assertEquals(array('bar'), $result);
 	}
 
-	/**
-	 * @test
-	 */
-	public function returnsErrorOnUnsupportedSubject() {
-		$result = $this->executeViewHelper(array('subject' => new \DateTime()));
-		$this->assertStringStartsWith('Cannot get values of unsupported type', $result);
-	}
-
 }

@@ -18,6 +18,11 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class Bar extends AbstractEntity {
 
 	/**
+	 * @var string
+	 */
+	protected $name;
+
+	/**
 	 * @var \FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo
 	 */
 	protected $foo;
@@ -32,6 +37,21 @@ class Bar extends AbstractEntity {
 	 */
 	public function __construct() {
 		$this->bars = new ObjectStorage();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 * @return void
+	 */
+	public function setName($name) {
+		$this->name = $name;
 	}
 
 	/**

@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  */
 
 use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -22,6 +23,8 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * @subpackage ViewHelpers\Page\Menu
  */
 abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
+
+	use TagViewHelperTrait;
 
 	/**
 	 * @var string
@@ -147,7 +150,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance')) {
 			return NULL;
 		}
-		$parentInstance = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'parentInstance');
+		$parentInstance = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'parentInstance');
 		$arguments = $parentInstance->getArguments();
 		$arguments['pageUid'] = $pageUid;
 		$parentInstance->setArguments($arguments);
@@ -158,10 +161,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return void
 	 */
 	protected function cleanTemplateVariableContainer() {
-		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables')) {
+		if (FALSE === $this->viewHelperVariableContainer->exists('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'variables')) {
 			return;
 		}
-		$storedVariables = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'variables');
+		$storedVariables = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Page\\Menu\\AbstractMenuViewHelper', 'variables');
 		foreach ($this->templateVariableContainer->getAll() as $variableName => $value) {
 			$this->backupValues[$variableName] = $value;
 			$this->templateVariableContainer->remove($variableName);
@@ -267,7 +270,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$parsed = array();
 		foreach ($types as $index => $type) {
 			if (FALSE === ctype_digit($type)) {
-				$typeNumber = constant('\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
+				$typeNumber = constant('TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
 				if (NULL !== $typeNumber) {
 					$parsed[$index] = $typeNumber;
 				}
@@ -628,14 +631,16 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (0 === count($menu) && FALSE === $deferredRendering) {
 			return NULL;
 		}
-		$this->tag->setTagName($this->getWrappingTagName());
-		$this->tag->forceClosingTag(TRUE);
 		if (TRUE === $deferredRendering) {
 			$tagContent = $this->autoRender($menu);
 			$this->tag->setContent($tagContent);
 			$deferredContent = $this->tag->render();
-			$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString', $deferredContent);
-			$this->viewHelperVariableContainer->addOrUpdate('FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray', $menu);
+			$this->viewHelperVariableContainer->addOrUpdate(
+				'FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredString', $deferredContent
+			);
+			$this->viewHelperVariableContainer->addOrUpdate(
+				'FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper', 'deferredArray', $menu
+			);
 			$output = $this->renderChildren();
 			$this->unsetDeferredVariableStorage();
 		} else {
@@ -643,9 +648,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			if (0 < strlen(trim($content))) {
 				$output = $content;
 			} else {
-				$tagContent = $this->autoRender($menu);
-				$this->tag->setContent($tagContent);
-				$output = $this->tag->render();
+				$output = $this->renderTag($this->getWrappingTagName(), $this->autoRender($menu));
 			}
 		}
 		return $output;

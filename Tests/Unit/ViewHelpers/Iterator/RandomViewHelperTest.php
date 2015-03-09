@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 
 /**
  * @protection on
@@ -51,37 +50,12 @@ class RandomViewHelperTest extends AbstractViewHelperTest {
 		$queryResult->expects($this->any())->method('count')->will($this->returnValue(0));
 		$queryResult->expects($this->any())->method('valid')->will($this->returnValue(FALSE));
 		return array(
-			array(array('subject' => NULL), array('foo', 'bar')),
 			array(array('subject' => array('foo', 'bar')), array('foo', 'bar')),
 			array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), array('foo', 'bar')),
 			array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), array('foo', 'bar')),
 			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), array('foo', 'bar')),
 			array(array('subject' => $queryResult), array('foo', 'bar')),
 			array(array('subject' => $queryResult, 'as' => 'variable'), array('foo', 'bar'))
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider getErrorTestValues
-	 * @param mixed $subject
-	 */
-	public function testThrowsErrorsOnInvalidSubjectType($subject) {
-		$expected = 'Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
-			' ObjectStorage or Iterator implementation but got ' . gettype($subject);
-		$result = $this->executeViewHelper(array('subject' => $subject));
-		$this->assertEquals($expected, $result);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getErrorTestValues() {
-		return array(
-			array(0),
-			array(new \DateTime()),
-			array('invalid'),
-			array(new \stdClass()),
 		);
 	}
 

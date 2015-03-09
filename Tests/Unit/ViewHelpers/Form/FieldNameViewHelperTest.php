@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * @protection off
@@ -16,5 +18,50 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  * @package Vhs
  */
 class FieldNameViewHelperTest extends AbstractViewHelperTest {
+
+	/**
+	 * @dataProvider getRenderTestValues
+	 * @param array $arguments
+	 * @param string|NULL $prefix
+	 * @param string|NULL $objectName
+	 * @param array|NULL $names
+	 * @param string $expected
+	 */
+	public function testRender(array $arguments, $prefix, $objectName, $names, $expected) {
+		$instance = $this->buildViewHelperInstance($arguments, array(), NULL, 'Vhs');
+		$viewHelperVariableContainer = new ViewHelperVariableContainer();
+		if (NULL !== $objectName) {
+			$viewHelperVariableContainer->add('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formObjectName', $objectName);
+		}
+		if (NULL !== $prefix) {
+			$viewHelperVariableContainer->add('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'fieldNamePrefix', $prefix);
+		}
+		if (NULL !== $names) {
+			$viewHelperVariableContainer->add('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formFieldNames', $names);
+		}
+		ObjectAccess::setProperty($instance, 'viewHelperVariableContainer', $viewHelperVariableContainer, TRUE);
+		$instance->setArguments($arguments);
+		$result = $instance->render();
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getRenderTestValues() {
+		return array(
+			array(array(), NULL, NULL, NULL, ''),
+			array(array('name' => 'test'), NULL, NULL, NULL, 'test'),
+			array(array('property' => 'test'), NULL, NULL, NULL, ''),
+			array(array('name' => 'test'), 'prefix', 'object', NULL, 'prefix[test]'),
+			array(array('property' => 'test'), 'prefix', 'object', NULL, 'prefix[object][test]'),
+			array(array('name' => 'test'), '', '', NULL, 'test'),
+			array(array('property' => 'test'), '', '', NULL, 'test'),
+			array(array('name' => 'test'), 'prefix', '', NULL, 'prefix[test]'),
+			array(array('property' => 'test'), 'prefix', '', NULL, 'prefix[test]'),
+			array(array('name' => 'test'), 'prefix', 'object', array(), 'prefix[test]'),
+			array(array('property' => 'test'), 'prefix', 'object', array(), 'prefix[object][test]'),
+		);
+	}
 
 }

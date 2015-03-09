@@ -22,6 +22,9 @@
             "FluidTYPO3\\Vhs\\": "Classes/"
         }
     },
+    "require": {
+        "php": ">=5.4.0"
+    },
     "require-dev": {
         "fluidtypo3/development": "*"
     },

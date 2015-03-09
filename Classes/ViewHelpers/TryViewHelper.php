@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 /**
  * ### Try ViewHelper
@@ -88,6 +88,8 @@ use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
  */
 class TryViewHelper extends AbstractConditionViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+
 	/**
 	 * @return mixed
 	 */
@@ -98,8 +100,7 @@ class TryViewHelper extends AbstractConditionViewHelper {
 				$content = $this->renderChildren();
 			}
 		} catch (\Exception $error) {
-			$variables = array('exception' => $error);
-			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
+			$content = $this->renderChildrenWithVariables(array('exception' => $error));
 		}
 		return $content;
 	}

@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Uncaches partials. Use like ``f:render``.
@@ -48,7 +48,7 @@ class UncacheViewHelper extends AbstractViewHelper {
 
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 		$content = '<!--' . $substKey . '-->';
-		$templateView = GeneralUtility::makeInstance('FluidTYPO3\Vhs\View\UncacheTemplateView');
+		$templateView = GeneralUtility::makeInstance('FluidTYPO3\\Vhs\\View\\UncacheTemplateView');
 
 		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
 			'type' => 'POSTUSERFUNC',

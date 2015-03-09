@@ -8,17 +8,15 @@ namespace FluidTYPO3\Vhs\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
-use FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface;
-use FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\CompilableAssetInterface;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use FluidTYPO3\Vhs\Asset;
 
 /**
  * Asset Handling Service
@@ -96,8 +94,8 @@ class AssetService implements SingletonInterface {
 	 */
 	public function buildAll(array $parameters, $caller, $cached = TRUE) {
 		if (FALSE === $this->objectManager instanceof ObjectManager) {
-			$this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-			$this->configurationManager = $this->objectManager->get('TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
+			$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			$this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		}
 		$settings = $this->getSettings();
 		$cached = (boolean) $cached;
@@ -341,7 +339,7 @@ class AssetService implements SingletonInterface {
 	 */
 	private function generateTagForAssetType($type, $content, $file = NULL) {
 		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
-		$tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+		$tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 		switch ($type) {
 			case 'js':
 				$tagBuilder->setTagName('script');
@@ -399,13 +397,13 @@ class AssetService implements SingletonInterface {
 			}
 			$localSettings = (array) $assetSettings;
 			if (TRUE === isset($settings['asset'])) {
-				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['asset']);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['asset']);
 			}
 			if (TRUE === isset($settings['asset'][$name])) {
-				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['asset'][$name]);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['asset'][$name]);
 			}
 			if (TRUE === isset($settings['assetGroup'][$groupName])) {
-				$localSettings = ViewHelperUtility::mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
+				$localSettings = $this->mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
 			}
 			if (TRUE === $asset instanceof AssetInterface) {
 				$asset->setSettings($localSettings);
@@ -424,7 +422,6 @@ class AssetService implements SingletonInterface {
 	 */
 	private function sortAssetsByDependency($assets) {
 		$placed = array();
-		$compilables = array();
 		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
@@ -454,40 +451,7 @@ class AssetService implements SingletonInterface {
 				}
 			}
 			if (FALSE === $postpone) {
-				if (TRUE === $asset instanceof CompilableAssetInterface) {
-					$compilerClassName = $asset->getCompilerClassName();
-					if (FALSE === isset($compilables[$compilerClassName])) {
-						$compilables[$compilerClassName] = array();
-					}
-					array_push($compilables[$compilerClassName], $asset);
-				} else {
-					$placed[$name] = $asset;
-				}
-			}
-		}
-		if (0 < count($compilables)) {
-			// loop once more, this time assigning compilable assets to their compilers
-			foreach ($placed as $asset) {
-				if (TRUE === $asset instanceof AssetCompilerInterface) {
-					/** @var AssetCompilerInterface */
-					$compilerClassName = get_class($asset);
-					$compilerTopInterfaceName = array_shift(class_implements($compilerClassName));
-					if ('\FluidTYPO3\Vhs\ViewHelpers\Asset\Compilable\AssetCompilerInterface' !== $compilerTopInterfaceName) {
-						$compilerIdentity = $compilerTopInterfaceName;
-					} else {
-						$compilerIdentity = $compilerClassName;
-					}
-					if (TRUE === isset($compilables[$compilerIdentity])) {
-						foreach ($compilables[$compilerIdentity] as $compilableAsset) {
-							$asset->addAsset($compilableAsset);
-						}
-						unset($compilables[$compilerIdentity]);
-					}
-				}
-			}
-			if (0 < count($compilables)) {
-				throw new \RuntimeException('Compilable Assets used without appropriate Compiler Assets: "' .
-				implode(', ', array_keys($compilables)) . '"', 1360502808);
+				$placed[$name] = $asset;
 			}
 		}
 		return $placed;
@@ -499,13 +463,11 @@ class AssetService implements SingletonInterface {
 	 */
 	private function renderAssetAsFluidTemplate($asset) {
 		$settings = $this->extractAssetSettings($asset);
-		$templateReference = $settings['path'];
 		$variables = (TRUE === (isset($settings['variables']) && is_array($settings['variables'])) ? $settings['variables'] : array());
-		$isExternal = (TRUE === (isset($settings['external']) && $settings['external'] > 0));
 		$contents = $this->buildAsset($asset);
 		$variables = GeneralUtility::removeDotsFromTS($variables);
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-		$view = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
+		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$view->setTemplateSource($contents);
 		$view->assignMultiple($variables);
 		$content = $view->render();
@@ -693,6 +655,20 @@ class AssetService implements SingletonInterface {
 	 */
 	protected function writeFile($file, $contents) {
 		file_put_contents($file, $contents);
+	}
+
+	/**
+	 * @param $array1
+	 * @param $array2
+	 * @return array
+	 */
+	protected function mergeArrays($array1, $array2) {
+		if (6.2 <= (float) substr(TYPO3_version, 0, 3)) {
+			ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
+			return $array1;
+		} else {
+			return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
+		}
 	}
 
 }

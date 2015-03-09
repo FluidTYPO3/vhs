@@ -50,7 +50,7 @@ class FieldNameViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		if (TRUE === $this->isObjectAccessorMode()) {
-			$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formObjectName');
+			$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
 			if (FALSE === empty($formObjectName)) {
 				$propertySegments = explode('.', $this->arguments['property']);
 				$propertyPath = '';
@@ -64,18 +64,13 @@ class FieldNameViewHelper extends AbstractViewHelper {
 		} else {
 			$name = $this->arguments['name'];
 		}
-		if (TRUE === $this->hasArgument('value') && TRUE === is_object($this->arguments['value'])) {
-			if (NULL !== $this->persistenceManager->getIdentifierByObject($this->arguments['value'])) {
-				$name .= '[__identity]';
-			}
-		}
 		if (NULL === $name || '' === $name) {
 			return '';
 		}
 		if (FALSE === $this->viewHelperVariableContainer->exists('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'fieldNamePrefix')) {
 			return $name;
 		}
-		$fieldNamePrefix = (string) $this->viewHelperVariableContainer->get('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'fieldNamePrefix');
+		$fieldNamePrefix = (string) $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
 		if ('' === $fieldNamePrefix) {
 			return $name;
 		}
@@ -84,8 +79,8 @@ class FieldNameViewHelper extends AbstractViewHelper {
 		if (1 < count($fieldNameSegments)) {
 			$name .= '[' . $fieldNameSegments[1];
 		}
-		if (TRUE === $this->viewHelperVariableContainer->exists('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formFieldNames')) {
-			$formFieldNames = $this->viewHelperVariableContainer->get('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formFieldNames');
+		if (TRUE === $this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames')) {
+			$formFieldNames = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames');
 		} else {
 			$formFieldNames = array();
 		}

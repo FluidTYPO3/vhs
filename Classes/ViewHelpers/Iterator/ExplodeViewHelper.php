@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\BasicViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -22,6 +23,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ExplodeViewHelper extends AbstractViewHelper {
 
+	use BasicViewHelperTrait;
+	use TemplateVariableViewHelperTrait;
+
 	/**
 	 * @var string
 	 */
@@ -33,9 +37,9 @@ class ExplodeViewHelper extends AbstractViewHelper {
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('content', 'string', 'String to be exploded by glue)', FALSE, '');
+		$this->registerAsArgument();
+		$this->registerArgument('content', 'string', 'String to be exploded by glue', FALSE, NULL);
 		$this->registerArgument('glue', 'string', 'String used as glue in the string to be exploded. Use glue value of "constant:NAMEOFCONSTANT" (fx "constant:LF" for linefeed as glue)', FALSE, ',');
-		$this->registerArgument('as', 'string', 'Template variable name to assign. If not specified returns the result array instead');
 	}
 
 	/**
@@ -44,21 +48,10 @@ class ExplodeViewHelper extends AbstractViewHelper {
 	 * @return mixed
 	 */
 	public function render() {
-		$content = $this->arguments['content'];
-		$as = $this->arguments['as'];
+		$content = $this->getArgumentFromArgumentsOrTagContent('content');
 		$glue = $this->resolveGlue();
-		$contentWasSource = FALSE;
-		if (TRUE === empty($content)) {
-			$content = $this->renderChildren();
-			$contentWasSource = TRUE;
-		}
 		$output = call_user_func_array($this->method, array($glue, $content));
-		if (TRUE === empty($as) || TRUE === $contentWasSource) {
-			return $output;
-		}
-		$variables = array($as => $output);
-		$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		return $content;
+		return $this->renderChildrenWithVariableOrReturnInput($output);
 	}
 
 	/**

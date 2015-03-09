@@ -9,7 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  */
 
 use FluidTYPO3\Vhs\Service\AssetService;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -34,9 +35,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-abstract class AbstractAssetViewHelper
-	extends AbstractViewHelper
-	implements AssetInterface {
+abstract class AbstractAssetViewHelper extends AbstractViewHelper implements AssetInterface {
+
+	use ArrayConsumingViewHelperTrait;
 
 	/**
 	 * @var ConfigurationManagerInterface
@@ -113,7 +114,7 @@ abstract class AbstractAssetViewHelper
 	 */
 	public function injectObjectManager(ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
+		$this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 	}
 
 	/**
@@ -218,6 +219,7 @@ abstract class AbstractAssetViewHelper
 		if (TRUE === $debugOutputEnabled) {
 			if (TRUE === $useDebugUtility) {
 				DebuggerUtility::var_dump($debugInformation);
+				return '';
 			} else {
 				return var_export($debugInformation, TRUE);
 			}
@@ -322,7 +324,11 @@ abstract class AbstractAssetViewHelper
 		}
 		$settings = self::$settingsCache;
 		if (TRUE === is_array($this->localSettings)) {
-			$settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
+			if (TRUE === method_exists('TYPO3\\CMS\\Core\\Utility\\ArrayUtility', 'mergeRecursiveWithOverrule')) {
+				ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
+			} else {
+				$settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
+			}
 		}
 		return $settings;
 	}
@@ -351,13 +357,13 @@ abstract class AbstractAssetViewHelper
 		$assetSettings = $this->arguments;
 		$assetSettings['type'] = $this->getType();
 		if (TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
-			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['asset']);
+			$assetSettings = $this->mergeArrays($assetSettings, $settings['asset']);
 		}
 		if (TRUE === (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName]))) {
-			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['assetGroup'][$groupName]);
+			$assetSettings = $this->mergeArrays($assetSettings, $settings['assetGroup'][$groupName]);
 		}
 		if (TRUE === (isset($settings['asset'][$name]) && is_array($settings['asset'][$name]))) {
-			$assetSettings = ViewHelperUtility::mergeArrays($assetSettings, $settings['asset'][$name]);
+			$assetSettings = $this->mergeArrays($assetSettings, $settings['asset'][$name]);
 		}
 		if (FALSE === empty($assetSettings['path']) && FALSE === (boolean) $assetSettings['external']) {
 			$assetSettings['path'] = GeneralUtility::getFileAbsFileName($assetSettings['path']);

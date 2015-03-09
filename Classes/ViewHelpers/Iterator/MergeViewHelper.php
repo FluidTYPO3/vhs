@@ -8,8 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,21 +20,26 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class MergeViewHelper extends AbstractViewHelper {
 
+	use ArrayConsumingViewHelperTrait;
+
+	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		$this->registerArgument('a', 'mixed', 'First array/Traversable - if not set, the ViewHelper can be in a chain (inline-notation)', FALSE, NULL);
+	}
+
 	/**
 	 * Merges arrays/Traversables $a and $b into an array
 	 *
 	 * @param mixed $b Second array/Traversable
-	 * @param mixed $a First array/Traversable - if not set, the ViewHelper can be in a chain (inline-notation)
 	 * @param boolean $useKeys If TRUE, comparison is done while also observing (and merging) the keys used in each array
 	 * @return array
 	 */
-	public function render($b, $a = NULL, $useKeys = TRUE) {
-		if (NULL === $a) {
-		    $a = $this->renderChildren();
-		}
-		$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a, $useKeys);
-		$b = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($b, $useKeys);
-		$merged = GeneralUtility::array_merge_recursive_overrule($a, $b);
+	public function render($b, $useKeys = TRUE) {
+		$a = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('a');
+		$b = $this->arrayFromArrayOrTraversableOrCSV($b, $useKeys);
+		$merged = $this->mergeArrays($a, $b);
 		return $merged;
 	}
 

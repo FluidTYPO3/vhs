@@ -8,7 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\VhsViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,36 +23,24 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class KeysViewHelper extends AbstractViewHelper {
 
+	use TemplateVariableViewHelperTrait;
+	use ArrayConsumingViewHelperTrait;
+
 	/**
 	 * @return void
 	 */
 	public function initializeArguments() {
+		$this->registerAsArgument();
 		$this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...', FALSE, NULL);
-		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
 	}
 
 	/**
 	 * @return array
 	 */
 	public function render() {
-		$subject = $this->arguments['subject'];
-		if (NULL === $subject) {
-			$subject = $this->renderChildren();
-		}
-		$subject = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($subject);
-
+		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
 		$content = array_keys($subject);
-
-		// Return if no assign
-		$as = $this->arguments['as'];
-		if (TRUE === empty($as)) {
-			return $content;
-		}
-
-		$variables = array($as => $content);
-		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($content);
 	}
 
 }

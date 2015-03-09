@@ -7,7 +7,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 
 /**
  * Math: Minimum
@@ -38,7 +37,7 @@ class MinimumViewHelper extends AbstractMultipleMathViewHelper {
 		$b = $this->arguments['b'];
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		if (TRUE === $aIsIterable && NULL === $b) {
-			$a = ViewHelperUtility::arrayFromArrayOrTraversableOrCSV($a);
+			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
 			return min($a);
 		}
 		return $this->calculate($a, $b);

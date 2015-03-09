@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -21,6 +21,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * @subpackage ViewHelpers/Page
  */
 class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
+
+	use ArrayConsumingViewHelperTrait;
 
 	/**
 	 * @var array
@@ -76,7 +78,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === is_object($GLOBALS['TSFE']->sys_page)) {
 			return NULL;
 		}
-		$this->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->tagName = $this->arguments['tagName'];
 
 		// to set the tagName we should call initialize()
@@ -299,7 +301,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 			)
 		);
 		if (TRUE === is_array($this->arguments['configuration'])) {
-			$config = ViewHelperUtility::mergeArrays($config, $this->arguments['configuration']);
+			$config = $this->mergeArrays($config, $this->arguments['configuration']);
 		}
 		return $this->cObj->typoLink('', $config);
 	}

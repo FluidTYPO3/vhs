@@ -8,10 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use FluidTYPO3\Vhs\Utility\ResourceUtility;
 
 /**
  * Base class for image related view helpers adapted from FLUID
@@ -138,7 +138,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper {
 		chdir(constant('PATH_site'));
 		$typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$GLOBALS['TSFE'] = new \stdClass();
-		$template = GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\TemplateService');
+		$template = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
 		$template->tt_track = 0;
 		$template->init();
 		$template->getFileName_backPath = constant('PATH_site');

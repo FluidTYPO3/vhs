@@ -144,7 +144,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		chdir(constant('PATH_site'));
 		$typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$GLOBALS['TSFE'] = new \stdClass();
-		$template = GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\TemplateService');
+		$template = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
 		$template->tt_track = 0;
 		$template->init();
 		$template->getFileName_backPath = constant('PATH_site');

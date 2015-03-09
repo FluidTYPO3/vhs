@@ -33,11 +33,11 @@ class EncodeViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function encodesRecursiveDomainObject() {
 		/** @var Foo $object */
-		$object = $this->objectManager->get('FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo');
+		$object = $this->objectManager->get('FluidTYPO3\\Vhs\\Tests\\Fixtures\\Domain\\Model\\Foo');
 		$object->setFoo($object);
 		$instance = $this->createInstance();
 		$test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, TRUE, TRUE, NULL, NULL);
-		$this->assertEquals('{"bar":"baz","children":[],"foo":null,"pid":null,"uid":null}', $test);
+		$this->assertEquals('{"bar":"baz","children":[],"foo":null,"name":null,"pid":null,"uid":null}', $test);
 	}
 
 	/**
@@ -59,7 +59,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function encodesTraversable() {
-		$traversable = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+		$traversable = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$instance = $this->createInstance();
 		$test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, FALSE, TRUE, NULL, NULL);
 		$this->assertEquals('[]', $test);
@@ -80,7 +80,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function returnsExpectedStringForProvidedArguments() {
 
-		$storage = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+		$storage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$fixture = array(
 			'foo' => 'bar',
 			'bar' => TRUE,

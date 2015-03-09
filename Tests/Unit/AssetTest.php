@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * @author Claus Due <claus@namelesscoder.net>
@@ -200,14 +199,14 @@ class AssetTest extends UnitTestCase {
 		$file = $this->getAbsoluteAssetFixturePath();
 		$asset = Asset::createFromFile($file);
 		$gettableProperties = ObjectAccess::getGettablePropertyNames($asset);
-		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		foreach ($gettableProperties as $propertyName) {
 			if (FALSE === property_exists('FluidTYPO3\Vhs\Asset', $propertyName)) {
 				continue;
 			}
 			$propertyValue = ObjectAccess::getProperty($asset, $propertyName);
 			/** @var \TYPO3\CMS\Extbase\Reflection\PropertyReflection $propertyReflection */
-			$propertyReflection = $objectManager->get('TYPO3\CMS\Extbase\Reflection\PropertyReflection', 'FluidTYPO3\Vhs\Asset', $propertyName);
+			$propertyReflection = $objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', 'FluidTYPO3\\Vhs\\Asset', $propertyName);
 			$expectedDataType = array_pop($propertyReflection->getTagValues('var'));
 			$constraint = new \PHPUnit_Framework_Constraint_IsType($expectedDataType);
 			$this->assertThat($propertyValue, $constraint);

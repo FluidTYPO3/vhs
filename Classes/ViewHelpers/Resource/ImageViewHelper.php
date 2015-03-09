@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 
 /**
  * ViewHelper to output or assign a image from FAL
@@ -18,6 +18,8 @@ use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
  * @subpackage ViewHelpers\Resource
  */
 class ImageViewHelper extends AbstractImageViewHelper {
+
+	use TemplateVariableViewHelperTrait;
 
 	/**
 	 * name of the tag to be created by this view helper
@@ -83,16 +85,7 @@ class ImageViewHelper extends AbstractImageViewHelper {
 				'tag' => $tag
 			);
 		}
-
-		// Return if no assign
-		$as = $this->arguments['as'];
-		if (TRUE === empty($as)) {
-			return implode('', $tags);
-		}
-
-		$variables = array($as => $info);
-		$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		return $output;
+		return $this->renderChildrenWithVariableOrReturnInput($info);
 	}
 
 }

@@ -110,20 +110,20 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 		$instance = $this->createInstance();
 		$node = new ViewHelperNode($instance, $arguments);
 		/** @var RenderingContext $renderingContext */
-		$renderingContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Rendering\RenderingContext');
+		$renderingContext = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext');
 		/** @var TemplateVariableContainer $container */
-		$container = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer');
+		$container = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
 		if (0 < count($variables)) {
 			ObjectAccess::setProperty($container, 'variables', $variables, TRUE);
 		}
 		ObjectAccess::setProperty($renderingContext, 'templateVariableContainer', $container, TRUE);
 		if (NULL !== $extensionName || NULL !== $pluginName) {
 			/** @var ViewHelperVariableContainer $viewHelperContainer */
-			$viewHelperContainer = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer');
+			$viewHelperContainer = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
 			/** @var UriBuilder $uriBuilder */
-			$uriBuilder = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder');
+			$uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 			/** @var Request $request */
-			$request = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Request');
+			$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 			if (NULL !== $extensionName) {
 				$request->setControllerExtensionName($extensionName);
 			}
@@ -131,9 +131,9 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 				$request->setPluginName($pluginName);
 			}
 			/** @var Response $response */
-			$response = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Web\Response');
+			$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
 			/** @var ControllerContext $controllerContext */
-			$controllerContext = $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext');
+			$controllerContext = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
 			$controllerContext->setRequest($request);
 			$controllerContext->setResponse($response);
 			$controllerContext->setUriBuilder($uriBuilder);
@@ -142,7 +142,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 		}
 		if (TRUE === $instance instanceof \Tx_Fluidwidget_Core_Widget_AbstractWidgetViewHelper) {
 			/** @var WidgetContext $widgetContext */
-			$widgetContext = $this->objectManager->get('TYPO3\CMS\Fluid\Core\Widget\WidgetContext');
+			$widgetContext = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
 			ObjectAccess::setProperty($instance, 'widgetContext', $widgetContext, TRUE);
 		}
 		if (NULL !== $childNode) {

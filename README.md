@@ -54,7 +54,7 @@ Which is itself a short form of:
 ```
 $asset = \FluidTYPO3\Vhs\Asset::getInstance();
 // or alternatively, if this fits better in your other code:
-$asset = $objectManager->get('FluidTYPO3\Vhs\Asset');
+$asset = $objectManager->get('FluidTYPO3\\Vhs\\Asset');
 // then:
 $asset->setName('demo');
 $asset->setPath('fileadmin/demo.js');
@@ -124,8 +124,3 @@ plugin.tx_vhs.settings.prependPath = http://static.mydomain.com/
 ```
 
 The setting affects *every* relative-path resource ViewHelper (NB: this does not include links!) in VHS, which is why it is not placed inside the "asset" scope. If you need to output this prefix path in templates you can use the `v:page.staticPrefix` ViewHelper - it accepts no arguments and only outputs the setting if it is set. For example, using `f:image` will not prefix the image path but manually creating an `<img />` tag and using `f:uri.image` as `src` argument will allow you to prefix the path.
-
-## Known issues
-
-* PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent
-  version. PHP 5.3.7 is recommended at least

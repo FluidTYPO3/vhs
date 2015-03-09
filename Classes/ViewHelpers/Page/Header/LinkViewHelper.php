@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -18,6 +19,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * @subpackage ViewHelpers\Page\Header
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper {
+
+	use TagViewHelperTrait;
 
 	/**
 	 * @var    string
@@ -46,7 +49,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 		if ('BE' === TYPO3_MODE) {
 			return;
 		}
-		$GLOBALS['TSFE']->getPageRenderer()->addMetaTag($this->tag->render());
+		$GLOBALS['TSFE']->getPageRenderer()->addMetaTag($this->renderTag($this->tagName));
 	}
 
 }

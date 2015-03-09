@@ -3,9 +3,22 @@
 2.3.0 - upcoming (documentation for this version may be not up to date yet)
 ------------------
 
+- :exclamation: Legacy namespace support completely removed
+  - It is no longer possible to use any of VHS classes by their legacy names. Switch to the proper vendor and namespace.
+
+- Reusable Traits implemented to extend ViewHelper capabilities, as a replacement for ViewHelperUtility:
+  - [BasicViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+  - [ArrayConsumingViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+  - [TemplateVariableViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+  - [TagViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/7def7c1cb1f0cb5d125465cdd65a854851b6d7e3)
+
+- :exclamation: Minimum PHP requirement is now 5.4.0 due to the use of Traits
+  - [Details](https://github.com/FluidTYPO3/vhs/commit/d1b732dbcd61fbdfd27df323265cbcb77618b4a3)
+  - [Reason for raising requirement](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
+
 - [#734](https://github.com/FluidTYPO3/vhs/pull/734) :exclamation: **v:format.url.sanitizeString** changed
-  - became deprecated - use **v:format.sanitizeString** instead
-  - got *'customMap'* attribute - allows to override built-in replacement mapping with custom one
+  - Became deprecated - use **v:format.sanitizeString** instead
+  - Got *'customMap'* attribute - allows to override built-in replacement mapping with custom one
   - [v:format.sanitizeString](https://fluidtypo3.org/viewhelpers/vhs/master/Format/SanitizeStringViewHelper.html)
 
 - :exclamation: CompilableAsset concept removed
@@ -21,9 +34,27 @@
 - [#746](https://github.com/FluidTYPO3/vhs/pull/746) **v:resource.language** added - reads a language file and returns all the translations from it
   - [v:resource.language](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/LanguageViewHelper.html)
 
+- [#770](https://github.com/FluidTYPO3/vhs/pull/770) [#773](https://github.com/FluidTYPO3/vhs/pull/773) v:media.youtube got more control attributres:
+  - *'hideControl'* - hide player's control bar
+  - *'hideInfo'* - hide player's info bar
+  - *'playlist'* - comma seperated list of video IDs to be played
+  - *'loop'* - play the video in a loop
+  - *'start'* - start playing after seconds
+  - *'end'* - stop playing after seconds
+  - *'lightTheme'* - use the player's light theme
+  - *'videoQuality'* - set the player's video quality (hd1080,hd720,highres,large,medium,small)
+  - *'windowMode'* - Set the Window-Mode of the player (transparent,opaque). This is necessary for z-index handling in IE10/11.
+  - [v:media.youtube](https://fluidtypo3.org/viewhelpers/vhs/master/Media/YoutubeViewHelper.html)
+
+- [#751](https://github.com/FluidTYPO3/vhs/pull/751) v:iterator.filter also accepts an array as 'filter' attribute; in case of array provided as filter, each value of 'subject' is compared with each value of 'filter'
+
 - [#757](https://github.com/FluidTYPO3/vhs/pull/757) v:iterator.merge can be used in a chain
   - suggested usage: `{abc -> v:iterator.merge(b: def)}`
   - [v:iterator.merge](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/MergeViewHelper.html)
+
+- Contents of Fluid assets (asset's attribute *fluid="TRUE"*) can be stored (or overriden) with TS 'content' property
+  - See [commit message](https://github.com/FluidTYPO3/vhs/commit/a14e2bbe1734e20509399513d987626f3a28bda3)
+  - Check [asset TS settings](https://github.com/FluidTYPO3/vhs#asset-settings)
 
 - [#740](https://github.com/FluidTYPO3/vhs/pull/740) v:page.languageMenu got *'excludeQueryVars'* attribute - set to comma-separate list of GET variables to exclude from generated link
   - [v:page.languageMenu](https://fluidtypo3.org/viewhelpers/vhs/master/Page/LanguageMenuViewHelper.html)
@@ -60,8 +91,8 @@
 - [#688](https://github.com/FluidTYPO3/vhs/pull/688) **v:condition.type.isBoolean** added
   - [v:condition.type.isBoolean](https://fluidtypo3.org/viewhelpers/vhs/master/Condition/Type/IsBooleanViewHelper.html)
 
-- [#697](https://github.com/FluidTYPO3/vhs/pull/697) **v:format.removeXss** added - accepts *'string'* as argument and cleans it out from possible XSS  
-Not included in VH reference, so please check [commit](https://github.com/FluidTYPO3/vhs/commit/9bcb298d10722110401dca48263159f3ae5405a0)
+- [#697](https://github.com/FluidTYPO3/vhs/pull/697) **v:format.removeXss** added - accepts *'string'* as argument and cleans it out from possible XSS
+  - Not included in VH reference, so please check [commit](https://github.com/FluidTYPO3/vhs/commit/9bcb298d10722110401dca48263159f3ae5405a0)
 
 2.1.2 - 2014-10-04
 ------------------
