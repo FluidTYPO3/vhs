@@ -105,7 +105,7 @@ class SortViewHelper extends AbstractViewHelper {
 	/**
 	 * Sort an array
 	 *
-	 * @param array|ObjectStorage $array
+	 * @param array|\Iterator $array
 	 * @return array
 	 */
 	protected function sortArray($array) {
