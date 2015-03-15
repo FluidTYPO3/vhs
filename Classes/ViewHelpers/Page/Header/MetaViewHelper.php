@@ -54,7 +54,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper {
 			return;
 		}
 		if (TRUE === isset($this->arguments['content']) && FALSE === empty($this->arguments['content'])) {
-			$GLOBALS['TSFE']->getPageRenderer()->addMetaTag($this->renderTag($this->tagName));
+			$GLOBALS['TSFE']->getPageRenderer()->addMetaTag($this->renderTag($this->tagName, $this->arguments['content']));
 		}
 	}
 
