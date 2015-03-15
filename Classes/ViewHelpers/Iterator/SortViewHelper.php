@@ -73,8 +73,8 @@ class SortViewHelper extends AbstractViewHelper {
 	 *
 	 * Returns the same type as $subject. Ignores NULL values which would be
 	 * OK to use in an f:for (empty loop as result)
-	 *
 	 * @return mixed
+	 * @throws \Exception
 	 */
 	public function render() {
 		$subject = $this->getArgumentFromArgumentsOrTagContent('subject');
@@ -105,7 +105,7 @@ class SortViewHelper extends AbstractViewHelper {
 	/**
 	 * Sort an array
 	 *
-	 * @param array $array
+	 * @param array|ObjectStorage $array
 	 * @return array
 	 */
 	protected function sortArray($array) {
@@ -151,31 +151,7 @@ class SortViewHelper extends AbstractViewHelper {
 		foreach ($storage as $item) {
 			$temp->attach($item);
 		}
-		$sorted = array();
-		foreach ($storage as $index => $item) {
-			if (TRUE === isset($this->arguments['sortBy'])) {
-				$index = $this->getSortValue($item);
-			}
-			while (isset($sorted[$index])) {
-				$index .= '.1';
-			}
-			$sorted[$index] = $item;
-		}
-		if ('ASC' === $this->arguments['order']) {
-			ksort($sorted, $this->getSortFlags());
-		} elseif ('RAND' === $this->arguments['order']) {
-			$sortedKeys = array_keys($sorted);
-			shuffle($sortedKeys);
-			$backup = $sorted;
-			$sorted = array();
-			foreach ($sortedKeys as $sortedKey) {
-				$sorted[$sortedKey] = $backup[$sortedKey];
-			}
-		} elseif ('SHUFFLE' === $this->arguments['order']) {
-			shuffle($sorted);
-		} else {
-			krsort($sorted, $this->getSortFlags());
-		}
+		$sorted = $this->sortArray($storage);
 		$storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		foreach ($sorted as $item) {
 			$storage->attach($item);
