@@ -62,8 +62,8 @@ trait TagViewHelperTrait {
 	 * @param array $nonEmptyAttributes
 	 * @return string
 	 */
-	protected function renderTag($tagName, $content, array $attributes = array(), array $nonEmptyAttributes = array('id', 'class')) {
-		$trimmedContent = trim($content);
+	protected function renderTag($tagName, $content = NULL, array $attributes = array(), array $nonEmptyAttributes = array('id', 'class')) {
+		$trimmedContent = trim((string) $content);
 		if (TRUE === empty($trimmedContent) && TRUE === (boolean) $this->arguments['hideIfEmpty']) {
 			return '';
 		}

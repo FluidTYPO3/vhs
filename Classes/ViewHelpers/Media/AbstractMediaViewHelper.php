@@ -48,7 +48,7 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
 			$src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
 		} elseif ('BE' === TYPO3_MODE || FALSE === (boolean) $this->arguments['relative']) {
-			$src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $src;
+			$src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
 		}
 		return $src;
 	}
