@@ -239,7 +239,8 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		if (FALSE === empty($parent)) {
 			++$GLOBALS['TSFE']->recordRegister[$parent];
 		}
-		$html = $GLOBALS['TSFE']->cObj->RECORDS($conf);
+		$html = $GLOBALS['TSFE']->cObj->cObjGetSingle('RECORDS', $conf);
+
 		$GLOBALS['TSFE']->currentRecord = $parent;
 		if (FALSE === empty($parent)) {
 			--$GLOBALS['TSFE']->recordRegister[$parent];
