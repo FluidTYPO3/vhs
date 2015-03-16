@@ -82,16 +82,16 @@
         },
         {
             "name": "fluidtypo3/development",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FluidTYPO3/fluidtypo3-development.git",
-                "reference": "cbc20c32d206572056b0a773ce2efd6d9848145b"
+                "reference": "5ed293f9bcf12055490631b66d348207a42743b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FluidTYPO3/fluidtypo3-development/zipball/cbc20c32d206572056b0a773ce2efd6d9848145b",
-                "reference": "cbc20c32d206572056b0a773ce2efd6d9848145b",
+                "url": "https://api.github.com/repos/FluidTYPO3/fluidtypo3-development/zipball/5ed293f9bcf12055490631b66d348207a42743b7",
+                "reference": "5ed293f9bcf12055490631b66d348207a42743b7",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +101,7 @@
                 "phpunit/phpunit": "4.3.*",
                 "satooshi/php-coveralls": "*",
                 "squizlabs/php_codesniffer": "*",
-                "typo3/cms": "6.2.*"
+                "typo3/cms": "*"
             },
             "replace": {
                 "typo3/cms-composer-installers": "*"
@@ -136,7 +136,7 @@
                 "php",
                 "typo3"
             ],
-            "time": "2015-03-16 00:31:28"
+            "time": "2015-03-16 22:00:26"
         },
         {
             "name": "guzzle/guzzle",
@@ -1535,16 +1535,16 @@
         },
         {
             "name": "typo3/cms",
-            "version": "6.2.10",
+            "version": "7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/TYPO3.CMS.git",
-                "reference": "b3201dd1e9ffd33dbd55912626d6de248e8d5696"
+                "reference": "5fa3e3899f93a5fcc022ad2564c1f23855c81e5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/TYPO3.CMS/zipball/b3201dd1e9ffd33dbd55912626d6de248e8d5696",
-                "reference": "b3201dd1e9ffd33dbd55912626d6de248e8d5696",
+                "url": "https://api.github.com/repos/TYPO3/TYPO3.CMS/zipball/5fa3e3899f93a5fcc022ad2564c1f23855c81e5f",
+                "reference": "5fa3e3899f93a5fcc022ad2564c1f23855c81e5f",
                 "shasum": ""
             },
             "require": {
@@ -1553,7 +1553,7 @@
                 "ext-session": "*",
                 "ext-xml": "*",
                 "helhum/class-alias-loader": "1.0.*@dev",
-                "php": ">=5.3.7",
+                "php": ">=5.5.0",
                 "typo3/cms-composer-installers": "1.1.*@dev"
             },
             "replace": {
@@ -1572,7 +1572,6 @@
                 "typo3/cms-documentation": "self.version",
                 "typo3/cms-extbase": "self.version",
                 "typo3/cms-extensionmanager": "self.version",
-                "typo3/cms-extra-page-cm-options": "self.version",
                 "typo3/cms-feedit": "self.version",
                 "typo3/cms-felogin": "self.version",
                 "typo3/cms-filelist": "self.version",
@@ -1593,7 +1592,6 @@
                 "typo3/cms-lowlevel": "self.version",
                 "typo3/cms-opendocs": "self.version",
                 "typo3/cms-openid": "self.version",
-                "typo3/cms-perm": "self.version",
                 "typo3/cms-recordlist": "self.version",
                 "typo3/cms-recycler": "self.version",
                 "typo3/cms-reports": "self.version",
@@ -1616,8 +1614,10 @@
                 "typo3/cms-workspaces": "self.version"
             },
             "require-dev": {
-                "mikey179/vfsstream": "1.3.*@dev",
-                "phpunit/phpunit": "~4.4.0"
+                "fortawesome/font-awesome": "4.2.*",
+                "mikey179/vfsstream": "1.4.*@dev",
+                "phpunit/phpunit": "~4.4.0",
+                "twbs/bootstrap": "3.3.*"
             },
             "suggest": {
                 "ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
@@ -1629,22 +1629,10 @@
             "type": "typo3-cms-core",
             "extra": {
                 "branch-alias": {
-                    "dev-TYPO3_6-2": "6.2.x-dev"
+                    "dev-master": "7.x-dev"
                 },
-                "autoload-case-sensitivity": false,
                 "class-alias-maps": [
-                    "typo3/sysext/backend/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/core/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/cshmanual/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/extbase/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/extensionmanager/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/fluid/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/frontend/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/install/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/lang/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/recordlist/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/saltedpasswords/Migrations/Code/ClassAliasMap.php",
-                    "typo3/sysext/sv/Migrations/Code/ClassAliasMap.php"
+                    "typo3/sysext/core/Migrations/Code/ClassAliasMap.php"
                 ]
             },
             "autoload": {
@@ -1728,9 +1716,9 @@
                 "issues": "http://forge.typo3.org",
                 "irc": "irc://irc.freenode.net/#typo3-cms",
                 "news": "nntp://lists.typo3.org",
-                "source": "https://github.com/TYPO3/TYPO3.CMS/tree/TYPO3_6-2-10"
+                "source": "https://github.com/TYPO3/TYPO3.CMS/tree/TYPO3_7-1-0"
             },
-            "time": "2015-02-26 17:50:53"
+            "time": "2015-02-24 14:34:50"
         }
     ],
     "aliases": [],
