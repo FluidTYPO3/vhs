@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ec8995bc4678e5fb1af851a8a2be4494",
+    "hash": "8c47b60b16a525dba4972d84e018cc36",
     "packages": [],
     "packages-dev": [
         {
@@ -82,16 +82,16 @@
         },
         {
             "name": "fluidtypo3/development",
-            "version": "1.1.11",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FluidTYPO3/fluidtypo3-development.git",
-                "reference": "cd00d5894b1ddfddfef4b6e4b006ba4b7ce9317c"
+                "reference": "cbc20c32d206572056b0a773ce2efd6d9848145b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FluidTYPO3/fluidtypo3-development/zipball/cd00d5894b1ddfddfef4b6e4b006ba4b7ce9317c",
-                "reference": "cd00d5894b1ddfddfef4b6e4b006ba4b7ce9317c",
+                "url": "https://api.github.com/repos/FluidTYPO3/fluidtypo3-development/zipball/cbc20c32d206572056b0a773ce2efd6d9848145b",
+                "reference": "cbc20c32d206572056b0a773ce2efd6d9848145b",
                 "shasum": ""
             },
             "require": {
@@ -136,7 +136,7 @@
                 "php",
                 "typo3"
             ],
-            "time": "2015-03-06 03:18:16"
+            "time": "2015-03-16 00:31:28"
         },
         {
             "name": "guzzle/guzzle",
@@ -315,16 +315,16 @@
         },
         {
             "name": "namelesscoder/typo3-repository-client",
-            "version": "1.0.5",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NamelessCoder/typo3-repository-client.git",
-                "reference": "f099dc8c6f5a0c899498d8f92a95e0808badb689"
+                "reference": "51e4b17dd685c30c0434493d70400b6bf9a19723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NamelessCoder/typo3-repository-client/zipball/f099dc8c6f5a0c899498d8f92a95e0808badb689",
-                "reference": "f099dc8c6f5a0c899498d8f92a95e0808badb689",
+                "url": "https://api.github.com/repos/NamelessCoder/typo3-repository-client/zipball/51e4b17dd685c30c0434493d70400b6bf9a19723",
+                "reference": "51e4b17dd685c30c0434493d70400b6bf9a19723",
                 "shasum": ""
             },
             "require-dev": {
@@ -354,7 +354,7 @@
                 }
             ],
             "description": "Client for interacting with the official TYPO3 Extension Repository (TER). Contains API and CLI scripts.",
-            "time": "2015-03-03 20:20:31"
+            "time": "2015-03-15 02:00:17"
         },
         {
             "name": "phpunit/php-code-coverage",
