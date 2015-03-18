@@ -49,10 +49,12 @@ class AssetTest extends UnitTestCase {
 	 * @test
 	 */
 	public function canCreateAssetInstanceFromStaticFileFactoryWithRelativeFileAndTranslatesRelativeToAbsolutePath() {
-		$file = $this->getRelativeAssetFixturePath();
+		$file = 'Tests/Fixtures/Files/dummy.js';
+		$expected = $this->getAbsoluteAssetFixturePath();
 		$asset = Asset::createFromFile($file);
 		$this->assertInstanceOf('FluidTYPO3\Vhs\Asset', $asset);
-		$this->assertEquals(GeneralUtility::getFileAbsFileName($file), $asset->getPath());
+		$this->assertStringEndsWith($file, $asset->getPath());
+		$this->assertNotEquals($file, $asset->getPath());
 	}
 
 	/**
