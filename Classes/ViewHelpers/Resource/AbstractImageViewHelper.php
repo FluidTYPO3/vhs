@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
@@ -104,6 +105,11 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper {
 				throw new Exception('Could not get image resource for "' . htmlspecialchars($file->getCombinedIdentifier()) . '".', 1253191060);
 			}
 
+			if ((float) substr(TYPO3_version, 0, 3) < 7.1) {
+				$imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($imageInfo[3]);
+			} else {
+				$imageInfo[3] = GraphicalFunctions::pngToGifByImagemagick($imageInfo[3]);
+			}
 			$imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($imageInfo[3]);
 			$GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
 			$imageSource = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($imageInfo[3]);
