@@ -35,17 +35,18 @@ class FilterViewHelper extends AbstractViewHelper {
 	 * @param string $propertyName Optional property name to extract and use for comparison instead of the object; use on ObjectStorage etc. Note: supports dot-path expressions.
 	 * @param boolean $preserveKeys If TRUE, keys in the array are preserved - even if they are numeric
 	 * @param boolean $invert Invert the behavior of the view helper
+	 * @param boolean $nullFilter If TRUE and $filter is NULL (not set) - to filter NULL or empty values
 	 *
 	 * @return mixed
 	 */
-	public function render($subject = NULL, $filter = NULL, $propertyName = NULL, $preserveKeys = FALSE, $invert = FALSE) {
+	public function render($subject = NULL, $filter = NULL, $propertyName = NULL, $preserveKeys = FALSE, $invert = FALSE, $nullFilter = FALSE) {
 		if (NULL === $subject) {
 			$subject = $this->renderChildren();
 		}
 		if (NULL === $subject || (FALSE === is_array($subject) && FALSE === $subject instanceof \Traversable)) {
 			return array();
 		}
-		if (TRUE === is_null($filter) || '' === $filter) {
+		if ((FALSE === (boolean) $nullFilter && TRUE === is_null($filter)) || '' === $filter) {
 			return $subject;
 		}
 		if (TRUE === $subject instanceof \Traversable) {
