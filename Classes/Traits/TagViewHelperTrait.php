@@ -75,7 +75,9 @@ trait TagViewHelperTrait {
 		$this->tag->setTagName($tagName);
 		$this->tag->addAttributes($attributes);
 		$this->tag->forceClosingTag($forceClosingTag);
-		$this->tag->setContent($content);
+		if (NULL !== $content) {
+			$this->tag->setContent($content);
+		}
 		// process some attributes differently - if empty, remove the property:
 		foreach ($nonEmptyAttributes as $propertyName) {
 			$value = $this->arguments[$propertyName];
