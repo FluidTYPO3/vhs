@@ -25,9 +25,14 @@ class DateTimeViewHelper extends AbstractViewHelper {
 	 * @return \DateTime
 	 */
 	public function render() {
-		$now = time();
-		$dateTime = \DateTime::createFromFormat('U', $now);
-		return $dateTime;
+		return \DateTime::createFromFormat('U', $this->getTimestamp());
+	}
+
+	/**
+	 * @return integer
+	 */
+	protected function getTimestamp() {
+		return time();
 	}
 
 }
