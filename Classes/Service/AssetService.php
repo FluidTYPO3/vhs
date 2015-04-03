@@ -541,7 +541,7 @@ class AssetService implements SingletonInterface {
 				$rawPath = GeneralUtility::getFileAbsFileName($originalDirectory . (TRUE === empty($originalDirectory) ? '' : '/')) . $path;
 				$realPath = realpath($rawPath);
 				if (FALSE === $realPath) {
-					GeneralUtility::sysLog('Asset at path "' . $rawPath . '" not found. Processing skipped.', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+					GeneralUtility::sysLog('Asset at path "' . $rawPath . '" not found. Processing skipped.', 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 				} else {
 					if (FALSE === file_exists($temporaryFile)) {
 						copy($realPath, $temporaryFile);

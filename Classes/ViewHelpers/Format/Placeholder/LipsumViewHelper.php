@@ -85,7 +85,7 @@ class LipsumViewHelper extends AbstractViewHelper {
 				$lipsum = file_get_contents($sourceFile);
 			} else {
 				GeneralUtility::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
-					'The file was: ' . $sourceFile, 'Vhs');
+					'The file was: ' . $sourceFile, 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 				$lipsum = $this->lipsum;
 			}
 		}
