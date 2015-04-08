@@ -189,7 +189,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest {
 		return array(
 			array(NULL, NULL, FALSE),
 			array($user1, NULL, FALSE),
-			array(NULL, $user1, FALSE),
+			array(NULL, $user1, TRUE),
 			array($user1, $user1, TRUE),
 			array($user1, $user2, FALSE)
 		);
