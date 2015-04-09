@@ -717,6 +717,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			$pages = iterator_to_array($pages);
 		} elseif (TRUE === is_string($pages)) {
 			$pages = GeneralUtility::trimExplode(',', $pages, TRUE);
+		} elseif (TRUE === is_integer($pages)) {
+			$pages = (array) $pages;
 		}
 		if (FALSE === is_array($pages)) {
 			return array();
