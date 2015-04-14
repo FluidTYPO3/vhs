@@ -24,6 +24,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * - retrieving an argument either from arguments or from
  *   tag contents while also converting it to array.
  * - merge arrays with a switch to respect TYPO3 version.
+ * - Converts the value into an array. If the value is NULL,
+ *   then the value of the given argument name is used.
  */
 trait ArrayConsumingViewHelperTrait {
 
@@ -78,5 +80,31 @@ trait ArrayConsumingViewHelperTrait {
 			return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
 		}
 	}
+
+	/**
+	 * Mixed argument with CSV, array, Traversable
+	 *
+	 * @param mixed $value
+	 * @param string $argumentName
+	 * @param bool $useKeys
+	 *
+	 * @return array
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 */
+	public function convertValueOrGetArgumentAsArray($value, $argumentName, $useKeys = TRUE) {
+		if (NULL === $value) {
+			$value = $this->arguments[$argumentName];
+			if (NULL === $value) {
+				return array();
+			}
+			if (is_int($value)) {
+				return (array) $value;
+			}
+		}
+
+		return $this->arrayFromArrayOrTraversableOrCSV($value, $useKeys);
+	}
+
+
 
 }
