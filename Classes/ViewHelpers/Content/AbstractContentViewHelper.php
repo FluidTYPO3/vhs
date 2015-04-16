@@ -172,7 +172,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 			$conditions .= ' AND sectionIndex = 1';
 		}
 
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, 'uid', $order, $limit);
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
 		return $rows;
 	}
 
