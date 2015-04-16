@@ -37,6 +37,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	public function initializeArguments() {
 		$this->registerTagAttribute('name', 'string', 'Name property of meta tag');
+		$this->registerTagAttribute('property', 'string', 'Property of meta tag');
 		$this->registerTagAttribute('content', 'string', 'Content of meta tag');
 		$this->registerTagAttribute('http-equiv', 'string', 'Property: http-equiv');
 		$this->registerTagAttribute('scheme', 'string', 'Property: scheme');
@@ -54,7 +55,8 @@ class MetaViewHelper extends AbstractTagBasedViewHelper {
 			return;
 		}
 		if (TRUE === isset($this->arguments['content']) && FALSE === empty($this->arguments['content'])) {
-			$GLOBALS['TSFE']->getPageRenderer()->addMetaTag($this->renderTag($this->tagName, $this->arguments['content']));
+			$GLOBALS['TSFE']->getPageRenderer()
+				->addMetaTag($this->renderTag($this->tagName, NULL, array('content' => $this->arguments['content'])));
 		}
 	}
 

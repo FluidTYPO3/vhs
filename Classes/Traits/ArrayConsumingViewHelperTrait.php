@@ -46,14 +46,16 @@ trait ArrayConsumingViewHelperTrait {
 	/**
 	 * @param mixed $candidate
 	 * @param boolean $useKeys
+	 *
 	 * @return array
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 */
 	protected function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = TRUE) {
 		if (TRUE === $candidate instanceof \Traversable) {
 			return iterator_to_array($candidate, $useKeys);
-		} elseif (TRUE === $subject instanceof QueryResultInterface) {
-			/** @var QueryResultInterface $subject */
-			return $subject->toArray();
+		} elseif (TRUE === $candidate instanceof QueryResultInterface) {
+			/** @var QueryResultInterface $candidate */
+			return $candidate->toArray();
 		}
 		if (TRUE === is_string($candidate)) {
 			return GeneralUtility::trimExplode(',', $candidate, TRUE);

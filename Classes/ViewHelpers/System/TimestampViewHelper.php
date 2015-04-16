@@ -29,8 +29,14 @@ class TimestampViewHelper extends AbstractViewHelper {
 	 * @return integer
 	 */
 	public function render() {
-		$now = time();
-		return $now;
+		return $this->getTimestamp();
+	}
+
+	/**
+	 * @return integer
+	 */
+	protected function getTimestamp() {
+		return time();
 	}
 
 }

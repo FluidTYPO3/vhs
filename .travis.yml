@@ -1,0 +1,32 @@
+language: php
+
+sudo: false
+
+env: TYPO3="7.1.*"
+
+php:
+  - "5.6"
+  - "7"
+  - "hhvm"
+
+matrix:
+  include:
+    - php: "5.4"
+      env: TYPO3="6.2.*"
+    - php: "5.5"
+      env: TYPO3="7.1.*" CHECKSTYLE="YES" COVERAGE="YES"
+  allow_failures:
+    - php: "7"
+      env: TYPO3="7.1.*"
+    - php: "hhvm"
+      env: TYPO3="7.1.*"
+
+cache:
+  directories:
+    - vendor
+
+before_cache: touch vendor/.cached
+
+install: if [ -a vendor/.cached ] ; then echo ; else composer require typo3/cms:$TYPO3 ; fi;
+
+script: ./vendor/bin/ci-runner

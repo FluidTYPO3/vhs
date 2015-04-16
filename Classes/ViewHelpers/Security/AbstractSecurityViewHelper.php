@@ -139,7 +139,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 				return FALSE;
 			}
 		}
-		return FALSE;
+		return (boolean) (TRUE === is_object($currentFrontendUser));
 	}
 
 	/**

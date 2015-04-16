@@ -1,5 +1,19 @@
 # VHS Change log
 
+2.3.2 - upcoming
+------------------
+
+- [#798](https://github.com/FluidTYPO3/vhs/pull/798) v:page.header.meta got *'property'* attribute - used for open graph metadata
+  - [v:page.header.meta](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Header/MetaViewHelper.html)
+
+- [#799](https://github.com/FluidTYPO3/vhs/pull/799) v:iterator.filter got *'nullFilter'* attribute - allows to filter NULL or empty values
+  - [v:iterator.filter](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/FilterViewHelper.html)
+
+2.3.1 - 2015-03-15
+------------------
+
+- No important changes
+
 2.3.0 - 2015-03-09
 ------------------
 
@@ -11,6 +25,8 @@
   - [ArrayConsumingViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
   - [TemplateVariableViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/0630c1a685b36b3bf799220a8e06b9c57ccadefe)
   - [TagViewHelperTrait](https://github.com/FluidTYPO3/vhs/commit/7def7c1cb1f0cb5d125465cdd65a854851b6d7e3)
+
+- :exclamation: Support of TYPO3 6.0 and 6.1 was dropped
 
 - :exclamation: Minimum PHP requirement is now 5.4.0 due to the use of Traits
   - [Details](https://github.com/FluidTYPO3/vhs/commit/d1b732dbcd61fbdfd27df323265cbcb77618b4a3)
@@ -30,6 +46,9 @@
   - [v:condition.context.isTesting](https://fluidtypo3.org/viewhelpers/vhs/master/Condition/Context/IsTestingViewHelper.html) - returns TRUE if application context is 'Testing' or a sub-context of it
   - [v:context.get](https://fluidtypo3.org/viewhelpers/vhs/master/Context/GetViewHelper.html) - returns the current application context which may include possible sub-contexts
   - **Note**: these ViewHelpers will work on TYPO3 >= 6.2 only. [Read more about contexts in TYPO3](http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context)
+
+- [#771](https://github.com/FluidTYPO3/vhs/pull/771) **v:variable.extensionConfiguration** added - reads extensions settings located in ext_conf_template.txt
+  - [v:variable.extensionConfiguration](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/ExtensionConfigurationViewHelper.html) 
 
 - [#746](https://github.com/FluidTYPO3/vhs/pull/746) **v:resource.language** added - reads a language file and returns all the translations from it
   - [v:resource.language](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/LanguageViewHelper.html)
@@ -62,7 +81,6 @@
 - v:debug got more intelligence in debugging ObjectAccessors - shows properties only accessible in Fluid
   - [v:debug](https://fluidtypo3.org/viewhelpers/vhs/master/DebugViewHelper.html)
 
-
 2.2.0 - 2014-12-03
 ------------------
 
@@ -83,7 +101,6 @@
   - [v:page.menu.list](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Menu/ListViewHelper.html)
   - [v:page.breadCrumb](https://fluidtypo3.org/viewhelpers/vhs/master/Page/BreadCrumbViewHelper.html)
   - [v:page.menu](https://fluidtypo3.org/viewhelpers/vhs/master/Page/MenuViewHelper.html)
-  
 
 2.1.3 - 2014-10-24
 ------------------

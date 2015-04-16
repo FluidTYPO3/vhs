@@ -47,32 +47,28 @@ class OrViewHelper extends AbstractViewHelper {
 			$content = $this->renderChildren();
 		}
 
-		if (FALSE === empty($content)) {
-			return NULL !== $arguments ? vsprintf($content, $arguments) : $content;
-		}
-
-		if (FALSE === is_string($alternative) || 0 !== strpos($alternative, 'LLL:')) {
+		if (FALSE === is_string($alternative)) {
 			return $alternative;
 		}
 
 		if (0 === strpos($alternative, 'LLL:EXT:')) {
-			return LocalizationUtility::translate($alternative, NULL, $arguments);
+			$alternative = LocalizationUtility::translate($alternative, NULL, $arguments);
+		} elseif (0 !== strpos($alternative, 'LLL:')) {
+			$extensionName = $this->arguments['extensionName'];
+			if (NULL === $extensionName) {
+				$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
+			}
+			$translatedAlternative = LocalizationUtility::translate(substr($alternative, 4), $extensionName, $arguments);
+			if (NULL !== $translatedAlternative) {
+				$alternative = $translatedAlternative;
+			}
 		}
 
-		$translate = substr($alternative, 4);
-		$extensionName = $this->arguments['extensionName'];
-
-		if (NULL === $extensionName) {
-			$request = $this->controllerContext->getRequest();
-			$extensionName = $request->getControllerExtensionName();
-		}
-
-		$content = LocalizationUtility::translate($translate, $extensionName, $arguments);
-		if (NULL === $content) {
+		if (TRUE === empty($content)) {
 			$content = $alternative;
 		}
 
-		return $content;
+		return NULL !== $arguments && FALSE === empty($content) ? vsprintf($content, $arguments) : $content;
 	}
 
 }
