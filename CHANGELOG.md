@@ -1,6 +1,6 @@
 # VHS Change log
 
-2.3.2 - upcoming
+2.3.2 - 2015-04-16
 ------------------
 
 - [#798](https://github.com/FluidTYPO3/vhs/pull/798) v:page.header.meta got *'property'* attribute - used for open graph metadata
@@ -8,6 +8,10 @@
 
 - [#799](https://github.com/FluidTYPO3/vhs/pull/799) v:iterator.filter got *'nullFilter'* attribute - allows to filter NULL or empty values
   - [v:iterator.filter](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/FilterViewHelper.html)
+
+- v:or 'arguments' array also applies on 'alternative' text
+  - Format is same, as in PHP [sprintf](http://php.net/manual/ru/function.sprintf.php) 
+  - [v:or](https://fluidtypo3.org/viewhelpers/vhs/master/OrViewHelper.html)
 
 2.3.1 - 2015-03-15
 ------------------
