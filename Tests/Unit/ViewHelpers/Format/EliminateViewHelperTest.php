@@ -114,6 +114,16 @@ class EliminateViewHelperTest extends AbstractViewHelperTest {
 	/**
 	 * @test
 	 */
+	public function removesWhitespaceBetweenHtmlTags() {
+		$arguments = $this->arguments;
+		$arguments['whitespaceBetweenHtmlTags'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', ' <p> Foo </p> <p> Bar </p> ', $arguments);
+		$this->assertSame('<p> Foo </p><p> Bar </p>', $test);
+	}
+
+	/**
+	 * @test
+	 */
 	public function removesCharactersRespectsCaseSensitive() {
 		$arguments = $this->arguments;
 		$arguments['characters'] = 'abc';
