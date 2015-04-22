@@ -41,7 +41,7 @@ class RandomViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$randomElement = $array[array_rand($subject)];
+		$randomElement = $subject[array_rand($subject)];
 		return $this->renderChildrenWithVariableOrReturnInput($randomElement);
 	}
 
