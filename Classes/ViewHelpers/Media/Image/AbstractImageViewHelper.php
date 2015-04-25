@@ -117,6 +117,10 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
 			$src = substr($src, 3);
 		}
+		if (is_object($src) && ($src instanceof \TYPO3\CMS\Extbase\Domain\Model\FileReference)) {
+			$src = $src->getUid();
+			$setup['treatIdAsReference'] = TRUE;
+		}
 		$this->imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
 		if (FALSE === is_array($this->imageInfo)) {
