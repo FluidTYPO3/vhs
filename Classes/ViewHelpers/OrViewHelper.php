@@ -26,7 +26,7 @@ class OrViewHelper extends AbstractViewHelper {
 	 * @return void
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('alternative', 'mixed', 'Alternative if content is empty, can use LLL: shortcut', FALSE, '');
+		$this->registerArgument('alternative', 'mixed', 'Alternative if content is empty, can use LLL: shortcut', FALSE);
 		$this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string', FALSE, NULL);
 		$this->registerArgument('extensionName', 'string', 'UpperCamelCase extension name without vendor prefix', FALSE, NULL);
 	}
@@ -36,21 +36,24 @@ class OrViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render($content = NULL) {
-		$alternative = $this->arguments['alternative'];
-		$arguments = (array) $this->arguments['arguments'];
-
-		if (0 === count($arguments)) {
-			$arguments = NULL;
-		}
-
 		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
-
-		if (FALSE === is_string($alternative)) {
-			return $alternative;
+		if (TRUE === empty($content)) {
+			$content = $this->getAlternativeValue();
 		}
+		return $content;
+	}
 
+	/**
+	 * @return mixed
+	 */
+	protected function getAlternativeValue() {
+		$alternative = $this->arguments['alternative'];
+		$arguments = (array) $this->arguments['arguments'];
+		if (0 === count($arguments)) {
+			$arguments = NULL;
+		}
 		if (0 === strpos($alternative, 'LLL:EXT:')) {
 			$alternative = LocalizationUtility::translate($alternative, NULL, $arguments);
 		} elseif (0 !== strpos($alternative, 'LLL:')) {
@@ -63,12 +66,7 @@ class OrViewHelper extends AbstractViewHelper {
 				$alternative = $translatedAlternative;
 			}
 		}
-
-		if (TRUE === empty($content)) {
-			$content = $alternative;
-		}
-
-		return NULL !== $arguments && FALSE === empty($content) ? vsprintf($content, $arguments) : $content;
+		return NULL !== $arguments && FALSE === empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
 	}
 
 }
