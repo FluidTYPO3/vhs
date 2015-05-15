@@ -27,8 +27,19 @@ class EliminateViewHelperTest extends AbstractViewHelperTest {
 		'windowsBreaks' => FALSE,
 		'digits' => FALSE,
 		'letters' => FALSE,
-		'nonAscii' => FALSE
+		'nonAscii' => FALSE,
+		'nonAlphanumeric' => FALSE
 	);
+
+	/**
+	 * @test
+	 */
+	public function removesNonAlphanumeric() {
+		$arguments = $this->arguments;
+		$arguments['nonAlphanumeric'] = TRUE;
+		$test = $this->executeViewHelperUsingTagContent('Text', 'fooøæå!"bar', $arguments);
+		$this->assertSame('foobar', $test);
+	}
 
 	/**
 	 * @test

@@ -39,6 +39,7 @@ class EliminateViewHelper extends AbstractViewHelper {
 		$this->registerArgument('digits', 'boolean', 'Eliminates all number characters (but not the dividers between floats converted to strings)', FALSE, FALSE);
 		$this->registerArgument('letters', 'boolean', 'Eliminates all letters (non-numbers, non-whitespace, non-syntactical)', FALSE, FALSE);
 		$this->registerArgument('nonAscii', 'boolean', 'Eliminates any ASCII char', FALSE, FALSE);
+		$this->registerArgument('nonAlphanumeric', 'boolean', 'Eliminates any none alphanumeric char', FALSE, FALSE);
 	}
 
 	/**
@@ -78,6 +79,9 @@ class EliminateViewHelper extends AbstractViewHelper {
 		}
 		if (TRUE === $this->arguments['nonAscii']) {
 			$content = $this->eliminateNonAscii($content);
+		}
+		if (TRUE === $this->arguments['nonAlphanumeric']) {
+			$content = $this->eliminateNonAlphanumeric($content);
 		}
 		return $content;
 	}
@@ -202,6 +206,15 @@ class EliminateViewHelper extends AbstractViewHelper {
 		$caseSensitive = (boolean) $this->arguments['caseSensitive'];
 		$caseSensitiveIndicator = TRUE === $caseSensitive ? 'i' : '';
 		$content = preg_replace('/[^(\x20-\x7F)]*/' . $caseSensitiveIndicator, '', $content);
+		return $content;
+	}
+
+	/**
+	 * @param string $content
+	 * @return string
+	 */
+	protected function eliminateNonAlphanumeric($content) {
+		$content = preg_replace('/[^A-Za-z0-9]*/', '', $content);
 		return $content;
 	}
 
