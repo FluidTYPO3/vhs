@@ -91,9 +91,6 @@ class AlternateViewHelper extends AbstractViewHelper {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-		unset($languages[$currentLanguageUid]);
-
 		/** @var UriBuilder $uriBuilder */
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uriBuilder = $uriBuilder->reset()
