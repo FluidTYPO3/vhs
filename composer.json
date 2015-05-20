@@ -29,6 +29,9 @@
     "require-dev": {
         "fluidtypo3/development": "*"
     },
+    "suggest": {
+        "ext-tidy": "Allows to make use of the tidy ViewHelper"
+    },
     "repositories": [
         {
             "type": "package",
@@ -45,9 +48,9 @@
             "type": "package",
             "package": {
                 "name": "typo3/cms",
-                "version": "7.1.0",
+                "version": "7.2.0",
                 "dist": {
-                    "url": "https://github.com/TYPO3/TYPO3.CMS/archive/7.1.0.zip",
+                    "url": "https://github.com/TYPO3/TYPO3.CMS/archive/7.2.0.zip",
                     "type": "zip"
                 }
             }

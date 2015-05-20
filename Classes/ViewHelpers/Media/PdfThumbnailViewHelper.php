@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-class PdfThumbnailViewHelper extends ImageViewhelper {
+class PdfThumbnailViewHelper extends ImageViewHelper {
 
 	/**
 	 * @return void
