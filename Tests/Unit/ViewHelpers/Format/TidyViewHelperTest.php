@@ -34,6 +34,7 @@ class TidyViewHelperTest extends AbstractViewHelperTest {
 	public function canTidySourceFromTagContent() {
 		$instance = $this->createInstance();
 		if (FALSE === ObjectAccess::getProperty($instance, 'hasTidy', TRUE)) {
+			$this->markTestSkipped('No tidy support');
 			return;
 		}
 		$source = '<foo> <bar>
@@ -48,6 +49,7 @@ class TidyViewHelperTest extends AbstractViewHelperTest {
 	public function canTidySourceFromArgument() {
 		$instance = $this->createInstance();
 		if (FALSE === ObjectAccess::getProperty($instance, 'hasTidy', TRUE)) {
+			$this->markTestSkipped('No tidy support');
 			return;
 		}
 		$source = '<foo> <bar>
