@@ -1,5 +1,14 @@
 # VHS Change log
 
+2.3.3 - 2015-05-20
+------------------
+
+- [#826](https://github.com/FluidTYPO3/vhs/pull/826) **v:format.wordWrap** added - breaks a *'subject'* into strings with maximum size of *'limit'* (default = 80) characters, breaking with *'break'* (default = PHP_EOL) and concatenating them with *'glue'* (default = PHP_EOL)
+  - [v:format.wordWrap](https://fluidtypo3.org/viewhelpers/vhs/master/Format/WordWrapViewHelper.html)
+
+- [#819](https://github.com/FluidTYPO3/vhs/pull/819) v:format.eliminate got *'whitespaceBetweenHtmlTags'* attribute, which makes VH to remove all spaces between HTML tags
+  - [v:format.eliminate](https://fluidtypo3.org/viewhelpers/vhs/master/Format/EliminateViewHelper.html)
+
 2.3.2 - 2015-04-16
 ------------------
 
