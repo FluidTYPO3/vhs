@@ -129,7 +129,7 @@ class PageSelectService implements SingletonInterface {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$addWhere = self::$pageSelect->enableFields('pages');
+		$addWhere = self::$pageSelect->enableFields('pages', 0);
 		if (0 < count($allowedDoktypeList)) {
 			$addWhere .= ' AND doktype IN (' . implode(',', $allowedDoktypeList) . ')';
 		} else {
