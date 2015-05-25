@@ -622,7 +622,7 @@ class AssetService implements SingletonInterface {
 		} else {
 			$content = $this->buildAsset($asset);
 		}
-		if ('css' === $assetSettings['type']) {
+		if (('css' === $assetSettings['type']) && (TRUE === (boolean) $assetSettings['rewrite'])) {
 			$content = $this->detectAndCopyFileReferences($content, $fileRelativePath);
 		}
 		return $content;
