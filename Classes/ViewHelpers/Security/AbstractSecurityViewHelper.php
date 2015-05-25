@@ -195,7 +195,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper {
 	public function assertBackendUserLoggedIn($backendUser = NULL) {
 		$currentBackendUser = $this->getCurrentBackendUser();
 		if (NULL !== $backendUser) {
-			if ($currentBackendUser['uid'] === $backendUser) {
+			if ((integer) $currentBackendUser['uid'] === (integer) $backendUser) {
 				return TRUE;
 			} else {
 				return FALSE;
