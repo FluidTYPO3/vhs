@@ -21,11 +21,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper;
 class BreadCrumbViewHelper extends AbstractMenuViewHelper {
 
 	/**
-	 * @var array
-	 */
-	protected $backups = array('rootLine');
-
-	/**
 	 * @return void
 	 */
 	public function initializeArguments() {
@@ -39,7 +34,6 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper {
 	 * @return string
 	 */
 	public function render() {
-		$this->backups = array($this->arguments['as']);
 		$pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
 		$entryLevel = $this->arguments['entryLevel'];
 		$endLevel = $this->arguments['endLevel'];

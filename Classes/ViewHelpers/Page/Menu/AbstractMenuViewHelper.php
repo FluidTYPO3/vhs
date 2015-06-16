@@ -34,11 +34,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	/**
 	 * @var array
 	 */
-	protected $backups = array('menu', 'rootLine');
-
-	/**
-	 * @var array
-	 */
 	private $backupValues = array();
 
 	/**
@@ -596,7 +591,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return void
 	 */
 	public function backupVariables() {
-		foreach ($this->backups as $var) {
+		$backups = array($this->arguments['as'], $this->arguments['rootLineAs']);
+		foreach ($backups as $var) {
 			if (TRUE === $this->templateVariableContainer->exists($var)) {
 				$this->backupValues[$var] = $this->templateVariableContainer->get($var);
 				$this->templateVariableContainer->remove($var);
