@@ -1,5 +1,11 @@
 # VHS Change log
 
+upcoming
+------------------
+
+- [#847](https://github.com/FluidTYPO3/vhs/pull/847) All the menu ViewHelpers got rid of hardcoded backup values
+	- This allows to use any variable names in 'as' and 'rootLineAs' attributes
+
 2.3.3 - 2015-05-20
 ------------------
 
