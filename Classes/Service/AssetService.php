@@ -340,29 +340,35 @@ class AssetService implements SingletonInterface {
 	private function generateTagForAssetType($type, $content, $file = NULL) {
 		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
 		$tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
+		if (NULL === $file && TRUE === empty($content)) {
+			$content = '<!-- Empty tag content -->';
+		}
 		switch ($type) {
 			case 'js':
 				$tagBuilder->setTagName('script');
+				$tagBuilder->forceClosingTag(TRUE);
 				$tagBuilder->addAttribute('type', 'text/javascript');
 				if (NULL === $file) {
 					$tagBuilder->setContent($content);
 				} else {
 					$tagBuilder->addAttribute('src', $file);
-					$tagBuilder->forceClosingTag(TRUE);
 				}
 				break;
 			case 'css':
 				if (NULL === $file) {
 					$tagBuilder->setTagName('style');
+					$tagBuilder->forceClosingTag(TRUE);
 					$tagBuilder->addAttribute('type', 'text/css');
 					$tagBuilder->setContent($content);
 				} else {
+					$tagBuilder->forceClosingTag(FALSE);
 					$tagBuilder->setTagName('link');
 					$tagBuilder->addAttribute('rel', 'stylesheet');
 					$tagBuilder->addAttribute('href', $file);
 				}
 				break;
 			case 'meta':
+				$tagBuilder->forceClosingTag(FALSE);
 				$tagBuilder->setTagName('meta');
 				break;
 			default:
