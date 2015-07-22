@@ -90,6 +90,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('rootLineAs', 'string', 'If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'rootLine');
 		$this->registerArgument('excludePages', 'mixed', 'Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.', FALSE, '');
 		$this->registerArgument('includeAnchorTitle', 'boolean', 'If TRUE, includes the page title as title attribute on the anchor.', FALSE, TRUE);
+		$this->registerArgument('forceAbsoluteUrl', 'boolean', 'If TRUE, the menu will be rendered with absolute URLs', FALSE, FALSE);
 	}
 
 	/**
@@ -332,11 +333,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (TRUE === (PageRepository::DOKTYPE_MOUNTPOINT === $doktype)) {
 			$pageUid = $page['mountedPageUid'];
 		}
+		$forceAbsoluteUrl = (boolean) $this->arguments['forceAbsoluteUrl'];
 		$config = array(
 			'parameter' => $pageUid,
 			'returnLast' => 'url',
 			'additionalParams' => '',
 			'useCacheHash' => FALSE,
+			'forceAbsoluteUrl' => $forceAbsoluteUrl,
 		);
 		// Append mountpoint parameter to urls of pages of a mounted subtree
 		$mountPointParameter = NULL;
