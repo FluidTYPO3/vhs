@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -93,6 +94,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		$format = $this->arguments['format'];
 		$quality = $this->arguments['quality'];
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+
+		if (is_object($src) && $src instanceof FileReference) {
+			$src = $src->getUid();
+			$treatIdAsReference = TRUE;
+		}
 
 		if ('BE' === TYPO3_MODE) {
 			$this->simulateFrontendEnvironment();
