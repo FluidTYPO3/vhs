@@ -113,7 +113,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper {
 			$imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($imageInfo[3]);
 			$GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
 			
-			if (TRUE ===GeneralUtility::isValidUrl($imageInfo[3])) {
+			if (TRUE === GeneralUtility::isValidUrl($imageInfo[3])) {
 				$imageSource = $imageInfo[3];
 			} else {
 				$imageSource = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($imageInfo[3]);
