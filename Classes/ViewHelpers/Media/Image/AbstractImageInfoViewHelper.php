@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -41,7 +42,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('src', 'string', 'Path to or id of the image file to determine info for.', TRUE);
+		$this->registerArgument('src', 'mixed', 'Path to or id of the image file to determine info for. In case a FileReference is supplied, treatIdAsUid and treatIdAsReference will automatically be activated.', TRUE);
 		$this->registerArgument('treatIdAsUid', 'boolean', 'If TRUE, the path argument is treated as a resource uid.', FALSE, FALSE);
 		$this->registerArgument('treatIdAsReference', 'boolean', 'If TRUE, the path argument is treated as a reference uid and will be resolved to a resource via sys_file_reference.', FALSE, FALSE);
 	}
@@ -60,6 +61,12 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 			if (NULL === $src) {
 				return array();
 			}
+		}
+
+		if (is_object($src) && $src instanceof FileReference) {
+			$src = $src->getUid();
+			$treatIdAsUid = TRUE;
+			$treatIdAsReference = TRUE;
 		}
 
 		if (TRUE === $treatIdAsUid || TRUE === $treatIdAsReference) {
