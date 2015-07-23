@@ -94,6 +94,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		$format = $this->arguments['format'];
 		$quality = $this->arguments['quality'];
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+		
+		if (is_object($src) && $src instanceof \TYPO3\CMS\Extbase\Domain\Model\FileReference) {
+			$src = $src->getUid();
+			$treatIdAsReference = TRUE;
+		}
 
 		if ('BE' === TYPO3_MODE) {
 			$this->simulateFrontendEnvironment();

@@ -41,7 +41,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('src', 'string', 'Path to or id of the image file to determine info for.', TRUE);
+		$this->registerArgument('src', 'mixed', 'Path to or id of the image file to determine info for. In case a FileReference is supplied, treatIdAsUid and treatIdAsReference will automatically be activated.', TRUE);
 		$this->registerArgument('treatIdAsUid', 'boolean', 'If TRUE, the path argument is treated as a resource uid.', FALSE, FALSE);
 		$this->registerArgument('treatIdAsReference', 'boolean', 'If TRUE, the path argument is treated as a reference uid and will be resolved to a resource via sys_file_reference.', FALSE, FALSE);
 	}
@@ -54,6 +54,12 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 		$src = $this->arguments['src'];
 		$treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+
+		if (is_object($src) && $src instanceof \TYPO3\CMS\Extbase\Domain\Model\FileReference) {
+			$src = $src->getUid();
+			$treatIdAsUid = TRUE;
+			$treatIdAsReference = TRUE;
+		}
 
 		if (NULL === $src) {
 			$src = $this->renderChildren();
