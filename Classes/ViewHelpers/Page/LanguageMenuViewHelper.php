@@ -123,7 +123,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 			$classes = array();
 			if (TRUE === (boolean) $var['inactive']) {
 				$classes[] = 'inactive';
-			} elseif (TRUE === (boolean) $var['current']) {
+			}
+			if (TRUE === (boolean) $var['current']) {
 				$classes[] = $this->arguments['classCurrent'];
 			}
 			if (0 === $index) {
