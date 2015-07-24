@@ -133,7 +133,8 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 		$this->registerArgument('rewrite', 'boolean', 'If FALSE, this Asset will be included as is without any processing of contained urls', FALSE, TRUE);
 		$this->registerArgument('fluid', 'boolean', 'If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "arguments" attribute or every available template variable if "arguments" not specified', FALSE, FALSE);
 		$this->registerArgument('variables', 'mixed', 'An optional array of arguments which you use inside the Asset, be it standalone or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same', FALSE, FALSE);
-		$this->registerArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
+		$this->registerArgument('allowMoveToFooter', 'boolean', 'DEPRECATED. Use movable instead.', FALSE, TRUE);
+		$this->registerArgument('movable', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
 		$this->registerArgument('trim', 'boolean', 'DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn\'t do anything.', FALSE, FALSE);
 		$this->registerArgument('namedChunks', 'boolean', 'If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency', FALSE, FALSE);
 	}
@@ -356,6 +357,11 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 		$settings = $this->getSettings();
 		$assetSettings = $this->arguments;
 		$assetSettings['type'] = $this->getType();
+		//TODO: Remove with deprecated argument
+		if (TRUE === $this->hasArgument('allowMoveToFooter')) {
+			$assetSettings['movable'] = $this->arguments['allowMoveToFooter'];
+			unset($assetSettings['allowMoveToFooter']);
+		}
 		if (TRUE === isset($settings['asset']) && TRUE === is_array($settings['asset'])) {
 			$assetSettings = $this->mergeArrays($assetSettings, $settings['asset']);
 		}
@@ -439,7 +445,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 	 */
 	public function assertAllowedInFooter() {
 		$settings = $this->getAssetSettings();
-		if (TRUE === (isset($settings['allowMoveToFooter']) && $settings['allowMoveToFooter'] < 1)) {
+		if (TRUE === (isset($settings['movable']) && $settings['movable'] < 1)) {
 			return FALSE;
 		}
 		return TRUE;
