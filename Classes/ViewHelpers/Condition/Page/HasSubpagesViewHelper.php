@@ -51,7 +51,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper {
 		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$menu = $this->pageSelect->getMenu($pageUid, array(), '', $showHiddenInMenu);
+		$menu = $this->pageSelect->getMenu($pageUid, [], '', $showHiddenInMenu);
 		$pageHasSubPages = (0 < count($menu));
 		if (TRUE === $pageHasSubPages) {
 			return $this->renderThenChild();

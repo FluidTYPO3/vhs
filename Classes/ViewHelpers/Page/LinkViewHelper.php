@@ -63,7 +63,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerTagAttribute('target', 'string', 'Target of link', FALSE);
 		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
 		$this->registerArgument('pageUid', 'integer', 'UID of the page to create the link and fetch the title for.', FALSE, 0);
-		$this->registerArgument('additionalParams', 'array', 'Query parameters to be attached to the resulting URI', FALSE, array());
+		$this->registerArgument('additionalParams', 'array', 'Query parameters to be attached to the resulting URI', FALSE, []);
 		$this->registerArgument('pageType', 'integer', 'Type of the target page. See typolink.parameter', FALSE, 0);
 		$this->registerArgument('noCache', 'boolean', 'When TRUE disables caching for the target page. You should not need this.', FALSE, FALSE);
 		$this->registerArgument('noCacheHash', 'boolean', 'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this.', FALSE, FALSE);
@@ -72,7 +72,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 			'to the page even though the page cannot be accessed.', FALSE, FALSE);
 		$this->registerArgument('absolute', 'boolean', 'When TRUE, the URI of the rendered link is absolute', FALSE, FALSE);
 		$this->registerArgument('addQueryString', 'boolean', 'When TRUE, the current query parameters will be kept in the URI', FALSE, FALSE);
-		$this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE', FALSE, array());
+		$this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE', FALSE, []);
 		$this->registerArgument('titleFields', 'string', 'CSV list of fields to use as link label - default is "nav_title,title", change to' .
 			'for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved' .
 			'AFTER page field overlays.', FALSE, 'nav_title,title');
@@ -142,9 +142,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 		// Check if we should assign page title to the template variable container
 		$pageTitleAs = $this->arguments['pageTitleAs'];
 		if (FALSE === empty($pageTitleAs)) {
-			$variables = array($pageTitleAs => $title);
+			$variables = [$pageTitleAs => $title];
 		} else {
-			$variables = array();
+			$variables = [];
 		}
 
 		// Render childs to see if an alternative title content should be used

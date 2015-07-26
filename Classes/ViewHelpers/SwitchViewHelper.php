@@ -38,7 +38,7 @@ class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInte
 	/**
 	 * @var array
 	 */
-	private $childNodes = array();
+	private $childNodes = [];
 
 	/**
 	 * @var mixed
@@ -107,11 +107,11 @@ class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInte
 	 * @return void
 	 */
 	protected function storeBackup(RenderingContextInterface $context) {
-		$this->backup = array(
+		$this->backup = [
 			$context->getViewHelperVariableContainer()->get('FluidTYPO3\Vhs\ViewHelpers\SwitchViewHelper', 'switchCaseValue'),
 			$this->determineBooleanOf($context, 'switchBreakRequested'),
 			$this->determineBooleanOf($context, 'switchContinueUntilBreak')
-		);
+		];
 	}
 
 	/**

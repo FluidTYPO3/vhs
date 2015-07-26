@@ -29,7 +29,7 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->fixture = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper', array('hasArgument'));
+		$this->fixture = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper', ['hasArgument']);
 	}
 
 	/**
@@ -43,25 +43,25 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function simpleStructures() {
-		$structures = array(
+		$structures = [
 			// structure, key, expected
-			'flat associative array' => array(
-				array('myKey' => 'myValue'),
+			'flat associative array' => [
+				['myKey' => 'myValue'],
 				'myKey',
 				'myValue'
-			),
-			'deeper associative array' => array(
-				array(
-					'myFirstKey' => array(
-						'mySecondKey' => array(
+			],
+			'deeper associative array' => [
+				[
+					'myFirstKey' => [
+						'mySecondKey' => [
 							'myThirdKey' => 'myValue'
-						)
-					)
-				),
+						]
+					]
+				],
 				'myFirstKey.mySecondKey.myThirdKey',
 				'myValue'
-			),
-		);
+			],
+		];
 
 		return $structures;
 	}
@@ -105,75 +105,75 @@ class ExtractViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function nestedStructures() {
-		$structures = array(
+		$structures = [
 			// structure, key, expected
-			'simple indexed_search searchWords array' => array(
-				array(
-					0 => array(
+			'simple indexed_search searchWords array' => [
+				[
+					0 => [
 						'sword' => 'firstWord',
 						'oper' => 'AND'
-					),
-				),
+					],
+				],
 				'sword',
-				array(
+				[
 					'firstWord'
-				)
-			),
-			'interesting indexed_search searchWords array' => array(
-				array(
-					0 => array(
+				]
+			],
+			'interesting indexed_search searchWords array' => [
+				[
+					0 => [
 						'sword' => 'firstWord',
 						'oper' => 'AND'
-					),
-					1 => array(
+					],
+					1 => [
 						'sword' => 'secondWord',
 						'oper' => 'AND'
-					),
-					3 => array(
+					],
+					3 => [
 						'sword' => 'thirdWord',
 						'oper' => 'AND'
-					)
-				),
+					]
+				],
 				'sword',
-				array(
+				[
 					'firstWord',
 					'secondWord',
 					'thirdWord'
-				)
-			),
-			'ridiculously nested array' => array(
-				array(
-					array(
-						array(
-							array(
-								array(
-									array(
+				]
+			],
+			'ridiculously nested array' => [
+				[
+					[
+						[
+							[
+								[
+									[
 										'l' => 'some'
-									)
-								)
-							),
-							array(
+									]
+								]
+							],
+							[
 								'l' => 'text'
-							)
-						)
-					)
-				),
+							]
+						]
+					]
+				],
 				'l',
-				array(
+				[
 					0 => 'some',
 					1 => 'text',
-				)
-			),
-			'ObjectStorage containing FrontendUser' => array(
+				]
+			],
+			'ObjectStorage containing FrontendUser' => [
 				$this->constructObjectStorageContainingFrontendUser(),
 				'firstname',
-				array(
+				[
 					'Peter',
 					'Paul',
 					'Marry'
-				)
-			),
-		);
+				]
+			],
+		];
 
 		return $structures;
 	}

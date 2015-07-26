@@ -19,7 +19,7 @@ class MinimumViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testSingleArgument() {
-		$this->executeSingleArgumentTest(array(1, 3), 1);
+		$this->executeSingleArgumentTest([1, 3], 1);
 	}
 
 	/**
@@ -33,14 +33,14 @@ class MinimumViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testDualArgumentBothIterators() {
-		$this->executeDualArgumentTest(array(4, 8), array(8, 8), array(4, 8));
+		$this->executeDualArgumentTest([4, 8], [8, 8], [4, 8]);
 	}
 
 	/**
 	 * @test
 	 */
 	public function executeMissingArgumentTest() {
-		$result = $this->executeViewHelper(array());
+		$result = $this->executeViewHelper([]);
 		$this->assertEquals('Required argument "b" was not supplied', $result);
 	}
 
@@ -48,7 +48,7 @@ class MinimumViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function executeInvalidArgumentTypeTest() {
-		$result = $this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
+		$result = $this->executeViewHelper(['b' => 1, 'fail' => TRUE]);
 		$this->assertEquals('Required argument "a" was not supplied', $result);
 	}
 

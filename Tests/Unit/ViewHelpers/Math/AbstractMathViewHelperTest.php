@@ -23,7 +23,7 @@ abstract class AbstractMathViewHelperTest extends AbstractViewHelperTest {
 	 * @return void
 	 */
 	protected function executeSingleArgumentTest($a, $expected) {
-		$result = $this->executeViewHelper(array('a' => $a));
+		$result = $this->executeViewHelper(['a' => $a]);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -34,7 +34,7 @@ abstract class AbstractMathViewHelperTest extends AbstractViewHelperTest {
 	 * @return void
 	 */
 	protected function executeDualArgumentTest($a, $b, $expected) {
-		$result = $this->executeViewHelper(array('a' => $a, 'b' => $b));
+		$result = $this->executeViewHelper(['a' => $a, 'b' => $b]);
 		$this->assertEquals($expected, $result);
 	}
 

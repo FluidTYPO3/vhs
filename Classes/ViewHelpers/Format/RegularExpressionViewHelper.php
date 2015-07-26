@@ -34,7 +34,7 @@ class RegularExpressionViewHelper extends AbstractViewHelper {
 			$subject = $this->renderChildren();
 		}
 		if (TRUE === $return) {
-			$returnValue = array();
+			$returnValue = [];
 			preg_match($pattern, $subject, $returnValue);
 		} else {
 			$returnValue = preg_replace($pattern, $replacement, $subject);

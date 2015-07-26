@@ -108,7 +108,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 
 		foreach ($languages as $languageUid => $languageName) {
 			if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
-				$uri = $uriBuilder->setArguments(array('L' => $languageUid))->build();
+				$uri = $uriBuilder->setArguments(['L' => $languageUid])->build();
 				$this->tagBuilder->addAttribute('href', $uri);
 				$this->tagBuilder->addAttribute('hreflang', $languageName);
 

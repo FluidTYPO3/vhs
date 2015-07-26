@@ -44,9 +44,9 @@ class OptionViewHelperTest extends AbstractViewHelperTest {
 	 * @param string $expected
 	 */
 	public function testRender(array $arguments, $selectedValue, $content, $expected) {
-		$instance = $this->buildViewHelperInstance($arguments, array(), NULL, 'Vhs');
+		$instance = $this->buildViewHelperInstance($arguments, [], NULL, 'Vhs');
 		$viewHelperVariableContainer = new ViewHelperVariableContainer();
-		$viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', array());
+		$viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', []);
 		$viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value', $selectedValue);
 		ObjectAccess::setProperty($instance, 'viewHelperVariableContainer', $viewHelperVariableContainer, TRUE);
 		$instance->setArguments($arguments);
@@ -59,24 +59,24 @@ class OptionViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getRenderTestValues() {
-		return array(
-			array(array(), '', '', '<option selected="selected" />'),
-			array(array(), 'notfound', '', '<option />'),
-			array(array(), 'notfound', 'content', '<option>content</option>'),
-			array(array('selected' => TRUE), 'notfound', 'content', '<option selected="selected">content</option>'),
-			array(
-				array('value' => 'notfound'),
+		return [
+			[[], '', '', '<option selected="selected" />'],
+			[[], 'notfound', '', '<option />'],
+			[[], 'notfound', 'content', '<option>content</option>'],
+			[['selected' => TRUE], 'notfound', 'content', '<option selected="selected">content</option>'],
+			[
+				['value' => 'notfound'],
 				'notfound',
 				'content',
 				'<option selected="selected" value="notfound">content</option>'
-			),
-			array(
-				array('value' => 'a'),
-				array('a', 'b'),
+			],
+			[
+				['value' => 'a'],
+				['a', 'b'],
 				'content',
 				'<option selected="selected" value="a">content</option>'
-			),
-		);
+			],
+		];
 	}
 
 }

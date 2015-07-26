@@ -72,7 +72,7 @@ class Asset implements AssetInterface {
 	/**
 	 * @var array
 	 */
-	protected $dependencies = array();
+	protected $dependencies = [];
 
 	/**
 	 * @var string
@@ -117,12 +117,12 @@ class Asset implements AssetInterface {
 	/**
 	 * @var array
 	 */
-	protected $variables = array();
+	protected $variables = [];
 
 	/**
 	 * @var array
 	 */
-	protected $settings = array();
+	protected $settings = [];
 
 	/**
 	 * @var boolean
@@ -263,7 +263,7 @@ class Asset implements AssetInterface {
 			$name = md5(spl_object_hash($this));
 		}
 		if (FALSE === isset($GLOBALS['VhsAssets']) || FALSE === is_array($GLOBALS['VhsAssets'])) {
-			$GLOBALS['VhsAssets'] = array();
+			$GLOBALS['VhsAssets'] = [];
 		}
 		$GLOBALS['VhsAssets'][$name] = $this;
 		return $this;

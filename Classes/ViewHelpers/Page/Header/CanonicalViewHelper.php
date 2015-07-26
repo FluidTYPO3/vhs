@@ -76,7 +76,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 		$uri = $uriBuilder->reset()
 			->setTargetPageUid($pageUid)
 			->setCreateAbsoluteUri(TRUE)
-			->setArguments(array('L' => $languageUid))
+			->setArguments(['L' => $languageUid])
 			->build();
 
 		$this->tag->addAttribute('rel', 'canonical');

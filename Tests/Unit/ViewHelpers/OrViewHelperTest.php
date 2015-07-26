@@ -34,11 +34,11 @@ class OrViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getRenderTestValues() {
-		return array(
-			array(array('extensionName' => 'Vhs', 'content' => 'alt', 'alternative' => 'alternative'), 'alt'),
-			array(array('extensionName' => 'Vhs', 'content' => '', 'alternative' => 'alternative'), 'alternative'),
-			array(array('extensionName' => 'Vhs', 'content' => NULL, 'alternative' => 'alternative'), 'alternative'),
-			array(array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'alternative'), 'alternative'),
+		return [
+			[['extensionName' => 'Vhs', 'content' => 'alt', 'alternative' => 'alternative'], 'alt'],
+			[['extensionName' => 'Vhs', 'content' => '', 'alternative' => 'alternative'], 'alternative'],
+			[['extensionName' => 'Vhs', 'content' => NULL, 'alternative' => 'alternative'], 'alternative'],
+			[['extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'alternative'], 'alternative'],
 			/*
 			array(
 				array(
@@ -58,11 +58,11 @@ class OrViewHelperTest extends AbstractViewHelperTest {
 				'Extension Manager'
 			),
 			*/
-			array(
-				array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'LLL:notfound'),
+			[
+				['extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'LLL:notfound'],
 				'LLL:notfound'
-			),
-		);
+			],
+		];
 	}
 
 }

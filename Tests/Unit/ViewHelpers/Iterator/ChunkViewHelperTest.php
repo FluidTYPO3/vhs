@@ -21,11 +21,11 @@ class ChunkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsConfiguredItemNumberIfFixed() {
-		$arguments = array(
+		$arguments = [
 			'count' => 5,
 			'fixed' => TRUE,
-			'subject' => array('a', 'b', 'c', 'd', 'e'),
-		);
+			'subject' => ['a', 'b', 'c', 'd', 'e'],
+		];
 		$result = $this->executeViewHelper($arguments);
 		$this->assertCount(5, $result);
 	}
@@ -34,11 +34,11 @@ class ChunkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsConfiguredItemNumberIfFixedAndSubjectIsEmpty() {
-		$arguments = array(
+		$arguments = [
 			'count' => 5,
 			'fixed' => TRUE,
-			'subject' => array(),
-		);
+			'subject' => [],
+		];
 		$result = $this->executeViewHelper($arguments);
 		$this->assertCount(5, $result);
 	}
@@ -47,10 +47,10 @@ class ChunkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsExpectedItemNumberIfNotFixed() {
-		$arguments = array(
+		$arguments = [
 			'count' => 4,
-			'subject' => array('a', 'b', 'c', 'd', 'e'),
-		);
+			'subject' => ['a', 'b', 'c', 'd', 'e'],
+		];
 		$result = $this->executeViewHelper($arguments);
 		$this->assertCount(2, $result);
 	}
@@ -59,10 +59,10 @@ class ChunkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsEmptyResultForEmptySubjectAndNotFixed() {
-		$arguments = array(
+		$arguments = [
 			'count' => 5,
-			'subject' => array(),
-		);
+			'subject' => [],
+		];
 		$result = $this->executeViewHelper($arguments);
 		$this->assertCount(0, $result);
 	}
@@ -71,10 +71,10 @@ class ChunkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsEmptyResultForZeroCount() {
-		$arguments = array(
+		$arguments = [
 			'count' => 0,
-			'subject' => array('a', 'b', 'c', 'd', 'e'),
-		);
+			'subject' => ['a', 'b', 'c', 'd', 'e'],
+		];
 		$result = $this->executeViewHelper($arguments);
 		$this->assertCount(0, $result);
 	}
@@ -83,14 +83,14 @@ class ChunkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function preservesArrayKeysIfRequested() {
-		$arguments = array(
+		$arguments = [
 			'count' => 2,
-			'subject' => array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5),
+			'subject' => ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5],
 			'preserveKeys' => TRUE,
-		);
+		];
 		$result = $this->executeViewHelper($arguments);
 
-		$expected = array(array('a' => 1, 'b' => 2), array('c' => 3, 'd' => 4), array('e' => 5));
+		$expected = [['a' => 1, 'b' => 2], ['c' => 3, 'd' => 4], ['e' => 5]];
 		$this->assertEquals($expected, $result);
 	}
 

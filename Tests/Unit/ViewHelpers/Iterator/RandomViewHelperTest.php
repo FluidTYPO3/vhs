@@ -28,7 +28,7 @@ class RandomViewHelperTest extends AbstractViewHelperTest {
 			$value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
 		} else {
 			$value = $this->executeViewHelper($arguments);
-			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array(), array('v' => $arguments['subject']));
+			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', [], ['v' => $arguments['subject']]);
 			if (NULL !== $value2) {
 				$this->assertContains($value2, $asArray);
 			}
@@ -45,18 +45,18 @@ class RandomViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function getRenderTestValues() {
 		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
-		$queryResult->expects($this->any())->method('toArray')->will($this->returnValue(array('foo', 'bar')));
+			['toArray', 'initialize', 'rewind', 'valid', 'count'], [], '', FALSE);
+		$queryResult->expects($this->any())->method('toArray')->will($this->returnValue(['foo', 'bar']));
 		$queryResult->expects($this->any())->method('count')->will($this->returnValue(0));
 		$queryResult->expects($this->any())->method('valid')->will($this->returnValue(FALSE));
-		return array(
-			array(array('subject' => array('foo', 'bar')), array('foo', 'bar')),
-			array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), array('foo', 'bar')),
-			array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), array('foo', 'bar')),
-			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), array('foo', 'bar')),
-			array(array('subject' => $queryResult), array('foo', 'bar')),
-			array(array('subject' => $queryResult, 'as' => 'variable'), array('foo', 'bar'))
-		);
+		return [
+			[['subject' => ['foo', 'bar']], ['foo', 'bar']],
+			[['subject' => ['foo', 'bar'], 'as' => 'variable'], ['foo', 'bar']],
+			[['subject' => new \ArrayIterator(['foo', 'bar'])], ['foo', 'bar']],
+			[['subject' => new \ArrayIterator(['foo', 'bar']), 'as' => 'variable'], ['foo', 'bar']],
+			[['subject' => $queryResult], ['foo', 'bar']],
+			[['subject' => $queryResult, 'as' => 'variable'], ['foo', 'bar']]
+		];
 	}
 
 }

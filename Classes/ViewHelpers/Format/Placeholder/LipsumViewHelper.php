@@ -101,7 +101,7 @@ class LipsumViewHelper extends AbstractViewHelper {
 		$lipsum = implode("\n", $paragraphs);
 		if ((boolean) $this->arguments['html'] === TRUE) {
 			$tsParserPath = (FALSE === empty($this->arguments['parseFuncTSPath']) ? '< ' . $this->arguments['parseFuncTSPath'] : NULL);
-			$lipsum = $this->contentObject->parseFunc($lipsum, array(), $tsParserPath);
+			$lipsum = $this->contentObject->parseFunc($lipsum, [], $tsParserPath);
 		}
 		return $lipsum;
 	}

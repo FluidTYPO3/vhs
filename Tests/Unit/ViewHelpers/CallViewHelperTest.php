@@ -20,24 +20,24 @@ class CallViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function throwsRuntimeExceptionIfObjectNotFound() {
 		$this->setExpectedException('RuntimeException', NULL, 1356849652);
-		$this->executeViewHelper(array('method' => 'method', 'arguments' => array()));
+		$this->executeViewHelper(['method' => 'method', 'arguments' => []]);
 	}
 
 	/**
 	 * @test
 	 */
 	public function throwsRuntimeExceptionIfMethodNotFound() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
+		$object = new \ArrayIterator(['foo', 'bar']);
 		$this->setExpectedException('RuntimeException', NULL, 1356834755);
-		$this->executeViewHelper(array('method' => 'notfound', 'object' => $object, 'arguments' => array()));
+		$this->executeViewHelper(['method' => 'notfound', 'object' => $object, 'arguments' => []]);
 	}
 
 	/**
 	 * @test
 	 */
 	public function executesMethodOnObjectFromArgument() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
-		$result = $this->executeViewHelper(array('method' => 'count', 'object' => $object, 'arguments' => array()));
+		$object = new \ArrayIterator(['foo', 'bar']);
+		$result = $this->executeViewHelper(['method' => 'count', 'object' => $object, 'arguments' => []]);
 		$this->assertEquals(2, $result);
 	}
 
@@ -45,8 +45,8 @@ class CallViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function executesMethodOnObjectFromChildContent() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
-		$result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array('method' => 'count', 'arguments' => array()), array('v' => $object));
+		$object = new \ArrayIterator(['foo', 'bar']);
+		$result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', ['method' => 'count', 'arguments' => []], ['v' => $object]);
 		$this->assertEquals(2, $result);
 	}
 

@@ -33,9 +33,9 @@ class IsFrontendViewHelperTest extends AbstractViewHelperTest {
 	 * @param boolean $expected
 	 */
 	public function testRender($verdict, $expected) {
-		$instance = $this->getMock($this->getViewHelperClassName(), array('isFrontendContext'));
+		$instance = $this->getMock($this->getViewHelperClassName(), ['isFrontendContext']);
 		$instance->expects($this->once())->method('isFrontendContext')->will($this->returnValue($verdict));
-		$arguments = array('then' => TRUE, 'else' => FALSE);
+		$arguments = ['then' => TRUE, 'else' => FALSE];
 		$instance->setArguments($arguments);
 		$result = $instance->render();
 		$this->assertEquals($expected, $result);
@@ -45,10 +45,10 @@ class IsFrontendViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getRenderTestValues() {
-		return array(
-			array(FALSE, FALSE),
-			array(TRUE, TRUE),
-		);
+		return [
+			[FALSE, FALSE],
+			[TRUE, TRUE],
+		];
 	}
 
 }

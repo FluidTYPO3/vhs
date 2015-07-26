@@ -102,7 +102,7 @@ class ExtractViewHelper extends AbstractViewHelper {
 			}
 		} catch (\Exception $error) {
 			GeneralUtility::sysLog($error->getMessage(), 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-			$result = array();
+			$result = [];
 		}
 
 		if (TRUE === (boolean) $single) {
@@ -139,7 +139,7 @@ class ExtractViewHelper extends AbstractViewHelper {
 	 * @throws \Exception
 	 */
 	public function recursivelyExtractKey($iterator, $key) {
-		$content = array();
+		$content = [];
 
 		foreach ($iterator as $v) {
 			// Lets see if we find something directly:

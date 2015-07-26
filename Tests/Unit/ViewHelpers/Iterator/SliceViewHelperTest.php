@@ -30,7 +30,7 @@ class SliceViewHelperTest extends AbstractViewHelperTest {
 			$value = $this->executeViewHelper($arguments);
 			$haystack = $arguments['haystack'];
 			unset($arguments['haystack']);
-			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', $arguments, array('v' => $haystack));
+			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', $arguments, ['v' => $haystack]);
 			$this->assertEquals($value, $value2);
 		}
 		$this->assertEquals($value, $expectedValue);
@@ -40,13 +40,13 @@ class SliceViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getRenderTestValues() {
-		return array(
-			array(array('haystack' => array(), 'length' => 0, 'start' => 0), array()),
-			array(array('haystack' => array('foo', 'bar'), 'length' => 1, 'start' => 0), array('foo')),
-			array(array('haystack' => array('foo', 'bar'), 'length' => 1, 'start' => 0, 'as' => 'variable'), array('foo')),
-			array(array('haystack' => new \ArrayIterator(array('foo', 'bar')), 'start' => 1, 'length' => 1), array(1 => 'bar')),
-			array(array('haystack' => new \ArrayIterator(array('foo', 'bar')), 'start' => 1, 'length' => 1, 'as' => 'variable'), array(1 => 'bar')),
-		);
+		return [
+			[['haystack' => [], 'length' => 0, 'start' => 0], []],
+			[['haystack' => ['foo', 'bar'], 'length' => 1, 'start' => 0], ['foo']],
+			[['haystack' => ['foo', 'bar'], 'length' => 1, 'start' => 0, 'as' => 'variable'], ['foo']],
+			[['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1], [1 => 'bar']],
+			[['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1, 'as' => 'variable'], [1 => 'bar']],
+		];
 	}
 
 }

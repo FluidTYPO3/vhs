@@ -21,37 +21,37 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest {
 
 	public function testRenderThenWithSingleProperty() {
 		$domainObject = new Foo();
-		$result = $this->executeViewHelper(array('property' => 'bar', 'object' => $domainObject, 'then' => 'then'));
+		$result = $this->executeViewHelper(['property' => 'bar', 'object' => $domainObject, 'then' => 'then']);
 		$this->assertEquals('then', $result);
 	}
 
 	public function testRenderElseWithSingleProperty() {
 		$domainObject = new Foo();
-		$result = $this->executeViewHelper(array('property' => 'foo', 'object' => $domainObject, 'else' => 'else'));
+		$result = $this->executeViewHelper(['property' => 'foo', 'object' => $domainObject, 'else' => 'else']);
 		$this->assertEquals('else', $result);
 	}
 
 	public function testRenderThenWithNestedSingleProperty() {
 		$domainObject = new Bar();
-		$result = $this->executeViewHelper(array('property' => 'foo.bar', 'object' => $domainObject, 'then' => 'then'));
+		$result = $this->executeViewHelper(['property' => 'foo.bar', 'object' => $domainObject, 'then' => 'then']);
 		$this->assertEquals('then', $result);
 	}
 
 	public function testRenderElseWithNestedSingleProperty() {
 		$domainObject = new Bar();
-		$result = $this->executeViewHelper(array('property' => 'foo.foo', 'object' => $domainObject, 'else' => 'else'));
+		$result = $this->executeViewHelper(['property' => 'foo.foo', 'object' => $domainObject, 'else' => 'else']);
 		$this->assertEquals('else', $result);
 	}
 
 	public function testRenderThenWithNestedMultiProperty() {
 		$domainObject = new Bar();
-		$result = $this->executeViewHelper(array('property' => 'bars.bar.foo.bar', 'object' => $domainObject, 'then' => 'then'));
+		$result = $this->executeViewHelper(['property' => 'bars.bar.foo.bar', 'object' => $domainObject, 'then' => 'then']);
 		$this->assertEquals('then', $result);
 	}
 
 	public function testRenderElseWithNestedMultiProperty() {
 		$domainObject = new Bar();
-		$result = $this->executeViewHelper(array('property' => 'bars.foo.foo', 'object' => $domainObject, 'else' => 'else'));
+		$result = $this->executeViewHelper(['property' => 'bars.foo.foo', 'object' => $domainObject, 'else' => 'else']);
 		$this->assertEquals('else', $result);
 	}
 

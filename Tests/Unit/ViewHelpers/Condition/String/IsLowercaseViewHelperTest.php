@@ -21,28 +21,28 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfFirstCharacterIsLowercase() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foobar', 'fullString' => FALSE)));
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'foobar', 'fullString' => FALSE]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersThenChildIfAllCharactersAreLowercase() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foobar', 'fullString' => TRUE)));
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'foobar', 'fullString' => TRUE]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfFirstCharacterIsNotLowercase() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'FooBar', 'fullString' => FALSE)));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'FooBar', 'fullString' => FALSE]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfAllCharactersAreNotLowercase() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'fooBar', 'fullString' => TRUE)));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'fooBar', 'fullString' => TRUE]));
 	}
 
 }

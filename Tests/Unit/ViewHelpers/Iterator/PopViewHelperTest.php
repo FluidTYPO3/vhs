@@ -28,7 +28,7 @@ class PopViewHelperTest extends AbstractViewHelperTest {
 			$value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
 		} else {
 			$value = $this->executeViewHelper($arguments);
-			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array(), array('v' => $arguments['subject']));
+			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', [], ['v' => $arguments['subject']]);
 			$this->assertEquals($value, $value2);
 		}
 		$this->assertEquals($value, $expectedValue);
@@ -38,13 +38,13 @@ class PopViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getRenderTestValues() {
-		return array(
-			array(array('subject' => array()), NULL),
-			array(array('subject' => array('foo', 'bar')), 'bar'),
-			array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), 'bar'),
-			array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), 'bar'),
-			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), 'bar'),
-		);
+		return [
+			[['subject' => []], NULL],
+			[['subject' => ['foo', 'bar']], 'bar'],
+			[['subject' => ['foo', 'bar'], 'as' => 'variable'], 'bar'],
+			[['subject' => new \ArrayIterator(['foo', 'bar'])], 'bar'],
+			[['subject' => new \ArrayIterator(['foo', 'bar']), 'as' => 'variable'], 'bar'],
+		];
 	}
 
 	/**
@@ -54,7 +54,7 @@ class PopViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function testThrowsErrorsOnInvalidSubjectType($subject) {
 		$expected = 'Unsupported input type; cannot convert to array!';
-		$result = $this->executeViewHelper(array('subject' => $subject));
+		$result = $this->executeViewHelper(['subject' => $subject]);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -62,12 +62,12 @@ class PopViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getErrorTestValues() {
-		return array(
-			array(0),
-			array(NULL),
-			array(new \DateTime()),
-			array(new \stdClass()),
-		);
+		return [
+			[0],
+			[NULL],
+			[new \DateTime()],
+			[new \stdClass()],
+		];
 	}
 
 }

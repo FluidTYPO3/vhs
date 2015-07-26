@@ -21,10 +21,10 @@ class FirstViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsFirstElement() {
-		$array = array('a', 'b', 'c');
-		$arguments = array(
+		$array = ['a', 'b', 'c'];
+		$arguments = [
 			'haystack' => $array
-		);
+		];
 		$output = $this->executeViewHelper($arguments);
 		$this->assertEquals('a', $output);
 	}
@@ -33,10 +33,10 @@ class FirstViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function supportsIterators() {
-		$array = new \ArrayIterator(array('a', 'b', 'c'));
-		$arguments = array(
+		$array = new \ArrayIterator(['a', 'b', 'c']);
+		$arguments = [
 			'haystack' => $array
-		);
+		];
 		$output = $this->executeViewHelper($arguments);
 		$this->assertEquals('a', $output);
 	}
@@ -45,10 +45,10 @@ class FirstViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function supportsTagContent() {
-		$array = array('a', 'b', 'c');
-		$arguments = array(
+		$array = ['a', 'b', 'c'];
+		$arguments = [
 			'haystack' => NULL
-		);
+		];
 		$output = $this->executeViewHelperUsingTagContent('Array', $array, $arguments);
 		$this->assertEquals('a', $output);
 	}
@@ -57,9 +57,9 @@ class FirstViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsNullIfHaystackIsNull() {
-		$arguments = array(
+		$arguments = [
 			'haystack' => NULL
-		);
+		];
 		$output = $this->executeViewHelper($arguments);
 		$this->assertEquals(NULL, $output);
 	}
@@ -68,9 +68,9 @@ class FirstViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsNullIfHaystackIsEmptyArray() {
-		$arguments = array(
-			'haystack' => array()
-		);
+		$arguments = [
+			'haystack' => []
+		];
 		$output = $this->executeViewHelper($arguments);
 		$this->assertEquals(NULL, $output);
 	}
@@ -79,9 +79,9 @@ class FirstViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function throwsExceptionOnUnsupportedHaystacks() {
-		$arguments = array(
+		$arguments = [
 			'haystack' => new \DateTime('now')
-		);
+		];
 		$output = $this->executeViewHelper($arguments);
 		$this->assertStringStartsWith('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got', $output);
 	}

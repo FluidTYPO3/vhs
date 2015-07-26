@@ -26,7 +26,7 @@ class RoundViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testSingleArgumentIteratorFirst() {
-		$this->executeSingleArgumentTest(array(0.5, 2.3), array(1, 2));
+		$this->executeSingleArgumentTest([0.5, 2.3], [1, 2]);
 	}
 
 }

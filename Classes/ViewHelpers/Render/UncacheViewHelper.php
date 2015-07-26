@@ -40,7 +40,7 @@ class UncacheViewHelper extends AbstractViewHelper {
 	public function render() {
 		$partialArguments = $this->arguments['arguments'];
 		if (FALSE === is_array($partialArguments)) {
-			$partialArguments = array();
+			$partialArguments = [];
 		}
 		if (FALSE === isset($partialArguments['settings']) && TRUE === $this->templateVariableContainer->exists('settings')) {
 			$partialArguments['settings'] = $this->templateVariableContainer->get('settings');
@@ -50,18 +50,18 @@ class UncacheViewHelper extends AbstractViewHelper {
 		$content = '<!--' . $substKey . '-->';
 		$templateView = GeneralUtility::makeInstance('FluidTYPO3\\Vhs\\View\\UncacheTemplateView');
 
-		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
+		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = [
 			'type' => 'POSTUSERFUNC',
 			'cObj' => serialize($templateView),
 			'postUserFunc' => 'render',
-			'conf' => array(
+			'conf' => [
 				'partial' => $this->arguments['partial'],
 				'section' => $this->arguments['section'],
 				'arguments' => $partialArguments,
 				'controllerContext' => $this->renderingContext->getControllerContext()
-			),
+			],
 			'content' => $content
-		);
+		];
 
 		return $content;
 	}

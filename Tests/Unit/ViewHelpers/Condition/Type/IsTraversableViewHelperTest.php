@@ -22,14 +22,14 @@ class IsTraversableViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => new ObjectStorage())));
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'value' => new ObjectStorage()]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatched() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => 1)));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'value' => 1]));
 	}
 
 }

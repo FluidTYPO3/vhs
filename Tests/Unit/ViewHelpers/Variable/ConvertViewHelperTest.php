@@ -25,7 +25,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @return void
 	 */
 	protected function executeConversion($value, $type, $expected) {
-		$this->assertEquals($expected, $this->executeViewHelper(array('value' => $value, 'type' => $type)));
+		$this->assertEquals($expected, $this->executeViewHelper(['value' => $value, 'type' => $type]));
 	}
 
 	/**
@@ -33,7 +33,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function throwsRuntimeExceptionIfTypeOfDefaultValueIsUnsupported() {
 		$this->setExpectedException('RuntimeException', NULL, 1364542576);
-		$this->executeViewHelper(array('type' => 'foobar', 'value' => NULL, 'default' => '1'));
+		$this->executeViewHelper(['type' => 'foobar', 'value' => NULL, 'default' => '1']);
 	}
 
 	/**
@@ -41,7 +41,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function throwsRuntimeExceptionIfTypeIsUnsupportedAndNoDefaultProvided() {
 		$this->setExpectedException('RuntimeException', NULL, 1364542884);
-		$this->executeViewHelper(array('type' => 'unsupported', 'value' => NULL));
+		$this->executeViewHelper(['type' => 'unsupported', 'value' => NULL]);
 	}
 
 	/**
@@ -49,7 +49,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function throwsRuntimeExceptionIfTypeOfDefaultIsNotSameAsType() {
 		$this->setExpectedException('RuntimeException', NULL, 1364542576);
-		$this->executeViewHelper(array('type' => 'ObjectStorage', 'value' => NULL, 'default' => '1'));
+		$this->executeViewHelper(['type' => 'ObjectStorage', 'value' => NULL, 'default' => '1']);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$dummy = new Foo();
 		$storage = new ObjectStorage();
 		$storage->attach($dummy);
-		$this->executeConversion(array($dummy), 'ObjectStorage', $storage);
+		$this->executeConversion([$dummy], 'ObjectStorage', $storage);
 	}
 
 	/**
@@ -104,16 +104,16 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$dummy = new Foo();
 		$storage = new ObjectStorage();
 		$storage->attach($dummy);
-		$this->executeConversion($storage, 'array', array($dummy));
+		$this->executeConversion($storage, 'array', [$dummy]);
 	}
 
 	/**
 	 * @test
 	 */
 	public function returnsEmptyStringForTypeStringAndValueNull() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-		$viewHelper->setArguments(array('type' => 'string'));
+		$viewHelper->setArguments(['type' => 'string']);
 		$converted = $viewHelper->render();
 		$this->assertEquals('', $converted);
 	}
@@ -122,9 +122,9 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsStringForTypeStringAndValueInteger() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(12345));
-		$viewHelper->setArguments(array('type' => 'string'));
+		$viewHelper->setArguments(['type' => 'string']);
 		$converted = $viewHelper->render();
 		$this->assertInternalType('string', $converted);
 	}
@@ -133,9 +133,9 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsArrayForTypeArrayAndValueNull() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-		$viewHelper->setArguments(array('type' => 'array'));
+		$viewHelper->setArguments(['type' => 'array']);
 		$converted = $viewHelper->render();
 		$this->assertInternalType('array', $converted);
 	}
@@ -144,21 +144,21 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsArrayForTypeArrayAndValueString() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
-		$viewHelper->setArguments(array('type' => 'array'));
+		$viewHelper->setArguments(['type' => 'array']);
 		$converted = $viewHelper->render();
 		$this->assertInternalType('array', $converted);
-		$this->assertEquals(array('foo'), $converted);
+		$this->assertEquals(['foo'], $converted);
 	}
 
 	/**
 	 * @test
 	 */
 	public function returnsObjectStorageForTypeArrayAndValueNull() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-		$viewHelper->setArguments(array('type' => 'ObjectStorage'));
+		$viewHelper->setArguments(['type' => 'ObjectStorage']);
 		$converted = $viewHelper->render();
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $converted);
 		$this->assertEquals(0, $converted->count());
@@ -171,9 +171,9 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$domainObject = new Foo();
 		$storage = new ObjectStorage();
 		$storage->attach($domainObject);
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($storage));
-		$viewHelper->setArguments(array('type' => 'array'));
+		$viewHelper->setArguments(['type' => 'array']);
 		$converted = $viewHelper->render();
 		$this->assertInternalType('array', $converted);
 		$this->assertEquals(1, count($converted));
@@ -183,9 +183,9 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsBooleanForTypeBooleanAndValueNull() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-		$viewHelper->setArguments(array('type' => 'boolean'));
+		$viewHelper->setArguments(['type' => 'boolean']);
 		$converted = $viewHelper->render();
 		$this->assertInternalType('boolean', $converted);
 		$this->assertFalse($converted);
@@ -195,9 +195,9 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsBooleanForTypeBooleanAndValueInteger() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(1));
-		$viewHelper->setArguments(array('type' => 'boolean'));
+		$viewHelper->setArguments(['type' => 'boolean']);
 		$converted = $viewHelper->render();
 		$this->assertInternalType('boolean', $converted);
 		$this->assertTrue($converted);
@@ -207,9 +207,9 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsBooleanForTypeBooleanAndValueString() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
-		$viewHelper->setArguments(array('type' => 'boolean'));
+		$viewHelper->setArguments(['type' => 'boolean']);
 		$converted = $viewHelper->render();
 		$this->assertInternalType('boolean', $converted);
 		$this->assertTrue($converted);
@@ -219,9 +219,9 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsExpectedDefaultValue() {
-		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
+		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-		$viewHelper->setArguments(array('type' => 'boolean', 'default' => TRUE));
+		$viewHelper->setArguments(['type' => 'boolean', 'default' => TRUE]);
 		$converted = $viewHelper->render();
 		$this->assertInternalType('boolean', $converted);
 		$this->assertTrue($converted);

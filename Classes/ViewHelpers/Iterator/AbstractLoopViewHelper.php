@@ -39,14 +39,14 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper {
 	protected function renderIteration($i, $from, $to, $step, $iterationArgument) {
 		if (FALSE === empty($iterationArgument)) {
 			$cycle = intval(($i - $from) / $step) + 1;
-			$iteration = array(
+			$iteration = [
 				'index' => $i,
 				'cycle' => $cycle,
 				'isOdd' => (0 === $cycle % 2 ? FALSE : TRUE),
 				'isEven' => (0 === $cycle % 2 ? TRUE : FALSE),
 				'isFirst' => ($i === $from ? TRUE : FALSE),
 				'isLast' => $this->isLast($i, $from, $to, $step)
-			);
+			];
 			$this->templateVariableContainer->add($iterationArgument, $iteration);
 			$content = $this->renderChildren();
 			$this->templateVariableContainer->remove($iterationArgument);

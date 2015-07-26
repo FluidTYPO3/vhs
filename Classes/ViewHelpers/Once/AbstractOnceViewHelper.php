@@ -26,7 +26,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper {
 	 *
 	 * @var array
 	 */
-	protected static $identifiers = array();
+	protected static $identifiers = [];
 
 	/**
 	 * Initialize arguments

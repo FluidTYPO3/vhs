@@ -36,7 +36,7 @@ class PregViewHelper extends AbstractConditionViewHelper {
 	 * @return string
 	 */
 	public function render($pattern, $string, $global = FALSE) {
-		$matches = array();
+		$matches = [];
 		if (TRUE === (boolean) $global) {
 			preg_match_all($pattern, $string, $matches, PREG_SET_ORDER);
 		} else {

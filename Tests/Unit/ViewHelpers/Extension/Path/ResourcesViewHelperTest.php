@@ -23,7 +23,7 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersUsingArgument() {
-		$test = $this->executeViewHelper(array('extensionName' => 'Vhs', 'path' => 'ext_icon.gif'));
+		$test = $this->executeViewHelper(['extensionName' => 'Vhs', 'path' => 'ext_icon.gif']);
 		$this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
 	}
 
@@ -31,7 +31,7 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersUsingControllerContext() {
-		$test = $this->executeViewHelper(array('path' => 'ext_icon.gif'), array(), NULL, 'Vhs');
+		$test = $this->executeViewHelper(['path' => 'ext_icon.gif'], [], NULL, 'Vhs');
 		$this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
 	}
 
@@ -40,7 +40,7 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function throwsErrorWhenUnableToDetectExtensionName() {
 		$this->setExpectedException('RuntimeException', NULL, 1364167519);
-		$this->executeViewHelper(array(), array(), NULL, NULL, 'FakePlugin');
+		$this->executeViewHelper([], [], NULL, NULL, 'FakePlugin');
 	}
 
 }

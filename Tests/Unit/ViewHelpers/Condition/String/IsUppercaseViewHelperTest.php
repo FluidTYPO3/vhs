@@ -21,28 +21,28 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfFirstCharacterIsUppercase() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'Foobar', 'fullString' => FALSE)));
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'Foobar', 'fullString' => FALSE]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersThenChildIfAllCharactersAreUppercase() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'FOOBAR', 'fullString' => TRUE)));
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'FOOBAR', 'fullString' => TRUE]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfFirstCharacterIsNotUppercase() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'fooBar', 'fullString' => FALSE)));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'fooBar', 'fullString' => FALSE]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfAllCharactersAreNotUppercase() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'FooBar', 'fullString' => TRUE)));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'FooBar', 'fullString' => TRUE]));
 	}
 
 }

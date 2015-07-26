@@ -20,12 +20,12 @@ class LipsumViewHelperTest extends AbstractViewHelperTest {
 	/**
 	 * @var array
 	 */
-	protected $arguments = array(
+	protected $arguments = [
 		'paragraphs' => 5,
 		'skew' => 0,
 		'html' => FALSE,
 		'parseFuncTSPath' => ''
-	);
+	];
 
 	/**
 	 * @test

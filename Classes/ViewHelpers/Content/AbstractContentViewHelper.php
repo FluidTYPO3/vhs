@@ -95,7 +95,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		}
 
 		// find out which storage page UIDs to read from, respecting slide depth
-		$storagePageUids = array();
+		$storagePageUids = [];
 		if (0 === $slide) {
 			$storagePageUids[] = $pageUid;
 		} else {
@@ -108,7 +108,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 			}
 		}
 		// select content elements, respecting slide and slideCollect.
-		$contentRecords = array();
+		$contentRecords = [];
 		do {
 			$storagePageUid = array_shift($storagePageUids);
 			$contentFromPageUid = $this->getContentRecordsFromPage($storagePageUid, $limit, $order);
@@ -205,7 +205,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		if (FALSE === empty($this->arguments['loadRegister'])) {
 			$this->contentObject->cObjGetSingle('LOAD_REGISTER', $this->arguments['loadRegister']);
 		}
-		$elements = array();
+		$elements = [];
 		foreach ($rows as $row) {
 			array_push($elements, $this->renderRecord($row));
 		}
@@ -228,11 +228,11 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
 			return NULL;
 		}
-		$conf = array(
+		$conf = [
 			'tables' => 'tt_content',
 			'source' => $row['uid'],
 			'dontCheckPid' => 1
-		);
+		];
 		$parent = $GLOBALS['TSFE']->currentRecord;
 		// If the currentRecord is set, we register, that this record has invoked this function.
 		// It's should not be allowed to do this again then!!

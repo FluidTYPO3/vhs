@@ -18,7 +18,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class YoutubeViewHelperTest extends AbstractViewHelperTest {
 
-	protected $arguments = array(
+	protected $arguments = [
 		'videoId' => '',
 		'width' => 640,
 		'height' => 385,
@@ -34,7 +34,7 @@ class YoutubeViewHelperTest extends AbstractViewHelperTest {
 		'end' => '',
 		'lightTheme' => FALSE,
 		'videoQuality' => ''
-	);
+	];
 
 	/**
 	 * @test

@@ -68,11 +68,11 @@ class SelectViewHelper extends AbstractFormFieldViewHelper {
 		if (TRUE === isset($this->arguments['options']) && FALSE === empty($this->arguments['options'])) {
 			$options = $this->getOptions();
 			if (TRUE === empty($options)) {
-				$options = array('' => '');
+				$options = ['' => ''];
 			}
 			$this->tag->setContent($this->renderOptionTags($options));
 		} else {
-			$this->viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', array());
+			$this->viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', []);
 			$this->viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value', $this->getValue());
 			$tagContent = $this->renderChildren();
 			$options = $this->viewHelperVariableContainer->get('FluidTYPO3\\Vhs\\ViewHelpers\\Form\\SelectViewHelper', 'options');
@@ -130,9 +130,9 @@ class SelectViewHelper extends AbstractFormFieldViewHelper {
 	 */
 	protected function getOptions() {
 		if (FALSE === is_array($this->arguments['options']) && FALSE === $this->arguments['options'] instanceof \Traversable) {
-			return array();
+			return [];
 		}
-		$options = array();
+		$options = [];
 		$optionsArgument = $this->arguments['options'];
 		foreach ($optionsArgument as $key => $value) {
 			if (TRUE === is_object($value)) {
@@ -214,7 +214,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper {
 				return $value;
 			}
 		}
-		$selectedValues = array();
+		$selectedValues = [];
 		foreach ($value as $selectedValueElement) {
 			if (TRUE === is_object($selectedValueElement)) {
 				$selectedValues[] = ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);

@@ -106,7 +106,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 	 * @param string $pluginName
 	 * @return AbstractViewHelper
 	 */
-	protected function buildViewHelperInstance($arguments = array(), $variables = array(), $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
+	protected function buildViewHelperInstance($arguments = [], $variables = [], $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
 		$instance = $this->createInstance();
 		$node = new ViewHelperNode($instance, $arguments);
 		/** @var RenderingContext $renderingContext */
@@ -148,7 +148,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 		if (NULL !== $childNode) {
 			$node->addChildNode($childNode);
 			if ($instance instanceof ChildNodeAccessInterface) {
-				$instance->setChildNodes(array($childNode));
+				$instance->setChildNodes([$childNode]);
 			}
 		}
 		$instance->setArguments($arguments);
@@ -165,7 +165,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 	 * @param string $pluginName
 	 * @return mixed
 	 */
-	protected function executeViewHelper($arguments = array(), $variables = array(), $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
+	protected function executeViewHelper($arguments = [], $variables = [], $childNode = NULL, $extensionName = NULL, $pluginName = NULL) {
 		$instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
 		$output = $instance->initializeArgumentsAndRender();
 		return $output;
@@ -180,7 +180,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 	 * @param string $pluginName
 	 * @return mixed
 	 */
-	protected function executeViewHelperUsingTagContent($nodeType, $nodeValue, $arguments = array(), $variables = array(), $extensionName = NULL, $pluginName = NULL) {
+	protected function executeViewHelperUsingTagContent($nodeType, $nodeValue, $arguments = [], $variables = [], $extensionName = NULL, $pluginName = NULL) {
 		$childNode = $this->createNode($nodeType, $nodeValue);
 		$instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
 		$output = $instance->initializeArgumentsAndRender();

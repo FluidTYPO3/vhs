@@ -19,7 +19,7 @@ class TemplateViewHelperTest extends AbstractViewHelperTest {
 
 	public function testRenderThrowsExceptionWithoutTemplatePath() {
 		$this->setExpectedException('TYPO3\\CMS\\Fluid\\View\\Exception\\InvalidTemplateResourceException');
-		$this->executeViewHelper(array('variables' => array()));
+		$this->executeViewHelper(['variables' => []]);
 	}
 
 }

@@ -38,12 +38,12 @@ class InstanceViewHelper extends AbstractOnceViewHelper {
 			return $this->arguments['identifier'];
 		}
 		$request = $this->controllerContext->getRequest();
-		$identifier = implode('_', array(
+		$identifier = implode('_', [
 			$request->getControllerActionName(),
 			$request->getControllerName(),
 			$request->getPluginName(),
 			$request->getControllerExtensionName()
-		));
+		]);
 		return $identifier;
 	}
 
@@ -54,7 +54,7 @@ class InstanceViewHelper extends AbstractOnceViewHelper {
 		$index = get_class($this);
 		$identifier = $this->getIdentifier();
 		if (FALSE === is_array($GLOBALS[$index])) {
-			$GLOBALS[$index] = array();
+			$GLOBALS[$index] = [];
 		}
 		$GLOBALS[$index][$identifier] = TRUE;
 	}

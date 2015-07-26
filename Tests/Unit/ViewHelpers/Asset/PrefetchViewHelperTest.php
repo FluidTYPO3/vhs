@@ -22,7 +22,7 @@ class PrefetchViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function buildReturnsMetaTag() {
-		$instance = $this->buildViewHelperInstance(array('domains' => 'test.com,test2.com', 'force' => TRUE));
+		$instance = $this->buildViewHelperInstance(['domains' => 'test.com,test2.com', 'force' => TRUE]);
 		$instance->render();
 		$result = $instance->build();
 		$this->assertStringStartsWith('<meta', $result);

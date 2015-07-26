@@ -26,7 +26,7 @@ class SquareRootViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testSingleArgumentIteratorFirst() {
-		$this->executeSingleArgumentTest(array(4, 16), array(2, 4));
+		$this->executeSingleArgumentTest([4, 16], [2, 4]);
 	}
 
 }

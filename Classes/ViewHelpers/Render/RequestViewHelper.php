@@ -75,7 +75,7 @@ class RequestViewHelper extends AbstractRenderViewHelper {
 			$extensionName = NULL,
 			$pluginName = NULL,
 			$vendorName = NULL,
-			array $arguments = array()
+			array $arguments = []
 	) {
 		$contentObjectBackup = $this->configurationManager->getContentObject();
 		if (TRUE === isset($this->request)) {
@@ -119,7 +119,7 @@ class RequestViewHelper extends AbstractRenderViewHelper {
 				throw $error;
 			}
 			if (FALSE === empty($this->arguments['onError'])) {
-				return sprintf($this->arguments['onError'], array($error->getMessage()), $error->getCode());
+				return sprintf($this->arguments['onError'], [$error->getMessage()], $error->getCode());
 			}
 			return $error->getMessage() . ' (' . $error->getCode() . ')';
 		}

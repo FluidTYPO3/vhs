@@ -26,14 +26,14 @@ class RangeViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testSingleArgumentIteratorSingleValue() {
-		$this->executeSingleArgumentTest(array(2), array(2, 2));
+		$this->executeSingleArgumentTest([2], [2, 2]);
 	}
 
 	/**
 	 * @test
 	 */
 	public function testSingleArgumentIteratorMultipleValues() {
-		$this->executeSingleArgumentTest(array(2, 4, 6, 3, 8), array(2, 8));
+		$this->executeSingleArgumentTest([2, 4, 6, 3, 8], [2, 8]);
 	}
 
 }

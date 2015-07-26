@@ -34,7 +34,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	/**
 	 * @var array
 	 */
-	private $backupValues = array();
+	private $backupValues = [];
 
 	/**
 	 * @var boolean
@@ -237,12 +237,12 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (TRUE === isset($this->arguments['doktypes']) && FALSE === empty($this->arguments['doktypes'])) {
 			$types = $this->parseDoktypeList($this->arguments['doktypes']);
 		} else {
-			$types = array(
+			$types = [
 				PageRepository::DOKTYPE_DEFAULT,
 				PageRepository::DOKTYPE_LINK,
 				PageRepository::DOKTYPE_SHORTCUT,
 				PageRepository::DOKTYPE_MOUNTPOINT,
-			);
+			];
 		}
 		if (TRUE === (boolean) $this->arguments['includeSpacers'] && FALSE === in_array(PageRepository::DOKTYPE_SPACER, $types)) {
 			array_push($types, PageRepository::DOKTYPE_SPACER);
@@ -263,7 +263,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		} else {
 			$types = GeneralUtility::trimExplode(',', $doktypes);
 		}
-		$parsed = array();
+		$parsed = [];
 		foreach ($types as $index => $type) {
 			if (FALSE === ctype_digit($type)) {
 				$typeNumber = constant('TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
@@ -298,7 +298,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return array
 	 */
 	protected function getItemClass($pageRow) {
-		$class = array();
+		$class = [];
 		if (TRUE === (boolean) $pageRow['active']) {
 			$class[] = $this->arguments['classActive'];
 		}
@@ -334,13 +334,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			$pageUid = $page['mountedPageUid'];
 		}
 		$forceAbsoluteUrl = (boolean) $this->arguments['forceAbsoluteUrl'];
-		$config = array(
+		$config = [
 			'parameter' => $pageUid,
 			'returnLast' => 'url',
 			'additionalParams' => '',
 			'useCacheHash' => FALSE,
 			'forceAbsoluteUrl' => $forceAbsoluteUrl,
-		);
+		];
 		// Append mountpoint parameter to urls of pages of a mounted subtree
 		$mountPointParameter = NULL;
 		if (FALSE === empty($page['mountPointParameter'])) {
@@ -443,12 +443,12 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$page['doktype'] = $doktype;
 
 		if (PageRepository::DOKTYPE_LINK === $doktype) {
-			$urlTypes = array(
+			$urlTypes = [
 				'1' => 'http://',
 				'4' => 'https://',
 				'2' => 'ftp://',
 				'3' => 'mailto:'
-			);
+			];
 			$page['link'] = $urlTypes[$page['urltype']] . $page['url'];
 		}
 
@@ -466,7 +466,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	protected function parseMenu($menu, $rootLine, array $parentPage = NULL) {
 		$classFirst = $this->arguments['classFirst'];
 		$classLast = $this->arguments['classLast'];
-		$filtered = array();
+		$filtered = [];
 		$allowedDocumentTypes = $this->allowedDoktypeList();
 		foreach ($menu as $uid => $page) {
 			if (TRUE === isset($page['tx_realurl_exclude']) && TRUE === (boolean) $page['tx_realurl_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
@@ -512,10 +512,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$expandAll = (boolean) $this->arguments['expandAll'];
 		$maxLevels = (integer) $this->arguments['levels'];
 		$includeAnchorTitle = (boolean) $this->arguments['includeAnchorTitle'];
-		$html = array();
+		$html = [];
 		$itemsRendered = 0;
 		$numberOfItems = count($menu);
-		$includedPages = array();
+		$includedPages = [];
 		foreach ($menu as $page) {
 			if (TRUE === (boolean) $page['current'] && FALSE === $showCurrent) {
 				continue;
@@ -594,7 +594,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return void
 	 */
 	public function backupVariables() {
-		$backups = array($this->arguments['as'], $this->arguments['rootLineAs']);
+		$backups = [$this->arguments['as'], $this->arguments['rootLineAs']];
 		foreach ($backups as $var) {
 			if (TRUE === $this->templateVariableContainer->exists($var)) {
 				$this->backupValues[$var] = $this->templateVariableContainer->get($var);
@@ -720,7 +720,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			$pages = (array) $pages;
 		}
 		if (FALSE === is_array($pages)) {
-			return array();
+			return [];
 		}
 		return $pages;
 	}

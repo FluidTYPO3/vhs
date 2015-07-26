@@ -23,7 +23,7 @@ class IconViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersUsingArgument() {
-		$test = $this->executeViewHelper(array('extensionName' => 'Vhs'));
+		$test = $this->executeViewHelper(['extensionName' => 'Vhs']);
 		$this->assertSame(ExtensionManagementUtility::extPath('vhs', 'ext_icon.gif'), $test);
 	}
 
@@ -31,7 +31,7 @@ class IconViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersUsingControllerContext() {
-		$test = $this->executeViewHelper(array(), array(), NULL, 'Vhs');
+		$test = $this->executeViewHelper([], [], NULL, 'Vhs');
 		$this->assertSame(ExtensionManagementUtility::extPath('vhs', 'ext_icon.gif'), $test);
 	}
 
@@ -40,7 +40,7 @@ class IconViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function throwsErrorWhenUnableToDetectExtensionName() {
 		$this->setExpectedException('RuntimeException', NULL, 1364167519);
-		$this->executeViewHelper(array(), array(), NULL, NULL, 'FakePlugin');
+		$this->executeViewHelper([], [], NULL, NULL, 'FakePlugin');
 	}
 
 }

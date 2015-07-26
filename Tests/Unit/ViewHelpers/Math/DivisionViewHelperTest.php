@@ -26,14 +26,14 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testDualArgumentIteratorFirst() {
-		$this->executeDualArgumentTest(array(4, 8), 2, array(2, 4));
+		$this->executeDualArgumentTest([4, 8], 2, [2, 4]);
 	}
 
 	/**
 	 * @test
 	 */
 	public function executeMissingArgumentTest() {
-		$result = $this->executeViewHelper(array());
+		$result = $this->executeViewHelper([]);
 		$this->assertEquals('Required argument "b" was not supplied', $result);
 	}
 
@@ -41,7 +41,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function executeInvalidFirstArgumentTypeTest() {
-		$result = $this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
+		$result = $this->executeViewHelper(['b' => 1, 'fail' => TRUE]);
 		$this->assertEquals('Required argument "a" was not supplied', $result);
 	}
 
@@ -49,7 +49,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function executeInvalidSecondArgumentTypeTest() {
-		$result = $this->executeViewHelper(array('a' => 1, 'b' => array(1), 'fail' => TRUE));
+		$result = $this->executeViewHelper(['a' => 1, 'b' => [1], 'fail' => TRUE]);
 		$this->assertEquals('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator', $result);
 	}
 

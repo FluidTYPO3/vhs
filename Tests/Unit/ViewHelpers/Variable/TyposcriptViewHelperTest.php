@@ -21,21 +21,21 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsNullIfPathIsNull() {
-		$this->assertNull($this->executeViewHelper(array('path' => NULL)));
+		$this->assertNull($this->executeViewHelper(['path' => NULL]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function returnsArrayIfPathContainsArray() {
-		$this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase.features')), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
+		$this->assertThat($this->executeViewHelper(['path' => 'config.tx_extbase.features']), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
 	}
 
 	/**
 	 * @test
 	 */
 	public function canGetPathUsingArgument() {
-		$this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features')));
+		$this->assertNotEmpty($this->executeViewHelper(['path' => 'config.tx_extbase.features']));
 	}
 
 	/**
