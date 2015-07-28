@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -59,7 +60,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('hideNotTranslated', 'boolean', 'Hides languageIDs which are not translated', FALSE, FALSE);
 		$this->registerArgument('layout', 'string', 'How to render links when using autorendering. Possible selections: name,flag - use fx "name" or "flag,name" or "name,flag"', FALSE, 'flag,name');
 		$this->registerArgument('useCHash', 'boolean', 'Use cHash for typolink', FALSE, TRUE);
-		$this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', FALSE, 'typo3/sysext/t3skin/images/flags/');
+		$this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', FALSE, '');
 		$this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', FALSE, 'png');
 		$this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', FALSE, TRUE);
 		$this->registerArgument('classCurrent', 'string', 'Sets the class, by which the current language will be marked', FALSE, 'current');
@@ -151,7 +152,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return string
 	 */
 	protected function getLanguageFlagSrc($iso) {
-		$path = trim($this->arguments['flagPath']);
+		if ('' !== $this->arguments['flagPath']) {
+			$path = trim($this->arguments['flagPath']);
+		} else {
+			$path = CoreUtility::getLanguageFlagIconPath();
+		}
+
 		$imgType = trim($this->arguments['flagImageType']);
 		$img = $path . $iso . '.' . $imgType;
 		return $img;

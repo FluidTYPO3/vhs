@@ -27,7 +27,7 @@ class CoreUtility {
 	 * @return string
 	 */
 	public static function getLanguageFlagIconPath() {
-		if (7.1 > (double)CoreUtility::getCurrentCoreVersion()) {
+		if (7.1 > (double)self::getCurrentCoreVersion()) {
 			return ExtensionManagementUtility::extPath('t3skin') . 'images/flags/';
 		} else {
 			return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/flags/';
