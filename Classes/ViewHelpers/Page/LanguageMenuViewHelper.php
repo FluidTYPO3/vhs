@@ -208,7 +208,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 			'altText' => $language['label'],
 			'titleText' => $language['label']
 		);
-		return $this->cObj->IMAGE($conf);
+		return $this->cObj->render($this->cObj->getContentObject('IMAGE'), $conf);
 	}
 
 	/**
