@@ -30,7 +30,7 @@ class CoreUtility {
 		if (7.1 > (double)self::getCurrentCoreVersion()) {
 			return ExtensionManagementUtility::extPath('t3skin') . 'images/flags/';
 		} else {
-			return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/flags/';
+			return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/';
 		}
 	}
 
