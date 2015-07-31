@@ -428,9 +428,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (0 < $getLL) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($overlayPageUid, $getLL);
 			foreach ($pageOverlay as $name => $value) {
-				if (FALSE === empty($value)) {
-					$page[$name] = $value;
-				}
+				$page[$name] = $value;
 			}
 		}
 
