@@ -64,7 +64,8 @@ class GetViewHelper extends AbstractViewHelper {
 			}
 		} else {
 			$segments = explode('.', $name);
-			$templateVariableRootName = $lastSegment = array_shift($segments);
+			$lastSegment = array_shift($segments);
+			$templateVariableRootName = $lastSegment;
 			if (TRUE === $this->templateVariableContainer->exists($templateVariableRootName)) {
 				$templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
 				if (TRUE === $useRawKeys) {

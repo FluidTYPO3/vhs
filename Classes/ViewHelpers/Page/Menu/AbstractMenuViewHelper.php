@@ -381,7 +381,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	protected function getMenuItemEntry($page, $rootLine, array $parentPage = NULL) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
-		$pageUid = $overlayPageUid = $page['originalPageUid'] = $page['uid'];
+		$page['originalPageUid'] = $page['uid'];
+		$overlayPageUid = $page['uid'];
+		$pageUid = $page['uid'];
 		$targetPage = NULL;
 		$doktype = (integer) $page['doktype'];
 		if (NULL !== $parentPage && TRUE === isset($parentPage['_MP_PARAM'])) {

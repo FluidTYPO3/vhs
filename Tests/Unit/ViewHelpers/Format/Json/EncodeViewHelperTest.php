@@ -51,7 +51,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest {
 			),
 			'dateTimeFormat' => 'Y-m-d',
 		);
-		$test = $test = $this->executeViewHelper($arguments);
+		$test = $this->executeViewHelper($arguments);
 		$this->assertEquals('{"date":"1970-01-02"}', $test);
 	}
 

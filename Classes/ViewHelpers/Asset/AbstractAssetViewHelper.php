@@ -313,7 +313,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 	 * @return array
 	 */
 	public function getSettings() {
-		if (TRUE === is_null(self::$settingsCache)) {
+		if (NULL === self::$settingsCache) {
 			$allTypoScript = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {

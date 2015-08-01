@@ -70,7 +70,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 		$nextUid = NULL;
 		$prevUid = NULL;
 		for ($i = 0; $i < $uidCount; $i++) {
-			if ((integer)$pageUids[$i] === $currentUid) {
+			if ((integer) $pageUids[$i] === $currentUid) {
 				if ($i > 0) {
 					$prevUid = $pageUids[$i - 1];
 				}
@@ -81,19 +81,19 @@ class BrowseViewHelper extends AbstractMenuViewHelper {
 			}
 		}
 		$pages = array();
-		if (TRUE === (boolean)$this->arguments['renderFirst']) {
+		if (TRUE === (boolean) $this->arguments['renderFirst']) {
 			$pages['first'] = $menuData[$firstUid];
 		}
 		if (NULL !== $prevUid) {
 			$pages['prev'] = $menuData[$prevUid];
 		}
-		if (TRUE === (boolean)$this->arguments['renderUp']) {
+		if (TRUE === (boolean) $this->arguments['renderUp']) {
 			$pages['up'] = $parentPage;
 		}
 		if (NULL !== $nextUid) {
 			$pages['next'] = $menuData[$nextUid];
 		}
-		if (TRUE === (boolean)$this->arguments['renderLast']) {
+		if (TRUE === (boolean) $this->arguments['renderLast']) {
 			$pages['last'] = $menuData[$lastUid];
 		}
 		$menuItems = $this->parseMenu($pages, $rootLineData);

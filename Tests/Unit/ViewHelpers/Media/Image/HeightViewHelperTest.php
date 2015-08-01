@@ -47,7 +47,7 @@ class HeightViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\HeightViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
 
-		$this->assertEquals(160, $height = $viewHelper->render());
+		$this->assertEquals(160, $viewHelper->render());
 	}
 
 	/**

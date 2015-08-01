@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  * @category ViewHelpers
  * @package Vhs
  * @author Dmitri Pisarev <dimaip@gmail.com>
-*/
+ */
 class CollectionViewHelper extends AbstractResourceViewHelper {
 
 	/**

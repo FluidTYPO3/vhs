@@ -32,7 +32,7 @@ class FirstViewHelper extends AbstractViewHelper {
 	/**
 	 * Render method
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @return mixed|NULL
 	 */
 	public function render() {
@@ -40,7 +40,7 @@ class FirstViewHelper extends AbstractViewHelper {
 		if (NULL === $haystack) {
 			$haystack = $this->renderChildren();
 		}
-		if (FALSE === is_array($haystack) && FALSE === $haystack instanceof \Iterator && FALSE === is_null($haystack)) {
+		if (FALSE === is_array($haystack) && FALSE === $haystack instanceof \Iterator && NULL !== $haystack) {
 			throw new Exception('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
 				gettype($haystack), 1351958398);
 		}

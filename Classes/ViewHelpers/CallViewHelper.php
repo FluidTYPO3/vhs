@@ -35,7 +35,7 @@ class CallViewHelper extends AbstractViewHelper {
 	 * @param string $method
 	 * @param object $object
 	 * @param array $arguments
-	 * @throws \Exception
+	 * @throws \RuntimeException
 	 * @return mixed
 	 */
 	public function render($method, $object = NULL, array $arguments = array()) {
