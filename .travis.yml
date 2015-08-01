@@ -23,10 +23,10 @@ matrix:
 
 cache:
   directories:
-    - vendor
+    - fix/vendor
 
-before_cache: touch vendor/.cached
+before_cache: touch fix/vendor/.cached
 
-install: if [ -a vendor/.cached ] ; then echo ; else composer require typo3/cms:$TYPO3 ; fi;
+install: if [ -a fix/vendor/.cached ] ; then echo ; else cd fix && composer require typo3/cms:$TYPO3 ; fi;
 
-script: ./vendor/bin/ci-runner
+script: ./fix/vendor/bin/ci-runner
