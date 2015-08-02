@@ -47,7 +47,7 @@ class WidthViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\WidthViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
 
-		$this->assertEquals(385, $width = $viewHelper->render());
+		$this->assertEquals(385, $viewHelper->render());
 	}
 
 	/**

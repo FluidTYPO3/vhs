@@ -70,7 +70,7 @@ class LanguageViewHelper extends AbstractViewHelper {
 	 * tries to resolve it from the controller context if not set.
 	 *
 	 * @return string
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 */
 	protected function getResolvedExtensionName() {
 		$extensionName = $this->arguments['extensionName'];

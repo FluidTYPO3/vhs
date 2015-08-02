@@ -220,7 +220,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		$order = $this->arguments['order'] ? GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
 		$labelOverwrite = $this->arguments['labelOverwrite'] ? GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']) : '';
 
-		$tempArray = $languageMenu = array();
+		$languageMenu = array();
+		$tempArray = array();
 
 		$tempArray[0] = array(
 			'label' => $this->arguments['defaultLanguageLabel'],

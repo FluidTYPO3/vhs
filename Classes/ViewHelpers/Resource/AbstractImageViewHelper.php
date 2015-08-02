@@ -73,7 +73,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper {
 	/**
 	 * @param array $files
 	 * @param boolean $onlyProperties
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 * @return array|NULL
 	 */
 	public function preprocessImages($files, $onlyProperties = FALSE) {

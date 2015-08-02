@@ -18,8 +18,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 class KeysViewHelperTest extends AbstractViewHelperTest {
 
 	/**
-	* @test
-	*/
+	 * @test
+	 */
 	public function returnsKeys() {
 		$array = array('a' => 'A', 'b' => 'B', 'c' => 'C');
 		$expected = array('a', 'b', 'c');

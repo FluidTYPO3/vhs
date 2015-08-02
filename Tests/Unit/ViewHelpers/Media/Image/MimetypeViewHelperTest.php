@@ -47,7 +47,7 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
 
-		$this->assertEquals('image/jpeg', $mimetype = $viewHelper->render());
+		$this->assertEquals('image/jpeg', $viewHelper->render());
 	}
 
 	/**

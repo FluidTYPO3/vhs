@@ -27,11 +27,10 @@ class CoreUtility {
 	 * @return string
 	 */
 	public static function getLanguageFlagIconPath() {
-		if (7.1 > (double)self::getCurrentCoreVersion()) {
+		if (TRUE === version_compare(TYPO3_version, '7.1', '<')) {
 			return ExtensionManagementUtility::extPath('t3skin') . 'images/flags/';
-		} else {
-			return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/';
 		}
+		return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/';
 	}
 
 	/**
