@@ -21,10 +21,10 @@ class AppendViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function canAppendValueToArgument() {
-		$arguments = array(
+		$arguments = [
 			'subject' => 'before',
 			'add' => 'after'
-		);
+		];
 		$test = $this->executeViewHelper($arguments);
 		$this->assertStringEndsWith($arguments['add'], $test);
 	}
@@ -33,9 +33,9 @@ class AppendViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function canAppendValueToChildContent() {
-		$arguments = array(
+		$arguments = [
 			'add' => 'after'
-		);
+		];
 		$test = $this->executeViewHelperUsingTagContent('Text', 'before', $arguments);
 		$this->assertStringEndsWith($arguments['add'], $test);
 	}

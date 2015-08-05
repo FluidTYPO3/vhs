@@ -82,7 +82,7 @@ class FieldNameViewHelper extends AbstractViewHelper {
 		if (TRUE === $this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames')) {
 			$formFieldNames = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames');
 		} else {
-			$formFieldNames = array();
+			$formFieldNames = [];
 		}
 		$formFieldNames[] = $name;
 		$this->viewHelperVariableContainer->addOrUpdate('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formFieldNames', $formFieldNames);

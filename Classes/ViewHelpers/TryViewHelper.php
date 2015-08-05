@@ -100,7 +100,7 @@ class TryViewHelper extends AbstractConditionViewHelper {
 				$content = $this->renderChildren();
 			}
 		} catch (\Exception $error) {
-			$content = $this->renderChildrenWithVariables(array('exception' => $error));
+			$content = $this->renderChildrenWithVariables(['exception' => $error]);
 		}
 		return $content;
 	}

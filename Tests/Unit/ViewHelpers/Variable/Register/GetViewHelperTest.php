@@ -21,7 +21,7 @@ class GetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function silentlyIgnoresMissingFrontendController() {
-		$result = $this->executeViewHelper(array('name' => 'name'));
+		$result = $this->executeViewHelper(['name' => 'name']);
 		$this->assertNull($result);
 	}
 
@@ -29,20 +29,20 @@ class GetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsNullIfRegisterDoesNotExist() {
-		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
+		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', [], [], '', FALSE);
 		$name = uniqid();
-		$this->assertEquals(NULL, $this->executeViewHelper(array('name' => $name)));
+		$this->assertEquals(NULL, $this->executeViewHelper(['name' => $name]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function returnsValueIfRegisterExists() {
-		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
+		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', [], [], '', FALSE);
 		$name = uniqid();
 		$value = uniqid();
 		$GLOBALS['TSFE']->register[$name] = $value;
-		$this->assertEquals($value, $this->executeViewHelper(array('name' => $name)));
+		$this->assertEquals($value, $this->executeViewHelper(['name' => $name]));
 	}
 
 }

@@ -58,13 +58,13 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 		if (NULL === $src) {
 			$src = $this->renderChildren();
 			if (NULL === $src) {
-				return array();
+				return [];
 			}
 		}
 
 		if (TRUE === $treatIdAsUid || TRUE === $treatIdAsReference) {
 			$id = (integer) $src;
-			$info = array();
+			$info = [];
 			if (TRUE === $treatIdAsUid) {
 				$info = $this->getInfoByUid($id);
 			} elseif (TRUE === $treatIdAsReference) {
@@ -76,11 +76,11 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 				throw new Exception('Cannot determine info for "' . $file . '". File does not exist or is a directory.', 1357066532);
 			}
 			$imageSize = getimagesize($file);
-			$info = array(
+			$info = [
 				'width'  => $imageSize[0],
 				'height' => $imageSize[1],
 				'type'   => $imageSize['mime'],
-			);
+			];
 		}
 
 		return $info;

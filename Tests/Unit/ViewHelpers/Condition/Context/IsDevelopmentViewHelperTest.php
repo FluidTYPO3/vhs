@@ -18,7 +18,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 class IsDevelopmentViewHelperTest extends AbstractViewHelperTest {
 
 	public function testRender() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else')));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else']));
 	}
 
 }

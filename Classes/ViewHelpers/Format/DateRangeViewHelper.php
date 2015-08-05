@@ -155,7 +155,7 @@ class DateRangeViewHelper extends AbstractViewHelper {
 			}
 			$output = $interval->format($return);
 		} elseif (TRUE === is_array($return)) {
-			$output = array();
+			$output = [];
 			foreach ($return as $format) {
 				if (FALSE === strpos($format, '%')) {
 					$format = '%' . $format;

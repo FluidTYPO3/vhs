@@ -26,7 +26,7 @@ class AverageViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testSingleArgumentIteratorFirst() {
-		$this->executeSingleArgumentTest(array(1, 3), 2);
+		$this->executeSingleArgumentTest([1, 3], 2);
 	}
 
 	/**
@@ -40,21 +40,21 @@ class AverageViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testDualArgumentWithIteratorFirst() {
-		$this->executeDualArgumentTest(array(1, 5), 3, array(2, 4));
+		$this->executeDualArgumentTest([1, 5], 3, [2, 4]);
 	}
 
 	/**
 	 * @test
 	 */
 	public function testDualArgumentBothIterators() {
-		$this->executeDualArgumentTest(array(1, 5), array(3, 3), array(2, 4));
+		$this->executeDualArgumentTest([1, 5], [3, 3], [2, 4]);
 	}
 
 	/**
 	 * @test
 	 */
 	public function executeMissingArgumentTest() {
-		$result = $this->executeViewHelper(array());
+		$result = $this->executeViewHelper([]);
 		$this->assertEquals('Required argument "b" was not supplied', $result);
 	}
 

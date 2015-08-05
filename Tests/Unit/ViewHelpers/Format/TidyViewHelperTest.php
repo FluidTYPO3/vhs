@@ -54,7 +54,7 @@ class TidyViewHelperTest extends AbstractViewHelperTest {
 		}
 		$source = '<foo> <bar>
 			</bar>			</foo>';
-		$test = $this->executeViewHelper(array('content' => $source));
+		$test = $this->executeViewHelper(['content' => $source]);
 		$this->assertNotSame($source, $test);
 	}
 

@@ -21,23 +21,23 @@ class ValuesViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsValuesUsingArgument() {
-		$result = $this->executeViewHelper(array('subject' => array('foo' => 'bar')));
-		$this->assertEquals(array('bar'), $result);
+		$result = $this->executeViewHelper(['subject' => ['foo' => 'bar']]);
+		$this->assertEquals(['bar'], $result);
 	}
 
 	/**
 	 * @test
 	 */
 	public function returnsValuesUsingTagContent() {
-		$result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'test', array(), array('test' => array('foo' => 'bar')));
-		$this->assertEquals(array('bar'), $result);
+		$result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'test', [], ['test' => ['foo' => 'bar']]);
+		$this->assertEquals(['bar'], $result);
 	}
 
 	/**
 	 * @test
 	 */
 	public function returnsValuesUsingTagContentAndAsArgument() {
-		$result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'test.0', array('as' => 'test', 'subject' => array('foo' => 'bar')), array());
+		$result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'test.0', ['as' => 'test', 'subject' => ['foo' => 'bar']], []);
 		$this->assertEquals('bar', $result);
 	}
 
@@ -45,8 +45,8 @@ class ValuesViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function supportsIterators() {
-		$result = $this->executeViewHelper(array('subject' => new \ArrayIterator(array('foo' => 'bar'))));
-		$this->assertEquals(array('bar'), $result);
+		$result = $this->executeViewHelper(['subject' => new \ArrayIterator(['foo' => 'bar'])]);
+		$this->assertEquals(['bar'], $result);
 	}
 
 }

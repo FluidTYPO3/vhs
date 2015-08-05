@@ -23,8 +23,8 @@ class LinkViewHelperTest extends AbstractViewHelperTest {
 		parent::setUp();
 		$GLOBALS['TYPO3_DB'] = $this->getMock(
 			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
-			array('exec_SELECTquery', 'sql_fetch_assoc'),
-			array(), '', FALSE
+			['exec_SELECTquery', 'sql_fetch_assoc'],
+			[], '', FALSE
 		);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->willReturn(NULL);
 	}
@@ -33,9 +33,9 @@ class LinkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function generatesPageLinks() {
-		$arguments = array('pageUid' => 1);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
-		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
+		$arguments = ['pageUid' => 1];
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(['uid' => '1', 'title' => 'test']);
+		$result = $this->executeViewHelper($arguments, [], NULL, 'Vhs');
 		$this->assertNotEmpty($result);
 	}
 
@@ -43,9 +43,9 @@ class LinkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function generatesNullLinkOnZeroPageUid() {
-		$arguments = array('pageUid' => 0);
+		$arguments = ['pageUid' => 0];
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(FALSE);
-		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
+		$result = $this->executeViewHelper($arguments, [], NULL, 'Vhs');
 		$this->assertNull($result);
 	}
 
@@ -53,9 +53,9 @@ class LinkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function generatesPageLinksWithCustomTitle() {
-		$arguments = array('pageUid' => 1, 'pageTitleAs' => 'title');
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
-		$result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments, array(), 'Vhs');
+		$arguments = ['pageUid' => 1, 'pageTitleAs' => 'title'];
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(['uid' => '1', 'title' => 'test']);
+		$result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments, [], 'Vhs');
 		$this->assertContains('customtitle', $result);
 	}
 
@@ -63,9 +63,9 @@ class LinkViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function generatesPageWizardLinks() {
-		$arguments = array('pageUid' => '1 2 3 4 5 foo=bar&baz=123');
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
-		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
+		$arguments = ['pageUid' => '1 2 3 4 5 foo=bar&baz=123'];
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(['uid' => '1', 'title' => 'test']);
+		$result = $this->executeViewHelper($arguments, [], NULL, 'Vhs');
 		$this->assertNotEmpty($result);
 	}
 

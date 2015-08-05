@@ -195,7 +195,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 		$this->assetSettingsCache = NULL;
 		$this->localSettings = NULL;
 		if (FALSE === isset($GLOBALS['VhsAssets'])) {
-			$GLOBALS['VhsAssets'] = array();
+			$GLOBALS['VhsAssets'] = [];
 		}
 		$name = $this->getName();
 		$overwrite = $this->getOverwrite();
@@ -235,7 +235,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 		if (TRUE === isset($assetSettings['dependencies'])) {
 			return GeneralUtility::trimExplode(',', $assetSettings['dependencies'], TRUE);
 		}
-		return array();
+		return [];
 	}
 
 	/**
@@ -302,7 +302,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 		if (TRUE === (isset($assetSettings['variables']) && is_array($assetSettings['variables']))) {
 			return $assetSettings['variables'];
 		}
-		return array();
+		return [];
 	}
 
 	/**
@@ -318,7 +318,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {
 				// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
-				self::$settingsCache = array();
+				self::$settingsCache = [];
 			} else {
 				self::$settingsCache = GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
@@ -386,10 +386,10 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 	 * @return array
 	 */
 	public function getDebugInformation() {
-		return array(
+		return [
 			'class' => get_class($this),
 			'settings' => $this->getAssetSettings()
-		);
+		];
 	}
 
 	/**

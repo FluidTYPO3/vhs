@@ -48,11 +48,11 @@ class TagViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getRenderTagTestValues() {
-		return array(
-			array(array('name' => 'div'), 'test', '<div>test</div>'),
-			array(array('name' => 'div', 'class' => 'test'), 'test', '<div class="test">test</div>'),
-			array(array('name' => 'div', 'hideIfEmpty' => TRUE), '', ''),
-		);
+		return [
+			[['name' => 'div'], 'test', '<div>test</div>'],
+			[['name' => 'div', 'class' => 'test'], 'test', '<div class="test">test</div>'],
+			[['name' => 'div', 'hideIfEmpty' => TRUE], '', ''],
+		];
 	}
 
 }

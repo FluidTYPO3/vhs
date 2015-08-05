@@ -17,7 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class EliminateViewHelperTest extends AbstractViewHelperTest {
 
-	protected $arguments = array(
+	protected $arguments = [
 		'caseSensitive' => TRUE,
 		'characters' => NULL,
 		'strings' => NULL,
@@ -28,7 +28,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest {
 		'digits' => FALSE,
 		'letters' => FALSE,
 		'nonAscii' => FALSE
-	);
+	];
 
 	/**
 	 * @test
@@ -147,7 +147,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function removesCharactersAsArray() {
 		$arguments = $this->arguments;
-		$arguments['characters'] = array('a', 'b', 'c');
+		$arguments['characters'] = ['a', 'b', 'c'];
 		$result = $this->executeViewHelperUsingTagContent('Text', 'abcdef', $arguments);
 		$this->assertSame('def', $result);
 	}
@@ -178,7 +178,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function removesStringsAsArray() {
 		$arguments = $this->arguments;
-		$arguments['strings'] = array('abc', 'def', 'ghi');
+		$arguments['strings'] = ['abc', 'def', 'ghi'];
 		$result = $this->executeViewHelperUsingTagContent('Text', 'abcdefghijkl', $arguments);
 		$this->assertSame('jkl', $result);
 	}

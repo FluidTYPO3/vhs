@@ -68,7 +68,7 @@ class TemplateViewHelper extends AbstractRenderViewHelper {
 	 * @param string $paths Optional array (plugin.tx_myext.view style) of paths, EXT:mypath/... paths supported
 	 * @return string
 	 */
-	public function render($file = NULL, $variables = array(), $format = NULL, $paths = NULL) {
+	public function render($file = NULL, $variables = [], $format = NULL, $paths = NULL) {
 		if (NULL === $file) {
 			$file = $this->renderChildren();
 		}

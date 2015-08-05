@@ -38,7 +38,7 @@ class CallViewHelper extends AbstractViewHelper {
 	 * @throws \RuntimeException
 	 * @return mixed
 	 */
-	public function render($method, $object = NULL, array $arguments = array()) {
+	public function render($method, $object = NULL, array $arguments = []) {
 		if (NULL === $object) {
 			$object = $this->renderChildren();
 			if (FALSE === is_object($object)) {
@@ -48,7 +48,7 @@ class CallViewHelper extends AbstractViewHelper {
 		if (FALSE === method_exists($object, $method)) {
 			throw new \RuntimeException('Method "' . $method . '" does not exist on object of type ' . get_class($object), 1356834755);
 		}
-		return call_user_func_array(array($object, $method), $arguments);
+		return call_user_func_array([$object, $method], $arguments);
 	}
 
 }

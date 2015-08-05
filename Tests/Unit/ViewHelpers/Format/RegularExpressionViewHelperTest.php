@@ -21,12 +21,12 @@ class RegularExpressionViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function canReplaceValues() {
-		$arguments = array(
+		$arguments = [
 			'subject' => 'foo123bar',
 			'return' => FALSE,
 			'pattern' => '/[0-9]{3}/',
 			'replacement' => 'baz',
-		);
+		];
 		$test = $this->executeViewHelper($arguments);
 		$this->assertSame('foobazbar', $test);
 	}
@@ -35,27 +35,27 @@ class RegularExpressionViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function canReturnMatches() {
-		$arguments = array(
+		$arguments = [
 			'subject' => 'foo123bar',
 			'return' => TRUE,
 			'pattern' => '/[0-9]{3}/',
 			'replacement' => 'baz',
-		);
+		];
 		$test = $this->executeViewHelper($arguments);
-		$this->assertSame(array('123'), $test);
+		$this->assertSame(['123'], $test);
 	}
 
 	/**
 	 * @test
 	 */
 	public function canTakeSubjectFromRenderChildren() {
-		$arguments = array(
+		$arguments = [
 			'return' => TRUE,
 			'pattern' => '/[0-9]{3}/',
 			'replacement' => 'baz',
-		);
+		];
 		$test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
-		$this->assertSame(array('123'), $test);
+		$this->assertSame(['123'], $test);
 	}
 
 }

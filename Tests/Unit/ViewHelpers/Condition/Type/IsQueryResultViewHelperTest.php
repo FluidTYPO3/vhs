@@ -22,15 +22,15 @@ class IsQueryResultViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersThenChildIfConditionMatched() {
 		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => $queryResult)));
+			['toArray', 'initialize', 'rewind', 'valid', 'count'], [], '', FALSE);
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'value' => $queryResult]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatched() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => 1)));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'value' => 1]));
 	}
 
 }

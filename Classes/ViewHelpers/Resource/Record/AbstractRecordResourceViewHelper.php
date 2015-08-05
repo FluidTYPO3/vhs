@@ -86,7 +86,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 		}
 
 		if (TRUE === empty($record[$field])) {
-			return array();
+			return [];
 		}
 
 		return GeneralUtility::trimExplode(',', $record[$field]);

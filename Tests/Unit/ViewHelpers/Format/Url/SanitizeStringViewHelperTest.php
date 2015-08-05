@@ -24,7 +24,7 @@ class SanitizeStringViewHelperTest extends AbstractViewHelperTest {
 	 * @param string $expectedOutput
 	 */
 	public function sanitizesString($input, $expectedOutput) {
-		$result1 = $this->executeViewHelper(array('string' => $input));
+		$result1 = $this->executeViewHelper(['string' => $input]);
 		$result2 = $this->executeViewHelperUsingTagContent('Text', $input);
 		$this->assertEquals($expectedOutput, $result1);
 		$this->assertEquals($result1, $result2);
@@ -34,12 +34,12 @@ class SanitizeStringViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getInputsAndExpectedOutputs() {
-		return array(
-			array('this string needs dashes', 'this-string-needs-dashes'),
-			array('THIS SHOULD BE LOWERCASE', 'this-should-be-lowercase'),
-			array('THESE øæå chars are not allowed', 'these-oeaeaa-chars-are-not-allowed'),
-			array('many           spaces become one dash', 'many-spaces-become-one-dash')
-		);
+		return [
+			['this string needs dashes', 'this-string-needs-dashes'],
+			['THIS SHOULD BE LOWERCASE', 'this-should-be-lowercase'],
+			['THESE øæå chars are not allowed', 'these-oeaeaa-chars-are-not-allowed'],
+			['many           spaces become one dash', 'many-spaces-become-one-dash']
+		];
 	}
 
 }

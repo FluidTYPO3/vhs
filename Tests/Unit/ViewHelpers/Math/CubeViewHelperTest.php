@@ -26,7 +26,7 @@ class CubeViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testSingleArgumentIteratorFirst() {
-		$this->executeSingleArgumentTest(array(2, 3), array(8, 27));
+		$this->executeSingleArgumentTest([2, 3], [8, 27]);
 	}
 
 }

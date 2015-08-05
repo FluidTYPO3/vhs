@@ -34,7 +34,7 @@ class UncacheTemplateView extends TemplateView {
 	public function callUserFunction($postUserFunc, $conf, $content) {
 		$partial = $conf['partial'];
 		$section = $conf['section'];
-		$arguments = TRUE === is_array($conf['arguments']) ? $conf['arguments'] : array();
+		$arguments = TRUE === is_array($conf['arguments']) ? $conf['arguments'] : [];
 		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
 		$controllerContext = $conf['controllerContext'];
 		if (TRUE === empty($partial)) {
@@ -67,8 +67,8 @@ class UncacheTemplateView extends TemplateView {
 	 * @param array $arguments
 	 * @return string
 	 */
-	protected function renderPartialUncached(RenderingContextInterface $renderingContext, $partial, $section = NULL, $arguments = array()) {
-		array_push($this->renderingStack, array('type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => NULL, 'renderingContext' => $renderingContext));
+	protected function renderPartialUncached(RenderingContextInterface $renderingContext, $partial, $section = NULL, $arguments = []) {
+		array_push($this->renderingStack, ['type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => NULL, 'renderingContext' => $renderingContext]);
 		$rendered = $this->renderPartial($partial, $section, $arguments);
 		array_pop($this->renderingStack);
 		return $rendered;

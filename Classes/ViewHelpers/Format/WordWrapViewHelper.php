@@ -43,7 +43,7 @@ class WordWrapViewHelper extends AbstractViewHelper {
 		$break = $this->arguments['break'];
 		$glue = $this->arguments['glue'];
 		$subject = preg_replace('/ +/', ' ', $subject);
-		$subject = str_replace(array("\r\n", "\r"), PHP_EOL, $subject);
+		$subject = str_replace(["\r\n", "\r"], PHP_EOL, $subject);
 		$subject = wordwrap($subject, $limit, $break, FALSE);
 		$output = '';
 		foreach (explode($break, $subject) as $line) {

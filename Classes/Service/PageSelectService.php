@@ -34,22 +34,22 @@ class PageSelectService implements SingletonInterface {
 	/**
 	 * @var array
 	 */
-	protected static $cachedPages = array();
+	protected static $cachedPages = [];
 
 	/**
 	 * @var array
 	 */
-	protected static $cachedOverlays = array();
+	protected static $cachedOverlays = [];
 
 	/**
 	 * @var array
 	 */
-	protected static $cachedMenus = array();
+	protected static $cachedMenus = [];
 
 	/**
 	 * @var array
 	 */
-	protected static $cachedRootLines = array();
+	protected static $cachedRootLines = [];
 
 	/**
 	 * Initialize \TYPO3\CMS\Frontend\Page\PageRepository objects
@@ -63,13 +63,13 @@ class PageSelectService implements SingletonInterface {
 	 */
 	private function createPageSelectInstance() {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
-			$groups = array(-2, 0);
+			$groups = [-2, 0];
 			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
 		} else {
-			$groups = array(-1, 0);
+			$groups = [-1, 0];
 		}
 		$pageSelect = new PageRepository();
-		$clauses = array();
+		$clauses = [];
 		foreach ($groups as $group) {
 			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
 				$group . ",%' OR fe_group LIKE '%," . $group . "' OR fe_group LIKE '%," . $group . ",%'";
@@ -125,7 +125,7 @@ class PageSelectService implements SingletonInterface {
 	 * @param array $allowedDoktypeList
 	 * @return array
 	 */
-	public function getMenu($pageUid = NULL, $excludePages = array(), $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE, $allowedDoktypeList = array()) {
+	public function getMenu($pageUid = NULL, $excludePages = [], $where = '', $showHiddenInMenu = FALSE, $checkShortcuts = FALSE, $allowedDoktypeList = []) {
 		if (NULL === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
@@ -199,7 +199,7 @@ class PageSelectService implements SingletonInterface {
 		$l18nCfg = TRUE === isset($page['l18n_cfg']) ? $page['l18n_cfg'] : 0;
 		$hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
 		$hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
-		$pageOverlay = 0 !== $languageUid ? $this->getPageOverlay($pageUid, $languageUid) : array();
+		$pageOverlay = 0 !== $languageUid ? $this->getPageOverlay($pageUid, $languageUid) : [];
 		$translationAvailable = 0 !== count($pageOverlay);
 		return
 			(TRUE === $hideIfNotTranslated && 0 !== $languageUid && FALSE === $translationAvailable) ||

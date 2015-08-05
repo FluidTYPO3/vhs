@@ -28,7 +28,7 @@ class ShiftViewHelperTest extends AbstractViewHelperTest {
 			$value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
 		} else {
 			$value = $this->executeViewHelper($arguments);
-			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array(), array('v' => $arguments['subject']));
+			$value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', [], ['v' => $arguments['subject']]);
 			$this->assertEquals($value, $value2);
 		}
 		$this->assertEquals($value, $expectedValue);
@@ -38,13 +38,13 @@ class ShiftViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getRenderTestValues() {
-		return array(
-			array(array('subject' => array()), NULL),
-			array(array('subject' => array('foo', 'bar')), 'foo'),
-			array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), 'foo'),
-			array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), 'foo'),
-			array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), 'foo'),
-		);
+		return [
+			[['subject' => []], NULL],
+			[['subject' => ['foo', 'bar']], 'foo'],
+			[['subject' => ['foo', 'bar'], 'as' => 'variable'], 'foo'],
+			[['subject' => new \ArrayIterator(['foo', 'bar'])], 'foo'],
+			[['subject' => new \ArrayIterator(['foo', 'bar']), 'as' => 'variable'], 'foo'],
+		];
 	}
 
 	/**
@@ -54,7 +54,7 @@ class ShiftViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function testThrowsErrorsOnInvalidSubjectType($subject) {
 		$expected = 'Unsupported input type; cannot convert to array!';
-		$result = $this->executeViewHelper(array('subject' => $subject));
+		$result = $this->executeViewHelper(['subject' => $subject]);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -62,12 +62,12 @@ class ShiftViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getErrorTestValues() {
-		return array(
-			array(0),
-			array(NULL),
-			array(new \DateTime()),
-			array(new \stdClass()),
-		);
+		return [
+			[0],
+			[NULL],
+			[new \DateTime()],
+			[new \stdClass()],
+		];
 	}
 
 }

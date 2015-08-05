@@ -21,12 +21,12 @@ class NextViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsNextElement() {
-		$array = array('a', 'b', 'c');
+		$array = ['a', 'b', 'c'];
 		next($array);
-		$arguments = array(
+		$arguments = [
 			'haystack' => $array,
 			'needle' => 'b',
-		);
+		];
 		$output = $this->executeViewHelper($arguments);
 		$this->assertEquals('c', $output);
 	}

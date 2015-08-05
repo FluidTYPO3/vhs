@@ -18,13 +18,13 @@ class AssetServiceTest extends UnitTestCase {
 	 */
 	public function testBuildAll(array $assets, $cached, $expectedFiles) {
 		$GLOBALS['VhsAssets'] = $assets;
-		$GLOBALS['TSFE'] = (object) array('content' => 'content');
-		$instance = $this->getMock('FluidTYPO3\\Vhs\\Service\\AssetService', array('writeFile'));
+		$GLOBALS['TSFE'] = (object) ['content' => 'content'];
+		$instance = $this->getMock('FluidTYPO3\\Vhs\\Service\\AssetService', ['writeFile']);
 		$instance->expects($this->exactly($expectedFiles))->method('writeFile')->with($this->anything(), $this->anything());
 		if (TRUE === $cached) {
-			$instance->buildAll(array(), $this, $cached);
+			$instance->buildAll([], $this, $cached);
 		} else {
-			$instance->buildAllUncached(array(), $this);
+			$instance->buildAllUncached([], $this);
 		}
 		unset($GLOBALS['VhsAssets']);
 	}
@@ -50,15 +50,15 @@ class AssetServiceTest extends UnitTestCase {
 		$fluidAsset = clone $asset1;
 		$fluidAsset->setName('fluid');
 		$fluidAsset->setFluid(TRUE);
-		return array(
-			array(array(), TRUE, 0, array()),
-			array(array(), FALSE, 0, array()),
-			array(array('asset1' => $asset1), TRUE, 1),
-			array(array('asset1' => $asset1, 'asset2' => $asset2), TRUE, 2),
-			array(array('asset1' => $asset1, 'asset2' => $asset2, 'asset3' => $asset3), TRUE, 2),
-			array(array('asset1' => $asset1, 'asset2' => $asset2, 'asset3standalone' => $asset3standalone), TRUE, 2),
-			array(array('fluid' => $fluidAsset), TRUE, 1)
-		);
+		return [
+			[[], TRUE, 0, []],
+			[[], FALSE, 0, []],
+			[['asset1' => $asset1], TRUE, 1],
+			[['asset1' => $asset1, 'asset2' => $asset2], TRUE, 2],
+			[['asset1' => $asset1, 'asset2' => $asset2, 'asset3' => $asset3], TRUE, 2],
+			[['asset1' => $asset1, 'asset2' => $asset2, 'asset3standalone' => $asset3standalone], TRUE, 2],
+			[['fluid' => $fluidAsset], TRUE, 1]
+		];
 	}
 
 }

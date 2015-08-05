@@ -21,35 +21,35 @@ class PregViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foo123bar', 'pattern' => '/([0-9]+)/i')));
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'foo123bar', 'pattern' => '/([0-9]+)/i']));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatched() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foobar', 'pattern' => '/[0-9]+/i')));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'foobar', 'pattern' => '/[0-9]+/i']));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatchedAndGlobalEnabled() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foo123bar', 'pattern' => '/([0-9]+)/i')));
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'foo123bar', 'pattern' => '/([0-9]+)/i']));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatchedAndGlobalEnabled() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foobar', 'pattern' => '/[0-9]+/i', 'global' => TRUE)));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'string' => 'foobar', 'pattern' => '/[0-9]+/i', 'global' => TRUE]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersTagContentWhenConditionMatchedAndAsArgumentUsed() {
-		$this->assertEquals('test', $this->executeViewHelperUsingTagContent('Text', 'test', array('string' => 'foo123bar', 'pattern' => '/[0-9]+/', 'global' => TRUE, 'as' => 'dummy'), array('dummy' => 'test')));
+		$this->assertEquals('test', $this->executeViewHelperUsingTagContent('Text', 'test', ['string' => 'foo123bar', 'pattern' => '/[0-9]+/', 'global' => TRUE, 'as' => 'dummy'], ['dummy' => 'test']));
 	}
 
 }

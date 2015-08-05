@@ -53,7 +53,7 @@ class AssetService implements SingletonInterface {
 	/**
 	 * @var array
 	 */
-	private static $cachedDependencies = array();
+	private static $cachedDependencies = [];
 
 	/**
 	 * @var boolean
@@ -82,7 +82,7 @@ class AssetService implements SingletonInterface {
 	 * @return boolean
 	 */
 	public function usePageCache($caller, $shouldUsePageCache) {
-		$this->buildAll(array(), $caller);
+		$this->buildAll([], $caller);
 		return $shouldUsePageCache;
 	}
 
@@ -137,7 +137,7 @@ class AssetService implements SingletonInterface {
 	 */
 	public function buildAllUncached(array $parameters, $caller) {
 		$content = $caller->content;
-		$matches = array();
+		$matches = [];
 		preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
 		foreach ($matches[1] as $key => $match) {
 			$extractedDependencies = explode(',', $matches[1][$key]);
@@ -161,7 +161,7 @@ class AssetService implements SingletonInterface {
 			$settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			if (FALSE === $settingsExist) {
 				// no settings exist, but don't allow a NULL value. This prevents cache clobbering.
-				self::$settingsCache = array();
+				self::$settingsCache = [];
 			} else {
 				self::$settingsCache = GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.']['settings.']);
 			}
@@ -177,8 +177,8 @@ class AssetService implements SingletonInterface {
 	 */
 	private function placeAssetsInHeaderAndFooter($assets, $cached) {
 		$settings = $this->getSettings();
-		$header = array();
-		$footer = array();
+		$header = [];
+		$footer = [];
 		$footerRelocationEnabled = (TRUE === isset($settings['enableFooterRelocation']) && $settings['relocateToFooter'] > 0) || FALSE === isset($settings['enableFooterRelocation']);
 		foreach ($assets as $name => $asset) {
 			$variables = $asset->getVariables();
@@ -200,7 +200,7 @@ class AssetService implements SingletonInterface {
 		}
 		$this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
 		$this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer);
-		$GLOBALS['VhsAssets'] = array();
+		$GLOBALS['VhsAssets'] = [];
 	}
 
 	/**
@@ -229,18 +229,18 @@ class AssetService implements SingletonInterface {
 	 * @return string
 	 */
 	private function buildAssetsChunk($assets) {
-		$spool = array();
+		$spool = [];
 		foreach ($assets as $name => $asset) {
 			$assetSettings = $this->extractAssetSettings($asset);
 			$type = $assetSettings['type'];
 			if (FALSE === isset($spool[$type])) {
-				$spool[$type] = array();
+				$spool[$type] = [];
 			}
 			$spool[$type][$name] = $asset;
 		}
-		$chunks = array();
+		$chunks = [];
 		foreach ($spool as $type => $spooledAssets) {
-			$chunk = array();
+			$chunk = [];
 			/** @var AssetInterface[] $spooledAssets */
 			foreach ($spooledAssets as $name => $asset) {
 				$assetSettings = $this->extractAssetSettings($asset);
@@ -254,7 +254,7 @@ class AssetService implements SingletonInterface {
 					if (0 < count($chunk)) {
 						$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
 						array_push($chunks, $mergedFileTag);
-						$chunk = array();
+						$chunk = [];
 					}
 					if (TRUE === empty($path)) {
 						$assetContent = $this->extractAssetContent($asset);
@@ -264,7 +264,7 @@ class AssetService implements SingletonInterface {
 							array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
 						} else {
 							if (TRUE === $rewrite) {
-								array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
+								array_push($chunks, $this->writeCachedMergedFileAndReturnTag([$name => $asset], $type));
 							} else {
 								$path = substr($path, strlen(PATH_site));
 								$path = $this->prefixPath($path);
@@ -392,7 +392,7 @@ class AssetService implements SingletonInterface {
 		if (FALSE === (isset($settings['asset']) || isset($settings['assetGroup']))) {
 			return $assets;
 		}
-		$filtered = array();
+		$filtered = [];
 		/** @var \FluidTYPO3\Vhs\Asset $asset */
 		foreach ($assets as $name => $asset) {
 			$assetSettings = $this->extractAssetSettings($asset);
@@ -427,8 +427,8 @@ class AssetService implements SingletonInterface {
 	 * @return AssetInterface[]
 	 */
 	private function sortAssetsByDependency($assets) {
-		$placed = array();
-		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
+		$placed = [];
+		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : [];
 		while ($asset = array_shift($assets)) {
 			$postpone = FALSE;
 			/** @var AssetInterface $asset */
@@ -469,7 +469,7 @@ class AssetService implements SingletonInterface {
 	 */
 	private function renderAssetAsFluidTemplate($asset) {
 		$settings = $this->extractAssetSettings($asset);
-		$variables = (TRUE === (isset($settings['variables']) && is_array($settings['variables'])) ? $settings['variables'] : array());
+		$variables = (TRUE === (isset($settings['variables']) && is_array($settings['variables'])) ? $settings['variables'] : []);
 		$contents = $this->buildAsset($asset);
 		$variables = GeneralUtility::removeDotsFromTS($variables);
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
@@ -526,8 +526,8 @@ class AssetService implements SingletonInterface {
 	 * @return string Processed data
 	 */
 	protected function copyReferencedFilesAndReplacePaths($contents, $regex, $originalDirectory, $wrap = '|') {
-		$matches = array();
-		$replacements = array();
+		$matches = [];
+		$replacements = [];
 		$wrap = explode('|', $wrap);
 		preg_match_all($regex, $contents, $matches);
 		foreach ($matches[2] as $matchCount => $match) {

@@ -29,7 +29,7 @@ class ContainsViewHelperTest extends AbstractViewHelperTest {
 	 * @param mixed $needle
 	 */
 	public function testRendersThen($haystack, $needle) {
-		$result = $this->executeViewHelper(array('haystack' => $haystack, 'needle' => $needle, 'then' => 'then'));
+		$result = $this->executeViewHelper(['haystack' => $haystack, 'needle' => $needle, 'then' => 'then']);
 		$this->assertEquals('then', $result);
 	}
 
@@ -48,13 +48,13 @@ class ContainsViewHelperTest extends AbstractViewHelperTest {
 			->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
 		ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', TRUE, TRUE);
 		$lazyObjectStorage->attach($foo);
-		return array(
-			array(array('foo'), 'foo'),
-			array('foo,bar', 'foo'),
-			array(array($foo), $foo),
-			array($objectStorage, $bar),
-			array($lazyObjectStorage, $foo)
-		);
+		return [
+			[['foo'], 'foo'],
+			['foo,bar', 'foo'],
+			[[$foo], $foo],
+			[$objectStorage, $bar],
+			[$lazyObjectStorage, $foo]
+		];
 	}
 
 	/**
@@ -63,7 +63,7 @@ class ContainsViewHelperTest extends AbstractViewHelperTest {
 	 * @param mixed $needle
 	 */
 	public function testRendersElse($haystack, $needle) {
-		$result = $this->executeViewHelper(array('haystack' => $haystack, 'needle' => $needle, 'else' => 'else'));
+		$result = $this->executeViewHelper(['haystack' => $haystack, 'needle' => $needle, 'else' => 'else']);
 		$this->assertEquals('else', $result);
 	}
 
@@ -82,12 +82,12 @@ class ContainsViewHelperTest extends AbstractViewHelperTest {
 			->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
 		ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', TRUE, TRUE);
 		$lazyObjectStorage->attach($foo);
-		return array(
-			array(array('foo'), 'bar'),
-			array('foo,baz', 'bar'),
-			array($objectStorage, $foo),
-			array($lazyObjectStorage, $bar)
-		);
+		return [
+			[['foo'], 'bar'],
+			['foo,baz', 'bar'],
+			[$objectStorage, $foo],
+			[$lazyObjectStorage, $bar]
+		];
 	}
 
 }

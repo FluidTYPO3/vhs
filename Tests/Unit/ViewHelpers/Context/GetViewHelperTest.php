@@ -38,8 +38,8 @@ class GetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsContext() {
-		$valid = array('Development', 'Testing', 'Production');
-		$result = $this->executeViewHelper(array());
+		$valid = ['Development', 'Testing', 'Production'];
+		$result = $this->executeViewHelper([]);
 		$this->assertContains($result, $valid);
 	}
 

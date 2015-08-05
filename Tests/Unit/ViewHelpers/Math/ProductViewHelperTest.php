@@ -19,7 +19,7 @@ class ProductViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testSingleArgumentIterator() {
-		$this->executeSingleArgumentTest(array(2, 8), 16);
+		$this->executeSingleArgumentTest([2, 8], 16);
 	}
 
 	/**
@@ -33,7 +33,7 @@ class ProductViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function executeMissingArgumentTest() {
-		$result = $this->executeViewHelper(array());
+		$result = $this->executeViewHelper([]);
 		$this->assertEquals('Required argument "b" was not supplied', $result);
 	}
 
@@ -41,7 +41,7 @@ class ProductViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function executeInvalidArgumentTypeTest() {
-		$result = $this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
+		$result = $this->executeViewHelper(['b' => 1, 'fail' => TRUE]);
 		$this->assertEquals('Required argument "a" was not supplied', $result);
 	}
 

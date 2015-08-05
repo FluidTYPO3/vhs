@@ -103,11 +103,11 @@ class MarkdownViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function transform($text) {
-		$descriptorspec = array(
-			0 => array('pipe', 'r'),
-			1 => array('pipe', 'w'),
-			2 => array('pipe', 'a')
-		);
+		$descriptorspec = [
+			0 => ['pipe', 'r'],
+			1 => ['pipe', 'w'],
+			2 => ['pipe', 'a']
+		];
 
 		$process = proc_open($this->markdownExecutablePath, $descriptorspec, $pipes, NULL, $GLOBALS['_ENV']);
 

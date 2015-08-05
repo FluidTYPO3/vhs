@@ -21,7 +21,7 @@ class DecodeViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsNullForEmptyArguments() {
-		$viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+		$viewHelper = $this->getMock($this->getViewHelperClassName(), ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(''));
 
 		$this->assertNull($viewHelper->render());
@@ -34,14 +34,14 @@ class DecodeViewHelperTest extends AbstractViewHelperTest {
 
 		$fixture = '{"foo":"bar","bar":true,"baz":1,"foobar":null}';
 
-		$expected = array(
+		$expected = [
 			'foo' => 'bar',
 			'bar' => TRUE,
 			'baz' => 1,
 			'foobar' => NULL,
-		);
+		];
 
-		$viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+		$viewHelper = $this->getMock($this->getViewHelperClassName(), ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
 
 		$this->assertEquals($expected, $viewHelper->render());
@@ -53,7 +53,7 @@ class DecodeViewHelperTest extends AbstractViewHelperTest {
 	public function throwsExceptionForInvalidArgument() {
 		$invalidJson = "{'foo': 'bar'}";
 
-		$viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+		$viewHelper = $this->getMock($this->getViewHelperClassName(), ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($invalidJson));
 
 		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');

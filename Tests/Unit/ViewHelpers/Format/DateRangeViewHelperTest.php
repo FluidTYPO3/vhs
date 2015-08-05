@@ -20,7 +20,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest {
 	/**
 	 * @var array
 	 */
-	protected $arguments = array(
+	protected $arguments = [
 		'start' => 1,
 		'end' => 86401,
 		'intervalFormat' => NULL,
@@ -29,7 +29,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest {
 		'glue' => '-',
 		'spaceGlue' => TRUE,
 		'return' => NULL,
-	);
+	];
 
 	/**
 	 * @test
@@ -76,9 +76,9 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function canReturnIntervalComponentArray() {
 		$arguments = $this->arguments;
-		$arguments['return'] = array('d', 's');
+		$arguments['return'] = ['d', 's'];
 		$test = $this->executeViewHelper($arguments);
-		$this->assertSame(array('1', '0'), $test);
+		$this->assertSame(['1', '0'], $test);
 	}
 
 	/**

@@ -21,11 +21,11 @@ class IsNullViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfVariableIsNull() {
-		$arguments = array(
+		$arguments = [
 			'value' => NULL,
 			'then' => 'then',
 			'else' => 'else'
-		);
+		];
 		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals($arguments['then'], $result);
 	}
@@ -34,11 +34,11 @@ class IsNullViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersElseChildIfVariableIsNotNull() {
-		$arguments = array(
+		$arguments = [
 			'value' => TRUE,
 			'then' => 'then',
 			'else' => 'else'
-		);
+		];
 		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals($arguments['else'], $result);
 	}

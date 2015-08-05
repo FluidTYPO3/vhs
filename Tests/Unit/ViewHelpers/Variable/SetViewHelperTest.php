@@ -22,8 +22,8 @@ class SetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function canSetVariable() {
-		$variables = new \ArrayObject(array('test' => TRUE));
-		$this->executeViewHelper(array('name' => 'test', 'value' => FALSE), $variables);
+		$variables = new \ArrayObject(['test' => TRUE]);
+		$this->executeViewHelper(['name' => 'test', 'value' => FALSE], $variables);
 		$this->assertFalse($variables['test']);
 	}
 
@@ -31,8 +31,8 @@ class SetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function canSetVariableInExistingArrayValue() {
-		$variables = new \ArrayObject(array('test' => array('test' => TRUE)));
-		$this->executeViewHelper(array('name' => 'test.test', 'value' => FALSE), $variables);
+		$variables = new \ArrayObject(['test' => ['test' => TRUE]]);
+		$this->executeViewHelper(['name' => 'test.test', 'value' => FALSE], $variables);
 		$this->assertFalse($variables['test']['test']);
 	}
 
@@ -40,8 +40,8 @@ class SetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function ignoresNestedVariableIfRootDoesNotExist() {
-		$variables = new \ArrayObject(array('test' => array('test' => TRUE)));
-		$result = $this->executeViewHelper(array('name' => 'doesnotexist.test', 'value' => FALSE), $variables);
+		$variables = new \ArrayObject(['test' => ['test' => TRUE]]);
+		$result = $this->executeViewHelper(['name' => 'doesnotexist.test', 'value' => FALSE], $variables);
 		$this->assertNull($result);
 	}
 
@@ -50,8 +50,8 @@ class SetViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function ignoresNestedVariableIfRootDoesNotAllowSetting() {
 		$domainObject = new Foo();
-		$variables = new \ArrayObject(array('test' => $domainObject));
-		$result = $this->executeViewHelper(array('name' => 'test.propertydoesnotexist', 'value' => FALSE), $variables);
+		$variables = new \ArrayObject(['test' => $domainObject]);
+		$result = $this->executeViewHelper(['name' => 'test.propertydoesnotexist', 'value' => FALSE], $variables);
 		$this->assertNull($result);
 	}
 
@@ -59,8 +59,8 @@ class SetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function ignoresNestedVariableIfRootPropertyNameIsInvalid() {
-		$variables = new \ArrayObject(array('test' => 'test'));
-		$result = $this->executeViewHelper(array('name' => 'test.test', 'value' => FALSE), $variables);
+		$variables = new \ArrayObject(['test' => 'test']);
+		$result = $this->executeViewHelper(['name' => 'test.test', 'value' => FALSE], $variables);
 		$this->assertNull($result);
 	}
 
@@ -68,8 +68,8 @@ class SetViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function canSetVariableWithValueFromTagContent() {
-		$variables = new \ArrayObject(array('test' => TRUE));
-		$this->executeViewHelperUsingTagContent('Boolean', FALSE, array('name' => 'test'), $variables);
+		$variables = new \ArrayObject(['test' => TRUE]);
+		$this->executeViewHelperUsingTagContent('Boolean', FALSE, ['name' => 'test'], $variables);
 		$this->assertFalse($variables['test']);
 	}
 

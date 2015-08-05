@@ -28,7 +28,7 @@ class FieldNameViewHelperTest extends AbstractViewHelperTest {
 	 * @param string $expected
 	 */
 	public function testRender(array $arguments, $prefix, $objectName, $names, $expected) {
-		$instance = $this->buildViewHelperInstance($arguments, array(), NULL, 'Vhs');
+		$instance = $this->buildViewHelperInstance($arguments, [], NULL, 'Vhs');
 		$viewHelperVariableContainer = new ViewHelperVariableContainer();
 		if (NULL !== $objectName) {
 			$viewHelperVariableContainer->add('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formObjectName', $objectName);
@@ -49,19 +49,19 @@ class FieldNameViewHelperTest extends AbstractViewHelperTest {
 	 * @return array
 	 */
 	public function getRenderTestValues() {
-		return array(
-			array(array(), NULL, NULL, NULL, ''),
-			array(array('name' => 'test'), NULL, NULL, NULL, 'test'),
-			array(array('property' => 'test'), NULL, NULL, NULL, ''),
-			array(array('name' => 'test'), 'prefix', 'object', NULL, 'prefix[test]'),
-			array(array('property' => 'test'), 'prefix', 'object', NULL, 'prefix[object][test]'),
-			array(array('name' => 'test'), '', '', NULL, 'test'),
-			array(array('property' => 'test'), '', '', NULL, 'test'),
-			array(array('name' => 'test'), 'prefix', '', NULL, 'prefix[test]'),
-			array(array('property' => 'test'), 'prefix', '', NULL, 'prefix[test]'),
-			array(array('name' => 'test'), 'prefix', 'object', array(), 'prefix[test]'),
-			array(array('property' => 'test'), 'prefix', 'object', array(), 'prefix[object][test]'),
-		);
+		return [
+			[[], NULL, NULL, NULL, ''],
+			[['name' => 'test'], NULL, NULL, NULL, 'test'],
+			[['property' => 'test'], NULL, NULL, NULL, ''],
+			[['name' => 'test'], 'prefix', 'object', NULL, 'prefix[test]'],
+			[['property' => 'test'], 'prefix', 'object', NULL, 'prefix[object][test]'],
+			[['name' => 'test'], '', '', NULL, 'test'],
+			[['property' => 'test'], '', '', NULL, 'test'],
+			[['name' => 'test'], 'prefix', '', NULL, 'prefix[test]'],
+			[['property' => 'test'], 'prefix', '', NULL, 'prefix[test]'],
+			[['name' => 'test'], 'prefix', 'object', [], 'prefix[test]'],
+			[['property' => 'test'], 'prefix', 'object', [], 'prefix[object][test]'],
+		];
 	}
 
 }

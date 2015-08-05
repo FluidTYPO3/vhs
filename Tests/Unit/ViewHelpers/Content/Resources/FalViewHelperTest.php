@@ -20,12 +20,12 @@ class FalViewHelperTest extends AbstractViewHelperTest {
 	public function testRender() {
 		$GLOBALS['TYPO3_DB'] = $this->getMock(
 			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
-			array('fullQuoteStr', 'exec_SELECTquery', 'sql_fetch_assoc'),
-			array(), '', FALSE
+			['fullQuoteStr', 'exec_SELECTquery', 'sql_fetch_assoc'],
+			[], '', FALSE
 		);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')->willReturnArgument(0);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->willReturn(NULL);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array());
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn([]);
 		$this->assertEmpty($this->executeViewHelper());
 	}
 

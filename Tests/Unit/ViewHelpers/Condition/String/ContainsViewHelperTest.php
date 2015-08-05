@@ -21,14 +21,14 @@ class ContainsViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'haystack' => 'foobar', 'needle' => 'bar')));
+		$this->assertEquals('then', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'haystack' => 'foobar', 'needle' => 'bar']));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatched() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'haystack' => 'foobar', 'needle' => 'baz')));
+		$this->assertEquals('else', $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'haystack' => 'foobar', 'needle' => 'baz']));
 	}
 
 }

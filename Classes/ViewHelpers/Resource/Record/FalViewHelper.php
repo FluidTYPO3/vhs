@@ -56,7 +56,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_file_reference', 'deleted = 0 AND hidden = 0 AND tablenames = ' . $sqlTable . ' AND fieldname = ' . $sqlField . ' AND uid_foreign = ' . $sqlRecordUid, '', 'sorting_foreign');
 
-		$resources = array();
+		$resources = [];
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$resources[] = $this->getResource($row['uid']);
 		}

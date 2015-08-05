@@ -65,7 +65,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper {
 	 * @return array
 	 */
 	protected function getPreparedNamespaces() {
-		$namespaces = array();
+		$namespaces = [];
 		foreach ((array) $this->arguments['namespaces'] as $namespaceIdentifier => $namespace) {
 			$addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . '}';
 			array_push($namespaces, $addedOverriddenNamespace);

@@ -18,7 +18,7 @@ $autoloader->addPsr4('TYPO3\\CMS\\Recordlist\\', __DIR__ . '/../vendor/typo3/cms
 $autoloader->addPsr4('TYPO3\\CMS\\Frontend\\', __DIR__ . '/../vendor/typo3/cms/typo3/sysext/frontend/Classes/');
 $autoloader->addPsr4('TYPO3\\CMS\\Lang\\', __DIR__ . '/../vendor/typo3/cms/typo3/sysext/lang/Classes/');
 
-\FluidTYPO3\Development\Bootstrap::initialize(array(
+\FluidTYPO3\Development\Bootstrap::initialize([
 	'vhs_main' => \FluidTYPO3\Development\Bootstrap::CACHE_NULL,
 	'vhs_markdown' => \FluidTYPO3\Development\Bootstrap::CACHE_NULL,
 	'extbase_typo3dbbackend_tablecolumns' => \FluidTYPO3\Development\Bootstrap::CACHE_NULL,
@@ -31,4 +31,4 @@ $autoloader->addPsr4('TYPO3\\CMS\\Lang\\', __DIR__ . '/../vendor/typo3/cms/typo3
 	'extbase_reflection' => \FluidTYPO3\Development\Bootstrap::CACHE_NULL,
 	'l10n' => \FluidTYPO3\Development\Bootstrap::CACHE_NULL,
 	'fluid_template' => \FluidTYPO3\Development\Bootstrap::CACHE_PHP_NULL
-));
+]);

@@ -43,7 +43,7 @@ class FilesViewHelper extends AbstractViewHelper {
 		if (NULL === $path) {
 			$path = $this->renderChildren();
 			if (NULL === $path) {
-				return array();
+				return [];
 			}
 		}
 

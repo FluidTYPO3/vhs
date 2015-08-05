@@ -25,9 +25,9 @@ class TryViewHelperTest extends AbstractViewHelperTest {
 	public function testRenderWithException() {
 		$renderingContext = new RenderingContext();
 		$renderingContext->injectTemplateVariableContainer(new TemplateVariableContainer());
-		$instance = $this->getMock($this->getViewHelperClassName(), array('renderThenChild', 'renderChildren'));
+		$instance = $this->getMock($this->getViewHelperClassName(), ['renderThenChild', 'renderChildren']);
 		$instance->setRenderingContext($renderingContext);
-		$instance->setArguments(array());
+		$instance->setArguments([]);
 		$instance->expects($this->once())->method('renderThenChild')->willThrowException(new \RuntimeException('testerror'));
 		$instance->expects($this->once())->method('renderChildren')->willReturn('testerror');
 		$result = $instance->render();

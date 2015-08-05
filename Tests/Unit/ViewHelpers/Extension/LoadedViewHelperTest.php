@@ -22,7 +22,7 @@ class LoadedViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfExtensionIsLoaded() {
-		$test = $this->executeViewHelper(array('extensionName' => 'Vhs', 'then' => 1, 'else' => 0));
+		$test = $this->executeViewHelper(['extensionName' => 'Vhs', 'then' => 1, 'else' => 0]);
 		$this->assertSame(1, $test);
 	}
 
@@ -30,7 +30,7 @@ class LoadedViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersElseChildIfExtensionIsNotLoaded() {
-		$test = $this->executeViewHelper(array('extensionName' => 'Void', 'then' => 1, 'else' => 0));
+		$test = $this->executeViewHelper(['extensionName' => 'Void', 'then' => 1, 'else' => 0]);
 		$this->assertSame(0, $test);
 	}
 

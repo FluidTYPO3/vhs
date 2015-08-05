@@ -34,7 +34,7 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsZeroForEmptyArguments() {
-		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 
 		$this->assertEquals('', $viewHelper->render());
@@ -44,7 +44,7 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function returnsFileMimetypeAsString() {
-		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
 
 		$this->assertEquals('image/jpeg', $viewHelper->render());
@@ -54,7 +54,7 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function throwsExceptionWhenFileNotFound() {
-		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
 
 		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
@@ -65,7 +65,7 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory() {
-		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
 
 		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');

@@ -61,7 +61,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper {
 
 		$src = self::VIMEO_BASEURL . $videoId . '?';
 
-		$queryParams = array(
+		$queryParams = [
 			'title='     . (integer) $this->arguments['title'],
 			'byline='    . (integer) $this->arguments['byline'],
 			'portrait='  . (integer) $this->arguments['portrait'],
@@ -70,7 +70,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper {
 			'loop='      . (integer) $this->arguments['loop'],
 			'api='       . (integer) $this->arguments['api'],
 			'player_id=' . (integer) $this->arguments['playerId'],
-		);
+		];
 
 		$src .= implode('&', $queryParams);
 

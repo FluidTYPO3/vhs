@@ -43,7 +43,7 @@ class ChunkViewHelper extends AbstractViewHelper {
 	 */
 	public function render($count, $fixed = FALSE, $preserveKeys = FALSE) {
 		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$output = array();
+		$output = [];
 		if (0 >= $count) {
 			return $output;
 		}

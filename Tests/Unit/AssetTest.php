@@ -24,7 +24,7 @@ class AssetTest extends UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$GLOBALS['VhsAssets'] = array();
+		$GLOBALS['VhsAssets'] = [];
 	}
 
 	/**
@@ -84,9 +84,9 @@ class AssetTest extends UnitTestCase {
 	 */
 	public function canCreateAssetInstanceFromStaticSettingsFactory() {
 		$file = $this->getAbsoluteAssetFixturePath();
-		$settings = array(
+		$settings = [
 			'file' => $file
-		);
+		];
 		$asset = Asset::createFromSettings($settings);
 		$this->assertInstanceOf('FluidTYPO3\Vhs\Asset', $asset);
 	}
@@ -96,11 +96,11 @@ class AssetTest extends UnitTestCase {
 	 */
 	public function createAssetInstanceFromStaticSettingsFactoryRemapsDeprecatedProperties() {
 		$file = $this->getAbsoluteAssetFixturePath();
-		$settings = array(
+		$settings = [
 			'file' => $file,
-			'arguments' => array('foo' => 'bar'),
+			'arguments' => ['foo' => 'bar'],
 			'allowMoveToFooter' => FALSE
-		);
+		];
 		$asset = Asset::createFromSettings($settings);
 		$this->assertAttributeEquals($settings['arguments'], 'variables', $asset);
 		$this->assertAttributeEquals($settings['allowMoveToFooter'], 'movable', $asset);

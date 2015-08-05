@@ -45,14 +45,14 @@ class SortViewHelper extends AbstractViewHelper {
 	 *
 	 * @var array
 	 */
-	protected $allowedSortFlags = array(
+	protected $allowedSortFlags = [
 		'SORT_REGULAR',
 		'SORT_STRING',
 		'SORT_NUMERIC',
 		'SORT_NATURAL',
 		'SORT_LOCALE_STRING',
 		'SORT_FLAG_CASE'
-	);
+	];
 
 	/**
 	 * Initialize arguments
@@ -109,7 +109,7 @@ class SortViewHelper extends AbstractViewHelper {
 	 * @return array
 	 */
 	protected function sortArray($array) {
-		$sorted = array();
+		$sorted = [];
 		foreach ($array as $index => $object) {
 			if (TRUE === isset($this->arguments['sortBy'])) {
 				$index = $this->getSortValue($object);
@@ -125,7 +125,7 @@ class SortViewHelper extends AbstractViewHelper {
 			$sortedKeys = array_keys($sorted);
 			shuffle($sortedKeys);
 			$backup = $sorted;
-			$sorted = array();
+			$sorted = [];
 			foreach ($sortedKeys as $sortedKey) {
 				$sorted[$sortedKey] = $backup[$sortedKey];
 			}

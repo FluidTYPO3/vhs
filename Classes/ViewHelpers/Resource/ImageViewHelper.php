@@ -57,8 +57,8 @@ class ImageViewHelper extends AbstractImageViewHelper {
 			return NULL;
 		}
 
-		$info = array();
-		$tags = array();
+		$info = [];
+		$tags = [];
 
 		foreach ($images as &$image) {
 			$source = $this->preprocessSourceUri($image['source']);
@@ -78,12 +78,12 @@ class ImageViewHelper extends AbstractImageViewHelper {
 			$image['tag'] = $tag;
 			$tags[] = $tag;
 
-			$info[] = array(
+			$info[] = [
 				'source' => $source,
 				'width' => $width,
 				'height' => $height,
 				'tag' => $tag
-			);
+			];
 		}
 		$as = $this->arguments['as'];
 		if (TRUE === empty($as)) {

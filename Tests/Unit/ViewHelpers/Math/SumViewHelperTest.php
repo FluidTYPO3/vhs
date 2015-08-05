@@ -19,7 +19,7 @@ class SumViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function testSingleArgumentIterator() {
-		$this->executeSingleArgumentTest(array(8, 2), 10);
+		$this->executeSingleArgumentTest([8, 2], 10);
 	}
 
 	/**

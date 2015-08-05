@@ -20,11 +20,11 @@ class ResourceUtilityTest extends UnitTestCase {
 	 * @test
 	 */
 	public function canGetFileInformationArrayFromFileObject() {
-		$propertiesFromFile = array('foo' => 123, 'bar' => 321);
-		$propertiesFromStorage = array('foo' => 'abc', 'baz' => 123);
+		$propertiesFromFile = ['foo' => 123, 'bar' => 321];
+		$propertiesFromStorage = ['foo' => 'abc', 'baz' => 123];
 		$expectation = array_merge($propertiesFromFile, $propertiesFromStorage);
-		$mockStorage = $this->getMock('TYPO3\CMS\Core\Resource\Storage', array('getFileInfo'));
-		$mockFile = $this->getMock('TYPO3\CMS\Core\Resource\File', array('getProperties', 'getStorage', 'toArray'), array(), '', FALSE);
+		$mockStorage = $this->getMock('TYPO3\CMS\Core\Resource\Storage', ['getFileInfo']);
+		$mockFile = $this->getMock('TYPO3\CMS\Core\Resource\File', ['getProperties', 'getStorage', 'toArray'], [], '', FALSE);
 		$mockFile->expects($this->once())->method('getProperties')->will($this->returnValue($propertiesFromFile));
 		$mockFile->expects($this->once())->method('getStorage')->will($this->returnValue($mockStorage));
 		$mockStorage->expects($this->once())->method('getFileInfo')->will($this->returnValue($propertiesFromStorage));
