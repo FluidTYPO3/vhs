@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
+use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
@@ -16,6 +17,8 @@ use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalView
  * @subpackage ViewHelpers\Page\Resources
  */
 class FalViewHelper extends ResourcesFalViewHelper {
+
+	use SlideViewHelperTrait;
 
 	const defaultTable = 'pages';
 	const defaultField = 'media';
@@ -41,6 +44,40 @@ class FalViewHelper extends ResourcesFalViewHelper {
 
 		$this->overrideArgument('table', 'string', 'The table to lookup records.', FALSE, self::defaultTable);
 		$this->overrideArgument('field', 'string', 'The field of the table associated to resources.', FALSE, self::defaultField);
+		$this->registerSlideArguments();
+	}
+
+	/**
+	 * @param integer $pageUid
+	 * @param integer $limit
+	 * @return array
+	 */
+	protected function getSlideRecordsFromPage($pageUid, $limit) {
+		$resources = $this->getResources($this->getRecord($pageUid));
+		if (NULL !== $limit && count($resources) > $limit) {
+			$resources = array_slice($resources, 0, $limit);
+		}
+		return $resources;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function render() {
+		$record = $this->arguments['record'];
+		$uid = $this->arguments['uid'];
+		if (NULL === $uid) {
+			if (NULL === $record) {
+				$record = $this->getActiveRecord();
+			}
+			$uid = $record['uid'];
+		}
+		if (NULL === $uid) {
+			throw new Exception('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
+		}
+		$resources = $this->getSlideRecords($uid);
+
+		return $this->renderChildrenWithVariableOrReturnInput($resources);
 	}
 
 }
