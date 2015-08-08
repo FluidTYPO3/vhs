@@ -62,6 +62,7 @@ class FalViewHelper extends ResourcesFalViewHelper {
 
 	/**
 	 * @return mixed
+	 * @throws Exception
 	 */
 	public function render() {
 		$record = $this->arguments['record'];

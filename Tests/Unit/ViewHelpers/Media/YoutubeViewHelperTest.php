@@ -18,6 +18,9 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class YoutubeViewHelperTest extends AbstractViewHelperTest {
 
+	/**
+	 * @var array
+	 */
 	protected $arguments = array(
 		'videoId' => '',
 		'width' => 640,

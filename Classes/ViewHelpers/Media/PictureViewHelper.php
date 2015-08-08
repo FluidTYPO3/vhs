@@ -63,8 +63,8 @@ class PictureViewHelper extends AbstractTagBasedViewHelper {
 
 	/**
 	 * Render method
-	 *
 	 * @return string
+	 * @throws Exception
 	 */
 	public function render() {
 		$src = $this->arguments['src'];
@@ -82,10 +82,10 @@ class PictureViewHelper extends AbstractTagBasedViewHelper {
 		$defaultImage->addAttribute('src', $defaultSource);
 		$defaultImage->addAttribute('alt', $this->arguments['alt']);
 
-		if (FALSE == empty($this->arguments['title'])) {
+		if (FALSE === empty($this->arguments['title'])) {
 			$defaultImage->addAttribute('title', $this->arguments['alt']);
 		}
-		$content.= $defaultImage->render();
+		$content .= $defaultImage->render();
 
 		$this->tag->setContent($content);
 		return $this->tag->render();
