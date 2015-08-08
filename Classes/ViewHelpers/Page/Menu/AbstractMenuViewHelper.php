@@ -238,6 +238,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			$types = $this->parseDoktypeList($this->arguments['doktypes']);
 		} else {
 			$types = array(
+				PageSelectService::DOKTYPE_MOVE_TO_PLACEHOLDER,
 				PageRepository::DOKTYPE_DEFAULT,
 				PageRepository::DOKTYPE_LINK,
 				PageRepository::DOKTYPE_SHORTCUT,
