@@ -129,7 +129,7 @@ trait SlideViewHelperTrait {
 					break;
 				}
 			}
-		} while (0 < count($storagePageUids));
+		} while (FALSE === empty($storagePageUids));
 
 		return $records;
 	}

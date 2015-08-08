@@ -122,8 +122,7 @@ class LipsumViewHelper extends AbstractViewHelper {
 		// Lipsum to contain zero HTML and zero special characters, 100% ASCII. Source
 		// of the Lipsum text is http://www.lipsum.com set at 20 paragraphs, compressed
 		// through a small shell script.
-		$lipsum = <<<LIPSUM
-eJy1WsuO7MYN3c9X6AOE+YGsDDsBDNhGAuNmX6PW9FSgR1tSzfeHr0Oyeu4iiOHFxe3plupBHh4esuqX/ZjXoT7Otg63fdmP4azXUNb5Godp3855uuarHUO51Uc9p7rdh3
+		$lipsum = 'eJy1WsuO7MYN3c9X6AOE+YGsDDsBDNhGAuNmX6PW9FSgR1tSzfeHr0Oyeu4iiOHFxe3plupBHh4esuqX/ZjXoT7Otg63fdmP4azXUNb5Godp3855uuarHUO51Uc9p7rdh3
 mp1+vw96uWdVgKvT9fw+f8Uae2lKG06dqP1+E3+vFWp4uG5ecHeYY/PPazzcfMg9/b/Dr8Pt+Ga14f7RzO8qjzNsx3enir5zLMrZ7rfhsavVyOSo/st7oPa7muer4O//wo
 57ws9HXdhm3+o83Dox3tHIcyXHWb6q1t17BWneTkidpBuxiKjF+HtixlnfbjMR/Dg0aat2s+eRhZwh80+zCfl75eV3rqVul7Xi3ZiXcz8r5u9U6jnXWlKejfvix1qle70a
 J4iNfhJx6o+37dFxq4zthy5eXxBK8vL2w5Ms6trrQcMt/joxzzdZRhPvZz+KxXmfHw8O/6WVba/9tS6IVreCfz1zcx5b2qkX7eho8y0b83evM8yURLueZizuHdYZBsjRut
@@ -161,8 +160,7 @@ w//zJYV0JmKy+R5nex12FPqMEdiWPnM9YhYV5glOZgGEtVlHypulSnk1t2dQz0UuMSkYjEtW8sascCnZ
 xQyF57QiZeNxsP50nYUxx+zH6agEAxRHnEqsH8BqIBVNokKRmb2lT1YdZNpwNiMFNvzg3al2OAoUHoN6MsueG0z5Ui2vbeIuLjKpFPT9TenUd9OVDB9QUKqe4cqL/xFGdi
 eoLJ4Ep5rXVoFu0culfUkx6M5TL9+9eRSN6k7qIfMQASX3oQXVGMtmPSfLjuBzGGeNjszJMznOLW8FUMbkptifPaZV13sSQyF0qOdN9Rk+hobN164Wdc6m4V8RrHTGxXQp
 N3EXiZfUJDMIQpga2uYYtOVQwtd838NhauhXzLF9AYQu16hr9u1C42SO8/kznuFkuu8wtkKoFbuoDxm3Cvn8OMziHcxkfZKgc+egBghffP+bZb9GrsmjORQPza31VR4fKl
-BugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==
-LIPSUM;
+BugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
 		$uncompressed = gzuncompress(base64_decode($lipsum));
 		$safe = htmlentities(strip_tags($uncompressed));
 		return $safe;

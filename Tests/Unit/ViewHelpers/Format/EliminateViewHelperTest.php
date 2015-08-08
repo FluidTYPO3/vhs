@@ -17,6 +17,9 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class EliminateViewHelperTest extends AbstractViewHelperTest {
 
+	/**
+	 * @var array
+	 */
 	protected $arguments = array(
 		'caseSensitive' => TRUE,
 		'characters' => NULL,
