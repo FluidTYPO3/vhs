@@ -24,23 +24,27 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 class IsLowercaseViewHelper extends AbstractConditionViewHelper {
 
 	/**
-	 * Render method
-	 *
-	 * @param string $string
-	 * @param boolean $fullString
-	 * @return string
+	 * Initialize arguments
 	 */
-	public function render($string, $fullString = FALSE) {
-		if (TRUE === $fullString) {
-			$result = ctype_lower($string);
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('string', 'string', 'string to check', TRUE);
+		$this->registerArgument('fullString', 'string', 'need', FALSE, FALSE);
+	}
+
+	/**
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+	 *
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
+	 */
+	static protected function evaluateCondition($arguments = NULL) {
+		if (TRUE === $arguments['fullString']) {
+			$result = ctype_lower($arguments['string']);
 		} else {
-			$result = ctype_lower(substr($string, 0, 1));
+			$result = ctype_lower(substr($arguments['string'], 0, 1));
 		}
-		if (TRUE === $result) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+		return TRUE === $result;
 	}
 
 }

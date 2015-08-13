@@ -20,19 +20,22 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * @subpackage ViewHelpers\Condition\Type
  */
 class IsBooleanViewHelper extends AbstractConditionViewHelper {
+	/**
+	 * Initialize arguments
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('value', 'mixed', 'value to check', TRUE);
+	}
 
 	/**
-	 * Render method
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
 	 *
-	 * @param mixed $value
-	 * @return string
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
 	 */
-	public function render($value) {
-		if (TRUE === is_bool($value)) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+	static protected function evaluateCondition($arguments = NULL) {
+		return TRUE === is_bool($arguments['value']);
 	}
 
 }

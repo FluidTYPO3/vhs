@@ -10,10 +10,19 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * File/Directory Exists Condition ViewHelper
+ *
+ * ### Example:
+ *
+ *     {v:media.exists(directory: 'fileadmin', then: 'yes', else: 'no')}
+ *
+ *     {v:media.exists(file: 'fileadmin/foo.png', then: 'yes', else: 'no')}
+ *
+ *     <v:media.exists file="fileadmin/foo.png">
+ *         show image, etc...
+ *     </v:media.exists>
  *
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
@@ -33,21 +42,6 @@ class ExistsViewHelper extends AbstractConditionViewHelper {
 	}
 
 	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-
-		$evaluation = static::evaluateCondition($this->arguments);
-
-		if (FALSE !== $evaluation) {
-			return $this->renderThenChild();
-		}
-		return $this->renderElseChild();
-	}
-
-	/**
 	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
 	 *
 	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
@@ -56,13 +50,15 @@ class ExistsViewHelper extends AbstractConditionViewHelper {
 	static protected function evaluateCondition($arguments = NULL) {
 		$file = GeneralUtility::getFileAbsFileName($arguments['file']);
 		$directory = $arguments['directory'];
+
 		$evaluation = FALSE;
 		if (TRUE === isset($arguments['file'])) {
 			$evaluation = (boolean) ((TRUE === file_exists($file) || TRUE === file_exists(constant('PATH_site') . $file)) && TRUE === is_file($file));
 		} elseif (TRUE === isset($arguments['directory'])) {
 			$evaluation = (boolean) (TRUE === is_dir($directory) || TRUE === is_dir(constant('PATH_site') . $directory));
 		}
-		return $evaluation;
+
+		return FALSE !== $evaluation;
 	}
 
 }

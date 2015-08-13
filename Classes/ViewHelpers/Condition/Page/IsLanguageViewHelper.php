@@ -26,13 +26,24 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 class IsLanguageViewHelper extends AbstractConditionViewHelper {
 
 	/**
-	 * Render method
-	 *
-	 * @param mixed $language
-	 * @param string $defaultTitle
-	 * @return string
+	 * Initialize arguments
 	 */
-	public function render($language, $defaultTitle = 'en') {
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('language', 'string', 'language to check', TRUE);
+		$this->registerArgument('defaultTitle', 'string', 'title of the default language', FALSE, 'en');
+	}
+
+	/**
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+	 *
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
+	 */
+	static protected function evaluateCondition($arguments = NULL) {
+		$language = $arguments['language'];
+		$defaultTitle = $arguments['defaultTitle'];
+
 		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
 		if (TRUE === is_numeric($language)) {
 			$languageUid = intval($language);
@@ -48,7 +59,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper {
 				}
 			}
 		}
-		return ($languageUid === $currentLanguageUid ? $this->renderThenChild() : $this->renderElseChild());
+		return $languageUid === $currentLanguageUid;
 	}
 
 }

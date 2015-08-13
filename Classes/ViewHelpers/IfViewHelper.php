@@ -33,7 +33,7 @@ class IfViewHelper extends AbstractConditionViewHelper {
 	/**
 	 * @var array
 	 */
-	protected $comparisonOperators = array(
+	static protected $comparisonOperators = array(
 		self::OPERATOR_IS_EQUAL => self::OPERATOR_IS_EQUAL,
 		self::OPERATOR_IS_NOT_EQUAL => self::OPERATOR_IS_NOT_EQUAL,
 		self::OPERATOR_IS_GREATER_OR_EQUAL => self::OPERATOR_IS_GREATER_OR_EQUAL,
@@ -45,7 +45,7 @@ class IfViewHelper extends AbstractConditionViewHelper {
 	/**
 	 * @var array
 	 */
-	protected $logicalOperators = array(
+	static protected $logicalOperators = array(
 		self::OPERATOR_LOGICAL_AND => self::OPERATOR_LOGICAL_AND,
 		self::OPERATOR_LOGICAL_OR => self::OPERATOR_LOGICAL_OR,
 		self::OPERATOR_BOOLEAN_AND => self::OPERATOR_LOGICAL_AND,
@@ -57,7 +57,7 @@ class IfViewHelper extends AbstractConditionViewHelper {
 	 *
 	 * @var array
 	 */
-	protected $operatorPrecedence = array(
+	static protected $operatorPrecedence = array(
 		self::OPERATOR_LOGICAL_OR => 0,
 		self::OPERATOR_LOGICAL_AND => 1
 	);
@@ -69,21 +69,17 @@ class IfViewHelper extends AbstractConditionViewHelper {
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('stack', 'array', 'The stack to be evaluated', TRUE);
+		self::registerArgument('stack', 'array', 'The stack to be evaluated', TRUE);
 	}
 
 	/**
-	 * @return string
-	 * @api
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+	 *
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
 	 */
-	public function render() {
-		$stack = $this->arguments['stack'];
-
-		if (TRUE === $this->evaluateStack($stack)) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+	static protected function evaluateCondition($arguments = NULL) {
+		return TRUE === self::evaluateStack($arguments['stack']);
 	}
 
 	/**
@@ -91,7 +87,7 @@ class IfViewHelper extends AbstractConditionViewHelper {
 	 * @param array $stack
 	 * @return boolean
 	 */
-	protected function evaluateStack(array $stack) {
+	static protected function evaluateStack(array $stack) {
 		$stackCount = count($stack);
 
 		if (0 === $stackCount) {
@@ -100,8 +96,8 @@ class IfViewHelper extends AbstractConditionViewHelper {
 			return BooleanNode::convertToBoolean(reset($stack));
 		} elseif (3 === $stackCount) {
 			list ($leftSide, $operator, $rightSide) = array_values($stack);
-			if (TRUE === is_string($operator) && TRUE === isset($this->comparisonOperators[$operator])) {
-				$operator = $this->comparisonOperators[$operator];
+			if (TRUE === is_string($operator) && TRUE === isset(self::$comparisonOperators[$operator])) {
+				$operator = self::$comparisonOperators[$operator];
 				return BooleanNode::evaluateComparator($operator, $leftSide, $rightSide);
 			}
 		}
@@ -111,9 +107,9 @@ class IfViewHelper extends AbstractConditionViewHelper {
 		$operatorIndex = FALSE;
 
 		foreach ($stack as $index => $element) {
-			if (TRUE === is_string($element) && TRUE === isset($this->logicalOperators[$element])) {
-				$currentOperator = $this->logicalOperators[$element];
-				$currentOperatorPrecedence = $this->operatorPrecedence[$currentOperator];
+			if (TRUE === is_string($element) && TRUE === isset(self::$logicalOperators[$element])) {
+				$currentOperator = self::$logicalOperators[$element];
+				$currentOperatorPrecedence = self::$operatorPrecedence[$currentOperator];
 				if ($currentOperatorPrecedence <= $operatorPrecedence) {
 					$operator = $currentOperator;
 					$operatorPrecedence = $currentOperatorPrecedence;
@@ -134,7 +130,7 @@ class IfViewHelper extends AbstractConditionViewHelper {
 		$leftSide = array_slice($stack, 0, $operatorIndex);
 		$rightSide = array_slice($stack, $operatorIndex + 1);
 
-		return $this->evaluateLogicalOperator($leftSide, $operator, $rightSide);
+		return self::evaluateLogicalOperator($leftSide, $operator, $rightSide);
 	}
 
 	/**
@@ -144,9 +140,9 @@ class IfViewHelper extends AbstractConditionViewHelper {
 	 * @param array $rightSide
 	 * @return boolean
 	 */
-	protected function evaluateLogicalOperator(array $leftSide, $operator, array $rightSide) {
-		$leftCondition = $this->evaluateStack($this->prepareSideForEvaluation($leftSide));
-		$rightCondition = $this->evaluateStack($this->prepareSideForEvaluation($rightSide));
+	static protected function evaluateLogicalOperator(array $leftSide, $operator, array $rightSide) {
+		$leftCondition = self::evaluateStack(self::prepareSideForEvaluation($leftSide));
+		$rightCondition = self::evaluateStack(self::prepareSideForEvaluation($rightSide));
 
 		if (self::OPERATOR_LOGICAL_AND === $operator) {
 			return $leftCondition && $rightCondition;
@@ -161,7 +157,7 @@ class IfViewHelper extends AbstractConditionViewHelper {
 	 * @param array $side
 	 * @return array
 	 */
-	protected function prepareSideForEvaluation(array $side) {
+	static protected function prepareSideForEvaluation(array $side) {
 		if (1 === count($side)) {
 			$element = reset($side);
 			if (TRUE === is_array($element)) {

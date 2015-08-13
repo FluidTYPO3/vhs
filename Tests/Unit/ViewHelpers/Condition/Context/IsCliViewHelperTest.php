@@ -36,8 +36,7 @@ class IsCliViewHelperTest extends AbstractViewHelperTest {
 		$instance = $this->getMock($this->getViewHelperClassName(), array('isCliContext'));
 		$instance->expects($this->once())->method('isCliContext')->will($this->returnValue($verdict));
 		$arguments = array('then' => TRUE, 'else' => FALSE);
-		$instance->setArguments($arguments);
-		$result = $instance->render();
+		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals($expected, $result);
 	}
 

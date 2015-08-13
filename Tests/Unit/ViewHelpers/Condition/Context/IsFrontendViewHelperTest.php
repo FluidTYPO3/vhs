@@ -36,8 +36,7 @@ class IsFrontendViewHelperTest extends AbstractViewHelperTest {
 		$instance = $this->getMock($this->getViewHelperClassName(), array('isFrontendContext'));
 		$instance->expects($this->once())->method('isFrontendContext')->will($this->returnValue($verdict));
 		$arguments = array('then' => TRUE, 'else' => FALSE);
-		$instance->setArguments($arguments);
-		$result = $instance->render();
+		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals($expected, $result);
 	}
 

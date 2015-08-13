@@ -36,8 +36,7 @@ class IsBackendViewHelperTest extends AbstractViewHelperTest {
 		$instance = $this->getMock($this->getViewHelperClassName(), array('isBackendContext'));
 		$instance->expects($this->once())->method('isBackendContext')->will($this->returnValue($verdict));
 		$arguments = array('then' => TRUE, 'else' => FALSE);
-		$instance->setArguments($arguments);
-		$result = $instance->render();
+		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals($expected, $result);
 	}
 
