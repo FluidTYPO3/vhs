@@ -82,16 +82,16 @@
         },
         {
             "name": "fluidtypo3/development",
-            "version": "1.3.5",
+            "version": "1.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FluidTYPO3/fluidtypo3-development.git",
-                "reference": "121d39b3b8844c551c01ff03eb415063e21c61ce"
+                "reference": "ead10398ca925f8f83e8c37e06f77f0b6cdd8a7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FluidTYPO3/fluidtypo3-development/zipball/121d39b3b8844c551c01ff03eb415063e21c61ce",
-                "reference": "121d39b3b8844c551c01ff03eb415063e21c61ce",
+                "url": "https://api.github.com/repos/FluidTYPO3/fluidtypo3-development/zipball/ead10398ca925f8f83e8c37e06f77f0b6cdd8a7d",
+                "reference": "ead10398ca925f8f83e8c37e06f77f0b6cdd8a7d",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +101,7 @@
                 "phpunit/phpunit": "4.3.*",
                 "satooshi/php-coveralls": "*",
                 "squizlabs/php_codesniffer": "*",
-                "typo3/cms": "6.2.*"
+                "typo3/cms-core": "6.2.*"
             },
             "replace": {
                 "typo3/cms-composer-installers": "*"
@@ -137,7 +137,7 @@
                 "php",
                 "typo3"
             ],
-            "time": "2015-08-02 11:01:41"
+            "time": "2015-08-22 13:35:28"
         },
         {
             "name": "guzzle/guzzle",
@@ -323,16 +323,16 @@
         },
         {
             "name": "namelesscoder/typo3-repository-client",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NamelessCoder/typo3-repository-client.git",
-                "reference": "51e4b17dd685c30c0434493d70400b6bf9a19723"
+                "reference": "39759d9d58aeee31d75f6657b4df79a6d81d53b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NamelessCoder/typo3-repository-client/zipball/51e4b17dd685c30c0434493d70400b6bf9a19723",
-                "reference": "51e4b17dd685c30c0434493d70400b6bf9a19723",
+                "url": "https://api.github.com/repos/NamelessCoder/typo3-repository-client/zipball/39759d9d58aeee31d75f6657b4df79a6d81d53b6",
+                "reference": "39759d9d58aeee31d75f6657b4df79a6d81d53b6",
                 "shasum": ""
             },
             "require-dev": {
@@ -362,20 +362,20 @@
                 }
             ],
             "description": "Client for interacting with the official TYPO3 Extension Repository (TER). Contains API and CLI scripts.",
-            "time": "2015-03-15 02:00:17"
+            "time": "2015-08-07 22:16:09"
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "6526d9bdb56e2af1e8950114d42391044d18cfa7"
+                "reference": "2d7c03c0e4e080901b8f33b2897b0577be18a13c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6526d9bdb56e2af1e8950114d42391044d18cfa7",
-                "reference": "6526d9bdb56e2af1e8950114d42391044d18cfa7",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/2d7c03c0e4e080901b8f33b2897b0577be18a13c",
+                "reference": "2d7c03c0e4e080901b8f33b2897b0577be18a13c",
                 "shasum": ""
             },
             "require": {
@@ -383,7 +383,7 @@
                 "phpunit/php-file-iterator": "~1.3",
                 "phpunit/php-text-template": "~1.2",
                 "phpunit/php-token-stream": "~1.3",
-                "sebastian/environment": "~1.3.1",
+                "sebastian/environment": "^1.3.2",
                 "sebastian/version": "~1.0"
             },
             "require-dev": {
@@ -424,7 +424,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-08-02 04:45:08"
+            "time": "2015-08-04 03:42:39"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -555,16 +555,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.3",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "7a9b0969488c3c54fd62b4d504b3ec758fd005d9"
+                "reference": "3ab72c62e550370a6cd5dc873e1a04ab57562f5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/7a9b0969488c3c54fd62b4d504b3ec758fd005d9",
-                "reference": "7a9b0969488c3c54fd62b4d504b3ec758fd005d9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/3ab72c62e550370a6cd5dc873e1a04ab57562f5b",
+                "reference": "3ab72c62e550370a6cd5dc873e1a04ab57562f5b",
                 "shasum": ""
             },
             "require": {
@@ -600,7 +600,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2015-06-19 03:43:16"
+            "time": "2015-08-16 08:51:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -678,20 +678,20 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "2.3.6",
+            "version": "2.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "18dfbcb81d05e2296c0bcddd4db96cade75e6f42"
+                "reference": "5e2645ad49d196e020b85598d7c97e482725786a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/18dfbcb81d05e2296c0bcddd4db96cade75e6f42",
-                "reference": "18dfbcb81d05e2296c0bcddd4db96cade75e6f42",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5e2645ad49d196e020b85598d7c97e482725786a",
+                "reference": "5e2645ad49d196e020b85598d7c97e482725786a",
                 "shasum": ""
             },
             "require": {
-                "doctrine/instantiator": "~1.0,>=1.0.2",
+                "doctrine/instantiator": "^1.0.2",
                 "php": ">=5.3.3",
                 "phpunit/php-text-template": "~1.2",
                 "sebastian/exporter": "~1.2"
@@ -730,7 +730,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-07-10 06:54:24"
+            "time": "2015-08-19 09:14:08"
         },
         {
             "name": "psr/log",
@@ -956,16 +956,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "3e39374f4c9ec3757839e2952e7a68ac28941760"
+                "reference": "6324c907ce7a52478eeeaede764f48733ef5ae44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/3e39374f4c9ec3757839e2952e7a68ac28941760",
-                "reference": "3e39374f4c9ec3757839e2952e7a68ac28941760",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6324c907ce7a52478eeeaede764f48733ef5ae44",
+                "reference": "6324c907ce7a52478eeeaede764f48733ef5ae44",
                 "shasum": ""
             },
             "require": {
@@ -1002,7 +1002,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2015-08-02 04:41:00"
+            "time": "2015-08-03 06:14:51"
         },
         {
             "name": "sebastian/exporter",
