@@ -3,8 +3,57 @@
 upcoming
 ------------------
 
+- :exclamation: [#894](https://github.com/FluidTYPO3/vhs/pull/894) In case you have troubles with Condition ViewHelpers under latest TYPO3 7 (TYPO3 >= 7.3), you may apply yourself a fix from pull-request
+	- TODO: Change this text to a note about 7.3 compatibility of Condions ViewHelpers, when fix is merged to 'development'
+
+- :exclamation: No more testing for PHP 5.4
+	- VHS still supports TYPO3 6.2, which can be run on PHP 5.4, but it is adviced to upgrade your PHP to 5.5 (which is also supported by 6.2) at least
+
+- :exclamation: [#829](https://github.com/FluidTYPO3/vhs/pull/829) *'allowMoveToFooter'*   attribute became deprecated in asset ViewHelpers
+	- use *'movable'* instead
+
+- :exclamation: [#856](https://github.com/FluidTYPO3/vhs/pull/856) *'pageUid'* attribute removed from v:render.request
+	- In fact it was never used, so shouldn't break your cide, unless you explicitly defind it
+	- [v:render.request](https://fluidtypo3.org/viewhelpers/vhs/master/Render/RequestViewHelper.html)
+
+- [#875](https://github.com/FluidTYPO3/vhs/pull/875) **Resposive images** support added
+	- [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html) got *'srcset'* attribute, which contains CSV or Traversable with image widths
+	- [v:media.picture](https://fluidtypo3.org/viewhelpers/vhs/master/Media/PictureViewHelper.html) - fully-functional implementation of [picturefill](http://scottjehl.github.io/picturefill/)
+
+- [#825](https://github.com/FluidTYPO3/vhs/pull/825) v:page.resources.fal got *'slide'*, *'slideCollect'* and *'slideCollectReverse'* attributes, which enables page media to slide
+	- [v:page.resources.fal](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Resources/FalViewHelper.html)
+	- As a bonus, [SlideViewHelperTrait](https://github.com/FluidTYPO3/vhs/blob/4b2215d74b339f3014e1e0f866439cbb05cb2ff6/Classes/Traits/SlideViewHelperTrait.php) introduced
+
+- [#884](https://github.com/FluidTYPO3/vhs/pull/884) **v:media.gravatar** and **v:uri.gravatar** ViewHelpers added
+	- [v:media.gravatar](https://fluidtypo3.org/viewhelpers/vhs/master/Media/GravatarViewHelper.html)
+	- [v:uri.gravatar](https://fluidtypo3.org/viewhelpers/vhs/master/Uri/GravatarViewHelper.html)
+	- [Gravatar](https://en.gravatar.com/)
+
+- [#883](https://github.com/FluidTYPO3/vhs/pull/883) v:resource.image returns an img-tag instead of an array, when no 'as' attribute provided
+	- [v:resource.image](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/ImageViewHelper.html)
+
+- [#861](https://github.com/FluidTYPO3/vhs/pull/861) All the menu ViewHelpers got *'forceAbsoluteUrl'* attribute
+	- Forces menu items to contain absolute URLs
+	- Default: `FALSE`
+
 - [#847](https://github.com/FluidTYPO3/vhs/pull/847) All the menu ViewHelpers got rid of hardcoded backup values
 	- This allows to use any variable names in 'as' and 'rootLineAs' attributes
+
+- [#879](https://github.com/FluidTYPO3/vhs/pull/879) All the menu ViewHelpers respect empty values in page translations
+
+- [#763](https://github.com/FluidTYPO3/vhs/pull/763) All the menu ViewHelpers respect moved pages in workspaces
+
+- [#854](https://github.com/FluidTYPO3/vhs/pull/854) v:page.languageMenu correctly detects TYPO3 version and provides appropriate path to flag-images 
+	- [v:page.languageMenu](https://fluidtypo3.org/viewhelpers/vhs/master/Page/LanguageMenuViewHelper.html)
+
+- [#871](https://github.com/FluidTYPO3/vhs/pull/871) v:page.languageMenu applies both: 'inactive' and 'current' classes, when this is a case
+	- [v:page.languageMenu](https://fluidtypo3.org/viewhelpers/vhs/master/Page/LanguageMenuViewHelper.html)
+
+- [#858](https://github.com/FluidTYPO3/vhs/pull/858) Force closing tag (instead of self-closing), when no file specified (or found) for asset
+
+- [#865](https://github.com/FluidTYPO3/vhs/pull/865) v:resource.image respects fully qualified URIs
+	- This VH can be used with external storages from now
+	- [v:resource.image](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/ImageViewHelper.html)
 
 2.3.3 - 2015-05-20
 ------------------
