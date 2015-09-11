@@ -175,7 +175,7 @@ class AssetService implements SingletonInterface {
 	 * @param boolean $cached
 	 * @return void
 	 */
-	private function placeAssetsInHeaderAndFooter($assets, $cached) {
+	protected function placeAssetsInHeaderAndFooter($assets, $cached) {
 		$settings = $this->getSettings();
 		$header = array();
 		$footer = array();
@@ -208,7 +208,7 @@ class AssetService implements SingletonInterface {
 	 * @param mixed $assets
 	 * @return void
 	 */
-	private function insertAssetsAtMarker($markerName, $assets) {
+	protected function insertAssetsAtMarker($markerName, $assets) {
 		$assetMarker = '<!-- VhsAssets' . $markerName . ' -->';
 		if (FALSE === strpos($GLOBALS['TSFE']->content, $assetMarker)) {
 			$inFooter = (boolean) (FALSE !== strpos($markerName, 'Footer'));
@@ -228,7 +228,7 @@ class AssetService implements SingletonInterface {
 	 * @throws \RuntimeException
 	 * @return string
 	 */
-	private function buildAssetsChunk($assets) {
+	protected function buildAssetsChunk($assets) {
 		$spool = array();
 		foreach ($assets as $name => $asset) {
 			$assetSettings = $this->extractAssetSettings($asset);
@@ -287,7 +287,7 @@ class AssetService implements SingletonInterface {
 	 * @param string $type
 	 * @return string
 	 */
-	private function writeCachedMergedFileAndReturnTag($assets, $type) {
+	protected function writeCachedMergedFileAndReturnTag($assets, $type) {
 		$source = '';
 		$assetName = implode('-', array_keys($assets));
 		if (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename'])) {
@@ -337,7 +337,7 @@ class AssetService implements SingletonInterface {
 	 * @throws \RuntimeException
 	 * @return string
 	 */
-	private function generateTagForAssetType($type, $content, $file = NULL) {
+	protected function generateTagForAssetType($type, $content, $file = NULL) {
 		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
 		$tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 		if (NULL === $file && TRUE === empty($content)) {
@@ -387,7 +387,7 @@ class AssetService implements SingletonInterface {
 	 * @return array
 	 * @throws \RuntimeException
 	 */
-	private function manipulateAssetsByTypoScriptSettings($assets) {
+	protected function manipulateAssetsByTypoScriptSettings($assets) {
 		$settings = $this->getSettings();
 		if (FALSE === (isset($settings['asset']) || isset($settings['assetGroup']))) {
 			return $assets;
@@ -426,7 +426,7 @@ class AssetService implements SingletonInterface {
 	 * @throws \RuntimeException
 	 * @return AssetInterface[]
 	 */
-	private function sortAssetsByDependency($assets) {
+	protected function sortAssetsByDependency($assets) {
 		$placed = array();
 		$assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
 		while ($asset = array_shift($assets)) {
@@ -467,7 +467,7 @@ class AssetService implements SingletonInterface {
 	 * @param mixed $asset
 	 * @return string
 	 */
-	private function renderAssetAsFluidTemplate($asset) {
+	protected function renderAssetAsFluidTemplate($asset) {
 		$settings = $this->extractAssetSettings($asset);
 		$variables = (TRUE === (isset($settings['variables']) && is_array($settings['variables'])) ? $settings['variables'] : array());
 		$contents = $this->buildAsset($asset);
@@ -609,7 +609,7 @@ class AssetService implements SingletonInterface {
 	 * @throws \RuntimeException
 	 * @return string
 	 */
-	private function extractAssetContent($asset) {
+	protected function extractAssetContent($asset) {
 		$assetSettings = $this->extractAssetSettings($asset);
 		$fileRelativePathAndFilename = $assetSettings['path'];
 		$fileRelativePath = dirname($assetSettings['path']);
