@@ -474,8 +474,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 				continue;
 			} elseif (TRUE === isset($page['tx_cooluri_exclude']) && TRUE === (boolean) $page['tx_cooluri_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
 				continue;
-			} elseif (TRUE === $this->pageSelect->hidePageForLanguageUid($page['uid'], $GLOBALS['TSFE']->sys_language_uid)) {
-				continue;
 			} elseif (TRUE === in_array($page['doktype'], $allowedDocumentTypes)) {
 				$filtered[$uid] = $this->getMenuItemEntry($page, $rootLine, $parentPage);
 			}
@@ -700,6 +698,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
 		$allowedDoktypeList = $this->allowedDoktypeList();
 		$menuData = $this->pageSelect->getMenu($pageUid, $excludePages, $where, $showHiddenInMenu, FALSE, $allowedDoktypeList);
+		foreach ($menuData as $key => $page) {
+			if (TRUE === $this->pageSelect->hidePageForLanguageUid($page['uid'], $GLOBALS['TSFE']->sys_language_uid)) {
+				unset($menuData[$key]);
+			}
+		}
 		return $menuData;
 	}
 
