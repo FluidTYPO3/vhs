@@ -26,8 +26,11 @@ class IndexOfViewHelperTest extends AbstractViewHelperTest {
 			'haystack' => $array,
 			'needle' => 'c',
 		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertEquals(2, $output);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals(2, $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -39,8 +42,11 @@ class IndexOfViewHelperTest extends AbstractViewHelperTest {
 			'haystack' => $array,
 			'needle' => 'd',
 		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertEquals(-1, $output);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals(-1, $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }

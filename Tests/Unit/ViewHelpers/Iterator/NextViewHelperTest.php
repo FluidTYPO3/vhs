@@ -27,8 +27,11 @@ class NextViewHelperTest extends AbstractViewHelperTest {
 			'haystack' => $array,
 			'needle' => 'b',
 		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertEquals('c', $output);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('c', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }
