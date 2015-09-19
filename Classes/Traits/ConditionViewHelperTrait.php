@@ -28,8 +28,7 @@ trait ConditionViewHelperTrait {
 	}
 
 	/**
-	 * Default implementation for CompilableInterface. See CompilableInterface
-	 * for a detailed description of this method.
+	 * Default implementation for use in compiled templates
 	 *
 	 * TODO: remove at some point, because this is only here for legacy reasons.
 	 * the AbstractConditionViewHelper in 6.2.* doesn't have a default render
@@ -41,7 +40,6 @@ trait ConditionViewHelperTrait {
 	 * @param \Closure $renderChildrenClosure
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return mixed
-	 * @see \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		$hasEvaluated = TRUE;

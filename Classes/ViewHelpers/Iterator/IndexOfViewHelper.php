@@ -35,14 +35,12 @@ class IndexOfViewHelper extends ContainsViewHelper {
 	}
 
 	/**
-	 * Default implementation for CompilableInterface. See CompilableInterface
-	 * for a detailed description of this method.
+	 * Default implementation for use in compiled templates
 	 *
 	 * @param array $arguments
 	 * @param \Closure $renderChildrenClosure
 	 * @param RenderingContextInterface $renderingContext
 	 * @return mixed
-	 * @see \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		$evaluation = self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
