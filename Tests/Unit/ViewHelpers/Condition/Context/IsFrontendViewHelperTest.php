@@ -22,33 +22,20 @@ class IsFrontendViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function testIsFrontendContext() {
 		$instance = $this->createInstance();
-		$result = $this->callInaccessibleMethod($instance, 'isFrontendContext');
+		$result = $this->callInaccessibleMethod($instance, 'evaluateCondition');
 		$this->assertThat($result, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_BOOL));
 	}
 
 	/**
 	 * @test
-	 * @dataProvider getRenderTestValues
-	 * @param boolean $verdict
-	 * @param boolean $expected
 	 */
-	public function testRender($verdict, $expected) {
-		$instance = $this->getMock($this->getViewHelperClassName(), array('isFrontendContext'));
-		$instance->expects($this->once())->method('isFrontendContext')->will($this->returnValue($verdict));
+	public function testRender() {
 		$arguments = array('then' => TRUE, 'else' => FALSE);
-		$instance->setArguments($arguments);
-		$result = $instance->render();
-		$this->assertEquals($expected, $result);
-	}
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals(FALSE, $result);
 
-	/**
-	 * @return array
-	 */
-	public function getRenderTestValues() {
-		return array(
-			array(FALSE, FALSE),
-			array(TRUE, TRUE),
-		);
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }
