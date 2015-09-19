@@ -31,6 +31,9 @@ class IssetViewHelperTest extends AbstractViewHelperTest {
 		);
 		$result = $this->executeViewHelper($arguments, $variables);
 		$this->assertEquals($arguments['then'], $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments, $variables);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -45,6 +48,9 @@ class IssetViewHelperTest extends AbstractViewHelperTest {
 		$variables = array();
 		$result = $this->executeViewHelper($arguments, $variables);
 		$this->assertEquals($arguments['else'], $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments, $variables);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }
