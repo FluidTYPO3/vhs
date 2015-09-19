@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Type;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Type of value is array
@@ -22,18 +23,24 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsArrayViewHelper extends AbstractConditionViewHelper {
 
+	use ConditionViewHelperTrait;
+
 	/**
-	 * Render method
-	 *
-	 * @param mixed $value
-	 * @return string
+	 * Initialize arguments
 	 */
-	public function render($value) {
-		if (TRUE === is_array($value)) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('value', 'string', 'value to check', TRUE);
+	}
+
+	/**
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+	 *
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
+	 */
+	static protected function evaluateCondition($arguments = NULL) {
+		return (isset($arguments['value']) && (TRUE === is_array($arguments['value'])));
 	}
 
 }
