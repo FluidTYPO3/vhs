@@ -18,7 +18,12 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 class IsDevelopmentViewHelperTest extends AbstractViewHelperTest {
 
 	public function testRender() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else')));
+		$arguments = array('then' => 'then', 'else' => 'else');
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }
