@@ -22,16 +22,32 @@ class LoadedViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfExtensionIsLoaded() {
-		$test = $this->executeViewHelper(array('extensionName' => 'Vhs', 'then' => 1, 'else' => 0));
-		$this->assertSame(1, $test);
+		$arguments = array(
+			'extensionName' => 'Vhs',
+			'then' => 1, '
+			else' => 0
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertSame(1, $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfExtensionIsNotLoaded() {
-		$test = $this->executeViewHelper(array('extensionName' => 'Void', 'then' => 1, 'else' => 0));
-		$this->assertSame(0, $test);
+		$arguments = array(
+			'extensionName' => 'Void',
+			 'then' => 1,
+			 'else' => 0
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertSame(0, $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }

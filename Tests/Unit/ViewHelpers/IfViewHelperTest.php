@@ -20,7 +20,16 @@ class IfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersThenChildWithFlatComparison() {
 		$stack = array(array('foo'), '==', array('foo'));
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'stack' => $stack
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -28,7 +37,16 @@ class IfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersThenChildWithPrecedence() {
 		$stack = array(1, 'OR', 0, 'AND', 0);
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'stack' => $stack
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -36,7 +54,16 @@ class IfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersElseChildWithFlatArrayComparison() {
 		$stack = array(array('foo'), '==', '3');
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'stack' => $stack
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -44,7 +71,16 @@ class IfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersThenChildWithFlatLogicalOperator() {
 		$stack = array(1, '==', 1, 'AND', 1);
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'stack' => $stack
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -52,7 +88,16 @@ class IfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersThenChildWithRightStack() {
 		$stack = array(1, '==', 1, 'AND', array(1, '!=', 0));
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'stack' => $stack
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -60,7 +105,16 @@ class IfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersThenChildWithStacks() {
 		$stack = array(array('foo', '!=', 'bar'), 'AND', 1, 'OR', array(1, '==', '0'));
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'stack' => $stack
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -68,7 +122,16 @@ class IfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersElseChildWithStacks() {
 		$stack = array(array('foo', '!=', 'bar'), 'AND', array('foo', '==', 'bar'));
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'stack' => $stack
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -76,7 +139,16 @@ class IfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersElseChildWithEmptyStack() {
 		$stack = array();
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'stack' => $stack
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
