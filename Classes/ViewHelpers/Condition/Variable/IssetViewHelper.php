@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -34,16 +35,40 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 class IssetViewHelper extends AbstractConditionViewHelper {
 
 	/**
-	 * Renders else-child or else-argument if variable $name exists
-	 *
-	 * @param string $name
-	 * @return string
+	 * Initialize arguments
 	 */
-	public function render($name) {
-		if (TRUE === $this->templateVariableContainer->exists($name)) {
-			return $this->renderThenChild();
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('name', 'string', 'name of the variable', TRUE);
+	}
+
+	/**
+	 * Default implementation for CompilableInterface. See CompilableInterface
+	 * for a detailed description of this method.
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+	 * @return mixed
+	 * @see \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$hasEvaluated = TRUE;
+		if (TRUE === $renderingContext->getTemplateVariableContainer()->exists($arguments['name'])) {
+			$result = static::renderStaticThenChild($arguments, $hasEvaluated);
+			if ($hasEvaluated) {
+				return $result;
+			}
+
+			return $renderChildrenClosure();
+		} else {
+			$result = static::renderStaticElseChild($arguments, $hasEvaluated);
+			if ($hasEvaluated) {
+				return $result;
+			}
 		}
-		return $this->renderElseChild();
+
+		return '';
 	}
 
 }
