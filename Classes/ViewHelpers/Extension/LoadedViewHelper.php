@@ -11,17 +11,28 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Extension: Loaded (Condition) ViewHelper
  *
  * Condition to check if an extension is loaded.
  *
+ * ### Example:
+ *
+ *     {v:extension.loaded(extensionName: 'news', then: 'yes', else: 'no')}
+ *
+ *     <v:extension.loaded extensionName="news">
+ *         ...
+ *     </v:extension.loaded>
+ *
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  * @subpackage ViewHelpers\Extension
  */
 class LoadedViewHelper extends AbstractConditionViewHelper {
+
+	use ConditionViewHelperTrait;
 
 	/**
 	 * Initialize arguments
@@ -32,19 +43,16 @@ class LoadedViewHelper extends AbstractConditionViewHelper {
 	}
 
 	/**
-	 * Render method
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
 	 *
-	 * @return string
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
 	 */
-	public function render() {
-		$extensionName = $this->arguments['extensionName'];
+	static protected function evaluateCondition($arguments = NULL) {
+		$extensionName = $arguments['extensionName'];
 		$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 		$isLoaded = ExtensionManagementUtility::isLoaded($extensionKey);
-		if (TRUE === $isLoaded) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+		return TRUE === $isLoaded;
 	}
 
 }
