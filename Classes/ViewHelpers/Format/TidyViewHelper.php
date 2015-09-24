@@ -36,15 +36,16 @@ class TidyViewHelper extends AbstractViewHelper {
 	 * Trims content, then trims each line of content
 	 *
 	 * @param string $content
+	 * @param string $encoding
 	 * @throws \RuntimeException
 	 * @return string
 	 */
-	public function render($content = NULL) {
+	public function render($content = NULL, $encoding = 'utf8') {
 		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
 		if (TRUE === $this->hasTidy) {
-			$tidy = tidy_parse_string($content);
+			$tidy = tidy_parse_string($content, NULL, $encoding);
 			$tidy->cleanRepair();
 			return (string) $tidy;
 		}
