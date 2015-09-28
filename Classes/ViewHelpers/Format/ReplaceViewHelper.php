@@ -24,12 +24,14 @@ class ReplaceViewHelper extends AbstractViewHelper {
 	 * @param string $content
 	 * @param string $replacement
 	 * @param integer $count
+	 * @param boolean $caseSensitve
 	 * @return string
 	 */
-	public function render($substring, $content = NULL, $replacement = '', $count = NULL) {
+	public function render($substring, $content = NULL, $replacement = '', $count = NULL, $caseSensitive = TRUE) {
 		if (NULL === $content) {
 			$content = $this->renderChildren();
 		}
+		$function = (TRUE === $caseSensitive ? 'str_replace' : 'str_ireplace');
 		return str_replace($substring, $replacement, $content, $count);
 	}
 
