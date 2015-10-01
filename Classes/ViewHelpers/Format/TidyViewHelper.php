@@ -45,7 +45,7 @@ class TidyViewHelper extends AbstractViewHelper {
 			$content = $this->renderChildren();
 		}
 		if (TRUE === $this->hasTidy) {
-			$tidy = tidy_parse_string($content, NULL, $encoding);
+			$tidy = tidy_parse_string($content, array(), $encoding);
 			$tidy->cleanRepair();
 			return (string) $tidy;
 		}
