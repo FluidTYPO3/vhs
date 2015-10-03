@@ -61,6 +61,16 @@ class FalViewHelper extends ResourcesFalViewHelper {
 	}
 
 	/**
+	 * AbstractRecordResource usually uses the current cObj as reference,
+	 * but the page is needed here
+	 *
+	 * @return array
+	 */
+	public function getActiveRecord() {
+		return $GLOBALS['TSFE']->page;
+	}
+
+	/**
 	 * @return mixed
 	 * @throws Exception
 	 */
