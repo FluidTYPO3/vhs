@@ -67,12 +67,16 @@ class PageSelectService implements SingletonInterface {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)
 			|| (TRUE === isset($GLOBALS['TSFE']->fe_user->groupData['uid']) && 0 < $GLOBALS['TSFE']->fe_user->groupData['uid'])) {
 			$groups = array(-2, 0);
-			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
 		} else {
 			$groups = array(-1, 0);
 		}
+
 		/** @var \TYPO3\CMS\Frontend\Page\PageRepository $pageSelect */
 		$pageSelect = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+
+		if (TRUE === isset($GLOBALS['TSFE']->fe_user->groupData)) {
+			$groups = array_merge($groups, array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
+		}
 		$clauses = array();
 		foreach ($groups as $group) {
 			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
