@@ -25,7 +25,7 @@ class TidyViewHelperTest extends AbstractViewHelperTest {
 		$instance = $this->createInstance();
 		ObjectAccess::setProperty($instance, 'hasTidy', FALSE, TRUE);
 		$this->setExpectedException('RuntimeException', NULL, 1352059753);
-		$instance->render('test');
+		$instance->render('test', 'utf8');
 	}
 
 	/**
@@ -33,13 +33,13 @@ class TidyViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function canTidySourceFromTagContent() {
 		$instance = $this->createInstance();
-		if (FALSE === ObjectAccess::getProperty($instance, 'hasTidy', TRUE)) {
+		if (FALSE === class_exists('tidy')) {
 			$this->markTestSkipped('No tidy support');
 			return;
 		}
 		$source = '<foo> <bar>
 			</bar>			</foo>';
-		$test = $this->executeViewHelperUsingTagContent('Text', $source);
+		$test = $this->executeViewHelperUsingTagContent('Text', $source, array('encoding' => 'utf8'));
 		$this->assertNotSame($source, $test);
 	}
 
@@ -48,13 +48,13 @@ class TidyViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function canTidySourceFromArgument() {
 		$instance = $this->createInstance();
-		if (FALSE === ObjectAccess::getProperty($instance, 'hasTidy', TRUE)) {
+		if (FALSE === class_exists('tidy')) {
 			$this->markTestSkipped('No tidy support');
 			return;
 		}
 		$source = '<foo> <bar>
 			</bar>			</foo>';
-		$test = $this->executeViewHelper(array('content' => $source));
+		$test = $this->executeViewHelper(array('content' => $source, 'encoding' => 'utf8'));
 		$this->assertNotSame($source, $test);
 	}
 

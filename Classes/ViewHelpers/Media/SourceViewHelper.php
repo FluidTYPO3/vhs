@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -85,7 +86,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper {
 		$src = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_SRC);
 
  		if ('BE' === TYPO3_MODE) {
-			FrontendSimulationUtility::simulateFrontendEnvironment();
+			$tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 		}
 
 		$setup = array(
@@ -113,7 +114,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper {
 		$result = $this->contentObject->getImgResource($src, $setup);
 
 		if ('BE' === TYPO3_MODE) {
-			FrontendSimulationUtility::resetFrontendEnvironment();
+			FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 		}
 
 		$src = $this->preprocessSourceUri(rawurldecode($result[3]));
