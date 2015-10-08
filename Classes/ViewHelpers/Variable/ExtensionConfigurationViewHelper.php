@@ -23,6 +23,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Returns setting 'foo' from extension 'bar' located in ext_conf_template.txt
  *
  * @author Harry Glatz <glatz@analog.de>
+ * @author Jochen Greiner <greiner@analog.de>
  * @author Cedric Ziel <cedric@cedric-ziel.com>
  * @package Vhs
  * @subpackage ViewHelpers
@@ -30,25 +31,39 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 
 	/**
+	 * caches unserialized config in runtime
+	 * @var array
+	 */
+	protected static $EXT_CONF = array();
+
+	/**
 	 * @param string $name
 	 * @param string $extensionKey
-	 * @return string
+	 * @return string|array|NULL
 	 */
-	public function render($name, $extensionKey = NULL) {
+	public function render($name = NULL, $extensionKey = NULL) {
 
 		if (NULL === $extensionKey) {
 			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
 			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 		}
-
 		if (FALSE === array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
 			return NULL;
 		}
 
-		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+		if (empty(self::$EXT_CONF[$extensionKey])) {
+			self::$EXT_CONF[$extensionKey] = GeneralUtility::removeDotsFromTS(unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]));
+		}
+		if (!$name) {
+			return self::$EXT_CONF[$extensionKey];
+		}
 
-		if (TRUE === array_key_exists($name, $extConf)) {
-			return $extConf[$name];
+		if (TRUE === array_key_exists($name, self::$EXT_CONF[$extensionKey])) {
+			$res = self::$EXT_CONF[$extensionKey][$name];
+			if (is_array($res)) {
+				return $res;
+			}
+			return trim($res);
 		} else {
 			return NULL;
 		}
