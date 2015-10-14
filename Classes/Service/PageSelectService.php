@@ -72,7 +72,6 @@ class PageSelectService implements SingletonInterface {
 		if (TRUE === isset($GLOBALS['TSFE']->fe_user->groupData)) {
 			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
 		}
-		
 		$pageSelect = new PageRepository();
 		$clauses = array();
 		foreach ($groups as $group) {
