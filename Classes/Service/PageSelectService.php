@@ -69,7 +69,7 @@ class PageSelectService implements SingletonInterface {
 		} else {
 			$groups = array(-1, 0);
 		}
-		if (FALSE === empty($GLOBALS['TSFE']->fe_user->groupData['uid'])) {
+		if (TRUE === isset($GLOBALS['TSFE']->fe_user->groupData)) {
 			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
 		}
 		
