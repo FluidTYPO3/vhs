@@ -66,9 +66,11 @@ class PageSelectService implements SingletonInterface {
 	private function createPageSelectInstance() {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)) {
 			$groups = array(-2, 0);
-			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
 		} else {
 			$groups = array(-1, 0);
+		}
+		if (TRUE === isset($GLOBALS['TSFE']->fe_user->groupData)) {
+			$groups = array_merge($groups, (array) array_values($GLOBALS['TSFE']->fe_user->groupData['uid']));
 		}
 		$pageSelect = new PageRepository();
 		$clauses = array();
