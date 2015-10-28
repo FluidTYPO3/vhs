@@ -70,7 +70,8 @@ class PageSelectService implements SingletonInterface {
 		} else {
 			$groups = array(-1, 0);
 		}
-		$pageSelect = new PageRepository();
+		/** @var \TYPO3\CMS\Frontend\Page\PageRepository $pageSelect */
+		$pageSelect = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$clauses = array();
 		foreach ($groups as $group) {
 			$clause = "fe_group = '" . $group . "' OR fe_group LIKE '" .
