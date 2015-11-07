@@ -44,7 +44,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
 		$this->registerArgument('pageUid', 'integer', 'The page uid to check', FALSE, 0);
-		$this->registerArgument('normalWhenNoLanguage', 'boolean', 'If TRUE, a missing page overlay should be ignored', FALSE, FALSE);
+		$this->registerArgument('normalWhenNoLanguage', 'boolean', 'DEPRECATED: Visibility is now handled by core\'s typolink function.', FALSE);
 	}
 
 	/**
@@ -56,28 +56,22 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		$pageUid = $this->arguments['pageUid'];
-		$normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
-
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-		$languageUid = 0;
-		if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
-			$languageUid = $currentLanguageUid;
-		} else if (0 !== $currentLanguageUid) {
-			if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
-				return '';
-			}
+		$configuration = array(
+			'parameter' => $pageUid,
+			'forceAbsoluteUrl' => 1,
+		);
+
+		$uri = $GLOBALS['TSFE']->cObj->typoLink_URL($configuration);
+
+		if (TRUE === empty($uri)) {
+			return '';
 		}
 
-		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder->reset()
-			->setTargetPageUid($pageUid)
-			->setCreateAbsoluteUri(TRUE)
-			->setArguments(array('L' => $languageUid))
-			->build();
+		$uri = $GLOBALS['TSFE']->baseUrlWrap($uri);
 
 		$this->tag->addAttribute('rel', 'canonical');
 		$this->tag->addAttribute('href', $uri);
