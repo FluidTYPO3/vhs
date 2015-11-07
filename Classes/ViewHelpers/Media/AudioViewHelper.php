@@ -105,7 +105,8 @@ class AudioViewHelper extends AbstractMediaViewHelper {
 				// skip invalid source
 				continue;
 			}
-			if (FALSE === in_array(strtolower($type), $this->validTypes)) {
+			$type = strtolower($type);
+			if (FALSE === in_array($type, $this->validTypes)) {
 					throw new Exception('Invalid audio type "' . $type . '".', 1359381260);
 			}
 			$type = $this->mimeTypesMap[$type];
