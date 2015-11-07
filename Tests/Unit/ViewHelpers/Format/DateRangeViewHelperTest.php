@@ -118,8 +118,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest {
 	public function returnsErrorIfMissingRequiredArgumentsEndAndIntervalFormat() {
 		$arguments = $this->arguments;
 		unset($arguments['end'], $arguments['intervalFormat']);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame('Either end or intervalFormat has to be provided.', $test);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Either end or intervalFormat has to be provided.');
+		$this->executeViewHelper($arguments);
 	}
 
 	/**
@@ -129,8 +129,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest {
 		$arguments = $this->arguments;
 		$arguments['intervalFormat'] = 'what is this then';
 		unset($arguments['end']);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertContains('"what is this then" could not be parsed by \\DateInterval constructor', $test);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', '"what is this then" could not be parsed by \\DateInterval constructor');
+		$this->executeViewHelper($arguments);
 	}
 
 	/**
@@ -139,8 +139,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest {
 	public function returnsErrorOnInvalidStart() {
 		$arguments = $this->arguments;
 		$arguments['start'] = 'what is this then';
-		$test = $this->executeViewHelper($arguments);
-		$this->assertContains('"what is this then" could not be parsed by \\DateTime constructor', $test);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', '"what is this then" could not be parsed by \\DateTime constructor');
+		$this->executeViewHelper($arguments);
 	}
 
 	/**
@@ -149,8 +149,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest {
 	public function returnsErrorOnInvalidEnd() {
 		$arguments = $this->arguments;
 		$arguments['end'] = 'what is this then';
-		$test = $this->executeViewHelper($arguments);
-		$this->assertContains('"what is this then" could not be parsed by \\DateTime constructor', $test);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', '"what is this then" could not be parsed by \\DateTime constructor');
+		$this->executeViewHelper($arguments);
 	}
 
 }

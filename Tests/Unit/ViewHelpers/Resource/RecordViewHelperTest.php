@@ -17,8 +17,12 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class RecordViewHelperTest extends AbstractViewHelperTest {
 
+	/**
+	 * @test
+	 */
 	public function testRenderFailsWithoutFieldArgument() {
-		$this->assertContains('The "field" argument must be specified', $this->executeViewHelper());
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument must be specified');
+		$this->executeViewHelper();
 	}
 
 }
