@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ### ExtConf ViewHelper
@@ -18,23 +19,55 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * ### Examples
  *
- * {v:variable.extensionConfiguration(name:'foo',extensionKey:'bar')}
+ * {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
  *
- * Returns setting 'foo' from extension 'bar' located in ext_conf_template.txt
+ * Returns setting 'bar.baz' from extension 'foo' located in ext_conf_template.txt
  *
  * @author Harry Glatz <glatz@analog.de>
  * @author Cedric Ziel <cedric@cedric-ziel.com>
+ * @author Stefan Neufeind <info@speedpartner.de>
  * @package Vhs
  * @subpackage ViewHelpers
  */
 class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @param string $name
-	 * @param string $extensionKey
-	 * @return string
+	 * @param array $source TypoScript-array with dots: $source['foo.']['bar.']['baz']
+	 * @param string $path
+	 * @return mixed
 	 */
-	public function render($name, $extensionKey = NULL) {
+	protected function extractFromArrayByPath($source, $path) {
+		$result = $source;
+		$pathParts = explode('.', $path);
+		$pathParts = array_diff($pathParts, array(''));
+		foreach ($pathParts as $part) {
+			if (array_key_exists($part . '.', $result)) {
+				$result = $result[$part . '.'];
+			} elseif (array_key_exists($part, $result)) {
+				$result = $result[$part];
+			} else {
+				return NULL;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * @param string $path
+	 * @param string $extensionKey
+	 * @param string $name (deprecated, just use $path instead)
+	 * @return string
+	 * @throws Exception
+	 */
+	public function render($path = NULL, $extensionKey = NULL, $name = NULL) {
+		if (NULL !== $path) {
+			$pathToExtract = $path;
+		} elseif (NULL !== $name) {
+			$pathToExtract = $name;
+			GeneralUtility::deprecationLog('v:variable.extensionConfiguration was called with parameter "name" which is deprecated. Use "path" instead.');
+		} else {
+			throw new Exception('v:variable.extensionConfiguration requires the "path" attribute to be filled.', 1446998437);
+		}
 
 		if (NULL === $extensionKey) {
 			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
@@ -47,10 +80,6 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
 
-		if (TRUE === array_key_exists($name, $extConf)) {
-			return $extConf[$name];
-		} else {
-			return NULL;
-		}
+		return $this->extractFromArrayByPath($extConf, $path);
 	}
 }
