@@ -61,7 +61,8 @@ class ImageViewHelper extends AbstractImageViewHelper {
 		$this->registerTagAttribute('usemap', 'string', 'A hash-name reference to a map element with which to associate the image.', FALSE);
 		$this->registerTagAttribute('ismap', 'string', 'Specifies that its img element provides access to a server-side image map.', FALSE, '');
 		$this->registerTagAttribute('alt', 'string', 'Equivalent content for those who cannot process images or who have image loading disabled.', TRUE);
-		$this->registerArgument('srcset', 'mixed', 'list of width used for the srcset variants (either CSV, array or implementing Traversable)', FALSE, NULL);
+		$this->registerArgument('srcset', 'mixed', 'List of width used for the srcset variants (either CSV, array or implementing Traversable)', FALSE, NULL);
+		$this->registerArgument('srcsetDefault', 'integer', 'Default width to use as a fallback for browsers that don\'t support srcset', FALSE, NULL);
 	}
 
 	/**
@@ -72,16 +73,26 @@ class ImageViewHelper extends AbstractImageViewHelper {
 	public function render() {
 		$this->preprocessImage();
 
-		if (NULL !== $this->arguments['srcset']) {
-			$this->addSourceSet($this->tag, $this->mediaSource);
-		} else {
-			$src = $this->preprocessSourceUri($this->mediaSource);
-			$this->tag->addAttribute('src', $src);
+		if (FALSE === empty($this->arguments['srcset'])) {
+			$srcSetVariants = $this->addSourceSet($this->tag, $this->mediaSource);
 		}
 
-		$this->tag->addAttribute('width', $this->imageInfo[0]);
-		$this->tag->addAttribute('height', $this->imageInfo[1]);
-		if ('' === $this->arguments['title']) {
+		if (FALSE === empty($srcSetVariants) && FALSE === empty($this->arguments['srcsetDefault'])) {
+			$srcSetVariantDefault = $srcSetVariants[$this->arguments['srcsetDefault']];
+			$src = $srcSetVariantDefault['src'];
+			$width = $srcSetVariantDefault['width'];
+			$height = $srcSetVariantDefault['height'];
+		} else {
+			$src = $this->preprocessSourceUri($this->mediaSource);
+			$width = $this->imageInfo[0];
+			$height = $this->imageInfo[1];
+		}
+
+		$this->tag->addAttribute('width', $width);
+		$this->tag->addAttribute('height', $height);
+		$this->tag->addAttribute('src', $src);
+
+		if (TRUE === empty($this->arguments['title'])) {
 			$this->tag->addAttribute('title', $this->arguments['alt']);
 		}
 		return $this->tag->render();
