@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
 
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
@@ -91,4 +92,31 @@ class FalViewHelper extends ResourcesFalViewHelper {
 		return $this->renderChildrenWithVariableOrReturnInput($resources);
 	}
 
+	/**
+	 * Table is either pages or pages_language_overlay
+	 *
+	 * This is kind of unique for the pages table, so override
+	 * the base method here.
+	 *
+	 * @override
+	 * @return string
+	 */
+	public function getTable() {
+		return $GLOBALS['TSFE']->sys_language_uid === 0 ? 'pages' : 'pages_language_overlay';
+	}
+
+	/**
+	 * @override
+	 * @param mixed $id
+	 * @return array
+	 */
+	public function getRecord($id) {
+		$table = $this->getTable();
+		$idField = $this->getTable() === 'pages_language_overlay' ? 'pid' : $this->idField;
+
+		$sqlIdField = $GLOBALS['TYPO3_DB']->quoteStr($idField, $table);
+		$sqlId = $GLOBALS['TYPO3_DB']->fullQuoteStr($id, $table);
+
+		return reset($GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $sqlIdField . ' = ' . $sqlId));
+	}
 }
