@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
 
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
@@ -53,11 +54,34 @@ class FalViewHelper extends ResourcesFalViewHelper {
 	 * @return array
 	 */
 	protected function getSlideRecordsFromPage($pageUid, $limit) {
-		$resources = $this->getResources($this->getRecord($pageUid));
+		$pageRecord = $this->getRecord($pageUid);
+		if (!$this->isDefaultLanguage()) {
+			$localisation = $this->getDatabaseConntection()->exec_SELECTgetSingleRow(
+				'*',
+				'pages_language_overlay',
+				"pid = '" . $pageRecord['uid'] . "' AND sys_language_uid = '" . $this->getCurrentLanguageUid() . "'"
+			);
+			ArrayUtility::mergeRecursiveWithOverrule($pageRecord, $localisation);
+		}
+		$resources = $this->getResources($pageRecord);
 		if (NULL !== $limit && count($resources) > $limit) {
 			$resources = array_slice($resources, 0, $limit);
 		}
 		return $resources;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isDefaultLanguage() {
+		return (boolean) $this->getCurrentLanguageUid() === 0;
+	}
+
+	/**
+	 * @return integer
+	 */
+	protected function getCurrentLanguageUid() {
+		return (integer) $GLOBALS['TSFE']->sys_language_uid;
 	}
 
 	/**
