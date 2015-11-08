@@ -32,9 +32,10 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 	/**
 	 * @param string $name
 	 * @param string $extensionKey
+	 * @param bool $removeDots
 	 * @return string
 	 */
-	public function render($name, $extensionKey = NULL) {
+	public function render($name, $extensionKey = NULL, $removeDots = FALSE) {
 
 		if (NULL === $extensionKey) {
 			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
@@ -48,7 +49,11 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
 
 		if (TRUE === array_key_exists($name, $extConf)) {
-			return $extConf[$name];
+			$extConfPart = $extConf[$name];
+			if (TRUE === (boolean)$removeDots) {
+				$extConfPart = GeneralUtility::removeDotsFromTS($extConfPart);
+			}
+			return $extConfPart;
 		} else {
 			return NULL;
 		}
