@@ -47,8 +47,8 @@ trait SourceSetViewHelperTrait {
 		}
 		$tag->addAttribute('srcset', implode(',', $srcsetVariants));
 
+		$tag->addAttribute('src', reset($imageSources));
 		ksort($imageSources);
-		$tag->addAttribute('src', current($imageSources));
 
 		if ('BE' === TYPO3_MODE) {
 			FrontendSimulationUtility::resetFrontendEnvironment();

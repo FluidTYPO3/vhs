@@ -21,7 +21,8 @@ use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
  * You can use the srcset argument to generate several differently sized
  * versions of this image that will be added as a srcset argument to the img tag.
  * enter a list of widths in the srcset to genereate copies of the same crop +
- * ratio but in the specified widths.
+ * ratio but in the specified widths. Put the width at the start that you want
+ * to use as a fallback to be shown when no srcset functionality is supported.
  *
  * ### Example
  *
