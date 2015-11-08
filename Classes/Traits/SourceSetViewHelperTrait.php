@@ -23,6 +23,7 @@ trait SourceSetViewHelperTrait {
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tag the tag to add the srcset as argument
 	 * @param string $src image path to render srcsets for
+	 * @return array
 	 */
 	public function addSourceSet($tag, $src) {
 		$srcsets = $this->getSourceSetWidths();
@@ -36,23 +37,29 @@ trait SourceSetViewHelperTrait {
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
 		$imageSources = array();
+		$srcsetVariants = array();
+
 		foreach ($srcsets as $key => $width) {
 			$srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference);
 
 			$srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
 			$srcsetVariantSrc = $this->preprocessSourceUri(GeneralUtility::rawUrlEncodeFP($srcsetVariantSrc));
 
-			$imageSources[$srcsetVariant[0]] = $srcsetVariantSrc;
+			$imageSources[$srcsetVariant[0]] = array(
+				'src' => $srcsetVariantSrc,
+				'width' => $srcsetVariant[0],
+				'height' => $srcsetVariant[1],
+			);
 			$srcsetVariants[$srcsetVariant[0]] = $srcsetVariantSrc . ' ' . $srcsetVariant[0] . 'w';
 		}
-		$tag->addAttribute('srcset', implode(',', $srcsetVariants));
 
-		$tag->addAttribute('src', reset($imageSources));
-		ksort($imageSources);
+		$tag->addAttribute('srcset', implode(',', $srcsetVariants));
 
 		if ('BE' === TYPO3_MODE) {
 			FrontendSimulationUtility::resetFrontendEnvironment();
 		}
+
+		return $imageSources;
 	}
 
 	/**

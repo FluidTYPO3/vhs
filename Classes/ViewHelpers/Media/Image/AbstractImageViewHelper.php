@@ -81,7 +81,6 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 
 	/**
 	 * @throws Exception
-	 * @return void
 	 */
 	public function preprocessImage() {
 		$src = $this->arguments['src'];
