@@ -61,7 +61,9 @@ class FalViewHelper extends ResourcesFalViewHelper {
 				'pages_language_overlay',
 				"pid = '" . $pageRecord['uid'] . "' AND sys_language_uid = '" . $this->getCurrentLanguageUid() . "'"
 			);
-			ArrayUtility::mergeRecursiveWithOverrule($pageRecord, $localisation);
+			if (TRUE === is_array($localisation)) {
+				ArrayUtility::mergeRecursiveWithOverrule($pageRecord, $localisation);
+			}
 		}
 		$resources = $this->getResources($pageRecord);
 		if (NULL !== $limit && count($resources) > $limit) {
