@@ -75,7 +75,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
 		$databaseConnection = $this->getDatabaseConntection();
 
-		if (isset($record['t3ver_oid']) && 0 !== $record['t3ver_oid']) {
+		if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
 			$sqlRecordUid = $record['t3ver_oid'];
 		} else {
 			$sqlRecordUid = $record[$this->idField];
