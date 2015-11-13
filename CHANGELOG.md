@@ -3,8 +3,12 @@
 upcoming
 ------------------
 
+- [TYPO3 7 LTS supported](https://github.com/FluidTYPO3/vhs/commit/ab893323e2cac57ca32b22efe20a7ad67c3e7bff)
+
 - :exclamation: No more testing for PHP 5.4
-	- VHS still supports TYPO3 6.2, which can be run on PHP 5.4, but it is advised to upgrade your PHP to 5.5 (which is also supported by 6.2) at least
+
+- :exclamation: Support of TYPO3 6.2 dropped
+	- For TYPO3 6.2 based projects there will be a *legacy* branch
 
 - :exclamation: [#829](https://github.com/FluidTYPO3/vhs/pull/829) *'allowMoveToFooter'*   attribute became deprecated in asset ViewHelpers
 	- use *'movable'* instead
@@ -20,6 +24,7 @@ upcoming
 
 - [#875](https://github.com/FluidTYPO3/vhs/pull/875) **Responsive images** support added
 	- [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html) got *'srcset'* attribute, which contains CSV or Traversable with image widths
+	- [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html) got *'srcsetDefault'* attribute, expected to contain default width, which should be used as fallback for non-srcset aware browsers
 	- [v:media.picture](https://fluidtypo3.org/viewhelpers/vhs/master/Media/PictureViewHelper.html) - fully-functional implementation of [picturefill](http://scottjehl.github.io/picturefill/)
 
 - [#825](https://github.com/FluidTYPO3/vhs/pull/825) v:page.resources.fal got *'slide'*, *'slideCollect'* and *'slideCollectReverse'* attributes, which enables page media to slide
@@ -31,12 +36,26 @@ upcoming
 	- [v:uri.gravatar](https://fluidtypo3.org/viewhelpers/vhs/master/Uri/GravatarViewHelper.html)
 	- [Gravatar](https://en.gravatar.com/)
 
+- [#945](https://github.com/FluidTYPO3/vhs/pull/945) v:variable.extensionConfiguration can fetch a subpart of extension configuration
+	- *'path'* attribute introduced, which is responsible for this; contains TS-dotted path, like 'bar.baz'
+	- :exclamation: *'name'* attribute became optional and deprecated
+	- *'name'* and *'path'* are both optional, but at least one of them must be set
+	- [v:variable.extensionConfiguration](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/ExtensionConfigurationViewHelper.html)
+
 - [#883](https://github.com/FluidTYPO3/vhs/pull/883) v:resource.image returns an img-tag instead of an array, when no 'as' attribute provided
 	- [v:resource.image](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/ImageViewHelper.html)
 
 - [#861](https://github.com/FluidTYPO3/vhs/pull/861) All the menu ViewHelpers got *'forceAbsoluteUrl'* attribute
 	- Forces menu items to contain absolute URLs
 	- Default: `FALSE`
+
+- v:page.resources.fal respects overrides in page localizations
+	- [v:page.resources.fal](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Resources/FalViewHelper.html)
+	- [Source commit with more info](https://github.com/FluidTYPO3/vhs/commit/59c9b3b3c9cc94e3e750d91f5f81dc3a6c9e675a)
+
+- [#921](https://github.com/FluidTYPO3/vhs/pull/921) v:page.header.canonical respects RealURL configuration
+	- :exclamation: Due to internal changes, attribute *'normalWhenNoLanguage'* is not used anymore and deprecated
+	- [v:page.header.canonical](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Header/CanonicalViewHelper.html)
 
 - v:format.tidy got *'encoding'* attribute 
 	- Sets string encoding for Tidy
@@ -74,7 +93,21 @@ upcoming
 - [#905](https://github.com/FluidTYPO3/vhs/pull/905) v:page.menu correctly calculates number of translated sub-pages
 
 - [#915](https://github.com/FluidTYPO3/vhs/pull/915) v:media.image correctly define paths to images, when `config.absRefPrefix` contains sub-folder in path
-	- [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html) 
+	- [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html)
+
+- [#939](https://github.com/FluidTYPO3/vhs/pull/939) v:resource.record.fal handles workspaces better
+	- [v:resource.record.fal](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/Record/FalViewHelper.html)
+
+- [#898](https://github.com/FluidTYPO3/vhs/pull/898) All the menu ViewHelpers are aware of possible *anonymous* users, when checking access rights against pages, links to which they generate
+	- *anonymous* users are those, who doesn't have a concrete *user* object, but have *group* only, like is done in [EXT:sfpipauth](http://typo3.org/extensions/repository/view/sfpipauth)
+
+- [#925](https://github.com/FluidTYPO3/vhs/pull/925) v:media.audio correctly handles audio-files with non-lowercase file extension
+	- [v:media.audio](https://fluidtypo3.org/viewhelpers/vhs/master/Media/AudioViewHelper.html)
+
+- [#934](https://github.com/FluidTYPO3/vhs/pull/934) `PageSelectService` is instantiated via `GeneralUtility::makeInstance()` instead of `new()`, making it possible to Xclass
+
+- Bugfix to respect 'preload' argument of v:media.audio
+	- [v:media.audio](https://fluidtypo3.org/viewhelpers/vhs/master/Media/AudioViewHelper.html)
 
 2.3.3 - 2015-05-20
 ------------------
