@@ -21,44 +21,24 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function supportsHtmlEntities() {
-		$test = $this->executeViewHelper(array('text' => 'test < test', 'trim' => TRUE, 'htmlentities' => TRUE));
-		if (FALSE === strpos($test, 'Use of Markdown requires the "markdown" shell utility to be installed')) {
-			$this->assertSame("<p>test &lt; test</p>\n", $test);
-		} else {
-			$this->assertStringStartsWith('Use of Markdown requires the "markdown" shell utility to be installed', $test);
-		}
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+		$this->executeViewHelper(array('text' => 'test < test', 'trim' => TRUE, 'htmlentities' => TRUE));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersUsingArgument() {
-		$test = $this->executeViewHelper(array('text' => 'test', 'trim' => TRUE, 'htmlentities' => FALSE));
-		if (FALSE === strpos($test, 'Use of Markdown requires the "markdown" shell utility to be installed')) {
-			if (0 === strpos($test, '<')) {
-				$this->assertSame("<p>test</p>\n", $test);
-			} else {
-				$this->assertSame('test', $test);
-			}
-		} else {
-			$this->assertStringStartsWith('Use of Markdown requires the "markdown" shell utility to be installed', $test);
-		}
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+		$this->executeViewHelper(array('text' => 'test', 'trim' => TRUE, 'htmlentities' => FALSE));
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersUsingTagContent() {
-		$test = $this->executeViewHelperUsingTagContent('Text', 'test', array('trim' => TRUE, 'htmlentities' => FALSE));
-		if (FALSE === strpos($test, 'Use of Markdown requires the "markdown" shell utility to be installed')) {
-				if (0 === strpos($test, '<')) {
-				$this->assertSame("<p>test</p>\n", $test);
-			} else {
-				$this->assertSame('test', $test);
-			}
-		} else {
-			$this->assertStringStartsWith('Use of Markdown requires the "markdown" shell utility to be installed', $test);
-		}
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+		$this->executeViewHelperUsingTagContent('Text', 'test', array('trim' => TRUE, 'htmlentities' => FALSE));
 	}
 
 }

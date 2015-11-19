@@ -39,7 +39,7 @@ class ConvertViewHelper extends AbstractViewHelper {
 	/**
 	 * Render method
 	 *
-	 * @throws \Exception
+	 * @throws \RuntimeException
 	 * @return mixed
 	 */
 	public function render() {

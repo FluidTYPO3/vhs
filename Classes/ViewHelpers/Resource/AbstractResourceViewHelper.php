@@ -41,6 +41,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper {
 	 * @param mixed $identifier
 	 * @param mixed $categories
 	 * @return array|NULL
+	 * @throws \RuntimeException
 	 */
 	public function getFiles($onlyProperties = FALSE, $identifier = NULL, $categories = NULL) {
 		$identifier = $this->arrayForMixedArgument($identifier, 'identifier');

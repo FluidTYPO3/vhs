@@ -40,16 +40,16 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function executeMissingArgumentTest() {
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
 		$result = $this->executeViewHelper(array());
-		$this->assertEquals('Required argument "b" was not supplied', $result);
 	}
 
 	/**
 	 * @test
 	 */
 	public function executeInvalidArgumentTypeTest() {
-		$result = $this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
-		$this->assertEquals('Required argument "a" was not supplied', $result);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
+		$this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
 	}
 
 }

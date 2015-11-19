@@ -54,8 +54,8 @@ class AverageViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function executeMissingArgumentTest() {
-		$result = $this->executeViewHelper(array());
-		$this->assertEquals('Required argument "b" was not supplied', $result);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
+		$this->executeViewHelper(array());
 	}
 
 }

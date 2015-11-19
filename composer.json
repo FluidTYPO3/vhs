@@ -31,29 +31,5 @@
     },
     "suggest": {
         "ext-tidy": "Allows to make use of the tidy ViewHelper"
-    },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "typo3/cms",
-                "version": "6.2.11",
-                "dist": {
-                    "url": "https://github.com/TYPO3/TYPO3.CMS/archive/6.2.11.zip",
-                    "type": "zip"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "typo3/cms",
-                "version": "7.2.0",
-                "dist": {
-                    "url": "https://github.com/TYPO3/TYPO3.CMS/archive/7.2.0.zip",
-                    "type": "zip"
-                }
-            }
-        }
-    ]
+    }
 }

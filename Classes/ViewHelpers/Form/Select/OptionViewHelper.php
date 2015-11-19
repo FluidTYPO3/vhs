@@ -36,7 +36,7 @@ class OptionViewHelper extends AbstractFormFieldViewHelper {
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	public function render() {

@@ -33,24 +33,24 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest {
 	 * @test
 	 */
 	public function executeMissingArgumentTest() {
-		$result = $this->executeViewHelper(array());
-		$this->assertEquals('Required argument "b" was not supplied', $result);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
+		$this->executeViewHelper(array());
 	}
 
 	/**
 	 * @test
 	 */
 	public function executeInvalidFirstArgumentTypeTest() {
-		$result = $this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
-		$this->assertEquals('Required argument "a" was not supplied', $result);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
+		$this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
 	}
 
 	/**
 	 * @test
 	 */
 	public function executeInvalidSecondArgumentTypeTest() {
-		$result = $this->executeViewHelper(array('a' => 1, 'b' => array(1), 'fail' => TRUE));
-		$this->assertEquals('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator', $result);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator');
+		$this->executeViewHelper(array('a' => 1, 'b' => array(1), 'fail' => TRUE));
 	}
 
 }

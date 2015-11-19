@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Page is child page
@@ -25,27 +26,37 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class IsChildPageViewHelper extends AbstractConditionViewHelper {
 
+	use ConditionViewHelperTrait;
+
 	/**
-	 * Render method
-	 *
-	 * @param integer $pageUid
-	 * @param boolean $respectSiteRoot
-	 * @return string
+	 * Initialize arguments
 	 */
-	public function render($pageUid = NULL, $respectSiteRoot = FALSE) {
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('pageUid', 'integer', 'value to check', FALSE, NULL);
+		$this->registerArgument('respectSiteRoot', 'boolean', 'value to check', FALSE, FALSE);
+	}
+
+	/**
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+	 *
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
+	 */
+	static protected function evaluateCondition($arguments = NULL) {
+		$pageUid = $arguments['pageUid'];
+		$respectSiteRoot = $arguments['respectSiteRoot'];
+
 		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 		$pageSelect = new PageRepository();
 		$page = $pageSelect->getPage($pageUid);
+
 		if (TRUE === (boolean) $respectSiteRoot && TRUE === isset($page['is_siteroot']) && TRUE === (boolean) $page['is_siteroot']) {
-			return $this->renderElseChild();
+			return FALSE;
 		}
-		if (TRUE === isset($page['pid']) && 0 < $page['pid']) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+		return TRUE === isset($page['pid']) && 0 < $page['pid'];
 	}
 
 }

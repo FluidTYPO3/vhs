@@ -82,8 +82,8 @@ class FirstViewHelperTest extends AbstractViewHelperTest {
 		$arguments = array(
 			'haystack' => new \DateTime('now')
 		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertStringStartsWith('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got', $output);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got');
+		$this->executeViewHelper($arguments);
 	}
 
 }

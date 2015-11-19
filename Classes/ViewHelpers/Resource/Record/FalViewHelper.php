@@ -11,6 +11,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
@@ -25,24 +27,41 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 	protected $resourceFactory;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 */
+	protected $fileRepository;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$this->resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$this->fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 	}
 
 	/**
 	 * @param mixed $identity
 	 * @return mixed
 	 */
-	public function getResource($identity) {
-		$fileReference = $this->resourceFactory->getFileReferenceObject(intval($identity));
+	public function getResource($fileReference) {
 		$file = $fileReference->getOriginalFile();
 		$fileReferenceProperties = $fileReference->getProperties();
 		$fileProperties = ResourceUtility::getFileArray($file);
-
 		ArrayUtility::mergeRecursiveWithOverrule($fileProperties, $fileReferenceProperties, TRUE, FALSE, FALSE);
 		return $fileProperties;
+	}
+
+	/**
+	 * Fetch a fileRefernce from the file repository
+	 *
+	 * @param $table name of the table to get the file reference for
+	 * @param $field name of the field referencing a file
+	 * @param $uid uid of the related record
+	 * @return array
+	 */
+	protected function getFileReferences($table, $field, $uid) {
+		$fileObjects = $this->fileRepository->findByRelation($table, $field, $uid);
+		return $fileObjects;
 	}
 
 	/**
@@ -50,18 +69,67 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 	 * @return array
 	 */
 	public function getResources($record) {
-		$sqlTable = $GLOBALS['TYPO3_DB']->fullQuoteStr($this->getTable(), 'sys_file_reference');
-		$sqlField = $GLOBALS['TYPO3_DB']->fullQuoteStr($this->getField(), 'sys_file_reference');
-		$sqlRecordUid = $GLOBALS['TYPO3_DB']->fullQuoteStr($record[$this->idField], 'sys_file_reference');
+		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
+		$contentObjectRenderer = $this->configurationManager->getContentObject();
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_file_reference', 'deleted = 0 AND hidden = 0 AND tablenames = ' . $sqlTable . ' AND fieldname = ' . $sqlField . ' AND uid_foreign = ' . $sqlRecordUid, '', 'sorting_foreign');
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
+		$databaseConnection = $this->getDatabaseConntection();
 
-		$resources = array();
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$resources[] = $this->getResource($row['uid']);
+		if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
+			$sqlRecordUid = $record['t3ver_oid'];
+		} else {
+			$sqlRecordUid = $record[$this->idField];
 		}
 
+		if (FALSE === empty($GLOBALS['TSFE']->sys_page)) {
+			$images = $this->getFileReferences($this->getTable(), $this->getField(), $sqlRecordUid);
+		} else {
+			if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
+				$versionWhere = 'AND sys_file_reference.deleted=0 AND (sys_file_reference.t3ver_wsid=0 OR sys_file_reference.t3ver_wsid=' . $GLOBALS['BE_USER']->workspaceRec['uid'] . ') AND sys_file_reference.pid<>-1';
+			} else {
+				$versionWhere = 'AND sys_file_reference.deleted=0 AND sys_file_reference.t3ver_state<=0 AND sys_file_reference.pid<>-1 AND sys_file_reference.hidden=0';
+			}
+			$references = $databaseConnection->exec_SELECTgetRows(
+					'uid',
+					'sys_file_reference',
+					'tablenames=' . $databaseConnection->fullQuoteStr($this->getTable(), 'sys_file_reference') .
+					' AND uid_foreign=' . (int) $sqlRecordUid .
+					' AND fieldname=' . $databaseConnection->fullQuoteStr($this->getField(), 'sys_file_reference')
+					. $versionWhere,
+					'',
+					'sorting_foreign',
+					'',
+					'uid'
+			);
+			if (FALSE === empty($references)) {
+				$referenceUids = array_keys($references);
+			}
+			$images = array();
+			if (FALSE === empty($referenceUids)) {
+				foreach ($referenceUids as $referenceUid) {
+					try {
+						// Just passing the reference uid, the factory is doing workspace
+						// overlays automatically depending on the current environment
+						$images[] = $this->resourceFactory->getFileReferenceObject($referenceUid);
+					} catch (ResourceDoesNotExistException $exception) {
+						// No handling, just omit the invalid reference uid
+						continue;
+					}
+				}
+			}
+		}
+		$resources = array();
+		foreach ($images as $file) {
+			$resources[] = $this->getResource($file);
+		}
 		return $resources;
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConntection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

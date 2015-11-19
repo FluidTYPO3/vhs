@@ -24,7 +24,7 @@ class CubicRootViewHelper extends AbstractSingleMathViewHelper {
 	 * @return integer
 	 */
 	protected function calculateAction($a) {
-		return pow($a, 1/3);
+		return pow($a, 1 / 3);
 	}
 
 }

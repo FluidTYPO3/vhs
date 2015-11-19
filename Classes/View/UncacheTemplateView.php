@@ -22,7 +22,6 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  * @package Vhs
  * @subpackage View
  */
-
 class UncacheTemplateView extends TemplateView {
 
 	/**

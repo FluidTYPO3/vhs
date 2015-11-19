@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Form;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Is Field Required ViewHelper (condition)
@@ -24,19 +25,16 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 class IsRequiredViewHelper extends HasValidatorViewHelper {
 
 	/**
-	 * Render
+	 * Default implementation for use in compiled templates
 	 *
-	 * Renders the then-child if the property at $property of the
-	 * object at $object (or the associated form object if $object
-	 * is not specified)
-	 *
-	 * @param string $property The property name, dotted path supported, to determine required
-	 * @param DomainObjectInterface $object Optional object - if not specified, grabs the associated form object
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render($property, DomainObjectInterface $object = NULL) {
-		$validatorName = 'NotEmpty';
-		return parent::render($property, $validatorName, $object);
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$arguments['validatorName'] = 'NotEmpty';
+		return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
 	}
 
 }

@@ -105,7 +105,8 @@ class AudioViewHelper extends AbstractMediaViewHelper {
 				// skip invalid source
 				continue;
 			}
-			if (FALSE === in_array(strtolower($type), $this->validTypes)) {
+			$type = strtolower($type);
+			if (FALSE === in_array($type, $this->validTypes)) {
 					throw new Exception('Invalid audio type "' . $type . '".', 1359381260);
 			}
 			$type = $this->mimeTypesMap[$type];
@@ -129,7 +130,7 @@ class AudioViewHelper extends AbstractMediaViewHelper {
 		if (TRUE === (boolean) $this->arguments['muted']) {
 			$tagAttributes['muted'] = 'muted';
 		}
-		if (TRUE === in_array($this->validPreloadModes, $this->arguments['preload'])) {
+		if (TRUE === in_array($this->arguments['preload'], $this->validPreloadModes)) {
 			$tagAttributes['preload'] = 'preload';
 		}
 		if (NULL !== $this->arguments['poster']) {

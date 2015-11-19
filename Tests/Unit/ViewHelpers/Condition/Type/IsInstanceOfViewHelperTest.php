@@ -22,14 +22,34 @@ class IsInstanceOfViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function rendersThenChildIfConditionMatched() {
 		$dateTime = new \DateTime('now');
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => $dateTime, 'class' => 'DateTime')));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'value' => $dateTime,
+			'class' => 'DateTime'
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatched() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => 1, 'class' => 'DateTime')));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'value' => 1,
+			'class' => 'DateTime'
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }

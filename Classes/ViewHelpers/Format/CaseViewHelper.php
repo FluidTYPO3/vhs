@@ -45,15 +45,32 @@ class CaseViewHelper extends AbstractViewHelper {
 			$tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 		}
 		switch ($case) {
-			case self::CASE_LOWER: $string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toLower'); break;
-			case self::CASE_UPPER: $string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toUpper'); break;
-			case self::CASE_UCWORDS: $string = ucwords($string); break;
-			case self::CASE_UCFIRST: $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $string, 'toUpper'); break;
-			case self::CASE_LCFIRST: $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $string, 'toLower'); break;
-			case self::CASE_CAMELCASE: $string = GeneralUtility::underscoredToUpperCamelCase($string); break;
-			case self::CASE_LOWERCAMELCASE: $string = GeneralUtility::underscoredToLowerCamelCase($string); break;
-			case self::CASE_UNDERSCORED: $string = GeneralUtility::camelCaseToLowerCaseUnderscored($string); break;
-			default: break;
+			case self::CASE_LOWER:
+				$string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toLower');
+				break;
+			case self::CASE_UPPER:
+				$string = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $string, 'toUpper');
+				break;
+			case self::CASE_UCWORDS:
+				$string = ucwords($string);
+				break;
+			case self::CASE_UCFIRST:
+				$string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $string, 'toUpper');
+				break;
+			case self::CASE_LCFIRST:
+				$string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $string, 'toLower');
+				break;
+			case self::CASE_CAMELCASE:
+				$string = GeneralUtility::underscoredToUpperCamelCase($string);
+				break;
+			case self::CASE_LOWERCAMELCASE:
+				$string = GeneralUtility::underscoredToLowerCamelCase($string);
+				break;
+			case self::CASE_UNDERSCORED:
+				$string = GeneralUtility::camelCaseToLowerCaseUnderscored($string);
+				break;
+			default:
+				break;
 		}
 		if ('BE' === TYPO3_MODE) {
 			FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
