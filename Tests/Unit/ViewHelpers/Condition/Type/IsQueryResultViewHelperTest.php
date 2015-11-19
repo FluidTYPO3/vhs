@@ -23,14 +23,32 @@ class IsQueryResultViewHelperTest extends AbstractViewHelperTest {
 	public function rendersThenChildIfConditionMatched() {
 		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
 			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => $queryResult)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'value' => $queryResult
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatched() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'value' => 1)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'value' => 1
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }

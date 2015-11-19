@@ -130,11 +130,13 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		// Get the title from the page or page overlay
+		$title = $this->getTitleValue($page);
 		if (0 < $currentLanguageUid) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $currentLanguageUid);
-			$title = $this->getTitleValue($pageOverlay);
-		} else {
-			$title = $this->getTitleValue($page);
+			$translatedTitle = $this->getTitleValue($pageOverlay);
+			if (FALSE === empty($translatedTitle)) {
+				$title = $translatedTitle;
+			}
 		}
 
 		// Check if we should assign page title to the template variable container

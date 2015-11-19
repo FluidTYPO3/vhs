@@ -46,7 +46,7 @@ class FilterViewHelper extends AbstractViewHelper {
 		if (NULL === $subject || (FALSE === is_array($subject) && FALSE === $subject instanceof \Traversable)) {
 			return array();
 		}
-		if ((FALSE === (boolean) $nullFilter && TRUE === is_null($filter)) || '' === $filter) {
+		if ((FALSE === (boolean) $nullFilter && NULL === $filter) || '' === $filter) {
 			return $subject;
 		}
 		if (TRUE === $subject instanceof \Traversable) {

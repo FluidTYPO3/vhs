@@ -21,35 +21,86 @@ class PregViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatched() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foo123bar', 'pattern' => '/([0-9]+)/i')));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'foo123bar',
+			'pattern' => '/([0-9]+)/i'
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatched() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foobar', 'pattern' => '/[0-9]+/i')));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'foobar',
+			'pattern' => '/[0-9]+/i'
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersThenChildIfConditionMatchedAndGlobalEnabled() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foo123bar', 'pattern' => '/([0-9]+)/i')));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'foo123bar',
+			'pattern' => '/([0-9]+)/i'
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfConditionNotMatchedAndGlobalEnabled() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foobar', 'pattern' => '/[0-9]+/i', 'global' => TRUE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'foobar',
+			'pattern' => '/[0-9]+/i',
+			'global' => TRUE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersTagContentWhenConditionMatchedAndAsArgumentUsed() {
-		$this->assertEquals('test', $this->executeViewHelperUsingTagContent('Text', 'test', array('string' => 'foo123bar', 'pattern' => '/[0-9]+/', 'global' => TRUE, 'as' => 'dummy'), array('dummy' => 'test')));
+		$arguments = array(
+			'string' => 'foo123bar',
+			'pattern' => '/[0-9]+/',
+			'global' => TRUE, 'as' => 'dummy'
+		);
+		$variables = array('dummy' => 'test');
+		$result = $this->executeViewHelperUsingTagContent('Text', 'test', $arguments, $variables);
+		$this->assertEquals('test', $result);
+
+		$staticResult = $this->executeViewHelperUsingTagContentStatic('Text', 'test', $arguments, $variables);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }

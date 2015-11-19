@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Is context Frontend?
@@ -38,22 +39,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsFrontendViewHelper extends AbstractConditionViewHelper {
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		if ($this->isFrontendContext()) {
-			return $this->renderThenChild();
-		}
-		return $this->renderElseChild();
-	}
+	use ConditionViewHelperTrait;
 
 	/**
-	 * @return boolean
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+	 *
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
 	 */
-	protected function isFrontendContext() {
+	static protected function evaluateCondition($arguments = NULL) {
 		return ('FE' === TYPO3_MODE);
 	}
 

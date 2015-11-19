@@ -11,6 +11,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
+
 /**
  * ### Context: IsDevelopment
  *
@@ -30,20 +32,16 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsDevelopmentViewHelper extends AbstractConditionViewHelper {
 
+	use ConditionViewHelperTrait;
+
 	/**
-	 * Render method
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
 	 *
-	 * @return string
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
 	 */
-	public function render () {
-		return (TRUE === $this->isDevelopmentContext() ? $this->renderThenChild() : $this->renderElseChild());
-	}
-
-
-	/**
-	 * @return boolean
-	 */
-	protected function isDevelopmentContext () {
+	static protected function evaluateCondition($arguments = NULL) {
 		return GeneralUtility::getApplicationContext()->isDevelopment();
 	}
+
 }

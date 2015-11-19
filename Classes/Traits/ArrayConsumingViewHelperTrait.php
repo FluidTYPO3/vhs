@@ -48,7 +48,7 @@ trait ArrayConsumingViewHelperTrait {
 	 * @param boolean $useKeys
 	 *
 	 * @return array
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 */
 	protected function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = TRUE) {
 		if (TRUE === $candidate instanceof \Traversable) {

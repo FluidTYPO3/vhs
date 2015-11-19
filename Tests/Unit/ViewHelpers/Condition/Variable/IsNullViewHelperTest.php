@@ -28,6 +28,9 @@ class IsNullViewHelperTest extends AbstractViewHelperTest {
 		);
 		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals($arguments['then'], $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -41,6 +44,9 @@ class IsNullViewHelperTest extends AbstractViewHelperTest {
 		);
 		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals($arguments['else'], $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }

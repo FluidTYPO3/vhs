@@ -81,7 +81,6 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 
 	/**
 	 * @throws Exception
-	 * @return void
 	 */
 	public function preprocessImage() {
 		$src = $this->arguments['src'];
@@ -129,7 +128,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		}
 		$GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
 		$publicUrl = rawurldecode($this->imageInfo[3]);
-		$this->mediaSource = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($publicUrl);
+		$this->mediaSource = GeneralUtility::rawUrlEncodeFP($publicUrl);
 		if ('BE' === TYPO3_MODE) {
 			$this->resetFrontendEnvironment();
 		}

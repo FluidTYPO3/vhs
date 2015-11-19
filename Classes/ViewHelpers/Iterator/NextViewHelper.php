@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Returns next element in array $haystack from position of $needle
@@ -20,13 +21,29 @@ use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
 class NextViewHelper extends ContainsViewHelper {
 
 	/**
-	 * Render method
+	 * Render
 	 *
 	 * @return string
 	 */
 	public function render() {
-		parent::render();
-		return $this->getNeedleAtIndex($this->evaluation !== FALSE ? $this->evaluation + 1 : -1);
+		return static::renderStatic(
+			$this->arguments,
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * Default implementation for use in compiled templates
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$evaluation = self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+		return self::getNeedleAtIndex($evaluation !== FALSE ? $evaluation + 1 : -1, $arguments);
 	}
 
 }

@@ -29,8 +29,16 @@ class ContainsViewHelperTest extends AbstractViewHelperTest {
 	 * @param mixed $needle
 	 */
 	public function testRendersThen($haystack, $needle) {
-		$result = $this->executeViewHelper(array('haystack' => $haystack, 'needle' => $needle, 'then' => 'then'));
+		$arguments = array(
+			'haystack' => $haystack,
+			'needle' => $needle,
+			'then' => 'then'
+		);
+		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
@@ -63,8 +71,16 @@ class ContainsViewHelperTest extends AbstractViewHelperTest {
 	 * @param mixed $needle
 	 */
 	public function testRendersElse($haystack, $needle) {
-		$result = $this->executeViewHelper(array('haystack' => $haystack, 'needle' => $needle, 'else' => 'else'));
+		$arguments = array(
+			'haystack' => $haystack,
+			'needle' => $needle,
+			'else' => 'else'
+		);
+		$result = $this->executeViewHelper($arguments);
 		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**

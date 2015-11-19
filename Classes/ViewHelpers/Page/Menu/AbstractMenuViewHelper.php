@@ -34,11 +34,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	/**
 	 * @var array
 	 */
-	protected $backups = array('menu', 'rootLine');
-
-	/**
-	 * @var array
-	 */
 	private $backupValues = array();
 
 	/**
@@ -95,6 +90,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('rootLineAs', 'string', 'If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'rootLine');
 		$this->registerArgument('excludePages', 'mixed', 'Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.', FALSE, '');
 		$this->registerArgument('includeAnchorTitle', 'boolean', 'If TRUE, includes the page title as title attribute on the anchor.', FALSE, TRUE);
+		$this->registerArgument('forceAbsoluteUrl', 'boolean', 'If TRUE, the menu will be rendered with absolute URLs', FALSE, FALSE);
 	}
 
 	/**
@@ -242,6 +238,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			$types = $this->parseDoktypeList($this->arguments['doktypes']);
 		} else {
 			$types = array(
+				PageSelectService::DOKTYPE_MOVE_TO_PLACEHOLDER,
 				PageRepository::DOKTYPE_DEFAULT,
 				PageRepository::DOKTYPE_LINK,
 				PageRepository::DOKTYPE_SHORTCUT,
@@ -337,11 +334,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (TRUE === (PageRepository::DOKTYPE_MOUNTPOINT === $doktype)) {
 			$pageUid = $page['mountedPageUid'];
 		}
+		$forceAbsoluteUrl = (boolean) $this->arguments['forceAbsoluteUrl'];
 		$config = array(
 			'parameter' => $pageUid,
 			'returnLast' => 'url',
 			'additionalParams' => '',
 			'useCacheHash' => FALSE,
+			'forceAbsoluteUrl' => $forceAbsoluteUrl,
 		);
 		// Append mountpoint parameter to urls of pages of a mounted subtree
 		$mountPointParameter = NULL;
@@ -383,7 +382,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	protected function getMenuItemEntry($page, $rootLine, array $parentPage = NULL) {
 		$getLL = $GLOBALS['TSFE']->sys_language_uid;
-		$pageUid = $overlayPageUid = $page['originalPageUid'] = $page['uid'];
+		$page['originalPageUid'] = $page['uid'];
+		$overlayPageUid = $page['uid'];
+		$pageUid = $page['uid'];
 		$targetPage = NULL;
 		$doktype = (integer) $page['doktype'];
 		if (NULL !== $parentPage && TRUE === isset($parentPage['_MP_PARAM'])) {
@@ -430,9 +431,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		if (0 < $getLL) {
 			$pageOverlay = $this->pageSelect->getPageOverlay($overlayPageUid, $getLL);
 			foreach ($pageOverlay as $name => $value) {
-				if (FALSE === empty($value)) {
-					$page[$name] = $value;
-				}
+				$page[$name] = $value;
 			}
 		}
 
@@ -474,8 +473,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 			if (TRUE === isset($page['tx_realurl_exclude']) && TRUE === (boolean) $page['tx_realurl_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
 				continue;
 			} elseif (TRUE === isset($page['tx_cooluri_exclude']) && TRUE === (boolean) $page['tx_cooluri_exclude'] && TRUE === (boolean) $this->arguments['resolveExclude']) {
-				continue;
-			} elseif (TRUE === $this->pageSelect->hidePageForLanguageUid($page['uid'], $GLOBALS['TSFE']->sys_language_uid)) {
 				continue;
 			} elseif (TRUE === in_array($page['doktype'], $allowedDocumentTypes)) {
 				$filtered[$uid] = $this->getMenuItemEntry($page, $rootLine, $parentPage);
@@ -596,7 +593,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return void
 	 */
 	public function backupVariables() {
-		foreach ($this->backups as $var) {
+		$backups = array($this->arguments['as'], $this->arguments['rootLineAs']);
+		foreach ($backups as $var) {
 			if (TRUE === $this->templateVariableContainer->exists($var)) {
 				$this->backupValues[$var] = $this->templateVariableContainer->get($var);
 				$this->templateVariableContainer->remove($var);
@@ -700,6 +698,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper {
 		$showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
 		$allowedDoktypeList = $this->allowedDoktypeList();
 		$menuData = $this->pageSelect->getMenu($pageUid, $excludePages, $where, $showHiddenInMenu, FALSE, $allowedDoktypeList);
+		foreach ($menuData as $key => $page) {
+			if (TRUE === $this->pageSelect->hidePageForLanguageUid($page['uid'], $GLOBALS['TSFE']->sys_language_uid)) {
+				unset($menuData[$key]);
+			}
+		}
 		return $menuData;
 	}
 

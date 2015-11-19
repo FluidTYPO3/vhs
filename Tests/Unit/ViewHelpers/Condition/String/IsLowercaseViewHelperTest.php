@@ -21,28 +21,68 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfFirstCharacterIsLowercase() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foobar', 'fullString' => FALSE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'foobar',
+			'fullString' => FALSE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersThenChildIfAllCharactersAreLowercase() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'foobar', 'fullString' => TRUE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'foobar',
+			'fullString' => TRUE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfFirstCharacterIsNotLowercase() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'FooBar', 'fullString' => FALSE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'FooBar',
+			'fullString' => FALSE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfAllCharactersAreNotLowercase() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'fooBar', 'fullString' => TRUE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'fooBar',
+			'fullString' => TRUE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }

@@ -21,28 +21,68 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTest {
 	 * @test
 	 */
 	public function rendersThenChildIfFirstCharacterIsUppercase() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'Foobar', 'fullString' => FALSE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'Foobar',
+			'fullString' => FALSE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersThenChildIfAllCharactersAreUppercase() {
-		$this->assertEquals('then', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'FOOBAR', 'fullString' => TRUE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'FOOBAR',
+			'fullString' => TRUE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('then', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfFirstCharacterIsNotUppercase() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'fooBar', 'fullString' => FALSE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'fooBar',
+			'fullString' => FALSE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 	/**
 	 * @test
 	 */
 	public function rendersElseChildIfAllCharactersAreNotUppercase() {
-		$this->assertEquals('else', $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'string' => 'FooBar', 'fullString' => TRUE)));
+		$arguments = array(
+			'then' => 'then',
+			'else' => 'else',
+			'string' => 'FooBar',
+			'fullString' => TRUE
+		);
+		$result = $this->executeViewHelper($arguments);
+		$this->assertEquals('else', $result);
+
+		$staticResult = $this->executeViewHelperStatic($arguments);
+		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
 	}
 
 }

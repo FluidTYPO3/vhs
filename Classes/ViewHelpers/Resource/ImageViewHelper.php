@@ -85,6 +85,10 @@ class ImageViewHelper extends AbstractImageViewHelper {
 				'tag' => $tag
 			);
 		}
+		$as = $this->arguments['as'];
+		if (TRUE === empty($as)) {
+			return implode('', $tags);
+		}
 		return $this->renderChildrenWithVariableOrReturnInput($info);
 	}
 

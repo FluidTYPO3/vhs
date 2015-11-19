@@ -58,9 +58,8 @@ class ReverseViewHelperTest extends AbstractViewHelperTest {
 	 * @param mixed $subject
 	 */
 	public function testThrowsErrorsOnInvalidSubjectType($subject) {
-		$expected = 'Unsupported input type; cannot convert to array!';
-		$result = $this->executeViewHelper(array('subject' => $subject));
-		$this->assertEquals($expected, $result, $result);
+		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Unsupported input type; cannot convert to array!');
+		$this->executeViewHelper(array('subject' => $subject));
 	}
 
 	/**

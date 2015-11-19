@@ -87,6 +87,10 @@ class CacheViewHelper extends AbstractRenderViewHelper {
 				);
 			}
 		}
+
+		// Hash the cache-key to circumvent disallowed chars
+		$identity = sha1($identity);
+
 		if (TRUE === $this->has($identity)) {
 			return $this->retrieve($identity);
 		}

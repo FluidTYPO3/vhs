@@ -1,5 +1,123 @@
 # VHS Change log
 
+upcoming
+------------------
+
+- [TYPO3 7 LTS supported](https://github.com/FluidTYPO3/vhs/commit/ab893323e2cac57ca32b22efe20a7ad67c3e7bff)
+
+- :exclamation: No more testing for PHP 5.4
+
+- :exclamation: Support of TYPO3 6.2 dropped
+	- For TYPO3 6.2 based projects there will be a *legacy* branch
+
+- :exclamation: [#829](https://github.com/FluidTYPO3/vhs/pull/829) *'allowMoveToFooter'*   attribute became deprecated in asset ViewHelpers
+	- use *'movable'* instead
+
+- :exclamation: [#856](https://github.com/FluidTYPO3/vhs/pull/856) *'pageUid'* attribute removed from v:render.request
+	- In fact it was never used, so shouldn't break your code, unless you explicitly defined it
+	- [v:render.request](https://fluidtypo3.org/viewhelpers/vhs/master/Render/RequestViewHelper.html)
+
+- [#906](https://github.com/FluidTYPO3/vhs/pull/906) [#907](https://github.com/FluidTYPO3/vhs/pull/907) [#908](https://github.com/FluidTYPO3/vhs/pull/908) [#909](https://github.com/FluidTYPO3/vhs/pull/909) [#910](https://github.com/FluidTYPO3/vhs/pull/910) [#911](https://github.com/FluidTYPO3/vhs/pull/911) [#912](https://github.com/FluidTYPO3/vhs/pull/912) [#913](https://github.com/FluidTYPO3/vhs/pull/913) All the condition (v:condition.*) ViewHelpers are static compilable
+	- Makes these ViewHelpers compatible with TYPO3 7.3+
+	- Improves Fluid rendering speed 
+	- Discover [Static compilable](http://blog.reelworx.at/detail/fluid-compilable-speed-it-up/)
+
+- [#875](https://github.com/FluidTYPO3/vhs/pull/875) **Responsive images** support added
+	- [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html) got *'srcset'* attribute, which contains CSV or Traversable with image widths
+	- [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html) got *'srcsetDefault'* attribute, expected to contain default width, which should be used as fallback for non-srcset aware browsers
+	- [v:media.picture](https://fluidtypo3.org/viewhelpers/vhs/master/Media/PictureViewHelper.html) - fully-functional implementation of [picturefill](http://scottjehl.github.io/picturefill/)
+
+- [#825](https://github.com/FluidTYPO3/vhs/pull/825) v:page.resources.fal got *'slide'*, *'slideCollect'* and *'slideCollectReverse'* attributes, which enables page media to slide
+	- [v:page.resources.fal](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Resources/FalViewHelper.html)
+	- As a bonus, [SlideViewHelperTrait](https://github.com/FluidTYPO3/vhs/blob/4b2215d74b339f3014e1e0f866439cbb05cb2ff6/Classes/Traits/SlideViewHelperTrait.php) introduced
+
+- [#884](https://github.com/FluidTYPO3/vhs/pull/884) **v:media.gravatar** and **v:uri.gravatar** ViewHelpers added
+	- [v:media.gravatar](https://fluidtypo3.org/viewhelpers/vhs/master/Media/GravatarViewHelper.html)
+	- [v:uri.gravatar](https://fluidtypo3.org/viewhelpers/vhs/master/Uri/GravatarViewHelper.html)
+	- [Gravatar](https://en.gravatar.com/)
+
+- [#945](https://github.com/FluidTYPO3/vhs/pull/945) v:variable.extensionConfiguration can fetch a subpart of extension configuration
+	- *'path'* attribute introduced, which is responsible for this; contains TS-dotted path, like 'bar.baz'
+	- :exclamation: *'name'* attribute became optional and deprecated
+	- *'name'* and *'path'* are both optional, but at least one of them must be set
+	- [v:variable.extensionConfiguration](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/ExtensionConfigurationViewHelper.html)
+
+- [#883](https://github.com/FluidTYPO3/vhs/pull/883) v:resource.image returns an img-tag instead of an array, when no 'as' attribute provided
+	- [v:resource.image](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/ImageViewHelper.html)
+
+- [#861](https://github.com/FluidTYPO3/vhs/pull/861) All the menu ViewHelpers got *'forceAbsoluteUrl'* attribute
+	- Forces menu items to contain absolute URLs
+	- Default: `FALSE`
+
+- v:page.resources.fal respects overrides in page localizations
+	- [v:page.resources.fal](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Resources/FalViewHelper.html)
+	- [Source commit with more info](https://github.com/FluidTYPO3/vhs/commit/59c9b3b3c9cc94e3e750d91f5f81dc3a6c9e675a)
+
+- [#921](https://github.com/FluidTYPO3/vhs/pull/921) v:page.header.canonical respects RealURL configuration
+	- :exclamation: Due to internal changes, attribute *'normalWhenNoLanguage'* is not used anymore and deprecated
+	- [v:page.header.canonical](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Header/CanonicalViewHelper.html)
+
+- v:format.tidy got *'encoding'* attribute 
+	- Sets string encoding for Tidy
+	- Default: `utf8`
+	- [v:format.tidy](https://fluidtypo3.org/viewhelpers/vhs/master/Format/TidyViewHelper.html)
+	- [Source commit with more info](https://github.com/FluidTYPO3/vhs/commit/f572be6a6c6ca261e1eee9bc74dc54e0dae0bb01)
+
+- v:format.replace got *'caseSensitve'* attribute
+	- Makes replacements case sensitive
+	- Default: `TRUE`
+	- [v:format.replace](https://fluidtypo3.org/viewhelpers/vhs/master/Format/ReplaceViewHelper.html)
+
+- [#847](https://github.com/FluidTYPO3/vhs/pull/847) All the menu ViewHelpers got rid of hardcoded backup values
+	- This allows to use any variable names in 'as' and 'rootLineAs' attributes
+
+- [#879](https://github.com/FluidTYPO3/vhs/pull/879) All the menu ViewHelpers respect empty values in page translations
+
+- [#763](https://github.com/FluidTYPO3/vhs/pull/763) All the menu ViewHelpers respect moved pages in workspaces
+
+- [#854](https://github.com/FluidTYPO3/vhs/pull/854) v:page.languageMenu correctly detects TYPO3 version and provides appropriate path to flag-images 
+	- [v:page.languageMenu](https://fluidtypo3.org/viewhelpers/vhs/master/Page/LanguageMenuViewHelper.html)
+
+- [#871](https://github.com/FluidTYPO3/vhs/pull/871) v:page.languageMenu applies both: 'inactive' and 'current' classes, when this is a case
+	- [v:page.languageMenu](https://fluidtypo3.org/viewhelpers/vhs/master/Page/LanguageMenuViewHelper.html)
+
+- [#858](https://github.com/FluidTYPO3/vhs/pull/858) Force closing tag (instead of self-closing), when no file specified (or found) for asset
+
+- [#922](https://github.com/FluidTYPO3/vhs/pull/922) v:page.resources.fal loads resources of *current* page by default
+	- [v:page.resources.fal](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Resources/FalViewHelper.html)
+
+- [#865](https://github.com/FluidTYPO3/vhs/pull/865) v:resource.image respects fully qualified URIs
+	- This VH can be used with external storages from now
+	- [v:resource.image](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/ImageViewHelper.html)
+
+- [#905](https://github.com/FluidTYPO3/vhs/pull/905) v:page.menu correctly calculates number of translated sub-pages
+
+- [#915](https://github.com/FluidTYPO3/vhs/pull/915) v:media.image correctly define paths to images, when `config.absRefPrefix` contains sub-folder in path
+	- [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html)
+
+- [#939](https://github.com/FluidTYPO3/vhs/pull/939) v:resource.record.fal handles workspaces better
+	- [v:resource.record.fal](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/Record/FalViewHelper.html)
+
+- [#898](https://github.com/FluidTYPO3/vhs/pull/898) All the menu ViewHelpers are aware of possible *anonymous* users, when checking access rights against pages, links to which they generate
+	- *anonymous* users are those, who doesn't have a concrete *user* object, but have *group* only, like is done in [EXT:sfpipauth](http://typo3.org/extensions/repository/view/sfpipauth)
+
+- [#925](https://github.com/FluidTYPO3/vhs/pull/925) v:media.audio correctly handles audio-files with non-lowercase file extension
+	- [v:media.audio](https://fluidtypo3.org/viewhelpers/vhs/master/Media/AudioViewHelper.html)
+
+- [#934](https://github.com/FluidTYPO3/vhs/pull/934) `PageSelectService` is instantiated via `GeneralUtility::makeInstance()` instead of `new()`, making it possible to Xclass
+
+- Bugfix to respect 'preload' argument of v:media.audio
+	- [v:media.audio](https://fluidtypo3.org/viewhelpers/vhs/master/Media/AudioViewHelper.html)
+
+2.3.3 - 2015-05-20
+------------------
+
+- [#826](https://github.com/FluidTYPO3/vhs/pull/826) **v:format.wordWrap** added - breaks a *'subject'* into strings with maximum size of *'limit'* (default = 80) characters, breaking with *'break'* (default = PHP_EOL) and concatenating them with *'glue'* (default = PHP_EOL)
+  - [v:format.wordWrap](https://fluidtypo3.org/viewhelpers/vhs/master/Format/WordWrapViewHelper.html)
+
+- [#819](https://github.com/FluidTYPO3/vhs/pull/819) v:format.eliminate got *'whitespaceBetweenHtmlTags'* attribute, which makes VH to remove all spaces between HTML tags
+  - [v:format.eliminate](https://fluidtypo3.org/viewhelpers/vhs/master/Format/EliminateViewHelper.html)
+
 2.3.2 - 2015-04-16
 ------------------
 
@@ -57,10 +175,10 @@
 - [#746](https://github.com/FluidTYPO3/vhs/pull/746) **v:resource.language** added - reads a language file and returns all the translations from it
   - [v:resource.language](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/LanguageViewHelper.html)
 
-- [#770](https://github.com/FluidTYPO3/vhs/pull/770) [#773](https://github.com/FluidTYPO3/vhs/pull/773) v:media.youtube got more control attributres:
+- [#770](https://github.com/FluidTYPO3/vhs/pull/770) [#773](https://github.com/FluidTYPO3/vhs/pull/773) v:media.youtube got more control attributes:
   - *'hideControl'* - hide player's control bar
   - *'hideInfo'* - hide player's info bar
-  - *'playlist'* - comma seperated list of video IDs to be played
+  - *'playlist'* - comma separated list of video IDs to be played
   - *'loop'* - play the video in a loop
   - *'start'* - start playing after seconds
   - *'end'* - stop playing after seconds
@@ -75,7 +193,7 @@
   - suggested usage: `{abc -> v:iterator.merge(b: def)}`
   - [v:iterator.merge](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/MergeViewHelper.html)
 
-- Contents of Fluid assets (asset's attribute *fluid="TRUE"*) can be stored (or overriden) with TS 'content' property
+- Contents of Fluid assets (asset's attribute *fluid="TRUE"*) can be stored (or overridden) with TS 'content' property
   - See [commit message](https://github.com/FluidTYPO3/vhs/commit/a14e2bbe1734e20509399513d987626f3a28bda3)
   - Check [asset TS settings](https://github.com/FluidTYPO3/vhs#asset-settings)
 
@@ -133,7 +251,7 @@
   - Check [release notes](https://fluidtypo3.org/blog/news/vhs-21-released.html) to find out more about this VH
   - [v:tag](https://fluidtypo3.org/viewhelpers/vhs/master/TagViewHelper.html)
 
-- v:iterator.filter got *'invert'* attribute - inverts the behaviour of the ViewHelper, so the filtered element is removed from the array
+- v:iterator.filter got *'invert'* attribute - inverts the behavior of the ViewHelper, so the filtered element is removed from the array
   - [v:iterator.filter](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/FilterViewHelper.html)
 
 2.0.2 - 2014-09-19

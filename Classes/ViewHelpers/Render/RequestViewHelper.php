@@ -65,7 +65,6 @@ class RequestViewHelper extends AbstractRenderViewHelper {
 	 * @param string|NULL $pluginName
 	 * @param string|NULL $vendorName
 	 * @param array $arguments
-	 * @param integer $pageUid
 	 * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
 	 * @throws \Exception
 	 * @api
@@ -76,8 +75,8 @@ class RequestViewHelper extends AbstractRenderViewHelper {
 			$extensionName = NULL,
 			$pluginName = NULL,
 			$vendorName = NULL,
-			array $arguments = array(),
-			$pageUid = 0) {
+			array $arguments = array()
+	) {
 		$contentObjectBackup = $this->configurationManager->getContentObject();
 		if (TRUE === isset($this->request)) {
 			$configurationBackup = $this->configurationManager->getConfiguration(
@@ -114,7 +113,6 @@ class RequestViewHelper extends AbstractRenderViewHelper {
 			if (TRUE === isset($configurationBackup)) {
 				$this->configurationManager->setConfiguration($configurationBackup);
 			}
-			unset($pageUid);
 			return $response;
 		} catch (\Exception $error) {
 			if (FALSE === (boolean) $this->arguments['graceful']) {

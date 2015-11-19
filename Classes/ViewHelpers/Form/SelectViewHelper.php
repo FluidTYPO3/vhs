@@ -188,7 +188,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper {
 			return TRUE;
 		}
 		if (TRUE === isset($this->arguments['multiple']) && FALSE === empty($this->arguments['multiple'])) {
-			if (TRUE === is_null($selectedValue) && TRUE === (boolean) $this->arguments['selectAllByDefault']) {
+			if (NULL === $selectedValue && TRUE === (boolean) $this->arguments['selectAllByDefault']) {
 				return TRUE;
 			} elseif (TRUE === is_array($selectedValue) && TRUE === in_array($value, $selectedValue)) {
 				return TRUE;
