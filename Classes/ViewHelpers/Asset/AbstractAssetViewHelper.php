@@ -137,6 +137,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 		$this->registerArgument('movable', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, TRUE);
 		$this->registerArgument('trim', 'boolean', 'DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn\'t do anything.', FALSE, FALSE);
 		$this->registerArgument('namedChunks', 'boolean', 'If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency', FALSE, FALSE);
+		$this->registerArgument('media', 'string', 'If TRUE, allows you to add a media parameter', FALSE, FALSE);
 	}
 
 	/**
