@@ -248,11 +248,12 @@ class AssetService implements SingletonInterface {
 				$external = (boolean) $assetSettings['external'];
 				$rewrite = (boolean) $assetSettings['rewrite'];
 				$path = $assetSettings['path'];
+				$media = $assetSettings['media'] ? $assetSettings['media'] : 'all';
 				if (FALSE === $standalone) {
 					$chunk[$name] = $asset;
 				} else {
 					if (0 < count($chunk)) {
-						$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
+						$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type, $media);
 						array_push($chunks, $mergedFileTag);
 						$chunk = array();
 					}
@@ -261,21 +262,21 @@ class AssetService implements SingletonInterface {
 						array_push($chunks, $this->generateTagForAssetType($type, $assetContent));
 					} else {
 						if (TRUE === $external) {
-							array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
+							array_push($chunks, $this->generateTagForAssetType($type, NULL, $path,$media));
 						} else {
 							if (TRUE === $rewrite) {
-								array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type));
+								array_push($chunks, $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type, $media));
 							} else {
 								$path = substr($path, strlen(PATH_site));
 								$path = $this->prefixPath($path);
-								array_push($chunks, $this->generateTagForAssetType($type, NULL, $path));
+								array_push($chunks, $this->generateTagForAssetType($type, NULL, $path,$media));
 							}
 						}
 					}
 				}
 			}
 			if (0 < count($chunk)) {
-				$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
+				$mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type, $media);
 				array_push($chunks, $mergedFileTag);
 			}
 		}
@@ -287,7 +288,7 @@ class AssetService implements SingletonInterface {
 	 * @param string $type
 	 * @return string
 	 */
-	protected function writeCachedMergedFileAndReturnTag($assets, $type) {
+	protected function writeCachedMergedFileAndReturnTag($assets, $type, $media) {
 		$source = '';
 		$assetName = implode('-', array_keys($assets));
 		if (TRUE === isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename'])) {
@@ -327,7 +328,7 @@ class AssetService implements SingletonInterface {
 			}
 		}
 		$fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
-		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename);
+		return $this->generateTagForAssetType($type, NULL, $fileRelativePathAndFilename, $media);
 	}
 
 	/**
@@ -337,7 +338,7 @@ class AssetService implements SingletonInterface {
 	 * @throws \RuntimeException
 	 * @return string
 	 */
-	protected function generateTagForAssetType($type, $content, $file = NULL) {
+	protected function generateTagForAssetType($type, $content, $file = NULL, $media = NULL) {
 		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
 		$tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 		if (NULL === $file && TRUE === empty($content)) {
