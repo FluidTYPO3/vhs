@@ -65,6 +65,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 		$this->registerArgument('languages', 'mixed', 'The languages (either CSV, array or implementing Traversable)', TRUE);
 		$this->registerArgument('pageUid', 'integer', 'The page uid to check', FALSE, 0);
 		$this->registerArgument('normalWhenNoLanguage', 'boolean', 'If TRUE, a missing page overlay should be ignored', FALSE, FALSE);
+		$this->registerArgument('addQueryString', 'boolean', 'If TRUE, the current query parameters will be kept in the URI', FALSE, FALSE);
 	}
 
 	/**
@@ -86,6 +87,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 
 		$pageUid = intval($this->arguments['pageUid']);
 		$normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
+		$addQueryString = $this->arguments['addQueryString'];
 
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
@@ -95,7 +97,8 @@ class AlternateViewHelper extends AbstractViewHelper {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uriBuilder = $uriBuilder->reset()
 			->setTargetPageUid($pageUid)
-			->setCreateAbsoluteUri(TRUE);
+			->setCreateAbsoluteUri(TRUE)
+			->setAddQueryString($addQueryString);
 
 		$this->tagBuilder->reset();
 		$this->tagBuilder->setTagName('link');
