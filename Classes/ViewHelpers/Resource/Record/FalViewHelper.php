@@ -79,7 +79,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 	 *
 	 * @param string $table name of the table to get the file reference for
 	 * @param string $field name of the field referencing a file
-	 * @param int $uid uid of the related record
+	 * @param integer $uid uid of the related record
 	 * @return array
 	 */
 	protected function getFileReferences($table, $field, $uid) {
