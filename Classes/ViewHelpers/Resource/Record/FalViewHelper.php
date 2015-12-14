@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -62,8 +63,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 	}
 
 	/**
-	 * @param mixed $identity
-	 * @return mixed
+	 * @param FileReference $fileReference
+	 * @return array
 	 */
 	public function getResource($fileReference) {
 		$file = $fileReference->getOriginalFile();
@@ -74,11 +75,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 	}
 
 	/**
-	 * Fetch a fileRefernce from the file repository
+	 * Fetch a fileReference from the file repository
 	 *
-	 * @param $table name of the table to get the file reference for
-	 * @param $field name of the field referencing a file
-	 * @param $uid uid of the related record
+	 * @param string $table name of the table to get the file reference for
+	 * @param string $field name of the field referencing a file
+	 * @param integer $uid uid of the related record
 	 * @return array
 	 */
 	protected function getFileReferences($table, $field, $uid) {
@@ -91,19 +92,15 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 	 * @return array
 	 */
 	public function getResources($record) {
-		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
-		$contentObjectRenderer = $this->configurationManager->getContentObject();
-
-		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
 		$databaseConnection = $this->getDatabaseConntection();
-
 		if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
 			$sqlRecordUid = $record['t3ver_oid'];
 		} else {
 			$sqlRecordUid = $record[$this->idField];
 		}
 
-		if (FALSE === empty($GLOBALS['TSFE']->sys_page)) {
+		$images = array();
+		if (empty($GLOBALS['TSFE']->sys_page) === FALSE) {
 			$images = $this->getFileReferences($this->getTable(), $this->getField(), $sqlRecordUid);
 		} else {
 			if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
@@ -123,19 +120,19 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 					'',
 					'uid'
 			);
-			if (FALSE === empty($references)) {
+			if (empty($references) === FALSE) {
 				$referenceUids = array_keys($references);
-			}
-			$images = array();
-			if (FALSE === empty($referenceUids)) {
-				foreach ($referenceUids as $referenceUid) {
-					try {
-						// Just passing the reference uid, the factory is doing workspace
-						// overlays automatically depending on the current environment
-						$images[] = $this->resourceFactory->getFileReferenceObject($referenceUid);
-					} catch (ResourceDoesNotExistException $exception) {
-						// No handling, just omit the invalid reference uid
-						continue;
+				$images = array();
+				if (empty($referenceUids) === FALSE) {
+					foreach ($referenceUids as $referenceUid) {
+						try {
+							// Just passing the reference uid, the factory is doing workspace
+							// overlays automatically depending on the current environment
+							$images[] = $this->resourceFactory->getFileReferenceObject($referenceUid);
+						} catch (ResourceDoesNotExistException $exception) {
+							// No handling, just omit the invalid reference uid
+							continue;
+						}
 					}
 				}
 			}
