@@ -27,3 +27,9 @@ if (FALSE === is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfi
 		'groups' => array('pages', 'all')
 	);
 }
+
+// add url and urltype to fix the rendering of external url doktypes
+if (FALSE === empty($GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'])) {
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',';
+}
+$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= 'url,urltype';
