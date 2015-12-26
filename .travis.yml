@@ -16,6 +16,10 @@ matrix:
     - php: "7"
     - php: "hhvm"
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 install: composer install
 
 script: ./vendor/bin/ci-runner
