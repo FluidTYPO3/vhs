@@ -47,7 +47,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
 	 * @return mixed
 	 * @throws Exception
 	 */
-	protected function calculate($a, $b) {
+	protected function calculate($a, $b = NULL) {
 		if ($b === NULL) {
 			throw new Exception('Required argument "b" was not supplied', 1237823699);
 		}
