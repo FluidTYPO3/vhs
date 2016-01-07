@@ -42,18 +42,24 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper {
 	static protected $staticReflectionService;
 
 	/**
+	 * Initialize
+	 */
+	public function initializeArguments() {
+		$this->registerArgument('property', 'string', 'The property name, dotted path supported, to determine required.', TRUE);
+		$this->registerArgument('validatorName', 'string', 'The class name of the Validator that indicates the property is required.', FALSE, NULL);
+		$this->registerArgument('object', 'TYPO3\\CMS\\Extbase\\\DomainObject\\DomainObjectInterface', 'Optional object - if not specified, grabs the associated form object.', FALSE, NULL);
+	}
+
+	/**
 	 * Render
 	 *
 	 * Renders the then-child if the property at $property of the
 	 * object at $object (or the associated form object if $object
 	 * is not specified) uses a certain @validate validator.
 	 *
-	 * @param string $property The property name, dotted path supported, to determine required
-	 * @param string $validatorName The class name of the Validator that indicates the property is required
-	 * @param DomainObjectInterface $object Optional object - if not specified, grabs the associated form object
 	 * @return string
 	 */
-	public function render($property, $validatorName = NULL, DomainObjectInterface $object = NULL) {
+	public function render() {
 		return static::renderStatic(
 			$this->arguments,
 			$this->buildRenderChildrenClosure(),

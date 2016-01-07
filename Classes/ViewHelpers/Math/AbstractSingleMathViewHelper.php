@@ -65,10 +65,14 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @param mixed $a
 	 * @return mixed
+	 *
+	 * @param mixed $a
+	 * @param mixed|null $b
+	 *
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 */
-	protected function calculate($a) {
+	protected function calculate($a, $b = NULL) {
 		$aIsIterable = $this->assertIsArrayOrIterator($a);
 		if (TRUE === $aIsIterable) {
 			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
