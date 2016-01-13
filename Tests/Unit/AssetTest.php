@@ -98,12 +98,10 @@ class AssetTest extends UnitTestCase {
 		$file = $this->getAbsoluteAssetFixturePath();
 		$settings = array(
 			'file' => $file,
-			'arguments' => array('foo' => 'bar'),
-			'allowMoveToFooter' => FALSE
+			'arguments' => array('foo' => 'bar')
 		);
 		$asset = Asset::createFromSettings($settings);
 		$this->assertAttributeEquals($settings['arguments'], 'variables', $asset);
-		$this->assertAttributeEquals($settings['allowMoveToFooter'], 'movable', $asset);
 	}
 
 	/**
