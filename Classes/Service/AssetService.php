@@ -570,7 +570,7 @@ class AssetService implements SingletonInterface {
 		if (TRUE === $asset instanceof AssetInterface) {
 			return $asset->assertAllowedInFooter();
 		}
-		return (boolean) (TRUE === isset($asset['allowMoveToFooter']) ? $asset['allowMoveToFooter'] : TRUE);
+		return (boolean) (TRUE === isset($asset['movable']) ? $asset['movable'] : TRUE);
 	}
 
 	/**

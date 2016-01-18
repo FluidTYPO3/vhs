@@ -24,7 +24,7 @@ class StyleViewHelper extends AbstractAssetViewHelper {
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->overrideArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, FALSE);
+		$this->overrideArgument('movable', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, FALSE);
 	}
 
 	/**

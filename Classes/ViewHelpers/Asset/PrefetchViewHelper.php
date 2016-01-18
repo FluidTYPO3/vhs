@@ -66,7 +66,7 @@ class PrefetchViewHelper extends AbstractAssetViewHelper {
 	 */
 	public function render() {
 		$this->arguments['standalone'] = TRUE;
-		$this->arguments['allowMoveToFooter'] = FALSE;
+		$this->arguments['movable'] = FALSE;
 		$this->tagBuilder->forceClosingTag(FALSE);
 		$this->tagBuilder->addAttribute('rel', 'dns-prefetch');
 		$this->tagBuilder->addAttribute('href', '');
