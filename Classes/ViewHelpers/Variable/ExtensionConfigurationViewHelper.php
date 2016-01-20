@@ -24,79 +24,19 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * Returns setting 'bar.baz' from extension 'foo' located in ext_conf_template.txt
  *
  * @author Harry Glatz <glatz@analog.de>
- * @author Jochen Greiner <greiner@analog.de>
  * @author Cedric Ziel <cedric@cedric-ziel.com>
  * @author Stefan Neufeind <info@speedpartner.de>
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class ExtensionConfigurationViewHelper extends AbstractViewHelper
-{
-
-	/**
-	 * caches unserialized config in runtime
-	 * @var array
-	 */
-	protected static $EXT_CONF = array();
-
-	/**
-	 * @param string $path
-	 * @param string $extensionKey
-	 * @param string $name (deprecated, just use $path instead)
-	 * @return string|array|NULL
-	 * @throws Exception
-	 */
-	public function render($path = null, $extensionKey = null, $name = null)
-	{
-		if (null !== $path) {
-			$pathToExtract = $path;
-		} elseif (null !== $name) {
-			$pathToExtract = $name;
-			GeneralUtility::deprecationLog('v:variable.extensionConfiguration was called with parameter "name" which is deprecated. Use "path" instead.');
-		} else {
-			throw new Exception('v:variable.extensionConfiguration requires the "path" attribute to be filled.',
-				1446998437);
-		}
-
-		$cacheKey = $this->getCacheKey($pathToExtract, $extensionKey);
-
-		if (array_key_exists($cacheKey, static::$EXT_CONF)) {
-			return static::$EXT_CONF[$cacheKey];
-		}
-
-		if (null === $extensionKey) {
-			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
-			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-		}
-
-		if (false === array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
-			return null;
-		}
-
-		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
-
-		return static::$EXT_CONF[$cacheKey] = $this->extractFromArrayByPath($extConf, $pathToExtract);
-	}
-
-	/**
-	 * Generates the cache key from a simple hash
-	 *
-	 * @param string $path
-	 * @param string $extensionKey
-	 * @return string
-	 */
-	protected function getCacheKey($path = null, $extensionKey = null)
-	{
-		return md5((string)$path . '-' . (string)$extensionKey);
-	}
+class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param array $source TypoScript-array with dots: $source['foo.']['bar.']['baz']
 	 * @param string $path
 	 * @return mixed
 	 */
-	protected function extractFromArrayByPath($source, $path)
-	{
+	protected function extractFromArrayByPath($source, $path) {
 		$result = $source;
 		$pathParts = explode('.', $path);
 		$pathParts = array_diff($pathParts, array(''));
@@ -106,9 +46,40 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
 			} elseif (array_key_exists($part, $result)) {
 				$result = $result[$part];
 			} else {
-				return null;
+				return NULL;
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * @param string $path
+	 * @param string $extensionKey
+	 * @param string $name (deprecated, just use $path instead)
+	 * @return string
+	 * @throws Exception
+	 */
+	public function render($path = NULL, $extensionKey = NULL, $name = NULL) {
+		if (NULL !== $path) {
+			$pathToExtract = $path;
+		} elseif (NULL !== $name) {
+			$pathToExtract = $name;
+			GeneralUtility::deprecationLog('v:variable.extensionConfiguration was called with parameter "name" which is deprecated. Use "path" instead.');
+		} else {
+			throw new Exception('v:variable.extensionConfiguration requires the "path" attribute to be filled.', 1446998437);
+		}
+
+		if (NULL === $extensionKey) {
+			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
+			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+		}
+
+		if (FALSE === array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
+			return NULL;
+		}
+
+		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+
+		return $this->extractFromArrayByPath($extConf, $path);
 	}
 }
