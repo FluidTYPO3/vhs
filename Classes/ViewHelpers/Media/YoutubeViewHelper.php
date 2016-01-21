@@ -54,6 +54,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('extendedPrivacy', 'boolean', 'Whether to use cookie-less video player.', FALSE, TRUE);
 		$this->registerArgument('hideControl', 'boolean', 'Hide video player\'s control bar.', FALSE, FALSE);
 		$this->registerArgument('hideInfo', 'boolean', 'Hide video player\'s info bar.', FALSE, FALSE);
+		$this->registerArgument('enableJsApi', 'boolean', 'Enable YouTube JavaScript API', FALSE, FALSE);
 		$this->registerArgument('playlist', 'string', 'Comma seperated list of video IDs to be played.', FALSE);
 		$this->registerArgument('loop', 'boolean', 'Play the video in a loop.', FALSE, FALSE);
 		$this->registerArgument('start', 'integer', 'Start playing after seconds.', FALSE);
@@ -135,6 +136,9 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper {
 		}
 		if (TRUE === (boolean) $this->arguments['hideInfo']) {
 			$params[] = 'showinfo=0';
+		}
+		if (TRUE === (boolean) $this->arguments['enableJsApi']) {
+			$params[] = 'enablejsapi=1';
 		}
 		if (FALSE === empty($this->arguments['playlist'])) {
 			$params[] = 'playlist=' . $this->arguments['playlist'];
