@@ -69,7 +69,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper {
 			'autoplay='  . (integer) $this->arguments['autoplay'],
 			'loop='      . (integer) $this->arguments['loop'],
 			'api='       . (integer) $this->arguments['api'],
-			'player_id=' . (integer) $this->arguments['playerId'],
+			'player_id=' . $this->arguments['playerId'],
 		);
 
 		$src .= implode('&', $queryParams);
