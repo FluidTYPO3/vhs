@@ -32,7 +32,7 @@ class ReplaceViewHelper extends AbstractViewHelper {
 			$content = $this->renderChildren();
 		}
 		$function = (TRUE === $caseSensitive ? 'str_replace' : 'str_ireplace');
-		return str_replace($substring, $replacement, $content, $count);
+		return $function($substring, $replacement, $content, $count);
 	}
 
 }
