@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageSelectService;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -24,26 +23,10 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 	use PageRendererTrait;
 
 	/**
-	 * @var PageSelectService
-	 */
-	protected $pageSelect;
-
-	/**
-	 * @param PageSelectService $pageSelectService
-	 * @return void
-	 */
-	public function injectPageSelectService(PageSelectService $pageSelectService) {
-		$this->pageSelect = $pageSelectService;
-	}
-
-	/**
 	 * @var string
 	 */
 	protected $tagName = 'link';
 
-	/**
-	 * Initialize
-	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
 		$this->registerArgument('pageUid', 'integer', 'The page uid to check', FALSE, 0);
@@ -58,7 +41,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 			return '';
 		}
 
-		$pageUid = $this->arguments['pageUid'];
+		$pageUid = (integer) $this->arguments['pageUid'];
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
@@ -71,7 +54,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 		$uri = $GLOBALS['TSFE']->cObj->typoLink_URL($configuration);
 
 		if (TRUE === empty($uri)) {
-			return '';
+			return NULL;
 		}
 
 		$uri = $GLOBALS['TSFE']->baseUrlWrap($uri);
@@ -81,7 +64,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 
 		$renderedTag = $this->tag->render();
 
-		if (1 === intval($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'])) {
+		if (1 === (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']) {
 			return $renderedTag;
 		}
 

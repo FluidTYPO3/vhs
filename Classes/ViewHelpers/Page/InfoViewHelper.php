@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,21 +27,17 @@ class InfoViewHelper extends AbstractViewHelper {
 	use TemplateVariableViewHelperTrait;
 
 	/**
-	 * @var PageSelectService
+	 * @var PageService
 	 */
-	protected $pageSelect;
+	protected $pageService;
 
 	/**
-	 * @param PageSelectService $pageSelect
-	 * @return void
+	 * @param PageService $pageService
 	 */
-	public function injectPageSelectService(PageSelectService $pageSelect) {
-		$this->pageSelect = $pageSelect;
+	public function injectPageService(PageService $pageService) {
+		$this->pageService = $pageService;
 	}
 
-	/**
-	 * @return void
-	 */
 	public function initializeArguments() {
 		$this->registerAsArgument();
 		$this->registerArgument('pageUid', 'integer', 'If specified, this UID will be used to fetch page data instead of using the current page.', FALSE, 0);
@@ -52,31 +48,13 @@ class InfoViewHelper extends AbstractViewHelper {
 	 * @return mixed
 	 */
 	public function render() {
-		// Get page via pageUid argument or current id
-		$pageUid = intval($this->arguments['pageUid']);
+		$pageUid = (integer) $this->arguments['pageUid'];
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-
-		$page = $this->pageSelect->getPage($pageUid);
-
-		// Add the page overlay
-		$languageUid = intval($GLOBALS['TSFE']->sys_language_uid);
-		if (0 !== $languageUid) {
-			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $languageUid);
-			if (TRUE === is_array($pageOverlay)) {
-				if (TRUE === method_exists('TYPO3\\CMS\\Core\\Utility\\ArrayUtility', 'mergeRecursiveWithOverrule')) {
-					ArrayUtility::mergeRecursiveWithOverrule($page, $pageOverlay, FALSE, FALSE);
-				} else {
-					$page = GeneralUtility::array_merge_recursive_overrule($page, $pageOverlay, FALSE, FALSE);
-				}
-			}
-		}
-
-		$content = NULL;
-
-		// Check if field should be returned or assigned
+		$page = $this->pageService->getPage($pageUid);
 		$field = $this->arguments['field'];
+		$content = NULL;
 		if (TRUE === empty($field)) {
 			$content = $page;
 		} elseif (TRUE === isset($page[$field])) {

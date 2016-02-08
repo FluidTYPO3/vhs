@@ -1,5 +1,7 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
+namespace FluidTYPO3\Vhs\ViewHelpers;
+
+use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -9,9 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  */
 
 /**
- * ### Page: Directory Menu ViewHelper
+ * ### Page: Menu ViewHelper
  *
- * ViewHelper for rendering TYPO3 list menus in Fluid
+ * ViewHelper for rendering TYPO3 menus in Fluid
  *
  * Supports both automatic, tag-based rendering (which
  * defaults to `ul > li` with options to set both the
@@ -19,11 +21,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  * a range of support CSS classes are available along
  * with each page record.
  *
- * DEPRECATED: use v:menu.directory instead
- *
+ * @author Claus Due <claus@namelesscoder.net>
  * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
- * @subpackage ViewHelpers\Page
+ * @subpackage ViewHelpers
  */
-class DirectoryViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\DirectoryViewHelper {
+class MenuViewHelper extends AbstractMenuViewHelper {
+
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
+	}
+
 }

@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -36,16 +36,15 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 	use TemplateVariableViewHelperTrait;
 
 	/**
-	 * @var PageSelectService
+	 * @var PageService
 	 */
-	protected $pageSelect;
+	protected $pageService;
 
 	/**
-	 * @param PageSelectService $pageSelect
-	 * @return void
+	 * @param PageService $pageService
 	 */
-	public function injectPageSelectService(PageSelectService $pageSelect) {
-		$this->pageSelect = $pageSelect;
+	public function injectPageService(PageService $pageService) {
+		$this->pageService = $pageService;
 	}
 
 	/**
@@ -112,32 +111,25 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		// Get page via pageUid argument or current id
-		$pageUid = intval($pageUid);
+		$pageUid = (integer) $pageUid;
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		$page = $this->pageSelect->getPage($pageUid);
+		$page = $this->pageService->getPage($pageUid);
 		if (TRUE === empty($page)) {
 			return NULL;
 		}
 
 		// Do not render the link, if the page should be hidden
 		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-		$hidePage = $this->pageSelect->hidePageForLanguageUid($pageUid, $currentLanguageUid);
+		$hidePage = $this->pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid);
 		if (TRUE === $hidePage) {
 			return NULL;
 		}
 
 		// Get the title from the page or page overlay
 		$title = $this->getTitleValue($page);
-		if (0 < $currentLanguageUid) {
-			$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $currentLanguageUid);
-			$translatedTitle = $this->getTitleValue($pageOverlay);
-			if (FALSE === empty($translatedTitle)) {
-				$title = $translatedTitle;
-			}
-		}
 
 		// Check if we should assign page title to the template variable container
 		$pageTitleAs = $this->arguments['pageTitleAs'];

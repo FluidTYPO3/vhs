@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -22,16 +22,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class LanguageViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @var PageSelectService
+	 * @var PageService
 	 */
-	protected $pageSelect;
+	protected $pageService;
 
 	/**
-	 * @param PageSelectService $pageSelectService
-	 * @return void
+	 * @param PageService $pageService
 	 */
-	public function injectPageSelectService(PageSelectService $pageSelectService) {
-		$this->pageSelect = $pageSelectService;
+	public function injectPageService(PageService $pageService) {
+		$this->pageService = $pageService;
 	}
 
 	/**
@@ -71,10 +70,10 @@ class LanguageViewHelper extends AbstractViewHelper {
 
 		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
 		$languageUid = 0;
-		if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
+		if (FALSE === $this->pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
 			$languageUid = $currentLanguageUid;
 		} elseif (0 !== $currentLanguageUid) {
-			if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
+			if (TRUE === $this->pageService->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
 				return '';
 			}
 		}

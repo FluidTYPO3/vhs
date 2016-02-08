@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,9 +28,9 @@ class AlternateViewHelper extends AbstractViewHelper {
 	use PageRendererTrait;
 
 	/**
-	 * @var PageSelectService
+	 * @var PageService
 	 */
-	protected $pageSelect;
+	protected $pageService;
 
 	/**
 	 * @var ObjectManagerInterface
@@ -43,11 +43,10 @@ class AlternateViewHelper extends AbstractViewHelper {
 	protected $tagBuilder;
 
 	/**
-	 * @param PageSelectService $pageSelectService
-	 * @return void
+	 * @param PageService $pageService
 	 */
-	public function injectPageSelectService(PageSelectService $pageSelectService) {
-		$this->pageSelect = $pageSelectService;
+	public function injectPageService(PageService $pageService) {
+		$this->pageService = $pageService;
 	}
 
 	/**
@@ -59,11 +58,6 @@ class AlternateViewHelper extends AbstractViewHelper {
 		$this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 	}
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
 	public function initializeArguments() {
 		$this->registerArgument('languages', 'mixed', 'The languages (either CSV, array or implementing Traversable)', TRUE);
 		$this->registerArgument('pageUid', 'integer', 'The page uid to check', FALSE, 0);
@@ -76,7 +70,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
 		if ('BE' === TYPO3_MODE) {
-			return '';
+			return NULL;
 		}
 
 		$languages = $this->arguments['languages'];
@@ -88,13 +82,13 @@ class AlternateViewHelper extends AbstractViewHelper {
 			$languages = (array) $languages;
 		}
 
-		$pageUid = intval($this->arguments['pageUid']);
-		$normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
-		$addQueryString = $this->arguments['addQueryString'];
-
+		$pageUid = (integer) $this->arguments['pageUid'];
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
+
+		$normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
+		$addQueryString = $this->arguments['addQueryString'];
 
 		/** @var UriBuilder $uriBuilder */
 		$uriBuilder = $this->controllerContext->getUriBuilder();
@@ -108,12 +102,12 @@ class AlternateViewHelper extends AbstractViewHelper {
 		$this->tagBuilder->addAttribute('rel', 'alternate');
 
 		/** @var PageRenderer $pageRenderer */
-		$pageRenderer = $this->getPageRenderer();
-		$usePageRenderer = (1 !== intval($GLOBALS['TSFE']->config['config']['disableAllHeaderCode']));
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+		$usePageRenderer = (1 !== (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']);
 		$output = '';
 
 		foreach ($languages as $languageUid => $languageName) {
-			if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
+			if (FALSE === $this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
 				$uri = $uriBuilder->setArguments(array('L' => $languageUid))->build();
 				$this->tagBuilder->addAttribute('href', $uri);
 				$this->tagBuilder->addAttribute('hreflang', $languageName);
@@ -131,6 +125,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 			return trim($output);
 		}
 
-		return '';
+		return NULL;
 	}
+
 }

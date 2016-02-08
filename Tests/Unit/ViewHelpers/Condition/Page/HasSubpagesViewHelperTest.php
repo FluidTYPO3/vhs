@@ -18,8 +18,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 class HasSubpagesViewHelperTest extends AbstractViewHelperTest {
 
 	public function testRenderWithAPageThatHasSubpages() {
-		$pageSelect = $this->getMock('FluidTYPO3\Vhs\Service\PageSelectService', array('getMenu'), array(), '', FALSE);
-		$pageSelect->expects($this->any())->method('getMenu')->will($this->returnValue(array('childpage')));
+		$pageService = $this->getMock('FluidTYPO3\Vhs\Service\PageService', array('getMenu'), array(), '', FALSE);
+		$pageService->expects($this->any())->method('getMenu')->will($this->returnValue(array('childpage')));
 
 		$arguments = array(
 			'then' => 'then',
@@ -27,7 +27,7 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTest {
 			'pageUid' => 1
 		);
 		$instance = $this->buildViewHelperInstance($arguments);
-		$instance::setPageSelectService($pageSelect);
+		$instance::setPageService($pageService);
 		$result = $instance->initializeArgumentsAndRender();
 		$this->assertEquals('then', $result);
 
@@ -36,8 +36,8 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTest {
 	}
 
 	public function testRenderWithAPageWithoutSubpages() {
-		$pageSelect = $this->getMock('FluidTYPO3\Vhs\Service\PageSelectService', array('getMenu'), array(), '', FALSE);
-		$pageSelect->expects($this->any())->method('getMenu')->will($this->returnValue(array()));
+		$pageService = $this->getMock('FluidTYPO3\Vhs\Service\PageService', array('getMenu'), array(), '', FALSE);
+		$pageService->expects($this->any())->method('getMenu')->will($this->returnValue(array()));
 
 		$arguments = array(
 			'then' => 'then',
@@ -45,7 +45,7 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTest {
 			'pageUid' => 1
 		);
 		$instance = $this->buildViewHelperInstance($arguments);
-		$instance::setPageSelectService($pageSelect);
+		$instance::setPageService($pageService);
 		$result = $instance->initializeArgumentsAndRender();
 		$this->assertEquals('else', $result);
 
