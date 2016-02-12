@@ -103,6 +103,20 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		} else {
 			$hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
 			$currentLanguage = $GLOBALS['TSFE']->sys_language_content;
+
+			$normalWhenNoLanguage = FALSE;
+			$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+			$languageUid = 0;
+			if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
+				$languageUid = $currentLanguageUid;
+			} elseif (0 !== $currentLanguageUid) {
+				if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
+					return '';
+				}
+			}
+
+			$currentLanguage = $languageUid;
+
 			$languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
 			if (0 < $currentLanguage) {
 				if (TRUE === $hideUntranslated) {
@@ -121,6 +135,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		}
 
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
+
 		return $rows;
 	}
 
@@ -173,6 +188,24 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 	 * @return string|NULL
 	 */
 	protected function renderRecord(array $row) {
+
+		$temp_sys_language_uid       = $GLOBALS['TSFE']->sys_language_uid;
+		$temp_sys_language_content   = $GLOBALS['TSFE']->sys_language_content;
+		$temp_sys_language_contentOL = $GLOBALS['TSFE']->sys_language_contentOL;
+
+		$normalWhenNoLanguage = FALSE;
+		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+		$languageUid = 0;
+		if ( FALSE === $this->pageSelect->hidePageForLanguageUid($row['pid'], $currentLanguageUid, $normalWhenNoLanguage)) {
+			$languageUid = $currentLanguageUid;
+		} elseif (0 !== $currentLanguageUid) {
+			if (TRUE === $this->pageSelect->hidePageForLanguageUid($row['pid'], 0, $normalWhenNoLanguage)) {
+				return '';
+			}
+		}
+			$currentLanguage = $languageUid;
+
+		$GLOBALS['TSFE']->sys_language_content = $currentLanguage;
 		if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
 			return NULL;
 		}
@@ -193,6 +226,9 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		if (FALSE === empty($parent)) {
 			--$GLOBALS['TSFE']->recordRegister[$parent];
 		}
+		$GLOBALS['TSFE']->sys_language_uid       = $temp_sys_language_uid;
+		$GLOBALS['TSFE']->sys_language_content   = $temp_sys_language_content;
+		$GLOBALS['TSFE']->sys_language_contentOL = $temp_sys_language_contentOL;
 		return $html;
 	}
 
