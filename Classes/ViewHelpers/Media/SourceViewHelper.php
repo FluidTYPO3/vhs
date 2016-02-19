@@ -140,7 +140,11 @@ class SourceViewHelper extends AbstractTagBasedViewHelper {
 		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
 			$src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
 		} elseif ('BE' === TYPO3_MODE || FALSE === (boolean) $this->arguments['relative']) {
-			$src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
+			if (GeneralUtility::isValidUrl($src)) {
+				$src = ltrim($src, '/');
+			} else {
+				$src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
+			}
 		}
 		return $src;
 	}
