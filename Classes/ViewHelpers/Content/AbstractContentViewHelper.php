@@ -11,6 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * ### Base class: Content ViewHelpers
@@ -107,11 +110,30 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 			$normalWhenNoLanguage = FALSE;
 			$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
 			$languageUid = 0;
+			$page = $this->pageSelect->getPage($pageUid);
+
+			$config = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+			list($sys_language_mode, $sys_language_content) = GeneralUtility::trimExplode(';', $config['config.']['sys_language_mode']);
+
 			if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
 				$languageUid = $currentLanguageUid;
-			} elseif (0 !== $currentLanguageUid) {
-				if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
-					return '';
+			} else {
+				if ( 0 !== $currentLanguageUid ) {
+					if ( ! GeneralUtility::hideIfNotTranslated($page['l18n_cfg']) ) {
+						if ((string) $sys_language_mode === 'content_fallback' ) {
+							$fallBackOrder = GeneralUtility::intExplode(',', $sys_language_content);
+							foreach ( $fallBackOrder as $orderValue ) {
+								if ( (string) $orderValue === '0' || ! $this->pageSelect->hidePageForLanguageUid($pageUid, $orderValue, $normalWhenNoLanguage) ) {
+									$pageOverlay = $this->pageSelect->getPageOverlay($pageUid, $orderValue);
+									$languageUid = $orderValue;
+									break;
+								}
+							}
+						}
+					}
+					if (TRUE === $this->pageSelect->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
+						return '';
+					}
 				}
 			}
 
@@ -188,7 +210,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 	 * @return string|NULL
 	 */
 	protected function renderRecord(array $row) {
-
 		$temp_sys_language_uid       = $GLOBALS['TSFE']->sys_language_uid;
 		$temp_sys_language_content   = $GLOBALS['TSFE']->sys_language_content;
 		$temp_sys_language_contentOL = $GLOBALS['TSFE']->sys_language_contentOL;
@@ -203,7 +224,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 				return '';
 			}
 		}
-			$currentLanguage = $languageUid;
+		$currentLanguage = $languageUid;
 
 		$GLOBALS['TSFE']->sys_language_content = $currentLanguage;
 		if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
@@ -226,9 +247,11 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		if (FALSE === empty($parent)) {
 			--$GLOBALS['TSFE']->recordRegister[$parent];
 		}
+
 		$GLOBALS['TSFE']->sys_language_uid       = $temp_sys_language_uid;
 		$GLOBALS['TSFE']->sys_language_content   = $temp_sys_language_content;
 		$GLOBALS['TSFE']->sys_language_contentOL = $temp_sys_language_contentOL;
+
 		return $html;
 	}
 
