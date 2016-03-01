@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -23,6 +24,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @subpackage ViewHelpers\Page\Header
  */
 class AlternateViewHelper extends AbstractViewHelper {
+
+	use PageRendererTrait;
 
 	/**
 	 * @var PageSelectService
@@ -105,7 +108,7 @@ class AlternateViewHelper extends AbstractViewHelper {
 		$this->tagBuilder->addAttribute('rel', 'alternate');
 
 		/** @var PageRenderer $pageRenderer */
-		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+		$pageRenderer = $this->getPageRenderer();
 		$usePageRenderer = (1 !== intval($GLOBALS['TSFE']->config['config']['disableAllHeaderCode']));
 		$output = '';
 

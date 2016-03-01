@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -23,7 +24,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class MetaViewHelper extends AbstractTagBasedViewHelper {
 
-	use TagViewHelperTrait;
+	use TagViewHelperTrait, PageRendererTrait;
 
 	/**
 	 * @var    string
@@ -55,7 +56,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper {
 			return;
 		}
 		if (TRUE === isset($this->arguments['content']) && FALSE === empty($this->arguments['content'])) {
-			$GLOBALS['TSFE']->getPageRenderer()
+			$this->getPageRenderer()
 				->addMetaTag($this->renderTag($this->tagName, NULL, array('content' => $this->arguments['content'])));
 		}
 	}

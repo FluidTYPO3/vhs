@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -46,6 +47,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TitleViewHelper extends AbstractViewHelper {
 
+	use PageRendererTrait;
+
 	/**
 	 * Arguments initialization
 	 *
@@ -72,7 +75,7 @@ class TitleViewHelper extends AbstractViewHelper {
 			$title = $this->renderChildren();
 		}
 		$title = trim(preg_replace('/\s+/', $this->arguments['whitespaceString'], $title), $this->arguments['whitespaceString']);
-		$GLOBALS['TSFE']->getPageRenderer()->setTitle($title);
+		$this->getPageRenderer()->setTitle($title);
 		if (TRUE === $this->arguments['setIndexedDocTitle']) {
 			$GLOBALS['TSFE']->indexedDocTitle = $title;
 		}

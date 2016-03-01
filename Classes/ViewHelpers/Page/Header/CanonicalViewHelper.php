@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -19,6 +20,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * @subpackage ViewHelpers\Page\Header
  */
 class CanonicalViewHelper extends AbstractTagBasedViewHelper {
+
+	use PageRendererTrait;
 
 	/**
 	 * @var PageSelectService
@@ -82,7 +85,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 			return $renderedTag;
 		}
 
-		$GLOBALS['TSFE']->getPageRenderer()->addMetaTag($renderedTag);
+		$this->getPageRenderer()->addMetaTag($renderedTag);
 	}
 
 }
