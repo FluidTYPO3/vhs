@@ -303,8 +303,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 			'returnLast' => 'url',
 			'additionalParams' => '&L=' . $uid,
 			'useCacheHash' => $this->arguments['useCHash'],
-			'addQueryString' => 'GET',
+			'addQueryString' => 1,
 			'addQueryString.' => array(
+				'method' => 'GET',
 				'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
 			)
 		);
