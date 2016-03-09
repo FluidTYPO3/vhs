@@ -61,7 +61,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('layout', 'string', 'How to render links when using autorendering. Possible selections: name,flag - use fx "name" or "flag,name" or "name,flag"', FALSE, 'flag,name');
 		$this->registerArgument('useCHash', 'boolean', 'Use cHash for typolink', FALSE, TRUE);
 		$this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', FALSE, '');
-		$this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', FALSE, 'png');
+		$this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', FALSE, 'svg');
 		$this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', FALSE, TRUE);
 		$this->registerArgument('classCurrent', 'string', 'Sets the class, by which the current language will be marked', FALSE, 'current');
 		$this->registerArgument('as', 'string', 'If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'languageMenu');
@@ -159,8 +159,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 		}
 
 		$imgType = trim($this->arguments['flagImageType']);
-		$img = $path . $iso . '.' . $imgType;
-		return $img;
+		return $path . strtoupper($iso) . '.' . $imgType;
 	}
 
 	/**
