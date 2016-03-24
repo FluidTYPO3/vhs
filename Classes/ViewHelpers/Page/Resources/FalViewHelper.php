@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
@@ -56,10 +57,12 @@ class FalViewHelper extends ResourcesFalViewHelper {
 	protected function getSlideRecordsFromPage($pageUid, $limit) {
 		$pageRecord = $this->getRecord($pageUid);
 		if (!$this->isDefaultLanguage()) {
-			$localisation = $this->getDatabaseConntection()->exec_SELECTgetSingleRow(
+			$cObj = $this->configurationManager->getContentObject();
+			$localisation = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 				'*',
 				'pages_language_overlay',
 				"pid = '" . $pageRecord['uid'] . "' AND sys_language_uid = '" . $this->getCurrentLanguageUid() . "'"
+				. $cObj->enableFields('pages_language_overlay')
 			);
 			if (TRUE === is_array($localisation)) {
 				ArrayUtility::mergeRecursiveWithOverrule($pageRecord, $localisation);
