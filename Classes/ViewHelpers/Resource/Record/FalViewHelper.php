@@ -92,7 +92,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 	 * @return array
 	 */
 	public function getResources($record) {
-		$databaseConnection = $this->getDatabaseConntection();
+		$databaseConnection = $this->getDatabaseConnection();
 		if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
 			$sqlRecordUid = $record['t3ver_oid'];
 		} else {
@@ -147,7 +147,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper {
 	/**
 	 * @return DatabaseConnection
 	 */
-	protected function getDatabaseConntection() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 
