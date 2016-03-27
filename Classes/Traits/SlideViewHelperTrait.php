@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Service\PageSelectService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,6 +26,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *   to the ViewHelper arguments
  */
 trait SlideViewHelperTrait {
+
+	/**
+	 * @var PageSelectService
+	 */
+	protected $pageSelect;
+
+	/**
+	 * @param PageSelectService $pageSelectService
+	 * @return void
+	 */
+	public function injectPageSelectService(PageSelectService $pageSelectService) {
+		$this->pageSelect = $pageSelectService;
+	}
 
 	/**
 	 * Default initialisation of arguments - will be used
