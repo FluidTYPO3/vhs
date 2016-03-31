@@ -296,22 +296,22 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper {
 	 * @return string
 	 */
 	protected function getLanguageUrl($uid) {
-		$excludedVars = trim((string) $this->arguments['excludeQueryVars']);
-		$config = array(
-			'parameter' => $this->getPageUid(),
-			'returnLast' => 'url',
-			'additionalParams' => '&L=' . $uid,
-			'useCacheHash' => $this->arguments['useCHash'],
-			'addQueryString' => 1,
-			'addQueryString.' => array(
-				'method' => 'GET',
-				'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
-			)
-		);
-		if (TRUE === is_array($this->arguments['configuration'])) {
-			$config = $this->mergeArrays($config, $this->arguments['configuration']);
-		}
-		return $this->cObj->typoLink('', $config);
+	    $excludedVars = trim((string) $this->arguments['excludeQueryVars']);
+	    $config = array(
+	        'parameter' => $this->getPageUid(),
+	        'returnLast' => 'url',
+	        'additionalParams' => '&L=' . $uid,
+	        'useCacheHash' => $this->arguments['useCHash'],
+	        'addQueryString' => '1',
+	        'addQueryString.' => array(
+	            'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : ''),
+	            'method' => 'GET'
+	        )
+	    );
+	    if (TRUE === is_array($this->arguments['configuration'])) {
+	        $config = $this->mergeArrays($config, $this->arguments['configuration']);
+	    }
+	    return $this->cObj->typoLink('', $config);
 	}
 
 	/**
