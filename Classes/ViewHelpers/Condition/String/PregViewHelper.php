@@ -37,6 +37,7 @@ class PregViewHelper extends AbstractConditionViewHelper {
 		$this->registerArgument('pattern', 'string', 'regex pattern to match string against', TRUE);
 		$this->registerArgument('string', 'string', 'string to match with the regex pattern', TRUE);
 		$this->registerArgument('global', 'boolean', 'match global', FALSE, FALSE);
+		$this->registerArgument('as', 'string', 'output variable', FALSE, FALSE);
 	}
 
 	/**
