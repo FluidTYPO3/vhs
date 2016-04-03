@@ -108,9 +108,7 @@ class FalViewHelper extends ResourcesFalViewHelper {
 	 */
 	public function render() {
 		$record = $this->arguments['record'];
-        if (isset($record[self::defaultOverlayField]) &&
-            $record[self::defaultOverlayField]
-        ) {
+        if (!empty($record[self::defaultOverlayField])) {
             $this->arguments['table'] = self::defaultOverlayTable;
             $this->arguments['uid'] = $record[self::defaultOverlayUidField];
         }
