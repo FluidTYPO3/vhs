@@ -35,6 +35,9 @@ trait SourceSetViewHelperTrait {
 		$format = $this->arguments['format'];
 		$quality = $this->arguments['quality'];
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+		if (TRUE === $treatIdAsReference) {
+			$src = $this->arguments['src'];
+		}
 
 		$imageSources = array();
 		$srcsetVariants = array();
