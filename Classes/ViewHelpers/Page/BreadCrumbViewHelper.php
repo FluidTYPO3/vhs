@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper;
+use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
 
 /**
  * ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual
@@ -37,7 +37,7 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper {
 		$pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
 		$entryLevel = $this->arguments['entryLevel'];
 		$endLevel = $this->arguments['endLevel'];
-		$rawRootLineData = $this->pageSelect->getRootLine($pageUid);
+		$rawRootLineData = $this->pageService->getRootLine($pageUid);
 		$rawRootLineData = array_reverse($rawRootLineData);
 		$rawRootLineData = array_slice($rawRootLineData, $entryLevel, $endLevel);
 		$rootLineData = $rawRootLineData;
@@ -49,7 +49,7 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper {
 				}
 			}
 		}
-		$rootLine = $this->parseMenu($rootLineData, $rootLineData);
+		$rootLine = $this->parseMenu($rootLineData);
 		if (0 === count($rootLine)) {
 			return NULL;
 		}
@@ -58,6 +58,7 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper {
 		$output = $this->renderContent($rootLine);
 		$this->templateVariableContainer->remove($this->arguments['as']);
 		$this->restoreVariables();
+
 		return $output;
 	}
 

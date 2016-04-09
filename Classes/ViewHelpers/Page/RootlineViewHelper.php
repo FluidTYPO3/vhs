@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -24,22 +24,18 @@ class RootlineViewHelper extends AbstractViewHelper {
 	use TemplateVariableViewHelperTrait;
 
 	/**
-	 * @var PageSelectService
+	 * @var PageService
 	 */
-	protected $pageSelect;
+	protected $pageService;
 
 	/**
-	 * @param PageSelectService $pageSelectService
-	 * @return void
+	 * @param PageService $pageService
 	 */
-	public function injectPageSelectService(PageSelectService $pageSelectService) {
-		$this->pageSelect = $pageSelectService;
+	public function injectPageService(PageService $pageService) {
+		$this->pageService = $pageService;
 	}
 
 	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
 	 * @api
 	 */
 	public function initializeArguments() {
@@ -52,12 +48,12 @@ class RootlineViewHelper extends AbstractViewHelper {
 	 * @return mixed
 	 */
 	public function render() {
-		$pageUid = $this->arguments['pageUid'];
+		$pageUid = (integer) $this->arguments['pageUid'];
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
+		$rootLineData = $this->pageService->getRootLine($pageUid);
 
-		$rootLineData = $this->pageSelect->getRootLine($pageUid);
 		return $this->renderChildrenWithVariableOrReturnInput($rootLineData);
 	}
 

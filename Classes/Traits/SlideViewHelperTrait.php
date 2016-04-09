@@ -53,11 +53,11 @@ trait SlideViewHelperTrait {
 	}
 
 	/**
-	 * @return \FluidTYPO3\Vhs\Service\PageSelectService
+	 * @return \FluidTYPO3\Vhs\Service\PageService
 	 */
-	protected function getPageSelectService() {
+	protected function getPageService() {
 		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		return $objectManager->get('FluidTYPO3\\Vhs\\Service\\PageSelectService');
+		return $objectManager->get('FluidTYPO3\\Vhs\\Service\\PageService');
 	}
 
 	/**
@@ -98,7 +98,7 @@ trait SlideViewHelperTrait {
 			if (TRUE === $slideCollectReverse && 0 !== $slideCollect) {
 				$reverse = TRUE;
 			}
-			$rootLine = $this->getPageSelectService()->getRootLine($pageUid, NULL, $reverse);
+			$rootLine = $this->getPageService()->getRootLine($pageUid, NULL, $reverse);
 			if (-1 !== $slide) {
 				if (TRUE === $reverse) {
 					$rootLine = array_slice($rootLine, - $slide);

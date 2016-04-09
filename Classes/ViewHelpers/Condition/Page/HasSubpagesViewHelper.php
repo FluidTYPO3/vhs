@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
@@ -31,16 +31,16 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper {
 	use ConditionViewHelperTrait;
 
 	/**
-	 * @var PageSelectService
+	 * @var PageService
 	 */
-	static protected $pageSelect;
+	static protected $pageService;
 
 	/**
-	 * @param PageSelectService $pageSelect
+	 * @param PageService $pageService
 	 * @return void
 	 */
-	static public function setPageSelectService(PageSelectService $pageSelect) {
-		self::$pageSelect = $pageSelect;
+	static public function setPageService(PageService $pageService) {
+		self::$pageService = $pageService;
 	}
 
 	/**
@@ -48,34 +48,34 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper {
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('pageUid', 'integer', 'value to check', FALSE, NULL);
-		$this->registerArgument('includeHidden', 'boolean', 'include hidden pages', FALSE, FALSE);
-		$this->registerArgument('showHiddenInMenu', 'boolean', 'include pages hidden in menu', FALSE, FALSE);
+		$this->registerArgument('pageUid', 'integer', 'Parent page to check', FALSE, NULL);
+		$this->registerArgument('includeHidden', 'boolean', 'DEPRECATED: Include hidden pages', FALSE, FALSE);
+		$this->registerArgument('includeAccessProtected', 'boolean', 'Include access protected pages', FALSE, FALSE);
+		$this->registerArgument('includeHiddenInMenu', 'boolean', 'Include pages hidden in menu', FALSE, FALSE);
+		$this->registerArgument('showHiddenInMenu', 'boolean', 'DEPRECATED: Use argument includeHiddenInMenu', FALSE, FALSE);
 	}
 
 	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
+	 * @param array $arguments
+	 * @return boolean
 	 */
 	static protected function evaluateCondition($arguments = NULL) {
 		$pageUid = $arguments['pageUid'];
-		$includeHidden = $arguments['includeHidden'];
-		$showHiddenInMenu = $arguments['showHiddenInMenu'];
+		$includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
+		$includeAccessProtected = (boolean) $arguments['includeAccessProtected'];
 
-		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
+		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === (integer) $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		if (self::$pageSelect === NULL) {
+		if (self::$pageService === NULL) {
 			$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-			self::$pageSelect = $objectManager->get('FluidTYPO3\Vhs\Service\PageSelectService');
+			self::$pageService = $objectManager->get('FluidTYPO3\Vhs\Service\PageService');
 		}
 
-		$menu = self::$pageSelect->getMenu($pageUid, array(), '', $showHiddenInMenu);
-		$pageHasSubPages = (0 < count($menu));
-		return TRUE === $pageHasSubPages;
+		$menu = self::$pageService->getMenu($pageUid, array(), $includeHiddenInMenu, FALSE, $includeAccessProtected);
+
+		return (0 < count($menu));
 	}
 
 }
