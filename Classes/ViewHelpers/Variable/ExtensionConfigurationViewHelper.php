@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -32,27 +33,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @param array $source TypoScript-array with dots: $source['foo.']['bar.']['baz']
-	 * @param string $path
-	 * @return mixed
-	 */
-	protected function extractFromArrayByPath($source, $path) {
-		$result = $source;
-		$pathParts = explode('.', $path);
-		$pathParts = array_diff($pathParts, array(''));
-		foreach ($pathParts as $part) {
-			if (array_key_exists($part . '.', $result)) {
-				$result = $result[$part . '.'];
-			} elseif (array_key_exists($part, $result)) {
-				$result = $result[$part];
-			} else {
-				return NULL;
-			}
-		}
-		return $result;
-	}
-
-	/**
 	 * @param string $path
 	 * @param string $extensionKey
 	 * @return string
@@ -71,6 +51,6 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
 
-		return $this->extractFromArrayByPath($extConf, $path);
+		return ObjectAccess::getPropertyPath(GeneralUtility::removeDotsFromTS($extConf), $path);
 	}
 }
