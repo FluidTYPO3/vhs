@@ -55,19 +55,10 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 	/**
 	 * @param string $path
 	 * @param string $extensionKey
-	 * @param string $name (deprecated, just use $path instead)
 	 * @return string
 	 * @throws Exception
 	 */
-	public function render($path = NULL, $extensionKey = NULL, $name = NULL) {
-		if (NULL !== $path) {
-			$pathToExtract = $path;
-		} elseif (NULL !== $name) {
-			$pathToExtract = $name;
-			GeneralUtility::deprecationLog('v:variable.extensionConfiguration was called with parameter "name" which is deprecated. Use "path" instead.');
-		} else {
-			throw new Exception('v:variable.extensionConfiguration requires the "path" attribute to be filled.', 1446998437);
-		}
+	public function render($path, $extensionKey = NULL) {
 
 		if (NULL === $extensionKey) {
 			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
