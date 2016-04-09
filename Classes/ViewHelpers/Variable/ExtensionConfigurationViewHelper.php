@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -33,24 +34,53 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 
 	/**
-	 * @param string $path
-	 * @param string $extensionKey
-	 * @return string
-	 * @throws Exception
+	 * @var array
 	 */
-	public function render($path, $extensionKey = NULL) {
+	protected static $configurations = array();
+
+	public function initializeArguments() {
+		$this->registerArgument('extensionKey', 'string', 'Extension key (lowercase_underscored format) to read configuration from');
+		$this->registerArgument('path', 'string', 'Configuration path to read - if NULL, returns all configuration as array');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function render() {
+		return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
+	 */
+	public static function renderStatic(
+		array $arguments,
+		\Closure $renderChildrenClosure,
+		RenderingContextInterface $renderingContext
+	) {
+		$extensionKey = $arguments['extensionKey'];
+		$path = $arguments['path'];
 
 		if (NULL === $extensionKey) {
-			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
+			$extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
 			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 		}
 
-		if (FALSE === array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
+		if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
 			return NULL;
+		} elseif (!array_key_exists($extensionKey, static::$configurations)) {
+			$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+			static::$configurations[$extensionKey] = GeneralUtility::removeDotsFromTS($extConf);
 		}
 
-		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+		if (!$path) {
+			return static::$configurations[$extensionKey];
+		}
 
-		return ObjectAccess::getPropertyPath(GeneralUtility::removeDotsFromTS($extConf), $path);
+		return ObjectAccess::getPropertyPath(static::$configurations[$extensionKey], $path);
 	}
+
 }
