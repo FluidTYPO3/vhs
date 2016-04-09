@@ -56,6 +56,12 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper {
 		$treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
 		$treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
+		if (is_object($src) && $src instanceof \TYPO3\CMS\Extbase\Domain\Model\FileReference) {
+			$src = $src->getUid();
+			$treatIdAsUid = TRUE;
+			$treatIdAsReference = TRUE;
+		}
+
 		if (NULL === $src) {
 			$src = $this->renderChildren();
 			if (NULL === $src) {
