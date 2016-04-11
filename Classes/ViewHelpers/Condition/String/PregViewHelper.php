@@ -18,7 +18,8 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * Condition ViewHelper which renders the `then` child if provided
  * string matches provided regular expression. $matches array containing
  * the results can be made available by providing a template variable
- * name with argument $as.
+ * name with argument $as. Resulting matches are assigned to the template
+ * through the variable $matches.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
  * @package Vhs
@@ -37,22 +38,33 @@ class PregViewHelper extends AbstractConditionViewHelper {
 		$this->registerArgument('pattern', 'string', 'regex pattern to match string against', TRUE);
 		$this->registerArgument('string', 'string', 'string to match with the regex pattern', TRUE);
 		$this->registerArgument('global', 'boolean', 'match global', FALSE, FALSE);
+		$this->registerAsArgument();
 	}
 
 	/**
 	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
 	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
+	 * @param array $matches
+	 * @return boolean
 	 */
-	static protected function evaluateCondition($arguments = NULL) {
+	static protected function evaluateCondition($matches = array()) {
+		return 0 < count($matches);
+	}
+
+	/**
+	 * Evaluates the regular expression and returns resulting matches
+	 *
+	 * @param array $arguments
+	 * @return array
+	 */
+	static protected function evaluateExpression($arguments = NULL) {
 		$matches = array();
 		if (TRUE === (boolean) $arguments['global']) {
 			preg_match_all($arguments['pattern'], $arguments['string'], $matches, PREG_SET_ORDER);
 		} else {
 			preg_match($arguments['pattern'], $arguments['string'], $matches);
 		}
-		return 0 < count($matches);
+		return $matches;
 	}
 
 	/**
@@ -62,12 +74,13 @@ class PregViewHelper extends AbstractConditionViewHelper {
 	 * @api
 	 */
 	public function render() {
-		if (static::evaluateCondition($this->arguments)) {
+		$matches = static::evaluateExpression($this->arguments);
+		if (static::evaluateCondition($matches)) {
 			$content = $this->renderThenChild();
 		} else {
 			$content = $this->renderElseChild();
 		}
-		return $this->renderChildrenWithVariableOrReturnInput($content);
+		return $this->renderChildrenWithVariableOrReturnInput($content, array('matches' => $matches));
 	}
 
 	/**
@@ -87,7 +100,8 @@ class PregViewHelper extends AbstractConditionViewHelper {
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		$hasEvaluated = TRUE;
 		$content = '';
-		if (static::evaluateCondition($arguments)) {
+		$matches = static::evaluateExpression($arguments);
+		if (static::evaluateCondition($matches)) {
 			$result = static::renderStaticThenChild($arguments, $hasEvaluated);
 			if ($hasEvaluated) {
 				$content = $result;
@@ -98,7 +112,7 @@ class PregViewHelper extends AbstractConditionViewHelper {
 				$content = $result;
 			}
 		}
-		return self::renderChildrenWithVariableOrReturnInputStatic($content, $arguments['as'], $renderingContext, $renderChildrenClosure);
+		return self::renderChildrenWithVariableOrReturnInputStatic($content, $arguments['as'], $renderingContext, $renderChildrenClosure, array('matches' => $matches));
 	}
 
 }

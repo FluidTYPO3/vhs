@@ -44,29 +44,41 @@ trait TemplateVariableViewHelperTrait {
 	}
 
 	/**
+	 * Returns the rendered content and assigns a variable $as
+	 * containing the viewhelper output and optional additional
+	 * variables to the template. If variable $as is not configured
+	 * the viewhelper output is returned.
+	 *
+	 * @param mixed $variable
+	 * @param array $additionalVariables
 	 * @return mixed
 	 */
-	protected function renderChildrenWithVariableOrReturnInput($variable = NULL) {
+	protected function renderChildrenWithVariableOrReturnInput($variable = NULL, array $additionalVariables = array()) {
 		$as = $this->arguments['as'];
 		if (TRUE === empty($as)) {
 			return $variable;
 		} else {
-			$variables = array($as => $variable);
+			$variables = array_merge(array($as => $variable), $additionalVariables);
 			$content = static::renderChildrenWithVariables($variables);
 		}
 		return $content;
 	}
 
 	/**
+	 * Same as above but static
+	 *
+	 * @param mixed $variable
+	 * @param string $as
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @param \Closure $renderChildrenClosure
+	 * @param array $additionalVariables
 	 * @return mixed
 	 */
-	protected static function renderChildrenWithVariableOrReturnInputStatic($variable = NULL, $as, $renderingContext = NULL, $renderChildrenClosure = NULL) {
+	protected static function renderChildrenWithVariableOrReturnInputStatic($variable = NULL, $as, $renderingContext = NULL, $renderChildrenClosure = NULL, array $additionalVariables = array()) {
 		if (TRUE === empty($as)) {
 			return $variable;
 		} else {
-			$variables = array($as => $variable);
+			$variables = array_merge(array($as => $variable), $additionalVariables);
 			$content = static::renderChildrenWithVariablesStatic($variables, $renderingContext->getTemplateVariableContainer(), $renderChildrenClosure);
 		}
 		return $content;
