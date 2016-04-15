@@ -90,6 +90,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 		$this->registerArgument('rootLineAs', 'string', 'If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used', FALSE, 'rootLine');
 		$this->registerArgument('excludePages', 'mixed', 'Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.', FALSE, '');
 		$this->registerArgument('forceAbsoluteUrl', 'boolean', 'If TRUE, the menu will be rendered with absolute URLs', FALSE, FALSE);
+		$this->registerArgument('doktypes', 'mixed', 'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut', FALSE, '');
 	}
 
 	/**
@@ -271,7 +272,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 	public function parseMenu(array $pages) {
 		$count = 0;
 		$total = count($pages);
+		$allowedDocumentTypes = $this->allowedDoktypeList();
 		foreach ($pages as $index => $page) {
+			if (!in_array($page['doktype'], $allowedDocumentTypes)) {
+				continue;
+			}
 			$count++;
 			$class = array();
 			$originalPageUid = $page['uid'];
@@ -323,7 +328,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 			}
 			if (0 < count($this->pageService->getMenu($originalPageUid))) {
 				$pages[$index]['hasSubpages'] = TRUE;
-				$class[] = $this->arguments['classHasSubPages'];
+				$class[] = $this->arguments['classHasSubpages'];
 			}
 			if (1 === $count) {
 				$class[] = $this->arguments['classFirst'];
@@ -613,6 +618,58 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 		}
 
 		return $pages;
+	}
+
+	/**
+	 * Get a list from allowed doktypes for pages
+	 *
+	 * @return array
+	 */
+	protected function allowedDoktypeList() {
+		if (isset($this->arguments['doktypes']) && !empty($this->arguments['doktypes'])) {
+			$types = $this->parseDoktypeList($this->arguments['doktypes']);
+		} else {
+			$types = array(
+				PageService::DOKTYPE_MOVE_TO_PLACEHOLDER,
+				PageRepository::DOKTYPE_DEFAULT,
+				PageRepository::DOKTYPE_LINK,
+				PageRepository::DOKTYPE_SHORTCUT,
+				PageRepository::DOKTYPE_MOUNTPOINT,
+			);
+		}
+		if (TRUE === (boolean) $this->arguments['includeSpacers'] && !in_array(PageRepository::DOKTYPE_SPACER, $types)) {
+			array_push($types, PageRepository::DOKTYPE_SPACER);
+		}
+
+		return $types;
+	}
+
+	/**
+	 * Parses the provided CSV list or array of doktypes to
+	 * return an array of integers
+	 *
+	 * @param mixed $doktypes
+	 * @return array
+	 */
+	protected function parseDoktypeList($doktypes) {
+		if (is_array($doktypes)) {
+			$types = $doktypes;
+		} else {
+			$types = GeneralUtility::trimExplode(',', $doktypes);
+		}
+		$parsed = array();
+		foreach ($types as $index => $type) {
+			if (!ctype_digit($type)) {
+				$typeNumber = constant('TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
+				if (NULL !== $typeNumber) {
+					$parsed[$index] = $typeNumber;
+				}
+			} else {
+				$parsed[$index] = (integer) $type;
+			}
+		}
+
+		return $parsed;
 	}
 
 }

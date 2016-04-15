@@ -27,6 +27,8 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class PageService implements SingletonInterface {
 
+	const DOKTYPE_MOVE_TO_PLACEHOLDER = 0;
+
 	/**
 	 * @var array
 	 */
