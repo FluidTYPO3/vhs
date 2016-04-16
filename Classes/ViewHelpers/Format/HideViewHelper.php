@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,6 +23,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class HideViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
 	 * Initialize
 	 *
@@ -31,13 +35,15 @@ class HideViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
-		if (TRUE === (boolean) $this->arguments['disabled']) {
-			return $this->renderChildren();
-		} else {
-			$this->renderChildren();
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$content = $renderChildrenClosure();
+		if ($arguments['disabled']) {
+			return $content;
 		}
 		return NULL;
 	}

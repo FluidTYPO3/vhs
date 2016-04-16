@@ -9,9 +9,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -24,19 +26,13 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class InfoViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
 	use TemplateVariableViewHelperTrait;
 
 	/**
 	 * @var PageService
 	 */
-	protected $pageService;
-
-	/**
-	 * @param PageService $pageService
-	 */
-	public function injectPageService(PageService $pageService) {
-		$this->pageService = $pageService;
-	}
+	protected static $pageService;
 
 	public function initializeArguments() {
 		$this->registerAsArgument();
@@ -45,15 +41,28 @@ class InfoViewHelper extends AbstractViewHelper {
 	}
 
 	/**
+	 * @return PageService
+	 */
+	protected static function getPageService() {
+		if (!static::$pageService) {
+			static::$pageService = GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
+		}
+		return static::$pageService;
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
 	 * @return mixed
 	 */
-	public function render() {
-		$pageUid = (integer) $this->arguments['pageUid'];
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$pageUid = (integer) $arguments['pageUid'];
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$page = $this->pageService->getPage($pageUid);
-		$field = $this->arguments['field'];
+		$page = static::getPageService()->getPage($pageUid);
+		$field = $arguments['field'];
 		$content = NULL;
 		if (TRUE === empty($field)) {
 			$content = $page;
@@ -61,7 +70,7 @@ class InfoViewHelper extends AbstractViewHelper {
 			$content = $page[$field];
 		}
 
-		return $this->renderChildrenWithVariableOrReturnInput($content);
+		return static::renderChildrenWithVariableOrReturnInputStatic($content, $arguments['as'], $renderingContext, $renderChildrenClosure);
 	}
 
 }

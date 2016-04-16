@@ -9,8 +9,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  */
 
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,6 +23,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @subpackage ViewHelpers\Uri
  */
 class GravatarViewHelper extends AbstractViewHelper {
+
+	use DefaultRenderMethodViewHelperTrait;
 
 	/**
 	 * Base url
@@ -52,14 +56,17 @@ class GravatarViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
-		$email = $this->arguments['email'];
-		$size = $this->checkArgument('size');
-		$imageSet = $this->checkArgument('imageSet');
-		$maximumRating = $this->checkArgument('maximumRating');
-		$secure = (boolean) $this->arguments['secure'];
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$email = $arguments['email'];
+		$size = $arguments['size'];
+		$imageSet = $arguments['imageSet'];
+		$maximumRating = $arguments['maximumRating'];
+		$secure = (boolean) $arguments['secure'];
 
 		$url = (TRUE === $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL);
 		$url .= md5(strtolower(trim($email)));
@@ -68,17 +75,5 @@ class GravatarViewHelper extends AbstractViewHelper {
 
 		return $url;
 	}
-
-	/**
-	 * Check if an argument is passed
-	 *
-	 * @param $argument
-	 *
-	 * @return mixed
-	 */
-	private function checkArgument($argument) {
-		return TRUE === isset($this->arguments[$argument]) ? $this->arguments[$argument] : NULL;
-	}
-
 
 }

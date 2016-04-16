@@ -22,7 +22,7 @@ trait PageRendererTrait {
 	 *
 	 * @return \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	protected function getPageRenderer() {
+	protected static function getPageRenderer() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
 	}
 

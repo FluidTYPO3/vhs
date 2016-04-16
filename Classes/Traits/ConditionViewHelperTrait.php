@@ -13,6 +13,7 @@ namespace FluidTYPO3\Vhs\Traits;
  * to add srcsets based to the imagetag for better responsiveness
  */
 trait ConditionViewHelperTrait {
+
 	/**
 	 * renders <f:then> child if $condition is true, otherwise renders <f:else> child.
 	 *

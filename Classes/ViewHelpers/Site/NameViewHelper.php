@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Site;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,12 +23,16 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class NameViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
-		$name = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-		return $name;
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 	}
 
 }

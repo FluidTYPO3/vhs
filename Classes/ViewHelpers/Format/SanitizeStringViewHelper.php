@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -44,12 +46,14 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class SanitizeStringViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
 	 * Basic character map
 	 *
 	 * @var array
 	 */
-	protected $characterMap = array(
+	protected static $characterMap = array(
 		'¹' => 1, '²' => 2, '³' => 3, '°' => 0, '€' => 'eur', 'æ' => 'ae', 'ǽ' => 'ae', 'À' => 'A', 'Á' => 'A', 'Â' => 'A',
 		'Ã' => 'A', 'Å' => 'AA', 'Ǻ' => 'A', 'Ă' => 'A', 'Ǎ' => 'A', 'Æ' => 'AE', 'Ǽ' => 'AE', 'à' => 'a', 'á' => 'a',
 		'â' => 'a', 'ã' => 'a', 'å' => 'aa', 'ǻ' => 'a', 'ă' => 'a', 'ǎ' => 'a', 'ª' => 'a', '@' => 'at', 'Ĉ' => 'C',
@@ -117,18 +121,21 @@ class SanitizeStringViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
-		$string = $this->arguments['string'];
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$string = $arguments['string'];
 		if (NULL === $string) {
-			$string = $this->renderChildren();
+			$string = $renderChildrenClosure();
 			if (NULL === $string) {
 				return NULL;
 			}
 		}
-		$characterMap = $this->characterMap;
-		$customMap = $this->arguments['customMap'];
+		$characterMap = static::$characterMap;
+		$customMap = $arguments['customMap'];
 		if (TRUE === is_array($customMap) && 0 < count($customMap)) {
 			$characterMap = array_merge($characterMap, $customMap);
 		}
@@ -139,6 +146,7 @@ class SanitizeStringViewHelper extends AbstractViewHelper {
 		$pattern = '/([^a-z0-9\-]){1,}/';
 		$string = preg_replace($pattern, '-', $string);
 		return trim($string, '-');
+
 	}
 
 }

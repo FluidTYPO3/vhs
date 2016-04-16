@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Url;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.

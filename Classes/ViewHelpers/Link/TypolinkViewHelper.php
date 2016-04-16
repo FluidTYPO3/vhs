@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Link;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -39,6 +41,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TypolinkViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
 	 * Initializes the arguments for the ViewHelper
 	 */
@@ -47,10 +51,13 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	}
 
 	/**
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
 	 * @return mixed
 	 */
-	public function render() {
-		return $GLOBALS['TSFE']->cObj->typoLink($this->renderChildren(), $this->arguments['configuration']);
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return $GLOBALS['TSFE']->cObj->typoLink($renderChildrenClosure(), $arguments['configuration']);
 	}
 
 }

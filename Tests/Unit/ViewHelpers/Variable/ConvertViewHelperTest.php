@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
@@ -114,6 +115,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$viewHelper->setArguments(array('type' => 'string'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertEquals('', $converted);
 	}
@@ -125,6 +127,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(12345));
 		$viewHelper->setArguments(array('type' => 'string'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInternalType('string', $converted);
 	}
@@ -136,6 +139,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$viewHelper->setArguments(array('type' => 'array'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInternalType('array', $converted);
 	}
@@ -147,6 +151,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
 		$viewHelper->setArguments(array('type' => 'array'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInternalType('array', $converted);
 		$this->assertEquals(array('foo'), $converted);
@@ -159,6 +164,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$viewHelper->setArguments(array('type' => 'ObjectStorage'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $converted);
 		$this->assertEquals(0, $converted->count());
@@ -174,6 +180,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($storage));
 		$viewHelper->setArguments(array('type' => 'array'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInternalType('array', $converted);
 		$this->assertEquals(1, count($converted));
@@ -186,6 +193,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$viewHelper->setArguments(array('type' => 'boolean'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInternalType('boolean', $converted);
 		$this->assertFalse($converted);
@@ -198,6 +206,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(1));
 		$viewHelper->setArguments(array('type' => 'boolean'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInternalType('boolean', $converted);
 		$this->assertTrue($converted);
@@ -210,6 +219,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
 		$viewHelper->setArguments(array('type' => 'boolean'));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInternalType('boolean', $converted);
 		$this->assertTrue($converted);
@@ -222,6 +232,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest {
 		$viewHelper = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Variable\ConvertViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$viewHelper->setArguments(array('type' => 'boolean', 'default' => TRUE));
+		$viewHelper->setRenderingContext(new RenderingContext());
 		$converted = $viewHelper->render();
 		$this->assertInternalType('boolean', $converted);
 		$this->assertTrue($converted);

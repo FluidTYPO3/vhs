@@ -8,7 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -23,6 +25,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class UncacheViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
 	 * Initialize
 	 *
@@ -35,15 +39,19 @@ class UncacheViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
-		$partialArguments = $this->arguments['arguments'];
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+		$partialArguments = $arguments['arguments'];
 		if (FALSE === is_array($partialArguments)) {
 			$partialArguments = array();
 		}
-		if (FALSE === isset($partialArguments['settings']) && TRUE === $this->templateVariableContainer->exists('settings')) {
-			$partialArguments['settings'] = $this->templateVariableContainer->get('settings');
+		if (FALSE === isset($partialArguments['settings']) && TRUE === $templateVariableContainer->exists('settings')) {
+			$partialArguments['settings'] = $templateVariableContainer->get('settings');
 		}
 
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
@@ -55,10 +63,10 @@ class UncacheViewHelper extends AbstractViewHelper {
 			'cObj' => serialize($templateView),
 			'postUserFunc' => 'render',
 			'conf' => array(
-				'partial' => $this->arguments['partial'],
-				'section' => $this->arguments['section'],
+				'partial' => $arguments['partial'],
+				'section' => $arguments['section'],
 				'arguments' => $partialArguments,
-				'controllerContext' => $this->renderingContext->getControllerContext()
+				'controllerContext' => $renderingContext->getControllerContext()
 			),
 			'content' => $content
 		);
