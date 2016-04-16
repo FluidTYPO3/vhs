@@ -35,10 +35,29 @@ trait ArrayConsumingViewHelperTrait {
 	 * @return mixed
 	 */
 	protected function getArgumentFromArgumentsOrTagContentAndConvertToArray($argumentName) {
-		if (FALSE === $this->hasArgument($argumentName)) {
-			$value = $this->renderChildren();
+		return static::getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
+			$this->arguments,
+			$argumentName,
+			$this->buildRenderChildrenClosure()
+		);
+	}
+
+	/**
+	 * Override of VhsViewHelperTrait equivalent. Does what
+	 * that function does, but also ensures an array return.
+	 *
+	 * @param string $argumentName
+	 * @return mixed
+	 */
+	protected function getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
+		array $arguments,
+		$argumentName,
+		\Closure $renderChildrenClosure
+	) {
+		if (!isset($arguments[$argumentName])) {
+			$value = $renderChildrenClosure();
 		} else {
-			$value = $this->arguments[$argumentName];
+			$value = $arguments[$argumentName];
 		}
 		return $this->arrayFromArrayOrTraversableOrCSV($value);
 	}
@@ -51,6 +70,17 @@ trait ArrayConsumingViewHelperTrait {
 	 * @throws Exception
 	 */
 	protected function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = TRUE) {
+		return static::arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys);
+	}
+
+	/**
+	 * @param mixed $candidate
+	 * @param boolean $useKeys
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	protected function arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys = TRUE) {
 		if (TRUE === $candidate instanceof \Traversable) {
 			return iterator_to_array($candidate, $useKeys);
 		} elseif (TRUE === $candidate instanceof QueryResultInterface) {
@@ -71,12 +101,17 @@ trait ArrayConsumingViewHelperTrait {
 	 * @return array
 	 */
 	protected function mergeArrays($array1, $array2) {
-		if (6.2 <= (float) substr(TYPO3_version, 0, 3)) {
-			ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
-			return $array1;
-		} else {
-			return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
-		}
+		return static::mergeArraysStatic($array1, $array2);
+	}
+
+	/**
+	 * @param $array1
+	 * @param $array2
+	 * @return array
+	 */
+	protected function mergeArraysStatic($array1, $array2) {
+		ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
+		return $array1;
 	}
 
 }
