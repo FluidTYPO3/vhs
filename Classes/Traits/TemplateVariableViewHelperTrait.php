@@ -7,6 +7,7 @@ namespace FluidTYPO3\Vhs\Traits;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Class TemplateVariableViewHelperTrait
@@ -52,7 +53,7 @@ trait TemplateVariableViewHelperTrait {
 			return $variable;
 		} else {
 			$variables = array($as => $variable);
-			$content = static::renderChildrenWithVariables($variables);
+			$content = $this->renderChildrenWithVariables($variables);
 		}
 		return $content;
 	}
@@ -62,7 +63,7 @@ trait TemplateVariableViewHelperTrait {
 	 * @param \Closure $renderChildrenClosure
 	 * @return mixed
 	 */
-	protected static function renderChildrenWithVariableOrReturnInputStatic($variable = NULL, $as, $renderingContext = NULL, $renderChildrenClosure = NULL) {
+	protected static function renderChildrenWithVariableOrReturnInputStatic($variable, $as, RenderingContextInterface $renderingContext, \Closure $renderChildrenClosure) {
 		if (TRUE === empty($as)) {
 			return $variable;
 		} else {
@@ -82,7 +83,7 @@ trait TemplateVariableViewHelperTrait {
 	 * @return mixed
 	 */
 	protected function renderChildrenWithVariables(array $variables) {
-		return self::renderChildrenWithVariablesStatic($variables, $this->templateVariableContainer, $this->buildRenderChildrenClosure());
+		return static::renderChildrenWithVariablesStatic($variables, $this->templateVariableContainer, $this->buildRenderChildrenClosure());
 	}
 
 	/**
@@ -97,9 +98,9 @@ trait TemplateVariableViewHelperTrait {
 	 * @return mixed
 	 */
 	protected static function renderChildrenWithVariablesStatic(array $variables, $templateVariableContainer, $renderChildrenClosure) {
-		$backups = self::backupVariables($variables, $templateVariableContainer);
+		$backups = static::backupVariables($variables, $templateVariableContainer);
 		$content = $renderChildrenClosure();
-		self::restoreVariables($variables, $backups, $templateVariableContainer);
+		static::restoreVariables($variables, $backups, $templateVariableContainer);
 		return $content;
 	}
 
