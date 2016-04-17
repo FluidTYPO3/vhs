@@ -13,12 +13,12 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class InfoViewHelperTest extends AbstractViewHelperTest {
+class InfoViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$this->assertEmpty($this->executeViewHelper());
-	}
-
+    public function testRender()
+    {
+        $this->assertEmpty($this->executeViewHelper());
+    }
 }

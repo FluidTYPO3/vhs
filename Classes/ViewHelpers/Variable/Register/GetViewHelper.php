@@ -23,36 +23,36 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *     {v:variable.register.get(name: 'dynamic{variableName}')}
  *
  * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-class GetViewHelper extends AbstractViewHelper {
+class GetViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('name', 'string', 'Name of register', TRUE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('name', 'string', 'Name of register', true);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if (FALSE === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-			return NULL;
-		}
-		$name = $arguments['name'];
-		$value = NULL;
-		if (TRUE === isset($GLOBALS['TSFE']->register[$name])) {
-			$value = $GLOBALS['TSFE']->register[$name];
-		}
-		return $value;
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            return null;
+        }
+        $name = $arguments['name'];
+        $value = null;
+        if (true === isset($GLOBALS['TSFE']->register[$name])) {
+            $value = $GLOBALS['TSFE']->register[$name];
+        }
+        return $value;
+    }
 }

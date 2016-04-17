@@ -44,45 +44,45 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * a fully controllable way.
  *
  * @author Georg Ringer
- * @package Vhs
- * @subpackage ViewHelpers\Page\Header
  */
-class TitleViewHelper extends AbstractViewHelper {
+class TitleViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
-	use PageRendererTrait;
+    use DefaultRenderMethodViewHelperTrait;
+    use PageRendererTrait;
 
-	/**
-	 * Arguments initialization
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('title', 'string', 'Title tag content');
-		$this->registerArgument('whitespaceString', 'string', 'String used to replace groups of white space characters, one replacement inserted per group', FALSE, ' ');
-		$this->registerArgument('setIndexedDocTitle', 'boolean', 'Set indexed doc title to title', FALSE, FALSE);
-	}
+    /**
+     * Arguments initialization
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('title', 'string', 'Title tag content');
+        $this->registerArgument('whitespaceString', 'string', 'String used to replace groups of white space characters, one replacement inserted per group', false, ' ');
+        $this->registerArgument('setIndexedDocTitle', 'boolean', 'Set indexed doc title to title', false, false);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if ('BE' === TYPO3_MODE) {
-			return;
-		}
-		if (FALSE === empty($arguments['title'])) {
-			$title = $arguments['title'];
-		} else {
-			$title = $renderChildrenClosure();
-		}
-		$title = trim(preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
-		static::getPageRenderer()->setTitle($title);
-		if (TRUE === $arguments['setIndexedDocTitle']) {
-			$GLOBALS['TSFE']->indexedDocTitle = $title;
-		}
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        if ('BE' === TYPO3_MODE) {
+            return;
+        }
+        if (false === empty($arguments['title'])) {
+            $title = $arguments['title'];
+        } else {
+            $title = $renderChildrenClosure();
+        }
+        $title = trim(preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
+        static::getPageRenderer()->setTitle($title);
+        if (true === $arguments['setIndexedDocTitle']) {
+            $GLOBALS['TSFE']->indexedDocTitle = $title;
+        }
+    }
 }

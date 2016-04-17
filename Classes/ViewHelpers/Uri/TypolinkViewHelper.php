@@ -36,28 +36,28 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <v:uri.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">Click Me!</v:uri.typolink>
  *
  * @author Cedric Ziel <cedric@cedric-ziel.com>, Cedric Ziel - Internetdienstleistungen & EDV
- * @package Vhs
- * @subpackage ViewHelpers
  */
-class TypolinkViewHelper extends AbstractViewHelper {
+class TypolinkViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * Initializes the arguments for the ViewHelper
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('configuration', 'array', 'The typoLink configuration', TRUE);
-	}
+    /**
+     * Initializes the arguments for the ViewHelper
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('configuration', 'array', 'The typoLink configuration', true);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return $GLOBALS['TSFE']->cObj->typoLink_URL($arguments['configuration']);
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return $GLOBALS['TSFE']->cObj->typoLink_URL($arguments['configuration']);
+    }
 }

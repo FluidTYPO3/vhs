@@ -13,17 +13,17 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class TimestampViewHelperTest extends AbstractViewHelperTest {
+class TimestampViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsIntegerAtOrAboveNowAsMeasuredInTest() {
-		$now = time();
-		$result = $this->executeViewHelper();
-		$this->assertGreaterThanOrEqual($now, $result);
-	}
-
+    /**
+     * @test
+     */
+    public function returnsIntegerAtOrAboveNowAsMeasuredInTest()
+    {
+        $now = time();
+        $result = $this->executeViewHelper();
+        $this->assertGreaterThanOrEqual($now, $result);
+    }
 }

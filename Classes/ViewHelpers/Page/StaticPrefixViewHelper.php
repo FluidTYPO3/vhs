@@ -22,24 +22,23 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * after the value is returned from the other ViewHelper.
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Page
  */
-class StaticPrefixViewHelper extends AbstractViewHelper {
+class StaticPrefixViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
-			return $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'];
-		}
-		return '';
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+            return $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'];
+        }
+        return '';
+    }
 }

@@ -13,16 +13,16 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class LanguageViewHelperTest extends AbstractViewHelperTest {
+class LanguageViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testRenderFailsWhenUnableToResolveExtensionName() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Unable to read extension name from ControllerContext and value not manually specified');
-		$this->executeViewHelper();
-	}
-
+    /**
+     * @test
+     */
+    public function testRenderFailsWhenUnableToResolveExtensionName()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Unable to read extension name from ControllerContext and value not manually specified');
+        $this->executeViewHelper();
+    }
 }

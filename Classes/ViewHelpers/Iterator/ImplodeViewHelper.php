@@ -14,14 +14,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * Implodes an array or array-convertible object by $glue
  *
  * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
-class ImplodeViewHelper extends ExplodeViewHelper {
+class ImplodeViewHelper extends ExplodeViewHelper
+{
 
-	/**
-	 * @var string
-	 */
-	protected $method = 'implode';
-
+    /**
+     * @var string
+     */
+    protected $method = 'implode';
 }

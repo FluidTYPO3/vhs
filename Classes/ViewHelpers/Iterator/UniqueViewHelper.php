@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ### Iterator Unique Values ViewHelper
@@ -57,28 +56,30 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * Countries of our users: Denmark - Germany - USA
  * ```
  */
-class UniqueViewHelper extends AbstractViewHelper {
+class UniqueViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'The input array/Traversable to process', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('subject', 'mixed', 'The input array/Traversable to process', false, null);
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		$array = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$array = array_unique($array);
-		return $this->renderChildrenWithVariableOrReturnInput($array);
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        $array = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $array = array_unique($array);
+        return $this->renderChildrenWithVariableOrReturnInput($array);
+    }
 }

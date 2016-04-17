@@ -28,31 +28,32 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class TagViewHelperTest extends AbstractViewHelperTest {
+class TagViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 * @dataProvider getRenderTagTestValues
-	 * @param array $arguments
-	 * @param mixed $content
-	 * @param string $expected
-	 */
-	public function renderTag(array $arguments, $content, $expected) {
-		$result = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
-		$this->assertEquals($expected, $result);
-	}
+    /**
+     * @test
+     * @dataProvider getRenderTagTestValues
+     * @param array $arguments
+     * @param mixed $content
+     * @param string $expected
+     */
+    public function renderTag(array $arguments, $content, $expected)
+    {
+        $result = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
+        $this->assertEquals($expected, $result);
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getRenderTagTestValues() {
-		return array(
-			array(array('name' => 'div'), 'test', '<div>test</div>'),
-			array(array('name' => 'div', 'class' => 'test'), 'test', '<div class="test">test</div>'),
-			array(array('name' => 'div', 'hideIfEmpty' => TRUE), '', ''),
-		);
-	}
-
+    /**
+     * @return array
+     */
+    public function getRenderTagTestValues()
+    {
+        return array(
+            array(array('name' => 'div'), 'test', '<div>test</div>'),
+            array(array('name' => 'div', 'class' => 'test'), 'test', '<div class="test">test</div>'),
+            array(array('name' => 'div', 'hideIfEmpty' => true), '', ''),
+        );
+    }
 }

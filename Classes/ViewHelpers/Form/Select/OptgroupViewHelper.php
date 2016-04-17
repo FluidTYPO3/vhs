@@ -14,32 +14,32 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Optgroup ViewHelper to use under vhs:form.select
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form\Select
  */
-class OptgroupViewHelper extends AbstractTagBasedViewHelper {
+class OptgroupViewHelper extends AbstractTagBasedViewHelper
+{
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'optgroup';
+    /**
+     * @var string
+     */
+    protected $tagName = 'optgroup';
 
-	/**
-	 * Initialize
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('label', 'string', 'Label for this option group');
-	}
+    /**
+     * Initialize
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
+        $this->registerTagAttribute('label', 'string', 'Label for this option group');
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$this->tag->setContent($this->renderChildren());
-		return $this->tag->render();
-	}
-
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $this->tag->setContent($this->renderChildren());
+        return $this->tag->render();
+    }
 }

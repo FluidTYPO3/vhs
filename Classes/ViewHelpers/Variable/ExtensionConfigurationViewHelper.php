@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ### ExtConf ViewHelper
@@ -29,57 +28,56 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * @author Harry Glatz <glatz@analog.de>
  * @author Cedric Ziel <cedric@cedric-ziel.com>
  * @author Stefan Neufeind <info@speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers
  */
-class ExtensionConfigurationViewHelper extends AbstractViewHelper {
+class ExtensionConfigurationViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @var array
-	 */
-	protected static $configurations = array();
+    /**
+     * @var array
+     */
+    protected static $configurations = array();
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('extensionKey', 'string', 'Extension key (lowercase_underscored format) to read configuration from');
-		$this->registerArgument('path', 'string', 'Configuration path to read - if NULL, returns all configuration as array');
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('extensionKey', 'string', 'Extension key (lowercase_underscored format) to read configuration from');
+        $this->registerArgument('path', 'string', 'Configuration path to read - if NULL, returns all configuration as array');
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(
-		array $arguments,
-		\Closure $renderChildrenClosure,
-		RenderingContextInterface $renderingContext
-	) {
-		$extensionKey = $arguments['extensionKey'];
-		$path = $arguments['path'];
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $extensionKey = $arguments['extensionKey'];
+        $path = $arguments['path'];
 
-		if (NULL === $extensionKey) {
-			$extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
-			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-		}
+        if (null === $extensionKey) {
+            $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+            $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+        }
 
-		if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
-			return NULL;
-		} elseif (!array_key_exists($extensionKey, static::$configurations)) {
-			$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
-			static::$configurations[$extensionKey] = GeneralUtility::removeDotsFromTS($extConf);
-		}
+        if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
+            return null;
+        } elseif (!array_key_exists($extensionKey, static::$configurations)) {
+            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+            static::$configurations[$extensionKey] = GeneralUtility::removeDotsFromTS($extConf);
+        }
 
-		if (!$path) {
-			return static::$configurations[$extensionKey];
-		}
+        if (!$path) {
+            return static::$configurations[$extensionKey];
+        }
 
-		return ObjectAccess::getPropertyPath(static::$configurations[$extensionKey], $path);
-	}
-
+        return ObjectAccess::getPropertyPath(static::$configurations[$extensionKey], $path);
+    }
 }

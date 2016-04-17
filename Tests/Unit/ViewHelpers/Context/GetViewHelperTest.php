@@ -30,17 +30,17 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class GetViewHelperTest extends AbstractViewHelperTest {
+class GetViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsContext() {
-		$valid = array('Development', 'Testing', 'Production');
-		$result = $this->executeViewHelper(array());
-		$this->assertContains($result, $valid);
-	}
-
+    /**
+     * @test
+     */
+    public function returnsContext()
+    {
+        $valid = array('Development', 'Testing', 'Production');
+        $result = $this->executeViewHelper(array());
+        $this->assertContains($result, $valid);
+    }
 }

@@ -13,24 +13,25 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class HideViewHelperTest extends AbstractViewHelperTest {
+class HideViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function hidesTagContent() {
-		$test = $this->executeViewHelperUsingTagContent('Text', 'this is hidden');
-		$this->assertNull($test);
-	}
+    /**
+     * @test
+     */
+    public function hidesTagContent()
+    {
+        $test = $this->executeViewHelperUsingTagContent('Text', 'this is hidden');
+        $this->assertNull($test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canBeDisabled() {
-		$test = $this->executeViewHelperUsingTagContent('Text', 'this is shown', array('disabled' => TRUE));
-		$this->assertSame('this is shown', $test);
-	}
-
+    /**
+     * @test
+     */
+    public function canBeDisabled()
+    {
+        $test = $this->executeViewHelperUsingTagContent('Text', 'this is shown', array('disabled' => true));
+        $this->assertSame('this is shown', $test);
+    }
 }

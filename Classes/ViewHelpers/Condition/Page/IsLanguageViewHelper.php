@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Condition: Is current language
@@ -21,48 +21,48 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * and a non existing language.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Page
  */
-class IsLanguageViewHelper extends AbstractConditionViewHelper {
+class IsLanguageViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('language', 'string', 'language to check', TRUE);
-		$this->registerArgument('defaultTitle', 'string', 'title of the default language', FALSE, 'en');
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('language', 'string', 'language to check', true);
+        $this->registerArgument('defaultTitle', 'string', 'title of the default language', false, 'en');
+    }
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		$language = $arguments['language'];
-		$defaultTitle = $arguments['defaultTitle'];
+    /**
+     * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+     *
+     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        $language = $arguments['language'];
+        $defaultTitle = $arguments['defaultTitle'];
 
-		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-		if (TRUE === is_numeric($language)) {
-			$languageUid = intval($language);
-		} else {
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'sys_language', "title='" . $language . "'");
-			if (FALSE !== $row) {
-				$languageUid = intval($row['uid']);
-			} else {
-				if ((string) $language === $defaultTitle) {
-					$languageUid = $currentLanguageUid;
-				} else {
-					$languageUid = -1;
-				}
-			}
-		}
-		return $languageUid === $currentLanguageUid;
-	}
-
+        $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+        if (true === is_numeric($language)) {
+            $languageUid = intval($language);
+        } else {
+            $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'sys_language', "title='" . $language . "'");
+            if (false !== $row) {
+                $languageUid = intval($row['uid']);
+            } else {
+                if ((string) $language === $defaultTitle) {
+                    $languageUid = $currentLanguageUid;
+                } else {
+                    $languageUid = -1;
+                }
+            }
+        }
+        return $languageUid === $currentLanguageUid;
+    }
 }

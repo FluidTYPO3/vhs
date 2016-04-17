@@ -13,28 +13,30 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class RecordViewHelperTest
  */
-class RecordViewHelperTest extends AbstractViewHelperTest {
+class RecordViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function requiresUid() {
-		$record = array('hasnouid' => 1);
-		$mock = $this->getMock($this->getViewHelperClassName(), array('renderRecord'));
-		$mock->expects($this->never())->method('renderRecord');
-		$result = $mock->render($record);
-		$this->assertNull($result);
-	}
+    /**
+     * @test
+     */
+    public function requiresUid()
+    {
+        $record = array('hasnouid' => 1);
+        $mock = $this->getMock($this->getViewHelperClassName(), array('renderRecord'));
+        $mock->expects($this->never())->method('renderRecord');
+        $result = $mock->render($record);
+        $this->assertNull($result);
+    }
 
-	/**
-	 * @test
-	 */
-	public function delegatesToRenderRecord() {
-		$record = array('uid' => 1);
-		$mock = $this->getMock($this->getViewHelperClassName(), array('renderRecord'));
-		$mock->expects($this->once())->method('renderRecord')->with($record)->willReturn('rendered');
-		$result = $mock->render($record);
-		$this->assertEquals('rendered', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function delegatesToRenderRecord()
+    {
+        $record = array('uid' => 1);
+        $mock = $this->getMock($this->getViewHelperClassName(), array('renderRecord'));
+        $mock->expects($this->once())->method('renderRecord')->with($record)->willReturn('rendered');
+        $result = $mock->render($record);
+        $this->assertEquals('rendered', $result);
+    }
 }

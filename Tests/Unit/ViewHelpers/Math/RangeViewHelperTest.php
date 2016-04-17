@@ -11,29 +11,31 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class RangeViewHelperTest extends AbstractMathViewHelperTest {
+class RangeViewHelperTest extends AbstractMathViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgumentNotIteratorPassesThrough() {
-		$this->executeSingleArgumentTest(1, 1);
-	}
+    /**
+     * @test
+     */
+    public function testSingleArgumentNotIteratorPassesThrough()
+    {
+        $this->executeSingleArgumentTest(1, 1);
+    }
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgumentIteratorSingleValue() {
-		$this->executeSingleArgumentTest(array(2), array(2, 2));
-	}
+    /**
+     * @test
+     */
+    public function testSingleArgumentIteratorSingleValue()
+    {
+        $this->executeSingleArgumentTest(array(2), array(2, 2));
+    }
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgumentIteratorMultipleValues() {
-		$this->executeSingleArgumentTest(array(2, 4, 6, 3, 8), array(2, 8));
-	}
-
+    /**
+     * @test
+     */
+    public function testSingleArgumentIteratorMultipleValues()
+    {
+        $this->executeSingleArgumentTest(array(2, 4, 6, 3, 8), array(2, 8));
+    }
 }

@@ -22,38 +22,38 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * contain `{value}`.
  *
  * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-class SetViewHelper extends AbstractViewHelper {
+class SetViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('value', 'mixed', 'Value to set', FALSE, NULL);
-		$this->registerArgument('name', 'string', 'Name of register', TRUE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('value', 'mixed', 'Value to set', false, null);
+        $this->registerArgument('name', 'string', 'Name of register', true);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if (FALSE === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-			return NULL;
-		}
-		$name = $arguments['name'];
-		$value = $arguments['value'];
-		if (NULL === $value) {
-			$value = $renderChildrenClosure();
-		}
-		$GLOBALS['TSFE']->register[$name] = $value;
-		return NULL;
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            return null;
+        }
+        $name = $arguments['name'];
+        $value = $arguments['value'];
+        if (null === $value) {
+            $value = $renderChildrenClosure();
+        }
+        $GLOBALS['TSFE']->register[$name] = $value;
+        return null;
+    }
 }

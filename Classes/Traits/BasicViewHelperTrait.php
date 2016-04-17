@@ -19,22 +19,23 @@ namespace FluidTYPO3\Vhs\Traits;
  * - generic method to get either an argument or if that
  *   argument is not specified, retrieve the tag contents.
  */
-trait BasicViewHelperTrait {
+trait BasicViewHelperTrait
+{
 
-	/**
-	 * Retrieve an argument either from arguments if
-	 * specified there, else from tag content.
-	 *
-	 * @param string $argumentName
-	 * @return mixed
-	 */
-	protected function getArgumentFromArgumentsOrTagContent($argumentName) {
-		if (FALSE === $this->hasArgument($argumentName)) {
-			$value = $this->renderChildren();
-		} else {
-			$value = $this->arguments[$argumentName];
-		}
-		return $value;
-	}
-
+    /**
+     * Retrieve an argument either from arguments if
+     * specified there, else from tag content.
+     *
+     * @param string $argumentName
+     * @return mixed
+     */
+    protected function getArgumentFromArgumentsOrTagContent($argumentName)
+    {
+        if (false === $this->hasArgument($argumentName)) {
+            $value = $this->renderChildren();
+        } else {
+            $value = $this->arguments[$argumentName];
+        }
+        return $value;
+    }
 }

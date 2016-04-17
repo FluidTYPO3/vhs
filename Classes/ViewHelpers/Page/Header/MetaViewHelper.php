@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
+use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -19,47 +19,47 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * not USER_INT, what means it has to be cached!
  *
  * @author Georg Ringer
- * @package Vhs
- * @subpackage ViewHelpers\Page\Header
  */
-class MetaViewHelper extends AbstractTagBasedViewHelper {
+class MetaViewHelper extends AbstractTagBasedViewHelper
+{
 
-	use TagViewHelperTrait;
-	use PageRendererTrait;
+    use TagViewHelperTrait;
+    use PageRendererTrait;
 
-	/**
-	 * @var    string
-	 */
-	protected $tagName = 'meta';
+    /**
+     * @var    string
+     */
+    protected $tagName = 'meta';
 
-	/**
-	 * Arguments initialization
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerTagAttribute('name', 'string', 'Name property of meta tag');
-		$this->registerTagAttribute('property', 'string', 'Property of meta tag');
-		$this->registerTagAttribute('content', 'string', 'Content of meta tag');
-		$this->registerTagAttribute('http-equiv', 'string', 'Property: http-equiv');
-		$this->registerTagAttribute('scheme', 'string', 'Property: scheme');
-		$this->registerTagAttribute('lang', 'string', 'Property: lang');
-		$this->registerTagAttribute('dir', 'string', 'Property: dir');
-	}
+    /**
+     * Arguments initialization
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerTagAttribute('name', 'string', 'Name property of meta tag');
+        $this->registerTagAttribute('property', 'string', 'Property of meta tag');
+        $this->registerTagAttribute('content', 'string', 'Content of meta tag');
+        $this->registerTagAttribute('http-equiv', 'string', 'Property: http-equiv');
+        $this->registerTagAttribute('scheme', 'string', 'Property: scheme');
+        $this->registerTagAttribute('lang', 'string', 'Property: lang');
+        $this->registerTagAttribute('dir', 'string', 'Property: dir');
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return void
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return;
-		}
-		if (TRUE === isset($this->arguments['content']) && FALSE === empty($this->arguments['content'])) {
-			$this->getPageRenderer()
-				->addMetaTag($this->renderTag($this->tagName, NULL, array('content' => $this->arguments['content'])));
-		}
-	}
-
+    /**
+     * Render method
+     *
+     * @return void
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return;
+        }
+        if (true === isset($this->arguments['content']) && false === empty($this->arguments['content'])) {
+            $this->getPageRenderer()
+                ->addMetaTag($this->renderTag($this->tagName, null, array('content' => $this->arguments['content'])));
+        }
+    }
 }

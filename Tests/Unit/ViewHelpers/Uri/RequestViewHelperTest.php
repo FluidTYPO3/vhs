@@ -14,16 +14,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class RequestViewHelperTest extends AbstractViewHelperTest {
+class RequestViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersUrl() {
-		$test = $this->executeViewHelper();
-		$this->assertSame(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), $test);
-	}
-
+    /**
+     * @test
+     */
+    public function rendersUrl()
+    {
+        $test = $this->executeViewHelper();
+        $this->assertSame(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), $test);
+    }
 }

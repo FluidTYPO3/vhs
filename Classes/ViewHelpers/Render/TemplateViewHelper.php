@@ -54,42 +54,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * place when rendering an Extbase plugin's content object.
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
-class TemplateViewHelper extends AbstractRenderViewHelper {
+class TemplateViewHelper extends AbstractRenderViewHelper
+{
 
-	/**
-	 * Renders a template using custom variables, format and paths
-	 *
-	 * @param string $file Path to template file, EXT:myext/... paths supported
-	 * @param array $variables Optional array of template variables when rendering
-	 * @param string $format Optional format of the template(s) being rendered
-	 * @param string $paths Optional array (plugin.tx_myext.view style) of paths, EXT:mypath/... paths supported
-	 * @return string
-	 */
-	public function render($file = NULL, $variables = array(), $format = NULL, $paths = NULL) {
-		if (NULL === $file) {
-			$file = $this->renderChildren();
-		}
-		$file = GeneralUtility::getFileAbsFileName($file);
-		$view = $this->getPreparedView();
-		$view->setTemplatePathAndFilename($file);
-		$view->assignMultiple($variables);
-		if (NULL !== $format) {
-			$view->setFormat($format);
-		}
-		if (TRUE === is_array($paths)) {
-			if (TRUE === isset($paths['layoutRootPath'])) {
-				$paths['layoutRootPath'] = 0 === strpos($paths['layoutRootPath'], 'EXT:') ? GeneralUtility::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
-				$view->setLayoutRootPath($paths['layoutRootPath']);
-			}
-			if (TRUE === isset($paths['partialRootPath'])) {
-				$paths['partialRootPath'] = 0 === strpos($paths['partialRootPath'], 'EXT:') ? GeneralUtility::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
-				$view->setPartialRootPath($paths['partialRootPath']);
-			}
-		}
-		return $this->renderView($view);
-	}
-
+    /**
+     * Renders a template using custom variables, format and paths
+     *
+     * @param string $file Path to template file, EXT:myext/... paths supported
+     * @param array $variables Optional array of template variables when rendering
+     * @param string $format Optional format of the template(s) being rendered
+     * @param string $paths Optional array (plugin.tx_myext.view style) of paths, EXT:mypath/... paths supported
+     * @return string
+     */
+    public function render($file = null, $variables = array(), $format = null, $paths = null)
+    {
+        if (null === $file) {
+            $file = $this->renderChildren();
+        }
+        $file = GeneralUtility::getFileAbsFileName($file);
+        $view = $this->getPreparedView();
+        $view->setTemplatePathAndFilename($file);
+        $view->assignMultiple($variables);
+        if (null !== $format) {
+            $view->setFormat($format);
+        }
+        if (true === is_array($paths)) {
+            if (true === isset($paths['layoutRootPath'])) {
+                $paths['layoutRootPath'] = 0 === strpos($paths['layoutRootPath'], 'EXT:') ? GeneralUtility::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
+                $view->setLayoutRootPath($paths['layoutRootPath']);
+            }
+            if (true === isset($paths['partialRootPath'])) {
+                $paths['partialRootPath'] = 0 === strpos($paths['partialRootPath'], 'EXT:') ? GeneralUtility::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
+                $view->setPartialRootPath($paths['partialRootPath']);
+            }
+        }
+        return $this->renderView($view);
+    }
 }

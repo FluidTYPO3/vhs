@@ -13,49 +13,51 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class RegularExpressionViewHelperTest extends AbstractViewHelperTest {
+class RegularExpressionViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function canReplaceValues() {
-		$arguments = array(
-			'subject' => 'foo123bar',
-			'return' => FALSE,
-			'pattern' => '/[0-9]{3}/',
-			'replacement' => 'baz',
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame('foobazbar', $test);
-	}
+    /**
+     * @test
+     */
+    public function canReplaceValues()
+    {
+        $arguments = array(
+            'subject' => 'foo123bar',
+            'return' => false,
+            'pattern' => '/[0-9]{3}/',
+            'replacement' => 'baz',
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('foobazbar', $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canReturnMatches() {
-		$arguments = array(
-			'subject' => 'foo123bar',
-			'return' => TRUE,
-			'pattern' => '/[0-9]{3}/',
-			'replacement' => 'baz',
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame(array('123'), $test);
-	}
+    /**
+     * @test
+     */
+    public function canReturnMatches()
+    {
+        $arguments = array(
+            'subject' => 'foo123bar',
+            'return' => true,
+            'pattern' => '/[0-9]{3}/',
+            'replacement' => 'baz',
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame(array('123'), $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canTakeSubjectFromRenderChildren() {
-		$arguments = array(
-			'return' => TRUE,
-			'pattern' => '/[0-9]{3}/',
-			'replacement' => 'baz',
-		);
-		$test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
-		$this->assertSame(array('123'), $test);
-	}
-
+    /**
+     * @test
+     */
+    public function canTakeSubjectFromRenderChildren()
+    {
+        $arguments = array(
+            'return' => true,
+            'pattern' => '/[0-9]{3}/',
+            'replacement' => 'baz',
+        );
+        $test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
+        $this->assertSame(array('123'), $test);
+    }
 }

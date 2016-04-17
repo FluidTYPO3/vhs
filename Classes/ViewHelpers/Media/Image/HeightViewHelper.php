@@ -12,17 +12,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  * Returns the height of the provided image file in pixels
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media\Image
  */
-class HeightViewHelper extends AbstractImageInfoViewHelper {
+class HeightViewHelper extends AbstractImageInfoViewHelper
+{
 
-	/**
-	 * @return int
-	 */
-	public function render() {
-		$info = $this->getInfo();
-		return (TRUE === isset($info['height']) ? $info['height'] : 0);
-	}
-
+    /**
+     * @return int
+     */
+    public function render()
+    {
+        $info = $this->getInfo();
+        return (true === isset($info['height']) ? $info['height'] : 0);
+    }
 }

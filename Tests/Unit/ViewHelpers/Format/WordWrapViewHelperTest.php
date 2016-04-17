@@ -13,22 +13,22 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection on
  * @author Björn Fromme <fromme@dreipunktnull.com>
- * @package Vhs
  */
-class WordWrapViewHelperTest extends AbstractViewHelperTest {
+class WordWrapViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function willWrapStringAccordingToArguments() {
-		$content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, et id ipsum modi molestiae molestias numquam! Aperiam assumenda commodi ducimus harum iure nostrum odit, vel voluptatem! Beatae commodi qui rem!';
-		$arguments = array(
-			'limit' => 25,
-			'break' => PHP_EOL,
-			'glue' => '|',
-		);
-		$test = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
-		$this->assertRegExp('/.{0,25}\|/', $test);
-	}
-
+    /**
+     * @test
+     */
+    public function willWrapStringAccordingToArguments()
+    {
+        $content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, et id ipsum modi molestiae molestias numquam! Aperiam assumenda commodi ducimus harum iure nostrum odit, vel voluptatem! Beatae commodi qui rem!';
+        $arguments = array(
+            'limit' => 25,
+            'break' => PHP_EOL,
+            'glue' => '|',
+        );
+        $test = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
+        $this->assertRegExp('/.{0,25}\|/', $test);
+    }
 }

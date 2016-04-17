@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\String;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Condition: Value is numeric
@@ -18,29 +18,29 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * value is numeric.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\String
  */
-class IsNumericViewHelper extends AbstractConditionViewHelper {
+class IsNumericViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('value', 'mixed', 'value to check', TRUE);
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('value', 'mixed', 'value to check', true);
+    }
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		return TRUE === ctype_digit($arguments['value']);
-	}
-
+    /**
+     * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+     *
+     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return true === ctype_digit($arguments['value']);
+    }
 }

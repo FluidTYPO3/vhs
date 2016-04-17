@@ -17,20 +17,19 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
  * or it's derivate if differing dimesions are provided.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Uri
  */
-class ImageViewHelper extends AbstractImageViewHelper {
+class ImageViewHelper extends AbstractImageViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$this->preprocessImage();
-		$src = $this->preprocessSourceUri($this->mediaSource);
-		return $src;
-	}
-
+    /**
+     * Render method
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $this->preprocessImage();
+        $src = $this->preprocessSourceUri($this->mediaSource);
+        return $src;
+    }
 }

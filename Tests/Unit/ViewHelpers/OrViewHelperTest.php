@@ -11,58 +11,59 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class OrViewHelperTest extends AbstractViewHelperTest {
+class OrViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 * @dataProvider getRenderTestValues
-	 * @param array $arguments
-	 * @param mixed $expected
-	 */
-	public function testRender($arguments, $expected) {
-		$result = $this->executeViewHelper($arguments);
-		$content = $arguments['content'];
-		unset($arguments['content']);
-		$result2 = $this->executeViewHelperUsingTagContent('Text', (string) $content, $arguments);
-		$this->assertEquals($expected, $result);
-		$this->assertEquals($result, $result2);
-	}
+    /**
+     * @test
+     * @dataProvider getRenderTestValues
+     * @param array $arguments
+     * @param mixed $expected
+     */
+    public function testRender($arguments, $expected)
+    {
+        $result = $this->executeViewHelper($arguments);
+        $content = $arguments['content'];
+        unset($arguments['content']);
+        $result2 = $this->executeViewHelperUsingTagContent('Text', (string) $content, $arguments);
+        $this->assertEquals($expected, $result);
+        $this->assertEquals($result, $result2);
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getRenderTestValues() {
-		return array(
-			array(array('extensionName' => 'Vhs', 'content' => 'alt', 'alternative' => 'alternative'), 'alt'),
-			array(array('extensionName' => 'Vhs', 'content' => '', 'alternative' => 'alternative'), 'alternative'),
-			array(array('extensionName' => 'Vhs', 'content' => NULL, 'alternative' => 'alternative'), 'alternative'),
-			array(array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'alternative'), 'alternative'),
-			/*
-			array(
-				array(
-					'extensionName' => 'Vhs',
-					'content' => 0,
-					'alternative' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionManager'
-				),
-				'Extension Manager'
-			),
-			array(
-				array(
-					'extensionName' => 'Vhs',
-					'content' => 0,
-					'alternative' => 'LLL:extensionManager',
-					'extensionName' => 'extensionmanager'
-				),
-				'Extension Manager'
-			),
-			*/
-			array(
-				array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'LLL:notfound'),
-				'LLL:notfound'
-			),
-		);
-	}
-
+    /**
+     * @return array
+     */
+    public function getRenderTestValues()
+    {
+        return array(
+            array(array('extensionName' => 'Vhs', 'content' => 'alt', 'alternative' => 'alternative'), 'alt'),
+            array(array('extensionName' => 'Vhs', 'content' => '', 'alternative' => 'alternative'), 'alternative'),
+            array(array('extensionName' => 'Vhs', 'content' => null, 'alternative' => 'alternative'), 'alternative'),
+            array(array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'alternative'), 'alternative'),
+            /*
+            array(
+                array(
+                    'extensionName' => 'Vhs',
+                    'content' => 0,
+                    'alternative' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionManager'
+                ),
+                'Extension Manager'
+            ),
+            array(
+                array(
+                    'extensionName' => 'Vhs',
+                    'content' => 0,
+                    'alternative' => 'LLL:extensionManager',
+                    'extensionName' => 'extensionmanager'
+                ),
+                'Extension Manager'
+            ),
+            */
+            array(
+                array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'LLL:notfound'),
+                'LLL:notfound'
+            ),
+        );
+    }
 }
