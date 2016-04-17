@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -33,21 +34,19 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class ExtensionConfigurationViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
 	 * @var array
 	 */
 	protected static $configurations = array();
 
+	/**
+	 * @return void
+	 */
 	public function initializeArguments() {
 		$this->registerArgument('extensionKey', 'string', 'Extension key (lowercase_underscored format) to read configuration from');
 		$this->registerArgument('path', 'string', 'Configuration path to read - if NULL, returns all configuration as array');
-	}
-
-	/**
-	 * @return string
-	 */
-	public function render() {
-		return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
 	}
 
 	/**

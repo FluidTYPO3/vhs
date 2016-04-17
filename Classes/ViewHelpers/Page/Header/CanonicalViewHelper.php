@@ -68,7 +68,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 			return $renderedTag;
 		}
 
-		$this->getPageRenderer()->addMetaTag($renderedTag);
+		static::getPageRenderer()->addMetaTag($renderedTag);
 	}
 
 }

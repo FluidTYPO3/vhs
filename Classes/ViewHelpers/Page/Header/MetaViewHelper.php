@@ -24,7 +24,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class MetaViewHelper extends AbstractTagBasedViewHelper {
 
-	use TagViewHelperTrait, PageRendererTrait;
+	use TagViewHelperTrait;
+	use PageRendererTrait;
 
 	/**
 	 * @var    string

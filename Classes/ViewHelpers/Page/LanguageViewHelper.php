@@ -9,7 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,17 +23,12 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class LanguageViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
 	 * @var PageService
 	 */
-	protected $pageService;
-
-	/**
-	 * @param PageService $pageService
-	 */
-	public function injectPageService(PageService $pageService) {
-		$this->pageService = $pageService;
-	}
+	protected static $pageService;
 
 	/**
 	 * Initialize
@@ -45,14 +42,17 @@ class LanguageViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		if ('BE' === TYPO3_MODE) {
 			return '';
 		}
 
-		$languages = $this->arguments['languages'];
+		$languages = $arguments['languages'];
 		if (TRUE === $languages instanceof \Traversable) {
 			$languages = iterator_to_array($languages);
 		} elseif (TRUE === is_string($languages)) {
@@ -61,8 +61,8 @@ class LanguageViewHelper extends AbstractViewHelper {
 			$languages = (array) $languages;
 		}
 
-		$pageUid = intval($this->arguments['pageUid']);
-		$normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
+		$pageUid = intval($arguments['pageUid']);
+		$normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
 
 		if (0 === $pageUid) {
 			$pageUid = $GLOBALS['TSFE']->id;
@@ -70,10 +70,10 @@ class LanguageViewHelper extends AbstractViewHelper {
 
 		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
 		$languageUid = 0;
-		if (FALSE === $this->pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
+		if (FALSE === static::getPageService()->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
 			$languageUid = $currentLanguageUid;
 		} elseif (0 !== $currentLanguageUid) {
-			if (TRUE === $this->pageService->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
+			if (TRUE === static::getPageService()->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
 				return '';
 			}
 		}
@@ -83,6 +83,16 @@ class LanguageViewHelper extends AbstractViewHelper {
 		}
 
 		return $languageUid;
+	}
+
+	/**
+	 * @return PageService
+	 */
+	protected static function getPageService() {
+		if (!static::$pageService) {
+			static::$pageService = GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
+		}
+		return static::$pageService;
 	}
 
 }

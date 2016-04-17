@@ -23,7 +23,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper {
 
-	use TagViewHelperTrait, PageRendererTrait;
+	use TagViewHelperTrait;
+	use PageRendererTrait;
 
 	/**
 	 * @var    string
@@ -52,7 +53,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 		if ('BE' === TYPO3_MODE) {
 			return;
 		}
-		$this->getPageRenderer()->addMetaTag($this->renderTag($this->tagName));
+		static::getPageRenderer()->addMetaTag($this->renderTag($this->tagName));
 	}
 
 }

@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,18 +23,23 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class DateTimeViewHelper extends AbstractViewHelper {
 
-	/**
-	 * @return \DateTime
-	 */
-	public function render() {
-		return \DateTime::createFromFormat('U', $this->getTimestamp());
-	}
+	use DefaultRenderMethodViewHelperTrait;
 
 	/**
 	 * @return integer
 	 */
-	protected function getTimestamp() {
+	protected static function getTimestamp() {
 		return time();
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
+	 */
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return \DateTime::createFromFormat('U', static::getTimestamp());
 	}
 
 }

@@ -8,9 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -27,6 +29,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ConvertViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
 	 * Initialize arguments
 	 */
@@ -37,18 +41,18 @@ class ConvertViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * Render method
-	 *
-	 * @throws \RuntimeException
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
 	 * @return mixed
 	 */
-	public function render() {
-		if (TRUE === isset($this->arguments['value'])) {
-			$value = $this->arguments['value'];
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		if (TRUE === isset($arguments['value'])) {
+			$value = $arguments['value'];
 		} else {
-			$value = $this->renderChildren();
+			$value = $renderChildrenClosure();
 		}
-		$type = $this->arguments['type'];
+		$type = $arguments['type'];
 		if (gettype($value) === $type) {
 			return $value;
 		}
@@ -70,8 +74,8 @@ class ConvertViewHelper extends AbstractViewHelper {
 				settype($value, $type);
 			}
 		} else {
-			if (TRUE === isset($this->arguments['default'])) {
-				$default = $this->arguments['default'];
+			if (TRUE === isset($arguments['default'])) {
+				$default = $arguments['default'];
 				if (gettype($default) !== $type) {
 					throw new \RuntimeException('Supplied argument "default" is not of the type "' . $type .'"', 1364542576);
 				}

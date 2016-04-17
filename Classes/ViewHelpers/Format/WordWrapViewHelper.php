@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -24,6 +26,11 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class WordWrapViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
+	/**
+	 * @return void
+	 */
 	public function initializeArguments() {
 		$this->registerArgument('subject', 'string', 'Text to wrap', FALSE);
 		$this->registerArgument('limit', 'integer', 'Maximum length of resulting parts after wrapping', FALSE, 80);
@@ -32,16 +39,19 @@ class WordWrapViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
-		$subject = $this->arguments['subject'];
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$subject = $arguments['subject'];
 		if (TRUE === empty($subject)) {
-			$subject = $this->renderChildren();
+			$subject = $renderChildrenClosure();
 		}
-		$limit = (integer) $this->arguments['limit'];
-		$break = $this->arguments['break'];
-		$glue = $this->arguments['glue'];
+		$limit = (integer) $arguments['limit'];
+		$break = $arguments['break'];
+		$glue = $arguments['glue'];
 		$subject = preg_replace('/ +/', ' ', $subject);
 		$subject = str_replace(array("\r\n", "\r"), PHP_EOL, $subject);
 		$subject = wordwrap($subject, $limit, $break, FALSE);

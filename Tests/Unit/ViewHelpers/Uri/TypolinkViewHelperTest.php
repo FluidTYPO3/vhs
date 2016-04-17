@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Uri;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -23,11 +24,10 @@ class TypolinkViewHelperTest extends AbstractViewHelperTest {
 	public function renderCallsTypoLinkFunctionOnContentObject() {
 		$class = $this->getViewHelperClassName();
 		$mock = new $class();
-		$mock->setArguments(array('configuration' => array('foo' => 'bar')));
 		$GLOBALS['TSFE'] = new TypoScriptFrontendController(array(), 1, 0);
 		$GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('typoLink_URL'));
 		$GLOBALS['TSFE']->cObj->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar'))->will($this->returnValue('foobar'));
-		$result = $this->callInaccessibleMethod($mock, 'render');
+		$result = $mock::renderStatic(array('configuration' => array('foo' => 'bar')), function() { }, new RenderingContext());
 		$this->assertEquals('foobar', $result);
 	}
 

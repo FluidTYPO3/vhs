@@ -140,11 +140,6 @@ abstract class AbstractViewHelperTest extends UnitTestCase {
 			ObjectAccess::setProperty($this->renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, TRUE);
 			$this->renderingContext->setControllerContext($controllerContext);
 		}
-		if (TRUE === $instance instanceof \Tx_Fluidwidget_Core_Widget_AbstractWidgetViewHelper) {
-			/** @var WidgetContext $widgetContext */
-			$widgetContext = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
-			ObjectAccess::setProperty($instance, 'widgetContext', $widgetContext, TRUE);
-		}
 		if (NULL !== $childNode) {
 			$node->addChildNode($childNode);
 			if ($instance instanceof ChildNodeAccessInterface) {

@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -26,6 +28,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class GetViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
+
 	/**
 	 * @return void
 	 */
@@ -34,13 +38,16 @@ class GetViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * @return string
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		if (FALSE === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
 			return NULL;
 		}
-		$name = $this->arguments['name'];
+		$name = $arguments['name'];
 		$value = NULL;
 		if (TRUE === isset($GLOBALS['TSFE']->register[$name])) {
 			$value = $GLOBALS['TSFE']->register[$name];

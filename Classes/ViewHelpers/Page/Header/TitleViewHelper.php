@@ -8,7 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -47,6 +49,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TitleViewHelper extends AbstractViewHelper {
 
+	use DefaultRenderMethodViewHelperTrait;
 	use PageRendererTrait;
 
 	/**
@@ -61,22 +64,23 @@ class TitleViewHelper extends AbstractViewHelper {
 	}
 
 	/**
-	 * Render method
-	 *
-	 * @return void
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
 	 */
-	public function render() {
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		if ('BE' === TYPO3_MODE) {
 			return;
 		}
-		if (FALSE === empty($this->arguments['title'])) {
-			$title = $this->arguments['title'];
+		if (FALSE === empty($arguments['title'])) {
+			$title = $arguments['title'];
 		} else {
-			$title = $this->renderChildren();
+			$title = $renderChildrenClosure();
 		}
-		$title = trim(preg_replace('/\s+/', $this->arguments['whitespaceString'], $title), $this->arguments['whitespaceString']);
-		$this->getPageRenderer()->setTitle($title);
-		if (TRUE === $this->arguments['setIndexedDocTitle']) {
+		$title = trim(preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
+		static::getPageRenderer()->setTitle($title);
+		if (TRUE === $arguments['setIndexedDocTitle']) {
 			$GLOBALS['TSFE']->indexedDocTitle = $title;
 		}
 	}
