@@ -11,7 +11,7 @@ php:
 matrix:
   include:
     - php: "5.5"
-      env: CHECKSTYLE="YES" COVERAGE="YES"
+      env: CHECKSTYLE_PSR2="YES" COVERAGE="YES"
   allow_failures:
     - php: "hhvm"
 

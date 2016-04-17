@@ -27,7 +27,7 @@
         "php": ">=5.5.0"
     },
     "require-dev": {
-        "fluidtypo3/development": "*"
+        "fluidtypo3/development": "dev-master"
     },
     "suggest": {
         "ext-tidy": "Allows to make use of the tidy ViewHelper"
