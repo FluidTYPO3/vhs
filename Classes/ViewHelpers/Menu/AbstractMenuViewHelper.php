@@ -73,10 +73,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 		$this->registerArgument('classLast', 'string', 'Optional class name for the last menu elment', FALSE, '');
 		$this->registerArgument('classActive', 'string', 'Optional class name to add to active links', FALSE, 'active');
 		$this->registerArgument('classCurrent', 'string', 'Optional class name to add to current link', FALSE, 'current');
-		$this->registerArgument('classHasSubpages', 'string', 'DEPRECATED: Use argument classHasSubPages instead', FALSE);
-		$this->registerArgument('classHasSubPages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
-		$this->registerArgument('classAccessProtected', 'string', 'Optional class name to add to links which are access protected', FALSE, 'protected');
-		$this->registerArgument('classAccessGranted', 'string', 'Optional class name to add to links which are access protected but access is actually granted', FALSE, 'access-granted');
+		$this->registerArgument('classHasSubpages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
 		$this->registerArgument('substElementUid', 'boolean', 'Optional parameter for wrapping the link with the uid of the page', FALSE, FALSE);
 		$this->registerArgument('showHiddenInMenu', 'boolean', 'Include pages that are set to be hidden in menus', FALSE, FALSE);
 		$this->registerArgument('showCurrent', 'boolean', 'If FALSE, does not display the current page', FALSE, TRUE);
@@ -291,7 +288,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 			$count++;
 			$class = array();
 			$originalPageUid = $page['uid'];
-			if (TRUE === (boolean) $this->arguments['showAccessProtected']) {
+			$showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+			if ($showAccessProtected) {
 				$pages[$index]['accessProtected'] = $this->pageService->isAccessProtected($page);
 				if (TRUE === $pages[$index]['accessProtected']) {
 					$class[] = $this->arguments['classAccessProtected'];
@@ -310,7 +308,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 					$page['uid'] = $targetPage['uid'];
 				}
 			}
-			$showAccessProtected = $this->arguments['showAccessProtected'];
 			if (TRUE === $this->pageService->isActive($originalPageUid, $showAccessProtected)) {
 				$pages[$index]['active'] = TRUE;
 				$class[] = $this->arguments['classActive'];
