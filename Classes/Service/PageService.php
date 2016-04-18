@@ -175,4 +175,144 @@ class PageService implements SingletonInterface {
 		return clone $GLOBALS['TSFE']->sys_page;
 	}
 
+	/**
+	 * @param array $page
+	 * @param boolean $forceAbsoluteUrl
+	 *
+	 * @return string
+	 */
+	public function getItemLink(array $page, $forceAbsoluteUrl = FALSE) {
+		$config = array(
+			'parameter' => $page['uid'],
+			'returnLast' => 'url',
+			'additionalParams' => '',
+			'useCacheHash' => FALSE,
+			'forceAbsoluteUrl' => $forceAbsoluteUrl,
+		);
+
+		return $GLOBALS['TSFE']->cObj->typoLink('', $config);
+	}
+
+	/**
+	 * @param array $page
+	 * @return boolean
+	 */
+	public function isAccessProtected(array $page) {
+		return (0 !== (integer) $page['fe_group']);
+	}
+
+	/**
+	 * @param array $page
+	 * @return boolean
+	 */
+	public function isAccessGranted(array $page) {
+		if (!$this->isAccessProtected($page)) {
+			return TRUE;
+		}
+
+		$groups = explode(',', $page['fe_group']);
+
+		$showPageAtAnyLogin = (in_array(-2, $groups));
+		$hidePageAtAnyLogin = (in_array(-1, $groups));
+		$userIsLoggedIn = (is_array($GLOBALS['TSFE']->fe_user->user));
+		$userGroups = $GLOBALS['TSFE']->fe_user->groupData['uid'];
+		$userIsInGrantedGroups = (0 < count(array_intersect($userGroups, $groups)));
+
+		if (
+			(FALSE === $userIsLoggedIn && TRUE === $hidePageAtAnyLogin) ||
+			(TRUE === $userIsLoggedIn && TRUE === $showPageAtAnyLogin) ||
+			(TRUE === $userIsLoggedIn && TRUE === $userIsInGrantedGroups)
+		) {
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * @param integer $pageUid
+	 * @return boolean
+	 */
+	public function isCurrent($pageUid) {
+		return ((integer) $pageUid === (integer) $GLOBALS['TSFE']->id);
+	}
+
+	/**
+	 * @param integer $pageUid
+	 * @param boolean $showAccessProtected
+	 * @return boolean
+	 */
+	public function isActive($pageUid, $showAccessProtected = FALSE) {
+		$rootLineData = $this->getRootLine(NULL, FALSE, $showAccessProtected);
+		foreach ($rootLineData as $page) {
+			if ((integer) $page['uid'] === (integer) $pageUid) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * @param array $arguments
+	 * @return boolean
+	 */
+	public function shouldUseShortcutTarget(array $arguments) {
+		$useShortcutTarget = (boolean) $arguments['useShortcutData'];
+		if ($arguments['useShortcutTarget'] !== NULL) {
+			$useShortcutTarget = (boolean) $arguments['useShortcutTarget'];
+		}
+
+		return $useShortcutTarget;
+	}
+
+	/**
+	 * @param array $arguments
+	 * @return boolean
+	 */
+	public function shouldUseShortcutUid(array $arguments) {
+		$useShortcutUid = (boolean) $arguments['useShortcutData'];
+		if ($arguments['useShortcutUid'] !== NULL) {
+			$useShortcutUid = (boolean) $arguments['useShortcutUid'];
+		}
+
+		return $useShortcutUid;
+	}
+
+	/**
+	 * Determines the target page record for the provided page record
+	 * if it is configured as a shortcut in any of the possible modes.
+	 * Returns NULL otherwise.
+	 *
+	 * @param array $page
+	 * @return NULL|array
+	 */
+	public function getShortcutTargetPage(array $page) {
+		if ((integer) $page['doktype'] !== PageRepository::DOKTYPE_SHORTCUT) {
+			return NULL;
+		}
+		$originalPageUid = $page['uid'];
+		switch ($page['shortcut_mode']) {
+			case 3:
+				// mode: parent page of current page (using PID of current page)
+				$targetPage = $this->getPage($page['pid']);
+				break;
+			case 2:
+				// mode: random subpage of selected or current page
+				$menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
+				$targetPage = (0 < count($menu)) ? $menu[array_rand($menu)] : $page;
+				break;
+			case 1:
+				// mode: first subpage of selected or current page
+				$menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
+				$targetPage = (0 < count($menu)) ? reset($menu) : $page;
+				break;
+			case 0:
+			default:
+				// mode: selected page
+				$targetPage = $this->getPage($page['shortcut']);
+		}
+		return $targetPage;
+	}
+
 }
