@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper {
 
+	use PageRecordViewHelperTrait;
 	use TemplateVariableViewHelperTrait;
 
 	/**
@@ -59,6 +61,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
+		$this->registerPageRecordArguments();
 		$this->registerTagAttribute('target', 'string', 'Target of link', FALSE);
 		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
 		$this->registerArgument('pageUid', 'integer', 'UID of the page to create the link and fetch the title for.', FALSE, 0);
@@ -67,8 +70,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 		$this->registerArgument('noCache', 'boolean', 'When TRUE disables caching for the target page. You should not need this.', FALSE, FALSE);
 		$this->registerArgument('noCacheHash', 'boolean', 'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this.', FALSE, FALSE);
 		$this->registerArgument('section', 'string', 'The anchor to be added to the URI', FALSE, '');
-		$this->registerArgument('linkAccessRestrictedPages', 'boolean', 'When TRUE, links pointing to access restricted pages will still link' .
-			'to the page even though the page cannot be accessed.', FALSE, FALSE);
+		$this->registerArgument('linkAccessRestrictedPages', 'boolean', 'DEPRECATED: Use showAccessProtected instead.', FALSE, NULL);
 		$this->registerArgument('absolute', 'boolean', 'When TRUE, the URI of the rendered link is absolute', FALSE, FALSE);
 		$this->registerArgument('addQueryString', 'boolean', 'When TRUE, the current query parameters will be kept in the URI', FALSE, FALSE);
 		$this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE', FALSE, array());
@@ -116,9 +118,26 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		$page = $this->pageService->getPage($pageUid);
-		if (TRUE === empty($page)) {
+		$showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+
+		//TODO: Remove handling of deprecated argument
+		if ($this->hasArgument('linkAccessRestrictedPages')) {
+			$showAccessProtected = (boolean) $this->arguments['linkAccessRestrictedPages'];
+		}
+
+		$page = $this->pageService->getPage($pageUid, $showAccessProtected);
+		if (empty($page)) {
 			return NULL;
+		}
+
+		$targetPage = $this->pageService->getShortcutTargetPage($page);
+		if ($targetPage !== NULL) {
+			if ($this->pageService->shouldUseShortcutTarget($this->arguments)) {
+				$page = $targetPage;
+			}
+			if ($this->pageService->shouldUseShortcutUid($this->arguments)) {
+				$pageUid = $targetPage['uid'];
+			}
 		}
 
 		// Do not render the link, if the page should be hidden
@@ -133,17 +152,26 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 
 		// Check if we should assign page title to the template variable container
 		$pageTitleAs = $this->arguments['pageTitleAs'];
-		if (FALSE === empty($pageTitleAs)) {
+		if (!empty($pageTitleAs)) {
 			$variables = array($pageTitleAs => $title);
 		} else {
 			$variables = array();
 		}
 
-		// Render childs to see if an alternative title content should be used
+		// Render children to see if an alternative title content should be used
 		$renderedTitle = $this->renderChildrenWithVariables($variables);
-		if (FALSE === empty($renderedTitle)) {
+		if (!empty($renderedTitle)) {
 			$title = $renderedTitle;
 		}
+
+		$class = array();
+		if ($showAccessProtected && $this->pageService->isAccessProtected($page)) {
+			$class[] = $this->arguments['classAccessProtected'];
+		}
+		if ($showAccessProtected && $this->pageService->isAccessGranted($page)) {
+			$class[] = $this->arguments['classAccessGranted'];
+		}
+		$additionalCssClasses = implode(' ', $class);
 
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uri = $uriBuilder->reset()
@@ -152,13 +180,13 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 			->setNoCache($this->arguments['noCache'])
 			->setUseCacheHash(!$this->arguments['noCacheHash'])
 			->setSection($this->arguments['section'])
-			->setLinkAccessRestrictedPages($this->arguments['linkAccessRestrictedPages'])
 			->setArguments($additionalParameters)
 			->setCreateAbsoluteUri($this->arguments['absolute'])
 			->setAddQueryString($this->arguments['addQueryString'])
 			->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
 			->build();
 		$this->tag->addAttribute('href', $uri);
+		$this->tag->addAttribute('class', (!empty($this->arguments['class']) ? $this->arguments['class'] . ' ' . $additionalCssClasses : $additionalCssClasses));
 		$this->tag->setContent($title);
 		return $this->tag->render();
 	}
@@ -170,7 +198,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 	private function getTitleValue($record) {
 		$titleFieldList = GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
 		foreach ($titleFieldList as $titleFieldName) {
-			if (FALSE === empty($record[$titleFieldName])) {
+			if (!empty($record[$titleFieldName])) {
 				return $record[$titleFieldName];
 			}
 		}
