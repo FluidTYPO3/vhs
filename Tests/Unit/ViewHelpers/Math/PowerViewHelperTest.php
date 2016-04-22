@@ -11,15 +11,15 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class PowerViewHelperTest extends AbstractMathViewHelperTest {
+class PowerViewHelperTest extends AbstractMathViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testDualArguments() {
-		$this->executeDualArgumentTest(8, 2, 64);
-	}
-
+    /**
+     * @test
+     */
+    public function testDualArguments()
+    {
+        $this->executeDualArgumentTest(8, 2, 64);
+    }
 }

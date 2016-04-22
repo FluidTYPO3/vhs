@@ -17,29 +17,28 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * simply returns
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
-class RegularExpressionViewHelper extends AbstractViewHelper {
+class RegularExpressionViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $pattern The regular expression pattern to search for
-	 * @param string $replacement The desired value to insert instead of detected matches
-	 * @param string $subject The subject in which to perform replacements/detection; taken from tag content if not specified.
-	 * @param boolean $return
-	 * @return mixed
-	 */
-	public function render($pattern, $replacement, $subject = NULL, $return = FALSE) {
-		if (NULL === $subject) {
-			$subject = $this->renderChildren();
-		}
-		if (TRUE === $return) {
-			$returnValue = array();
-			preg_match($pattern, $subject, $returnValue);
-		} else {
-			$returnValue = preg_replace($pattern, $replacement, $subject);
-		}
-		return $returnValue;
-	}
-
+    /**
+     * @param string $pattern The regular expression pattern to search for
+     * @param string $replacement The desired value to insert instead of detected matches
+     * @param string $subject The subject in which to perform replacements/detection; taken from tag content if not specified.
+     * @param bool $return
+     * @return mixed
+     */
+    public function render($pattern, $replacement, $subject = null, $return = false)
+    {
+        if (null === $subject) {
+            $subject = $this->renderChildren();
+        }
+        if (true === $return) {
+            $returnValue = array();
+            preg_match($pattern, $subject, $returnValue);
+        } else {
+            $returnValue = preg_replace($pattern, $replacement, $subject);
+        }
+        return $returnValue;
+    }
 }

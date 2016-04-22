@@ -14,33 +14,34 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension\Path
  */
-class ResourcesViewHelperTest extends AbstractViewHelperTest {
+class ResourcesViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersUsingArgument() {
-		$test = $this->executeViewHelper(array('extensionName' => 'Vhs', 'path' => 'ext_icon.gif'));
-		$this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
-	}
+    /**
+     * @test
+     */
+    public function rendersUsingArgument()
+    {
+        $test = $this->executeViewHelper(array('extensionName' => 'Vhs', 'path' => 'ext_icon.gif'));
+        $this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersUsingControllerContext() {
-		$test = $this->executeViewHelper(array('path' => 'ext_icon.gif'), array(), NULL, 'Vhs');
-		$this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
-	}
+    /**
+     * @test
+     */
+    public function rendersUsingControllerContext()
+    {
+        $test = $this->executeViewHelper(array('path' => 'ext_icon.gif'), array(), null, 'Vhs');
+        $this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function throwsErrorWhenUnableToDetectExtensionName() {
-		$this->setExpectedException('RuntimeException', NULL, 1364167519);
-		$this->executeViewHelper(array(), array(), NULL, NULL, 'FakePlugin');
-	}
-
+    /**
+     * @test
+     */
+    public function throwsErrorWhenUnableToDetectExtensionName()
+    {
+        $this->setExpectedException('RuntimeException', null, 1364167519);
+        $this->executeViewHelper(array(), array(), null, null, 'FakePlugin');
+    }
 }

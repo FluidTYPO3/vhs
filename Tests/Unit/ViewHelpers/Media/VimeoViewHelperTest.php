@@ -13,9 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection off
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
-class VimeoViewHelperTest extends AbstractViewHelperTest {
-
+class VimeoViewHelperTest extends AbstractViewHelperTest
+{
 }

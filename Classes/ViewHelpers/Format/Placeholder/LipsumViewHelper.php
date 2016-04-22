@@ -19,110 +19,114 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * Renders Lorem Ipsum text according to provided arguments.
  *
  * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Format\Placeholder
  */
-class LipsumViewHelper extends AbstractViewHelper {
+class LipsumViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @var string
-	 */
-	protected $lipsum;
+    /**
+     * @var string
+     */
+    protected $lipsum;
 
-	/**
-	 * @var	ContentObjectRenderer
-	 */
-	protected $contentObject;
+    /**
+     * @var	ContentObjectRenderer
+     */
+    protected $contentObject;
 
-	/**
-	 * @var ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
+    /**
+     * @var ConfigurationManagerInterface
+     */
+    protected $configurationManager;
 
-	/**
-	 * @return void
-	 */
-	public function initialize() {
-		$this->lipsum = $this->getDefaultLoremIpsum();
-	}
+    /**
+     * @return void
+     */
+    public function initialize()
+    {
+        $this->lipsum = $this->getDefaultLoremIpsum();
+    }
 
-	/**
-	 * @param ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-		$this->contentObject = $this->configurationManager->getContentObject();
-	}
+    /**
+     * @param ConfigurationManagerInterface $configurationManager
+     * @return void
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+        $this->contentObject = $this->configurationManager->getContentObject();
+    }
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('paragraphs', 'integer', 'Number of paragraphs to output');
-		$this->registerArgument('wordsPerParagraph', 'integer', 'Number of words per paragraph');
-		$this->registerArgument('skew', 'integer', 'Amount in number of words to vary the number of words per paragraph');
-		$this->registerArgument('html', 'boolean', 'If TRUE, renders output as HTML paragraph tags in the same way an RTE would');
-		$this->registerArgument('parseFuncTSPath', 'string', 'If you want another parseFunc for HTML processing, enter the TS path here');
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('paragraphs', 'integer', 'Number of paragraphs to output');
+        $this->registerArgument('wordsPerParagraph', 'integer', 'Number of words per paragraph');
+        $this->registerArgument('skew', 'integer', 'Amount in number of words to vary the number of words per paragraph');
+        $this->registerArgument('html', 'boolean', 'If TRUE, renders output as HTML paragraph tags in the same way an RTE would');
+        $this->registerArgument('parseFuncTSPath', 'string', 'If you want another parseFunc for HTML processing, enter the TS path here');
+    }
 
-	/**
-	 * Renders Lorem Ipsum paragraphs. If $lipsum is provided it
-	 * will be used as source text. If not provided as an argument
-	 * or as inline argument, $lipsum is fetched from TypoScript settings.
-	 *
-	 * @param string $lipsum String of paragraphs file path or EXT:myext/path/to/file
-	 * @return string
-	 */
-	public function render($lipsum = NULL) {
-		if (strlen($lipsum) === 0) {
-			$lipsum = $this->lipsum;
-		}
-		if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
-			// argument is most likely a file reference.
-			$sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
-			if (file_exists($sourceFile) === TRUE) {
-				$lipsum = file_get_contents($sourceFile);
-			} else {
-				GeneralUtility::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
-					'The file was: ' . $sourceFile, 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-				$lipsum = $this->lipsum;
-			}
-		}
-		$lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
-		$paragraphs = explode("\n", $lipsum);
-		$paragraphs = array_slice($paragraphs, 0, intval($this->arguments['paragraphs']));
-		foreach ($paragraphs as $index => $paragraph) {
-			$length = $this->arguments['wordsPerParagraph'] + rand(0 - intval($this->arguments['skew']), intval($this->arguments['skew']));
-			$words = explode(' ', $paragraph);
-			$paragraphs[$index] = implode(' ', array_slice($words, 0, $length));
-		}
+    /**
+     * Renders Lorem Ipsum paragraphs. If $lipsum is provided it
+     * will be used as source text. If not provided as an argument
+     * or as inline argument, $lipsum is fetched from TypoScript settings.
+     *
+     * @param string $lipsum String of paragraphs file path or EXT:myext/path/to/file
+     * @return string
+     */
+    public function render($lipsum = null)
+    {
+        if (strlen($lipsum) === 0) {
+            $lipsum = $this->lipsum;
+        }
+        if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
+            // argument is most likely a file reference.
+            $sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
+            if (file_exists($sourceFile) === true) {
+                $lipsum = file_get_contents($sourceFile);
+            } else {
+                GeneralUtility::sysLog('Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
+                    'The file was: ' . $sourceFile, 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+                $lipsum = $this->lipsum;
+            }
+        }
+        $lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
+        $paragraphs = explode("\n", $lipsum);
+        $paragraphs = array_slice($paragraphs, 0, intval($this->arguments['paragraphs']));
+        foreach ($paragraphs as $index => $paragraph) {
+            $length = $this->arguments['wordsPerParagraph'] + rand(0 - intval($this->arguments['skew']), intval($this->arguments['skew']));
+            $words = explode(' ', $paragraph);
+            $paragraphs[$index] = implode(' ', array_slice($words, 0, $length));
+        }
 
-		$lipsum = implode("\n", $paragraphs);
-		if ((boolean) $this->arguments['html'] === TRUE) {
-			$tsParserPath = (FALSE === empty($this->arguments['parseFuncTSPath']) ? '< ' . $this->arguments['parseFuncTSPath'] : NULL);
-			$lipsum = $this->contentObject->parseFunc($lipsum, array(), $tsParserPath);
-		}
-		return $lipsum;
-	}
+        $lipsum = implode("\n", $paragraphs);
+        if ((boolean) $this->arguments['html'] === true) {
+            $tsParserPath = (false === empty($this->arguments['parseFuncTSPath']) ? '< ' . $this->arguments['parseFuncTSPath'] : null);
+            $lipsum = $this->contentObject->parseFunc($lipsum, array(), $tsParserPath);
+        }
+        return $lipsum;
+    }
 
-	/**
-	 * Get the default Lorem Ipsum. The compressed block (which is
-	 * of course cleaned thoroughly to avoid any injection) contains
-	 * 20 full paragraphs of Lorem Ipsum in standard latin. No bells
-	 * and whistles there.
-	 *
-	 * @return string
-	 */
-	protected function getDefaultLoremIpsum() {
-		// Note: this MAY look suspicious but it really is just a whole lot of Lipsum
-		// in a compressed state. Just to make sure that you trust the block, we run
-		// strip_tags and htmlentities on the string before it is returned. This is not
-		// done on custom Lipsum - but it is done here at no risk, since we know the
-		// Lipsum to contain zero HTML and zero special characters, 100% ASCII. Source
-		// of the Lipsum text is http://www.lipsum.com set at 20 paragraphs, compressed
-		// through a small shell script.
-		$lipsum = 'eJy1WsuO7MYN3c9X6AOE+YGsDDsBDNhGAuNmX6PW9FSgR1tSzfeHr0Oyeu4iiOHFxe3plupBHh4esuqX/ZjXoT7Otg63fdmP4azXUNb5Godp3855uuarHUO51Uc9p7rdh3
+    /**
+     * Get the default Lorem Ipsum. The compressed block (which is
+     * of course cleaned thoroughly to avoid any injection) contains
+     * 20 full paragraphs of Lorem Ipsum in standard latin. No bells
+     * and whistles there.
+     *
+     * @return string
+     */
+    protected function getDefaultLoremIpsum()
+    {
+        // Note: this MAY look suspicious but it really is just a whole lot of Lipsum
+        // in a compressed state. Just to make sure that you trust the block, we run
+        // strip_tags and htmlentities on the string before it is returned. This is not
+        // done on custom Lipsum - but it is done here at no risk, since we know the
+        // Lipsum to contain zero HTML and zero special characters, 100% ASCII. Source
+        // of the Lipsum text is http://www.lipsum.com set at 20 paragraphs, compressed
+        // through a small shell script.
+        $lipsum = 'eJy1WsuO7MYN3c9X6AOE+YGsDDsBDNhGAuNmX6PW9FSgR1tSzfeHr0Oyeu4iiOHFxe3plupBHh4esuqX/ZjXoT7Otg63fdmP4azXUNb5Godp3855uuarHUO51Uc9p7rdh3
 mp1+vw96uWdVgKvT9fw+f8Uae2lKG06dqP1+E3+vFWp4uG5ecHeYY/PPazzcfMg9/b/Dr8Pt+Ga14f7RzO8qjzNsx3enir5zLMrZ7rfhsavVyOSo/st7oPa7muer4O//wo
 57ws9HXdhm3+o83Dox3tHIcyXHWb6q1t17BWneTkidpBuxiKjF+HtixlnfbjMR/Dg0aat2s+eRhZwh80+zCfl75eV3rqVul7Xi3ZiXcz8r5u9U6jnXWlKejfvix1qle70a
 J4iNfhJx6o+37dFxq4zthy5eXxBK8vL2w5Ms6trrQcMt/joxzzdZRhPvZz+KxXmfHw8O/6WVba/9tS6IVreCfz1zcx5b2qkX7eho8y0b83evM8yURLueZizuHdYZBsjRut
@@ -161,9 +165,8 @@ xQyF57QiZeNxsP50nYUxx+zH6agEAxRHnEqsH8BqIBVNokKRmb2lT1YdZNpwNiMFNvzg3al2OAoUHoN6
 eoLJ4Ep5rXVoFu0culfUkx6M5TL9+9eRSN6k7qIfMQASX3oQXVGMtmPSfLjuBzGGeNjszJMznOLW8FUMbkptifPaZV13sSQyF0qOdN9Rk+hobN164Wdc6m4V8RrHTGxXQp
 N3EXiZfUJDMIQpga2uYYtOVQwtd838NhauhXzLF9AYQu16hr9u1C42SO8/kznuFkuu8wtkKoFbuoDxm3Cvn8OMziHcxkfZKgc+egBghffP+bZb9GrsmjORQPza31VR4fKl
 BugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
-		$uncompressed = gzuncompress(base64_decode($lipsum));
-		$safe = htmlentities(strip_tags($uncompressed));
-		return $safe;
-	}
-
+        $uncompressed = gzuncompress(base64_decode($lipsum));
+        $safe = htmlentities(strip_tags($uncompressed));
+        return $safe;
+    }
 }

@@ -19,81 +19,83 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * of dynamically added fields.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Form
  */
-class FieldNameViewHelper extends AbstractViewHelper {
+class FieldNameViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @var PersistenceManagerInterface
-	 */
-	protected $persistenceManager;
+    /**
+     * @var PersistenceManagerInterface
+     */
+    protected $persistenceManager;
 
-	/**
-	 * @param PersistenceManagerInterface $persistenceManager
-	 */
-	public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
-	}
+    /**
+     * @param PersistenceManagerInterface $persistenceManager
+     */
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
+    {
+        $this->persistenceManager = $persistenceManager;
+    }
 
-	/**
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('name', 'string', 'Name of the form field to generate the HMAC for.');
-		$this->registerArgument('property', 'string', 'Name of object property. If used in conjunction with <f:form object="...">, "name" argument will be ignored.');
-	}
+    /**
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('name', 'string', 'Name of the form field to generate the HMAC for.');
+        $this->registerArgument('property', 'string', 'Name of object property. If used in conjunction with <f:form object="...">, "name" argument will be ignored.');
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		if (TRUE === $this->isObjectAccessorMode()) {
-			$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
-			if (FALSE === empty($formObjectName)) {
-				$propertySegments = explode('.', $this->arguments['property']);
-				$propertyPath = '';
-				foreach ($propertySegments as $segment) {
-					$propertyPath .= '[' . $segment . ']';
-				}
-				$name = $formObjectName . $propertyPath;
-			} else {
-				$name = $this->arguments['property'];
-			}
-		} else {
-			$name = $this->arguments['name'];
-		}
-		if (NULL === $name || '' === $name) {
-			return '';
-		}
-		if (FALSE === $this->viewHelperVariableContainer->exists('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'fieldNamePrefix')) {
-			return $name;
-		}
-		$fieldNamePrefix = (string) $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
-		if ('' === $fieldNamePrefix) {
-			return $name;
-		}
-		$fieldNameSegments = explode('[', $name, 2);
-		$name = $fieldNamePrefix . '[' . $fieldNameSegments[0] . ']';
-		if (1 < count($fieldNameSegments)) {
-			$name .= '[' . $fieldNameSegments[1];
-		}
-		if (TRUE === $this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames')) {
-			$formFieldNames = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames');
-		} else {
-			$formFieldNames = array();
-		}
-		$formFieldNames[] = $name;
-		$this->viewHelperVariableContainer->addOrUpdate('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formFieldNames', $formFieldNames);
-		return $name;
-	}
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        if (true === $this->isObjectAccessorMode()) {
+            $formObjectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
+            if (false === empty($formObjectName)) {
+                $propertySegments = explode('.', $this->arguments['property']);
+                $propertyPath = '';
+                foreach ($propertySegments as $segment) {
+                    $propertyPath .= '[' . $segment . ']';
+                }
+                $name = $formObjectName . $propertyPath;
+            } else {
+                $name = $this->arguments['property'];
+            }
+        } else {
+            $name = $this->arguments['name'];
+        }
+        if (null === $name || '' === $name) {
+            return '';
+        }
+        if (false === $this->viewHelperVariableContainer->exists('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'fieldNamePrefix')) {
+            return $name;
+        }
+        $fieldNamePrefix = (string) $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
+        if ('' === $fieldNamePrefix) {
+            return $name;
+        }
+        $fieldNameSegments = explode('[', $name, 2);
+        $name = $fieldNamePrefix . '[' . $fieldNameSegments[0] . ']';
+        if (1 < count($fieldNameSegments)) {
+            $name .= '[' . $fieldNameSegments[1];
+        }
+        if (true === $this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames')) {
+            $formFieldNames = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames');
+        } else {
+            $formFieldNames = array();
+        }
+        $formFieldNames[] = $name;
+        $this->viewHelperVariableContainer->addOrUpdate('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formFieldNames', $formFieldNames);
+        return $name;
+    }
 
-	/**
-	 * @return boolean
-	 */
-	protected function isObjectAccessorMode() {
-		return (boolean) (TRUE === $this->hasArgument('property') && TRUE === $this->viewHelperVariableContainer->exists('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formObjectName'));
-	}
-
+    /**
+     * @return bool
+     */
+    protected function isObjectAccessorMode()
+    {
+        return (boolean) (true === $this->hasArgument('property') && true === $this->viewHelperVariableContainer->exists('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formObjectName'));
+    }
 }

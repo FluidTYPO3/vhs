@@ -14,21 +14,21 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * @protection on
- * @package Vhs
  */
-class TypolinkViewHelperTest extends AbstractViewHelperTest {
+class TypolinkViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function renderCallsTypoLinkFunctionOnContentObject() {
-		$class = $this->getViewHelperClassName();
-		$mock = new $class();
-		$GLOBALS['TSFE'] = new TypoScriptFrontendController(array(), 1, 0);
-		$GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('typoLink_URL'));
-		$GLOBALS['TSFE']->cObj->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar'))->will($this->returnValue('foobar'));
-		$result = $mock::renderStatic(array('configuration' => array('foo' => 'bar')), function() { }, new RenderingContext());
-		$this->assertEquals('foobar', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function renderCallsTypoLinkFunctionOnContentObject()
+    {
+        $class = $this->getViewHelperClassName();
+        $mock = new $class();
+        $GLOBALS['TSFE'] = new TypoScriptFrontendController(array(), 1, 0);
+        $GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('typoLink_URL'));
+        $GLOBALS['TSFE']->cObj->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar'))->will($this->returnValue('foobar'));
+        $result = $mock::renderStatic(array('configuration' => array('foo' => 'bar')), function () { }, new RenderingContext());
+        $this->assertEquals('foobar', $result);
+    }
 }

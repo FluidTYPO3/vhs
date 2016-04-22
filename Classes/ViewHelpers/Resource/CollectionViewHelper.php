@@ -20,40 +20,42 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  * {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
  *
  * @category ViewHelpers
- * @package Vhs
  * @author Dmitri Pisarev <dimaip@gmail.com>
  */
-class CollectionViewHelper extends AbstractResourceViewHelper {
+class CollectionViewHelper extends AbstractResourceViewHelper
+{
 
-	/**
-	 * @var RecordCollectionRepository
-	 */
-	protected $collectionRepository;
+    /**
+     * @var RecordCollectionRepository
+     */
+    protected $collectionRepository;
 
-	/**
-	 * @param RecordCollectionRepository $collectionRepository
-	 * @return void
-	 */
-	public function injectCollectionRepository(RecordCollectionRepository $collectionRepository) {
-		$this->collectionRepository = $collectionRepository;
-	}
+    /**
+     * @param RecordCollectionRepository $collectionRepository
+     * @return void
+     */
+    public function injectCollectionRepository(RecordCollectionRepository $collectionRepository)
+    {
+        $this->collectionRepository = $collectionRepository;
+    }
 
-	/**
-	 * Returns a specific collection referenced by uid.
-	 *
-	 * @param integer $uid
-	 * @return mixed
-	 */
-	public function render($uid) {
-		if (NULL !== $uid) {
-			/** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
-			$collection = $this->collectionRepository->findByUid($uid);
-			if (NULL !== $collection) {
-				return $collection->loadContents();
-			} else {
-				return NULL;
-			}
-		}
-		return NULL;
-	}
+    /**
+     * Returns a specific collection referenced by uid.
+     *
+     * @param int $uid
+     * @return mixed
+     */
+    public function render($uid)
+    {
+        if (null !== $uid) {
+            /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
+            $collection = $this->collectionRepository->findByUid($uid);
+            if (null !== $collection) {
+                return $collection->loadContents();
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
 }

@@ -17,18 +17,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * against the corresponding member in $b compared using index.
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
-class DivisionViewHelper extends AbstractMultipleMathViewHelper {
+class DivisionViewHelper extends AbstractMultipleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @param mixed $b
-	 * @return mixed
-	 */
-	protected function calculateAction($a, $b) {
-		return (0 <> $b ? $a / $b : $a);
-	}
-
+    /**
+     * @param mixed $a
+     * @param mixed $b
+     * @return mixed
+     */
+    protected function calculateAction($a, $b)
+    {
+        return (0 <> $b ? $a / $b : $a);
+    }
 }

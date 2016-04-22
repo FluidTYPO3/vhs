@@ -15,22 +15,21 @@ use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
  * with <v:content.get(column: '0', render: FALSE) />
  *
  * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
-class RecordViewHelper extends AbstractContentViewHelper {
+class RecordViewHelper extends AbstractContentViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @param array $record
-	 * @return string
-	 */
-	public function render(array $record = array()) {
-		if (FALSE === isset($record['uid'])) {
-			return NULL;
-		}
-		return $this->renderRecord($record);
-	}
-
+    /**
+     * Render method
+     *
+     * @param array $record
+     * @return string
+     */
+    public function render(array $record = array())
+    {
+        if (false === isset($record['uid'])) {
+            return null;
+        }
+        return $this->renderRecord($record);
+    }
 }

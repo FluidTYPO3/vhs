@@ -13,16 +13,16 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class RecordViewHelperTest extends AbstractViewHelperTest {
+class RecordViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testRenderFailsWithoutFieldArgument() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument must be specified');
-		$this->executeViewHelper();
-	}
-
+    /**
+     * @test
+     */
+    public function testRenderFailsWithoutFieldArgument()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument must be specified');
+        $this->executeViewHelper();
+    }
 }

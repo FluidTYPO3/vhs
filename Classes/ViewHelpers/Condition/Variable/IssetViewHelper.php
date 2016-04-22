@@ -8,9 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Variable: Isset
@@ -30,59 +30,60 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *     {foo -> v:condition.variable.isset(name: bar)}
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Variable
  */
-class IssetViewHelper extends AbstractConditionViewHelper {
+class IssetViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('name', 'string', 'name of the variable', TRUE);
-	}
-	/**
- 	 * Render
- 	 *
- 	 * @return string
- 	 */
- 	public function render() {
-		return static::renderStatic(
-			$this->arguments,
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('name', 'string', 'name of the variable', true);
+    }
+    /**
+     * Render
+     *
+     * @return string
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Default implementation for use in compiled templates
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$hasEvaluated = TRUE;
+    /**
+     * Default implementation for use in compiled templates
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $hasEvaluated = true;
 
-		if (TRUE === $renderingContext->getTemplateVariableContainer()->exists($arguments['name'])) {
-			$result = static::renderStaticThenChild($arguments, $hasEvaluated);
-			if ($hasEvaluated) {
-				return $result;
-			}
+        if (true === $renderingContext->getTemplateVariableContainer()->exists($arguments['name'])) {
+            $result = static::renderStaticThenChild($arguments, $hasEvaluated);
+            if ($hasEvaluated) {
+                return $result;
+            }
 
-			return $renderChildrenClosure();
-		} else {
-			$result = static::renderStaticElseChild($arguments, $hasEvaluated);
-			if ($hasEvaluated) {
-				return $result;
-			}
-		}
+            return $renderChildrenClosure();
+        } else {
+            $result = static::renderStaticElseChild($arguments, $hasEvaluated);
+            if ($hasEvaluated) {
+                return $result;
+            }
+        }
 
-		return '';
-	}
-
+        return '';
+    }
 }

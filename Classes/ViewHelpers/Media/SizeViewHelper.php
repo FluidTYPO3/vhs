@@ -16,49 +16,48 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * Returns the size of the provided file in bytes
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
-class SizeViewHelper extends AbstractViewHelper {
+class SizeViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('path', 'string', 'Path to the file to determine size for.', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('path', 'string', 'Path to the file to determine size for.', false, null);
+    }
 
-	/**
-	 * @throws Exception
-	 * @return integer
-	 */
-	public function render() {
+    /**
+     * @throws Exception
+     * @return int
+     */
+    public function render()
+    {
+        $path = $this->arguments['path'];
 
-		$path = $this->arguments['path'];
+        if (null === $path) {
+            $path = $this->renderChildren();
+            if (null === $path) {
+                return 0;
+            }
+        }
 
-		if (NULL === $path) {
-			$path = $this->renderChildren();
-			if (NULL === $path) {
-				return 0;
-			}
-		}
+        $file = GeneralUtility::getFileAbsFileName($path);
 
-		$file = GeneralUtility::getFileAbsFileName($path);
+        if (false === file_exists($file) || true === is_dir($file)) {
+            throw new Exception('Cannot determine size of "' . $file . '". File does not exist or is a directory.', 1356953963);
+        }
 
-		if (FALSE === file_exists($file) || TRUE === is_dir($file)) {
-			throw new Exception('Cannot determine size of "' . $file . '". File does not exist or is a directory.', 1356953963);
-		}
+        $size = filesize($file);
 
-		$size = filesize($file);
+        if (false === $size) {
+            throw new Exception('Cannot determine size of "' . $file . '".', 1356954032);
+        }
 
-		if (FALSE === $size) {
-			throw new Exception('Cannot determine size of "' . $file . '".', 1356954032);
-		}
-
-		return $size;
-	}
-
+        return $size;
+    }
 }

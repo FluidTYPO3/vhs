@@ -18,21 +18,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Returns the site name as specified in TYPO3_CONF_VARS.
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Site
  */
-class NameViewHelper extends AbstractViewHelper {
+class NameViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+    }
 }

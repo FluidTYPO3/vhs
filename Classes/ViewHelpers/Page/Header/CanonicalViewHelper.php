@@ -15,60 +15,60 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Returns the current canonical url in a link tag.
  *
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page\Header
  */
-class CanonicalViewHelper extends AbstractTagBasedViewHelper {
+class CanonicalViewHelper extends AbstractTagBasedViewHelper
+{
 
-	use PageRendererTrait;
+    use PageRendererTrait;
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'link';
+    /**
+     * @var string
+     */
+    protected $tagName = 'link';
 
-	public function initializeArguments() {
-		$this->registerUniversalTagAttributes();
-		$this->registerArgument('pageUid', 'integer', 'The page uid to check', FALSE, 0);
-		$this->registerArgument('normalWhenNoLanguage', 'boolean', 'DEPRECATED: Visibility is now handled by core\'s typolink function.', FALSE);
-	}
+    public function initializeArguments()
+    {
+        $this->registerUniversalTagAttributes();
+        $this->registerArgument('pageUid', 'integer', 'The page uid to check', false, 0);
+        $this->registerArgument('normalWhenNoLanguage', 'boolean', 'DEPRECATED: Visibility is now handled by core\'s typolink function.', false);
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return '';
-		}
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return '';
+        }
 
-		$pageUid = (integer) $this->arguments['pageUid'];
-		if (0 === $pageUid) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
+        $pageUid = (integer) $this->arguments['pageUid'];
+        if (0 === $pageUid) {
+            $pageUid = $GLOBALS['TSFE']->id;
+        }
 
-		$configuration = array(
-			'parameter' => $pageUid,
-			'forceAbsoluteUrl' => 1,
-		);
+        $configuration = array(
+            'parameter' => $pageUid,
+            'forceAbsoluteUrl' => 1,
+        );
 
-		$uri = $GLOBALS['TSFE']->cObj->typoLink_URL($configuration);
+        $uri = $GLOBALS['TSFE']->cObj->typoLink_URL($configuration);
 
-		if (TRUE === empty($uri)) {
-			return NULL;
-		}
+        if (true === empty($uri)) {
+            return null;
+        }
 
-		$uri = $GLOBALS['TSFE']->baseUrlWrap($uri);
+        $uri = $GLOBALS['TSFE']->baseUrlWrap($uri);
 
-		$this->tag->addAttribute('rel', 'canonical');
-		$this->tag->addAttribute('href', $uri);
+        $this->tag->addAttribute('rel', 'canonical');
+        $this->tag->addAttribute('href', $uri);
 
-		$renderedTag = $this->tag->render();
+        $renderedTag = $this->tag->render();
 
-		if (1 === (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']) {
-			return $renderedTag;
-		}
+        if (1 === (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']) {
+            return $renderedTag;
+        }
 
-		static::getPageRenderer()->addMetaTag($renderedTag);
-	}
-
+        static::getPageRenderer()->addMetaTag($renderedTag);
+    }
 }

@@ -23,8 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * well as the "then" and "else" arguments.
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Once
  */
-class StandardViewHelper extends AbstractOnceViewHelper {
+class StandardViewHelper extends AbstractOnceViewHelper
+{
 }

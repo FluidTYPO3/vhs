@@ -21,49 +21,49 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  * recycled parent menu instance.
  *
  * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Menu
  */
-class SubViewHelper extends AbstractMenuViewHelper {
+class SubViewHelper extends AbstractMenuViewHelper
+{
 
-	public function initializeArguments() {
-		$this->registerArgument('pageUid', 'mixed', 'Page UID to be overridden in the recycled rendering of the parent instance, if one exists', TRUE);
-	}
+    public function initializeArguments()
+    {
+        $this->registerArgument('pageUid', 'mixed', 'Page UID to be overridden in the recycled rendering of the parent instance, if one exists', true);
+    }
 
-	/**
-	 * @return NULL|string
-	 */
-	public function render() {
-		$pageUid = $this->arguments['pageUid'];
-		$parentInstance = $this->retrieveReconfiguredParentMenuInstance($pageUid);
-		if (NULL === $parentInstance) {
-			return NULL;
-		}
-		$parentArguments = $parentInstance->getArguments();
-		$isActive = $this->isActive($pageUid);
-		// Note about next case: although $isCurrent in most cases implies $isActive, cases where the menu item
-		// that is being rendered is in fact the current page but is NOT part of the rootline of the menu being
-		// rendered - which is expected for example if using a page setting to render a different page in menus.
-		// This means that the following check although it appears redundant, it is in fact not.
-		$isCurrent = $this->isCurrent($pageUid);
-		$isExpanded = (boolean) (TRUE === (boolean) $parentArguments['expandAll']);
-		$shouldRender = (boolean) (TRUE === $isActive || TRUE === $isCurrent || TRUE === $isExpanded);
-		if (FALSE === $shouldRender) {
-			return NULL;
-		}
-		// retrieve the set of template variables which were in play when the parent menu VH started rendering.
-		$variables = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper', 'variables');
-		$parentInstance->setOriginal(FALSE);
-		$content = $parentInstance->render();
-		// restore the previous set of variables after they most likely have changed during the render() above.
-		foreach ($variables as $name => $value) {
-			if (TRUE === $this->templateVariableContainer->exists($name)) {
-				$this->templateVariableContainer->remove($name);
-				$this->templateVariableContainer->add($name, $value);
-			}
-		}
+    /**
+     * @return NULL|string
+     */
+    public function render()
+    {
+        $pageUid = $this->arguments['pageUid'];
+        $parentInstance = $this->retrieveReconfiguredParentMenuInstance($pageUid);
+        if (null === $parentInstance) {
+            return null;
+        }
+        $parentArguments = $parentInstance->getArguments();
+        $isActive = $this->isActive($pageUid);
+        // Note about next case: although $isCurrent in most cases implies $isActive, cases where the menu item
+        // that is being rendered is in fact the current page but is NOT part of the rootline of the menu being
+        // rendered - which is expected for example if using a page setting to render a different page in menus.
+        // This means that the following check although it appears redundant, it is in fact not.
+        $isCurrent = $this->isCurrent($pageUid);
+        $isExpanded = (boolean) (true === (boolean) $parentArguments['expandAll']);
+        $shouldRender = (boolean) (true === $isActive || true === $isCurrent || true === $isExpanded);
+        if (false === $shouldRender) {
+            return null;
+        }
+        // retrieve the set of template variables which were in play when the parent menu VH started rendering.
+        $variables = $this->viewHelperVariableContainer->get('FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper', 'variables');
+        $parentInstance->setOriginal(false);
+        $content = $parentInstance->render();
+        // restore the previous set of variables after they most likely have changed during the render() above.
+        foreach ($variables as $name => $value) {
+            if (true === $this->templateVariableContainer->exists($name)) {
+                $this->templateVariableContainer->remove($name);
+                $this->templateVariableContainer->add($name, $value);
+            }
+        }
 
-		return $content;
-	}
-
+        return $content;
+    }
 }

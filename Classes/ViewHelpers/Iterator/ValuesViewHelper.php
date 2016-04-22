@@ -28,39 +28,38 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Gets values from an iterator, removing current keys (if any exist)
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
-class ValuesViewHelper extends AbstractViewHelper {
+class ValuesViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'The array/Traversable instance from which to get values', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('subject', 'mixed', 'The array/Traversable instance from which to get values', false, null);
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return array
-	 */
-	public function render() {
-		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$output = array_values($subject);
-		return $this->renderChildrenWithVariableOrReturnInput($output);
-	}
-
+    /**
+     * Render method
+     *
+     * @return array
+     */
+    public function render()
+    {
+        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $output = array_values($subject);
+        return $this->renderChildrenWithVariableOrReturnInput($output);
+    }
 }

@@ -13,14 +13,14 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
  */
-class Foo extends AbstractEntity {
+class Foo extends AbstractEntity
+{
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @var string
@@ -28,61 +28,68 @@ class Foo extends AbstractEntity {
      */
     protected $bar;
 
-	/**
-	 * @var Foo
-	 */
-	protected $foo;
+    /**
+     * @var Foo
+     */
+    protected $foo;
 
     /**
      * @var ObjectStorage<Foo>
      */
     protected $children;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->bar = 'baz';
         $this->children = new ObjectStorage();
     }
 
-	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
+    /**
+     * @param string $name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
     /**
      * @return string
      */
-    public function getBar() {
+    public function getBar()
+    {
         return $this->bar;
     }
 
-	/**
-	 * @param Foo $foo
-	 */
-	public function setFoo($foo) {
-		$this->foo = $foo;
-	}
+    /**
+     * @param Foo $foo
+     */
+    public function setFoo($foo)
+    {
+        $this->foo = $foo;
+    }
 
-	/**
-	 * @return Foo
-	 */
-	public function getFoo() {
-		return $this->foo;
-	}
+    /**
+     * @return Foo
+     */
+    public function getFoo()
+    {
+        return $this->foo;
+    }
 
     /**
      * @return ObjectStorage<Foo>
      */
-    public function getChildren() {
+    public function getChildren()
+    {
         return $this->children;
     }
 
@@ -90,7 +97,8 @@ class Foo extends AbstractEntity {
      * @param Foo $child
      * @return Foo
      */
-    public function addChild(Foo $child) {
+    public function addChild(Foo $child)
+    {
         $this->children->attach($child);
 
         return $this;

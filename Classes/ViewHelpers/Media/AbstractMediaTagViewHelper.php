@@ -15,11 +15,9 @@ use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
  * adds HTML5 tag attributes.
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
-abstract class AbstractMediaTagViewHelper extends AbstractMediaViewHelper {
+abstract class AbstractMediaTagViewHelper extends AbstractMediaViewHelper
+{
 
-	use TagViewHelperTrait;
-
+    use TagViewHelperTrait;
 }

@@ -20,58 +20,58 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Arguments must be serializable and will be cached.
  *
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
-class UncacheViewHelper extends AbstractViewHelper {
+class UncacheViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('partial', 'string', 'Reference to a partial.', TRUE);
-		$this->registerArgument('section', 'string', 'Name of section inside the partial to render.', FALSE, NULL);
-		$this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.', FALSE, NULL);
-	}
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('partial', 'string', 'Reference to a partial.', true);
+        $this->registerArgument('section', 'string', 'Name of section inside the partial to render.', false, null);
+        $this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.', false, null);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$templateVariableContainer = $renderingContext->getTemplateVariableContainer();
-		$partialArguments = $arguments['arguments'];
-		if (FALSE === is_array($partialArguments)) {
-			$partialArguments = array();
-		}
-		if (FALSE === isset($partialArguments['settings']) && TRUE === $templateVariableContainer->exists('settings')) {
-			$partialArguments['settings'] = $templateVariableContainer->get('settings');
-		}
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+        $partialArguments = $arguments['arguments'];
+        if (false === is_array($partialArguments)) {
+            $partialArguments = array();
+        }
+        if (false === isset($partialArguments['settings']) && true === $templateVariableContainer->exists('settings')) {
+            $partialArguments['settings'] = $templateVariableContainer->get('settings');
+        }
 
-		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
-		$content = '<!--' . $substKey . '-->';
-		$templateView = GeneralUtility::makeInstance('FluidTYPO3\\Vhs\\View\\UncacheTemplateView');
+        $substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+        $content = '<!--' . $substKey . '-->';
+        $templateView = GeneralUtility::makeInstance('FluidTYPO3\\Vhs\\View\\UncacheTemplateView');
 
-		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
-			'type' => 'POSTUSERFUNC',
-			'cObj' => serialize($templateView),
-			'postUserFunc' => 'render',
-			'conf' => array(
-				'partial' => $arguments['partial'],
-				'section' => $arguments['section'],
-				'arguments' => $partialArguments,
-				'controllerContext' => $renderingContext->getControllerContext()
-			),
-			'content' => $content
-		);
+        $GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
+            'type' => 'POSTUSERFUNC',
+            'cObj' => serialize($templateView),
+            'postUserFunc' => 'render',
+            'conf' => array(
+                'partial' => $arguments['partial'],
+                'section' => $arguments['section'],
+                'arguments' => $partialArguments,
+                'controllerContext' => $renderingContext->getControllerContext()
+            ),
+            'content' => $content
+        );
 
-		return $content;
-	}
-
+        return $content;
+    }
 }

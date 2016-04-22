@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Context: IsDevelopment
@@ -27,21 +26,20 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context
  *
  * @author     Benjamin Beck <beck@beckdigitalemedien.de>
- * @package    Vhs
- * @subpackage ViewHelpers\Condition\Context
  */
-class IsDevelopmentViewHelper extends AbstractConditionViewHelper {
+class IsDevelopmentViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		return GeneralUtility::getApplicationContext()->isDevelopment();
-	}
-
+    /**
+     * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+     *
+     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return GeneralUtility::getApplicationContext()->isDevelopment();
+    }
 }

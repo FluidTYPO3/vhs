@@ -19,41 +19,42 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * member in $b compared using index.
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
-class SumViewHelper extends AbstractMultipleMathViewHelper {
+class SumViewHelper extends AbstractMultipleMathViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation', FALSE, NULL);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation', false, null);
+    }
 
-	/**
-	 * @return mixed
-	 * @throw Exception
-	 */
-	public function render() {
-		$a = $this->getInlineArgument();
-		$b = $this->arguments['b'];
-		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if (TRUE === $aIsIterable && NULL === $b) {
-			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
-			return array_sum($a);
-		}
-		return $this->calculate($a, $b);
-	}
+    /**
+     * @return mixed
+     * @throw Exception
+     */
+    public function render()
+    {
+        $a = $this->getInlineArgument();
+        $b = $this->arguments['b'];
+        $aIsIterable = $this->assertIsArrayOrIterator($a);
+        if (true === $aIsIterable && null === $b) {
+            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            return array_sum($a);
+        }
+        return $this->calculate($a, $b);
+    }
 
-	/**
-	 * @param mixed $a
-	 * @param $b
-	 * @return mixed
-	 */
-	protected function calculateAction($a, $b) {
-		return $a + $b;
-	}
-
+    /**
+     * @param mixed $a
+     * @param $b
+     * @return mixed
+     */
+    protected function calculateAction($a, $b)
+    {
+        return $a + $b;
+    }
 }

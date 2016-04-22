@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ### Iterator Column Extraction ViewHelper
@@ -71,29 +70,30 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * the model of the entity and even then support is limited to first
  * level properties' values without dots in their names*.
  */
-class ColumnViewHelper extends AbstractViewHelper {
+class ColumnViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...', false, null);
+        $this->registerArgument('columnKey', 'string', 'Name of the column whose values will become the value of the new array', false, null);
+        $this->registerArgument('indexKey', 'string', 'Name of the column whose values will become the index of the new array', false, null);
+    }
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...', FALSE, NULL);
-		$this->registerArgument('columnKey', 'string', 'Name of the column whose values will become the value of the new array', FALSE, NULL);
-		$this->registerArgument('indexKey', 'string', 'Name of the column whose values will become the index of the new array', FALSE, NULL);
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$output = array_column($subject, $this->arguments['columnKey'], $this->arguments['indexKey']);
-		return $this->renderChildrenWithVariableOrReturnInput($output);
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $output = array_column($subject, $this->arguments['columnKey'], $this->arguments['indexKey']);
+        return $this->renderChildrenWithVariableOrReturnInput($output);
+    }
 }

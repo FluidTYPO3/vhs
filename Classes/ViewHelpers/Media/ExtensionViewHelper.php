@@ -15,48 +15,47 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Returns the extension of the provided file
  *
  * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
-class ExtensionViewHelper extends AbstractViewHelper {
+class ExtensionViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('file', 'string', 'Path to the file to determine extension for.', FALSE);
-	}
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('file', 'string', 'Path to the file to determine extension for.', false);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $filePath = $this->arguments['file'];
 
-		$filePath = $this->arguments['file'];
+        if (true === empty($filePath)) {
+            $filePath = $this->renderChildren();
 
-		if (TRUE === empty($filePath)) {
-			$filePath = $this->renderChildren();
+            if (null === $filePath) {
+                return '';
+            }
+        }
 
-			if (NULL === $filePath) {
-				return '';
-			}
-		}
+        $file = GeneralUtility::getFileAbsFileName($filePath);
 
-		$file = GeneralUtility::getFileAbsFileName($filePath);
+        $parts = explode('.', basename($file));
 
-		$parts = explode('.', basename($file));
+        // file has no extension
+        if (1 === count($parts)) {
+            return '';
+        }
 
-		// file has no extension
-		if (1 === count($parts)) {
-			return '';
-		}
+        $extension = strtolower(array_pop($parts));
 
-		$extension = strtolower(array_pop($parts));
-
-		return $extension;
-	}
-
+        return $extension;
+    }
 }

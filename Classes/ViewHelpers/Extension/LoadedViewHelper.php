@@ -8,10 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Extension: Loaded (Condition) ViewHelper
@@ -27,32 +27,32 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *     </v:extension.loaded>
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension
  */
-class LoadedViewHelper extends AbstractConditionViewHelper {
+class LoadedViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('extensionName', 'string', 'Name of extension that must be loaded in order to evaluate as TRUE, UpperCamelCase', TRUE);
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extensionName', 'string', 'Name of extension that must be loaded in order to evaluate as TRUE, UpperCamelCase', true);
+    }
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		$extensionName = $arguments['extensionName'];
-		$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-		$isLoaded = ExtensionManagementUtility::isLoaded($extensionKey);
-		return TRUE === $isLoaded;
-	}
-
+    /**
+     * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+     *
+     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        $extensionName = $arguments['extensionName'];
+        $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+        $isLoaded = ExtensionManagementUtility::isLoaded($extensionKey);
+        return true === $isLoaded;
+    }
 }

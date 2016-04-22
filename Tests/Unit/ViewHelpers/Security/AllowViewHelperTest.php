@@ -13,24 +13,25 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * @protection on
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
-class AllowViewHelperTest extends AbstractViewHelperTest {
+class AllowViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testConditionalRenderTrue() {
-		$instance = $this->getMock($this->getViewHelperClassName(), array('evaluateArguments', 'renderThenChild', 'renderElseChild'));
-		$instance->expects($this->once())->method('evaluateArguments')->willReturn(TRUE);
-		$instance->expects($this->once())->method('renderThenChild');
-		$instance->expects($this->never())->method('renderElseChild');
-		$instance->render();
-	}
+    public function testConditionalRenderTrue()
+    {
+        $instance = $this->getMock($this->getViewHelperClassName(), array('evaluateArguments', 'renderThenChild', 'renderElseChild'));
+        $instance->expects($this->once())->method('evaluateArguments')->willReturn(true);
+        $instance->expects($this->once())->method('renderThenChild');
+        $instance->expects($this->never())->method('renderElseChild');
+        $instance->render();
+    }
 
-	public function testConditionalRenderFalse() {
-		$instance = $this->getMock($this->getViewHelperClassName(), array('evaluateArguments', 'renderThenChild', 'renderElseChild'));
-		$instance->expects($this->once())->method('evaluateArguments')->willReturn(FALSE);
-		$instance->expects($this->never())->method('renderThenChild');
-		$instance->expects($this->once())->method('renderElseChild');
-		$instance->render();
-	}
-
+    public function testConditionalRenderFalse()
+    {
+        $instance = $this->getMock($this->getViewHelperClassName(), array('evaluateArguments', 'renderThenChild', 'renderElseChild'));
+        $instance->expects($this->once())->method('evaluateArguments')->willReturn(false);
+        $instance->expects($this->never())->method('renderThenChild');
+        $instance->expects($this->once())->method('renderElseChild');
+        $instance->render();
+    }
 }

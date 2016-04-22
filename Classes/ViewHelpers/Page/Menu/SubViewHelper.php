@@ -23,8 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  * DEPRECATED: use v:menu.sub instead
  *
  * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Page
  */
-class SubViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\SubViewHelper {
+class SubViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\SubViewHelper
+{
 }
