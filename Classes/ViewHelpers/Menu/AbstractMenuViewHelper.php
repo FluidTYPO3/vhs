@@ -277,6 +277,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 			if (!in_array($page['doktype'], $allowedDocumentTypes)) {
 				continue;
 			}
+			if (TRUE === $this->pageService->hidePageForLanguageUid($page['uid'])) {
+				continue;
+			}
 			$count++;
 			$class = array();
 			$originalPageUid = $page['uid'];
