@@ -123,7 +123,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper {
 
 		// Do not render the link, if the page should be hidden
 		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-		$hidePage = $this->pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid);
+		$hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
 		if (TRUE === $hidePage) {
 			return NULL;
 		}
