@@ -140,20 +140,23 @@ class PageService implements SingletonInterface {
 	}
 
 	/**
-	 * @param integer $pageUid
+	 * @param array|integer $page
 	 * @param integer $languageUid
 	 * @param boolean $normalWhenNoLanguage
 	 * @return boolean
 	 */
-	public function hidePageForLanguageUid($pageUid = 0, $languageUid = -1, $normalWhenNoLanguage = TRUE) {
-		if (0 === (integer) $pageUid) {
-			$pageUid = $GLOBALS['TSFE']->id;
+	public function hidePageForLanguageUid($page = NULL, $languageUid = -1, $normalWhenNoLanguage = TRUE) {
+		if (is_array($page)) {
+			$pageUid = $page['uid'];
+			$pageRecord = $page;
+		} else {
+			$pageUid = (0 === (integer) $page) ? $GLOBALS['TSFE']->id : (integer) $page;
+			$pageRecord = $this->getPage($pageUid);
 		}
 		if (-1 === (integer) $languageUid) {
 			$languageUid = $GLOBALS['TSFE']->sys_language_uid;
 		}
-		$page = $this->getPage($pageUid);
-		$l18nCfg = TRUE === isset($page['l18n_cfg']) ? $page['l18n_cfg'] : 0;
+		$l18nCfg = TRUE === isset($pageRecord['l18n_cfg']) ? $pageRecord['l18n_cfg'] : 0;
 		$hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
 		$hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
 		$pageOverlay = (0 !== $languageUid) ? $GLOBALS['TSFE']->sys_page->getPageOverlay($pageUid, $languageUid) : array();
