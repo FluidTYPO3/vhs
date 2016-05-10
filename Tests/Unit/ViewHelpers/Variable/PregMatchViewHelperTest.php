@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -15,34 +15,18 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  * @author Claus Due <claus@namelesscoder.net>
  * @package Vhs
  */
-class RegularExpressionViewHelperTest extends AbstractViewHelperTest {
+class PregMatchViewHelperTest extends AbstractViewHelperTest {
 
 	/**
 	 * @test
 	 */
-	public function canReplaceValues() {
+	public function canMatchValues() {
 		$arguments = array(
 			'subject' => 'foo123bar',
-			'return' => FALSE,
 			'pattern' => '/[0-9]{3}/',
-			'replacement' => 'baz',
 		);
 		$test = $this->executeViewHelper($arguments);
-		$this->assertSame('foobazbar', $test);
-	}
-
-	/**
-	 * @test
-	 */
-	public function canReturnMatches() {
-		$arguments = array(
-			'subject' => 'foo123bar',
-			'return' => TRUE,
-			'pattern' => '/[0-9]{3}/',
-			'replacement' => 'baz',
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame(array('123'), $test);
+		$this->assertSame(1, count($test));
 	}
 
 	/**
@@ -50,12 +34,10 @@ class RegularExpressionViewHelperTest extends AbstractViewHelperTest {
 	 */
 	public function canTakeSubjectFromRenderChildren() {
 		$arguments = array(
-			'return' => TRUE,
 			'pattern' => '/[0-9]{3}/',
-			'replacement' => 'baz',
 		);
 		$test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
-		$this->assertSame(array('123'), $test);
+		$this->assertSame(1, count($test));
 	}
 
 }
