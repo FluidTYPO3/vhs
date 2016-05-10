@@ -92,6 +92,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 		$this->registerArgument('excludePages', 'mixed', 'Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.', FALSE, '');
 		$this->registerArgument('forceAbsoluteUrl', 'boolean', 'If TRUE, the menu will be rendered with absolute URLs', FALSE, FALSE);
 		$this->registerArgument('doktypes', 'mixed', 'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut', FALSE, '');
+		$this->registerArgument('divider', 'string', 'Optional divider to insert between each menu item. Note that this does not mix well with automatic rendering due to the use of an ul > li structure', FALSE, NULL);
 	}
 
 	/**
@@ -168,6 +169,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 		$levels = (integer) $this->arguments['levels'];
 		$showCurrent = (boolean) $this->arguments['showCurrent'];
 		$expandAll = (boolean) $this->arguments['expandAll'];
+		$itemsRendered = 0;
+		$numberOfItems = count($menu);
 		foreach ($menu as $page) {
 			if (TRUE === (boolean) $page['current'] && FALSE === $showCurrent) {
 				continue;
@@ -199,6 +202,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 			}
 			if (FALSE === $this->isNonWrappingMode()) {
 				$html[] = '</' . $tagName . '>';
+			}
+			$itemsRendered++;
+			if (TRUE === isset($this->arguments['divider']) && $itemsRendered < $numberOfItems) {
+				$divider = $this->arguments['divider'];
+				$html[] = (FALSE === $this->isNonWrappingMode()) ? '<' . $tagName . '>' . $divider . '</' . $tagName . '>' : $divider;
 			}
 		}
 
