@@ -71,7 +71,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 		$this->registerArgument('classLast', 'string', 'Optional class name for the last menu elment', FALSE, '');
 		$this->registerArgument('classActive', 'string', 'Optional class name to add to active links', FALSE, 'active');
 		$this->registerArgument('classCurrent', 'string', 'Optional class name to add to current link', FALSE, 'current');
-		$this->registerArgument('classHasSubpages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
+		$this->registerArgument('classHasSubpages', 'string', 'DEPRECATED: Use argument classHasSubPages instead', FALSE);
+		$this->registerArgument('classHasSubPages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
 		$this->registerArgument('classAccessProtected', 'string', 'Optional class name to add to links which are access protected', FALSE, 'protected');
 		$this->registerArgument('classAccessGranted', 'string', 'Optional class name to add to links which are access protected but access is actually granted', FALSE, 'access-granted');
 		$this->registerArgument('substElementUid', 'boolean', 'Optional parameter for wrapping the link with the uid of the page', FALSE, FALSE);
@@ -177,7 +178,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 				$html[] = '<' . $tagName . $elementId . $class . '>';
 			}
 			$html[] = $this->renderItemLink($page);
-			if ((TRUE === (boolean) $page['active'] || TRUE === $expandAll) && TRUE === (boolean) $page['hasSubpages'] && $level < $levels) {
+			if ((TRUE === (boolean) $page['active'] || TRUE === $expandAll) && TRUE === (boolean) $page['hasSubPages'] && $level < $levels) {
 				$subPages = $this->getMenu($page['uid']);
 				$subMenu = $this->parseMenu($subPages);
 				if (0 < count($subMenu)) {
@@ -330,8 +331,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 				$class[] = $this->arguments['classCurrent'];
 			}
 			if (0 < count($this->pageService->getMenu($originalPageUid))) {
-				$pages[$index]['hasSubpages'] = TRUE;
-				$class[] = $this->arguments['classHasSubpages'];
+				$pages[$index]['hasSubPages'] = TRUE;
+				//TODO: Remove deprecated argument in next major version
+				$class[] = (TRUE === $this->hasArgument('classHasSubpages')) ? $this->arguments['classHasSubpages'] : $this->arguments['classHasSubPages'];
 			}
 			if (1 === $count) {
 				$class[] = $this->arguments['classFirst'];
