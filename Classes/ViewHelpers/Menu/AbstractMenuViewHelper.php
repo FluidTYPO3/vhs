@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 {
 
+	use PageRecordViewHelperTrait;
 	use TagViewHelperTrait;
 
 	/**
@@ -61,24 +63,18 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
+		$this->registerPageRecordArguments();
 		$this->registerArgument('tagName', 'string', 'Tag name to use for enclosing container', FALSE, 'ul');
 		$this->registerArgument('tagNameChildren', 'string', 'Tag name to use for child nodes surrounding links. If set to "a" enables non-wrapping mode.', FALSE, 'li');
 		$this->registerArgument('entryLevel', 'integer', 'Optional entryLevel TS equivalent of the menu', FALSE, 0);
 		$this->registerArgument('levels', 'integer', 'Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel', FALSE, 1);
 		$this->registerArgument('expandAll', 'boolean', 'If TRUE and $levels > 1 then expands all (not just the active) menu items which have submenus', FALSE, FALSE);
-		$this->registerArgument('showAccessProtected', 'boolean', 'If TRUE links to access protected pages are always rendered regardless of user login status', FALSE, FALSE);
 		$this->registerArgument('classFirst', 'string', 'Optional class name for the first menu elment', FALSE, '');
 		$this->registerArgument('classLast', 'string', 'Optional class name for the last menu elment', FALSE, '');
 		$this->registerArgument('classActive', 'string', 'Optional class name to add to active links', FALSE, 'active');
 		$this->registerArgument('classCurrent', 'string', 'Optional class name to add to current link', FALSE, 'current');
-		$this->registerArgument('classHasSubpages', 'string', 'DEPRECATED: Use argument classHasSubPages instead', FALSE);
-		$this->registerArgument('classHasSubPages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
-		$this->registerArgument('classAccessProtected', 'string', 'Optional class name to add to links which are access protected', FALSE, 'protected');
-		$this->registerArgument('classAccessGranted', 'string', 'Optional class name to add to links which are access protected but access is actually granted', FALSE, 'access-granted');
+		$this->registerArgument('classHasSubpages', 'string', 'Optional class name to add to links which have subpages', FALSE, 'sub');
 		$this->registerArgument('substElementUid', 'boolean', 'Optional parameter for wrapping the link with the uid of the page', FALSE, FALSE);
-		$this->registerArgument('useShortcutUid', 'boolean', 'If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.', FALSE, FALSE);
-		$this->registerArgument('useShortcutTarget', 'boolean', 'Optional param for using shortcut target instead of shortcut itself for current link', FALSE, NULL);
-		$this->registerArgument('useShortcutData', 'boolean', 'Shortcut to set useShortcutTarget and useShortcutData simultaneously', FALSE, NULL);
 		$this->registerArgument('showHiddenInMenu', 'boolean', 'Include pages that are set to be hidden in menus', FALSE, FALSE);
 		$this->registerArgument('showCurrent', 'boolean', 'If FALSE, does not display the current page', FALSE, TRUE);
 		$this->registerArgument('linkCurrent', 'boolean', 'If FALSE, does not wrap the current page in a link', FALSE, TRUE);
@@ -292,49 +288,31 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 			$count++;
 			$class = array();
 			$originalPageUid = $page['uid'];
-			if (TRUE === (boolean) $this->arguments['showAccessProtected']) {
-				$pages[$index]['accessProtected'] =  $this->isAccessProtected($page);
+			$showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+			if ($showAccessProtected) {
+				$pages[$index]['accessProtected'] = $this->pageService->isAccessProtected($page);
 				if (TRUE === $pages[$index]['accessProtected']) {
 					$class[] = $this->arguments['classAccessProtected'];
 				}
-				$pages[$index]['accessGranted'] = $this->isAccessGranted($page);
-				if (TRUE === $pages[$index]['accessGranted'] && TRUE === $this->isAccessProtected($page)) {
+				$pages[$index]['accessGranted'] = $this->pageService->isAccessGranted($page);
+				if (TRUE === $pages[$index]['accessGranted'] && TRUE === $this->pageService->isAccessProtected($page)) {
 					$class[] = $this->arguments['classAccessGranted'];
 				}
 			}
-			if (PageRepository::DOKTYPE_SHORTCUT === (integer) $page['doktype']) {
-				switch ($page['shortcut_mode']) {
-					case 3:
-						// mode: parent page of current page (using PID of current page)
-						$targetPage = $this->pageService->getPage($page['pid']);
-						break;
-					case 2:
-						// mode: random subpage of selected or current page
-						$menu = $this->pageService->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
-						$targetPage = (0 < count($menu)) ? $menu[array_rand($menu)] : $page;
-						break;
-					case 1:
-						// mode: first subpage of selected or current page
-						$menu = $this->pageService->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
-						$targetPage = (0 < count($menu)) ? reset($menu) : $page;
-						break;
-					case 0:
-					default:
-						// mode: selected page
-						$targetPage = $this->pageService->getPage($page['shortcut']);
-				}
-				if (TRUE === $this->shouldUseShortcutTarget()) {
+			$targetPage = $this->pageService->getShortcutTargetPage($page);
+			if ($targetPage !== NULL) {
+				if ($this->pageService->shouldUseShortcutTarget($this->arguments)) {
 					$pages[$index] = $targetPage;
 				}
-				if (TRUE === $this->shouldUseShortcutUid()) {
+				if ($this->pageService->shouldUseShortcutUid($this->arguments)) {
 					$page['uid'] = $targetPage['uid'];
 				}
 			}
-			if (TRUE === $this->isActive($originalPageUid)) {
+			if (TRUE === $this->pageService->isActive($originalPageUid, $showAccessProtected)) {
 				$pages[$index]['active'] = TRUE;
 				$class[] = $this->arguments['classActive'];
 			}
-			if (TRUE === $this->isCurrent($originalPageUid)) {
+			if (TRUE === $this->pageService->isCurrent($originalPageUid)) {
 				$pages[$index]['current'] = TRUE;
 				$class[] = $this->arguments['classCurrent'];
 			}
@@ -351,27 +329,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 			}
 			$pages[$index]['class'] = implode(' ', $class);
 			$pages[$index]['linktext'] = $this->getItemTitle($pages[$index]);
-			$pages[$index]['link'] = $this->getItemLink($page);
+			$forceAbsoluteUrl = $this->arguments['forceAbsoluteUrl'];
+			$pages[$index]['link'] = $this->pageService->getItemLink($page, $forceAbsoluteUrl);
 		}
 
 		return $pages;
-	}
-
-	/**
-	 * @param array $page
-	 * @return string
-	 */
-	protected function getItemLink(array $page) {
-		$forceAbsoluteUrl = (boolean) $this->arguments['forceAbsoluteUrl'];
-		$config = array(
-			'parameter' => $page['uid'],
-			'returnLast' => 'url',
-			'additionalParams' => '',
-			'useCacheHash' => FALSE,
-			'forceAbsoluteUrl' => $forceAbsoluteUrl,
-		);
-
-		return $GLOBALS['TSFE']->cObj->typoLink('', $config);
 	}
 
 	/**
@@ -387,89 +349,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 		}
 
 		return $page['title'];
-	}
-
-	/**
-	 * @return boolean
-	 */
-	protected function shouldUseShortcutTarget() {
-		$useShortcutTarget = (boolean) $this->arguments['useShortcutData'];
-		if (TRUE === $this->hasArgument('useShortcutTarget')) {
-			$useShortcutTarget = (boolean) $this->arguments['useShortcutTarget'];
-		}
-
-		return $useShortcutTarget;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	protected function shouldUseShortcutUid() {
-		$useShortcutUid = (boolean) $this->arguments['useShortcutData'];
-		if (TRUE === $this->hasArgument('useShortcutUid')) {
-			$useShortcutUid = (boolean) $this->arguments['useShortcutUid'];
-		}
-
-		return $useShortcutUid;
-	}
-
-	/**
-	 * @param integer $pageUid
-	 * @return boolean
-	 */
-	protected function isCurrent($pageUid) {
-		return ((integer) $pageUid === (integer) $GLOBALS['TSFE']->id);
-	}
-
-	/**
-	 * @param $pageUid
-	 * @return boolean
-	 */
-	protected function isActive($pageUid) {
-		$rootLineData = $this->pageService->getRootLine(NULL, FALSE, $this->arguments['showAccessProtected']);
-		foreach ($rootLineData as $page) {
-			if ((integer) $page['uid'] === (integer) $pageUid) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-
-	/**
-	 * @param array $page
-	 * @return boolean
-	 */
-	protected function isAccessProtected(array $page) {
-		return (0 !== (integer) $page['fe_group']);
-	}
-
-	/**
-	 * @param array $page
-	 * @return boolean
-	 */
-	protected function isAccessGranted(array $page) {
-		if (FALSE === $this->isAccessProtected($page)) {
-			return TRUE;
-		}
-
-		$groups = explode(',', $page['fe_group']);
-
-		$showPageAtAnyLogin = (TRUE === in_array(-2, $groups));
-		$hidePageAtAnyLogin = (TRUE === in_array(-1, $groups));
-		$userIsLoggedIn = (TRUE === is_array($GLOBALS['TSFE']->fe_user->user));
-		$userGroups = $GLOBALS['TSFE']->fe_user->groupData['uid'];
-		$userIsInGrantedGroups = (0 < count(array_intersect($userGroups, $groups)));
-
-		if (
-			(FALSE === $userIsLoggedIn && TRUE === $hidePageAtAnyLogin) ||
-			(TRUE === $userIsLoggedIn && TRUE === $showPageAtAnyLogin) ||
-			(TRUE === $userIsLoggedIn && TRUE === $userIsInGrantedGroups)
-		) {
-			return TRUE;
-		}
-
-		return FALSE;
 	}
 
 	/**
