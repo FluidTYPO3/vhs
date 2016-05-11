@@ -24,4 +24,15 @@ class ImplodeViewHelper extends ExplodeViewHelper {
 	 */
 	protected $method = 'implode';
 
+	/**
+	 * Initialize
+	 *
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->overrideArgument('content', 'string', 'Array or array-convertible object to be imploded by glue', FALSE, NULL);
+		$this->overrideArgument('glue', 'string', 'String used as glue in the content to be imploded. Use glue value of "constant:NAMEOFCONSTANT" (fx "constant:LF" for linefeed as glue)', FALSE, ',');
+	}
+
 }
