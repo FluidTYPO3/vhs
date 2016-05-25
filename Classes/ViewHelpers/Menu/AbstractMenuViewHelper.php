@@ -312,7 +312,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 				$pages[$index]['active'] = TRUE;
 				$class[] = $this->arguments['classActive'];
 			}
-			if (TRUE === $this->pageService->isCurrent($originalPageUid)) {
+			if (TRUE === $this->pageService->isCurrent($page['uid'])) {
 				$pages[$index]['current'] = TRUE;
 				$class[] = $this->arguments['classCurrent'];
 			}
