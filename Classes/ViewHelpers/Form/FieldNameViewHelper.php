@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Form;
  */
 
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Form Field Name View Helper
