@@ -15,6 +15,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Returns the current canonical url in a link tag.
  *
  * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
+ * @author Daniel Kestler <daniel.kestler@medienreaktor.de>, medienreaktor GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Page\Header
  */
@@ -46,12 +47,14 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		$configuration = array(
-			'parameter' => $pageUid,
-			'forceAbsoluteUrl' => 1,
-		);
-
-		$uri = $GLOBALS['TSFE']->cObj->typoLink_URL($configuration);
+		$uriBuilder = $this->controllerContext->getUriBuilder();
+		$uri = $uriBuilder->reset()
+			->setTargetPageUid($pageUid)
+			->setUseCacheHash(TRUE)
+			->setCreateAbsoluteUri(TRUE)
+			->setAddQueryString(TRUE)
+			->setArgumentsToBeExcludedFromQueryString(['id'])
+			->build();
 
 		if (TRUE === empty($uri)) {
 			return NULL;
@@ -60,7 +63,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper {
 		$uri = $GLOBALS['TSFE']->baseUrlWrap($uri);
 
 		$this->tag->addAttribute('rel', 'canonical');
-		$this->tag->addAttribute('href', $uri);
+		$this->tag->addAttribute('href', $uri, FALSE);
 
 		$renderedTag = $this->tag->render();
 
