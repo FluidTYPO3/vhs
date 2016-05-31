@@ -119,6 +119,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper {
 		if (TRUE === (boolean) $this->arguments['sectionIndexOnly']) {
 			$conditions .= ' AND sectionIndex = 1';
 		}
+		$conditions .= ' AND t3ver_state<=1';
 
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
 		return $rows;
