@@ -88,6 +88,11 @@ class ImageViewHelper extends AbstractImageViewHelper {
 			$height = $this->imageInfo[1];
 		}
 
+		if ($this->hasArgument('canvasWidth') || $this->hasArgument('canvasHeight')) {
+			$width = $this->arguments['canvasWidth'];
+			$height = $this->arguments['canvasHeight'];
+		}
+
 		$this->tag->addAttribute('width', $width);
 		$this->tag->addAttribute('height', $height);
 		$this->tag->addAttribute('src', $src);
