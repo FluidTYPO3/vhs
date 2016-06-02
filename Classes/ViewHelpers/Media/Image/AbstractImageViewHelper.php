@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
 
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -78,6 +79,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		$this->registerArgument('format', 'string', 'Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.', FALSE, NULL);
 		$this->registerArgument('quality', 'integer', 'Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.', FALSE, NULL);
 		$this->registerArgument('treatIdAsReference', 'boolean', 'When TRUE treat given src argument as sys_file_reference record. Applies only to TYPO3 6.x and above.', FALSE, FALSE);
+		$this->registerArgument('canvasWidth', 'integer', 'Width of an optional canvas to place the image on.', FALSE);
+		$this->registerArgument('canvasHeight', 'integer', 'Height of an optional canvas to place the image on.', FALSE);
+		$this->registerArgument('canvasColor', 'string', 'Background color of an optional canvas to place the image on (hex triplet).', FALSE);
 	}
 
 	/**
@@ -115,11 +119,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		if (FALSE === empty($format)) {
 			$setup['ext'] = $format;
 		}
-		if (0 < intval($quality)) {
+		if (0 < (integer) $quality) {
 			$quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
 			$setup['params'] = '-quality ' . $quality;
 		}
-		if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
+		if ('BE' === TYPO3_MODE && 0 === strpos($src, '../')) {
 			$src = substr($src, 3);
 		}
 		$this->imageInfo = $this->contentObject->getImgResource($src, $setup);
@@ -127,12 +131,25 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper {
 		if (FALSE === is_array($this->imageInfo)) {
 			throw new Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
 		}
-		if ((float) substr(TYPO3_version, 0, 3) < 7.1) {
-			$this->imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($this->imageInfo[3]);
-		} else {
-			$this->imageInfo[3] = GraphicalFunctions::pngToGifByImagemagick($this->imageInfo[3]);
-		}
+
+        if ($this->hasArgument('canvasWidth') && $this->hasArgument('canvasHeight')) {
+            $canvasWidth = (integer) $this->arguments['canvasWidth'];
+            $canvasHeight = (integer) $this->arguments['canvasHeight'];
+            $canvasColor = str_replace('#', '', $this->arguments['canvasColor']);
+            $originalFilename = $this->imageInfo[3];
+	        $originalExtension = substr($originalFilename, -3);
+	        $destinationFilename = 'typo3temp/vhs-canvas-' . md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
+            $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);
+	        if (!file_exists($destinationFilepath)) {
+		        $arguments = sprintf('%s -background \'#%s\' -gravity center -extent %dx%d %s', $originalFilename, $canvasColor, $canvasWidth, $canvasHeight, $destinationFilepath);
+		        $command = CommandUtility::imageMagickCommand('convert', $arguments);
+		        CommandUtility::exec($command);
+	        }
+	        $this->imageInfo[3] = $destinationFilename;
+        }
+
 		$GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
+
 		$publicUrl = rawurldecode($this->imageInfo[3]);
 		$this->mediaSource = GeneralUtility::rawUrlEncodeFP($publicUrl);
 		if ('BE' === TYPO3_MODE) {
