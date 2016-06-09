@@ -3,6 +3,117 @@
 upcoming
 ------------------
 
+- [#970](https://github.com/FluidTYPO3/vhs/pull/970) **PHP7** is supported
+
+- [TYPO3 8 supported](https://github.com/FluidTYPO3/vhs/commit/5625467c951b2ee762d88da21169ade08605e7d0)
+
+- :exclamation: [#974](https://github.com/FluidTYPO3/vhs/pull/974) *'allowMoveToFooter'* attribute removed from asset ViewHelpers
+	- use *'movable'* instead
+
+- :exclamation: [fc1baf9](https://github.com/FluidTYPO3/vhs/commit/fc1baf90b07f6036ccec74e53730c8c2f66e6af6) *'name'* attribute removed from v:variable.extensionConfiguration
+	- use *'path'* instead
+	- [v:variable.extensionConfiguration](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/ExtensionConfigurationViewHelper.html)
+
+- :exclamation: [#1003](https://github.com/FluidTYPO3/vhs/pull/1003) v:switch and v:case ViewHelpers removed
+	- use **f:switch** and **f:case** from Fluid itself
+	- check the notes from PR [#1003](https://github.com/FluidTYPO3/vhs/pull/1003) for migration instruction
+
+- :exclamation: [#987](https://github.com/FluidTYPO3/vhs/pull/987) Major refactoring of menu ViewHelpers
+	- **WIP**: the list of changes and work on this isn't complete yet. Feel free to add more items here to provide a better overview of the work, which was done.
+	- All the menu ViewHelpers are relocated from *v:page.menu.[vh-name]* to **v:menu.[vh-name]**
+	- Removed `FluidTYPO3\Vhs\Service\PageSelectService` (use `FluidTYPO3\Vhs\Service\PageService` and TYPO3 native `TYPO3\CMS\Frontend\Page\PageRepository` instead)
+	- **v:condition.page.hasSubpages**
+		- *'includeHiddenInMenu'* attribute added - include pages hidden in menu
+		- *'includeAccessProtected'* attribute added - includes pages, protected by FE groups constraints, see [#976](https://github.com/FluidTYPO3/vhs/issues/976)  
+		- *'includeHidden'*, *'showHiddenInMenu'* attributes deprecated
+	- All the menu ViewHelpers
+		- *'showAccessProtected'* attribute added - if `TRUE` links to access protected pages are always rendered regardless of user login status
+		- *'classAccessProtected'* attribute added - optional class name to add to links which are access protected
+		- *'classAccessGranted'* attribute added - optional class name to add to links which are access protected but access is actually granted (user is logged in with corrrect FE usergroup)
+		- *'resolveExclude'*, *'showHidden'*, *'excludeSubpageTypes'* attributes removed
+	- All the menu objects, used in Fluid manual menu rendering
+		- got *'accessProtected'* property, which indicates, that page is protected by FE groups constraints
+		- got *'accessGranted'* property, which indicates, that page is protected by FE groups, but currently logged in user can access the page
+		- *'hasSubPages'* property was renamed to **'hasSubpages'** (lowercase P)
+	-  [Source commit with more info](https://github.com/FluidTYPO3/vhs/commit/ee6956109be02d1c8fd75db6e4c4732e417bf184)
+
+- :exclamation: [#1024](https://github.com/FluidTYPO3/vhs/pull/1024) v:page.link functionality was aligned with same link creation behavior, which was introdiced in menu ViewHelpers, regarding shrotcuts and protected pages
+	- Received new attributes *'showAccessProtected'*, *'classAccessProtected'*, *'classAccessGranted'*, *'useShortcutUid'*, *'useShortcutTarget'*, *'useShortcutData'*
+	- *'linkAccessRestrictedPages'* was deprectaed in favor of *'showAccessProtected'*
+	- [v:page.link](https://fluidtypo3.org/viewhelpers/vhs/master/Page/LinkViewHelper.html)
+
+- :exclamation: [#1023](https://github.com/FluidTYPO3/vhs/pull/1023) RegEx related ViewHelpers changed
+	- *v:condition.string.preg* removed and **v:variable.pregMatch** should be used instead
+	- *v:format.regularExpression* removed and **v:format.pregReplace** should be used instead
+	- [v:variable.pregMatch](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/PregMatchViewHelper.html)
+	- [v:format.pregReplace](https://fluidtypo3.org/viewhelpers/vhs/master/Format/PregReplaceViewHelper.html)
+
+- [#1022](https://github.com/FluidTYPO3/vhs/pull/1022) All the possible ViewHelpers are static compilable, which results in major performance improve
+	- Discover [Static compilable](http://blog.reelworx.at/detail/fluid-compilable-speed-it-up/)
+
+- [#955](https://github.com/FluidTYPO3/vhs/pull/955) **v:unless** ViewHelper added
+	- Inverted *f:if* which only supports negative matching
+	- [v:unless](https://fluidtypo3.org/viewhelpers/vhs/master/UnlessViewHelper.html)
+
+- [#988](https://github.com/FluidTYPO3/vhs/pull/988) **v:iterator.diff** ViewHelper added
+	- Computes the difference of arrays/Traversables
+	- [v:iterator.diff](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/DiffViewHelper.html)
+
+- [#1018](https://github.com/FluidTYPO3/vhs/pull/1018) **v:iterator.unique** ViewHelper added
+	- Accepts a subject and returns or assigns a new uniques-filtered array
+	- [v:iterator.unique](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/UniqueViewHelper.html)
+
+- [#1019](https://github.com/FluidTYPO3/vhs/pull/1019) **v:iterator.column** ViewHelper added
+	- Allows doing everything that array_column in PHP does but also supporting Iterator as input
+	- [v:iterator.column](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/ColumnViewHelper.html)
+
+- [#958](https://github.com/FluidTYPO3/vhs/pull/958) v:page.header.alternate got *'addQueryString'* attribute
+	- If *TRUE*, the current query parameters will be kept in the URI
+	- [v:page.header.alternate](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Header/AlternateViewHelper.html)
+
+- [#980](https://github.com/FluidTYPO3/vhs/pull/980) v:media.youtube got *'enableJsApi'* attribute
+	- Adds `enablejsapi=1` to a list of YouTube parameters
+	- [v:media.youtube](https://fluidtypo3.org/viewhelpers/vhs/master/Media/YoutubeViewHelper.html)
+
+- [aff7034](https://github.com/FluidTYPO3/vhs/commit/aff7034dc135a704b9d946d3f87df6bdc0a3790f) v:variable.extensionConfiguration returns a complete extension settings in case NULL provided as 'path'
+	- [v:variable.extensionConfiguration](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/ExtensionConfigurationViewHelper.html)
+
+- [6851420](https://github.com/FluidTYPO3/vhs/commit/6851420557ef00f5efcfb1ab8ad871c0b7c990a0) Image and ImageInfo ViewHelpers cna now correctly recognize a FileReference, supplied as 'src', so no need to set up manually 'treatIdAsUid' and 'treatIdAsReference' attributes
+
+- [#966](https://github.com/FluidTYPO3/vhs/pull/966) Fixed links of type "external" in menu ViewHelpers
+	- [Source commit with more info](https://github.com/FluidTYPO3/vhs/commit/39a7c1820887199a1aade1c7bdd4b9dfd0ecd5eb)
+
+- [#981](https://github.com/FluidTYPO3/vhs/pull/981) Fixed `player_id` argument for Vimeo player
+
+- [#982](https://github.com/FluidTYPO3/vhs/pull/982) Fixed rendering of restricted pages by menu ViewHelpers
+
+- [#984](https://github.com/FluidTYPO3/vhs/pull/984) Fixed *'caseSensitive'* behavior of v:format.replace
+
+- [#994](https://github.com/FluidTYPO3/vhs/pull/994) Fixed deprecation warnings with `TSFE->getPageRenderer()`
+
+- [#995](https://github.com/FluidTYPO3/vhs/pull/995) Fixed *'addQueryString'* behavior in v:page.languageMenu
+
+- [#997](https://github.com/FluidTYPO3/vhs/pull/997) Fixed path to SVG flag icons in v:page.languageMenu
+
+- Easter egg: over [1000](https://github.com/FluidTYPO3/vhs/pull/1000) commitments into repository!
+
+- [#1001](https://github.com/FluidTYPO3/vhs/pull/1001) v:format.placeholder.image now loads the placeholder via http**s**: https://placehold.it
+
+- [#953](https://github.com/FluidTYPO3/vhs/pull/953) v:page.resources.fal respects enableFileds, when sliding records by rootline
+
+- [#1015](https://github.com/FluidTYPO3/vhs/pull/1015) v:render.template is aware of TYPO3 7 paths definition (layoutRootPath**s** and partialRootPath**s**)
+
+- [#1042](https://github.com/FluidTYPO3/vhs/pull/1042) v:page.header.canonical includes query string, like with `addQueryString`
+
+- [#1044](https://github.com/FluidTYPO3/vhs/pull/1044) Fix duplicate content in workspace previews
+
+- [8085f56](https://github.com/FluidTYPO3/vhs/commit/8085f5621112f1d23aaabd8c89d464dc2f7b71b8) v:media.source respect fully qualified uris
+
+- [456d709](https://github.com/FluidTYPO3/vhs/commit/456d709413351ceb2bc9a478a7e54bb032f9e5dc) src-set of image ViewHelper works correctly with `treatIdAsReference`
+
+2.4.0 - 2015-11-19
+------------------
+
 - [TYPO3 7 LTS supported](https://github.com/FluidTYPO3/vhs/commit/ab893323e2cac57ca32b22efe20a7ad67c3e7bff)
 
 - :exclamation: No more testing for PHP 5.4
@@ -10,7 +121,7 @@ upcoming
 - :exclamation: Support of TYPO3 6.2 dropped
 	- For TYPO3 6.2 based projects there will be a *legacy* branch
 
-- :exclamation: [#829](https://github.com/FluidTYPO3/vhs/pull/829) *'allowMoveToFooter'*   attribute became deprecated in asset ViewHelpers
+- :exclamation: [#829](https://github.com/FluidTYPO3/vhs/pull/829) *'allowMoveToFooter'* attribute became deprecated in asset ViewHelpers
 	- use *'movable'* instead
 
 - :exclamation: [#856](https://github.com/FluidTYPO3/vhs/pull/856) *'pageUid'* attribute removed from v:render.request
