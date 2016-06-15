@@ -9,8 +9,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Link;
  */
 
 use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper as FluidTypolinkViewHelper;
 
 /**
  * ### TypolinkViewhelper
@@ -20,6 +22,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * For more info on the typolink function, please consult the offical core-documentation:
  * http://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/TypoScriptFunctions/Typolink/Index.html
+ *
+ * DEPRECATED: Use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper instead
  *
  * ### Examples
  *
@@ -36,8 +40,10 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <v:link.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">Click Me!</v:link.typolink>
  *
  * @author Cedric Ziel <cedric@cedric-ziel.com>, Cedric Ziel - Internetdienstleistungen & EDV
+ * @author Daniel Kestler <daniel.kestler@medienreaktor.de>, medienreaktor GmbH
  * @package Vhs
  * @subpackage ViewHelpers\Link
+ * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper instead
  */
 class TypolinkViewHelper extends AbstractViewHelper {
 
@@ -57,7 +63,11 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	 * @return mixed
 	 */
 	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return $GLOBALS['TSFE']->cObj->typoLink($renderChildrenClosure(), $arguments['configuration']);
+		GeneralUtility::deprecationLog('Deprecated TypoLinkViewHelper from VHS was used. Please use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper instead.');
+		if (NULL === $arguments['configuration']['additionalAttributes']) {
+			$arguments['configuration']['additionalAttributes'] = array();
+		}
+		return FluidTypolinkViewHelper::renderStatic($arguments['configuration'], $renderChildrenClosure, $renderingContext);
 	}
 
 }
