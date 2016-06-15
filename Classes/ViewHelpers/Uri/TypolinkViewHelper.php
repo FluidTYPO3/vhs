@@ -64,9 +64,6 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	 */
 	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		GeneralUtility::deprecationLog('Deprecated TypoLinkViewHelper from VHS was used. Please use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper instead.');
-		if (NULL === $arguments['configuration']['additionalAttributes']) {
-			$arguments['configuration']['additionalAttributes'] = array();
-		}
 		return FluidTypolinkViewHelper::renderStatic($arguments['configuration'], $renderChildrenClosure, $renderingContext);
 	}
 
