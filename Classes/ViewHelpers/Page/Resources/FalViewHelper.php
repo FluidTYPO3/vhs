@@ -79,7 +79,7 @@ class FalViewHelper extends ResourcesFalViewHelper {
 	 * @return boolean
 	 */
 	protected function isDefaultLanguage() {
-		return (boolean) $this->getCurrentLanguageUid() === 0;
+		return $this->getCurrentLanguageUid() === 0;
 	}
 
 	/**
