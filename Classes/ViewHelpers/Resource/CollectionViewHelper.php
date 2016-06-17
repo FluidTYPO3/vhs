@@ -49,7 +49,7 @@ class CollectionViewHelper extends AbstractResourceViewHelper {
 			/** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
 			$collection = $this->collectionRepository->findByUid($uid);
 			if (NULL !== $collection) {
-				return $collection->loadContents();
+				$collection->loadContents();
 			}
 			return $collection;
 		}
