@@ -50,9 +50,8 @@ class CollectionViewHelper extends AbstractResourceViewHelper {
 			$collection = $this->collectionRepository->findByUid($uid);
 			if (NULL !== $collection) {
 				return $collection->loadContents();
-			} else {
-				return NULL;
 			}
+			return $collection;
 		}
 		return NULL;
 	}
