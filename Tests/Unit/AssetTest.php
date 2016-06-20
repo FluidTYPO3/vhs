@@ -93,19 +93,6 @@ class AssetTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function createAssetInstanceFromStaticSettingsFactoryRemapsDeprecatedProperties() {
-		$file = $this->getAbsoluteAssetFixturePath();
-		$settings = array(
-			'file' => $file,
-			'arguments' => array('foo' => 'bar')
-		);
-		$asset = Asset::createFromSettings($settings);
-		$this->assertAttributeEquals($settings['arguments'], 'variables', $asset);
-	}
-
-	/**
-	 * @test
-	 */
 	public function supportsChainingInAllSettersWithFakeNullArgument() {
 		$asset = Asset::getInstance();
 		$settableProperties = ObjectAccess::getSettablePropertyNames($asset);
