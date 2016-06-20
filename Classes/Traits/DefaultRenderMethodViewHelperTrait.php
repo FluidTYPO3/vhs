@@ -24,15 +24,16 @@ namespace FluidTYPO3\Vhs\Traits;
  * - generic render method passing arguments, context and closures
  *   to renderStatic.
  */
-trait DefaultRenderMethodViewHelperTrait {
+trait DefaultRenderMethodViewHelperTrait
+{
 
-	/**
-	 * Delegation to renderStatic
-	 *
-	 * @return mixed
-	 */
-	public function render() {
-		return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
-	}
-
+    /**
+     * Delegation to renderStatic
+     *
+     * @return mixed
+     */
+    public function render()
+    {
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+    }
 }

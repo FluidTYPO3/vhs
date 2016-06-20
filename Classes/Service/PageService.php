@@ -25,294 +25,319 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * @package Vhs
  * @subpackage Service
  */
-class PageService implements SingletonInterface {
+class PageService implements SingletonInterface
+{
 
-	const DOKTYPE_MOVE_TO_PLACEHOLDER = 0;
+    const DOKTYPE_MOVE_TO_PLACEHOLDER = 0;
 
-	/**
-	 * @var array
-	 */
-	protected static $cachedPages = array();
+    /**
+     * @var array
+     */
+    protected static $cachedPages = array();
 
-	/**
-	 * @var array
-	 */
-	protected static $cachedMenus = array();
+    /**
+     * @var array
+     */
+    protected static $cachedMenus = array();
 
-	/**
-	 * @var array
-	 */
-	protected static $cachedRootlines = array();
+    /**
+     * @var array
+     */
+    protected static $cachedRootlines = array();
 
-	/**
-	 * @param integer $pageUid
-	 * @param array $excludePages
-	 * @param boolean $includeNotInMenu
-	 * @param boolean $includeMenuSeparator
-	 * @param boolean $disableGroupAccessCheck
-	 *
-	 * @return array
-	 */
-	public function getMenu($pageUid, array $excludePages = array(), $includeNotInMenu = FALSE, $includeMenuSeparator = FALSE, $disableGroupAccessCheck = FALSE) {
-		$pageRepository = $this->getPageRepository();
-		$pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
-		$cacheKey = md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
-		if (FALSE === isset(self::$cachedMenus[$cacheKey])) {
-			if (TRUE === (boolean) $disableGroupAccessCheck) {
-				$pageRepository->where_groupAccess = '';
-			}
-			self::$cachedMenus[$cacheKey] = $pageRepository->getMenu(
-				$pageUid,
-				'*',
-				'sorting',
-				$pageConstraints
-			);
-		}
+    /**
+     * @param integer $pageUid
+     * @param array $excludePages
+     * @param boolean $includeNotInMenu
+     * @param boolean $includeMenuSeparator
+     * @param boolean $disableGroupAccessCheck
+     *
+     * @return array
+     */
+    public function getMenu(
+        $pageUid,
+        array $excludePages = array(),
+        $includeNotInMenu = false,
+        $includeMenuSeparator = false,
+        $disableGroupAccessCheck = false
+    ) {
+        $pageRepository = $this->getPageRepository();
+        $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
+        $cacheKey = md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
+        if (false === isset(self::$cachedMenus[$cacheKey])) {
+            if (true === (boolean) $disableGroupAccessCheck) {
+                $pageRepository->where_groupAccess = '';
+            }
+            self::$cachedMenus[$cacheKey] = $pageRepository->getMenu(
+                $pageUid,
+                '*',
+                'sorting',
+                $pageConstraints
+            );
+        }
 
-		return self::$cachedMenus[$cacheKey];
-	}
+        return self::$cachedMenus[$cacheKey];
+    }
 
-	/**
-	 * @param integer $pageUid
-	 * @param boolean $disableGroupAccessCheck
-	 * @return array
-	 */
-	public function getPage($pageUid, $disableGroupAccessCheck = FALSE) {
-		$cacheKey = md5($pageUid . (integer) $disableGroupAccessCheck);
-		if (FALSE === isset(self::$cachedPages[$cacheKey])) {
-			self::$cachedPages[$cacheKey] = $this->getPageRepository()->getPage($pageUid, $disableGroupAccessCheck);
-		}
+    /**
+     * @param integer $pageUid
+     * @param boolean $disableGroupAccessCheck
+     * @return array
+     */
+    public function getPage($pageUid, $disableGroupAccessCheck = false)
+    {
+        $cacheKey = md5($pageUid . (integer) $disableGroupAccessCheck);
+        if (false === isset(self::$cachedPages[$cacheKey])) {
+            self::$cachedPages[$cacheKey] = $this->getPageRepository()->getPage($pageUid, $disableGroupAccessCheck);
+        }
 
-		return self::$cachedPages[$cacheKey];
-	}
+        return self::$cachedPages[$cacheKey];
+    }
 
-	/**
-	 * @param integer $pageUid
-	 * @param boolean $reverse
-	 * @param boolean $disableGroupAccessCheck
-	 * @return array
-	 */
-	public function getRootLine($pageUid = NULL, $reverse = FALSE, $disableGroupAccessCheck = FALSE) {
-		if (NULL === $pageUid) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
-		$cacheKey = md5($pageUid . (integer) $reverse . (integer) $disableGroupAccessCheck);
-		if (FALSE === isset(self::$cachedRootlines[$cacheKey])) {
-			$pageRepository = $this->getPageRepository();
-			if (TRUE === (boolean) $disableGroupAccessCheck) {
-				$pageRepository->where_groupAccess = '';
-			}
-			$rootline = $pageRepository->getRootLine($pageUid);
-			if (TRUE === $reverse) {
-				$rootline = array_reverse($rootline);
-			}
-			self::$cachedRootlines[$cacheKey] = $rootline;
-		}
+    /**
+     * @param integer $pageUid
+     * @param boolean $reverse
+     * @param boolean $disableGroupAccessCheck
+     * @return array
+     */
+    public function getRootLine($pageUid = null, $reverse = false, $disableGroupAccessCheck = false)
+    {
+        if (null === $pageUid) {
+            $pageUid = $GLOBALS['TSFE']->id;
+        }
+        $cacheKey = md5($pageUid . (integer) $reverse . (integer) $disableGroupAccessCheck);
+        if (false === isset(self::$cachedRootlines[$cacheKey])) {
+            $pageRepository = $this->getPageRepository();
+            if (true === (boolean) $disableGroupAccessCheck) {
+                $pageRepository->where_groupAccess = '';
+            }
+            $rootline = $pageRepository->getRootLine($pageUid);
+            if (true === $reverse) {
+                $rootline = array_reverse($rootline);
+            }
+            self::$cachedRootlines[$cacheKey] = $rootline;
+        }
 
-		return self::$cachedRootlines[$cacheKey];
-	}
+        return self::$cachedRootlines[$cacheKey];
+    }
 
-	/**
-	 * @param array $excludePages
-	 * @param boolean $includeNotInMenu
-	 * @param boolean $includeMenuSeparator
-	 *
-	 * @return string
-	 */
-	protected function getPageConstraints(array $excludePages = array(), $includeNotInMenu = FALSE, $includeMenuSeparator = FALSE) {
-		$constraints = array();
+    /**
+     * @param array $excludePages
+     * @param boolean $includeNotInMenu
+     * @param boolean $includeMenuSeparator
+     *
+     * @return string
+     */
+    protected function getPageConstraints(
+        array $excludePages = array(),
+        $includeNotInMenu = false,
+        $includeMenuSeparator = false
+    ) {
+        $constraints = array();
 
-		$constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' . PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
+        $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' .
+            PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
 
-		if ($includeNotInMenu === FALSE) {
-			$constraints[] = 'nav_hide = 0';
-		}
+        if ($includeNotInMenu === false) {
+            $constraints[] = 'nav_hide = 0';
+        }
 
-		if ($includeMenuSeparator === FALSE) {
-			$constraints[] = 'doktype != ' . PageRepository::DOKTYPE_SPACER;
-		}
+        if ($includeMenuSeparator === false) {
+            $constraints[] = 'doktype != ' . PageRepository::DOKTYPE_SPACER;
+        }
 
-		if (0 < count($excludePages)) {
-			$constraints[] = 'uid NOT IN (' . implode(',', $excludePages) . ')';
-		}
+        if (0 < count($excludePages)) {
+            $constraints[] = 'uid NOT IN (' . implode(',', $excludePages) . ')';
+        }
 
-		return 'AND ' . implode(' AND ', $constraints);
-	}
+        return 'AND ' . implode(' AND ', $constraints);
+    }
 
-	/**
-	 * @param array|integer $page
-	 * @param integer $languageUid
-	 * @param boolean $normalWhenNoLanguage
-	 * @return boolean
-	 */
-	public function hidePageForLanguageUid($page = NULL, $languageUid = -1, $normalWhenNoLanguage = TRUE) {
-		if (is_array($page)) {
-			$pageUid = $page['uid'];
-			$pageRecord = $page;
-		} else {
-			$pageUid = (0 === (integer) $page) ? $GLOBALS['TSFE']->id : (integer) $page;
-			$pageRecord = $this->getPage($pageUid);
-		}
-		if (-1 === (integer) $languageUid) {
-			$languageUid = $GLOBALS['TSFE']->sys_language_uid;
-		}
-		$l18nCfg = TRUE === isset($pageRecord['l18n_cfg']) ? $pageRecord['l18n_cfg'] : 0;
-		$hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
-		$hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
-		$pageOverlay = (0 !== $languageUid) ? $GLOBALS['TSFE']->sys_page->getPageOverlay($pageUid, $languageUid) : array();
-		$translationAvailable = (0 !== count($pageOverlay));
+    /**
+     * @param array|integer $page
+     * @param integer $languageUid
+     * @param boolean $normalWhenNoLanguage
+     * @return boolean
+     */
+    public function hidePageForLanguageUid($page = null, $languageUid = -1, $normalWhenNoLanguage = true)
+    {
+        if (is_array($page)) {
+            $pageUid = $page['uid'];
+            $pageRecord = $page;
+        } else {
+            $pageUid = (0 === (integer) $page) ? $GLOBALS['TSFE']->id : (integer) $page;
+            $pageRecord = $this->getPage($pageUid);
+        }
+        if (-1 === (integer) $languageUid) {
+            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+        }
+        $l18nCfg = true === isset($pageRecord['l18n_cfg']) ? $pageRecord['l18n_cfg'] : 0;
+        $hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
+        $hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
+        $pageOverlay = array();
+        if (0 !== $languageUid) {
+            $pageOverlay¨ = $GLOBALS['TSFE']->sys_page->getPageOverlay($pageUid, $languageUid);
+        }
+        $translationAvailable = (0 !== count($pageOverlay));
 
-		return
-			(TRUE === $hideIfNotTranslated && (0 !== $languageUid) && FALSE === $translationAvailable) ||
-			(TRUE === $hideIfDefaultLanguage && ((0 === $languageUid) || FALSE === $translationAvailable)) ||
-			(FALSE === $normalWhenNoLanguage && (0 !== $languageUid) && FALSE === $translationAvailable);
-	}
+        return
+            (true === $hideIfNotTranslated && (0 !== $languageUid) && false === $translationAvailable) ||
+            (true === $hideIfDefaultLanguage && ((0 === $languageUid) || false === $translationAvailable)) ||
+            (false === $normalWhenNoLanguage && (0 !== $languageUid) && false === $translationAvailable);
+    }
 
-	/**
-	 * @return PageRepository
-	 */
-	protected function getPageRepository() {
-		return clone $GLOBALS['TSFE']->sys_page;
-	}
+    /**
+     * @return PageRepository
+     */
+    protected function getPageRepository()
+    {
+        return clone $GLOBALS['TSFE']->sys_page;
+    }
 
-	/**
-	 * @param array $page
-	 * @param boolean $forceAbsoluteUrl
-	 *
-	 * @return string
-	 */
-	public function getItemLink(array $page, $forceAbsoluteUrl = FALSE) {
-		$config = array(
-			'parameter' => $page['uid'],
-			'returnLast' => 'url',
-			'additionalParams' => '',
-			'useCacheHash' => FALSE,
-			'forceAbsoluteUrl' => $forceAbsoluteUrl,
-		);
+    /**
+     * @param array $page
+     * @param boolean $forceAbsoluteUrl
+     *
+     * @return string
+     */
+    public function getItemLink(array $page, $forceAbsoluteUrl = false)
+    {
+        $config = array(
+            'parameter' => $page['uid'],
+            'returnLast' => 'url',
+            'additionalParams' => '',
+            'useCacheHash' => false,
+            'forceAbsoluteUrl' => $forceAbsoluteUrl,
+        );
 
-		return $GLOBALS['TSFE']->cObj->typoLink('', $config);
-	}
+        return $GLOBALS['TSFE']->cObj->typoLink('', $config);
+    }
 
-	/**
-	 * @param array $page
-	 * @return boolean
-	 */
-	public function isAccessProtected(array $page) {
-		return (0 !== (integer) $page['fe_group']);
-	}
+    /**
+     * @param array $page
+     * @return boolean
+     */
+    public function isAccessProtected(array $page)
+    {
+        return (0 !== (integer) $page['fe_group']);
+    }
 
-	/**
-	 * @param array $page
-	 * @return boolean
-	 */
-	public function isAccessGranted(array $page) {
-		if (!$this->isAccessProtected($page)) {
-			return TRUE;
-		}
+    /**
+     * @param array $page
+     * @return boolean
+     */
+    public function isAccessGranted(array $page)
+    {
+        if (!$this->isAccessProtected($page)) {
+            return true;
+        }
 
-		$groups = explode(',', $page['fe_group']);
+        $groups = explode(',', $page['fe_group']);
 
-		$showPageAtAnyLogin = (in_array(-2, $groups));
-		$hidePageAtAnyLogin = (in_array(-1, $groups));
-		$userIsLoggedIn = (is_array($GLOBALS['TSFE']->fe_user->user));
-		$userGroups = $GLOBALS['TSFE']->fe_user->groupData['uid'];
-		$userIsInGrantedGroups = (0 < count(array_intersect($userGroups, $groups)));
+        $showPageAtAnyLogin = (in_array(-2, $groups));
+        $hidePageAtAnyLogin = (in_array(-1, $groups));
+        $userIsLoggedIn = (is_array($GLOBALS['TSFE']->fe_user->user));
+        $userGroups = $GLOBALS['TSFE']->fe_user->groupData['uid'];
+        $userIsInGrantedGroups = (0 < count(array_intersect($userGroups, $groups)));
 
-		if (
-			(FALSE === $userIsLoggedIn && TRUE === $hidePageAtAnyLogin) ||
-			(TRUE === $userIsLoggedIn && TRUE === $showPageAtAnyLogin) ||
-			(TRUE === $userIsLoggedIn && TRUE === $userIsInGrantedGroups)
-		) {
-			return TRUE;
-		}
+        if ((false === $userIsLoggedIn && true === $hidePageAtAnyLogin) ||
+            (true === $userIsLoggedIn && true === $showPageAtAnyLogin) ||
+            (true === $userIsLoggedIn && true === $userIsInGrantedGroups)
+        ) {
+            return true;
+        }
 
-		return FALSE;
-	}
+        return false;
+    }
 
-	/**
-	 * @param integer $pageUid
-	 * @return boolean
-	 */
-	public function isCurrent($pageUid) {
-		return ((integer) $pageUid === (integer) $GLOBALS['TSFE']->id);
-	}
+    /**
+     * @param integer $pageUid
+     * @return boolean
+     */
+    public function isCurrent($pageUid)
+    {
+        return ((integer) $pageUid === (integer) $GLOBALS['TSFE']->id);
+    }
 
-	/**
-	 * @param integer $pageUid
-	 * @param boolean $showAccessProtected
-	 * @return boolean
-	 */
-	public function isActive($pageUid, $showAccessProtected = FALSE) {
-		$rootLineData = $this->getRootLine(NULL, FALSE, $showAccessProtected);
-		foreach ($rootLineData as $page) {
-			if ((integer) $page['uid'] === (integer) $pageUid) {
-				return TRUE;
-			}
-		}
+    /**
+     * @param integer $pageUid
+     * @param boolean $showAccessProtected
+     * @return boolean
+     */
+    public function isActive($pageUid, $showAccessProtected = false)
+    {
+        $rootLineData = $this->getRootLine(null, false, $showAccessProtected);
+        foreach ($rootLineData as $page) {
+            if ((integer) $page['uid'] === (integer) $pageUid) {
+                return true;
+            }
+        }
 
-		return FALSE;
-	}
+        return false;
+    }
 
-	/**
-	 * @param array $arguments
-	 * @return boolean
-	 */
-	public function shouldUseShortcutTarget(array $arguments) {
-		$useShortcutTarget = (boolean) $arguments['useShortcutData'];
-		if ($arguments['useShortcutTarget'] !== NULL) {
-			$useShortcutTarget = (boolean) $arguments['useShortcutTarget'];
-		}
+    /**
+     * @param array $arguments
+     * @return boolean
+     */
+    public function shouldUseShortcutTarget(array $arguments)
+    {
+        $useShortcutTarget = (boolean) $arguments['useShortcutData'];
+        if ($arguments['useShortcutTarget'] !== null) {
+            $useShortcutTarget = (boolean) $arguments['useShortcutTarget'];
+        }
 
-		return $useShortcutTarget;
-	}
+        return $useShortcutTarget;
+    }
 
-	/**
-	 * @param array $arguments
-	 * @return boolean
-	 */
-	public function shouldUseShortcutUid(array $arguments) {
-		$useShortcutUid = (boolean) $arguments['useShortcutData'];
-		if ($arguments['useShortcutUid'] !== NULL) {
-			$useShortcutUid = (boolean) $arguments['useShortcutUid'];
-		}
+    /**
+     * @param array $arguments
+     * @return boolean
+     */
+    public function shouldUseShortcutUid(array $arguments)
+    {
+        $useShortcutUid = (boolean) $arguments['useShortcutData'];
+        if ($arguments['useShortcutUid'] !== null) {
+            $useShortcutUid = (boolean) $arguments['useShortcutUid'];
+        }
 
-		return $useShortcutUid;
-	}
+        return $useShortcutUid;
+    }
 
-	/**
-	 * Determines the target page record for the provided page record
-	 * if it is configured as a shortcut in any of the possible modes.
-	 * Returns NULL otherwise.
-	 *
-	 * @param array $page
-	 * @return NULL|array
-	 */
-	public function getShortcutTargetPage(array $page) {
-		if ((integer) $page['doktype'] !== PageRepository::DOKTYPE_SHORTCUT) {
-			return NULL;
-		}
-		$originalPageUid = $page['uid'];
-		switch ($page['shortcut_mode']) {
-			case 3:
-				// mode: parent page of current page (using PID of current page)
-				$targetPage = $this->getPage($page['pid']);
-				break;
-			case 2:
-				// mode: random subpage of selected or current page
-				$menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
-				$targetPage = (0 < count($menu)) ? $menu[array_rand($menu)] : $page;
-				break;
-			case 1:
-				// mode: first subpage of selected or current page
-				$menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
-				$targetPage = (0 < count($menu)) ? reset($menu) : $page;
-				break;
-			case 0:
-			default:
-				// mode: selected page
-				$targetPage = $this->getPage($page['shortcut']);
-		}
-		return $targetPage;
-	}
-
+    /**
+     * Determines the target page record for the provided page record
+     * if it is configured as a shortcut in any of the possible modes.
+     * Returns NULL otherwise.
+     *
+     * @param array $page
+     * @return NULL|array
+     */
+    public function getShortcutTargetPage(array $page)
+    {
+        if ((integer) $page['doktype'] !== PageRepository::DOKTYPE_SHORTCUT) {
+            return null;
+        }
+        $originalPageUid = $page['uid'];
+        switch ($page['shortcut_mode']) {
+            case 3:
+                // mode: parent page of current page (using PID of current page)
+                $targetPage = $this->getPage($page['pid']);
+                break;
+            case 2:
+                // mode: random subpage of selected or current page
+                $menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
+                $targetPage = (0 < count($menu)) ? $menu[array_rand($menu)] : $page;
+                break;
+            case 1:
+                // mode: first subpage of selected or current page
+                $menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
+                $targetPage = (0 < count($menu)) ? reset($menu) : $page;
+                break;
+            case 0:
+            default:
+                // mode: selected page
+                $targetPage = $this->getPage($page['shortcut']);
+        }
+        return $targetPage;
+    }
 }

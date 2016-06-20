@@ -28,18 +28,19 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class PrependViewHelper extends AbstractViewHelper {
+class PrependViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $add
-	 * @param string $subject
-	 * @return string
-	 */
-	public function render($add, $subject = NULL) {
-		if (NULL === $subject) {
-			$subject = $this->renderChildren();
-		}
-		return $add . $subject;
-	}
-
+    /**
+     * @param string $add
+     * @param string $subject
+     * @return string
+     */
+    public function render($add, $subject = null)
+    {
+        if (null === $subject) {
+            $subject = $this->renderChildren();
+        }
+        return $add . $subject;
+    }
 }

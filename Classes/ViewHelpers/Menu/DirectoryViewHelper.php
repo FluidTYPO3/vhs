@@ -23,38 +23,46 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  * @package Vhs
  * @subpackage ViewHelpers\Menu
  */
-class DirectoryViewHelper extends AbstractMenuViewHelper {
+class DirectoryViewHelper extends AbstractMenuViewHelper
+{
 
-	/**
-	 * @var array
-	 */
-	protected $backups = array('menu');
+    /**
+     * @var array
+     */
+    protected $backups = array('menu');
 
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('pages', 'mixed', 'Parent page UIDs of subpages to include in the menu. Can be CSV, array or an object implementing Traversable.', TRUE);
-	}
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'pages',
+            'mixed',
+            'Parent page UIDs of subpages to include in the menu. Can be CSV, array or an object ' .
+            'implementing Traversable.',
+            true
+        );
+    }
 
-	/**
-	 * @return NULL|string
-	 */
-	public function render() {
-		$pages = $this->processPagesArgument();
-		if (0 === count($pages)) {
-			return NULL;
-		}
-		$menuData = array();
-		foreach ($pages as $pageUid) {
-			$menuData = array_merge($menuData, $this->getMenu($pageUid));
-		}
-		$menu = $this->parseMenu($menuData);
-		$this->backupVariables();
-		$this->templateVariableContainer->add($this->arguments['as'], $menu);
-		$output = $this->renderContent($menu);
-		$this->templateVariableContainer->remove($this->arguments['as']);
-		$this->restoreVariables();
+    /**
+     * @return NULL|string
+     */
+    public function render()
+    {
+        $pages = $this->processPagesArgument();
+        if (0 === count($pages)) {
+            return null;
+        }
+        $menuData = array();
+        foreach ($pages as $pageUid) {
+            $menuData = array_merge($menuData, $this->getMenu($pageUid));
+        }
+        $menu = $this->parseMenu($menuData);
+        $this->backupVariables();
+        $this->templateVariableContainer->add($this->arguments['as'], $menu);
+        $output = $this->renderContent($menu);
+        $this->templateVariableContainer->remove($this->arguments['as']);
+        $this->restoreVariables();
 
-		return $output;
-	}
-
+        return $output;
+    }
 }

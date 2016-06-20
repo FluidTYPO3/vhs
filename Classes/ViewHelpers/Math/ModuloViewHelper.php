@@ -28,15 +28,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class ModuloViewHelper extends AbstractMultipleMathViewHelper {
+class ModuloViewHelper extends AbstractMultipleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @param mixed $b
-	 * @return integer
-	 */
-	protected function calculateAction($a, $b) {
-		return $a % $b;
-	}
-
+    /**
+     * @param mixed $a
+     * @param mixed $b
+     * @return integer
+     */
+    protected function calculateAction($a, $b)
+    {
+        return $a % $b;
+    }
 }

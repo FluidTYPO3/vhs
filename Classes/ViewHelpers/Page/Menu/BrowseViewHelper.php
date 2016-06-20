@@ -27,5 +27,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class BrowseViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\BrowseViewHelper {
+class BrowseViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\BrowseViewHelper
+{
 }

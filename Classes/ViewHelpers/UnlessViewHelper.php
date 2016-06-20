@@ -44,34 +44,39 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class UnlessViewHelper extends AbstractConditionViewHelper {
+class UnlessViewHelper extends AbstractConditionViewHelper
+{
 
-	/**
-	 * Rendering with inversion and ignoring any f:then / f:else children.
-	 *
-	 * @return string|NULL
-	 */
-	public function render() {
-		if (!static::evaluateCondition($this->arguments)) {
-			return $this->renderChildren();
-		}
-		return NULL;
-	}
+    /**
+     * Rendering with inversion and ignoring any f:then / f:else children.
+     *
+     * @return string|NULL
+     */
+    public function render()
+    {
+        if (!static::evaluateCondition($this->arguments)) {
+            return $this->renderChildren();
+        }
+        return null;
+    }
 
-	/**
-	 * Static rendering with inversion and ignoring any f:then / f:else children.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$hasEvaluated = TRUE;
-		if (!static::evaluateCondition($arguments)) {
-			return $renderChildrenClosure();
-		}
-		return NULL;
-	}
-
+    /**
+     * Static rendering with inversion and ignoring any f:then / f:else children.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $hasEvaluated = true;
+        if (!static::evaluateCondition($arguments)) {
+            return $renderChildrenClosure();
+        }
+        return null;
+    }
 }

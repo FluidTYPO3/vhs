@@ -17,14 +17,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class CubicRootViewHelper extends AbstractSingleMathViewHelper {
+class CubicRootViewHelper extends AbstractSingleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @return integer
-	 */
-	protected function calculateAction($a) {
-		return pow($a, 1 / 3);
-	}
-
+    /**
+     * @param mixed $a
+     * @return integer
+     */
+    protected function calculateAction($a)
+    {
+        return pow($a, 1 / 3);
+    }
 }

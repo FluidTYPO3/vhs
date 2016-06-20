@@ -18,25 +18,26 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class TrimViewHelper extends AbstractViewHelper {
+class TrimViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Trims content by stripping off $characters
-	 *
-	 * @param string $content
-	 * @param string $characters
-	 * @return string
-	 */
-	public function render($content = NULL, $characters = NULL) {
-		if (NULL === $content) {
-			$content = $this->renderChildren();
-		}
-		if (FALSE === empty($characters)) {
-			$content = trim($content, $characters);
-		} else {
-			$content = trim($content);
-		}
-		return $content;
-	}
-
+    /**
+     * Trims content by stripping off $characters
+     *
+     * @param string $content
+     * @param string $characters
+     * @return string
+     */
+    public function render($content = null, $characters = null)
+    {
+        if (null === $content) {
+            $content = $this->renderChildren();
+        }
+        if (false === empty($characters)) {
+            $content = trim($content, $characters);
+        } else {
+            $content = trim($content);
+        }
+        return $content;
+    }
 }

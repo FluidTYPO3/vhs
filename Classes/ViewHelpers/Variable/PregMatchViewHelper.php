@@ -18,39 +18,49 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Implementation of `preg_match' for Fluid.
  */
-class PregMatchViewHelper extends AbstractViewHelper {
+class PregMatchViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
-	use TemplateVariableViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('pattern', 'mixed', 'Regex pattern to match against', TRUE);
-		$this->registerArgument('subject', 'mixed', 'String to match with the regex pattern', TRUE);
-		$this->registerArgument('global', 'boolean', 'Match global', FALSE, FALSE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('pattern', 'mixed', 'Regex pattern to match against', true);
+        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern', true);
+        $this->registerArgument('global', 'boolean', 'Match global', false, false);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if (empty($arguments['subject'])) {
-			$subject = $renderChildrenClosure();
-		} else {
-			$subject = $arguments['subject'];
-		}
-		if (TRUE === (boolean) $arguments['global']) {
-			preg_match_all($arguments['pattern'], $subject, $matches, PREG_SET_ORDER);
-		} else {
-			preg_match($arguments['pattern'], $subject, $matches);
-		}
-		return static::renderChildrenWithVariableOrReturnInputStatic($matches, $arguments['as'], $renderingContext, $renderChildrenClosure);
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        if (empty($arguments['subject'])) {
+            $subject = $renderChildrenClosure();
+        } else {
+            $subject = $arguments['subject'];
+        }
+        if (true === (boolean) $arguments['global']) {
+            preg_match_all($arguments['pattern'], $subject, $matches, PREG_SET_ORDER);
+        } else {
+            preg_match($arguments['pattern'], $subject, $matches);
+        }
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $matches,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
+    }
 }

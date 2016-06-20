@@ -19,14 +19,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class FloorViewHelper extends AbstractSingleMathViewHelper {
+class FloorViewHelper extends AbstractSingleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @return integer
-	 */
-	protected function calculateAction($a) {
-		return floor($a);
-	}
-
+    /**
+     * @param mixed $a
+     * @return integer
+     */
+    protected function calculateAction($a)
+    {
+        return floor($a);
+    }
 }

@@ -23,21 +23,22 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
  * @package Vhs
  * @subpackage ViewHelpers\Security
  */
-class DenyViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface {
+class DenyViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface
+{
 
-	/**
-	 * Render deny - i.e. render "else" child only if arguments are satisfied,
-	 * resulting in an inverse match.
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$evaluation = $this->evaluateArguments();
-		if (FALSE === $evaluation) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
-	}
-
+    /**
+     * Render deny - i.e. render "else" child only if arguments are satisfied,
+     * resulting in an inverse match.
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $evaluation = $this->evaluateArguments();
+        if (false === $evaluation) {
+            return $this->renderThenChild();
+        } else {
+            return $this->renderElseChild();
+        }
+    }
 }

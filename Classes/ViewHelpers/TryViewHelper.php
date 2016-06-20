@@ -61,7 +61,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *                     -> v:iterator.explode(glue: '_')
  *                     -> v:iterator.pop()
  *                     -> v:format.replace(substring: 'ViewHelper', replacement: ''}"
- * 	               <small>{exception.code}</small>
+ *                 <small>{exception.code}</small>
  *                 <!-- Output example: "Error in Decode <small>1358440054</small>" -->
  *             </h4>
  *             <p>
@@ -86,23 +86,24 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class TryViewHelper extends AbstractConditionViewHelper {
+class TryViewHelper extends AbstractConditionViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		try {
-			$content = $this->renderThenChild();
-			if (TRUE === empty($content)) {
-				$content = $this->renderChildren();
-			}
-		} catch (\Exception $error) {
-			$content = $this->renderChildrenWithVariables(array('exception' => $error));
-		}
-		return $content;
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        try {
+            $content = $this->renderThenChild();
+            if (true === empty($content)) {
+                $content = $this->renderChildren();
+            }
+        } catch (\Exception $error) {
+            $content = $this->renderChildrenWithVariables(array('exception' => $error));
+        }
+        return $content;
+    }
 }

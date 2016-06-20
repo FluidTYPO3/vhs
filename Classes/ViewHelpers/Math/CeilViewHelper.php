@@ -19,14 +19,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class CeilViewHelper extends AbstractSingleMathViewHelper {
+class CeilViewHelper extends AbstractSingleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @return integer
-	 */
-	protected function calculateAction($a) {
-		return ceil($a);
-	}
-
+    /**
+     * @param mixed $a
+     * @return integer
+     */
+    protected function calculateAction($a)
+    {
+        return ceil($a);
+    }
 }

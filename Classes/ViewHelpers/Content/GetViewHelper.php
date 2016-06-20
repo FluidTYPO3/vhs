@@ -18,27 +18,29 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-class GetViewHelper extends AbstractContentViewHelper {
+class GetViewHelper extends AbstractContentViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->overrideArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, FALSE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument('render', 'boolean', 'Return rendered result', false, false);
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return mixed
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return '';
-		}
-		$contentRecords = $this->getContentRecords();
-		return $contentRecords;
-	}
-
+    /**
+     * Render method
+     *
+     * @return mixed
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return '';
+        }
+        $contentRecords = $this->getContentRecords();
+        return $contentRecords;
+    }
 }

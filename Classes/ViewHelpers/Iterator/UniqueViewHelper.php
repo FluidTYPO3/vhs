@@ -57,28 +57,30 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * Countries of our users: Denmark - Germany - USA
  * ```
  */
-class UniqueViewHelper extends AbstractViewHelper {
+class UniqueViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'The input array/Traversable to process', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('subject', 'mixed', 'The input array/Traversable to process');
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		$array = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$array = array_unique($array);
-		return $this->renderChildrenWithVariableOrReturnInput($array);
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        $array = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $array = array_unique($array);
+        return $this->renderChildrenWithVariableOrReturnInput($array);
+    }
 }

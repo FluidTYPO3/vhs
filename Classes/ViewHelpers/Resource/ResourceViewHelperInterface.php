@@ -13,12 +13,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-interface ResourceViewHelperInterface {
+interface ResourceViewHelperInterface
+{
 
-	/**
-	 * @param mixed $identity
-	 * @return mixed
-	 */
-	public function getResource($identity);
-
+    /**
+     * @param mixed $identity
+     * @return mixed
+     */
+    public function getResource($identity);
 }

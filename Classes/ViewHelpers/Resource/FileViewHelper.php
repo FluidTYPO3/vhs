@@ -17,30 +17,32 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-class FileViewHelper extends AbstractResourceViewHelper {
+class FileViewHelper extends AbstractResourceViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerAsArgument();
-	}
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerAsArgument();
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		$files = $this->getFiles(TRUE);
-		if (1 === count($files)) {
-			$files = array_shift($files);
-		}
-		return $this->renderChildrenWithVariableOrReturnInput($files);
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        $files = $this->getFiles(true);
+        if (1 === count($files)) {
+            $files = array_shift($files);
+        }
+        return $this->renderChildrenWithVariableOrReturnInput($files);
+    }
 }

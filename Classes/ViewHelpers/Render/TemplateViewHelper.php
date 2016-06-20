@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * this can be done (from any extension, not just "foo")
  *
  *     <v:render.template
- * 	    file="EXT:foo/Resources/Private/Templates/Action/Show.html"
+ *      file="EXT:foo/Resources/Private/Templates/Action/Show.html"
  *      variables="{object: customLoadedObject}"
  *      paths="{v:variable.typoscript(path: 'plugin.tx_foo.view')}"
  *      format="xml" />
@@ -57,58 +57,66 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package Vhs
  * @subpackage ViewHelpers\Render
  */
-class TemplateViewHelper extends AbstractRenderViewHelper {
+class TemplateViewHelper extends AbstractRenderViewHelper
+{
 
-	public function initializeArguments() {
-		$this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported', FALSE);
-		$this->registerArgument('variables', 'array', 'Optional array of template variables for rendering', FALSE);
-		$this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered', FALSE);
-		$this->registerArgument('paths', 'array', 'Optional array of arrays of layout and partial root paths, EXT:mypath/... paths supported', FALSE);
-	}
+    public function initializeArguments()
+    {
+        $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported', false);
+        $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering', false);
+        $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered', false);
+        $this->registerArgument(
+            'paths',
+            'array',
+            'Optional array of arrays of layout and partial root paths, EXT:mypath/... paths supported',
+            false
+        );
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$file = $this->arguments['file'];
-		if (NULL === $file) {
-			$file = $this->renderChildren();
-		}
-		$file = GeneralUtility::getFileAbsFileName($file);
-		$view = $this->getPreparedView();
-		$view->setTemplatePathAndFilename($file);
-		if (is_array($this->arguments['variables'])) {
-			$view->assignMultiple($this->arguments['variables']);
-		}
-		$format = $this->arguments['format'];
-		if (NULL !== $format) {
-			$view->setFormat($format);
-		}
-		$paths = $this->arguments['paths'];
-		if (is_array($paths)) {
-			if (isset($paths['layoutRootPaths']) && is_array($paths['layoutRootPaths'])) {
-				$layoutRootPaths = $this->processPathsArray($paths['layoutRootPaths']);
-				$view->setLayoutRootPaths($layoutRootPaths);
-			}
-			if (isset($paths['partialRootPaths']) && is_array($paths['partialRootPaths'])) {
-				$partialRootPaths = $this->processPathsArray($paths['partialRootPaths']);
-				$view->setPartialRootPaths($partialRootPaths);
-			}
-		}
-		return $this->renderView($view);
-	}
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $file = $this->arguments['file'];
+        if (null === $file) {
+            $file = $this->renderChildren();
+        }
+        $file = GeneralUtility::getFileAbsFileName($file);
+        $view = $this->getPreparedView();
+        $view->setTemplatePathAndFilename($file);
+        if (is_array($this->arguments['variables'])) {
+            $view->assignMultiple($this->arguments['variables']);
+        }
+        $format = $this->arguments['format'];
+        if (null !== $format) {
+            $view->setFormat($format);
+        }
+        $paths = $this->arguments['paths'];
+        if (is_array($paths)) {
+            if (isset($paths['layoutRootPaths']) && is_array($paths['layoutRootPaths'])) {
+                $layoutRootPaths = $this->processPathsArray($paths['layoutRootPaths']);
+                $view->setLayoutRootPaths($layoutRootPaths);
+            }
+            if (isset($paths['partialRootPaths']) && is_array($paths['partialRootPaths'])) {
+                $partialRootPaths = $this->processPathsArray($paths['partialRootPaths']);
+                $view->setPartialRootPaths($partialRootPaths);
+            }
+        }
+        return $this->renderView($view);
+    }
 
-	/**
-	 * @param array $paths
-	 * @return array
-	 */
-	protected function processPathsArray(array $paths) {
-		$pathsArray = array();
-		foreach ($paths as $key => $path) {
-			$pathsArray[$key] = (0 === strpos($path, 'EXT:')) ? GeneralUtility::getFileAbsFilename($path) : $path;
-		}
+    /**
+     * @param array $paths
+     * @return array
+     */
+    protected function processPathsArray(array $paths)
+    {
+        $pathsArray = array();
+        foreach ($paths as $key => $path) {
+            $pathsArray[$key] = (0 === strpos($path, 'EXT:')) ? GeneralUtility::getFileAbsFilename($path) : $path;
+        }
 
-		return $pathsArray;
-	}
-
+        return $pathsArray;
+    }
 }

@@ -19,25 +19,26 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class RangeViewHelper extends AbstractSingleMathViewHelper {
+class RangeViewHelper extends AbstractSingleMathViewHelper
+{
 
-	/**
-	 * @return mixed
-	 * @throw Exception
-	 */
-	public function render() {
-		$a = $this->getInlineArgument();
-		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if (TRUE === $aIsIterable) {
-			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
-			sort($a, SORT_NUMERIC);
-			if (1 === count($a)) {
-				return array(reset($a), reset($a));
-			} else {
-				return array(array_shift($a), array_pop($a));
-			}
-		}
-		return $a;
-	}
-
+    /**
+     * @return mixed
+     * @throw Exception
+     */
+    public function render()
+    {
+        $a = $this->getInlineArgument();
+        $aIsIterable = $this->assertIsArrayOrIterator($a);
+        if (true === $aIsIterable) {
+            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            sort($a, SORT_NUMERIC);
+            if (1 === count($a)) {
+                return array(reset($a), reset($a));
+            } else {
+                return array(array_shift($a), array_pop($a));
+            }
+        }
+        return $a;
+    }
 }

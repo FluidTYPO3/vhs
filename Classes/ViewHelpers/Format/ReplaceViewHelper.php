@@ -17,22 +17,23 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class ReplaceViewHelper extends AbstractViewHelper {
+class ReplaceViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $substring
-	 * @param string $content
-	 * @param string $replacement
-	 * @param integer $count
-	 * @param boolean $caseSensitve
-	 * @return string
-	 */
-	public function render($substring, $content = NULL, $replacement = '', $count = NULL, $caseSensitive = TRUE) {
-		if (NULL === $content) {
-			$content = $this->renderChildren();
-		}
-		$function = (TRUE === $caseSensitive ? 'str_replace' : 'str_ireplace');
-		return $function($substring, $replacement, $content, $count);
-	}
-
+    /**
+     * @param string $substring
+     * @param string $content
+     * @param string $replacement
+     * @param integer $count
+     * @param boolean $caseSensitve
+     * @return string
+     */
+    public function render($substring, $content = null, $replacement = '', $count = null, $caseSensitive = true)
+    {
+        if (null === $content) {
+            $content = $this->renderChildren();
+        }
+        $function = (true === $caseSensitive ? 'str_replace' : 'str_ireplace');
+        return $function($substring, $replacement, $content, $count);
+    }
 }

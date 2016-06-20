@@ -26,11 +26,19 @@ use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class MenuViewHelper extends AbstractMenuViewHelper {
+class MenuViewHelper extends AbstractMenuViewHelper
+{
 
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
-	}
-
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'pageUid',
+            'integer',
+            'Optional parent page UID to use as top level of menu. If left out will be detected from ' .
+            'rootLine using $entryLevel',
+            false,
+            null
+        );
+    }
 }

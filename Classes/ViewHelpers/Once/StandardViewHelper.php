@@ -26,5 +26,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * @package Vhs
  * @subpackage ViewHelpers\Once
  */
-class StandardViewHelper extends AbstractOnceViewHelper {
+class StandardViewHelper extends AbstractOnceViewHelper
+{
 }

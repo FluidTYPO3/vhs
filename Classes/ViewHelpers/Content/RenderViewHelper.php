@@ -20,34 +20,36 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  * @package Vhs
  * @subpackage ViewHelpers\Content
  */
-class RenderViewHelper extends AbstractContentViewHelper {
+class RenderViewHelper extends AbstractContentViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerAsArgument();
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerAsArgument();
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return '';
-		}
+    /**
+     * Render method
+     *
+     * @return string
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return '';
+        }
 
-		$content = $this->getContentRecords();
-		if (FALSE === $this->hasArgument('as')) {
-			$content = implode(LF, $content);
-		}
+        $content = $this->getContentRecords();
+        if (false === $this->hasArgument('as')) {
+            $content = implode(LF, $content);
+        }
 
-		return $this->renderChildrenWithVariableOrReturnInput($content);
-	}
-
+        return $this->renderChildrenWithVariableOrReturnInput($content);
+    }
 }

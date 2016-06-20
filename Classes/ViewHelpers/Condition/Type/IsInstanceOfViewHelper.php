@@ -21,27 +21,27 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * @package Vhs
  * @subpackage ViewHelpers\Condition\Type
  */
-class IsInstanceOfViewHelper extends AbstractConditionViewHelper {
+class IsInstanceOfViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('value', 'mixed', 'value to check', TRUE);
-		$this->registerArgument('class', 'mixed', 'className to check against', TRUE);
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('value', 'mixed', 'value to check', true);
+        $this->registerArgument('class', 'mixed', 'className to check against', true);
+    }
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		return TRUE === $arguments['value'] instanceof $arguments['class'];
-	}
-
+    /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return true === $arguments['value'] instanceof $arguments['class'];
+    }
 }

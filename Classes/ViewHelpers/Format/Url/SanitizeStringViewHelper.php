@@ -17,5 +17,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper as RelocatedSanit
  * @subpackage ViewHelpers\Format\Url
  * @deprecated Use FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper instead
  */
-class SanitizeStringViewHelper extends RelocatedSanitizeStringViewHelper {
+class SanitizeStringViewHelper extends RelocatedSanitizeStringViewHelper
+{
 }

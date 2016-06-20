@@ -17,24 +17,25 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class SubstringViewHelper extends AbstractViewHelper {
+class SubstringViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Substrings a string or string-compatible value
-	 *
-	 * @param string $content Content string to substring
-	 * @param integer $start Positive or negative offset
-	 * @param integer $length Positive or negative length
-	 * @return string
-	 */
-	public function render($content = NULL, $start = 0, $length = NULL) {
-		if (NULL === $content) {
-			$content = $this->renderChildren();
-		}
-		if (NULL !== $length) {
-			return substr($content, $start, $length);
-		}
-		return substr($content, $start);
-	}
-
+    /**
+     * Substrings a string or string-compatible value
+     *
+     * @param string $content Content string to substring
+     * @param integer $start Positive or negative offset
+     * @param integer $length Positive or negative length
+     * @return string
+     */
+    public function render($content = null, $start = 0, $length = null)
+    {
+        if (null === $content) {
+            $content = $this->renderChildren();
+        }
+        if (null !== $length) {
+            return substr($content, $start, $length);
+        }
+        return substr($content, $start);
+    }
 }

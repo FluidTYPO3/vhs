@@ -15,15 +15,16 @@ namespace FluidTYPO3\Vhs\Traits;
  * to PageRenderer
  *
  */
-trait PageRendererTrait {
+trait PageRendererTrait
+{
 
-	/**
-	 * Provides a shared (singleton) instance of PageRenderer
-	 *
-	 * @return \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	protected static function getPageRenderer() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-	}
-
+    /**
+     * Provides a shared (singleton) instance of PageRenderer
+     *
+     * @return \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    protected static function getPageRenderer()
+    {
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+    }
 }

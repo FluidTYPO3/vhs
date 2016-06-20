@@ -45,26 +45,38 @@ use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper as FluidTypolinkViewHelpe
  * @subpackage ViewHelpers
  * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper instead
  */
-class TypolinkViewHelper extends AbstractViewHelper {
+class TypolinkViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * Initializes the arguments for the ViewHelper
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('configuration', 'array', 'The typoLink configuration', TRUE);
-	}
+    /**
+     * Initializes the arguments for the ViewHelper
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('configuration', 'array', 'The typoLink configuration', true);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		GeneralUtility::deprecationLog('Deprecated TypoLinkViewHelper from VHS was used. Please use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper instead.');
-		return FluidTypolinkViewHelper::renderStatic($arguments['configuration'], $renderChildrenClosure, $renderingContext);
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        GeneralUtility::deprecationLog(
+            'Deprecated TypoLinkViewHelper from VHS was used. Please use ' .
+            'TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper instead.'
+        );
+        return FluidTypolinkViewHelper::renderStatic(
+            $arguments['configuration'],
+            $renderChildrenClosure,
+            $renderingContext
+        );
+    }
 }

@@ -16,24 +16,25 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class HeaderViewHelper extends AbstractAssetViewHelper {
+class HeaderViewHelper extends AbstractAssetViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @return void
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return;
-		}
-		$content = $this->getContent();
-		$name = $this->getName();
-		$overwrite = $this->getOverwrite();
-		if (TRUE === isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && FALSE === $overwrite) {
-			return;
-		}
-		$GLOBALS['TSFE']->additionalHeaderData[$name] = $content;
-	}
-
+    /**
+     * Render method
+     *
+     * @return void
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return;
+        }
+        $content = $this->getContent();
+        $name = $this->getName();
+        $overwrite = $this->getOverwrite();
+        if (true === isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && false === $overwrite) {
+            return;
+        }
+        $GLOBALS['TSFE']->additionalHeaderData[$name] = $content;
+    }
 }

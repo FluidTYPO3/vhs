@@ -20,25 +20,31 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @package Vhs
  * @subpackage ViewHelpers\Extension\Path
  */
-class ResourcesViewHelper extends AbstractExtensionViewHelper {
+class ResourcesViewHelper extends AbstractExtensionViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('path', 'string', 'Optional path to append after output of \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath');
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'path',
+            'string',
+            'Optional path to append after output of \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath'
+        );
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$extensionKey = $this->getExtensionKey();
-		$path = TRUE === empty($this->arguments['path']) ? '' : $this->arguments['path'];
-		return ExtensionManagementUtility::extRelPath($extensionKey) . 'Resources/Public/' . $path;
-	}
-
+    /**
+     * Render method
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $extensionKey = $this->getExtensionKey();
+        $path = true === empty($this->arguments['path']) ? '' : $this->arguments['path'];
+        return ExtensionManagementUtility::extRelPath($extensionKey) . 'Resources/Public/' . $path;
+    }
 }

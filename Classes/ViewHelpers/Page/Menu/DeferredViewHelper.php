@@ -22,5 +22,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class DeferredViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\DeferredViewHelper {
+class DeferredViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\DeferredViewHelper
+{
 }

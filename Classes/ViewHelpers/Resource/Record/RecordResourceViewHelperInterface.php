@@ -15,33 +15,33 @@ use FluidTYPO3\Vhs\ViewHelpers\Resource\ResourceViewHelperInterface;
  * @package Vhs
  * @subpackage ViewHelpers\Resource\Record
  */
-interface RecordResourceViewHelperInterface extends ResourceViewHelperInterface {
+interface RecordResourceViewHelperInterface extends ResourceViewHelperInterface
+{
 
-	/**
-	 * @param array $record
-	 * @return array
-	 */
-	public function getResources($record);
+    /**
+     * @param array $record
+     * @return array
+     */
+    public function getResources($record);
 
-	/**
-	 * @return string
-	 */
-	public function getTable();
+    /**
+     * @return string
+     */
+    public function getTable();
 
-	/**
-	 * @return string
-	 */
-	public function getField();
+    /**
+     * @return string
+     */
+    public function getField();
 
-	/**
-	 * @param mixed $id
-	 * @return array
-	 */
-	public function getRecord($id);
+    /**
+     * @param mixed $id
+     * @return array
+     */
+    public function getRecord($id);
 
-	/**
-	 * @return array
-	 */
-	public function getActiveRecord();
-
+    /**
+     * @return array
+     */
+    public function getActiveRecord();
 }

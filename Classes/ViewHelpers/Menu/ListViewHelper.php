@@ -23,39 +23,46 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  * @package Vhs
  * @subpackage ViewHelpers\Menu
  */
-class ListViewHelper extends AbstractMenuViewHelper {
+class ListViewHelper extends AbstractMenuViewHelper
+{
 
-	/**
-	 * @var array
-	 */
-	protected $backups = array('menu');
+    /**
+     * @var array
+     */
+    protected $backups = array('menu');
 
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('pages', 'mixed', 'Page UIDs to include in the menu. Can be CSV, array or an object implementing Traversable.', TRUE);
-	}
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'pages',
+            'mixed',
+            'Page UIDs to include in the menu. Can be CSV, array or an object implementing Traversable.',
+            true
+        );
+    }
 
-	/**
-	 * @return NULL|string
-	 */
-	public function render() {
-		$pages = $this->processPagesArgument();
-		if (0 === count($pages)) {
-			return NULL;
-		}
-		$showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
-		$menuData = array();
-		foreach ($pages as $pageUid) {
-			$menuData[] = $this->pageService->getPage($pageUid, $showAccessProtected);
-		}
-		$menu = $this->parseMenu($menuData);
-		$this->backupVariables();
-		$this->templateVariableContainer->add($this->arguments['as'], $menu);
-		$output = $this->renderContent($menu);
-		$this->templateVariableContainer->remove($this->arguments['as']);
-		$this->restoreVariables();
+    /**
+     * @return NULL|string
+     */
+    public function render()
+    {
+        $pages = $this->processPagesArgument();
+        if (0 === count($pages)) {
+            return null;
+        }
+        $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+        $menuData = array();
+        foreach ($pages as $pageUid) {
+            $menuData[] = $this->pageService->getPage($pageUid, $showAccessProtected);
+        }
+        $menu = $this->parseMenu($menuData);
+        $this->backupVariables();
+        $this->templateVariableContainer->add($this->arguments['as'], $menu);
+        $output = $this->renderContent($menu);
+        $this->templateVariableContainer->remove($this->arguments['as']);
+        $this->restoreVariables();
 
-		return $output;
-	}
-
+        return $output;
+    }
 }

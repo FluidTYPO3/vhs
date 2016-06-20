@@ -22,58 +22,74 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Uri
  */
-class GravatarViewHelper extends AbstractViewHelper {
+class GravatarViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * Base url
-	 *
-	 * @var string
-	 */
-	const GRAVATAR_BASEURL = 'http://www.gravatar.com/avatar/';
+    /**
+     * Base url
+     *
+     * @var string
+     */
+    const GRAVATAR_BASEURL = 'http://www.gravatar.com/avatar/';
 
-	/**
-	 * Base secure url
-	 *
-	 * @var string
-	 */
-	const GRAVATAR_SECURE_BASEURL = 'https://secure.gravatar.com/avatar/';
+    /**
+     * Base secure url
+     *
+     * @var string
+     */
+    const GRAVATAR_SECURE_BASEURL = 'https://secure.gravatar.com/avatar/';
 
-	/**
-	 * Initialize arguments.
-	 * Size argument has no default value to prevent the creation of an unnecessary URI parameter.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('email', 'string', 'Email address', TRUE);
-		$this->registerArgument('size', 'integer', 'Size in pixels, defaults to 80px [ 1 - 2048 ]', FALSE);
-		$this->registerArgument('imageSet', 'string', 'Default image set to use. Possible values [ 404 | mm | identicon | monsterid | wavatar ] ', FALSE);
-		$this->registerArgument('maximumRating', 'string', 'Maximum rating (inclusive) [ g | pg | r | x ]', FALSE);
-		$this->registerArgument('secure', 'boolean', 'If it is FALSE will return the un secure Gravatar domain (www.gravatar.com)', FALSE, TRUE);
-	}
+    /**
+     * Initialize arguments.
+     * Size argument has no default value to prevent the creation of an unnecessary URI parameter.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('email', 'string', 'Email address', true);
+        $this->registerArgument('size', 'integer', 'Size in pixels, defaults to 80px [ 1 - 2048 ]', false);
+        $this->registerArgument(
+            'imageSet',
+            'string',
+            'Default image set to use. Possible values [ 404 | mm | identicon | monsterid | wavatar ] ',
+            false
+        );
+        $this->registerArgument('maximumRating', 'string', 'Maximum rating (inclusive) [ g | pg | r | x ]', false);
+        $this->registerArgument(
+            'secure',
+            'boolean',
+            'If it is FALSE will return the un secure Gravatar domain (www.gravatar.com)',
+            false,
+            true
+        );
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$email = $arguments['email'];
-		$size = $arguments['size'];
-		$imageSet = $arguments['imageSet'];
-		$maximumRating = $arguments['maximumRating'];
-		$secure = (boolean) $arguments['secure'];
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $email = $arguments['email'];
+        $size = $arguments['size'];
+        $imageSet = $arguments['imageSet'];
+        $maximumRating = $arguments['maximumRating'];
+        $secure = (boolean) $arguments['secure'];
 
-		$url = (TRUE === $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL);
-		$url .= md5(strtolower(trim($email)));
-		$query = http_build_query(array('s' => $size, 'd' => $imageSet, 'r' => $maximumRating));
-		$url .= (FALSE === empty($query) ? '?' . $query : '');
+        $url = (true === $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL);
+        $url .= md5(strtolower(trim($email)));
+        $query = http_build_query(array('s' => $size, 'd' => $imageSet, 'r' => $maximumRating));
+        $url .= (false === empty($query) ? '?' . $query : '');
 
-		return $url;
-	}
-
+        return $url;
+    }
 }

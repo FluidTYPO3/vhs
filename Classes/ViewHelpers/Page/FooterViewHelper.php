@@ -17,21 +17,22 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class FooterViewHelper extends AbstractAssetViewHelper {
+class FooterViewHelper extends AbstractAssetViewHelper
+{
 
-	use PageRendererTrait;
+    use PageRendererTrait;
 
-	/**
-	 * Render method
-	 *
-	 * @return void
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return;
-		}
-		$content = $this->getContent();
-		$this->getPageRenderer()->addFooterData($content);
-	}
-
+    /**
+     * Render method
+     *
+     * @return void
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return;
+        }
+        $content = $this->getContent();
+        $this->getPageRenderer()->addFooterData($content);
+    }
 }

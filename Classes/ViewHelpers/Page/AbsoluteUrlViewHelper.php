@@ -20,22 +20,26 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class AbsoluteUrlViewHelper extends AbstractViewHelper {
+class AbsoluteUrlViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-		if (0 !== strpos($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
-			$url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
-		}
-		return $url;
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+        if (0 !== strpos($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
+            $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+        }
+        return $url;
+    }
 }

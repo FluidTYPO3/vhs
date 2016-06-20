@@ -15,6 +15,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\AbstractRecordResourceViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Resource
  */
-class RecordViewHelper extends AbstractRecordResourceViewHelper {
+class RecordViewHelper extends AbstractRecordResourceViewHelper
+{
 
 }

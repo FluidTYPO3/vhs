@@ -37,7 +37,9 @@ use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper as FluidTypolinkViewHelp
  *     <!-- same with a {page} variable from fluidpages -->
  *     <v:link.typolink configuration="{parameter: page.uid}" />
  *     <!-- With extensive configuration -->
- *     <v:link.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">Click Me!</v:link.typolink>
+ *     <v:link.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">
+ *         Click Me!
+ *     </v:link.typolink>
  *
  * @author Cedric Ziel <cedric@cedric-ziel.com>, Cedric Ziel - Internetdienstleistungen & EDV
  * @author Daniel Kestler <daniel.kestler@medienreaktor.de>, medienreaktor GmbH
@@ -45,29 +47,43 @@ use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper as FluidTypolinkViewHelp
  * @subpackage ViewHelpers\Link
  * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper instead
  */
-class TypolinkViewHelper extends AbstractViewHelper {
+class TypolinkViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * Initializes the arguments for the ViewHelper
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('configuration', 'array', 'The typoLink configuration', TRUE);
-	}
+    /**
+     * Initializes the arguments for the ViewHelper
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('configuration', 'array', 'The typoLink configuration', true);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		GeneralUtility::deprecationLog('Deprecated TypoLinkViewHelper from VHS was used. Please use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper instead.');
-		if (NULL === $arguments['configuration']['additionalAttributes']) {
-			$arguments['configuration']['additionalAttributes'] = array();
-		}
-		return FluidTypolinkViewHelper::renderStatic($arguments['configuration'], $renderChildrenClosure, $renderingContext);
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        GeneralUtility::deprecationLog(
+            sprintf(
+                'Deprecated TypoLinkViewHelper from VHS was used. Please use %s instead.',
+                FluidTypolinkViewHelper::class
+            )
+        );
+        if (null === $arguments['configuration']['additionalAttributes']) {
+            $arguments['configuration']['additionalAttributes'] = array();
+        }
+        return FluidTypolinkViewHelper::renderStatic(
+            $arguments['configuration'],
+            $renderChildrenClosure,
+            $renderingContext
+        );
+    }
 }

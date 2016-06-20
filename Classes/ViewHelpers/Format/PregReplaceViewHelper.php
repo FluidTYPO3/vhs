@@ -18,35 +18,45 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Implementation of `preg_replace` for Fluid.
  */
-class PregReplaceViewHelper extends AbstractViewHelper {
+class PregReplaceViewHelper extends AbstractViewHelper
+{
 
-	use DefaultRenderMethodViewHelperTrait;
-	use TemplateVariableViewHelperTrait;
+    use DefaultRenderMethodViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('pattern', 'string', 'Regex pattern to match against', TRUE);
-		$this->registerArgument('subject', 'string', 'String to match with the regex pattern or patterns', TRUE);
-		$this->registerArgument('replacement', 'string', 'String to replace matches with', TRUE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('pattern', 'string', 'Regex pattern to match against', true);
+        $this->registerArgument('subject', 'string', 'String to match with the regex pattern or patterns', true);
+        $this->registerArgument('replacement', 'string', 'String to replace matches with', true);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if (empty($arguments['subject'])) {
-			$subject = $renderChildrenClosure();
-		} else {
-			$subject = $arguments['subject'];
-		}
-		$value = preg_replace($arguments['pattern'], $arguments['replacement'], $subject);
-		return static::renderChildrenWithVariableOrReturnInputStatic($value, $arguments['as'], $renderingContext, $renderChildrenClosure);
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        if (empty($arguments['subject'])) {
+            $subject = $renderChildrenClosure();
+        } else {
+            $subject = $arguments['subject'];
+        }
+        $value = preg_replace($arguments['pattern'], $arguments['replacement'], $subject);
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $value,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
+    }
 }

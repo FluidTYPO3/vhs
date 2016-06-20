@@ -18,35 +18,37 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class DiffViewHelper extends AbstractViewHelper {
+class DiffViewHelper extends AbstractViewHelper
+{
 
-	use ArrayConsumingViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
 
-		$this->registerArgument('a', 'mixed', 'First Array/Traversable/CSV', FALSE, NULL);
-		$this->registerArgument('b', 'mixed', 'Second Array/Traversable/CSV', TRUE);
-	}
+        $this->registerArgument('a', 'mixed', 'First Array/Traversable/CSV', false, null);
+        $this->registerArgument('b', 'mixed', 'Second Array/Traversable/CSV', true);
+    }
 
-	/**
-	 * @return array
-	 */
-	public function render() {
-		$a = $this->arguments['a'];
-		if (NULL === $a) {
-			$a = $this->renderChildren();
-		}
+    /**
+     * @return array
+     */
+    public function render()
+    {
+        $a = $this->arguments['a'];
+        if (null === $a) {
+            $a = $this->renderChildren();
+        }
 
-		$a = $this->arrayFromArrayOrTraversableOrCSV($a);
-		$b = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
+        $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+        $b = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
 
-		return array_diff($a, $b);
-	}
-
+        return array_diff($a, $b);
+    }
 }

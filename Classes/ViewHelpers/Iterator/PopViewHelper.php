@@ -20,27 +20,29 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class PopViewHelper extends AbstractViewHelper {
+class PopViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...', FALSE, NULL);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$output = array_pop($subject);
-		return $this->renderChildrenWithVariableOrReturnInput($output);
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $output = array_pop($subject);
+        return $this->renderChildrenWithVariableOrReturnInput($output);
+    }
 }

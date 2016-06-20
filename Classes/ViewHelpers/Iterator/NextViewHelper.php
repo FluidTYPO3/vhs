@@ -18,32 +18,37 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class NextViewHelper extends ContainsViewHelper {
+class NextViewHelper extends ContainsViewHelper
+{
 
-	/**
-	 * Render
-	 *
-	 * @return string
-	 */
-	public function render() {
-		return static::renderStatic(
-			$this->arguments,
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Render
+     *
+     * @return string
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Default implementation for use in compiled templates
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$evaluation = self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
-		return self::getNeedleAtIndex($evaluation !== FALSE ? $evaluation + 1 : -1, $arguments);
-	}
-
+    /**
+     * Default implementation for use in compiled templates
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $evaluation = self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+        return self::getNeedleAtIndex($evaluation !== false ? $evaluation + 1 : -1, $arguments);
+    }
 }

@@ -23,36 +23,39 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  * @package Vhs
  * @author Dmitri Pisarev <dimaip@gmail.com>
  */
-class CollectionViewHelper extends AbstractResourceViewHelper {
+class CollectionViewHelper extends AbstractResourceViewHelper
+{
 
-	/**
-	 * @var RecordCollectionRepository
-	 */
-	protected $collectionRepository;
+    /**
+     * @var RecordCollectionRepository
+     */
+    protected $collectionRepository;
 
-	/**
-	 * @param RecordCollectionRepository $collectionRepository
-	 * @return void
-	 */
-	public function injectCollectionRepository(RecordCollectionRepository $collectionRepository) {
-		$this->collectionRepository = $collectionRepository;
-	}
+    /**
+     * @param RecordCollectionRepository $collectionRepository
+     * @return void
+     */
+    public function injectCollectionRepository(RecordCollectionRepository $collectionRepository)
+    {
+        $this->collectionRepository = $collectionRepository;
+    }
 
-	/**
-	 * Returns a specific collection referenced by uid.
-	 *
-	 * @param integer $uid
-	 * @return mixed
-	 */
-	public function render($uid) {
-		if (NULL !== $uid) {
-			/** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
-			$collection = $this->collectionRepository->findByUid($uid);
-			if (NULL !== $collection) {
-				$collection->loadContents();
-			}
-			return $collection;
-		}
-		return NULL;
-	}
+    /**
+     * Returns a specific collection referenced by uid.
+     *
+     * @param integer $uid
+     * @return mixed
+     */
+    public function render($uid)
+    {
+        if (null !== $uid) {
+            /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
+            $collection = $this->collectionRepository->findByUid($uid);
+            if (null !== $collection) {
+                $collection->loadContents();
+            }
+            return $collection;
+        }
+        return null;
+    }
 }

@@ -30,18 +30,17 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * @package    Vhs
  * @subpackage ViewHelpers\Condition\Context
  */
-class IsDevelopmentViewHelper extends AbstractConditionViewHelper {
+class IsDevelopmentViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		return GeneralUtility::getApplicationContext()->isDevelopment();
-	}
-
+    /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return GeneralUtility::getApplicationContext()->isDevelopment();
+    }
 }

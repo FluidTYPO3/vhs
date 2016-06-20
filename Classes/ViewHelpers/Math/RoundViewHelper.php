@@ -19,22 +19,24 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * @package Vhs
  * @subpackage ViewHelpers\Math
  */
-class RoundViewHelper extends AbstractSingleMathViewHelper {
+class RoundViewHelper extends AbstractSingleMathViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('decimals', 'integer', 'Number of decimals', FALSE, 0);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('decimals', 'integer', 'Number of decimals', false, 0);
+    }
 
-	/**
-	 * @param mixed $a
-	 * @return integer
-	 */
-	protected function calculateAction($a) {
-		return round($a, $this->arguments['decimals']);
-	}
-
+    /**
+     * @param mixed $a
+     * @return integer
+     */
+    protected function calculateAction($a)
+    {
+        return round($a, $this->arguments['decimals']);
+    }
 }

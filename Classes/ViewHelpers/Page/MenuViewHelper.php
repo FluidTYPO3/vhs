@@ -26,5 +26,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class MenuViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\MenuViewHelper {
+class MenuViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\MenuViewHelper
+{
 }

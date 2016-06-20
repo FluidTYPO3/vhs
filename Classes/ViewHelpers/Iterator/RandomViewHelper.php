@@ -20,29 +20,35 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class RandomViewHelper extends AbstractViewHelper {
+class RandomViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'The subject Traversable/Array instance from which to select a random element', FALSE, NULL);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument(
+            'subject',
+            'mixed',
+            'The subject Traversable/Array instance from which to select a random element'
+        );
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @throws Exception
-	 * @return mixed
-	 */
-	public function render() {
-		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$randomElement = $subject[array_rand($subject)];
-		return $this->renderChildrenWithVariableOrReturnInput($randomElement);
-	}
-
+    /**
+     * Render method
+     *
+     * @throws Exception
+     * @return mixed
+     */
+    public function render()
+    {
+        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $randomElement = $subject[array_rand($subject)];
+        return $this->renderChildrenWithVariableOrReturnInput($randomElement);
+    }
 }

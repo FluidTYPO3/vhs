@@ -18,8 +18,8 @@ use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
  * @package Vhs
  * @subpackage ViewHelpers\Media
  */
-abstract class AbstractMediaTagViewHelper extends AbstractMediaViewHelper {
+abstract class AbstractMediaTagViewHelper extends AbstractMediaViewHelper
+{
 
-	use TagViewHelperTrait;
-
+    use TagViewHelperTrait;
 }

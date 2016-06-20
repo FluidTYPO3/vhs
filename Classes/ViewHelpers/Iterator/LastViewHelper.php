@@ -18,32 +18,34 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Iterator
  */
-class LastViewHelper extends AbstractViewHelper {
+class LastViewHelper extends AbstractViewHelper
+{
 
-	use ArrayConsumingViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle');
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return mixed|NULL
-	 */
-	public function render() {
-		$haystack = $this->arguments['haystack'];
-		if (NULL === $haystack) {
-			$haystack = $this->renderChildren();
-		}
-		$haystack = $this->arrayFromArrayOrTraversableOrCSV($haystack);
+    /**
+     * Render method
+     *
+     * @return mixed|NULL
+     */
+    public function render()
+    {
+        $haystack = $this->arguments['haystack'];
+        if (null === $haystack) {
+            $haystack = $this->renderChildren();
+        }
+        $haystack = $this->arrayFromArrayOrTraversableOrCSV($haystack);
 
-		return array_pop($haystack);
-	}
-
+        return array_pop($haystack);
+    }
 }

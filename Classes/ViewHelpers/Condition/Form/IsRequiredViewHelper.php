@@ -22,19 +22,23 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  * @package Vhs
  * @subpackage ViewHelpers\Condition\Form
  */
-class IsRequiredViewHelper extends HasValidatorViewHelper {
+class IsRequiredViewHelper extends HasValidatorViewHelper
+{
 
-	/**
-	 * Default implementation for use in compiled templates
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$arguments['validatorName'] = 'NotEmpty';
-		return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
-	}
-
+    /**
+     * Default implementation for use in compiled templates
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $arguments['validatorName'] = 'NotEmpty';
+        return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
+    }
 }

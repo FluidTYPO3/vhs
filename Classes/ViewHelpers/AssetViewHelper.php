@@ -50,14 +50,21 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class AssetViewHelper extends AbstractAssetViewHelper {
+class AssetViewHelper extends AbstractAssetViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->overrideArgument('standalone', 'boolean', 'If TRUE, excludes this Asset from any concatenation which may be applied', FALSE, TRUE);
-	}
-
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument(
+            'standalone',
+            'boolean',
+            'If TRUE, excludes this Asset from any concatenation which may be applied',
+            false,
+            true
+        );
+    }
 }
