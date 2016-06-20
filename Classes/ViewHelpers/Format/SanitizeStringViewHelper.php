@@ -49,7 +49,7 @@ class SanitizeStringViewHelper extends AbstractViewHelper
      *
      * @var array
      */
-    protected static $characterMap = array(
+    protected static $characterMap = [
         '¹' => 1, '²' => 2, '³' => 3, '°' => 0, '€' => 'eur', 'æ' => 'ae', 'ǽ' => 'ae', 'À' => 'A',
         'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Å' => 'AA', 'Ǻ' => 'A', 'Ă' => 'A', 'Ǎ' => 'A', 'Æ' => 'AE',
         'Ǽ' => 'AE', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'å' => 'aa', 'ǻ' => 'a', 'ă' => 'a',
@@ -111,7 +111,7 @@ class SanitizeStringViewHelper extends AbstractViewHelper
         'Ộ' => 'O', 'Ổ' => 'O', 'Ỗ' => 'O', 'Ờ' => 'O', 'Ớ' => 'O', 'Ợ' => 'O', 'Ở' => 'O', 'Ỡ' => 'O',
         'Ụ' => 'U', 'Ủ' => 'U', 'Ừ' => 'U', 'Ứ' => 'U', 'Ự' => 'U', 'Ử' => 'U', 'Ữ' => 'U', 'Ỳ' => 'Y',
         'Ỵ' => 'Y', 'Ỷ' => 'Y', 'Ỹ' => 'Y',
-    );
+    ];
 
     /**
      * Initialize

@@ -49,7 +49,7 @@ class FilterViewHelper extends AbstractViewHelper
             $subject = $this->renderChildren();
         }
         if (null === $subject || (false === is_array($subject) && false === $subject instanceof \Traversable)) {
-            return array();
+            return [];
         }
         if ((false === (boolean) $nullFilter && null === $filter) || '' === $filter) {
             return $subject;
@@ -57,7 +57,7 @@ class FilterViewHelper extends AbstractViewHelper
         if (true === $subject instanceof \Traversable) {
             $subject = iterator_to_array($subject);
         }
-        $items = array();
+        $items = [];
         $invert = (boolean) $invert;
         $invertFlag = true === $invert ? false : true;
         foreach ($subject as $key => $item) {

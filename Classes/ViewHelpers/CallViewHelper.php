@@ -35,7 +35,7 @@ class CallViewHelper extends AbstractViewHelper
      * @throws \RuntimeException
      * @return mixed
      */
-    public function render($method, $object = null, array $arguments = array())
+    public function render($method, $object = null, array $arguments = [])
     {
         if (null === $object) {
             $object = $this->renderChildren();

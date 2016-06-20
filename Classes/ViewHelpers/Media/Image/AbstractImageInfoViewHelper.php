@@ -76,7 +76,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         if (null === $src) {
             $src = $this->renderChildren();
             if (null === $src) {
-                return array();
+                return [];
             }
         }
 
@@ -88,7 +88,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 
         if (true === $treatIdAsUid || true === $treatIdAsReference) {
             $id = (integer) $src;
-            $info = array();
+            $info = [];
             if (true === $treatIdAsUid) {
                 $info = $this->getInfoByUid($id);
             } elseif (true === $treatIdAsReference) {
@@ -103,11 +103,11 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
                 );
             }
             $imageSize = getimagesize($file);
-            $info = array(
+            $info = [
                 'width'  => $imageSize[0],
                 'height' => $imageSize[1],
                 'type'   => $imageSize['mime'],
-            );
+            ];
         }
 
         return $info;

@@ -46,7 +46,7 @@ class EncodeViewHelper extends AbstractViewHelper
     /**
      * @var array
      */
-    protected $encounteredClasses = array();
+    protected $encounteredClasses = [];
 
     /**
      * @param mixed $value Array or Traversable

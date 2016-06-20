@@ -60,7 +60,7 @@ trait TemplateVariableViewHelperTrait
         if (true === empty($as)) {
             return $variable;
         } else {
-            $variables = array($as => $variable);
+            $variables = [$as => $variable];
             $content = $this->renderChildrenWithVariables($variables);
         }
         return $content;
@@ -80,7 +80,7 @@ trait TemplateVariableViewHelperTrait
         if (true === empty($as)) {
             return $variable;
         } else {
-            $variables = array($as => $variable);
+            $variables = [$as => $variable];
             $content = static::renderChildrenWithVariablesStatic(
                 $variables,
                 $renderingContext->getTemplateVariableContainer(),
@@ -138,7 +138,7 @@ trait TemplateVariableViewHelperTrait
      */
     private static function backupVariables(array $variables, $templateVariableContainer)
     {
-        $backups = array();
+        $backups = [];
         foreach ($variables as $variableName => $variableValue) {
             if (true === $templateVariableContainer->exists($variableName)) {
                 $backups[$variableName] = $templateVariableContainer->get($variableName);

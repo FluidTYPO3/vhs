@@ -41,8 +41,8 @@ trait SourceSetViewHelperTrait
             $src = $this->arguments['src'];
         }
 
-        $imageSources = array();
-        $srcsetVariants = array();
+        $imageSources = [];
+        $srcsetVariants = [];
 
         foreach ($srcsets as $key => $width) {
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference);
@@ -50,11 +50,11 @@ trait SourceSetViewHelperTrait
             $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
             $srcsetVariantSrc = $this->preprocessSourceUri(GeneralUtility::rawUrlEncodeFP($srcsetVariantSrc));
 
-            $imageSources[$srcsetVariant[0]] = array(
+            $imageSources[$srcsetVariant[0]] = [
                 'src' => $srcsetVariantSrc,
                 'width' => $srcsetVariant[0],
                 'height' => $srcsetVariant[1],
-            );
+            ];
             $srcsetVariants[$srcsetVariant[0]] = $srcsetVariantSrc . ' ' . $srcsetVariant[0] . 'w';
         }
 
@@ -81,10 +81,10 @@ trait SourceSetViewHelperTrait
     public function getImgResource($src, $width, $format, $quality, $treatIdAsReference, $params = null)
     {
 
-        $setup = array(
+        $setup = [
             'width' => $width,
             'treatIdAsReference' => $treatIdAsReference
-        );
+        ];
         if (false === empty($format)) {
             $setup['ext'] = $format;
         }

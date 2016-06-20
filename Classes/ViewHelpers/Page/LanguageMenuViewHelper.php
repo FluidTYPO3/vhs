@@ -25,7 +25,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     /**
      * @var array
      */
-    protected $languageMenu = array();
+    protected $languageMenu = [];
 
     /**
      * @var integer
@@ -102,7 +102,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             'languageMenu'
         );
         $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
-        $this->registerArgument('configuration', 'array', 'Additional typoLink configuration', false, array());
+        $this->registerArgument('configuration', 'array', 'Additional typoLink configuration', false, []);
         $this->registerArgument('excludeQueryVars', 'string', 'Comma-separate list of variables to exclude', false, '');
     }
 
@@ -156,11 +156,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     protected function getLanguageMenu()
     {
         $tagName = $this->arguments['tagNameChildren'];
-        $html = array();
+        $html = [];
         $itemCount = count($this->languageMenu);
         foreach ($this->languageMenu as $index => $var) {
             $class = '';
-            $classes = array();
+            $classes = [];
             if (true === (boolean) $var['inactive']) {
                 $classes[] = 'inactive';
             }
@@ -245,11 +245,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getFlagImage(array $language)
     {
-        $conf = array(
+        $conf = [
             'file' => $language['flagSrc'],
             'altText' => $language['label'],
             'titleText' => $language['label']
-        );
+        ];
         return $this->cObj->render($this->cObj->getContentObject('IMAGE'), $conf);
     }
 
@@ -266,13 +266,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $labelOverwrite = GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']);
         }
 
-        $languageMenu = array();
-        $tempArray = array();
+        $languageMenu = [];
+        $tempArray = [];
 
-        $tempArray[0] = array(
+        $tempArray[0] = [
             'label' => $this->arguments['defaultLanguageLabel'],
             'flag' => $this->arguments['defaultIsoFlag']
-        );
+        ];
 
         $select = 'uid, title, flag';
         $from = 'sys_language';
@@ -280,10 +280,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $sysLanguage = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select, $from, $where);
 
         foreach ($sysLanguage as $value) {
-            $tempArray[$value['uid']] = array(
+            $tempArray[$value['uid']] = [
                 'label' => $value['title'],
                 'flag' => $value['flag'],
-            );
+            ];
         }
 
         // reorders languageMenu
@@ -305,7 +305,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         // Select all pages_language_overlay records on the current page. Each represents a possibility for a language.
-        $pageArray = array();
+        $pageArray = [];
         $table = 'pages_language_overlay';
         $whereClause = 'pid=' . $this->getPageUid() . ' ';
         $whereClause .= $GLOBALS['TSFE']->sys_page->enableFields($table);
@@ -345,17 +345,17 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     protected function getLanguageUrl($uid)
     {
         $excludedVars = trim((string) $this->arguments['excludeQueryVars']);
-        $config = array(
+        $config = [
             'parameter' => $this->getPageUid(),
             'returnLast' => 'url',
             'additionalParams' => '&L=' . $uid,
             'useCacheHash' => $this->arguments['useCHash'],
             'addQueryString' => 1,
-            'addQueryString.' => array(
+            'addQueryString.' => [
                 'method' => 'GET',
                 'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
-            )
-        );
+            ]
+        ];
         if (true === is_array($this->arguments['configuration'])) {
             $config = $this->mergeArrays($config, $this->arguments['configuration']);
         }

@@ -101,7 +101,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $sqlRecordUid = $record[$this->idField];
         }
 
-        $images = array();
+        $images = [];
         if (empty($GLOBALS['TSFE']->sys_page) === false) {
             $images = $this->getFileReferences($this->getTable(), $this->getField(), $sqlRecordUid);
         } else {
@@ -127,7 +127,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             );
             if (empty($references) === false) {
                 $referenceUids = array_keys($references);
-                $images = array();
+                $images = [];
                 if (empty($referenceUids) === false) {
                     foreach ($referenceUids as $referenceUid) {
                         try {
@@ -142,7 +142,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 }
             }
         }
-        $resources = array();
+        $resources = [];
         foreach ($images as $file) {
             $resources[] = $this->getResource($file);
         }

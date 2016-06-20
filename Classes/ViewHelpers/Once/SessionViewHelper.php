@@ -43,7 +43,7 @@ class SessionViewHelper extends AbstractOnceViewHelper
         $identifier = $this->getIdentifier();
         $index = get_class($this);
         if (false === is_array($_SESSION[$index])) {
-            $_SESSION[$index] = array();
+            $_SESSION[$index] = [];
         }
         $_SESSION[$index][$identifier] = time();
     }

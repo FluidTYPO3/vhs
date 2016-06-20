@@ -108,9 +108,9 @@ class TemplateViewHelper extends AbstractRenderViewHelper
      */
     protected function processPathsArray(array $paths)
     {
-        $pathsArray = array();
+        $pathsArray = [];
         foreach ($paths as $key => $path) {
-            $pathsArray[$key] = (0 === strpos($path, 'EXT:')) ? GeneralUtility::getFileAbsFilename($path) : $path;
+            $pathsArray[$key] = (0 === strpos($path, 'EXT:')) ? GeneralUtility::getFileAbsFileName($path) : $path;
         }
 
         return $pathsArray;

@@ -36,22 +36,22 @@ class VideoViewHelper extends AbstractMediaViewHelper
     /**
      * @var array
      */
-    protected $validTypes = array('mp4', 'webm', 'ogg', 'ogv');
+    protected $validTypes = ['mp4', 'webm', 'ogg', 'ogv'];
 
     /**
      * @var array
      */
-    protected $mimeTypesMap = array(
+    protected $mimeTypesMap = [
         'mp4' => 'video/mp4',
         'webm' => 'video/webm',
         'ogg' => 'video/ogg',
         'ogv' => 'video/ogg'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $validPreloadModes = array('auto', 'metadata', 'none');
+    protected $validPreloadModes = ['auto', 'metadata', 'none'];
 
     /**
      * Initialize arguments.
@@ -152,13 +152,13 @@ class VideoViewHelper extends AbstractMediaViewHelper
             }
             $type = $this->mimeTypesMap[$type];
             $src = $this->preprocessSourceUri($src);
-            $this->renderChildTag('source', array('src' => $src, 'type' => $type), false, 'append');
+            $this->renderChildTag('source', ['src' => $src, 'type' => $type], false, 'append');
         }
-        $tagAttributes = array(
+        $tagAttributes = [
             'width'   => $this->arguments['width'],
             'height'  => $this->arguments['height'],
             'preload' => 'auto',
-        );
+        ];
         if (true === (boolean) $this->arguments['autoplay']) {
             $tagAttributes['autoplay'] = 'autoplay';
         }

@@ -132,7 +132,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if ('BE' === TYPO3_MODE) {
             $this->simulateFrontendEnvironment();
         }
-        $setup = array(
+        $setup = [
             'width' => $width,
             'height' => $height,
             'minW' => $minW,
@@ -140,7 +140,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             'maxW' => $maxW,
             'maxH' => $maxH,
             'treatIdAsReference' => $treatIdAsReference,
-        );
+        ];
         if (false === empty($format)) {
             $setup['ext'] = $format;
         }

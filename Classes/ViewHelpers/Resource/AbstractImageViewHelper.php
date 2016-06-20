@@ -134,7 +134,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             $this->simulateFrontendEnvironment();
         }
 
-        $setup = array(
+        $setup = [
             'width' => $this->arguments['width'],
             'height' => $this->arguments['height'],
             'minW' => $this->arguments['minWidth'],
@@ -142,9 +142,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             'maxW' => $this->arguments['maxWidth'],
             'maxH' => $this->arguments['maxHeight'],
             'treatIdAsReference' => false
-        );
+        ];
 
-        $images = array();
+        $images = [];
 
         foreach ($files as $file) {
             $imageInfo = $this->contentObject->getImgResource($file->getUid(), $setup);
@@ -175,11 +175,11 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
                 $file = ResourceUtility::getFileArray($file);
             }
 
-            $images[] = array(
+            $images[] = [
                 'info' => $imageInfo,
                 'source' => $imageSource,
                 'file' => $file
-            );
+            ];
         }
 
         if ('BE' === TYPO3_MODE) {

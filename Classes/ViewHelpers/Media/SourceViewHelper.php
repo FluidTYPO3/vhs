@@ -110,14 +110,14 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
         }
 
-        $setup = array(
+        $setup = [
             'width' => $this->arguments['width'],
             'height' => $this->arguments['height'],
             'minW' => $this->arguments['minW'],
             'minH' => $this->arguments['minH'],
             'maxW' => $this->arguments['maxW'],
             'maxH' => $this->arguments['maxH']
-        );
+        ];
         $quality = $this->arguments['quality'];
         $format = $this->arguments['format'];
 

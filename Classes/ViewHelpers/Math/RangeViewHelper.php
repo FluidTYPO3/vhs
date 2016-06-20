@@ -30,9 +30,9 @@ class RangeViewHelper extends AbstractSingleMathViewHelper
             $a = $this->arrayFromArrayOrTraversableOrCSV($a);
             sort($a, SORT_NUMERIC);
             if (1 === count($a)) {
-                return array(reset($a), reset($a));
+                return [reset($a), reset($a)];
             } else {
-                return array(array_shift($a), array_pop($a));
+                return [array_shift($a), array_pop($a)];
             }
         }
         return $a;

@@ -74,7 +74,7 @@ class TypolinkViewHelper extends AbstractViewHelper
             )
         );
         if (null === $arguments['configuration']['additionalAttributes']) {
-            $arguments['configuration']['additionalAttributes'] = array();
+            $arguments['configuration']['additionalAttributes'] = [];
         }
         return FluidTypolinkViewHelper::renderStatic(
             $arguments['configuration'],

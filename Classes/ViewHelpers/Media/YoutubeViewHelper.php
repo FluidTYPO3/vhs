@@ -122,23 +122,23 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
 
             $tagContent = '';
 
-            $paramAttributes = array(
+            $paramAttributes = [
                 'movie' => $src,
                 'allowFullScreen' => 'true',
                 'scriptAccess' => 'always',
-            );
+            ];
             foreach ($paramAttributes as $name => $value) {
-                $tagContent .= $this->renderChildTag('param', array($name => $value), true);
+                $tagContent .= $this->renderChildTag('param', [$name => $value], true);
             }
 
-            $embedAttributes = array(
+            $embedAttributes = [
                 'src' => $src,
                 'type' => 'application/x-shockwave-flash',
                 'width' => $width,
                 'height' => $height,
                 'allowFullScreen' => 'true',
                 'scriptAccess' => 'always',
-            );
+            ];
             $tagContent .= $this->renderChildTag('embed', $embedAttributes, true);
 
             $this->tag->setContent($tagContent);
@@ -157,7 +157,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
     {
         $src = $this->arguments['extendedPrivacy'] ? self::YOUTUBE_PRIVACY_BASEURL : self::YOUTUBE_BASEURL;
 
-        $params = array();
+        $params = [];
 
         if (false === (boolean) $this->arguments['showRelated']) {
             $params[] = 'rel=0';
@@ -219,7 +219,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      * @param boolean $forceClosingTag
      * @return string
      */
-    private function renderChildTag($tagName, $attributes = array(), $forceClosingTag = false)
+    private function renderChildTag($tagName, $attributes = [], $forceClosingTag = false)
     {
         $tagBuilder = clone $this->tag;
         $tagBuilder->reset();

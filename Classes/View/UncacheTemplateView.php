@@ -31,7 +31,7 @@ class UncacheTemplateView extends TemplateView
     {
         $partial = $conf['partial'];
         $section = $conf['section'];
-        $arguments = true === is_array($conf['arguments']) ? $conf['arguments'] : array();
+        $arguments = true === is_array($conf['arguments']) ? $conf['arguments'] : [];
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
         $controllerContext = $conf['controllerContext'];
         if (true === empty($partial)) {
@@ -75,11 +75,11 @@ class UncacheTemplateView extends TemplateView
         RenderingContextInterface $renderingContext,
         $partial,
         $section = null,
-        $arguments = array()
+        array $arguments = []
     ) {
         array_push(
             $this->renderingStack,
-            array('type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext)
+            ['type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
         );
         $rendered = $this->renderPartial($partial, $section, $arguments);
         array_pop($this->renderingStack);

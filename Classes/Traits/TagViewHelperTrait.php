@@ -111,8 +111,8 @@ trait TagViewHelperTrait
     protected function renderTag(
         $tagName,
         $content = null,
-        array $attributes = array(),
-        array $nonEmptyAttributes = array('id', 'class')
+        array $attributes = [],
+        array $nonEmptyAttributes = ['id', 'class']
     ) {
         $trimmedContent = trim((string) $content);
         $forceClosingTag = (boolean) $this->arguments['forceClosingTag'];
@@ -152,7 +152,7 @@ trait TagViewHelperTrait
      * @param string $mode
      * @return string
      */
-    protected function renderChildTag($tagName, $attributes = array(), $forceClosingTag = false, $mode = 'none')
+    protected function renderChildTag($tagName, $attributes = [], $forceClosingTag = false, $mode = 'none')
     {
         $tagBuilder = clone $this->tag;
         $tagBuilder->reset();

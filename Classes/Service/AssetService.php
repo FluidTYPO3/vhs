@@ -50,7 +50,7 @@ class AssetService implements SingletonInterface
     /**
      * @var array
      */
-    private static $cachedDependencies = array();
+    private static $cachedDependencies = [];
 
     /**
      * @var boolean
@@ -140,7 +140,7 @@ class AssetService implements SingletonInterface
     public function buildAllUncached(array $parameters, $caller)
     {
         $content = $caller->content;
-        $matches = array();
+        $matches = [];
         preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
         foreach ($matches[1] as $key => $match) {
             $extractedDependencies = explode(',', $matches[1][$key]);
@@ -167,7 +167,7 @@ class AssetService implements SingletonInterface
             $settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
             if (false === $settingsExist) {
                 // no settings exist, but don't allow a NULL value. This prevents cache clobbering.
-                self::$settingsCache = array();
+                self::$settingsCache = [];
             } else {
                 self::$settingsCache = GeneralUtility::removeDotsFromTS(
                     $allTypoScript['plugin.']['tx_vhs.']['settings.']
@@ -186,8 +186,8 @@ class AssetService implements SingletonInterface
     protected function placeAssetsInHeaderAndFooter($assets, $cached)
     {
         $settings = $this->getSettings();
-        $header = array();
-        $footer = array();
+        $header = [];
+        $footer = [];
         $footerRelocationEnabled = (isset($settings['enableFooterRelocation']) && $settings['relocateToFooter'] > 0)
             || !isset($settings['enableFooterRelocation']);
         foreach ($assets as $name => $asset) {
@@ -210,7 +210,7 @@ class AssetService implements SingletonInterface
         }
         $this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
         $this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer);
-        $GLOBALS['VhsAssets'] = array();
+        $GLOBALS['VhsAssets'] = [];
     }
 
     /**
@@ -241,18 +241,18 @@ class AssetService implements SingletonInterface
      */
     protected function buildAssetsChunk($assets)
     {
-        $spool = array();
+        $spool = [];
         foreach ($assets as $name => $asset) {
             $assetSettings = $this->extractAssetSettings($asset);
             $type = $assetSettings['type'];
             if (false === isset($spool[$type])) {
-                $spool[$type] = array();
+                $spool[$type] = [];
             }
             $spool[$type][$name] = $asset;
         }
-        $chunks = array();
+        $chunks = [];
         foreach ($spool as $type => $spooledAssets) {
-            $chunk = array();
+            $chunk = [];
             /** @var AssetInterface[] $spooledAssets */
             foreach ($spooledAssets as $name => $asset) {
                 $assetSettings = $this->extractAssetSettings($asset);
@@ -266,7 +266,7 @@ class AssetService implements SingletonInterface
                     if (0 < count($chunk)) {
                         $mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
                         array_push($chunks, $mergedFileTag);
-                        $chunk = array();
+                        $chunk = [];
                     }
                     if (true === empty($path)) {
                         $assetContent = $this->extractAssetContent($asset);
@@ -418,7 +418,7 @@ class AssetService implements SingletonInterface
         if (false === (isset($settings['asset']) || isset($settings['assetGroup']))) {
             return $assets;
         }
-        $filtered = array();
+        $filtered = [];
         /** @var \FluidTYPO3\Vhs\Asset $asset */
         foreach ($assets as $name => $asset) {
             $assetSettings = $this->extractAssetSettings($asset);
@@ -454,8 +454,8 @@ class AssetService implements SingletonInterface
      */
     protected function sortAssetsByDependency($assets)
     {
-        $placed = array();
-        $assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : array();
+        $placed = [];
+        $assetNames = (0 < count($assets)) ? array_combine(array_keys($assets), array_keys($assets)) : [];
         while ($asset = array_shift($assets)) {
             $postpone = false;
             /** @var AssetInterface $asset */
@@ -507,7 +507,7 @@ class AssetService implements SingletonInterface
         if (isset($settings['variables']) && is_array($settings['variables'])) {
             $variables =  $settings['variables'];
         } else {
-            $variables = array();
+            $variables = [];
         }
         $contents = $this->buildAsset($asset);
         $variables = GeneralUtility::removeDotsFromTS($variables);
@@ -568,8 +568,8 @@ class AssetService implements SingletonInterface
      */
     protected function copyReferencedFilesAndReplacePaths($contents, $regex, $originalDirectory, $wrap = '|')
     {
-        $matches = array();
-        $replacements = array();
+        $matches = [];
+        $replacements = [];
         $wrap = explode('|', $wrap);
         preg_match_all($regex, $contents, $matches);
         foreach ($matches[2] as $matchCount => $match) {

@@ -57,7 +57,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
         }
         if (true === isset($this->arguments['content']) && false === empty($this->arguments['content'])) {
             $this->getPageRenderer()
-                ->addMetaTag($this->renderTag($this->tagName, null, array('content' => $this->arguments['content'])));
+                ->addMetaTag($this->renderTag($this->tagName, null, ['content' => $this->arguments['content']]));
         }
     }
 }

@@ -118,7 +118,7 @@ trait SlideViewHelperTrait
         }
 
         // find out which storage page UIDs to read from, respecting slide depth
-        $storagePageUids = array();
+        $storagePageUids = [];
         if (0 === $slide) {
             $storagePageUids[] = $pageUid;
         } else {
@@ -139,7 +139,7 @@ trait SlideViewHelperTrait
             }
         }
         // select records, respecting slide and slideCollect.
-        $records = array();
+        $records = [];
         do {
             $storagePageUid = array_shift($storagePageUids);
             $limitRemaining = null;

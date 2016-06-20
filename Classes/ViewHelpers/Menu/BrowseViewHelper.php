@@ -27,7 +27,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper
     /**
      * @var array
      */
-    protected $backups = array('menu');
+    protected $backups = ['menu'];
 
     public function initializeArguments()
     {
@@ -107,7 +107,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper
                 break;
             }
         }
-        $pages = array();
+        $pages = [];
         if (true === (boolean) $this->arguments['renderFirst']) {
             $pages['first'] = $menuData[$firstUid];
         }
@@ -124,7 +124,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper
             $pages['last'] = $menuData[$lastUid];
         }
         $menuItems = $this->parseMenu($pages);
-        $menu = array();
+        $menu = [];
         if (true === isset($pages['first'])) {
             $menu['first'] = $menuItems['first'];
             $menu['first']['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menuItems['first']);

@@ -138,7 +138,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     protected function evaluateArguments()
     {
         $evaluationType = $this->arguments['evaluationType'];
-        $evaluations = array();
+        $evaluations = [];
         if (true === (boolean) $this->arguments['anyFrontendUser']) {
             $evaluations['anyFrontendUser'] = intval($this->assertFrontendUserLoggedIn());
         }
@@ -293,13 +293,13 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         }
         $currentBackendUser = $this->getCurrentBackendUser();
         $currentUserGroups = trim($currentBackendUser['usergroup'], ',');
-        $userGroups = false === empty($currentUserGroups) ? explode(',', $currentUserGroups) : array();
+        $userGroups = false === empty($currentUserGroups) ? explode(',', $currentUserGroups) : [];
         if (0 === count($userGroups)) {
             return false;
         }
         if (true === is_string($groups)) {
             $groups = trim($groups, ',');
-            $groups = false === empty($groups) ? explode(',', $groups) : array();
+            $groups = false === empty($groups) ? explode(',', $groups) : [];
         }
         if (0 < count($groups)) {
             return (boolean) (0 < count(array_intersect($userGroups, $groups)));

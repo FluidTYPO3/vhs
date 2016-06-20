@@ -25,7 +25,7 @@ class ListViewHelper extends AbstractMenuViewHelper
     /**
      * @var array
      */
-    protected $backups = array('menu');
+    protected $backups = ['menu'];
 
     public function initializeArguments()
     {
@@ -48,7 +48,7 @@ class ListViewHelper extends AbstractMenuViewHelper
             return null;
         }
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
-        $menuData = array();
+        $menuData = [];
         foreach ($pages as $pageUid) {
             $menuData[] = $this->pageService->getPage($pageUid, $showAccessProtected);
         }

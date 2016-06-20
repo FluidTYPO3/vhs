@@ -29,17 +29,17 @@ class PageService implements SingletonInterface
     /**
      * @var array
      */
-    protected static $cachedPages = array();
+    protected static $cachedPages = [];
 
     /**
      * @var array
      */
-    protected static $cachedMenus = array();
+    protected static $cachedMenus = [];
 
     /**
      * @var array
      */
-    protected static $cachedRootlines = array();
+    protected static $cachedRootlines = [];
 
     /**
      * @param integer $pageUid
@@ -52,7 +52,7 @@ class PageService implements SingletonInterface
      */
     public function getMenu(
         $pageUid,
-        array $excludePages = array(),
+        array $excludePages = [],
         $includeNotInMenu = false,
         $includeMenuSeparator = false,
         $disableGroupAccessCheck = false
@@ -125,11 +125,11 @@ class PageService implements SingletonInterface
      * @return string
      */
     protected function getPageConstraints(
-        array $excludePages = array(),
+        array $excludePages = [],
         $includeNotInMenu = false,
         $includeMenuSeparator = false
     ) {
-        $constraints = array();
+        $constraints = [];
 
         $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' .
             PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
@@ -170,7 +170,7 @@ class PageService implements SingletonInterface
         $l18nCfg = true === isset($pageRecord['l18n_cfg']) ? $pageRecord['l18n_cfg'] : 0;
         $hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
         $hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
-        $pageOverlay = array();
+        $pageOverlay = [];
         if (0 !== $languageUid) {
             $pageOverlay¨ = $GLOBALS['TSFE']->sys_page->getPageOverlay($pageUid, $languageUid);
         }
@@ -198,13 +198,13 @@ class PageService implements SingletonInterface
      */
     public function getItemLink(array $page, $forceAbsoluteUrl = false)
     {
-        $config = array(
+        $config = [
             'parameter' => $page['uid'],
             'returnLast' => 'url',
             'additionalParams' => '',
             'useCacheHash' => false,
             'forceAbsoluteUrl' => $forceAbsoluteUrl,
-        );
+        ];
 
         return $GLOBALS['TSFE']->cObj->typoLink('', $config);
     }

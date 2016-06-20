@@ -73,7 +73,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
             self::$pageService = $objectManager->get('FluidTYPO3\Vhs\Service\PageService');
         }
 
-        $menu = self::$pageService->getMenu($pageUid, array(), $includeHiddenInMenu, false, $includeAccessProtected);
+        $menu = self::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);
 
         return (0 < count($menu));
     }

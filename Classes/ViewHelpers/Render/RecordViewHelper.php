@@ -23,7 +23,7 @@ class RecordViewHelper extends AbstractContentViewHelper
      * @param array $record
      * @return string
      */
-    public function render(array $record = array())
+    public function render(array $record = [])
     {
         if (false === isset($record['uid'])) {
             return null;

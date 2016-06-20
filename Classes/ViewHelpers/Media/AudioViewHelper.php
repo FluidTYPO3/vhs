@@ -36,22 +36,22 @@ class AudioViewHelper extends AbstractMediaViewHelper
     /**
      * @var array
      */
-    protected $validTypes = array('mp3', 'ogg', 'oga', 'wav');
+    protected $validTypes = ['mp3', 'ogg', 'oga', 'wav'];
 
     /**
      * @var array
      */
-    protected $mimeTypesMap = array(
+    protected $mimeTypesMap = [
         'mp3' => 'audio/mpeg',
         'ogg' => 'audio/ogg',
         'oga' => 'audio/ogg',
         'wav' => 'audio/wav'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $validPreloadModes = array('auto', 'metadata', 'none');
+    protected $validPreloadModes = ['auto', 'metadata', 'none'];
 
     /**
      * Initialize arguments.
@@ -160,13 +160,13 @@ class AudioViewHelper extends AbstractMediaViewHelper
             }
             $type = $this->mimeTypesMap[$type];
             $src = $this->preprocessSourceUri($src);
-            $this->renderChildTag('source', array('src' => $src, 'type' => $type), false, 'append');
+            $this->renderChildTag('source', ['src' => $src, 'type' => $type], false, 'append');
         }
-        $tagAttributes = array(
+        $tagAttributes = [
             'width'   => $this->arguments['width'],
             'height'  => $this->arguments['height'],
             'preload' => 'auto',
-        );
+        ];
         if (true === (boolean) $this->arguments['autoplay']) {
             $tagAttributes['autoplay'] = 'autoplay';
         }

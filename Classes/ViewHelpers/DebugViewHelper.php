@@ -69,12 +69,12 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
     /**
      * @var ViewHelperNode[]
      */
-    protected $childViewHelperNodes = array();
+    protected $childViewHelperNodes = [];
 
     /**
      * @var ObjectAccessorNode[]
      */
-    protected $childObjectAccessorNodes = array();
+    protected $childObjectAccessorNodes = [];
     /**
      * With this flag, you can disable the escaping interceptor inside this ViewHelper.
      * THIS MIGHT CHANGE WITHOUT NOTICE, NO PUBLIC API!
@@ -86,7 +86,7 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
      */
     public function render()
     {
-        $nodes = array();
+        $nodes = [];
         foreach ($this->childViewHelperNodes as $viewHelperNode) {
             $viewHelper = $viewHelperNode->getUninitializedViewHelper();
             $arguments = $viewHelper->prepareArguments();
@@ -99,17 +99,17 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
             $renderMethodDescription = htmlentities($renderMethodDescription);
             $renderMethodDescription = implode(LF, array_map('trim', explode(LF, $renderMethodDescription)));
             $renderMethodDescription = '[RENDER METHOD DOC]' . LF . $renderMethodDescription . LF;
-            $argumentDefinitions = array();
+            $argumentDefinitions = [];
             foreach ($arguments as $argument) {
                 $name = $argument->getName();
                 $argumentDefinitions[$name] = ObjectAccess::getGettableProperties($argument);
             }
-            $sections = array(
+            $sections = [
                 $viewHelperDescription,
                 DebuggerUtility::var_dump($argumentDefinitions, '[ARGUMENTS]', 4, true, false, true),
                 DebuggerUtility::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, true, false, true),
                 $renderMethodDescription
-            );
+            ];
             array_push($nodes, implode(LF, $sections));
         }
         if (0 < count($this->childObjectAccessorNodes)) {
@@ -128,10 +128,10 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
                     $value = null;
                     $type = 'UNDEFINED/INACCESSIBLE';
                 }
-                $sections = array(
+                $sections = [
                     'Path: {' . $path . '}',
                     'Value type: ' . $type,
-                );
+                ];
                 if (true === is_object($value)) {
                     $sections[] = 'Accessible properties on {' . $path . '}:';
                     $gettable = ObjectAccess::getGettablePropertyNames($value);

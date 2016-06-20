@@ -34,7 +34,7 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
     /**
      * @var array
      */
-    protected static $configurations = array();
+    protected static $configurations = [];
 
     /**
      * @return void

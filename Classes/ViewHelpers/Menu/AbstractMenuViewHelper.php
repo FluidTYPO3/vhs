@@ -43,7 +43,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     /**
      * @var array
      */
-    private $backupValues = array();
+    private $backupValues = [];
 
     /**
      * @param PageService $pageService
@@ -285,7 +285,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     {
         $tagName = $this->arguments['tagNameChildren'];
         $this->tag->setTagName($this->getWrappingTagName());
-        $html = array();
+        $html = [];
         $levels = (integer) $this->arguments['levels'];
         $showCurrent = (boolean) $this->arguments['showCurrent'];
         $expandAll = (boolean) $this->arguments['expandAll'];
@@ -440,7 +440,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                 continue;
             }
             $count++;
-            $class = array();
+            $class = [];
             $originalPageUid = $page['uid'];
             $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
             if ($showAccessProtected) {
@@ -560,7 +560,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function backupVariables()
     {
-        $backups = array($this->arguments['as'], $this->arguments['rootLineAs']);
+        $backups = [$this->arguments['as'], $this->arguments['rootLineAs']];
         foreach ($backups as $var) {
             if (true === $this->templateVariableContainer->exists($var)) {
                 $this->backupValues[$var] = $this->templateVariableContainer->get($var);
@@ -680,7 +680,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $pages = (array) $pages;
         }
         if (false === is_array($pages)) {
-            return array();
+            return [];
         }
 
         return $pages;
@@ -696,13 +696,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         if (isset($this->arguments['doktypes']) && !empty($this->arguments['doktypes'])) {
             $types = $this->parseDoktypeList($this->arguments['doktypes']);
         } else {
-            $types = array(
+            $types = [
                 PageService::DOKTYPE_MOVE_TO_PLACEHOLDER,
                 PageRepository::DOKTYPE_DEFAULT,
                 PageRepository::DOKTYPE_LINK,
                 PageRepository::DOKTYPE_SHORTCUT,
                 PageRepository::DOKTYPE_MOUNTPOINT,
-            );
+            ];
         }
         if ($this->arguments['includeSpacers'] && !in_array(PageRepository::DOKTYPE_SPACER, $types)) {
             array_push($types, PageRepository::DOKTYPE_SPACER);
@@ -725,7 +725,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         } else {
             $types = GeneralUtility::trimExplode(',', $doktypes);
         }
-        $parsed = array();
+        $parsed = [];
         foreach ($types as $index => $type) {
             if (!ctype_digit($type)) {
                 $typeNumber = constant('TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));

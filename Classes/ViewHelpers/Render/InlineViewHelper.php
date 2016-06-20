@@ -34,9 +34,9 @@ class InlineViewHelper extends AbstractRenderViewHelper
         $this->registerArgument(
             'namespaces',
             'array',
-            'Optional additional/overridden namespaces, array("ns" => "MyVendor\\MyExt\\ViewHelpers")',
+            'Optional additional/overridden namespaces, ["ns" => "MyVendor\\MyExt\\ViewHelpers"]',
             false,
-            array()
+            []
         );
     }
 

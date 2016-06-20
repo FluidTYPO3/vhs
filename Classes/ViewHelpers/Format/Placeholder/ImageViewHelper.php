@@ -49,12 +49,12 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         }
         $height = $this->arguments['height'] != $this->arguments['width'] ? $this->arguments['height'] : null;
         $addHeight = false === empty($height) ? 'x' . $height : null;
-        $url = array(
+        $url = [
             'https://placehold.it',
             $this->arguments['width'] . $addHeight,
             $this->arguments['backgroundColor'],
             $this->arguments['textColor'],
-        );
+        ];
         if (false === empty($text)) {
             array_push($url, '&text=' . urlencode($text));
         }

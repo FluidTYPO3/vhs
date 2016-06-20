@@ -179,7 +179,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if (false === empty($this->arguments['loadRegister'])) {
             $this->contentObject->cObjGetSingle('LOAD_REGISTER', $this->arguments['loadRegister']);
         }
-        $elements = array();
+        $elements = [];
         foreach ($rows as $row) {
             array_push($elements, $this->renderRecord($row));
         }
@@ -203,11 +203,11 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
             return null;
         }
-        $conf = array(
+        $conf = [
             'tables' => 'tt_content',
             'source' => $row['uid'],
             'dontCheckPid' => 1
-        );
+        ];
         $parent = $GLOBALS['TSFE']->currentRecord;
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It's should not be allowed to do this again then!!

@@ -56,7 +56,7 @@ class ExplodeViewHelper extends AbstractViewHelper
     {
         $content = $this->getArgumentFromArgumentsOrTagContent('content');
         $glue = $this->resolveGlue();
-        $output = call_user_func_array($this->method, array($glue, $content));
+        $output = call_user_func_array($this->method, [$glue, $content]);
         return $this->renderChildrenWithVariableOrReturnInput($output);
     }
 

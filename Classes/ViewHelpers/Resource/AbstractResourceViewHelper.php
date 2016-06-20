@@ -84,7 +84,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
              return null;
         }
 
-        $files = array();
+        $files = [];
         $resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 
         if (false === empty($categories)) {
@@ -95,7 +95,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                 'tablenames = \'sys_file\' AND uid_local IN (' . $sqlCategories . ')'
             );
 
-            $fileUids = array();
+            $fileUids = [];
             while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 $fileUids[] = intval($row['uid_foreign']);
             }

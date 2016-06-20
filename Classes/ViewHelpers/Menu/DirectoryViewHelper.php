@@ -25,7 +25,7 @@ class DirectoryViewHelper extends AbstractMenuViewHelper
     /**
      * @var array
      */
-    protected $backups = array('menu');
+    protected $backups = ['menu'];
 
     public function initializeArguments()
     {
@@ -48,7 +48,7 @@ class DirectoryViewHelper extends AbstractMenuViewHelper
         if (0 === count($pages)) {
             return null;
         }
-        $menuData = array();
+        $menuData = [];
         foreach ($pages as $pageUid) {
             $menuData = array_merge($menuData, $this->getMenu($pageUid));
         }

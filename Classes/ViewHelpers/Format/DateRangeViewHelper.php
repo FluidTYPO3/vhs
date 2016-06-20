@@ -38,7 +38,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *     DateTime corresponding to "intervalFormat" into the future/past.
  *   - if "return" is a string such as "w", "d", "h" etc. the corresponding
  *     counter value (weeks, days, hours etc.) is returned.
- *   - if "return" is an array of counter IDs, for example Array("w", "d"),
+ *   - if "return" is an array of counter IDs, for example ["w", "d"],
  *     the corresponding counters from the range are returned as an array.
  *
  * #### Note about LLL support and array consumers
@@ -188,7 +188,7 @@ class DateRangeViewHelper extends AbstractViewHelper
             }
             $output = $interval->format($return);
         } elseif (true === is_array($return)) {
-            $output = array();
+            $output = [];
             foreach ($return as $format) {
                 if (false === strpos($format, '%')) {
                     $format = '%' . $format;

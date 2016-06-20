@@ -79,7 +79,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             'array',
             'Query parameters to be attached to the resulting URI',
             false,
-            array()
+            []
         );
         $this->registerArgument('pageType', 'integer', 'Type of the target page. See typolink.parameter', false, 0);
         $this->registerArgument(
@@ -117,7 +117,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             'array',
             'Arguments to be removed from the URI. Only active if $addQueryString = TRUE',
             false,
-            array()
+            []
         );
         $this->registerArgument(
             'titleFields',
@@ -209,9 +209,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         // Check if we should assign page title to the template variable container
         $pageTitleAs = $this->arguments['pageTitleAs'];
         if (!empty($pageTitleAs)) {
-            $variables = array($pageTitleAs => $title);
+            $variables = [$pageTitleAs => $title];
         } else {
-            $variables = array();
+            $variables = [];
         }
 
         // Render children to see if an alternative title content should be used
@@ -220,7 +220,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $title = $renderedTitle;
         }
 
-        $class = array();
+        $class = [];
         if ($showAccessProtected && $this->pageService->isAccessProtected($page)) {
             $class[] = $this->arguments['classAccessProtected'];
         }

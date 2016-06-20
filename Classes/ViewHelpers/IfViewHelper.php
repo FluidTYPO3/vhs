@@ -36,34 +36,34 @@ class IfViewHelper extends AbstractConditionViewHelper
     /**
      * @var array
      */
-    static protected $comparisonOperators = array(
+    static protected $comparisonOperators = [
         self::OPERATOR_IS_EQUAL => self::OPERATOR_IS_EQUAL,
         self::OPERATOR_IS_NOT_EQUAL => self::OPERATOR_IS_NOT_EQUAL,
         self::OPERATOR_IS_GREATER_OR_EQUAL => self::OPERATOR_IS_GREATER_OR_EQUAL,
         self::OPERATOR_IS_SMALLER_OR_EQUAL => self::OPERATOR_IS_SMALLER_OR_EQUAL,
         self::OPERATOR_IS_SMALLER => self::OPERATOR_IS_SMALLER,
         self::OPERATOR_IS_GREATER => self::OPERATOR_IS_GREATER
-    );
+    ];
 
     /**
      * @var array
      */
-    static protected $logicalOperators = array(
+    static protected $logicalOperators = [
         self::OPERATOR_LOGICAL_AND => self::OPERATOR_LOGICAL_AND,
         self::OPERATOR_LOGICAL_OR => self::OPERATOR_LOGICAL_OR,
         self::OPERATOR_BOOLEAN_AND => self::OPERATOR_LOGICAL_AND,
         self::OPERATOR_BOOLEAN_OR => self::OPERATOR_LOGICAL_OR
-    );
+    ];
 
     /**
      * Lower value means less precedence
      *
      * @var array
      */
-    static protected $operatorPrecedence = array(
+    static protected $operatorPrecedence = [
         self::OPERATOR_LOGICAL_OR => 0,
         self::OPERATOR_LOGICAL_AND => 1
-    );
+    ];
 
     /**
      * Initialize

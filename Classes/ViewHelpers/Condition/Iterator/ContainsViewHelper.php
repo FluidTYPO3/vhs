@@ -66,7 +66,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
             return null;
         }
         $haystack = $arguments['haystack'];
-        $asArray = array();
+        $asArray = [];
         if (true === is_array($haystack)) {
             $asArray = $haystack;
         } elseif (true === $haystack instanceof LazyObjectStorage) {

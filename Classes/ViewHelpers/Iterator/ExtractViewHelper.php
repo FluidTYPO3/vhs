@@ -26,20 +26,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * #### Input from extbase version of indexed_search">
  *
- *     array(
- *           0 => array(
+ *     [
+ *         0 => [
  *             'sword' => 'firstWord',
  *             'oper' => 'AND'
- *         ),
- *         1 => array(
+ *         ],
+ *         1 => [
  *             'sword' => 'secondWord',
  *             'oper' => 'AND'
- *         ),
- *         3 => array(
+ *         ],
+ *         3 => [
  *             'sword' => 'thirdWord',
  *             'oper' => 'AND'
- *         )
- *     )
+ *         ]
+ *     ]
  *
  * Show the previous search words in the search form of the
  * result page:
@@ -102,7 +102,7 @@ class ExtractViewHelper extends AbstractViewHelper
             }
         } catch (\Exception $error) {
             GeneralUtility::sysLog($error->getMessage(), 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-            $result = array();
+            $result = [];
         }
 
         if (true === (boolean) $single) {
@@ -141,7 +141,7 @@ class ExtractViewHelper extends AbstractViewHelper
      */
     public function recursivelyExtractKey($iterator, $key)
     {
-        $content = array();
+        $content = [];
 
         foreach ($iterator as $v) {
             // Lets see if we find something directly:

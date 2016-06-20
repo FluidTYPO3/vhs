@@ -129,7 +129,7 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected function getLabelsByLanguageKey($locallang, $languageKey)
     {
-        $labels = array();
+        $labels = [];
 
         if (false === empty($locallang[$languageKey])) {
             $labels = $locallang[$languageKey];

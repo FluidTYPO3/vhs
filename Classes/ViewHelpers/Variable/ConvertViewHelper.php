@@ -83,7 +83,7 @@ class ConvertViewHelper extends AbstractViewHelper
             } elseif ('array' === $type && true === $value instanceof \Traversable) {
                 $value = iterator_to_array($value, false);
             } elseif ('array' === $type) {
-                $value = array($value);
+                $value = [$value];
             } else {
                 settype($value, $type);
             }
@@ -112,7 +112,7 @@ class ConvertViewHelper extends AbstractViewHelper
                         $value = 0.0;
                         break;
                     case 'array':
-                        $value = array();
+                        $value = [];
                         break;
                     case 'ObjectStorage':
                         $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');

@@ -88,7 +88,7 @@ class FieldNameViewHelper extends AbstractViewHelper
         if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'formFieldNames')) {
             $formFieldNames = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formFieldNames');
         } else {
-            $formFieldNames = array();
+            $formFieldNames = [];
         }
         $formFieldNames[] = $name;
         $this->viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'formFieldNames', $formFieldNames);

@@ -56,7 +56,7 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
         $rawRootLineData = array_slice($rawRootLineData, $entryLevel, $endLevel);
         $rootLineData = $rawRootLineData;
         if (false === (boolean) $this->arguments['showHiddenInMenu']) {
-            $rootLineData = array();
+            $rootLineData = [];
             foreach ($rawRootLineData as $record) {
                 if (false === (boolean) $record['nav_hide']) {
                     array_push($rootLineData, $record);
