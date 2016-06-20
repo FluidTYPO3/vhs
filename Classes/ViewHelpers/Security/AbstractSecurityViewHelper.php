@@ -8,9 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -130,12 +132,24 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     }
 
     /**
+     * @param array|null $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        $proxy = GeneralUtility::makeInstance(ObjectManager::class)->get(static::class);
+        $proxy->setArguments((array) $arguments);
+        return $proxy->evaluateArguments();
+    }
+
+
+    /**
      * Returns TRUE if all conditions from arguments are satisfied. The
      * type of evaluation (AND or OR) can be set using argument "evaluationType"
      *
      * @return boolean
      */
-    protected function evaluateArguments()
+    public function evaluateArguments()
     {
         $evaluationType = $this->arguments['evaluationType'];
         $evaluations = [];

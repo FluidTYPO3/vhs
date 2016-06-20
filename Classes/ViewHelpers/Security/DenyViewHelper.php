@@ -23,18 +23,15 @@ class DenyViewHelper extends AbstractSecurityViewHelper implements ChildNodeAcce
 {
 
     /**
-     * Render deny - i.e. render "else" child only if arguments are satisfied,
-     * resulting in an inverse match.
+     * Overridden condition evaluation - full negation of verdict
      *
-     * @return string
+     * @param array|null $arguments
+     * @return bool
      */
-    public function render()
+    protected static function evaluateCondition($arguments = null)
     {
-        $evaluation = $this->evaluateArguments();
-        if (false === $evaluation) {
-            return $this->renderThenChild();
-        } else {
-            return $this->renderElseChild();
-        }
+        return !parent::evaluateCondition($arguments);
     }
+
+
 }

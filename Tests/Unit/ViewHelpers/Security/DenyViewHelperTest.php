@@ -15,22 +15,4 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class DenyViewHelperTest extends AbstractViewHelperTest
 {
-
-    public function testConditionalRenderTrue()
-    {
-        $instance = $this->getMock($this->getViewHelperClassName(), array('evaluateArguments', 'renderThenChild', 'renderElseChild'));
-        $instance->expects($this->once())->method('evaluateArguments')->willReturn(false);
-        $instance->expects($this->once())->method('renderThenChild');
-        $instance->expects($this->never())->method('renderElseChild');
-        $instance->render();
-    }
-
-    public function testConditionalRenderFalse()
-    {
-        $instance = $this->getMock($this->getViewHelperClassName(), array('evaluateArguments', 'renderThenChild', 'renderElseChild'));
-        $instance->expects($this->once())->method('evaluateArguments')->willReturn(true);
-        $instance->expects($this->never())->method('renderThenChild');
-        $instance->expects($this->once())->method('renderElseChild');
-        $instance->render();
-    }
 }
