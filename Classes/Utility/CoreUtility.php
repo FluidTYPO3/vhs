@@ -25,9 +25,6 @@ class CoreUtility
      */
     public static function getLanguageFlagIconPath()
     {
-        if (true === version_compare(TYPO3_version, '7.1', '<')) {
-            return ExtensionManagementUtility::extPath('t3skin') . 'images/flags/';
-        }
         return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/SVG/';
     }
 
