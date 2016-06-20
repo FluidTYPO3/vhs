@@ -13,7 +13,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper as RelocatedSanit
 /**
  * Sanitizes a string
  *
- * @deprecated Use FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper instead
+ * @deprecated Use FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper, remove in 4.0.0
  */
 class SanitizeStringViewHelper extends RelocatedSanitizeStringViewHelper
 {

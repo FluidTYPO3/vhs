@@ -23,7 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  *
  * DEPRECATED: use v:menu.browse instead
  *
- * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\BrowseViewHelper
+ * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\BrowseViewHelper, remove in 4.0.0
  */
 class BrowseViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\BrowseViewHelper
 {

@@ -18,7 +18,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  *
  * DEPRECATED: use v:menu.deferred instead
  *
- * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\DeferredViewHelper
+ * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\DeferredViewHelper, remove in 4.0.0
  */
 class DeferredViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\DeferredViewHelper
 {

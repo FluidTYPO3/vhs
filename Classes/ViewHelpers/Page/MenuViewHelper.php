@@ -21,7 +21,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  *
  * DEPRECATED: use v:menu instead
  *
- * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\MenuViewHelper
+ * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\MenuViewHelper, remove in 4.0.0
  */
 class MenuViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\MenuViewHelper
 {

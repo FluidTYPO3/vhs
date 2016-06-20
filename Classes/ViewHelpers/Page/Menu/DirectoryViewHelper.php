@@ -21,7 +21,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  *
  * DEPRECATED: use v:menu.directory instead
  *
- * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\DirectoryViewHelper
+ * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\DirectoryViewHelper, remove in 4.0.0
  */
 class DirectoryViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\DirectoryViewHelper
 {

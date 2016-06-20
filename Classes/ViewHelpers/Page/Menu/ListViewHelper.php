@@ -21,7 +21,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  *
  * DEPRECATED: use v:menu.list instead
  *
- * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\ListViewHelper
+ * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\ListViewHelper, remove in 4.0.0
  */
 class ListViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\ListViewHelper
 {

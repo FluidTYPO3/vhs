@@ -39,7 +39,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper as FluidTypolinkViewHelpe
  *     <!-- With extensive configuration -->
  *     <v:uri.typolink configuration="{parameter: page.uid, additionalParams: '&print=1'}" />
  *
- * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper instead
+ * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper, remove in 4.0.0
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {
