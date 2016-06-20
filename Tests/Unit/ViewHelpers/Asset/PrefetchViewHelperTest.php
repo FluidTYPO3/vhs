@@ -13,16 +13,17 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class PrefetchViewHelperTest
  */
-class PrefetchViewHelperTest extends AbstractViewHelperTest {
+class PrefetchViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function buildReturnsMetaTag() {
-		$instance = $this->buildViewHelperInstance(array('domains' => 'test.com,test2.com', 'force' => TRUE));
-		$instance->render();
-		$result = $instance->build();
-		$this->assertStringStartsWith('<meta', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function buildReturnsMetaTag()
+    {
+        $instance = $this->buildViewHelperInstance(array('domains' => 'test.com,test2.com', 'force' => true));
+        $instance->render();
+        $result = $instance->build();
+        $this->assertStringStartsWith('<meta', $result);
+    }
 }

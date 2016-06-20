@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class MenuViewHelperTest
  */
-class MenuViewHelperTest extends AbstractViewHelperTest {
+class MenuViewHelperTest extends AbstractViewHelperTest
+{
 
 }

@@ -13,18 +13,19 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class PlaintextViewHelperTest
  */
-class PlaintextViewHelperTest extends AbstractViewHelperTest {
+class PlaintextViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function formatsToPlaintext() {
-		$input = "	This string\n	is plain-text formatted";
-		$expected = "This string\nis plain-text formatted";
-		$result = $this->executeViewHelper(array('content' => $input));
-		$result2 = $this->executeViewHelperUsingTagContent('Text', $input);
-		$this->assertEquals($expected, $result);
-		$this->assertEquals($result, $result2);
-	}
-
+    /**
+     * @test
+     */
+    public function formatsToPlaintext()
+    {
+        $input = "	This string\n	is plain-text formatted";
+        $expected = "This string\nis plain-text formatted";
+        $result = $this->executeViewHelper(array('content' => $input));
+        $result2 = $this->executeViewHelperUsingTagContent('Text', $input);
+        $this->assertEquals($expected, $result);
+        $this->assertEquals($result, $result2);
+    }
 }

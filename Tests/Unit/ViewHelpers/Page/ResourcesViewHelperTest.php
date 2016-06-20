@@ -13,14 +13,15 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class ResourcesViewHelperTest
  */
-class ResourcesViewHelperTest extends AbstractViewHelperTest {
+class ResourcesViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testRenderFailsWithoutFieldArgument() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument was not found');
-		$this->executeViewHelper();
-	}
-
+    /**
+     * @test
+     */
+    public function testRenderFailsWithoutFieldArgument()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument was not found');
+        $this->executeViewHelper();
+    }
 }

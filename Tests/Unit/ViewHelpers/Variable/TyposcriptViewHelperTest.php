@@ -13,34 +13,38 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class TyposcriptViewHelperTest
  */
-class TyposcriptViewHelperTest extends AbstractViewHelperTest {
+class TyposcriptViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsNullIfPathIsNull() {
-		$this->assertNull($this->executeViewHelper(array('path' => NULL)));
-	}
+    /**
+     * @test
+     */
+    public function returnsNullIfPathIsNull()
+    {
+        $this->assertNull($this->executeViewHelper(array('path' => null)));
+    }
 
-	/**
-	 * @test
-	 */
-	public function returnsArrayIfPathContainsArray() {
-		$this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase.features')), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
-	}
+    /**
+     * @test
+     */
+    public function returnsArrayIfPathContainsArray()
+    {
+        $this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase.features')), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canGetPathUsingArgument() {
-		$this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features')));
-	}
+    /**
+     * @test
+     */
+    public function canGetPathUsingArgument()
+    {
+        $this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canGetPathUsingTagContent() {
-		$this->assertNotEmpty($this->executeViewHelperUsingTagContent('Text', 'config.tx_extbase.features'));
-	}
-
+    /**
+     * @test
+     */
+    public function canGetPathUsingTagContent()
+    {
+        $this->assertNotEmpty($this->executeViewHelperUsingTagContent('Text', 'config.tx_extbase.features'));
+    }
 }

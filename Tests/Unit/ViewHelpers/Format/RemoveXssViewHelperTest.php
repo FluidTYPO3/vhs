@@ -13,10 +13,11 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class RemoveXssViewHelperTest
  */
-class RemoveXssViewHelperTest extends AbstractViewHelperTest {
+class RemoveXssViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$this->assertEmpty($this->executeViewHelper());
-	}
-
+    public function testRender()
+    {
+        $this->assertEmpty($this->executeViewHelper());
+    }
 }

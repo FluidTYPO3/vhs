@@ -13,29 +13,31 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class PregMatchViewHelperTest
  */
-class PregMatchViewHelperTest extends AbstractViewHelperTest {
+class PregMatchViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function canMatchValues() {
-		$arguments = array(
-			'subject' => 'foo123bar',
-			'pattern' => '/[0-9]{3}/',
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame(1, count($test));
-	}
+    /**
+     * @test
+     */
+    public function canMatchValues()
+    {
+        $arguments = array(
+            'subject' => 'foo123bar',
+            'pattern' => '/[0-9]{3}/',
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame(1, count($test));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canTakeSubjectFromRenderChildren() {
-		$arguments = array(
-			'pattern' => '/[0-9]{3}/',
-		);
-		$test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
-		$this->assertSame(1, count($test));
-	}
-
+    /**
+     * @test
+     */
+    public function canTakeSubjectFromRenderChildren()
+    {
+        $arguments = array(
+            'pattern' => '/[0-9]{3}/',
+        );
+        $test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
+        $this->assertSame(1, count($test));
+    }
 }

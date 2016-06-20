@@ -13,15 +13,16 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class SortViewHelperTest
  */
-class SortViewHelperTest extends AbstractViewHelperTest {
+class SortViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function throwsExceptionOnUnsupportedSortFlag() {
-		$arguments = array('sortFlags' => 'FOOBAR');
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The constant "FOOBAR" you\'re trying to use as a sortFlag is not allowed.');
-		$this->executeViewHelperUsingTagContent('Array', array('a', 'b', 'c'), $arguments);
-	}
-
+    /**
+     * @test
+     */
+    public function throwsExceptionOnUnsupportedSortFlag()
+    {
+        $arguments = array('sortFlags' => 'FOOBAR');
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The constant "FOOBAR" you\'re trying to use as a sortFlag is not allowed.');
+        $this->executeViewHelperUsingTagContent('Array', array('a', 'b', 'c'), $arguments);
+    }
 }

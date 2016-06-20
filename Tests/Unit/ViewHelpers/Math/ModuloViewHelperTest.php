@@ -11,13 +11,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class ModuloViewHelperTest
  */
-class ModuloViewHelperTest extends AbstractMathViewHelperTest {
+class ModuloViewHelperTest extends AbstractMathViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testDualArguments() {
-		$this->executeDualArgumentTest(3, 2, 1);
-	}
-
+    /**
+     * @test
+     */
+    public function testDualArguments()
+    {
+        $this->executeDualArgumentTest(3, 2, 1);
+    }
 }

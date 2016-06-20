@@ -13,15 +13,16 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class IsTestingViewHelperTest
  */
-class IsTestingViewHelperTest extends AbstractViewHelperTest {
+class IsTestingViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$arguments = array('then' => 'then', 'else' => 'else');
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    public function testRender()
+    {
+        $arguments = array('then' => 'then', 'else' => 'else');
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

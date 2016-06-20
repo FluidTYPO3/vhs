@@ -14,30 +14,33 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 /**
  * Class SiteRelativeViewHelperTest
  */
-class SiteRelativeViewHelperTest extends AbstractViewHelperTest {
+class SiteRelativeViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersUsingArgument() {
-		$test = $this->executeViewHelper(array('extensionName' => 'Vhs'));
-		$this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
-	}
+    /**
+     * @test
+     */
+    public function rendersUsingArgument()
+    {
+        $test = $this->executeViewHelper(array('extensionName' => 'Vhs'));
+        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersUsingControllerContext() {
-		$test = $this->executeViewHelper(array(), array(), NULL, 'Vhs');
-		$this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
-	}
+    /**
+     * @test
+     */
+    public function rendersUsingControllerContext()
+    {
+        $test = $this->executeViewHelper(array(), array(), null, 'Vhs');
+        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function throwsErrorWhenUnableToDetectExtensionName() {
-		$this->setExpectedException('RuntimeException', NULL, 1364167519);
-		$this->executeViewHelper(array(), array(), NULL, NULL, 'FakePlugin');
-	}
-
+    /**
+     * @test
+     */
+    public function throwsErrorWhenUnableToDetectExtensionName()
+    {
+        $this->setExpectedException('RuntimeException', null, 1364167519);
+        $this->executeViewHelper(array(), array(), null, null, 'FakePlugin');
+    }
 }

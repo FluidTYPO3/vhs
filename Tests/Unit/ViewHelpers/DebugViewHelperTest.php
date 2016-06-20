@@ -30,35 +30,37 @@ use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 /**
  * Class DebugViewHelperTest
  */
-class DebugViewHelperTest extends AbstractViewHelperTest {
+class DebugViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsDebugOutput() {
-		$viewHelper = $this->createInstance();
-		$viewHelperNode = new ViewHelperNode($viewHelper, array());
-		$result = $this->executeViewHelper(array(), array(), $viewHelperNode);
-		$this->assertContains('ViewHelper Debug ViewHelper', $result);
-		$this->assertContains('[ARGUMENTS]', $result);
-		$this->assertContains('[CURRENT ARGUMENTS]', $result);
-		$this->assertContains('[RENDER METHOD DOC]', $result);
-	}
+    /**
+     * @test
+     */
+    public function returnsDebugOutput()
+    {
+        $viewHelper = $this->createInstance();
+        $viewHelperNode = new ViewHelperNode($viewHelper, array());
+        $result = $this->executeViewHelper(array(), array(), $viewHelperNode);
+        $this->assertContains('ViewHelper Debug ViewHelper', $result);
+        $this->assertContains('[ARGUMENTS]', $result);
+        $this->assertContains('[CURRENT ARGUMENTS]', $result);
+        $this->assertContains('[RENDER METHOD DOC]', $result);
+    }
 
-	/**
-	 * @test
-	 */
-	public function debugsChildNodeObjectAccessors() {
-		$viewHelper = $this->createInstance();
-		$viewHelperNode = new ViewHelperNode($viewHelper, array());
-		$result = $this->executeViewHelperUsingTagContent(
-			'ObjectAccessor',
-			'test.test',
-			array('test' => array('test' => 'test')),
-			array(),
-			$viewHelperNode
-		);
-		$this->assertContains('[VARIABLE ACCESSORS]', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function debugsChildNodeObjectAccessors()
+    {
+        $viewHelper = $this->createInstance();
+        $viewHelperNode = new ViewHelperNode($viewHelper, array());
+        $result = $this->executeViewHelperUsingTagContent(
+            'ObjectAccessor',
+            'test.test',
+            array('test' => array('test' => 'test')),
+            array(),
+            $viewHelperNode
+        );
+        $this->assertContains('[VARIABLE ACCESSORS]', $result);
+    }
 }

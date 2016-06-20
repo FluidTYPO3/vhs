@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class AudioViewHelperTest
  */
-class AudioViewHelperTest extends AbstractViewHelperTest {
+class AudioViewHelperTest extends AbstractViewHelperTest
+{
 
 }

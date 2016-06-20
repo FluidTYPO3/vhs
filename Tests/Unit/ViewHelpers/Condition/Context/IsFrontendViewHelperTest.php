@@ -13,27 +13,29 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class IsFrontendViewHelperTest
  */
-class IsFrontendViewHelperTest extends AbstractViewHelperTest {
+class IsFrontendViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testIsFrontendContext() {
-		$instance = $this->createInstance();
-		$result = $this->callInaccessibleMethod($instance, 'evaluateCondition');
-		$this->assertThat($result, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_BOOL));
-	}
+    /**
+     * @test
+     */
+    public function testIsFrontendContext()
+    {
+        $instance = $this->createInstance();
+        $result = $this->callInaccessibleMethod($instance, 'evaluateCondition');
+        $this->assertThat($result, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_BOOL));
+    }
 
-	/**
-	 * @test
-	 */
-	public function testRender() {
-		$arguments = array('then' => TRUE, 'else' => FALSE);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals(FALSE, $result);
+    /**
+     * @test
+     */
+    public function testRender()
+    {
+        $arguments = array('then' => true, 'else' => false);
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals(false, $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

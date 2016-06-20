@@ -13,14 +13,15 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class NameViewHelperTest
  */
-class NameViewHelperTest extends AbstractViewHelperTest {
+class NameViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersSiteName() {
-		$test = $this->executeViewHelper();
-		$this->assertSame($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], $test);
-	}
-
+    /**
+     * @test
+     */
+    public function rendersSiteName()
+    {
+        $test = $this->executeViewHelper();
+        $this->assertSame($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], $test);
+    }
 }

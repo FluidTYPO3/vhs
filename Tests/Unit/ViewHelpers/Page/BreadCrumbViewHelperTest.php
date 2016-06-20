@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class BreadCrumbViewHelperTest
  */
-class BreadCrumbViewHelperTest extends AbstractViewHelperTest {
+class BreadCrumbViewHelperTest extends AbstractViewHelperTest
+{
 
 }

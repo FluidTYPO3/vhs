@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class SpotifyViewHelperTest
  */
-class SpotifyViewHelperTest extends AbstractViewHelperTest {
+class SpotifyViewHelperTest extends AbstractViewHelperTest
+{
 
 }

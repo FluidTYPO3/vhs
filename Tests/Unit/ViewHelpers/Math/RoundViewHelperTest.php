@@ -11,20 +11,22 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class RoundViewHelperTest
  */
-class RoundViewHelperTest extends AbstractMathViewHelperTest {
+class RoundViewHelperTest extends AbstractMathViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgument() {
-		$this->executeSingleArgumentTest(0.5, 1);
-	}
+    /**
+     * @test
+     */
+    public function testSingleArgument()
+    {
+        $this->executeSingleArgumentTest(0.5, 1);
+    }
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgumentIteratorFirst() {
-		$this->executeSingleArgumentTest(array(0.5, 2.3), array(1, 2));
-	}
-
+    /**
+     * @test
+     */
+    public function testSingleArgumentIteratorFirst()
+    {
+        $this->executeSingleArgumentTest(array(0.5, 2.3), array(1, 2));
+    }
 }

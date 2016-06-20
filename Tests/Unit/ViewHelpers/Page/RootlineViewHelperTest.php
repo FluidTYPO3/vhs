@@ -14,14 +14,15 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Class RootlineViewHelperTest
  */
-class RootlineViewHelperTest extends AbstractViewHelperTest {
+class RootlineViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$pageRepository = $this->getMock(PageRepository::class, array('dummy'));
-		$GLOBALS['TSFE'] = (object) array('sys_page' => $pageRepository);
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTgetSingleRow'), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->willReturn(FALSE);
-		$this->assertEmpty($this->executeViewHelper());
-	}
-
+    public function testRender()
+    {
+        $pageRepository = $this->getMock(PageRepository::class, array('dummy'));
+        $GLOBALS['TSFE'] = (object) array('sys_page' => $pageRepository);
+        $GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTgetSingleRow'), array(), '', false);
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->willReturn(false);
+        $this->assertEmpty($this->executeViewHelper());
+    }
 }

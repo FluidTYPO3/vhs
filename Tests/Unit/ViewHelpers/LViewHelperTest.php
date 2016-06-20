@@ -11,10 +11,11 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 /**
  * Class LViewHelperTest
  */
-class LViewHelperTest extends AbstractViewHelperTest {
+class LViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$this->assertEmpty($this->executeViewHelper(array('extensionName' => 'Vhs')));
-	}
-
+    public function testRender()
+    {
+        $this->assertEmpty($this->executeViewHelper(array('extensionName' => 'Vhs')));
+    }
 }

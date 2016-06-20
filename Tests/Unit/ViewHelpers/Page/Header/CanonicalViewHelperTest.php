@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class CanonicalViewHelperTest
  */
-class CanonicalViewHelperTest extends AbstractViewHelperTest {
+class CanonicalViewHelperTest extends AbstractViewHelperTest
+{
 
 }

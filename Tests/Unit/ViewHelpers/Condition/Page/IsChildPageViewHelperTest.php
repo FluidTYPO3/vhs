@@ -13,21 +13,22 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class IsChildPageViewHelperTest
  */
-class IsChildPageViewHelperTest extends AbstractViewHelperTest {
+class IsChildPageViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTquery'), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnValue(FALSE));
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'pageUid' => 0
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    public function testRender()
+    {
+        $GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTquery'), array(), '', false);
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnValue(false));
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'pageUid' => 0
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

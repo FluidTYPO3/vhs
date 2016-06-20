@@ -13,23 +13,24 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class PreviousViewHelperTest
  */
-class PreviousViewHelperTest extends AbstractViewHelperTest {
+class PreviousViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsPreviousElement() {
-		$array = array('a', 'b', 'c');
-		next($array);
-		$arguments = array(
-			'haystack' => $array,
-			'needle' => 'c',
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('b', $result);
+    /**
+     * @test
+     */
+    public function returnsPreviousElement()
+    {
+        $array = array('a', 'b', 'c');
+        next($array);
+        $arguments = array(
+            'haystack' => $array,
+            'needle' => 'c',
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('b', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

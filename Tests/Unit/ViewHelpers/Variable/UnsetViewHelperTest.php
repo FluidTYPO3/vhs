@@ -13,15 +13,16 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class UnsetViewHelperTest
  */
-class UnsetViewHelperTest extends AbstractViewHelperTest {
+class UnsetViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function canUnsetVariable() {
-		$variables = new \ArrayObject(array('test' => TRUE));
-		$this->executeViewHelper(array('name' => 'test'), $variables);
-		$this->assertNotContains('test', $variables);
-	}
-
+    /**
+     * @test
+     */
+    public function canUnsetVariable()
+    {
+        $variables = new \ArrayObject(array('test' => true));
+        $this->executeViewHelper(array('name' => 'test'), $variables);
+        $this->assertNotContains('test', $variables);
+    }
 }

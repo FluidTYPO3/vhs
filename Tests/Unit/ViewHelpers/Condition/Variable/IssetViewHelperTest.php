@@ -13,42 +13,44 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class IssetViewHelperTest
  */
-class IssetViewHelperTest extends AbstractViewHelperTest {
+class IssetViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersThenChildIfVariableIsSet() {
-		$arguments = array(
-			'name' => 'test',
-			'then' => 'then',
-			'else' => 'else'
-		);
-		$variables = array(
-			'test' => TRUE
-		);
-		$result = $this->executeViewHelper($arguments, $variables);
-		$this->assertEquals($arguments['then'], $result);
+    /**
+     * @test
+     */
+    public function rendersThenChildIfVariableIsSet()
+    {
+        $arguments = array(
+            'name' => 'test',
+            'then' => 'then',
+            'else' => 'else'
+        );
+        $variables = array(
+            'test' => true
+        );
+        $result = $this->executeViewHelper($arguments, $variables);
+        $this->assertEquals($arguments['then'], $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments, $variables);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments, $variables);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersElseChildIfVariableIsNotSet() {
-		$arguments = array(
-			'name' => 'test',
-			'then' => 'then',
-			'else' => 'else'
-		);
-		$variables = array();
-		$result = $this->executeViewHelper($arguments, $variables);
-		$this->assertEquals($arguments['else'], $result);
+    /**
+     * @test
+     */
+    public function rendersElseChildIfVariableIsNotSet()
+    {
+        $arguments = array(
+            'name' => 'test',
+            'then' => 'then',
+            'else' => 'else'
+        );
+        $variables = array();
+        $result = $this->executeViewHelper($arguments, $variables);
+        $this->assertEquals($arguments['else'], $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments, $variables);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments, $variables);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class DeferredViewHelperTest
  */
-class DeferredViewHelperTest extends AbstractViewHelperTest {
+class DeferredViewHelperTest extends AbstractViewHelperTest
+{
 
 }

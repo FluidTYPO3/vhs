@@ -13,42 +13,45 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class NumberViewHelperTest
  */
-class NumberViewHelperTest extends AbstractViewHelperTest {
+class NumberViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function generatesRandomNumberWithoutDecimalsAsDefault() {
-		$arguments = array('minimum' => 0, 'maximum' => 999999);
-		$result1 = $this->executeViewHelper($arguments);
-		$result2 = $this->executeViewHelper($arguments);
-		$this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
-		$this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
-		$this->assertNotEquals($result1, $result2);
-	}
+    /**
+     * @test
+     */
+    public function generatesRandomNumberWithoutDecimalsAsDefault()
+    {
+        $arguments = array('minimum' => 0, 'maximum' => 999999);
+        $result1 = $this->executeViewHelper($arguments);
+        $result2 = $this->executeViewHelper($arguments);
+        $this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
+        $this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
+        $this->assertNotEquals($result1, $result2);
+    }
 
-	/**
-	 * @test
-	 */
-	public function generatesRandomNumberWithoutDecimalsGivenArguments() {
-		$arguments = array('minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 0, 'maximumDecimals' => 0);
-		$result1 = $this->executeViewHelper($arguments);
-		$result2 = $this->executeViewHelper($arguments);
-		$this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
-		$this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
-		$this->assertNotEquals($result1, $result2);
-	}
+    /**
+     * @test
+     */
+    public function generatesRandomNumberWithoutDecimalsGivenArguments()
+    {
+        $arguments = array('minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 0, 'maximumDecimals' => 0);
+        $result1 = $this->executeViewHelper($arguments);
+        $result2 = $this->executeViewHelper($arguments);
+        $this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
+        $this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
+        $this->assertNotEquals($result1, $result2);
+    }
 
-	/**
-	 * @test
-	 */
-	public function generatesRandomNumberWithDecimalsGivenArguments() {
-		$arguments = array('minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 2, 'maximumDecimals' => 8);
-		$result1 = $this->executeViewHelper($arguments);
-		$result2 = $this->executeViewHelper($arguments);
-		$this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_FLOAT));
-		$this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_FLOAT));
-		$this->assertNotEquals($result1, $result2);
-	}
-
+    /**
+     * @test
+     */
+    public function generatesRandomNumberWithDecimalsGivenArguments()
+    {
+        $arguments = array('minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 2, 'maximumDecimals' => 8);
+        $result1 = $this->executeViewHelper($arguments);
+        $result2 = $this->executeViewHelper($arguments);
+        $this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_FLOAT));
+        $this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_FLOAT));
+        $this->assertNotEquals($result1, $result2);
+    }
 }

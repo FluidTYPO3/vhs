@@ -13,14 +13,15 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class DateTimeViewHelperTest
  */
-class DateTimeViewHelperTest extends AbstractViewHelperTest {
+class DateTimeViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsDateTimeInstance() {
-		$result = $this->executeViewHelper();
-		$this->assertInstanceOf('DateTime', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function returnsDateTimeInstance()
+    {
+        $result = $this->executeViewHelper();
+        $this->assertInstanceOf('DateTime', $result);
+    }
 }
