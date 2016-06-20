@@ -15,11 +15,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * ### Base class: Security ViewHelpers
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Security
+ * Base class: Security ViewHelpers
  */
 abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 {

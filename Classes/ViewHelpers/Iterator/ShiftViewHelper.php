@@ -14,11 +14,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Shifts the first value off $subject (but does not change $subject itself as array_shift would)
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Shifts the first value off $subject (but does not change $subject itself as array_shift would).
  */
 class ShiftViewHelper extends AbstractViewHelper
 {

@@ -11,9 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable\Register;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
+ * Class SetViewHelperTest
  */
 class SetViewHelperTest extends AbstractViewHelperTest {
 

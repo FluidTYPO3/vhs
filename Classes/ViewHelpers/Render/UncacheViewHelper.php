@@ -18,10 +18,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * The partial will then be rendered each time.
  * Please be aware that this will impact render time.
  * Arguments must be serializable and will be cached.
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
 class UncacheViewHelper extends AbstractViewHelper
 {

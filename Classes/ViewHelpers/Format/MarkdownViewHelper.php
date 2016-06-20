@@ -31,10 +31,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * In other words, *NIX standard behavior must be used.
  *
  * See: http://daringfireball.net/projects/markdown/
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class MarkdownViewHelper extends AbstractViewHelper
 {

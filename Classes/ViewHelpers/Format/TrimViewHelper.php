@@ -13,10 +13,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Trims $content by stripping off $characters (string list
  * of individual chars to strip off, default is all whitespaces).
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class TrimViewHelper extends AbstractViewHelper
 {

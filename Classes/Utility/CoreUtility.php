@@ -14,10 +14,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * Core Utility
  *
  * Utility to get core informations.
- *
- * @author Daniel Dorndorf <dorndorf@dreipunktnull.com>
- * @package Vhs
- * @subpackage Utility
  */
 class CoreUtility
 {

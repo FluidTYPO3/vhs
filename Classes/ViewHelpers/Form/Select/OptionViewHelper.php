@@ -12,11 +12,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
- * Option ViewHelper to use under vhs:form.select
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form\Select
+ * Option ViewHelper to use under vhs:form.select.
  */
 class OptionViewHelper extends AbstractFormFieldViewHelper
 {

@@ -26,10 +26,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
  *     </v:security.allow>
  *
  * Is the mirror opposite of `v:security.deny`.
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Security
  */
 class AllowViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface
 {

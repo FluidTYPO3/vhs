@@ -17,11 +17,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * ### Uri: Request
  *
  * Returns the Uri of the requested page (site_url + all the GET params)
- * \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Uri
+ * `\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')`.
  */
 class RequestViewHelper extends AbstractViewHelper
 {

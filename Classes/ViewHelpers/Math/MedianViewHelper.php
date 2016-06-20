@@ -15,10 +15,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * is an odd number of numbers the middle value is returned.
  * If there is an even number of numbers an average of the
  * two middle numbers is returned.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class MedianViewHelper extends AbstractSingleMathViewHelper
 {

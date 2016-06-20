@@ -9,11 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 
 /**
- * Returns the mimetype of the provided image file
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media\Image
+ * Returns the mimetype of the provided image file.
  */
 class MimetypeViewHelper extends AbstractImageInfoViewHelper
 {

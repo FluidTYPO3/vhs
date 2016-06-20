@@ -12,9 +12,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
 /**
- * @protection on
- * @author Marc Neuhaus <mneuhaus@famelo.com>
- * @package Vhs
+ * Class FalViewHelperTest
  */
 class FalViewHelperTest extends AbstractViewHelperTest {
 	/**

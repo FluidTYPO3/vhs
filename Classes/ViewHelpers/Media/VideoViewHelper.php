@@ -22,10 +22,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * sources (even for a single source) is preferred as you can set
  * the correct mime type of the video which is otherwise guessed
  * from the filename's extension.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
 class VideoViewHelper extends AbstractMediaViewHelper
 {

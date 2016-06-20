@@ -12,11 +12,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
 /**
  * ViewHelper used to render raw content records typically fetched
- * with <v:content.get(column: '0', render: FALSE) />
- *
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Render
+ * with `<v:content.get(column: '0', render: FALSE) />`.
  */
 class RecordViewHelper extends AbstractContentViewHelper
 {

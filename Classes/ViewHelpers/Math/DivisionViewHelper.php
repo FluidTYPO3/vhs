@@ -15,10 +15,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * number, in which case each member of $a gets divided by $b.
  * If both $a and $b are arrays, each member of $a is summed
  * against the corresponding member in $b compared using index.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class DivisionViewHelper extends AbstractMultipleMathViewHelper
 {

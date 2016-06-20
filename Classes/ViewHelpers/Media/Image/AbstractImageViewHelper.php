@@ -19,10 +19,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 /**
  * Base class for image related view helpers adapted from FLUID
  * original image viewhelper.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
 abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 {

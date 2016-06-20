@@ -14,10 +14,6 @@ use TYPO3\CMS\Core\Resource\File;
  * ViewHelper Utility
  *
  * Contains helper methods used in resources ViewHelpers
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage Utility
  */
 class ResourceUtility
 {

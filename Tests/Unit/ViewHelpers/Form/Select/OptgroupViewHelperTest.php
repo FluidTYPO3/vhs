@@ -11,10 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form\Select;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form\Select
+ * Class OptgroupViewHelperTest
  */
 class OptgroupViewHelperTest extends AbstractViewHelperTest {
 

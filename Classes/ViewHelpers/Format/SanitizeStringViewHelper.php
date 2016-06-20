@@ -38,11 +38,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * to use for AJAX based detail views - and in almot all cases
  * the sanitized string will be 100% identical to the one used
  * by Realurl when translating using table lookups.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class SanitizeStringViewHelper extends AbstractViewHelper
 {

@@ -9,9 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  */
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class LViewHelperTest
  */
 class LViewHelperTest extends AbstractViewHelperTest {
 

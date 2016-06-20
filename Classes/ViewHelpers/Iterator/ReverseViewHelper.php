@@ -18,10 +18,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *
  * Reverses the order of every member of an Iterator/Array,
  * preserving the original keys.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
 class ReverseViewHelper extends AbstractViewHelper
 {

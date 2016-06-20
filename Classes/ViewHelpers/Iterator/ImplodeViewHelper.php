@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 /**
  * Implode ViewHelper
  *
- * Implodes an array or array-convertible object by $glue
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Implodes an array or array-convertible object by $glue.
  */
 class ImplodeViewHelper extends ExplodeViewHelper
 {

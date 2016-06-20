@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
 /**
- * ViewHelper for rendering a random content element in Fluid page templates
- *
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Content\Random
+ * ViewHelper for rendering a random content element in Fluid page templates.
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {

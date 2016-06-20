@@ -32,10 +32,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *            Maybe BE, maybe CLI.
  *         </f:else>
  *     </v:condition.context.isFrontend>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\If\Context
  */
 class IsFrontendViewHelper extends AbstractConditionViewHelper
 {

@@ -26,9 +26,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetContext;
 
 /**
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
+ * Class AbstractViewHelperTest
  */
 abstract class AbstractViewHelperTest extends UnitTestCase {
 

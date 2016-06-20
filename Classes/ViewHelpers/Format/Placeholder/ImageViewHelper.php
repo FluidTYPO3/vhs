@@ -14,10 +14,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Placeholder Image ViewHelper
  *
  * Inserts a placeholder image from http://placehold.it/
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Format\Placeholder
  */
 class ImageViewHelper extends AbstractTagBasedViewHelper
 {

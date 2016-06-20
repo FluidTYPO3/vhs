@@ -13,11 +13,7 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ViewHelper to get the rootline of a page
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * ViewHelper to get the rootline of a page.
  */
 class RootlineViewHelper extends AbstractViewHelper
 {

@@ -16,10 +16,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *
  * Condition ViewHelper which renders the `then` child if provided
  * value is numeric.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\String
  */
 class IsNumericViewHelper extends AbstractConditionViewHelper
 {

@@ -11,10 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
 /**
  * Basic interface which must be implemented by every
  * possible Asset type.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Asset
  */
 interface AssetInterface
 {

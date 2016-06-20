@@ -15,11 +15,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Explode ViewHelper
  *
- * Explodes a string by $glue
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Explodes a string by $glue.
  */
 class ExplodeViewHelper extends AbstractViewHelper
 {

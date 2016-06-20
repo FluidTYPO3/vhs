@@ -17,11 +17,8 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  * http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Index.html#collections-api
  *
  * ### Example
- * {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
  *
- * @category ViewHelpers
- * @package Vhs
- * @author Dmitri Pisarev <dimaip@gmail.com>
+ *     {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
  */
 class CollectionViewHelper extends AbstractResourceViewHelper
 {

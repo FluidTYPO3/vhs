@@ -24,10 +24,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <v:call method="unconventionalGetter">{object}</v:call>
  *     <!-- arguments for the method -->
  *     <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class CallViewHelper extends AbstractViewHelper
 {

@@ -13,10 +13,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form\Select
+ * Class OptionViewHelperTest
  */
 class OptionViewHelperTest extends AbstractViewHelperTest {
 

@@ -16,10 +16,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Generates a random number. The default minimum number is
  * set to 100000 in order to generate a longer integer string
  * representation. Decimal values can be generated as well.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Random
  */
 class NumberViewHelper extends AbstractViewHelper
 {

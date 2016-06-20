@@ -19,10 +19,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * any and all changes in variables that happen while
  * rendering this inline code will be destroyed after
  * sub-rendering is finished.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
 class InlineViewHelper extends AbstractRenderViewHelper
 {

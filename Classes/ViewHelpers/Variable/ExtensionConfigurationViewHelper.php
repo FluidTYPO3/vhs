@@ -22,15 +22,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *
  * ### Examples
  *
- * {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
+ *     {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
  *
- * Returns setting 'bar.baz' from extension 'foo' located in ext_conf_template.txt
- *
- * @author Harry Glatz <glatz@analog.de>
- * @author Cedric Ziel <cedric@cedric-ziel.com>
- * @author Stefan Neufeind <info@speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers
+ * Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt`.
  */
 class ExtensionConfigurationViewHelper extends AbstractViewHelper
 {

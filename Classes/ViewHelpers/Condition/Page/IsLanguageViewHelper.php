@@ -19,10 +19,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * title. When using language titles like 'de' it is required to
  * provide a default title to distinguish between the standard
  * and a non existing language.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Page
  */
 class IsLanguageViewHelper extends AbstractConditionViewHelper
 {

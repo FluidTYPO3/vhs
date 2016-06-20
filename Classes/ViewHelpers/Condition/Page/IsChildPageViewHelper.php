@@ -19,10 +19,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * page or page with provided UID is a child of some other page in
  * the page tree. If $respectSiteRoot is set to TRUE root pages are
  * never considered child pages even if they are.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Page
  */
 class IsChildPageViewHelper extends AbstractConditionViewHelper
 {

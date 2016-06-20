@@ -15,10 +15,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Frontend Simulation Utility
  *
  * Utility to simulate frontend enviroment in backend enviroment.
- *
- * @author Xaver Maierhofer <xaver.maierhofer@xwissen.info>
- * @package Vhs
- * @subpackage Utility
  */
 class FrontendSimulationUtility
 {

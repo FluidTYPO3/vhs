@@ -17,10 +17,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * used to return a single numeric value. If both $a and $b are
  * arrays, each member of $a is multiplied against the corresponding
  * member in $b compared using index.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class ProductViewHelper extends AbstractMultipleMathViewHelper
 {

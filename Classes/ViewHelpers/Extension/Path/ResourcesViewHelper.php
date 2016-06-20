@@ -15,10 +15,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * ### Path: Relative Extension Resource Path
  *
  * Site Relative path to Extension Resources/Public folder.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension\Path
  */
 class ResourcesViewHelper extends AbstractExtensionViewHelper
 {

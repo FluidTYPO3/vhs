@@ -14,10 +14,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Creates chunks from an input Array/Traversable with option to allocate items to a fixed number of chunks
- *
- * @author Benjamin Rau <rau@codearts.at>, codearts
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
 class ChunkViewHelper extends AbstractViewHelper
 {

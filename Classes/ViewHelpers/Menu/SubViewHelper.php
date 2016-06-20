@@ -19,10 +19,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  * to be rendered; accepts only a single argument called `pageUid`
  * which defines the new starting page UID that is used in the
  * recycled parent menu instance.
- *
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Menu
  */
 class SubViewHelper extends AbstractMenuViewHelper
 {

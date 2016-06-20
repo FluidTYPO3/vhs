@@ -12,11 +12,7 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Merges arrays/Traversables $a and $b into an array
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Merges arrays/Traversables $a and $b into an array.
  */
 class MergeViewHelper extends AbstractViewHelper
 {

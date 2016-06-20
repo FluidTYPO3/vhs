@@ -59,9 +59,6 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  * > on your Asset just before returning it. You can of course keep modifying
  * > the instance after it is returned - but when using a "createFrom"... method
  * > VHS assumes you always want your Asset included in the output.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
  */
 class Asset implements AssetInterface
 {

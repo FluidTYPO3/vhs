@@ -11,10 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Media;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Juan Manuel Vergés Solanas <juanmanuel@vergessolanas.es>
- * @package Vhs
- * @subpackage ViewHelpers\Media
+ * Class GravatarViewHelperTest
  */
 class GravatarViewHelperTest extends AbstractViewHelperTest {
 

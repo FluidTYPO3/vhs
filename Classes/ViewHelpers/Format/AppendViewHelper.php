@@ -34,10 +34,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * In other words: use this only when you do not have the option of
  * simply using {subject}{add}, i.e. in complex inline statements used
  * as attribute values on other ViewHelpers (where tag usage is undesirable).
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class AppendViewHelper extends AbstractViewHelper
 {

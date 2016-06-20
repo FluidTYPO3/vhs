@@ -12,10 +12,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * Math: Power
  *
  * Performs pow($a, $b) where $a is the base and $b is the exponent.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class PowerViewHelper extends AbstractMultipleMathViewHelper
 {

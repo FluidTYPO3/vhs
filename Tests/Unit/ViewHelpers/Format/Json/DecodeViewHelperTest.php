@@ -11,9 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
+ * Class DecodeViewHelperTest
  */
 class DecodeViewHelperTest extends AbstractViewHelperTest {
 

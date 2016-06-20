@@ -14,11 +14,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Slice an Iterator by $start and $length
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Slice an Iterator by $start and $length.
  */
 class SliceViewHelper extends AbstractViewHelper
 {

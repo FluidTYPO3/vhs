@@ -11,9 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Media\Image;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Media\Image
+ * Class HeightViewHelperTest
  */
 class HeightViewHelperTest extends AbstractViewHelperTest {
 

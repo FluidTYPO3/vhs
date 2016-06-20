@@ -45,10 +45,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * in templates is the very reason why `useRawKeys` by
  * default is set to `FALSE`.
  * ```
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
 class GetViewHelper extends AbstractViewHelper
 {

@@ -11,9 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\System;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Cedric Ziel <cedric@cedric-ziel.com>
- * @package Vhs
+ * Class UniqIdViewHelperTest
  */
 class UniqIdViewHelperTest extends AbstractViewHelperTest {
 

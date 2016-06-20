@@ -26,10 +26,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <v:l>some.label</v:l>
  *     <v:l key="some.label" />
  *     <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class LViewHelper extends AbstractViewHelper
 {

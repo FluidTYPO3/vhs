@@ -12,11 +12,7 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Intersects arrays/Traversables $a and $b into an array
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Intersects arrays/Traversables $a and $b into an array.
  */
 class IntersectViewHelper extends AbstractViewHelper
 {

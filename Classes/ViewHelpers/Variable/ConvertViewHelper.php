@@ -22,10 +22,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * 'float', 'boolean', 'array' or 'ObjectStorage'. If $value is NULL
  * sensible defaults are assigned or $default which obviously has to
  * be of $type as well.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
 class ConvertViewHelper extends AbstractViewHelper
 {

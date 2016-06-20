@@ -21,10 +21,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * disabled subpages are considered non existent which can be overridden
  * by setting $includeHidden to TRUE. To include pages that are hidden
  * in menus set $showHiddenInMenu to TRUE.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Page
  */
 class HasSubpagesViewHelper extends AbstractConditionViewHelper
 {

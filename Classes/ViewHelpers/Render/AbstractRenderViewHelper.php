@@ -18,10 +18,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * If errors occur they can be graciously ignored and
  * replaced by a small error message or the error itself.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
 abstract class AbstractRenderViewHelper extends AbstractViewHelper
 {

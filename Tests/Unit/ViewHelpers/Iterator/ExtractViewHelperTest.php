@@ -14,8 +14,7 @@ use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
- * @author Andreas Lappe <nd@kaeufli.ch>
- * @package Vhs
+ * Class ExtractViewHelperTest
  */
 class ExtractViewHelperTest extends AbstractViewHelperTest {
 

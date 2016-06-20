@@ -16,10 +16,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * the according image tag using Fluid's standard image ViewHelper
  * thus implementing its arguments. For PDF documents with multiple
  * pages the first page is rendered by default unless specified.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
 class PdfThumbnailViewHelper extends ImageViewHelper
 {

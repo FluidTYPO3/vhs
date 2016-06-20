@@ -16,11 +16,7 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * ### Condition: Value is a query result
  *
  * Condition ViewHelper which renders the `then` child if provided
- * value is an extbase query result
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Type
+ * value is an extbase query result.
  */
 class IsQueryResultViewHelper extends AbstractConditionViewHelper
 {

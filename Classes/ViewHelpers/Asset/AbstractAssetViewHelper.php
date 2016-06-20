@@ -30,10 +30,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * - The method but must be public and non-static and thus
  *   cannot be hidden from access by subclasses if placed
  *   in this class.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Asset
  */
 abstract class AbstractAssetViewHelper extends AbstractViewHelper implements AssetInterface
 {

@@ -15,10 +15,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  *
  * Outputs the icon of the extension key. Supports both
  * extension key and extension name arguments.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension
  */
 class IconViewHelper extends AbstractExtensionViewHelper
 {

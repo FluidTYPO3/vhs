@@ -17,10 +17,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * Lipsum ViewHelper
  *
  * Renders Lorem Ipsum text according to provided arguments.
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Format\Placeholder
  */
 class LipsumViewHelper extends AbstractViewHelper
 {

@@ -9,9 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  */
 
 /**
- * @protection off
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
+ * Class IfViewHelperTest
  */
 class IfViewHelperTest extends AbstractViewHelperTest {
 

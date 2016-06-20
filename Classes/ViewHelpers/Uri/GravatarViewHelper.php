@@ -16,11 +16,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Renders Gravatar URI
- *
- * @author Juan Manuel Vergés Solanas <juanmanuel@vergessolanas.es>
- * @package Vhs
- * @subpackage ViewHelpers\Uri
+ * Renders Gravatar URI.
  */
 class GravatarViewHelper extends AbstractViewHelper
 {

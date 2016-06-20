@@ -13,11 +13,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Returns the current canonical url in a link tag.
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @author Daniel Kestler <daniel.kestler@medienreaktor.de>, medienreaktor GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page\Header
  */
 class CanonicalViewHelper extends AbstractTagBasedViewHelper
 {

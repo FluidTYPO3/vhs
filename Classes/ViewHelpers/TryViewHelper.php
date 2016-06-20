@@ -81,10 +81,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *     {v:try(then: '{badObject -> v:format.json.encode()}', else: '{"validJson": "validValue"')}
  *     <!-- Note: be VERY careful about the inline JSON syntax! It's very close to Fluids. Always
  *          double quote your object variables' names, that prevents almost all issues! -->
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class TryViewHelper extends AbstractConditionViewHelper
 {

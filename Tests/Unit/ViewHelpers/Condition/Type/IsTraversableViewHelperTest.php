@@ -12,9 +12,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class IsTraversableViewHelperTest
  */
 class IsTraversableViewHelperTest extends AbstractViewHelperTest {
 

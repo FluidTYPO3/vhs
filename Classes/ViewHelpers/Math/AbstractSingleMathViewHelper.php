@@ -15,10 +15,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 /**
  * Base class: Math ViewHelpers operating on one number or an
  * array of numbers.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
 abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
 {

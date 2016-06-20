@@ -30,10 +30,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
  *
  * To have the widest Browser-Support you should consider using a polyfill like:
  * http://scottjehl.github.io/picturefill/
- *
- * @author Marc Neuhaus <mneuhaus@famelo.com>, famelo
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
 class PictureViewHelper extends AbstractTagBasedViewHelper
 {

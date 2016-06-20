@@ -19,10 +19,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * Used in conjuntion with the `v:media.PictureViewHelper`.
  * Please take a look at the `v:media.PictureViewHelper` documentation for more
  * information.
- *
- * @author Marc Neuhaus <mneuhaus@famelo.com>, famelo
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
 class SourceViewHelper extends AbstractTagBasedViewHelper
 {

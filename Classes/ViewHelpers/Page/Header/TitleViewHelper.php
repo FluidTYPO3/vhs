@@ -42,10 +42,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Enforcing use of the core behavior is the only way to ensure
  * that this ViewHelper can coexist with other extensions in
  * a fully controllable way.
- *
- * @author Georg Ringer
- * @package Vhs
- * @subpackage ViewHelpers\Page\Header
  */
 class TitleViewHelper extends AbstractViewHelper
 {

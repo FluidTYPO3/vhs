@@ -11,14 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 
 /**
- * ViewHelper used to render content elements in Fluid page templates
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Dominique Feyer, <dfeyer@ttree.ch>
- * @author Daniel Schöne, <daniel@schoene.it>
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Content
+ * ViewHelper used to render content elements in Fluid page templates.
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {

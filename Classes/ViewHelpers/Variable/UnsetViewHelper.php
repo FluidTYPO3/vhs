@@ -31,10 +31,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *     <!-- DOES NOT WORK! -->
  *     <v:variable.unset name="myObject.propertyName" />
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
 class UnsetViewHelper extends AbstractViewHelper
 {

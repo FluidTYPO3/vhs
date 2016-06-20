@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Gets a substring from a string or string-compatible value
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
+ * Gets a substring from a string or string-compatible value.
  */
 class SubstringViewHelper extends AbstractViewHelper
 {

@@ -12,11 +12,7 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Returns the last element of $haystack
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Returns the last element of $haystack.
  */
 class LastViewHelper extends AbstractViewHelper
 {

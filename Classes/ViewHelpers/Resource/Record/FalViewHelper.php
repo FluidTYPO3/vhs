@@ -38,10 +38,6 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
  *     </f:if>
  *
  * Use the `uid` attribute if you don't have a `record`.
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource\Record
  */
 class FalViewHelper extends AbstractRecordResourceViewHelper
 {

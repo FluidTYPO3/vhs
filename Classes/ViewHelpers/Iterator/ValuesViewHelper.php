@@ -31,11 +31,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Gets values from an iterator, removing current keys (if any exist)
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Gets values from an iterator, removing current keys (if any exist).
  */
 class ValuesViewHelper extends AbstractViewHelper
 {

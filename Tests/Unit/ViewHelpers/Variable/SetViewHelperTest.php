@@ -12,9 +12,7 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class SetViewHelperTest
  */
 class SetViewHelperTest extends AbstractViewHelperTest {
 

@@ -28,10 +28,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *     <v:condition.variable.isset name="variable{suffix}">...</v:condition.variable.isset>
  *     <!-- outputs value of {foo} if {bar} is defined -->
  *     {foo -> v:condition.variable.isset(name: bar)}
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Variable
  */
 class IssetViewHelper extends AbstractConditionViewHelper
 {

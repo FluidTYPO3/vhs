@@ -39,11 +39,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * check the type before assuming that every member of a converted 1:n
  * or m:n recursive relation is in fact a JavaScript. Not doing so may
  * result in fatal JavaScript errors in the client browser.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Format\Json
  */
 class EncodeViewHelper extends AbstractViewHelper
 {

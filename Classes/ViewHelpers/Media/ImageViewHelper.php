@@ -32,10 +32,6 @@ use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
  *
  * To have the widest Browser-Support you should consider using a polyfill like:
  * http://scottjehl.github.io/picturefill/
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
 class ImageViewHelper extends AbstractImageViewHelper
 {

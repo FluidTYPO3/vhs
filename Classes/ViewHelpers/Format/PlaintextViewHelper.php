@@ -18,10 +18,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Expects that you use f:format.htmlentities or similar
  * if you do not want HTML to be displayed as HTML, or
  * simply want it stripped out.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class PlaintextViewHelper extends AbstractViewHelper
 {

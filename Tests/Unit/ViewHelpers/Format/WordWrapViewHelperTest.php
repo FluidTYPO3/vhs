@@ -11,9 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Björn Fromme <fromme@dreipunktnull.com>
- * @package Vhs
+ * Class WordWrapViewHelperTest
  */
 class WordWrapViewHelperTest extends AbstractViewHelperTest {
 

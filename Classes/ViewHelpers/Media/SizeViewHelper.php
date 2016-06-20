@@ -13,11 +13,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Returns the size of the provided file in bytes
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
+ * Returns the size of the provided file in bytes.
  */
 class SizeViewHelper extends AbstractViewHelper
 {

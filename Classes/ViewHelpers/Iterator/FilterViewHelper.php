@@ -20,10 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * property from each member of the array.
  *
  * Iterators and ObjectStorage etc. are supported.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
 class FilterViewHelper extends AbstractViewHelper
 {

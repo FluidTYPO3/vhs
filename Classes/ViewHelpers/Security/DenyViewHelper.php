@@ -18,10 +18,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
  * supports the `f:then` and `f:else` child nodes.
  *
  * Is the mirror opposite of `v:security.allow`.
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Security
  */
 class DenyViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface
 {

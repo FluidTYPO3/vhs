@@ -11,9 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Content
+ * Resources ViewHelper
+ *
+ * Loads FAL records associated with records of arbitrary types.
  */
 class ResourcesViewHelper extends RecordViewHelper
 {

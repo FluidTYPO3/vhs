@@ -20,10 +20,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Using as `{value -> v:variable.register.set(name: 'myVar')}` makes $GLOBALS["TSFE"]->register['myVar']
  * contain `{value}`.
- *
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
 class SetViewHelper extends AbstractViewHelper
 {

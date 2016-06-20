@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Renders HTML code to embed a video from YouTube
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
+ * Renders HTML code to embed a video from YouTube.
  */
 class YoutubeViewHelper extends AbstractTagBasedViewHelper
 {

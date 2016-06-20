@@ -14,12 +14,7 @@ use FluidTYPO3\Vhs\Traits\VhsViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Gets keys from an iterator
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Gets keys from an iterator.
  */
 class KeysViewHelper extends AbstractViewHelper
 {

@@ -19,10 +19,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Has built-in insurance that first character of random string is
  * an alphabetic character (allowing safe use as DOM id for example).
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Random
  */
 class StringViewHelper extends AbstractViewHelper
 {

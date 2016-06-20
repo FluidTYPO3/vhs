@@ -17,12 +17,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
- * Base class for menu rendering ViewHelpers
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Menu
+ * Base class for menu rendering ViewHelpers.
  */
 abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 {

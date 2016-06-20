@@ -18,10 +18,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  * parent and child tag names. When using manual rendering
  * a range of support CSS classes are available along
  * with each page record.
- *
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Menu
  */
 class DirectoryViewHelper extends AbstractMenuViewHelper
 {

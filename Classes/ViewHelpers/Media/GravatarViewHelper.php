@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Renders Gravatar <img/> tag
- *
- * @author Juan Manuel Vergés Solanas <juanmanuel@vergessolanas.es>
- * @package Vhs
- * @subpackage ViewHelpers\Media
+ * Renders Gravatar <img/> tag.
  */
 class GravatarViewHelper extends AbstractTagBasedViewHelper
 {

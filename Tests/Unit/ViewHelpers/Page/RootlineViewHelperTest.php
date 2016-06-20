@@ -12,9 +12,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class RootlineViewHelperTest
  */
 class RootlineViewHelperTest extends AbstractViewHelperTest {
 

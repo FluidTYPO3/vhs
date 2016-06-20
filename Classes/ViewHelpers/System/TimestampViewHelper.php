@@ -20,10 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *     <!-- adds exactly one hour to a DateTime and formats it -->
  *     <f:format.date format="H:i">{dateTime.timestamp -> v:math.sum(b: 3600)}</f:format.date>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\System
  */
 class TimestampViewHelper extends AbstractViewHelper
 {

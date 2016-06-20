@@ -12,9 +12,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\ViewHelpers\Format\CaseViewHelper;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class CaseViewHelperTest
  */
 class CaseViewHelperTest extends AbstractViewHelperTest {
 

@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Form\Select;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Optgroup ViewHelper to use under vhs:form.select
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form\Select
+ * Optgroup ViewHelper to use under vhs:form.select.
  */
 class OptgroupViewHelper extends AbstractTagBasedViewHelper
 {

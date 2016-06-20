@@ -14,8 +14,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
+ * Class ConvertViewHelperTest
  */
 class ConvertViewHelperTest extends AbstractViewHelperTest {
 

@@ -16,10 +16,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *
  * Condition ViewHelper which renders the `then` child if provided
  * value is an instance of provided class name.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Type
  */
 class IsInstanceOfViewHelper extends AbstractConditionViewHelper
 {

@@ -40,11 +40,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper as FluidTypolinkViewHelp
  *     <v:link.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">
  *         Click Me!
  *     </v:link.typolink>
- *
- * @author Cedric Ziel <cedric@cedric-ziel.com>, Cedric Ziel - Internetdienstleistungen & EDV
- * @author Daniel Kestler <daniel.kestler@medienreaktor.de>, medienreaktor GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Link
+ * 
  * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper instead
  */
 class TypolinkViewHelper extends AbstractViewHelper

@@ -14,10 +14,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * Gets the lowest and highest number from an array of numbers.
  * Returns an array of [low, high]. For individual low/high
  * values please use v:math.maximum and v:math.minimum.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class RangeViewHelper extends AbstractSingleMathViewHelper
 {

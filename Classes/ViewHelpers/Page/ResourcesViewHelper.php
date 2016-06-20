@@ -11,9 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * Page FAL resources ViewHelper.
  */
 class ResourcesViewHelper extends RecordViewHelper
 {

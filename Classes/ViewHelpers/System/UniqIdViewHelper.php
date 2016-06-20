@@ -17,10 +17,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Comes in useful when handling/generating html-element-IDs
  * for usage with JavaScript.
- *
- * @author Cedric Ziel, <cedric@cedric-ziel.com>
- * @package Vhs
- * @subpackage ViewHelpers\System
  */
 class UniqIdViewHelper extends AbstractViewHelper
 {

@@ -13,10 +13,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  *
  * Gets the lowest number in array $a or the lowest
  * number of numbers $a and $b.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class MinimumViewHelper extends AbstractMultipleMathViewHelper
 {

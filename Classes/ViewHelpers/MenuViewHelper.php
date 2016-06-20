@@ -20,11 +20,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
  * parent and child tag names. When using manual rendering
  * a range of support CSS classes are available along
  * with each page record.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class MenuViewHelper extends AbstractMenuViewHelper
 {

@@ -11,12 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
 
 /**
- * ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual.
  */
 class BreadCrumbViewHelper extends AbstractMenuViewHelper
 {

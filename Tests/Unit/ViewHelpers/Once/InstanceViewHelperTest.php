@@ -14,9 +14,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class InstanceViewHelperTest
  */
 class InstanceViewHelperTest extends AbstractViewHelperTest {
 

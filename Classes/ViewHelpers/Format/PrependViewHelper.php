@@ -23,10 +23,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *         -> v:format.prepend(add: '@')
  *         -> v:format.date(format: 'Y-m-d H:i')}
  *     <!-- You don't have to break the syntax into lines; done here for display only -->
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class PrependViewHelper extends AbstractViewHelper
 {

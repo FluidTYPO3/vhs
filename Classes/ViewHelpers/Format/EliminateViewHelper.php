@@ -15,10 +15,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * There is no example - each argument describes how it should be
  * used and arguments can be used individually or in any combination.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class EliminateViewHelper extends AbstractViewHelper
 {

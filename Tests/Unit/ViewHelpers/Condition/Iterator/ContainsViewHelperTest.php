@@ -17,9 +17,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class ContainsViewHelperTest
  */
 class ContainsViewHelperTest extends AbstractViewHelperTest {
 

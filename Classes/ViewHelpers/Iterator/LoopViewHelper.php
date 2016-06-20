@@ -9,12 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 /**
- * Repeats rendering of children $count times while updating $iteration
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Repeats rendering of children $count times while updating $iteration.
  */
 class LoopViewHelper extends AbstractLoopViewHelper
 {

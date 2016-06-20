@@ -24,13 +24,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * it as linktext if that is omitted. The link will not render at all
  * if the requested page is not translated in the current language.
  *
- * Automatic linktext: <v:page.link pageUid="UID" />
- * Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
- *
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ *      Automatic linktext: <v:page.link pageUid="UID" />
+ *      Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {

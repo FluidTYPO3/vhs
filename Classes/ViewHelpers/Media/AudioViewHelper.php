@@ -22,10 +22,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * sources (even for a single source) is preferred as you can set
  * the correct mime type of the audio which is otherwise guessed
  * from the filename's extension.
- *
- * @author Xaver Maierhofer <xaver.maierhofer@xwissen.info>
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
 class AudioViewHelper extends AbstractMediaViewHelper
 {

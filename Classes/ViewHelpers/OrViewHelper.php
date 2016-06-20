@@ -13,10 +13,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * If content is empty use alternative text (can also be LLL:labelname shortcut or LLL:EXT: file paths).
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class OrViewHelper extends AbstractViewHelper
 {

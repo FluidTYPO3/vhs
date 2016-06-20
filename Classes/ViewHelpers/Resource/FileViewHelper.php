@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 
 /**
- * ViewHelper to output or assign FAL sys_file records
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource
+ * ViewHelper to output or assign FAL sys_file records.
  */
 class FileViewHelper extends AbstractResourceViewHelper
 {

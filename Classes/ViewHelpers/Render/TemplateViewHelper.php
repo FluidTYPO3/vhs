@@ -52,10 +52,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Consider using Render/RequestViewHelper if you require a
  * completely isolated rendering identical to that which takes
  * place when rendering an Extbase plugin's content object.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
 class TemplateViewHelper extends AbstractRenderViewHelper
 {

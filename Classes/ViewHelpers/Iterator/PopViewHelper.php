@@ -14,11 +14,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Pops the last value off $subject (but does not change $subject itself as array_pop would)
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Pops the last value off $subject (but does not change $subject itself as array_pop would).
  */
 class PopViewHelper extends AbstractViewHelper
 {

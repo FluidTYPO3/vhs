@@ -14,11 +14,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Returns a full, absolute URL to this page with all arguments
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * Returns a full, absolute URL to this page with all arguments.
  */
 class AbsoluteUrlViewHelper extends AbstractViewHelper
 {

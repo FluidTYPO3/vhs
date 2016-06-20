@@ -13,11 +13,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Searches $haystack for index of $needle, returns -1 if $needle
- * is not in $haystack
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * is not in $haystack.
  */
 class IndexOfViewHelper extends ContainsViewHelper
 {

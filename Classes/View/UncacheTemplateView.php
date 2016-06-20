@@ -17,10 +17,6 @@ use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
  * Uncache Template View
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage View
  */
 class UncacheTemplateView extends TemplateView
 {

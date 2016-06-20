@@ -16,10 +16,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *
  * Condition ViewHelper which renders the `then` child if type of
  * provided value is integer.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Type
  */
 class IsIntegerViewHelper extends AbstractConditionViewHelper
 {

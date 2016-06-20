@@ -75,10 +75,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
  *     one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().
  *     {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
- *
- * @author Andreas Lappe <nd@kaeufli.ch>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
 class ExtractViewHelper extends AbstractViewHelper
 {

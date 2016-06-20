@@ -13,10 +13,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Tidy-processes a string (HTML source), applying proper
  * indentation.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class TidyViewHelper extends AbstractViewHelper
 {

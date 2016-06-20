@@ -28,10 +28,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *
  *    <!-- Tag usage for getting labels of current language -->
  *    <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf"/>
- *
- * @author Cornel Boppart <cornel@bopp-art.com>
- * @package Vhs
- * @subpackage ViewHelpers\Resource
  */
 class LanguageViewHelper extends AbstractViewHelper
 {

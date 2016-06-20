@@ -13,11 +13,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ViewHelper to access data of the current content element record
- *
- * @author Benjamin Rau <rau@codearts.at>
- * @package Vhs
- * @subpackage ViewHelpers\Content
+ * ViewHelper to access data of the current content element record.
  */
 class InfoViewHelper extends AbstractViewHelper
 {

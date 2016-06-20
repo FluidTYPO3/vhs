@@ -39,10 +39,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper as FluidTypolinkViewHelpe
  *     <!-- With extensive configuration -->
  *     <v:uri.typolink configuration="{parameter: page.uid, additionalParams: '&print=1'}" />
  *
- * @author Cedric Ziel <cedric@cedric-ziel.com>, Cedric Ziel - Internetdienstleistungen & EDV
- * @author Daniel Kestler <daniel.kestler@medienreaktor.de>, medienreaktor GmbH
- * @package Vhs
- * @subpackage ViewHelpers
  * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper instead
  */
 class TypolinkViewHelper extends AbstractViewHelper

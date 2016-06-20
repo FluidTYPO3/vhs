@@ -18,12 +18,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ViewHelper to access data of the current page record
- *
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * ViewHelper to access data of the current page record.
  */
 class InfoViewHelper extends AbstractViewHelper
 {

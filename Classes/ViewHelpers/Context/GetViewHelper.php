@@ -26,10 +26,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * It can be set by .htaccess or in the server configuration
  *
  * See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context
- *
- * @author     Benjamin Beck <beck@beckdigitalemedien.de>
- * @package    Vhs
- * @subpackage ViewHelpers\Context
  */
 class GetViewHelper extends AbstractViewHelper
 {

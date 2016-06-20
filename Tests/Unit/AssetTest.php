@@ -15,8 +15,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class AssetTest
  */
 class AssetTest extends UnitTestCase {
 

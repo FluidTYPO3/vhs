@@ -28,9 +28,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class DebugViewHelperTest
  */
 class DebugViewHelperTest extends AbstractViewHelperTest {
 

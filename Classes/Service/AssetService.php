@@ -23,10 +23,6 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
  *
  * Inject this Service in your class to access VHS Asset
  * features - include assets etc.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage Service
  */
 class AssetService implements SingletonInterface
 {

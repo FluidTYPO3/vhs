@@ -42,10 +42,6 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
  * Do not use around ViewHelpers which add header data or which
  * interact with the PageRenderer or other "live" objects; this
  * includes many of the VHS ViewHelpers!
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
 class CacheViewHelper extends AbstractRenderViewHelper
 {

@@ -13,9 +13,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers
+ * If (condition) ViewHelper supporting a stack of conditions
+ * instead of a single condition.
  */
 class IfViewHelper extends AbstractConditionViewHelper
 {

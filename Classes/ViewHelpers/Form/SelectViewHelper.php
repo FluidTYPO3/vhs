@@ -13,11 +13,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
- * Select ViewHelper (with support for Optgroup and Option subnodes)
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form
+ * Select ViewHelper (with support for Optgroup and Option subnodes).
  */
 class SelectViewHelper extends AbstractFormFieldViewHelper
 {

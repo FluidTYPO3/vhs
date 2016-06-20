@@ -23,10 +23,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
  * Takes a property (dotted path supported) and renders the
  * then-child if the property at the given path has any
  * @validate annotation.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\If\Form
  */
 class HasValidatorViewHelper extends AbstractConditionViewHelper
 {

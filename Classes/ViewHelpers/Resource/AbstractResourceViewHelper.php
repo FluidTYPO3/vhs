@@ -13,11 +13,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Base class for resource related view helpers
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource
+ * Base class for resource related view helpers.
  */
 abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 {

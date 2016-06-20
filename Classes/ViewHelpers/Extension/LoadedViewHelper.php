@@ -25,10 +25,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *     <v:extension.loaded extensionName="news">
  *         ...
  *     </v:extension.loaded>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension
  */
 class LoadedViewHelper extends AbstractConditionViewHelper
 {

@@ -20,10 +20,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * menus, rootlines, pages and page overlays to be implemented in
  * viewhelpers by replacing calls to \TYPO3\CMS\Frontend\Page\PageRepository::getMenu()
  * and the like.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage Service
  */
 class PageService implements SingletonInterface
 {

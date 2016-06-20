@@ -11,10 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 /**
  * Repeats rendering of children with a typical for loop: starting at
  * index $from it will loop until the index has reached $to.
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
 class ForViewHelper extends AbstractLoopViewHelper
 {

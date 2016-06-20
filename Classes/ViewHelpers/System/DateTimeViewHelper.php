@@ -16,10 +16,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * ### System: DateTime
  *
  * Returns the current system UNIX timestamp as DateTime.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\System
  */
 class DateTimeViewHelper extends AbstractViewHelper
 {

@@ -15,11 +15,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper for rendering TYPO3 menus in Fluid
- * Require the extension static_info_table
- *
- * @author Dominic Garms, DMFmedia GmbH
- * @package Vhs
- * @subpackage ViewHelpers/Page
+ * Require the extension static_info_table.
  */
 class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 {

@@ -21,10 +21,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * Note: arguments must not be wrapped with the prefix used
  * in GET/POST parameters but must be provided as if the
  * arguments were sent directly to the Controller action.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
 class RequestViewHelper extends AbstractRenderViewHelper
 {

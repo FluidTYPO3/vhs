@@ -14,9 +14,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page\Resources
+ * Page FAL resource ViewHelper.
  */
 class FalViewHelper extends ResourcesFalViewHelper
 {

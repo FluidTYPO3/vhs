@@ -31,11 +31,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *     {v:render.ascii(ascii: {0: 13, 1: 10})}
  *
- * Will produce a Windows line break, \r\n
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
+ * Will produce a Windows line break, \r\n.
  */
 class AsciiViewHelper extends AbstractViewHelper
 {

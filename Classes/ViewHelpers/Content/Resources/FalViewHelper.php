@@ -9,9 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  */
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Content\Resources
+ * Content FAL relations ViewHelper
  */
 class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper
 {

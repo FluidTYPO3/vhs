@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Url;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Urldecodes the provided string
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Format
+ * Urldecodes the provided string.
  */
 class DecodeViewHelper extends AbstractViewHelper
 {

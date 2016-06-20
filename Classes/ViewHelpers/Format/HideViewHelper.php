@@ -16,10 +16,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Hides output from browser, but still renders tag content
  * which means any ViewHelper inside the tag content still
  * gets processed.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class HideViewHelper extends AbstractViewHelper
 {

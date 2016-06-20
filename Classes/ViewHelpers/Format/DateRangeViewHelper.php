@@ -58,10 +58,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * > value return modes, are also nicely consumable by the "math" suite
  * > of ViewHelpers, for example `v:math.division` would be able to divide
  * > number of days by two, three etc. to further divide the date range.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class DateRangeViewHelper extends AbstractViewHelper
 {

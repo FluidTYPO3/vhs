@@ -13,10 +13,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 /**
  * Base class for "Render Once"-style ViewHelpers: session, cookie,
  * request, template variable set, ViewHelper variable set etc.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Once
  */
 abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
 {

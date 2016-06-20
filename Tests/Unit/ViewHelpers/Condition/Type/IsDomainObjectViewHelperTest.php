@@ -12,9 +12,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class IsDomainObjectViewHelperTest
  */
 class IsDomainObjectViewHelperTest extends AbstractViewHelperTest {
 

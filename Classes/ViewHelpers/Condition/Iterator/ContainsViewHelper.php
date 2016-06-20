@@ -23,10 +23,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * ### Example:
  *
  *     {v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Iterator
  */
 class ContainsViewHelper extends AbstractConditionViewHelper
 {

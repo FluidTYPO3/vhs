@@ -25,10 +25,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * It can be set by .htaccess or in the server configuration
  *
  * See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context
- *
- * @author     Benjamin Beck <beck@beckdigitalemedien.de>
- * @package    Vhs
- * @subpackage ViewHelpers\Condition\Context
  */
 class IsDevelopmentViewHelper extends AbstractConditionViewHelper
 {

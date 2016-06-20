@@ -12,11 +12,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * Returns previous element in array $haystack from position of $needle
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Returns previous element in array $haystack from position of $needle.
  */
 class PreviousViewHelper extends ContainsViewHelper
 {

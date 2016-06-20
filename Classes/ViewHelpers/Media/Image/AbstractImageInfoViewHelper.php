@@ -15,11 +15,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Base class: Media\Image view helpers
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media\Image
+ * Base class: Media\Image view helpers.
  */
 abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 {

@@ -32,10 +32,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *            Maybe BE, maybe FE.
  *         </f:else>
  *     </v:condition.context.isCli>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Context
  */
 class IsCliViewHelper extends AbstractConditionViewHelper
 {

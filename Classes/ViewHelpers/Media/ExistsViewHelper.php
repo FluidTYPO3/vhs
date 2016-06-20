@@ -13,11 +13,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * File/Directory Exists Condition ViewHelper
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Media
+ * File/Directory Exists Condition ViewHelper.
  */
 class ExistsViewHelper extends AbstractConditionViewHelper
 {

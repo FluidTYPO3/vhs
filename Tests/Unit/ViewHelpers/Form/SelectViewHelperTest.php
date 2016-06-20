@@ -13,10 +13,7 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form
+ * Class SelectViewHelperTest
  */
 class SelectViewHelperTest extends AbstractViewHelperTest {
 

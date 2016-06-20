@@ -18,10 +18,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * this array is averaged to one number. If $a is a number and
  * $b is not provided or NULL, $a is gracefully returned as an
  * average value of itself.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class AverageViewHelper extends AbstractMultipleMathViewHelper
 {

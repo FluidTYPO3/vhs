@@ -12,10 +12,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Replaces $substring in $content with $replacement.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class ReplaceViewHelper extends AbstractViewHelper
 {

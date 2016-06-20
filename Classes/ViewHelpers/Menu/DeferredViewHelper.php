@@ -16,10 +16,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * has been configured with the `deferred` attribute set to
  * TRUE - this will cause the output of the parent to only
  * contain the content of this ViewHelper.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Menu
  */
 class DeferredViewHelper extends AbstractMenuViewHelper
 {

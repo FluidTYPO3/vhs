@@ -13,10 +13,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: Extension ViewHelpers
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension
  */
 abstract class AbstractExtensionViewHelper extends AbstractViewHelper
 {

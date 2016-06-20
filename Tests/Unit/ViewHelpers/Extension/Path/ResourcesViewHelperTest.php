@@ -12,10 +12,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension\Path
+ * Class ResourcesViewHelperTest
  */
 class ResourcesViewHelperTest extends AbstractViewHelperTest {
 

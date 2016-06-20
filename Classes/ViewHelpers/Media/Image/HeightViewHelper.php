@@ -9,11 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 
 /**
- * Returns the height of the provided image file in pixels
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media\Image
+ * Returns the height of the provided image file in pixels.
  */
 class HeightViewHelper extends AbstractImageInfoViewHelper
 {

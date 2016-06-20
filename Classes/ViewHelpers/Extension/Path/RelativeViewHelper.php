@@ -15,10 +15,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * ### Path: Relative Extension Folder Path
  *
  * Returns the relative path to an Extension folder.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension\Path
  */
 class RelativeViewHelper extends AbstractExtensionViewHelper
 {

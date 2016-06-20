@@ -12,11 +12,7 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Computes the difference of arrays
- *
- * @author Thomas Deuling <typo3@coding.ms>, coding.ms
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Computes the difference of arrays.
  */
 class DiffViewHelper extends AbstractViewHelper
 {

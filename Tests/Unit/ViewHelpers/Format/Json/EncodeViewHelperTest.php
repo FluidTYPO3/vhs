@@ -12,9 +12,7 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
+ * Class EncodeViewHelperTest
  */
 class EncodeViewHelperTest extends AbstractViewHelperTest {
 

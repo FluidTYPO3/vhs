@@ -15,11 +15,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Case Formatting ViewHelper
  *
- * Formats string case according to provided arguments
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
+ * Formats string case according to provided arguments.
  */
 class CaseViewHelper extends AbstractViewHelper
 {

@@ -17,10 +17,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * Condition ViewHelper which renders the `then` child if provided
  * string is uppercase. By default only the first letter is tested.
  * To test the full string set $fullString to TRUE.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\String
  */
 class IsUppercaseViewHelper extends AbstractConditionViewHelper
 {

@@ -16,10 +16,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * ViewHelper used to render a link tag in the `<head>` section of the page.
  * If you use the ViewHelper in a plugin, the plugin and its action have to
  * be cached!
- *
- * @author Georg Ringer
- * @package Vhs
- * @subpackage ViewHelpers\Page\Header
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {

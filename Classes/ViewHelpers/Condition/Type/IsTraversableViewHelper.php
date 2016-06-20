@@ -15,11 +15,7 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * ### Condition: Value implements interface Traversable
  *
  * Condition ViewHelper which renders the `then` child if provided
- * value implements interface Traversable
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Type
+ * value implements interface Traversable.
  */
 class IsTraversableViewHelper extends AbstractConditionViewHelper
 {

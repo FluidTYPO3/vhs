@@ -21,10 +21,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
  *     {v:variable.register.get(name: 'dynamic{variableName}')}
- *
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
 class GetViewHelper extends AbstractViewHelper
 {

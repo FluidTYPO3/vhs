@@ -32,10 +32,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *            Maybe FE, maybe CLI.
  *         </f:else>
  *     </v:condition.context.isBackend>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\If\Context
  */
 class IsBackendViewHelper extends AbstractConditionViewHelper
 {

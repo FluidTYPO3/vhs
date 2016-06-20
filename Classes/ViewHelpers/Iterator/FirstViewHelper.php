@@ -12,11 +12,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Returns the first element of $haystack
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Returns the first element of $haystack.
  */
 class FirstViewHelper extends AbstractViewHelper
 {

@@ -11,9 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Björn Fromme <fromme@dreipunktnull.com>
- * @package Vhs
+ * Class ChunkViewHelperTest
  */
 class ChunkViewHelperTest extends AbstractViewHelperTest {
 

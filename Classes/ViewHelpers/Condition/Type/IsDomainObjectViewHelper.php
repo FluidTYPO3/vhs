@@ -17,11 +17,7 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *
  * Condition ViewHelper which renders the `then` child if provided
  * value is a domain object, i.e. it inherits from extbase's base
- * class
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Type
+ * class.
  */
 class IsDomainObjectViewHelper extends AbstractConditionViewHelper
 {

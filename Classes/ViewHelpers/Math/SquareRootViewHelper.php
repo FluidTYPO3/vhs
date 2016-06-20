@@ -11,11 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /**
  * Math: SquareRoot
  *
- * Performs sqrt($a)
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
+ * Performs sqrt($a).
  */
 class SquareRootViewHelper extends AbstractSingleMathViewHelper
 {

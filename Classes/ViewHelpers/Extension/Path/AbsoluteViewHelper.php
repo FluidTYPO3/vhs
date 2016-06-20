@@ -15,10 +15,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * ### Path: Absolute Extension Folder Path
  *
  * Returns the absolute path to an extension folder.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension\Path
  */
 class AbsoluteViewHelper extends AbstractExtensionViewHelper
 {

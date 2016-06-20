@@ -12,10 +12,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Abstract class with basic functionality for loop view helpers.
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
 abstract class AbstractLoopViewHelper extends AbstractViewHelper
 {

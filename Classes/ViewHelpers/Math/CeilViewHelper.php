@@ -14,10 +14,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * Ceiling on $a which can be either an array-accessible
  * value (Iterator+ArrayAccess || array) or a raw numeric
  * value.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class CeilViewHelper extends AbstractSingleMathViewHelper
 {

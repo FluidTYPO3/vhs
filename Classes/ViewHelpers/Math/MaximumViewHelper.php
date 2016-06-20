@@ -13,10 +13,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  *
  * Gets the highest number in array $a or the highest
  * number of numbers $a and $b.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
 class MaximumViewHelper extends AbstractMultipleMathViewHelper
 {

@@ -9,9 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class RangeViewHelperTest
  */
 class RangeViewHelperTest extends AbstractMathViewHelperTest {
 

@@ -11,9 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\ResourceViewHelperInterface;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource\Record
+ * Interface for Record Resource ViewHelpers
  */
 interface RecordResourceViewHelperInterface extends ResourceViewHelperInterface
 {

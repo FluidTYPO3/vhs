@@ -13,15 +13,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ### Base class: Content ViewHelpers
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Dominique Feyer, <dfeyer@ttree.ch>
- * @author Daniel Schöne, <daniel@schoene.it>
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Content
+ * Base class: Content ViewHelpers
  */
 abstract class AbstractContentViewHelper extends AbstractViewHelper
 {

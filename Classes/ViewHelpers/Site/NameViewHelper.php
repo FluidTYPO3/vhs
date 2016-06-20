@@ -15,11 +15,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * ### Site: Name
  *
- * Returns the site name as specified in TYPO3_CONF_VARS.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Site
+ * Returns the site name as specified in `$TYPO3_CONF_VARS`.
  */
 class NameViewHelper extends AbstractViewHelper
 {

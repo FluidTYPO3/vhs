@@ -12,11 +12,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Converts the JSON encoded argument into a PHP variable
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Format\Json
+ * Converts the JSON encoded argument into a PHP variable.
  */
 class DecodeViewHelper extends AbstractViewHelper
 {

@@ -19,10 +19,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * while maintaining complete words. Concatenates the resulting
  * strings with $glue. Code is heavily inspired
  * by Codeigniter's word_wrap helper.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
 class WordWrapViewHelper extends AbstractViewHelper
 {
