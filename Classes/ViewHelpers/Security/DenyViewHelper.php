@@ -32,6 +32,4 @@ class DenyViewHelper extends AbstractSecurityViewHelper implements ChildNodeAcce
     {
         return !parent::evaluateCondition($arguments);
     }
-
-
 }
