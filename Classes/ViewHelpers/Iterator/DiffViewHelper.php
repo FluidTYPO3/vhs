@@ -28,7 +28,7 @@ class DiffViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
 
-        $this->registerArgument('a', 'mixed', 'First Array/Traversable/CSV', false, null);
+        $this->registerArgument('a', 'mixed', 'First Array/Traversable/CSV');
         $this->registerArgument('b', 'mixed', 'Second Array/Traversable/CSV', true);
     }
 
