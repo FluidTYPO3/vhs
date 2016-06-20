@@ -24,6 +24,9 @@ class FalViewHelper extends ResourcesFalViewHelper {
 
 	const defaultTable = 'pages';
 	const defaultField = 'media';
+    const defaultOverlayField = '_PAGES_OVERLAY';
+    const defaultOverlayUidField = '_PAGES_OVERLAY_UID';
+    const defaultOverlayTable = 'pages_language_overlay';
 
 	/**
 	 * @var string
@@ -105,6 +108,10 @@ class FalViewHelper extends ResourcesFalViewHelper {
 	 */
 	public function render() {
 		$record = $this->arguments['record'];
+        if (!empty($record[self::defaultOverlayField])) {
+            $this->arguments['table'] = self::defaultOverlayTable;
+            $this->arguments['uid'] = $record[self::defaultOverlayUidField];
+        }
 		$uid = $this->arguments['uid'];
 		if (NULL === $uid) {
 			if (NULL === $record) {
