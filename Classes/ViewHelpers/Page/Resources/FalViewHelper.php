@@ -56,6 +56,28 @@ class FalViewHelper extends ResourcesFalViewHelper
     }
 
     /**
+     * @param integer $id
+     * @return array
+     */
+    public function getRecord($id)
+    {
+        $record = parent::getRecord($id);
+        if (!$this->isDefaultLanguage()) {
+            $cObj = $this->configurationManager->getContentObject();
+            $localisation = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+                '*',
+                'pages_language_overlay',
+                "pid = '" . $record['uid'] . "' AND sys_language_uid = '" . $this->getCurrentLanguageUid() . "'"
+                . $cObj->enableFields('pages_language_overlay')
+            );
+            if (true === is_array($localisation)) {
+                ArrayUtility::mergeRecursiveWithOverrule($record, $localisation);
+            }
+        }
+        return $record;
+    }
+
+    /**
      * @param integer $pageUid
      * @param integer $limit
      * @return array
@@ -63,18 +85,6 @@ class FalViewHelper extends ResourcesFalViewHelper
     protected function getSlideRecordsFromPage($pageUid, $limit)
     {
         $pageRecord = $this->getRecord($pageUid);
-        if (!$this->isDefaultLanguage()) {
-            $cObj = $this->configurationManager->getContentObject();
-            $localisation = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                '*',
-                'pages_language_overlay',
-                "pid = '" . $pageRecord['uid'] . "' AND sys_language_uid = '" . $this->getCurrentLanguageUid() . "'"
-                . $cObj->enableFields('pages_language_overlay')
-            );
-            if (true === is_array($localisation)) {
-                ArrayUtility::mergeRecursiveWithOverrule($pageRecord, $localisation);
-            }
-        }
         $resources = $this->getResources($pageRecord);
         if (null !== $limit && count($resources) > $limit) {
             $resources = array_slice($resources, 0, $limit);
@@ -107,27 +117,5 @@ class FalViewHelper extends ResourcesFalViewHelper
     public function getActiveRecord()
     {
         return $GLOBALS['TSFE']->page;
-    }
-
-    /**
-     * @return mixed
-     * @throws Exception
-     */
-    public function render()
-    {
-        $record = $this->arguments['record'];
-        $uid = $this->arguments['uid'];
-        if (null === $uid) {
-            if (null === $record) {
-                $record = $this->getActiveRecord();
-            }
-            $uid = $record['uid'];
-        }
-        if (null === $uid) {
-            throw new Exception('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
-        }
-        $resources = $this->getSlideRecords($uid);
-
-        return $this->renderChildrenWithVariableOrReturnInput($resources);
     }
 }
