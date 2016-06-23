@@ -14,6 +14,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Resolve FAL relations and return file records.
@@ -101,9 +102,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $sqlRecordUid = $record[$this->idField];
         }
 
-        $images = [];
+        $fileReferences = [];
         if (empty($GLOBALS['TSFE']->sys_page) === false) {
-            $images = $this->getFileReferences($this->getTable(), $this->getField(), $sqlRecordUid);
+            $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $sqlRecordUid);
         } else {
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $versionWhere = 'AND sys_file_reference.deleted=0 AND (sys_file_reference.t3ver_wsid=0 OR ' .
@@ -127,13 +128,13 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             );
             if (empty($references) === false) {
                 $referenceUids = array_keys($references);
-                $images = [];
+                $fileReferences = [];
                 if (empty($referenceUids) === false) {
                     foreach ($referenceUids as $referenceUid) {
                         try {
                             // Just passing the reference uid, the factory is doing workspace
                             // overlays automatically depending on the current environment
-                            $images[] = $this->resourceFactory->getFileReferenceObject($referenceUid);
+                            $fileReferences[] = $this->resourceFactory->getFileReferenceObject($referenceUid);
                         } catch (ResourceDoesNotExistException $exception) {
                             // No handling, just omit the invalid reference uid
                             continue;
@@ -143,8 +144,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             }
         }
         $resources = [];
-        foreach ($images as $file) {
-            $resources[] = $this->getResource($file);
+        foreach ($fileReferences as $file) {
+            // Exclude workspace deleted files references
+            if ($file->getProperty('t3ver_state') !== VersionState::DELETE_PLACEHOLDER) {
+                $resources[] = $this->getResource($file);
+            }
         }
         return $resources;
     }
