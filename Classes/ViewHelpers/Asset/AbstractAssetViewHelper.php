@@ -543,7 +543,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function assertAllowedInFooter()
     {
         $settings = $this->getAssetSettings();
-        return (isset($settings['movable']) && !$settings['movable']);
+        return (isset($settings['movable']) && $settings['movable']);
     }
 
     /**
