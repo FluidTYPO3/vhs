@@ -90,11 +90,19 @@ class ImageViewHelper extends AbstractImageViewHelper
      * Render method
      *
      * @return string
+     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      */
     public function render()
     {
         $this->preprocessImage();
+        return $this->renderTag();
+    }
 
+    /**
+     * @return string
+     */
+    public function renderTag()
+    {
         if (false === empty($this->arguments['srcset'])) {
             $srcSetVariants = $this->addSourceSet($this->tag, $this->mediaSource);
         }

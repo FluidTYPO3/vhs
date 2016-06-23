@@ -26,11 +26,11 @@ class PdfThumbnailViewHelper extends ImageViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('path', 'string', 'Path to PDF source file');
-        $this->registerArgument('minWidth', 'integer', 'Minimum width of resulting thumbnail image');
-        $this->registerArgument('minHeight', 'integer', 'Minimum height of resulting thumbnail image');
-        $this->registerArgument('maxWidth', 'integer', 'Maximum width of resulting thumbnail image');
-        $this->registerArgument('maxHeight', 'integer', 'Maximum height of resulting thumbnail image');
+        $this->registerArgument('path', 'string', 'DEPRECATED: Use src instead');
+        $this->registerArgument('minWidth', 'integer', 'DEPRECATED: Use minW instead');
+        $this->registerArgument('minHeight', 'integer', 'DEPRECATED: Use minH instead');
+        $this->registerArgument('maxWidth', 'integer', 'DEPRECATED: Use maxW instead');
+        $this->registerArgument('maxHeight', 'integer', 'DEPRECATED: Use maxH instead');
         $this->registerArgument(
             'density',
             'integer',
@@ -71,46 +71,40 @@ class PdfThumbnailViewHelper extends ImageViewHelper
      */
     public function render()
     {
-        $path = GeneralUtility::getFileAbsFileName($this->arguments['path']);
-        if (false === file_exists($path)) {
+        $src = GeneralUtility::getFileAbsFileName($this->arguments['src']);
+        if (false === file_exists($src)) {
             return null;
         }
         $density = $this->arguments['density'];
         $rotate = $this->arguments['rotate'];
-        $page = intval($this->arguments['page']);
+        $page = (integer) $this->arguments['page'];
         $background = $this->arguments['background'];
         $forceOverwrite = (boolean) $this->arguments['forceOverwrite'];
-        $width = $this->arguments['width'];
-        $height = $this->arguments['height'];
-        $minWidth = $this->arguments['minWidth'];
-        $minHeight = $this->arguments['minHeight'];
-        $maxWidth = $this->arguments['maxWidth'];
-        $maxHeight = $this->arguments['maxHeight'];
-        $filename = basename($path);
+        $filename = basename($src);
         $pageArgument = $page > 0 ? $page - 1 : 0;
         if (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'])) {
             $colorspace = $GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'];
         } else {
             $colorspace = 'RGB';
         }
-        $destination = GeneralUtility::getFileAbsFileName('typo3temp/vhs-pdf-' . $filename . '-page' . $page . '.png');
-        if (false === file_exists($destination) || true === $forceOverwrite) {
+        $path = GeneralUtility::getFileAbsFileName('typo3temp/vhs-pdf-' . $filename . '-page' . $page . '.png');
+        if (false === file_exists($path) || true === $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
-            if (0 < intval($density)) {
+            if (0 < (integer) $density) {
                 $arguments .= ' -density ' . $density;
             }
-            if (0 !== intval($rotate)) {
+            if (0 !== (integer) $rotate) {
                 $arguments .= ' -rotate ' . $rotate;
             }
-            $arguments .= ' "' . $path . '"[' . $pageArgument . ']';
+            $arguments .= ' "' . $src . '"[' . $pageArgument . ']';
             if (null !== $background) {
                 $arguments .= ' -background "' . $background . '" -flatten';
             }
-            $arguments .= ' "' . $destination . '"';
+            $arguments .= ' "' . $path . '"';
             $command = CommandUtility::imageMagickCommand('convert', $arguments);
             CommandUtility::exec($command);
         }
-        $image = substr($destination, strlen(PATH_site));
-        return parent::render($image, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);
+        $this->preprocessImage($path);
+        return $this->renderTag();
     }
 }
