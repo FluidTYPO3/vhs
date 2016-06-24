@@ -109,11 +109,12 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     }
 
     /**
+     * @param string|null $imageSource
      * @throws Exception
      */
-    public function preprocessImage()
+    public function preprocessImage($imageSource = null)
     {
-        $src = $this->arguments['src'];
+        $src = (null === $imageSource) ? $this->arguments['src'] : $imageSource;
         $width = $this->arguments['width'];
         $height = $this->arguments['height'];
         $minW = $this->arguments['minW'];
@@ -144,11 +145,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if (false === empty($format)) {
             $setup['ext'] = $format;
         }
-        if (0 < intval($quality)) {
+        if (0 < (integer) $quality) {
             $quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
             $setup['params'] = '-quality ' . $quality;
         }
-        if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
+        if (TYPO3_MODE === 'BE' && strpos($src, '../') === 0) {
             $src = substr($src, 3);
         }
         $this->imageInfo = $this->contentObject->getImgResource($src, $setup);
@@ -156,15 +157,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if (false === is_array($this->imageInfo)) {
             throw new Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
         }
-        if ((float) substr(TYPO3_version, 0, 3) < 7.1) {
-            $this->imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($this->imageInfo[3]);
-        } else {
-            $this->imageInfo[3] = GraphicalFunctions::pngToGifByImagemagick($this->imageInfo[3]);
-        }
+        $this->imageInfo[3] = GraphicalFunctions::pngToGifByImagemagick($this->imageInfo[3]);
         $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
         $publicUrl = rawurldecode($this->imageInfo[3]);
         $this->mediaSource = GeneralUtility::rawUrlEncodeFP($publicUrl);
-        if ('BE' === TYPO3_MODE) {
+        if (TYPO3_MODE === 'BE') {
             $this->resetFrontendEnvironment();
         }
     }
