@@ -65,7 +65,7 @@ class PageSelectService implements SingletonInterface {
 	 */
 	private function createPageSelectInstance() {
 		if (TRUE === is_array($GLOBALS['TSFE']->fe_user->user)
-			|| (TRUE === isset($GLOBALS['TSFE']->fe_user->groupData['uid']) && 0 < $GLOBALS['TSFE']->fe_user->groupData['uid'])) {
+			|| (TRUE === isset($GLOBALS['TSFE']->fe_user->groupData['uid']) && 0 < (int) $GLOBALS['TSFE']->fe_user->groupData['uid'])) {
 			$groups = array(-2, 0);
 		} else {
 			$groups = array(-1, 0);
