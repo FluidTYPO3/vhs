@@ -8,38 +8,51 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Hides output from browser, but still renders tag content
  * which means any ViewHelper inside the tag content still
  * gets processed.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
-class HideViewHelper extends AbstractViewHelper {
+class HideViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('disabled', 'boolean', 'If TRUE, renders content - use to quickly enable/disable Fluid code', FALSE, FALSE);
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		if (TRUE === (boolean) $this->arguments['disabled']) {
-			return $this->renderChildren();
-		} else {
-			$this->renderChildren();
-		}
-		return NULL;
-	}
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'disabled',
+            'boolean',
+            'If TRUE, renders content - use to quickly enable/disable Fluid code',
+            false,
+            false
+        );
+    }
 
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $content = $renderChildrenClosure();
+        if ($arguments['disabled']) {
+            return $content;
+        }
+        return null;
+    }
 }

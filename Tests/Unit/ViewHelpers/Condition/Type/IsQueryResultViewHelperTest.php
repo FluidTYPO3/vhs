@@ -11,44 +11,49 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class IsQueryResultViewHelperTest
  */
-class IsQueryResultViewHelperTest extends AbstractViewHelperTest {
+class IsQueryResultViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersThenChildIfConditionMatched() {
-		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-			array('toArray', 'initialize', 'rewind', 'valid', 'count'), array(), '', FALSE);
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'value' => $queryResult
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    /**
+     * @test
+     */
+    public function rendersThenChildIfConditionMatched()
+    {
+        $queryResult = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
+            array('toArray', 'initialize', 'rewind', 'valid', 'count'),
+            array(),
+            '',
+            false
+        );
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'value' => $queryResult
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersElseChildIfConditionNotMatched() {
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'value' => 1
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    /**
+     * @test
+     */
+    public function rendersElseChildIfConditionNotMatched()
+    {
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'value' => 1
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

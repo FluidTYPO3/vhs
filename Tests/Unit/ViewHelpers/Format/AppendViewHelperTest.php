@@ -11,33 +11,33 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class AppendViewHelperTest
  */
-class AppendViewHelperTest extends AbstractViewHelperTest {
+class AppendViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function canAppendValueToArgument() {
-		$arguments = array(
-			'subject' => 'before',
-			'add' => 'after'
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertStringEndsWith($arguments['add'], $test);
-	}
+    /**
+     * @test
+     */
+    public function canAppendValueToArgument()
+    {
+        $arguments = array(
+            'subject' => 'before',
+            'add' => 'after'
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertStringEndsWith($arguments['add'], $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canAppendValueToChildContent() {
-		$arguments = array(
-			'add' => 'after'
-		);
-		$test = $this->executeViewHelperUsingTagContent('Text', 'before', $arguments);
-		$this->assertStringEndsWith($arguments['add'], $test);
-	}
-
+    /**
+     * @test
+     */
+    public function canAppendValueToChildContent()
+    {
+        $arguments = array(
+            'add' => 'after'
+        );
+        $test = $this->executeViewHelperUsingTagContent('Text', 'before', $arguments);
+        $this->assertStringEndsWith($arguments['add'], $test);
+    }
 }

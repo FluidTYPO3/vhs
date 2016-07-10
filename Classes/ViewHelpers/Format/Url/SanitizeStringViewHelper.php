@@ -11,11 +11,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Url;
 use FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper as RelocatedSanitizeStringViewHelper;
 
 /**
- * @author Claus Due <claus@namelesscoder.net>
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Format\Url
- * @deprecated Use FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper instead
+ * Sanitizes a string
+ *
+ * @deprecated Use FluidTYPO3\Vhs\ViewHelpers\Format\SanitizeStringViewHelper, remove in 4.0.0
  */
-class SanitizeStringViewHelper extends RelocatedSanitizeStringViewHelper {
+class SanitizeStringViewHelper extends RelocatedSanitizeStringViewHelper
+{
 }

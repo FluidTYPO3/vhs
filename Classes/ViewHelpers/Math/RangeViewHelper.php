@@ -14,30 +14,27 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * Gets the lowest and highest number from an array of numbers.
  * Returns an array of [low, high]. For individual low/high
  * values please use v:math.maximum and v:math.minimum.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
-class RangeViewHelper extends AbstractSingleMathViewHelper {
+class RangeViewHelper extends AbstractSingleMathViewHelper
+{
 
-	/**
-	 * @return mixed
-	 * @throw Exception
-	 */
-	public function render() {
-		$a = $this->getInlineArgument();
-		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if (TRUE === $aIsIterable) {
-			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
-			sort($a, SORT_NUMERIC);
-			if (1 === count($a)) {
-				return array(reset($a), reset($a));
-			} else {
-				return array(array_shift($a), array_pop($a));
-			}
-		}
-		return $a;
-	}
-
+    /**
+     * @return mixed
+     * @throw Exception
+     */
+    public function render()
+    {
+        $a = $this->getInlineArgument();
+        $aIsIterable = $this->assertIsArrayOrIterator($a);
+        if (true === $aIsIterable) {
+            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            sort($a, SORT_NUMERIC);
+            if (1 === count($a)) {
+                return [reset($a), reset($a)];
+            } else {
+                return [array_shift($a), array_pop($a)];
+            }
+        }
+        return $a;
+    }
 }

@@ -15,21 +15,18 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  *
  * Outputs the icon of the extension key. Supports both
  * extension key and extension name arguments.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension
  */
-class IconViewHelper extends AbstractExtensionViewHelper {
+class IconViewHelper extends AbstractExtensionViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$extensionKey = $this->getExtensionKey();
-		return ExtensionManagementUtility::extPath($extensionKey, 'ext_icon.gif');
-	}
-
+    /**
+     * Render method
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $extensionKey = $this->getExtensionKey();
+        return ExtensionManagementUtility::extPath($extensionKey, 'ext_icon.gif');
+    }
 }

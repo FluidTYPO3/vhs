@@ -12,50 +12,51 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class TidyViewHelperTest
  */
-class TidyViewHelperTest extends AbstractViewHelperTest {
+class TidyViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function throwsErrorWhenNoTidyIsInstalled() {
-		$instance = $this->createInstance();
-		ObjectAccess::setProperty($instance, 'hasTidy', FALSE, TRUE);
-		$this->setExpectedException('RuntimeException', NULL, 1352059753);
-		$instance->render('test', 'utf8');
-	}
+    /**
+     * @test
+     */
+    public function throwsErrorWhenNoTidyIsInstalled()
+    {
+        $instance = $this->createInstance();
+        ObjectAccess::setProperty($instance, 'hasTidy', false, true);
+        $this->setExpectedException('RuntimeException', null, 1352059753);
+        $instance->render('test', 'utf8');
+    }
 
-	/**
-	 * @test
-	 */
-	public function canTidySourceFromTagContent() {
-		$instance = $this->createInstance();
-		if (FALSE === class_exists('tidy')) {
-			$this->markTestSkipped('No tidy support');
-			return;
-		}
-		$source = '<foo> <bar>
+    /**
+     * @test
+     */
+    public function canTidySourceFromTagContent()
+    {
+        $instance = $this->createInstance();
+        if (false === class_exists('tidy')) {
+            $this->markTestSkipped('No tidy support');
+            return;
+        }
+        $source = '<foo> <bar>
 			</bar>			</foo>';
-		$test = $this->executeViewHelperUsingTagContent('Text', $source, array('encoding' => 'utf8'));
-		$this->assertNotSame($source, $test);
-	}
+        $test = $this->executeViewHelperUsingTagContent('Text', $source, array('encoding' => 'utf8'));
+        $this->assertNotSame($source, $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canTidySourceFromArgument() {
-		$instance = $this->createInstance();
-		if (FALSE === class_exists('tidy')) {
-			$this->markTestSkipped('No tidy support');
-			return;
-		}
-		$source = '<foo> <bar>
+    /**
+     * @test
+     */
+    public function canTidySourceFromArgument()
+    {
+        $instance = $this->createInstance();
+        if (false === class_exists('tidy')) {
+            $this->markTestSkipped('No tidy support');
+            return;
+        }
+        $source = '<foo> <bar>
 			</bar>			</foo>';
-		$test = $this->executeViewHelper(array('content' => $source, 'encoding' => 'utf8'));
-		$this->assertNotSame($source, $test);
-	}
-
+        $test = $this->executeViewHelper(array('content' => $source, 'encoding' => 'utf8'));
+        $this->assertNotSame($source, $test);
+    }
 }

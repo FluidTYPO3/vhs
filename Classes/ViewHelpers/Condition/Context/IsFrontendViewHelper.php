@@ -32,23 +32,18 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *            Maybe BE, maybe CLI.
  *         </f:else>
  *     </v:condition.context.isFrontend>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\If\Context
  */
-class IsFrontendViewHelper extends AbstractConditionViewHelper {
+class IsFrontendViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		return ('FE' === TYPO3_MODE);
-	}
-
+    /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return ('FE' === TYPO3_MODE);
+    }
 }

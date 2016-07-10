@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
+namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,10 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class DeferredViewHelperTest
  */
-class ListViewHelperTest extends AbstractViewHelperTest {
+class DeferredViewHelperTest extends AbstractViewHelperTest
+{
 
 }

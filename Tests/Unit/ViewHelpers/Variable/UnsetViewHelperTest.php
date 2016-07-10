@@ -11,19 +11,18 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class UnsetViewHelperTest
  */
-class UnsetViewHelperTest extends AbstractViewHelperTest {
+class UnsetViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function canUnsetVariable() {
-		$variables = new \ArrayObject(array('test' => TRUE));
-		$this->executeViewHelper(array('name' => 'test'), $variables);
-		$this->assertNotContains('test', $variables);
-	}
-
+    /**
+     * @test
+     */
+    public function canUnsetVariable()
+    {
+        $variables = new \ArrayObject(array('test' => true));
+        $this->executeViewHelper(array('name' => 'test'), $variables);
+        $this->assertNotContains('test', $variables);
+    }
 }

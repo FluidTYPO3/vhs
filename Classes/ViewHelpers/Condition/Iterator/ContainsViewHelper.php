@@ -23,155 +23,164 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * ### Example:
  *
  *     {v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Iterator
  */
-class ContainsViewHelper extends AbstractConditionViewHelper {
+class ContainsViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('needle', 'mixed', 'Needle to search for in haystack', TRUE);
-		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', TRUE);
-		$this->registerArgument('considerKeys', 'boolean', 'Tell whether to consider keys in the search assuming haystack is an array.', FALSE, FALSE);
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('needle', 'mixed', 'Needle to search for in haystack', true);
+        $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', true);
+        $this->registerArgument(
+            'considerKeys',
+            'boolean',
+            'Tell whether to consider keys in the search assuming haystack is an array.',
+            false,
+            false
+        );
+    }
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		return FALSE !== self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);;
-	}
+    /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return false !== self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+        ;
+    }
 
-	/**
-	 * @param integer $index
-	 * @param array $arguments
-	 * @return mixed
-	 */
-	static protected function getNeedleAtIndex($index, $arguments) {
-		if (0 > $index) {
-			return NULL;
-		}
-		$haystack = $arguments['haystack'];
-		$asArray = array();
-		if (TRUE === is_array($haystack)) {
-			$asArray = $haystack;
-		} elseif (TRUE === $haystack instanceof LazyObjectStorage) {
-			/** @var $haystack LazyObjectStorage */
-			$asArray = $haystack->toArray();
-		} elseif (TRUE === $haystack instanceof ObjectStorage) {
-			/** @var $haystack ObjectStorage */
-			$asArray = $haystack->toArray();
-		} elseif (TRUE === $haystack instanceof QueryResult) {
-			/** @var $haystack QueryResult */
-			$asArray = $haystack->toArray();
-		} elseif (TRUE === is_string($haystack)) {
-			$asArray = str_split($haystack);
-		}
-		return (TRUE === isset($asArray[$index]) ? $asArray[$index] : FALSE);
-	}
+    /**
+     * @param integer $index
+     * @param array $arguments
+     * @return mixed
+     */
+    protected static function getNeedleAtIndex($index, $arguments)
+    {
+        if (0 > $index) {
+            return null;
+        }
+        $haystack = $arguments['haystack'];
+        $asArray = [];
+        if (true === is_array($haystack)) {
+            $asArray = $haystack;
+        } elseif (true === $haystack instanceof LazyObjectStorage) {
+            /** @var $haystack LazyObjectStorage */
+            $asArray = $haystack->toArray();
+        } elseif (true === $haystack instanceof ObjectStorage) {
+            /** @var $haystack ObjectStorage */
+            $asArray = $haystack->toArray();
+        } elseif (true === $haystack instanceof QueryResult) {
+            /** @var $haystack QueryResult */
+            $asArray = $haystack->toArray();
+        } elseif (true === is_string($haystack)) {
+            $asArray = str_split($haystack);
+        }
+        return (true === isset($asArray[$index]) ? $asArray[$index] : false);
+    }
 
-	/**
-	 * @param mixed $haystack
-	 * @param mixed $needle
-	 * @param array $arguments
-	 * @return boolean|integer
-	 */
-	static protected function assertHaystackHasNeedle($haystack, $needle, $arguments) {
-		if (TRUE === is_array($haystack)) {
-			return self::assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments);
-		} elseif ($haystack instanceof LazyObjectStorage) {
-			return self::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} elseif ($haystack instanceof ObjectStorage) {
-			return self::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
-		} elseif ($haystack instanceof QueryResult) {
-			return self::assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
-		} elseif (TRUE === is_string($haystack)) {
-			return strpos($haystack, $needle);
-		}
-		return FALSE;
-	}
+    /**
+     * @param mixed $haystack
+     * @param mixed $needle
+     * @param array $arguments
+     * @return boolean|integer
+     */
+    protected static function assertHaystackHasNeedle($haystack, $needle, $arguments)
+    {
+        if (true === is_array($haystack)) {
+            return self::assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments);
+        } elseif ($haystack instanceof LazyObjectStorage) {
+            return self::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+        } elseif ($haystack instanceof ObjectStorage) {
+            return self::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+        } elseif ($haystack instanceof QueryResult) {
+            return self::assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
+        } elseif (true === is_string($haystack)) {
+            return strpos($haystack, $needle);
+        }
+        return false;
+    }
 
-	/**
-	 * @param mixed $haystack
-	 * @param mixed $needle
-	 * @return boolean|integer
-	 */
-	static protected function assertHaystackIsQueryResultAndHasNeedle($haystack, $needle) {
-		if (TRUE === $needle instanceof DomainObjectInterface) {
-			/** @var $needle DomainObjectInterface */
-			$needle = $needle->getUid();
-		}
-		foreach ($haystack as $index => $candidate) {
-			/** @var $candidate DomainObjectInterface */
-			if ((integer) $candidate->getUid() === (integer) $needle) {
-				return $index;
-			}
-		}
-		return FALSE;
-	}
+    /**
+     * @param mixed $haystack
+     * @param mixed $needle
+     * @return boolean|integer
+     */
+    protected static function assertHaystackIsQueryResultAndHasNeedle($haystack, $needle)
+    {
+        if (true === $needle instanceof DomainObjectInterface) {
+            /** @var $needle DomainObjectInterface */
+            $needle = $needle->getUid();
+        }
+        foreach ($haystack as $index => $candidate) {
+            /** @var $candidate DomainObjectInterface */
+            if ((integer) $candidate->getUid() === (integer) $needle) {
+                return $index;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * @param mixed $haystack
-	 * @param mixed $needle
-	 * @return boolean|integer
-	 */
-	static protected function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle) {
-		$index = 0;
-		/** @var $candidate DomainObjectInterface */
-		if (TRUE === $needle instanceof AbstractDomainObject) {
-			$needle = $needle->getUid();
-		}
-		foreach ($haystack as $candidate) {
-			if ((integer) $candidate->getUid() === (integer) $needle) {
-				return $index;
-			}
-			$index++;
-		}
-		return FALSE;
-	}
+    /**
+     * @param mixed $haystack
+     * @param mixed $needle
+     * @return boolean|integer
+     */
+    protected static function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle)
+    {
+        $index = 0;
+        /** @var $candidate DomainObjectInterface */
+        if (true === $needle instanceof AbstractDomainObject) {
+            $needle = $needle->getUid();
+        }
+        foreach ($haystack as $candidate) {
+            if ((integer) $candidate->getUid() === (integer) $needle) {
+                return $index;
+            }
+            $index++;
+        }
+        return false;
+    }
 
-	/**
-	 * @param mixed $haystack
-	 * @param mixed $needle
-	 * @param array $arguments
-	 * @return boolean|integer
-	 */
-	static protected function assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments) {
-		if (FALSE === $needle instanceof DomainObjectInterface) {
-			if (TRUE === (boolean) $arguments['considerKeys']) {
-				$result = (boolean) (FALSE !== array_search($needle, $haystack) || TRUE === isset($haystack[$needle]));
-			} else {
-				$result = array_search($needle, $haystack);
-			}
-			return $result;
-		} else {
-			/** @var $needle DomainObjectInterface */
-			foreach ($haystack as $index => $straw) {
-				/** @var $straw DomainObjectInterface */
-				if ((integer) $straw->getUid() === (integer) $needle->getUid()) {
-					return $index;
-				}
-			}
-		}
-		return FALSE;
-	}
+    /**
+     * @param mixed $haystack
+     * @param mixed $needle
+     * @param array $arguments
+     * @return boolean|integer
+     */
+    protected static function assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments)
+    {
+        if (false === $needle instanceof DomainObjectInterface) {
+            if (true === (boolean) $arguments['considerKeys']) {
+                $result = (boolean) (false !== array_search($needle, $haystack) || true === isset($haystack[$needle]));
+            } else {
+                $result = array_search($needle, $haystack);
+            }
+            return $result;
+        } else {
+            /** @var $needle DomainObjectInterface */
+            foreach ($haystack as $index => $straw) {
+                /** @var $straw DomainObjectInterface */
+                if ((integer) $straw->getUid() === (integer) $needle->getUid()) {
+                    return $index;
+                }
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * @param mixed $haystack
-	 * @param mixed $needle
-	 * @return boolean|integer
-	 */
-	static protected function assertHaystackIsStringAndHasNeedle($haystack, $needle) {
-		return strpos($haystack, $needle);
-	}
-
+    /**
+     * @param mixed $haystack
+     * @param mixed $needle
+     * @return boolean|integer
+     */
+    protected static function assertHaystackIsStringAndHasNeedle($haystack, $needle)
+    {
+        return strpos($haystack, $needle);
+    }
 }

@@ -9,48 +9,51 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class DivisionViewHelperTest
  */
-class DivisionViewHelperTest extends AbstractMathViewHelperTest {
+class DivisionViewHelperTest extends AbstractMathViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testDualArgument() {
-		$this->executeDualArgumentTest(4, 2, 2);
-	}
+    /**
+     * @test
+     */
+    public function testDualArgument()
+    {
+        $this->executeDualArgumentTest(4, 2, 2);
+    }
 
-	/**
-	 * @test
-	 */
-	public function testDualArgumentIteratorFirst() {
-		$this->executeDualArgumentTest(array(4, 8), 2, array(2, 4));
-	}
+    /**
+     * @test
+     */
+    public function testDualArgumentIteratorFirst()
+    {
+        $this->executeDualArgumentTest(array(4, 8), 2, array(2, 4));
+    }
 
-	/**
-	 * @test
-	 */
-	public function executeMissingArgumentTest() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
-		$this->executeViewHelper(array());
-	}
+    /**
+     * @test
+     */
+    public function executeMissingArgumentTest()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
+        $this->executeViewHelper(array());
+    }
 
-	/**
-	 * @test
-	 */
-	public function executeInvalidFirstArgumentTypeTest() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
-		$this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
-	}
+    /**
+     * @test
+     */
+    public function executeInvalidFirstArgumentTypeTest()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
+        $this->executeViewHelper(array('b' => 1, 'fail' => true));
+    }
 
-	/**
-	 * @test
-	 */
-	public function executeInvalidSecondArgumentTypeTest() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator');
-		$this->executeViewHelper(array('a' => 1, 'b' => array(1), 'fail' => TRUE));
-	}
-
+    /**
+     * @test
+     */
+    public function executeInvalidSecondArgumentTypeTest()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator');
+        $this->executeViewHelper(array('a' => 1, 'b' => array(1), 'fail' => true));
+    }
 }

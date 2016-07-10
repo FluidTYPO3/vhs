@@ -9,36 +9,31 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 /**
- * ViewHelper used to render content elements in Fluid page templates
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Dominique Feyer, <dfeyer@ttree.ch>
- * @author Daniel Schöne, <daniel@schoene.it>
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Content
+ * ViewHelper used to render get content elements in Fluid templates
  */
-class GetViewHelper extends AbstractContentViewHelper {
+class GetViewHelper extends AbstractContentViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->overrideArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, FALSE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument('render', 'boolean', 'Return rendered result', false, false);
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return mixed
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return '';
-		}
-		$contentRecords = $this->getContentRecords();
-		return $contentRecords;
-	}
-
+    /**
+     * Render method
+     *
+     * @return mixed
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return '';
+        }
+        $contentRecords = $this->getContentRecords();
+        return $contentRecords;
+    }
 }

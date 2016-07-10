@@ -8,7 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -16,54 +18,61 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * The partial will then be rendered each time.
  * Please be aware that this will impact render time.
  * Arguments must be serializable and will be cached.
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
-class UncacheViewHelper extends AbstractViewHelper {
+class UncacheViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('partial', 'string', 'Reference to a partial.', TRUE);
-		$this->registerArgument('section', 'string', 'Name of section inside the partial to render.', FALSE, NULL);
-		$this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.', FALSE, NULL);
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$partialArguments = $this->arguments['arguments'];
-		if (FALSE === is_array($partialArguments)) {
-			$partialArguments = array();
-		}
-		if (FALSE === isset($partialArguments['settings']) && TRUE === $this->templateVariableContainer->exists('settings')) {
-			$partialArguments['settings'] = $this->templateVariableContainer->get('settings');
-		}
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('partial', 'string', 'Reference to a partial.', true);
+        $this->registerArgument('section', 'string', 'Name of section inside the partial to render.', false, null);
+        $this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.', false, null);
+    }
 
-		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
-		$content = '<!--' . $substKey . '-->';
-		$templateView = GeneralUtility::makeInstance('FluidTYPO3\\Vhs\\View\\UncacheTemplateView');
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+        $partialArguments = $arguments['arguments'];
+        if (false === is_array($partialArguments)) {
+            $partialArguments = [];
+        }
+        if (false === isset($partialArguments['settings']) && true === $templateVariableContainer->exists('settings')) {
+            $partialArguments['settings'] = $templateVariableContainer->get('settings');
+        }
 
-		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
-			'type' => 'POSTUSERFUNC',
-			'cObj' => serialize($templateView),
-			'postUserFunc' => 'render',
-			'conf' => array(
-				'partial' => $this->arguments['partial'],
-				'section' => $this->arguments['section'],
-				'arguments' => $partialArguments,
-				'controllerContext' => $this->renderingContext->getControllerContext()
-			),
-			'content' => $content
-		);
+        $substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+        $content = '<!--' . $substKey . '-->';
+        $templateView = GeneralUtility::makeInstance('FluidTYPO3\\Vhs\\View\\UncacheTemplateView');
 
-		return $content;
-	}
+        $GLOBALS['TSFE']->config['INTincScript'][$substKey] = [
+            'type' => 'POSTUSERFUNC',
+            'cObj' => serialize($templateView),
+            'postUserFunc' => 'render',
+            'conf' => [
+                'partial' => $arguments['partial'],
+                'section' => $arguments['section'],
+                'arguments' => $partialArguments,
+                'controllerContext' => $renderingContext->getControllerContext()
+            ],
+            'content' => $content
+        ];
 
+        return $content;
+    }
 }

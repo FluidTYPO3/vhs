@@ -11,21 +11,20 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Url;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class EncodeViewHelperTest
  */
-class EncodeViewHelperTest extends AbstractViewHelperTest {
+class EncodeViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function encodesUrlDecodedStrings() {
-		$decoded = 'Url Decoded';
-		$result1 = $this->executeViewHelper(array('content' => $decoded));
-		$result2 = $this->executeViewHelperUsingTagContent('Text', $decoded);
-		$this->assertEquals(rawurlencode($decoded), $result1);
-		$this->assertEquals($result1, $result2);
-	}
-
+    /**
+     * @test
+     */
+    public function encodesUrlDecodedStrings()
+    {
+        $decoded = 'Url Decoded';
+        $result1 = $this->executeViewHelper(array('content' => $decoded));
+        $result2 = $this->executeViewHelperUsingTagContent('Text', $decoded);
+        $this->assertEquals(rawurlencode($decoded), $result1);
+        $this->assertEquals($result1, $result2);
+    }
 }

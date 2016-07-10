@@ -34,23 +34,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * In other words: use this only when you do not have the option of
  * simply using {subject}{add}, i.e. in complex inline statements used
  * as attribute values on other ViewHelpers (where tag usage is undesirable).
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
-class AppendViewHelper extends AbstractViewHelper {
+class AppendViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $add
-	 * @param string $subject
-	 * @return string
-	 */
-	public function render($add, $subject = NULL) {
-		if (NULL === $subject) {
-			$subject = $this->renderChildren();
-		}
-		return $subject . $add;
-	}
-
+    /**
+     * @param string $add
+     * @param string $subject
+     * @return string
+     */
+    public function render($add, $subject = null)
+    {
+        if (null === $subject) {
+            $subject = $this->renderChildren();
+        }
+        return $subject . $add;
+    }
 }

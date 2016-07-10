@@ -12,45 +12,46 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Returns the first element of $haystack
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Returns the first element of $haystack.
  */
-class FirstViewHelper extends AbstractViewHelper {
+class FirstViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle');
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @throws Exception
-	 * @return mixed|NULL
-	 */
-	public function render() {
-		$haystack = $this->arguments['haystack'];
-		if (NULL === $haystack) {
-			$haystack = $this->renderChildren();
-		}
-		if (FALSE === is_array($haystack) && FALSE === $haystack instanceof \Iterator && NULL !== $haystack) {
-			throw new Exception('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
-				gettype($haystack), 1351958398);
-		}
-		if (NULL === $haystack) {
-			return NULL;
-		}
-		foreach ($haystack as $needle) {
-			return $needle;
-		}
-		return NULL;
-	}
-
+    /**
+     * Render method
+     *
+     * @throws Exception
+     * @return mixed|NULL
+     */
+    public function render()
+    {
+        $haystack = $this->arguments['haystack'];
+        if (null === $haystack) {
+            $haystack = $this->renderChildren();
+        }
+        if (false === is_array($haystack) && false === $haystack instanceof \Iterator && null !== $haystack) {
+            throw new Exception(
+                'Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
+                gettype($haystack),
+                1351958398
+            );
+        }
+        if (null === $haystack) {
+            return null;
+        }
+        foreach ($haystack as $needle) {
+            return $needle;
+        }
+        return null;
+    }
 }

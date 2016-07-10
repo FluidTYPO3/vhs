@@ -19,44 +19,40 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  * page or page with provided UID is a child of some other page in
  * the page tree. If $respectSiteRoot is set to TRUE root pages are
  * never considered child pages even if they are.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Page
  */
-class IsChildPageViewHelper extends AbstractConditionViewHelper {
+class IsChildPageViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('pageUid', 'integer', 'value to check', FALSE, NULL);
-		$this->registerArgument('respectSiteRoot', 'boolean', 'value to check', FALSE, FALSE);
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('pageUid', 'integer', 'value to check', false, null);
+        $this->registerArgument('respectSiteRoot', 'boolean', 'value to check', false, false);
+    }
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		$pageUid = $arguments['pageUid'];
-		$respectSiteRoot = $arguments['respectSiteRoot'];
+    /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        $pageUid = $arguments['pageUid'];
+        $respectSiteRoot = $arguments['respectSiteRoot'];
 
-		if (NULL === $pageUid || TRUE === empty($pageUid) || 0 === intval($pageUid)) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
-		$pageSelect = new PageRepository();
-		$page = $pageSelect->getPage($pageUid);
+        if (null === $pageUid || true === empty($pageUid) || 0 === intval($pageUid)) {
+            $pageUid = $GLOBALS['TSFE']->id;
+        }
+        $pageSelect = new PageRepository();
+        $page = $pageSelect->getPage($pageUid);
 
-		if (TRUE === (boolean) $respectSiteRoot && TRUE === isset($page['is_siteroot']) && TRUE === (boolean) $page['is_siteroot']) {
-			return FALSE;
-		}
-		return TRUE === isset($page['pid']) && 0 < $page['pid'];
-	}
-
+        if ($respectSiteRoot && isset($page['is_siteroot']) && $page['is_siteroot']) {
+            return false;
+        }
+        return true === isset($page['pid']) && 0 < $page['pid'];
+    }
 }

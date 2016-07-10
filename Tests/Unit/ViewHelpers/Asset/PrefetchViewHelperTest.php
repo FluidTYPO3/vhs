@@ -11,21 +11,19 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Asset;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Cedric Ziel <cedric@cedric-ziel.com>
- * @package Vhs
- * @subpackage ViewHelpers\Asset
+ * Class PrefetchViewHelperTest
  */
-class PrefetchViewHelperTest extends AbstractViewHelperTest {
+class PrefetchViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function buildReturnsMetaTag() {
-		$instance = $this->buildViewHelperInstance(array('domains' => 'test.com,test2.com', 'force' => TRUE));
-		$instance->render();
-		$result = $instance->build();
-		$this->assertStringStartsWith('<meta', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function buildReturnsMetaTag()
+    {
+        $instance = $this->buildViewHelperInstance(array('domains' => 'test.com,test2.com', 'force' => true));
+        $instance->render();
+        $result = $instance->build();
+        $this->assertStringStartsWith('<meta', $result);
+    }
 }

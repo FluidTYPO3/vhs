@@ -8,7 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Link;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper as FluidTypolinkViewHelper;
 
 /**
  * ### TypolinkViewhelper
@@ -18,6 +22,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * For more info on the typolink function, please consult the offical core-documentation:
  * http://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/TypoScriptFunctions/Typolink/Index.html
+ *
+ * DEPRECATED: Use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper instead
  *
  * ### Examples
  *
@@ -31,26 +37,49 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <!-- same with a {page} variable from fluidpages -->
  *     <v:link.typolink configuration="{parameter: page.uid}" />
  *     <!-- With extensive configuration -->
- *     <v:link.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">Click Me!</v:link.typolink>
+ *     <v:link.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">
+ *         Click Me!
+ *     </v:link.typolink>
  *
- * @author Cedric Ziel <cedric@cedric-ziel.com>, Cedric Ziel - Internetdienstleistungen & EDV
- * @package Vhs
- * @subpackage ViewHelpers\Link
+ * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper, remove in 4.0.0
  */
-class TypolinkViewHelper extends AbstractViewHelper {
+class TypolinkViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Initializes the arguments for the ViewHelper
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('configuration', 'array', 'The typoLink configuration', TRUE);
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		return $GLOBALS['TSFE']->cObj->typoLink($this->renderChildren(), $this->arguments['configuration']);
-	}
+    /**
+     * Initializes the arguments for the ViewHelper
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('configuration', 'array', 'The typoLink configuration', true);
+    }
 
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        GeneralUtility::deprecationLog(
+            sprintf(
+                'Deprecated TypoLinkViewHelper from VHS was used. Please use %s instead.',
+                FluidTypolinkViewHelper::class
+            )
+        );
+        if (null === $arguments['configuration']['additionalAttributes']) {
+            $arguments['configuration']['additionalAttributes'] = [];
+        }
+        return FluidTypolinkViewHelper::renderStatic(
+            $arguments['configuration'],
+            $renderChildrenClosure,
+            $renderingContext
+        );
+    }
 }

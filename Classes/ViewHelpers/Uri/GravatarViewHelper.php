@@ -9,76 +9,83 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  */
 
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Renders Gravatar URI
- *
- * @author Juan Manuel Vergés Solanas <juanmanuel@vergessolanas.es>
- * @package Vhs
- * @subpackage ViewHelpers\Uri
+ * Renders Gravatar URI.
  */
-class GravatarViewHelper extends AbstractViewHelper {
+class GravatarViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Base url
-	 *
-	 * @var string
-	 */
-	const GRAVATAR_BASEURL = 'http://www.gravatar.com/avatar/';
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * Base secure url
-	 *
-	 * @var string
-	 */
-	const GRAVATAR_SECURE_BASEURL = 'https://secure.gravatar.com/avatar/';
+    /**
+     * Base url
+     *
+     * @var string
+     */
+    const GRAVATAR_BASEURL = 'http://www.gravatar.com/avatar/';
 
-	/**
-	 * Initialize arguments.
-	 * Size argument has no default value to prevent the creation of an unnecessary URI parameter.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('email', 'string', 'Email address', TRUE);
-		$this->registerArgument('size', 'integer', 'Size in pixels, defaults to 80px [ 1 - 2048 ]', FALSE);
-		$this->registerArgument('imageSet', 'string', 'Default image set to use. Possible values [ 404 | mm | identicon | monsterid | wavatar ] ', FALSE);
-		$this->registerArgument('maximumRating', 'string', 'Maximum rating (inclusive) [ g | pg | r | x ]', FALSE);
-		$this->registerArgument('secure', 'boolean', 'If it is FALSE will return the un secure Gravatar domain (www.gravatar.com)', FALSE, TRUE);
-	}
+    /**
+     * Base secure url
+     *
+     * @var string
+     */
+    const GRAVATAR_SECURE_BASEURL = 'https://secure.gravatar.com/avatar/';
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$email = $this->arguments['email'];
-		$size = $this->checkArgument('size');
-		$imageSet = $this->checkArgument('imageSet');
-		$maximumRating = $this->checkArgument('maximumRating');
-		$secure = (boolean) $this->arguments['secure'];
+    /**
+     * Initialize arguments.
+     * Size argument has no default value to prevent the creation of an unnecessary URI parameter.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('email', 'string', 'Email address', true);
+        $this->registerArgument('size', 'integer', 'Size in pixels, defaults to 80px [ 1 - 2048 ]', false);
+        $this->registerArgument(
+            'imageSet',
+            'string',
+            'Default image set to use. Possible values [ 404 | mm | identicon | monsterid | wavatar ] ',
+            false
+        );
+        $this->registerArgument('maximumRating', 'string', 'Maximum rating (inclusive) [ g | pg | r | x ]', false);
+        $this->registerArgument(
+            'secure',
+            'boolean',
+            'If it is FALSE will return the un secure Gravatar domain (www.gravatar.com)',
+            false,
+            true
+        );
+    }
 
-		$url = (TRUE === $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL);
-		$url .= md5(strtolower(trim($email)));
-		$query = http_build_query(array('s' => $size, 'd' => $imageSet, 'r' => $maximumRating));
-		$url .= (FALSE === empty($query) ? '?' . $query : '');
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $email = $arguments['email'];
+        $size = $arguments['size'];
+        $imageSet = $arguments['imageSet'];
+        $maximumRating = $arguments['maximumRating'];
+        $secure = (boolean) $arguments['secure'];
 
-		return $url;
-	}
+        $url = (true === $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL);
+        $url .= md5(strtolower(trim($email)));
+        $query = http_build_query(array('s' => $size, 'd' => $imageSet, 'r' => $maximumRating));
+        $url .= (false === empty($query) ? '?' . $query : '');
 
-	/**
-	 * Check if an argument is passed
-	 *
-	 * @param $argument
-	 *
-	 * @return mixed
-	 */
-	private function checkArgument($argument) {
-		return TRUE === isset($this->arguments[$argument]) ? $this->arguments[$argument] : NULL;
-	}
-
-
+        return $url;
+    }
 }

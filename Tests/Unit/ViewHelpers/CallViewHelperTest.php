@@ -9,45 +9,47 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  */
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class CallViewHelperTest
  */
-class CallViewHelperTest extends AbstractViewHelperTest {
+class CallViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function throwsRuntimeExceptionIfObjectNotFound() {
-		$this->setExpectedException('RuntimeException', NULL, 1356849652);
-		$this->executeViewHelper(array('method' => 'method', 'arguments' => array()));
-	}
+    /**
+     * @test
+     */
+    public function throwsRuntimeExceptionIfObjectNotFound()
+    {
+        $this->setExpectedException('RuntimeException', null, 1356849652);
+        $this->executeViewHelper(array('method' => 'method', 'arguments' => array()));
+    }
 
-	/**
-	 * @test
-	 */
-	public function throwsRuntimeExceptionIfMethodNotFound() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
-		$this->setExpectedException('RuntimeException', NULL, 1356834755);
-		$this->executeViewHelper(array('method' => 'notfound', 'object' => $object, 'arguments' => array()));
-	}
+    /**
+     * @test
+     */
+    public function throwsRuntimeExceptionIfMethodNotFound()
+    {
+        $object = new \ArrayIterator(array('foo', 'bar'));
+        $this->setExpectedException('RuntimeException', null, 1356834755);
+        $this->executeViewHelper(array('method' => 'notfound', 'object' => $object, 'arguments' => array()));
+    }
 
-	/**
-	 * @test
-	 */
-	public function executesMethodOnObjectFromArgument() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
-		$result = $this->executeViewHelper(array('method' => 'count', 'object' => $object, 'arguments' => array()));
-		$this->assertEquals(2, $result);
-	}
+    /**
+     * @test
+     */
+    public function executesMethodOnObjectFromArgument()
+    {
+        $object = new \ArrayIterator(array('foo', 'bar'));
+        $result = $this->executeViewHelper(array('method' => 'count', 'object' => $object, 'arguments' => array()));
+        $this->assertEquals(2, $result);
+    }
 
-	/**
-	 * @test
-	 */
-	public function executesMethodOnObjectFromChildContent() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
-		$result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array('method' => 'count', 'arguments' => array()), array('v' => $object));
-		$this->assertEquals(2, $result);
-	}
-
+    /**
+     * @test
+     */
+    public function executesMethodOnObjectFromChildContent()
+    {
+        $object = new \ArrayIterator(array('foo', 'bar'));
+        $result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array('method' => 'count', 'arguments' => array()), array('v' => $object));
+        $this->assertEquals(2, $result);
+    }
 }

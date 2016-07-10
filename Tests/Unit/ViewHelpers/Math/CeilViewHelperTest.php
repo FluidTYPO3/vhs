@@ -9,24 +9,24 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class CeilViewHelperTest
  */
-class CeilViewHelperTest extends AbstractMathViewHelperTest {
+class CeilViewHelperTest extends AbstractMathViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgument() {
-		$this->executeSingleArgumentTest(0.5, 1);
-	}
+    /**
+     * @test
+     */
+    public function testSingleArgument()
+    {
+        $this->executeSingleArgumentTest(0.5, 1);
+    }
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgumentIteratorFirst() {
-		$this->executeSingleArgumentTest(array(0.5, 0.8), array(1, 1));
-	}
-
+    /**
+     * @test
+     */
+    public function testSingleArgumentIteratorFirst()
+    {
+        $this->executeSingleArgumentTest(array(0.5, 0.8), array(1, 1));
+    }
 }

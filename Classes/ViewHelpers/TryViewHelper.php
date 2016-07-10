@@ -61,7 +61,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *                     -> v:iterator.explode(glue: '_')
  *                     -> v:iterator.pop()
  *                     -> v:format.replace(substring: 'ViewHelper', replacement: ''}"
- * 	               <small>{exception.code}</small>
+ *                 <small>{exception.code}</small>
  *                 <!-- Output example: "Error in Decode <small>1358440054</small>" -->
  *             </h4>
  *             <p>
@@ -81,28 +81,25 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *     {v:try(then: '{badObject -> v:format.json.encode()}', else: '{"validJson": "validValue"')}
  *     <!-- Note: be VERY careful about the inline JSON syntax! It's very close to Fluids. Always
  *          double quote your object variables' names, that prevents almost all issues! -->
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
-class TryViewHelper extends AbstractConditionViewHelper {
+class TryViewHelper extends AbstractConditionViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		try {
-			$content = $this->renderThenChild();
-			if (TRUE === empty($content)) {
-				$content = $this->renderChildren();
-			}
-		} catch (\Exception $error) {
-			$content = $this->renderChildrenWithVariables(array('exception' => $error));
-		}
-		return $content;
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        try {
+            $content = $this->renderThenChild();
+            if (true === empty($content)) {
+                $content = $this->renderChildren();
+            }
+        } catch (\Exception $error) {
+            $content = $this->renderChildrenWithVariables(array('exception' => $error));
+        }
+        return $content;
+    }
 }

@@ -24,31 +24,34 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <v:call method="unconventionalGetter">{object}</v:call>
  *     <!-- arguments for the method -->
  *     <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
-class CallViewHelper extends AbstractViewHelper {
+class CallViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $method
-	 * @param object $object
-	 * @param array $arguments
-	 * @throws \RuntimeException
-	 * @return mixed
-	 */
-	public function render($method, $object = NULL, array $arguments = array()) {
-		if (NULL === $object) {
-			$object = $this->renderChildren();
-			if (FALSE === is_object($object)) {
-				throw new \RuntimeException('Using v:call requires an object either as "object" attribute, tag content or inline argument', 1356849652);
-			}
-		}
-		if (FALSE === method_exists($object, $method)) {
-			throw new \RuntimeException('Method "' . $method . '" does not exist on object of type ' . get_class($object), 1356834755);
-		}
-		return call_user_func_array(array($object, $method), $arguments);
-	}
-
+    /**
+     * @param string $method
+     * @param object $object
+     * @param array $arguments
+     * @throws \RuntimeException
+     * @return mixed
+     */
+    public function render($method, $object = null, array $arguments = [])
+    {
+        if (null === $object) {
+            $object = $this->renderChildren();
+            if (false === is_object($object)) {
+                throw new \RuntimeException(
+                    'Using v:call requires an object either as "object" attribute, tag content or inline argument',
+                    1356849652
+                );
+            }
+        }
+        if (false === method_exists($object, $method)) {
+            throw new \RuntimeException(
+                'Method "' . $method . '" does not exist on object of type ' . get_class($object),
+                1356834755
+            );
+        }
+        return call_user_func_array(array($object, $method), $arguments);
+    }
 }

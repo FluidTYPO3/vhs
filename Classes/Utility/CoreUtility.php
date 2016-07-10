@@ -14,33 +14,28 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * Core Utility
  *
  * Utility to get core informations.
- *
- * @author Daniel Dorndorf <dorndorf@dreipunktnull.com>
- * @package Vhs
- * @subpackage Utility
  */
-class CoreUtility {
+class CoreUtility
+{
 
-	/**
-	 * Returns the flag icons path depending on the current core version
-	 *
-	 * @return string
-	 */
-	public static function getLanguageFlagIconPath() {
-		if (TRUE === version_compare(TYPO3_version, '7.1', '<')) {
-			return ExtensionManagementUtility::extPath('t3skin') . 'images/flags/';
-		}
-		return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/';
-	}
+    /**
+     * Returns the flag icons path depending on the current core version
+     *
+     * @return string
+     */
+    public static function getLanguageFlagIconPath()
+    {
+        return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/SVG/';
+    }
 
-	/**
-	 * Returns the current core minor version
-	 *
-	 * @return string
-	 * @throws \TYPO3\CMS\Core\Package\Exception
-	 */
-	public static function getCurrentCoreVersion() {
-		return substr(ExtensionManagementUtility::getExtensionVersion('core'), 0, 3);
-	}
-
+    /**
+     * Returns the current core minor version
+     *
+     * @return string
+     * @throws \TYPO3\CMS\Core\Package\Exception
+     */
+    public static function getCurrentCoreVersion()
+    {
+        return substr(ExtensionManagementUtility::getExtensionVersion('core'), 0, 3);
+    }
 }

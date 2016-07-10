@@ -11,21 +11,20 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Uri;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class ImageViewHelperTest
  */
-class ImageViewHelperTest extends AbstractViewHelperTest {
+class ImageViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function callsExpectedMethodSequence() {
-		$mock = $this->getMock($this->getViewHelperClassName(), array('preprocessImage', 'preprocessSourceUri'));
-		$mock->expects($this->at(0))->method('preprocessImage');
-		$mock->expects($this->at(1))->method('preprocessSourceUri')->will($this->returnValue('foobar'));
-		$result = $this->callInaccessibleMethod($mock, 'render');
-		$this->assertEquals('foobar', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function callsExpectedMethodSequence()
+    {
+        $mock = $this->getMock($this->getViewHelperClassName(), array('preprocessImage', 'preprocessSourceUri'));
+        $mock->expects($this->at(0))->method('preprocessImage');
+        $mock->expects($this->at(1))->method('preprocessSourceUri')->will($this->returnValue('foobar'));
+        $result = $this->callInaccessibleMethod($mock, 'render');
+        $this->assertEquals('foobar', $result);
+    }
 }

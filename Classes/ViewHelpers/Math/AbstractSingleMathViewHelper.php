@@ -15,69 +15,81 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 /**
  * Base class: Math ViewHelpers operating on one number or an
  * array of numbers.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
-abstract class AbstractSingleMathViewHelper extends AbstractViewHelper {
+abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
+{
 
-	use ArrayConsumingViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('a', 'mixed', 'First number for calculation', FALSE, NULL, TRUE);
-		$this->registerArgument('fail', 'boolean', 'If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).', FALSE, FALSE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('a', 'mixed', 'First number for calculation');
+        $this->registerArgument(
+            'fail',
+            'boolean',
+            'If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument ' .
+            'is found. Usually okay to use a NULL value (as integer zero).',
+            false,
+            false
+        );
+    }
 
-	/**
-	 * @param mixed $subject
-	 * @return boolean
-	 */
-	protected function assertIsArrayOrIterator($subject) {
-		return (boolean) (TRUE === is_array($subject) || TRUE === $subject instanceof \Iterator);
-	}
+    /**
+     * @param mixed $subject
+     * @return boolean
+     */
+    protected function assertIsArrayOrIterator($subject)
+    {
+        return (boolean) (true === is_array($subject) || true === $subject instanceof \Iterator);
+    }
 
-	/**
-	 * @return mixed
-	 * @throw Exception
-	 */
-	public function render() {
-		$a = $this->getInlineArgument();
-		return $this->calculate($a);
-	}
+    /**
+     * @return mixed
+     * @throw Exception
+     */
+    public function render()
+    {
+        $a = $this->getInlineArgument();
+        return $this->calculate($a);
+    }
 
-	/**
-	 * @throws Exception
-	 * @return mixed
-	 */
-	protected function getInlineArgument() {
-		$a = $this->renderChildren();
-		if (NULL === $a && TRUE === isset($this->arguments['a'])) {
-			$a = $this->arguments['a'];
-		}
-		if (NULL === $a && TRUE === (boolean) $this->arguments['fail']) {
-			throw new Exception('Required argument "a" was not supplied', 1237823699);
-		}
-		return $a;
-	}
+    /**
+     * @throws Exception
+     * @return mixed
+     */
+    protected function getInlineArgument()
+    {
+        $a = $this->renderChildren();
+        if (null === $a && true === isset($this->arguments['a'])) {
+            $a = $this->arguments['a'];
+        }
+        if (null === $a && true === (boolean) $this->arguments['fail']) {
+            throw new Exception('Required argument "a" was not supplied', 1237823699);
+        }
+        return $a;
+    }
 
-	/**
-	 * @param mixed $a
-	 * @return mixed
-	 */
-	protected function calculate($a) {
-		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if (TRUE === $aIsIterable) {
-			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
-			foreach ($a as $index => $value) {
-				$a[$index] = $this->calculateAction($value);
-			}
-			return $a;
-		}
-		return $this->calculateAction($a);
-	}
-
+    /**
+     * @return mixed
+     *
+     * @param mixed $a
+     * @param mixed|null $b
+     *
+     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     */
+    protected function calculate($a, $b = null)
+    {
+        $aIsIterable = $this->assertIsArrayOrIterator($a);
+        if (true === $aIsIterable) {
+            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            foreach ($a as $index => $value) {
+                $a[$index] = $this->calculateAction($value);
+            }
+            return $a;
+        }
+        return $this->calculateAction($a);
+    }
 }

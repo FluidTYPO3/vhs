@@ -11,32 +11,31 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form\Select;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form\Select
+ * Class OptgroupViewHelperTest
  */
-class OptgroupViewHelperTest extends AbstractViewHelperTest {
+class OptgroupViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @dataProvider getRenderTestValues
-	 * @param array $arguments
-	 * @param string|NULL $content
-	 * @param string $expected
-	 */
-	public function testRender(array $arguments, $content, $expected) {
-		$result = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
-		$this->assertEquals($expected, $result);
-	}
+    /**
+     * @dataProvider getRenderTestValues
+     * @param array $arguments
+     * @param string|NULL $content
+     * @param string $expected
+     */
+    public function testRender(array $arguments, $content, $expected)
+    {
+        $result = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
+        $this->assertEquals($expected, $result);
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getRenderTestValues() {
-		return array(
-			array(array('label' => 'test'), '', '<optgroup label="test" />'),
-			array(array('label' => 'test'), 'content', '<optgroup label="test">content</optgroup>')
-		);
-	}
-
+    /**
+     * @return array
+     */
+    public function getRenderTestValues()
+    {
+        return array(
+            array(array('label' => 'test'), '', '<optgroup label="test" />'),
+            array(array('label' => 'test'), 'content', '<optgroup label="test">content</optgroup>')
+        );
+    }
 }

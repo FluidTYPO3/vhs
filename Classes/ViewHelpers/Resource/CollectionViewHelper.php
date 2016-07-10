@@ -17,43 +17,42 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  * http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Index.html#collections-api
  *
  * ### Example
- * {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
  *
- * @category ViewHelpers
- * @package Vhs
- * @author Dmitri Pisarev <dimaip@gmail.com>
+ *     {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
  */
-class CollectionViewHelper extends AbstractResourceViewHelper {
+class CollectionViewHelper extends AbstractResourceViewHelper
+{
 
-	/**
-	 * @var RecordCollectionRepository
-	 */
-	protected $collectionRepository;
+    /**
+     * @var RecordCollectionRepository
+     */
+    protected $collectionRepository;
 
-	/**
-	 * @param RecordCollectionRepository $collectionRepository
-	 * @return void
-	 */
-	public function injectCollectionRepository(RecordCollectionRepository $collectionRepository) {
-		$this->collectionRepository = $collectionRepository;
-	}
+    /**
+     * @param RecordCollectionRepository $collectionRepository
+     * @return void
+     */
+    public function injectCollectionRepository(RecordCollectionRepository $collectionRepository)
+    {
+        $this->collectionRepository = $collectionRepository;
+    }
 
-	/**
-	 * Returns a specific collection referenced by uid.
-	 *
-	 * @param integer $uid
-	 * @return mixed
-	 */
-	public function render($uid) {
-		if (NULL !== $uid) {
-			/** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
-			$collection = $this->collectionRepository->findByUid($uid);
-			if (NULL !== $collection) {
-				return $collection->loadContents();
-			} else {
-				return NULL;
-			}
-		}
-		return NULL;
-	}
+    /**
+     * Returns a specific collection referenced by uid.
+     *
+     * @param integer $uid
+     * @return mixed
+     */
+    public function render($uid)
+    {
+        if (null !== $uid) {
+            /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
+            $collection = $this->collectionRepository->findByUid($uid);
+            if (null !== $collection) {
+                $collection->loadContents();
+            }
+            return $collection;
+        }
+        return null;
+    }
 }

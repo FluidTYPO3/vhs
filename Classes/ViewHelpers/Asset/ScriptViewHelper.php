@@ -17,11 +17,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-class ScriptViewHelper extends AbstractAssetViewHelper {
+class ScriptViewHelper extends AbstractAssetViewHelper
+{
 
-	/**
-	 * @var string
-	 */
-	protected $type = 'js';
-
+    /**
+     * @var string
+     */
+    protected $type = 'js';
 }

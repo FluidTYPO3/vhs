@@ -14,33 +14,30 @@ use FluidTYPO3\Vhs\Traits\VhsViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Gets keys from an iterator
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Gets keys from an iterator.
  */
-class KeysViewHelper extends AbstractViewHelper {
+class KeysViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...', FALSE, NULL);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
+    }
 
-	/**
-	 * @return array
-	 */
-	public function render() {
-		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$content = array_keys($subject);
-		return $this->renderChildrenWithVariableOrReturnInput($content);
-	}
-
+    /**
+     * @return array
+     */
+    public function render()
+    {
+        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $content = array_keys($subject);
+        return $this->renderChildrenWithVariableOrReturnInput($content);
+    }
 }

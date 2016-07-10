@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -19,33 +21,39 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
  *     {v:variable.register.get(name: 'dynamic{variableName}')}
- *
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-class GetViewHelper extends AbstractViewHelper {
+class GetViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('name', 'string', 'Name of register', TRUE);
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		if (FALSE === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-			return NULL;
-		}
-		$name = $this->arguments['name'];
-		$value = NULL;
-		if (TRUE === isset($GLOBALS['TSFE']->register[$name])) {
-			$value = $GLOBALS['TSFE']->register[$name];
-		}
-		return $value;
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('name', 'string', 'Name of register', true);
+    }
 
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            return null;
+        }
+        $name = $arguments['name'];
+        $value = null;
+        if (true === isset($GLOBALS['TSFE']->register[$name])) {
+            $value = $GLOBALS['TSFE']->register[$name];
+        }
+        return $value;
+    }
 }

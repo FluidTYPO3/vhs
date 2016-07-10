@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -18,35 +20,41 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Using as `{value -> v:variable.register.set(name: 'myVar')}` makes $GLOBALS["TSFE"]->register['myVar']
  * contain `{value}`.
- *
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-class SetViewHelper extends AbstractViewHelper {
+class SetViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('value', 'mixed', 'Value to set', FALSE, NULL);
-		$this->registerArgument('name', 'string', 'Name of register', TRUE);
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * Set (override) the value in register $name.
-	 */
-	public function render() {
-		if (FALSE === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-			return NULL;
-		}
-		$name = $this->arguments['name'];
-		$value = $this->arguments['value'];
-		if (NULL === $value) {
-			$value = $this->renderChildren();
-		}
-		$GLOBALS['TSFE']->register[$name] = $value;
-		return NULL;
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('value', 'mixed', 'Value to set', false, null);
+        $this->registerArgument('name', 'string', 'Name of register', true);
+    }
 
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            return null;
+        }
+        $name = $arguments['name'];
+        $value = $arguments['value'];
+        if (null === $value) {
+            $value = $renderChildrenClosure();
+        }
+        $GLOBALS['TSFE']->register[$name] = $value;
+        return null;
+    }
 }

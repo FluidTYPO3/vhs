@@ -16,8 +16,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Returns the current application context which may include possible sub-contexts.
  * The application context can be 'Production', 'Development' or 'Testing'.
- * Additionally each context can be extended with custom sub-contexts like: 'Production/Staging' or ' Production/Staging/Server1'.
- * If no application context has been set by the configuration, then the default context is 'Production'.
+ * Additionally each context can be extended with custom sub-contexts like: 'Production/Staging' or
+ * 'Production/Staging/Server1'. If no application context has been set by the configuration, then the
+ * default context is 'Production'.
  *
  * #### Note about how to set the application context
  *
@@ -25,18 +26,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * It can be set by .htaccess or in the server configuration
  *
  * See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context
- *
- * @author     Benjamin Beck <beck@beckdigitalemedien.de>
- * @package    Vhs
- * @subpackage ViewHelpers\Context
  */
-class GetViewHelper extends AbstractViewHelper {
+class GetViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @return string
-	 */
-	public function render () {
-		return (string) GeneralUtility::getApplicationContext();
-	}
-
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        return (string) GeneralUtility::getApplicationContext();
+    }
 }

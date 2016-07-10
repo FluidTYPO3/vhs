@@ -41,49 +41,49 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *     <!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
  *     {wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-class TyposcriptViewHelper extends AbstractViewHelper {
+class TyposcriptViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @var ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
+    /**
+     * @var ConfigurationManagerInterface
+     */
+    protected $configurationManager;
 
-	/**
-	 * @param ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
+    /**
+     * @param ConfigurationManagerInterface $configurationManager
+     * @return void
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
 
-	/**
-	 * Render
-	 *
-	 * @param string $path
-	 * @return mixed
-	 */
-	public function render($path = NULL) {
-		if (NULL === $path) {
-			$path = $this->renderChildren();
-		}
-		if (TRUE === empty($path)) {
-			return NULL;
-		}
-		$all = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		$segments = explode('.', $path);
-		$value = $all;
-		foreach ($segments as $path) {
-			$value = (TRUE === isset($value[$path . '.']) ? $value[$path . '.'] : $value[$path]);
-		}
-		if (TRUE === is_array($value)) {
-			$value = GeneralUtility::removeDotsFromTS($value);
-		}
-		return $value;
-	}
-
+    /**
+     * Render
+     *
+     * @param string $path
+     * @return mixed
+     */
+    public function render($path = null)
+    {
+        if (null === $path) {
+            $path = $this->renderChildren();
+        }
+        if (true === empty($path)) {
+            return null;
+        }
+        $all = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+        );
+        $segments = explode('.', $path);
+        $value = $all;
+        foreach ($segments as $path) {
+            $value = (true === isset($value[$path . '.']) ? $value[$path . '.'] : $value[$path]);
+        }
+        if (true === is_array($value)) {
+            $value = GeneralUtility::removeDotsFromTS($value);
+        }
+        return $value;
+    }
 }

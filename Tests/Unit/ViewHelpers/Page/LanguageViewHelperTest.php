@@ -11,14 +11,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class LanguageViewHelperTest
  */
-class LanguageViewHelperTest extends AbstractViewHelperTest {
+class LanguageViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$this->assertEmpty($this->executeViewHelper());
-	}
-
+    public function testRender()
+    {
+        $this->assertEmpty($this->executeViewHelper());
+    }
 }

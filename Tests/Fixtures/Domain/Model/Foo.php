@@ -12,8 +12,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
+ * Class Foo
  */
 class Foo extends AbstractEntity {
 

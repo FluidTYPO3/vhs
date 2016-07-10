@@ -21,27 +21,29 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class TagViewHelper extends AbstractTagBasedViewHelper {
+class TagViewHelper extends AbstractTagBasedViewHelper
+{
 
-	use TagViewHelperTrait;
+    use TagViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerUniversalTagAttributes();
-		$this->registerArgument('name', 'string', 'Tag name', TRUE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
+        $this->registerArgument('name', 'string', 'Tag name', true);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$this->arguments['class'] = trim((string) $this->arguments['class']);
-		$this->arguments['class'] = str_replace(',', ' ', $this->arguments['class']);
-		$content = $this->renderChildren();
-		return $this->renderTag($this->arguments['name'], $content);
-	}
-
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $this->arguments['class'] = trim((string) $this->arguments['class']);
+        $this->arguments['class'] = str_replace(',', ' ', $this->arguments['class']);
+        $content = $this->renderChildren();
+        return $this->renderTag($this->arguments['name'], $content);
+    }
 }

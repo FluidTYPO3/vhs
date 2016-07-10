@@ -63,106 +63,114 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface {
+class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface
+{
 
-	/**
-	 * @var ViewHelperNode[]
-	 */
-	protected $childViewHelperNodes = array();
+    /**
+     * @var ViewHelperNode[]
+     */
+    protected $childViewHelperNodes = [];
 
-	/**
-	 * @var ObjectAccessorNode[]
-	 */
-	protected $childObjectAccessorNodes = array();
-	/**
-	 * With this flag, you can disable the escaping interceptor inside this ViewHelper.
-	 * THIS MIGHT CHANGE WITHOUT NOTICE, NO PUBLIC API!
-	 * @var boolean
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$nodes = array();
-		foreach ($this->childViewHelperNodes as $viewHelperNode) {
-			$viewHelper = $viewHelperNode->getUninitializedViewHelper();
-			$arguments = $viewHelper->prepareArguments();
-			$givenArguments = $viewHelperNode->getArguments();
-			$viewHelperReflection = new \ReflectionClass($viewHelper);
-			$viewHelperDescription = $viewHelperReflection->getDocComment();
-			$viewHelperDescription = htmlentities($viewHelperDescription);
-			$viewHelperDescription = '[CLASS DOC]' . LF . $viewHelperDescription . LF;
-			$renderMethodDescription = $viewHelperReflection->getMethod('render')->getDocComment();
-			$renderMethodDescription = htmlentities($renderMethodDescription);
-			$renderMethodDescription = implode(LF, array_map('trim', explode(LF, $renderMethodDescription)));
-			$renderMethodDescription = '[RENDER METHOD DOC]' . LF . $renderMethodDescription . LF;
-			$argumentDefinitions = array();
-			foreach ($arguments as $argument) {
-				$name = $argument->getName();
-				$argumentDefinitions[$name] = ObjectAccess::getGettableProperties($argument);
-			}
-			$sections = array(
-				$viewHelperDescription,
-				DebuggerUtility::var_dump($argumentDefinitions, '[ARGUMENTS]', 4, TRUE, FALSE, TRUE),
-				DebuggerUtility::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, TRUE, FALSE, TRUE),
-				$renderMethodDescription
-			);
-			array_push($nodes, implode(LF, $sections));
+    /**
+     * @var ObjectAccessorNode[]
+     */
+    protected $childObjectAccessorNodes = [];
+    /**
+     * With this flag, you can disable the escaping interceptor inside this ViewHelper.
+     * THIS MIGHT CHANGE WITHOUT NOTICE, NO PUBLIC API!
+     * @var boolean
+     */
+    protected $escapingInterceptorEnabled = false;
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $nodes = [];
+        foreach ($this->childViewHelperNodes as $viewHelperNode) {
+            $viewHelper = $viewHelperNode->getUninitializedViewHelper();
+            $arguments = $viewHelper->prepareArguments();
+            $givenArguments = $viewHelperNode->getArguments();
+            $viewHelperReflection = new \ReflectionClass($viewHelper);
+            $viewHelperDescription = $viewHelperReflection->getDocComment();
+            $viewHelperDescription = htmlentities($viewHelperDescription);
+            $viewHelperDescription = '[CLASS DOC]' . LF . $viewHelperDescription . LF;
+            $renderMethodDescription = $viewHelperReflection->getMethod('render')->getDocComment();
+            $renderMethodDescription = htmlentities($renderMethodDescription);
+            $renderMethodDescription = implode(LF, array_map('trim', explode(LF, $renderMethodDescription)));
+            $renderMethodDescription = '[RENDER METHOD DOC]' . LF . $renderMethodDescription . LF;
+            $argumentDefinitions = [];
+            foreach ($arguments as $argument) {
+                $name = $argument->getName();
+                $argumentDefinitions[$name] = ObjectAccess::getGettableProperties($argument);
+            }
+            $sections = [
+                $viewHelperDescription,
+                DebuggerUtility::var_dump($argumentDefinitions, '[ARGUMENTS]', 4, true, false, true),
+                DebuggerUtility::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, true, false, true),
+                $renderMethodDescription
+            ];
+            array_push($nodes, implode(LF, $sections));
+        }
+        if (0 < count($this->childObjectAccessorNodes)) {
+            array_push($nodes, '[VARIABLE ACCESSORS]');
+            $templateVariables = $this->templateVariableContainer->getAll();
+            foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
+                $path = $objectAccessorNode->getObjectPath();
+                $segments = explode('.', $path);
+                try {
+                    $value = ObjectAccess::getProperty($templateVariables, array_shift($segments));
+                    foreach ($segments as $segment) {
+                        $value = ObjectAccess::getProperty($value, $segment);
+                    }
+                    $type = gettype($value);
+                } catch (PropertyNotAccessibleException $error) {
+                    $value = null;
+                    $type = 'UNDEFINED/INACCESSIBLE';
+                }
+                $sections = [
+                    'Path: {' . $path . '}',
+                    'Value type: ' . $type,
+                ];
+                if (true === is_object($value)) {
+                    $sections[] = 'Accessible properties on {' . $path . '}:';
+                    $gettable = ObjectAccess::getGettablePropertyNames($value);
+                    unset($gettable[0]);
+                    foreach ($gettable as $gettableProperty) {
+                        $sections[] = '   {' . $path . '.' . $gettableProperty . '} (' .
+                            gettype(ObjectAccess::getProperty($value, $gettableProperty)) . ')';
+                    }
+                } elseif (null !== $value) {
+                    $sections[] = DebuggerUtility::var_dump(
+                        $value,
+                        'Dump of variable "' . $path . '"',
+                        4,
+                        true,
+                        false,
+                        true
+                    );
+                }
+                array_push($nodes, implode(LF, $sections));
+            }
+        }
+        return '<pre>' . implode(LF . LF, $nodes) . '</pre>';
+    }
 
-		}
-		if (0 < count($this->childObjectAccessorNodes)) {
-			array_push($nodes, '[VARIABLE ACCESSORS]');
-			$templateVariables = $this->templateVariableContainer->getAll();
-			foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
-				$path = $objectAccessorNode->getObjectPath();
-				$segments = explode('.', $path);
-				try {
-					$value = ObjectAccess::getProperty($templateVariables, array_shift($segments));
-					foreach ($segments as $segment) {
-						$value = ObjectAccess::getProperty($value, $segment);
-					}
-					$type = gettype($value);
-				} catch (PropertyNotAccessibleException $error) {
-					$value = NULL;
-					$type = 'UNDEFINED/INACCESSIBLE';
-				}
-				$sections = array(
-					'Path: {' . $path . '}',
-					'Value type: ' . $type,
-				);
-				if (TRUE === is_object($value)) {
-					$sections[] = 'Accessible properties on {' . $path . '}:';
-					$gettable = ObjectAccess::getGettablePropertyNames($value);
-					unset($gettable[0]);
-					foreach ($gettable as $gettableProperty) {
-						$sections[] = '   {' . $path . '.' . $gettableProperty . '} (' . gettype(ObjectAccess::getProperty($value, $gettableProperty)) . ')';
-					}
-				} elseif (NULL !== $value) {
-					$sections[] = DebuggerUtility::var_dump($value, 'Dump of variable "' . $path . '"', 4, TRUE, FALSE, TRUE);
-				}
-				array_push($nodes, implode(LF, $sections));
-			}
-
-		}
-		return '<pre>' . implode(LF . LF, $nodes) . '</pre>';
-	}
-
-	/**
-	 * Sets the direct child nodes of the current syntax tree node.
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode[] $childNodes
-	 * @return void
-	 */
-	public function setChildNodes(array $childNodes) {
-		foreach ($childNodes as $childNode) {
-			if (TRUE === $childNode instanceof ViewHelperNode) {
-				array_push($this->childViewHelperNodes, $childNode);
-			}
-			if (TRUE === $childNode instanceof ObjectAccessorNode) {
-				array_push($this->childObjectAccessorNodes, $childNode);
-			}
-		}
-	}
-
+    /**
+     * Sets the direct child nodes of the current syntax tree node.
+     *
+     * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode[] $childNodes
+     * @return void
+     */
+    public function setChildNodes(array $childNodes)
+    {
+        foreach ($childNodes as $childNode) {
+            if (true === $childNode instanceof ViewHelperNode) {
+                array_push($this->childViewHelperNodes, $childNode);
+            }
+            if (true === $childNode instanceof ObjectAccessorNode) {
+                array_push($this->childObjectAccessorNodes, $childNode);
+            }
+        }
+    }
 }

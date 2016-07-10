@@ -11,11 +11,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Link;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author
- * @package Vhs
- * @subpackage ViewHelpers\Link
+ * Class TypolinkViewHelperTest
  */
-class TypolinkViewHelperTest extends AbstractViewHelperTest {
+class TypolinkViewHelperTest extends AbstractViewHelperTest
+{
 
 }

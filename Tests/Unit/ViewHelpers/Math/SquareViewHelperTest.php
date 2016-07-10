@@ -9,24 +9,24 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class SquareViewHelperTest
  */
-class SquareViewHelperTest extends AbstractMathViewHelperTest {
+class SquareViewHelperTest extends AbstractMathViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgument() {
-		$this->executeSingleArgumentTest(3, 9);
-	}
+    /**
+     * @test
+     */
+    public function testSingleArgument()
+    {
+        $this->executeSingleArgumentTest(3, 9);
+    }
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgumentIteratorFirst() {
-		$this->executeSingleArgumentTest(array(2, 4), array(4, 16));
-	}
-
+    /**
+     * @test
+     */
+    public function testSingleArgumentIteratorFirst()
+    {
+        $this->executeSingleArgumentTest(array(2, 4), array(4, 16));
+    }
 }

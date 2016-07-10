@@ -11,57 +11,59 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class LastViewHelperTest
  */
-class LastViewHelperTest extends AbstractViewHelperTest {
+class LastViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsLastElement() {
-		$array = array('a', 'b', 'c');
-		$arguments = array(
-			'haystack' => $array
-		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertEquals('c', $output);
-	}
+    /**
+     * @test
+     */
+    public function returnsLastElement()
+    {
+        $array = array('a', 'b', 'c');
+        $arguments = array(
+            'haystack' => $array
+        );
+        $output = $this->executeViewHelper($arguments);
+        $this->assertEquals('c', $output);
+    }
 
-	/**
-	 * @test
-	 */
-	public function supportsIterators() {
-		$array = new \ArrayIterator(array('a', 'b', 'c'));
-		$arguments = array(
-			'haystack' => $array
-		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertEquals('c', $output);
-	}
+    /**
+     * @test
+     */
+    public function supportsIterators()
+    {
+        $array = new \ArrayIterator(array('a', 'b', 'c'));
+        $arguments = array(
+            'haystack' => $array
+        );
+        $output = $this->executeViewHelper($arguments);
+        $this->assertEquals('c', $output);
+    }
 
-	/**
-	 * @test
-	 */
-	public function supportsTagContent() {
-		$array = array('a', 'b', 'c');
-		$arguments = array(
-			'haystack' => NULL
-		);
-		$output = $this->executeViewHelperUsingTagContent('Array', $array, $arguments);
-		$this->assertEquals('c', $output);
-	}
+    /**
+     * @test
+     */
+    public function supportsTagContent()
+    {
+        $array = array('a', 'b', 'c');
+        $arguments = array(
+            'haystack' => null
+        );
+        $output = $this->executeViewHelperUsingTagContent('Array', $array, $arguments);
+        $this->assertEquals('c', $output);
+    }
 
-	/**
-	 * @test
-	 */
-	public function returnsNullIfHaystackIsEmptyArray() {
-		$arguments = array(
-			'haystack' => array()
-		);
-		$output = $this->executeViewHelper($arguments);
-		$this->assertEquals(NULL, $output);
-	}
-
+    /**
+     * @test
+     */
+    public function returnsNullIfHaystackIsEmptyArray()
+    {
+        $arguments = array(
+            'haystack' => array()
+        );
+        $output = $this->executeViewHelper($arguments);
+        $this->assertEquals(null, $output);
+    }
 }

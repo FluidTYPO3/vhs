@@ -19,30 +19,31 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Has built-in insurance that first character of random string is
  * an alphabetic character (allowing safe use as DOM id for example).
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Random
  */
-class StringViewHelper extends AbstractViewHelper {
+class StringViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param integer $length
-	 * @param integer $minimumLength
-	 * @param integer $maximumLength
-	 * @param string $characters
-	 * @return string
-	 */
-	public function render($length = NULL, $minimumLength = 32, $maximumLength = 32, $characters = '0123456789abcdef') {
-		$minimumLength = intval($minimumLength);
-		$maximumLength = intval($maximumLength);
-		$length = ($minimumLength != $maximumLength ? rand($minimumLength, $maximumLength) : ($length !== NULL ? $length : $minimumLength));
-		$string = '';
-		for ($i = 0; $i < $length; $i++) {
-			$randomIndex = mt_rand(0, strlen($characters) - 1);
-			$string .= $characters{$randomIndex};
-		}
-		return $string;
-	}
-
+    /**
+     * @param integer $length
+     * @param integer $minimumLength
+     * @param integer $maximumLength
+     * @param string $characters
+     * @return string
+     */
+    public function render($length = null, $minimumLength = 32, $maximumLength = 32, $characters = '0123456789abcdef')
+    {
+        $minimumLength = intval($minimumLength);
+        $maximumLength = intval($maximumLength);
+        if ($minimumLength != $maximumLength) {
+            $length = rand($minimumLength, $maximumLength);
+        } else {
+            $length = $length !== null ? $length : $minimumLength;
+        }
+        $string = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomIndex = mt_rand(0, strlen($characters) - 1);
+            $string .= $characters{$randomIndex};
+        }
+        return $string;
+    }
 }

@@ -11,31 +11,31 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class AbstractMathViewHelperTest
  */
-abstract class AbstractMathViewHelperTest extends AbstractViewHelperTest {
+abstract class AbstractMathViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @param mixed $a
-	 * @param mixed $expected
-	 * @return void
-	 */
-	protected function executeSingleArgumentTest($a, $expected) {
-		$result = $this->executeViewHelper(array('a' => $a));
-		$this->assertEquals($expected, $result);
-	}
+    /**
+     * @param mixed $a
+     * @param mixed $expected
+     * @return void
+     */
+    protected function executeSingleArgumentTest($a, $expected)
+    {
+        $result = $this->executeViewHelper(array('a' => $a));
+        $this->assertEquals($expected, $result);
+    }
 
-	/**
-	 * @param mixed $a
-	 * @param mixed $b
-	 * @param mixed $expected
-	 * @return void
-	 */
-	protected function executeDualArgumentTest($a, $b, $expected) {
-		$result = $this->executeViewHelper(array('a' => $a, 'b' => $b));
-		$this->assertEquals($expected, $result);
-	}
-
+    /**
+     * @param mixed $a
+     * @param mixed $b
+     * @param mixed $expected
+     * @return void
+     */
+    protected function executeDualArgumentTest($a, $b, $expected)
+    {
+        $result = $this->executeViewHelper(array('a' => $a, 'b' => $b));
+        $this->assertEquals($expected, $result);
+    }
 }

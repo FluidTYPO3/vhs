@@ -23,49 +23,48 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * In addition the ViewHelper is a ConditionViewHelper, which
  * means you can utilize the f:then and f:else child nodes as
  * well as the "then" and "else" arguments.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Once
  */
-class InstanceViewHelper extends AbstractOnceViewHelper {
+class InstanceViewHelper extends AbstractOnceViewHelper
+{
 
-	/**
-	 * @return string
-	 */
-	protected function getIdentifier() {
-		if (TRUE === isset($this->arguments['identifier']) && NULL !== $this->arguments['identifier']) {
-			return $this->arguments['identifier'];
-		}
-		$request = $this->controllerContext->getRequest();
-		$identifier = implode('_', array(
-			$request->getControllerActionName(),
-			$request->getControllerName(),
-			$request->getPluginName(),
-			$request->getControllerExtensionName()
-		));
-		return $identifier;
-	}
+    /**
+     * @return string
+     */
+    protected function getIdentifier()
+    {
+        if (true === isset($this->arguments['identifier']) && null !== $this->arguments['identifier']) {
+            return $this->arguments['identifier'];
+        }
+        $request = $this->controllerContext->getRequest();
+        $identifier = implode('_', [
+            $request->getControllerActionName(),
+            $request->getControllerName(),
+            $request->getPluginName(),
+            $request->getControllerExtensionName()
+        ]);
+        return $identifier;
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function storeIdentifier() {
-		$index = get_class($this);
-		$identifier = $this->getIdentifier();
-		if (FALSE === is_array($GLOBALS[$index])) {
-			$GLOBALS[$index] = array();
-		}
-		$GLOBALS[$index][$identifier] = TRUE;
-	}
+    /**
+     * @return void
+     */
+    protected function storeIdentifier()
+    {
+        $index = get_class($this);
+        $identifier = $this->getIdentifier();
+        if (false === is_array($GLOBALS[$index])) {
+            $GLOBALS[$index] = [];
+        }
+        $GLOBALS[$index][$identifier] = true;
+    }
 
-	/**
-	 * @return boolean
-	 */
-	protected function assertShouldSkip() {
-		$index = get_class($this);
-		$identifier = $this->getIdentifier();
-		return isset($GLOBALS[$index][$identifier]);
-	}
-
+    /**
+     * @return boolean
+     */
+    protected function assertShouldSkip()
+    {
+        $index = get_class($this);
+        $identifier = $this->getIdentifier();
+        return isset($GLOBALS[$index][$identifier]);
+    }
 }

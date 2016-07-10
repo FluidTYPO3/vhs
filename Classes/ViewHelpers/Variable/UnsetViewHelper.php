@@ -31,23 +31,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *     <!-- DOES NOT WORK! -->
  *     <v:variable.unset name="myObject.propertyName" />
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-class UnsetViewHelper extends AbstractViewHelper {
+class UnsetViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Unsets variable $name if it exists in the container
-	 *
-	 * @param string $name
-	 * @return void
-	 */
-	public function render($name) {
-		if (TRUE === $this->templateVariableContainer->exists($name)) {
-			$this->templateVariableContainer->remove($name);
-		}
-	}
-
+    /**
+     * Unsets variable $name if it exists in the container
+     *
+     * @param string $name
+     * @return void
+     */
+    public function render($name)
+    {
+        if (true === $this->templateVariableContainer->exists($name)) {
+            $this->templateVariableContainer->remove($name);
+        }
+    }
 }

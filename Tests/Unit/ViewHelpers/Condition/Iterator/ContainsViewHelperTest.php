@@ -17,93 +17,95 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class ContainsViewHelperTest
  */
-class ContainsViewHelperTest extends AbstractViewHelperTest {
+class ContainsViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @dataProvider getPositiveTestValues
-	 * @param mixed $haystack
-	 * @param mixed $needle
-	 */
-	public function testRendersThen($haystack, $needle) {
-		$arguments = array(
-			'haystack' => $haystack,
-			'needle' => $needle,
-			'then' => 'then'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    /**
+     * @dataProvider getPositiveTestValues
+     * @param mixed $haystack
+     * @param mixed $needle
+     */
+    public function testRendersThen($haystack, $needle)
+    {
+        $arguments = array(
+            'haystack' => $haystack,
+            'needle' => $needle,
+            'then' => 'then'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getPositiveTestValues() {
-		$bar = new Bar();
-		ObjectAccess::setProperty($bar, 'uid', 1, TRUE);
-		$foo = new Foo();
-		ObjectAccess::setProperty($foo, 'uid', 2, TRUE);
-		$objectStorage = new ObjectStorage();
-		$objectStorage->attach($bar);
-		/** @var LazyObjectStorage $lazyObjectStorage */
-		$lazyObjectStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
-			->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
-		ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', TRUE, TRUE);
-		$lazyObjectStorage->attach($foo);
-		return array(
-			array(array('foo'), 'foo'),
-			array('foo,bar', 'foo'),
-			array(array($foo), $foo),
-			array($objectStorage, $bar),
-			array($lazyObjectStorage, $foo)
-		);
-	}
+    /**
+     * @return array
+     */
+    public function getPositiveTestValues()
+    {
+        $bar = new Bar();
+        ObjectAccess::setProperty($bar, 'uid', 1, true);
+        $foo = new Foo();
+        ObjectAccess::setProperty($foo, 'uid', 2, true);
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach($bar);
+        /** @var LazyObjectStorage $lazyObjectStorage */
+        $lazyObjectStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+            ->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
+        ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
+        $lazyObjectStorage->attach($foo);
+        return array(
+            array(array('foo'), 'foo'),
+            array('foo,bar', 'foo'),
+            array(array($foo), $foo),
+            array($objectStorage, $bar),
+            array($lazyObjectStorage, $foo)
+        );
+    }
 
-	/**
-	 * @dataProvider getNegativeTestValues
-	 * @param mixed $haystack
-	 * @param mixed $needle
-	 */
-	public function testRendersElse($haystack, $needle) {
-		$arguments = array(
-			'haystack' => $haystack,
-			'needle' => $needle,
-			'else' => 'else'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    /**
+     * @dataProvider getNegativeTestValues
+     * @param mixed $haystack
+     * @param mixed $needle
+     */
+    public function testRendersElse($haystack, $needle)
+    {
+        $arguments = array(
+            'haystack' => $haystack,
+            'needle' => $needle,
+            'else' => 'else'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getNegativeTestValues() {
-		$bar = new Bar();
-		ObjectAccess::setProperty($bar, 'uid', 1, TRUE);
-		$foo = new Foo();
-		ObjectAccess::setProperty($foo, 'uid', 2, TRUE);
-		$objectStorage = new ObjectStorage();
-		$objectStorage->attach($bar);
-		/** @var LazyObjectStorage $lazyObjectStorage */
-		$lazyObjectStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
-			->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
-		ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', TRUE, TRUE);
-		$lazyObjectStorage->attach($foo);
-		return array(
-			array(array('foo'), 'bar'),
-			array('foo,baz', 'bar'),
-			array($objectStorage, $foo),
-			array($lazyObjectStorage, $bar)
-		);
-	}
-
+    /**
+     * @return array
+     */
+    public function getNegativeTestValues()
+    {
+        $bar = new Bar();
+        ObjectAccess::setProperty($bar, 'uid', 1, true);
+        $foo = new Foo();
+        ObjectAccess::setProperty($foo, 'uid', 2, true);
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach($bar);
+        /** @var LazyObjectStorage $lazyObjectStorage */
+        $lazyObjectStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+            ->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
+        ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
+        $lazyObjectStorage->attach($foo);
+        return array(
+            array(array('foo'), 'bar'),
+            array('foo,baz', 'bar'),
+            array($objectStorage, $foo),
+            array($lazyObjectStorage, $bar)
+        );
+    }
 }

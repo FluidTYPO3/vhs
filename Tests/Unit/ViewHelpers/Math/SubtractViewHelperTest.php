@@ -9,40 +9,42 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class SubtractViewHelperTest
  */
-class SubtractViewHelperTest extends AbstractMathViewHelperTest {
+class SubtractViewHelperTest extends AbstractMathViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testSingleArgumentIterator() {
-		$this->executeSingleArgumentTest(array(8, 2), -10);
-	}
+    /**
+     * @test
+     */
+    public function testSingleArgumentIterator()
+    {
+        $this->executeSingleArgumentTest(array(8, 2), -10);
+    }
 
-	/**
-	 * @test
-	 */
-	public function testDualArguments() {
-		$this->executeDualArgumentTest(8, 2, 6);
-	}
+    /**
+     * @test
+     */
+    public function testDualArguments()
+    {
+        $this->executeDualArgumentTest(8, 2, 6);
+    }
 
-	/**
-	 * @test
-	 */
-	public function executeMissingArgumentTest() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
-		$result = $this->executeViewHelper(array());
-	}
+    /**
+     * @test
+     */
+    public function executeMissingArgumentTest()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
+        $result = $this->executeViewHelper(array());
+    }
 
-	/**
-	 * @test
-	 */
-	public function executeInvalidArgumentTypeTest() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
-		$result = $this->executeViewHelper(array('b' => 1, 'fail' => TRUE));
-	}
-
+    /**
+     * @test
+     */
+    public function executeInvalidArgumentTypeTest()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
+        $result = $this->executeViewHelper(array('b' => 1, 'fail' => true));
+    }
 }

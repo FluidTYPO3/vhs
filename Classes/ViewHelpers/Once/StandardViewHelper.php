@@ -21,10 +21,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * In addition the ViewHelper is a ConditionViewHelper, which
  * means you can utilize the f:then and f:else child nodes as
  * well as the "then" and "else" arguments.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Once
  */
-class StandardViewHelper extends AbstractOnceViewHelper {
+class StandardViewHelper extends AbstractOnceViewHelper
+{
 }

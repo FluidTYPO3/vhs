@@ -9,16 +9,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource
+ * Interface for Resource ViewHelpers
  */
-interface ResourceViewHelperInterface {
+interface ResourceViewHelperInterface
+{
 
-	/**
-	 * @param mixed $identity
-	 * @return mixed
-	 */
-	public function getResource($identity);
-
+    /**
+     * @param mixed $identity
+     * @return mixed
+     */
+    public function getResource($identity);
 }

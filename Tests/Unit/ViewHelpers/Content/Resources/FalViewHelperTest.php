@@ -11,22 +11,23 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Content\Resources;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class FalViewHelperTest
  */
-class FalViewHelperTest extends AbstractViewHelperTest {
+class FalViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock(
-			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
-			array('fullQuoteStr', 'exec_SELECTquery', 'sql_fetch_assoc'),
-			array(), '', FALSE
-		);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')->willReturnArgument(0);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->willReturn(NULL);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array());
-		$this->assertEmpty($this->executeViewHelper());
-	}
-
+    public function testRender()
+    {
+        $GLOBALS['TYPO3_DB'] = $this->getMock(
+            'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
+            array('fullQuoteStr', 'exec_SELECTquery', 'sql_fetch_assoc'),
+            array(),
+            '',
+            false
+        );
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')->willReturnArgument(0);
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->willReturn(null);
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array());
+        $this->assertEmpty($this->executeViewHelper());
+    }
 }

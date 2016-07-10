@@ -11,21 +11,20 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class MergeViewHelperTest
  */
-class MergeViewHelperTest extends AbstractViewHelperTest {
+class MergeViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function testMergesArraysWithOverrule() {
-		$array1 = array('foo');
-		$array2 = array('bar');
-		$expected = array('bar');
-		$result = $this->executeViewHelper(array('a' => $array1, 'b' => $array2, 'useKeys' => FALSE));
-		$this->assertEquals($expected, $result);
-	}
-
+    /**
+     * @test
+     */
+    public function testMergesArraysWithOverrule()
+    {
+        $array1 = array('foo');
+        $array2 = array('bar');
+        $expected = array('bar');
+        $result = $this->executeViewHelper(array('a' => $array1, 'b' => $array2, 'useKeys' => false));
+        $this->assertEquals($expected, $result);
+    }
 }

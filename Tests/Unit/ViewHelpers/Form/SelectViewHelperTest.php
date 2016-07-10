@@ -13,88 +13,87 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Form
+ * Class SelectViewHelperTest
  */
-class SelectViewHelperTest extends AbstractViewHelperTest {
+class SelectViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @dataProvider getRenderTestValues
-	 * @param array $arguments
-	 * @param string $expected
-	 */
-	public function testRender(array $arguments, $expected) {
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals($expected, $result);
-	}
+    /**
+     * @dataProvider getRenderTestValues
+     * @param array $arguments
+     * @param string $expected
+     */
+    public function testRender(array $arguments, $expected)
+    {
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals($expected, $result);
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getRenderTestValues() {
-		$model1 = new Foo();
-		$model1->setName('Model1');
-		$model2 = new Bar();
-		$model2->setName('Model2');
-		$model1id = spl_object_hash($model1);
-		$model2id = spl_object_hash($model2);
-		$model1name = 'FluidTYPO3\\Vhs\\Tests\\Fixtures\\Domain\\Model\\Foo:';
-		$model2name = 'FluidTYPO3\\Vhs\\Tests\\Fixtures\\Domain\\Model\\Bar:';
-		return array(
-			array(array(), '<select name="" />'),
-			array(array('name' => 'test'), '<select name="test" />'),
-			array(
-				array('name' => 'test', 'multiple' => TRUE),
-				'<input type="hidden" name="test" value="" /><select name="test[]" multiple="multiple" />'
-			),
-			array(
-				array('name' => 'test', 'multiple' => TRUE, 'selectAllbyDefault' => TRUE, 'value' => 'test'),
-				'<input type="hidden" name="test" value="" /><select name="test[]" multiple="multiple" />'
-			),
-			array(
-				array(
-					'name' => 'test', 'multiple' => TRUE, 'selectAllbyDefault' => TRUE, 'value' => array($model1id, $model1id),
-					'optionLabelField' => 'name'
-				),
-				'<input type="hidden" name="test" value="" /><select name="test[]" multiple="multiple" />'
-			),
-			array(
-				array('name' => 'foobar', 'options' => array('foo' => 'bar')),
-				'<select name="foobar"><option value="foo">bar</option>' . PHP_EOL . '</select>'
-			),
-			array(
-				array('name' => 'foobar', 'options' => array('foo' => 'bar'), 'value' => 'foo'),
-				'<select name="foobar"><option value="foo" selected="selected">bar</option>' . PHP_EOL . '</select>'
-			),
-			array(
-				array('name' => 'foobar', 'options' => array($model1)),
-				'<select name="foobar"><option value="' . $model1id . '">' . $model1name . '</option>' . PHP_EOL . '</select>'
-			),
-			array(
-				array('name' => 'foobar', 'options' => array($model1), 'value' => $model1),
-				'<select name="foobar[__identity]"><option value="' . $model1id . '" selected="selected">'
-				. $model1name .'</option>' . PHP_EOL . '</select>'
-			),
-			array(
-				array('name' => 'foobar', 'options' => array($model1, $model2)),
-				'<select name="foobar"><option value="' . $model1id . '">' . $model1name . '</option>' . PHP_EOL
-				. '<option value="' . $model2id . '">' . $model2name . '</option>' . PHP_EOL . '</select>'
-			),
-			array(
-				array('name' => 'foobar', 'options' => array($model1), 'optionLabelField' => 'name'),
-				'<select name="foobar"><option value="' . $model1id . '">' . $model1->getName() . '</option>' . PHP_EOL . '</select>'
-			),
-			array(
-				array('name' => 'foobar', 'options' => array($model1), 'optionLabelField' => 'bar'),
-				'<select name="foobar"><option value="' . $model1id . '">baz</option>' . PHP_EOL . '</select>'
-			),
-			array(
-				array('name' => 'foobar', 'options' => array($model1), 'optionValueField' => 'bar'),
-				'<select name="foobar"><option value="baz">' . $model1name . '</option>' . PHP_EOL . '</select>'
-			),
-		);
-	}
-
+    /**
+     * @return array
+     */
+    public function getRenderTestValues()
+    {
+        $model1 = new Foo();
+        $model1->setName('Model1');
+        $model2 = new Bar();
+        $model2->setName('Model2');
+        $model1id = spl_object_hash($model1);
+        $model2id = spl_object_hash($model2);
+        $model1name = 'FluidTYPO3\\Vhs\\Tests\\Fixtures\\Domain\\Model\\Foo:';
+        $model2name = 'FluidTYPO3\\Vhs\\Tests\\Fixtures\\Domain\\Model\\Bar:';
+        return array(
+            array(array(), '<select name="" />'),
+            array(array('name' => 'test'), '<select name="test" />'),
+            array(
+                array('name' => 'test', 'multiple' => true),
+                '<input type="hidden" name="test" value="" /><select name="test[]" multiple="multiple" />'
+            ),
+            array(
+                array('name' => 'test', 'multiple' => true, 'selectAllbyDefault' => true, 'value' => 'test'),
+                '<input type="hidden" name="test" value="" /><select name="test[]" multiple="multiple" />'
+            ),
+            array(
+                array(
+                    'name' => 'test', 'multiple' => true, 'selectAllbyDefault' => true, 'value' => array($model1id, $model1id),
+                    'optionLabelField' => 'name'
+                ),
+                '<input type="hidden" name="test" value="" /><select name="test[]" multiple="multiple" />'
+            ),
+            array(
+                array('name' => 'foobar', 'options' => array('foo' => 'bar')),
+                '<select name="foobar"><option value="foo">bar</option>' . PHP_EOL . '</select>'
+            ),
+            array(
+                array('name' => 'foobar', 'options' => array('foo' => 'bar'), 'value' => 'foo'),
+                '<select name="foobar"><option value="foo" selected="selected">bar</option>' . PHP_EOL . '</select>'
+            ),
+            array(
+                array('name' => 'foobar', 'options' => array($model1)),
+                '<select name="foobar"><option value="' . $model1id . '">' . $model1name . '</option>' . PHP_EOL . '</select>'
+            ),
+            array(
+                array('name' => 'foobar', 'options' => array($model1), 'value' => $model1),
+                '<select name="foobar[__identity]"><option value="' . $model1id . '" selected="selected">'
+                . $model1name .'</option>' . PHP_EOL . '</select>'
+            ),
+            array(
+                array('name' => 'foobar', 'options' => array($model1, $model2)),
+                '<select name="foobar"><option value="' . $model1id . '">' . $model1name . '</option>' . PHP_EOL
+                . '<option value="' . $model2id . '">' . $model2name . '</option>' . PHP_EOL . '</select>'
+            ),
+            array(
+                array('name' => 'foobar', 'options' => array($model1), 'optionLabelField' => 'name'),
+                '<select name="foobar"><option value="' . $model1id . '">' . $model1->getName() . '</option>' . PHP_EOL . '</select>'
+            ),
+            array(
+                array('name' => 'foobar', 'options' => array($model1), 'optionLabelField' => 'bar'),
+                '<select name="foobar"><option value="' . $model1id . '">baz</option>' . PHP_EOL . '</select>'
+            ),
+            array(
+                array('name' => 'foobar', 'options' => array($model1), 'optionValueField' => 'bar'),
+                '<select name="foobar"><option value="baz">' . $model1name . '</option>' . PHP_EOL . '</select>'
+            ),
+        );
+    }
 }

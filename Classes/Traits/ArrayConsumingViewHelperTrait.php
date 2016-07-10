@@ -25,58 +25,98 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *   tag contents while also converting it to array.
  * - merge arrays with a switch to respect TYPO3 version.
  */
-trait ArrayConsumingViewHelperTrait {
+trait ArrayConsumingViewHelperTrait
+{
 
-	/**
-	 * Override of VhsViewHelperTrait equivalent. Does what
-	 * that function does, but also ensures an array return.
-	 *
-	 * @param string $argumentName
-	 * @return mixed
-	 */
-	protected function getArgumentFromArgumentsOrTagContentAndConvertToArray($argumentName) {
-		if (FALSE === $this->hasArgument($argumentName)) {
-			$value = $this->renderChildren();
-		} else {
-			$value = $this->arguments[$argumentName];
-		}
-		return $this->arrayFromArrayOrTraversableOrCSV($value);
-	}
+    /**
+     * Override of VhsViewHelperTrait equivalent. Does what
+     * that function does, but also ensures an array return.
+     *
+     * @param string $argumentName
+     * @return mixed
+     */
+    protected function getArgumentFromArgumentsOrTagContentAndConvertToArray($argumentName)
+    {
+        return static::getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
+            $this->arguments,
+            $argumentName,
+            $this->buildRenderChildrenClosure()
+        );
+    }
 
-	/**
-	 * @param mixed $candidate
-	 * @param boolean $useKeys
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	protected function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = TRUE) {
-		if (TRUE === $candidate instanceof \Traversable) {
-			return iterator_to_array($candidate, $useKeys);
-		} elseif (TRUE === $candidate instanceof QueryResultInterface) {
-			/** @var QueryResultInterface $candidate */
-			return $candidate->toArray();
-		}
-		if (TRUE === is_string($candidate)) {
-			return GeneralUtility::trimExplode(',', $candidate, TRUE);
-		} elseif (TRUE === is_array($candidate)) {
-			return $candidate;
-		}
-		throw new Exception('Unsupported input type; cannot convert to array!');
-	}
+    /**
+     * Override of VhsViewHelperTrait equivalent. Does what
+     * that function does, but also ensures an array return.
+     *
+     * @param string $argumentName
+     * @return mixed
+     */
+    protected function getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
+        array $arguments,
+        $argumentName,
+        \Closure $renderChildrenClosure
+    ) {
+        if (!isset($arguments[$argumentName])) {
+            $value = $renderChildrenClosure();
+        } else {
+            $value = $arguments[$argumentName];
+        }
+        return $this->arrayFromArrayOrTraversableOrCSV($value);
+    }
 
-	/**
-	 * @param $array1
-	 * @param $array2
-	 * @return array
-	 */
-	protected function mergeArrays($array1, $array2) {
-		if (6.2 <= (float) substr(TYPO3_version, 0, 3)) {
-			ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
-			return $array1;
-		} else {
-			return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
-		}
-	}
+    /**
+     * @param mixed $candidate
+     * @param boolean $useKeys
+     *
+     * @return array
+     * @throws Exception
+     */
+    protected function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = true)
+    {
+        return static::arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys);
+    }
 
+    /**
+     * @param mixed $candidate
+     * @param boolean $useKeys
+     *
+     * @return array
+     * @throws Exception
+     */
+    protected function arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys = true)
+    {
+        if (true === $candidate instanceof \Traversable) {
+            return iterator_to_array($candidate, $useKeys);
+        } elseif (true === $candidate instanceof QueryResultInterface) {
+            /** @var QueryResultInterface $candidate */
+            return $candidate->toArray();
+        }
+        if (true === is_string($candidate)) {
+            return GeneralUtility::trimExplode(',', $candidate, true);
+        } elseif (true === is_array($candidate)) {
+            return $candidate;
+        }
+        throw new Exception('Unsupported input type; cannot convert to array!');
+    }
+
+    /**
+     * @param $array1
+     * @param $array2
+     * @return array
+     */
+    protected function mergeArrays($array1, $array2)
+    {
+        return static::mergeArraysStatic($array1, $array2);
+    }
+
+    /**
+     * @param $array1
+     * @param $array2
+     * @return array
+     */
+    protected function mergeArraysStatic($array1, $array2)
+    {
+        ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
+        return $array1;
+    }
 }

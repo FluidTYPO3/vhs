@@ -23,20 +23,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * on $a using $b for each calculation.
  *
  * If $a and $b are both numbers simple modulo is performed.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
-class ModuloViewHelper extends AbstractMultipleMathViewHelper {
+class ModuloViewHelper extends AbstractMultipleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @param mixed $b
-	 * @return integer
-	 */
-	protected function calculateAction($a, $b) {
-		return $a % $b;
-	}
-
+    /**
+     * @param mixed $a
+     * @param mixed $b
+     * @return integer
+     */
+    protected function calculateAction($a, $b)
+    {
+        return $a % $b;
+    }
 }

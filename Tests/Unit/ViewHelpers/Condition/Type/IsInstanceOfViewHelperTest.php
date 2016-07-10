@@ -11,45 +11,45 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class IsInstanceOfViewHelperTest
  */
-class IsInstanceOfViewHelperTest extends AbstractViewHelperTest {
+class IsInstanceOfViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersThenChildIfConditionMatched() {
-		$dateTime = new \DateTime('now');
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'value' => $dateTime,
-			'class' => 'DateTime'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    /**
+     * @test
+     */
+    public function rendersThenChildIfConditionMatched()
+    {
+        $dateTime = new \DateTime('now');
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'value' => $dateTime,
+            'class' => 'DateTime'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersElseChildIfConditionNotMatched() {
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'value' => 1,
-			'class' => 'DateTime'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    /**
+     * @test
+     */
+    public function rendersElseChildIfConditionNotMatched()
+    {
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'value' => 1,
+            'class' => 'DateTime'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

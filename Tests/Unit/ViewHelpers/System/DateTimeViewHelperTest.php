@@ -11,18 +11,17 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\System;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class DateTimeViewHelperTest
  */
-class DateTimeViewHelperTest extends AbstractViewHelperTest {
+class DateTimeViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsDateTimeInstance() {
-		$result = $this->executeViewHelper();
-		$this->assertInstanceOf('DateTime', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function returnsDateTimeInstance()
+    {
+        $result = $this->executeViewHelper();
+        $this->assertInstanceOf('DateTime', $result);
+    }
 }

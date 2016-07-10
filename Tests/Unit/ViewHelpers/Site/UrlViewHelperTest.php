@@ -12,18 +12,17 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class UrlViewHelperTest
  */
-class UrlViewHelperTest extends AbstractViewHelperTest {
+class UrlViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersUrl() {
-		$test = $this->executeViewHelper();
-		$this->assertSame(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $test);
-	}
-
+    /**
+     * @test
+     */
+    public function rendersUrl()
+    {
+        $test = $this->executeViewHelper();
+        $this->assertSame(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $test);
+    }
 }

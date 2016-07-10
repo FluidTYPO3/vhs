@@ -8,7 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -19,67 +22,67 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *
  * ### Examples
  *
- * {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
+ *     {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
  *
- * Returns setting 'bar.baz' from extension 'foo' located in ext_conf_template.txt
- *
- * @author Harry Glatz <glatz@analog.de>
- * @author Cedric Ziel <cedric@cedric-ziel.com>
- * @author Stefan Neufeind <info@speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers
+ * Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt`.
  */
-class ExtensionConfigurationViewHelper extends AbstractViewHelper {
+class ExtensionConfigurationViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param array $source TypoScript-array with dots: $source['foo.']['bar.']['baz']
-	 * @param string $path
-	 * @return mixed
-	 */
-	protected function extractFromArrayByPath($source, $path) {
-		$result = $source;
-		$pathParts = explode('.', $path);
-		$pathParts = array_diff($pathParts, array(''));
-		foreach ($pathParts as $part) {
-			if (array_key_exists($part . '.', $result)) {
-				$result = $result[$part . '.'];
-			} elseif (array_key_exists($part, $result)) {
-				$result = $result[$part];
-			} else {
-				return NULL;
-			}
-		}
-		return $result;
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @param string $path
-	 * @param string $extensionKey
-	 * @param string $name (deprecated, just use $path instead)
-	 * @return string
-	 * @throws Exception
-	 */
-	public function render($path = NULL, $extensionKey = NULL, $name = NULL) {
-		if (NULL !== $path) {
-			$pathToExtract = $path;
-		} elseif (NULL !== $name) {
-			$pathToExtract = $name;
-			GeneralUtility::deprecationLog('v:variable.extensionConfiguration was called with parameter "name" which is deprecated. Use "path" instead.');
-		} else {
-			throw new Exception('v:variable.extensionConfiguration requires the "path" attribute to be filled.', 1446998437);
-		}
+    /**
+     * @var array
+     */
+    protected static $configurations = [];
 
-		if (NULL === $extensionKey) {
-			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
-			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-		}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'extensionKey',
+            'string',
+            'Extension key (lowercase_underscored format) to read configuration from'
+        );
+        $this->registerArgument(
+            'path',
+            'string',
+            'Configuration path to read - if NULL, returns all configuration as array'
+        );
+    }
 
-		if (FALSE === array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
-			return NULL;
-		}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $extensionKey = $arguments['extensionKey'];
+        $path = $arguments['path'];
 
-		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+        if (null === $extensionKey) {
+            $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+            $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+        }
 
-		return $this->extractFromArrayByPath($extConf, $path);
-	}
+        if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
+            return null;
+        } elseif (!array_key_exists($extensionKey, static::$configurations)) {
+            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+            static::$configurations[$extensionKey] = GeneralUtility::removeDotsFromTS($extConf);
+        }
+
+        if (!$path) {
+            return static::$configurations[$extensionKey];
+        }
+
+        return ObjectAccess::getPropertyPath(static::$configurations[$extensionKey], $path);
+    }
 }

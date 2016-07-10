@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
 
 /**
@@ -16,19 +17,22 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Page
  */
-class FooterViewHelper extends AbstractAssetViewHelper {
+class FooterViewHelper extends AbstractAssetViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @return void
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return;
-		}
-		$content = $this->getContent();
-		$GLOBALS['TSFE']->getPageRenderer()->addFooterData($content);
-	}
+    use PageRendererTrait;
 
+    /**
+     * Render method
+     *
+     * @return void
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return;
+        }
+        $content = $this->getContent();
+        $this->getPageRenderer()->addFooterData($content);
+    }
 }

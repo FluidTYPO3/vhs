@@ -9,36 +9,41 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  */
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Content\Resources
+ * Content FAL relations ViewHelper
  */
-class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper {
+class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper
+{
 
-	const defaultTable = 'tt_content';
-	const defaultField = 'image';
+    const DEFAULT_TABLE = 'tt_content';
+    const DEFAULT_FIELD = 'image';
 
-	/**
-	 * @var string
-	 */
-	protected $table = self::defaultTable;
+    /**
+     * @var string
+     */
+    protected $table = self::DEFAULT_TABLE;
 
-	/**
-	 * @var string
-	 */
-	protected $field = self::defaultField;
+    /**
+     * @var string
+     */
+    protected $field = self::DEFAULT_FIELD;
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
 
-		$this->overrideArgument('table', 'string', 'The table to lookup records.', FALSE, self::defaultTable);
-		$this->overrideArgument('field', 'string', 'The field of the table associated to resources.', FALSE, self::defaultField);
-	}
-
+        $this->overrideArgument('table', 'string', 'The table to lookup records.', false, self::DEFAULT_TABLE);
+        $this->overrideArgument(
+            'field',
+            'string',
+            'The field of the table associated to resources.',
+            false,
+            self::DEFAULT_FIELD
+        );
+    }
 }

@@ -14,54 +14,52 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Creates chunks from an input Array/Traversable with option to allocate items to a fixed number of chunks
- *
- * @author Benjamin Rau <rau@codearts.at>, codearts
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
-class ChunkViewHelper extends AbstractViewHelper {
+class ChunkViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'The subject Traversable/Array instance to shift', FALSE, NULL);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('subject', 'mixed', 'The subject Traversable/Array instance to shift', false, null);
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @param integer $count The count of items per chunk or if fixed number of chunks
-	 * @param boolean $fixed Whether to allocate items to a fixed number of chunks or not
-	 * @param boolean $preserveKeys If set to true, the original array keys will be preserved in the chunks
-	 * @throws \Exception
-	 * @return array
-	 */
-	public function render($count, $fixed = FALSE, $preserveKeys = FALSE) {
-		$subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$output = array();
-		if (0 >= $count) {
-			return $output;
-		}
-		if (TRUE === (boolean) $fixed) {
-			$subjectSize = count($subject);
-			if (0 < $subjectSize) {
-				$chunkSize = ceil($subjectSize / $count);
-				$output = array_chunk($subject, $chunkSize, $preserveKeys);
-			}
-			// Fill the resulting array with empty items to get the desired element count
-			$elementCount = count($output);
-			if ($elementCount < $count) {
-				$output += array_fill($elementCount, $count - $elementCount, NULL);
-			}
-		} else {
-			$output = array_chunk($subject, $count, $preserveKeys);
-		}
-		return $this->renderChildrenWithVariableOrReturnInput($output);
-	}
-
+    /**
+     * Render method
+     *
+     * @param integer $count The count of items per chunk or if fixed number of chunks
+     * @param boolean $fixed Whether to allocate items to a fixed number of chunks or not
+     * @param boolean $preserveKeys If set to true, the original array keys will be preserved in the chunks
+     * @throws \Exception
+     * @return array
+     */
+    public function render($count, $fixed = false, $preserveKeys = false)
+    {
+        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $output = [];
+        if (0 >= $count) {
+            return $output;
+        }
+        if (true === (boolean) $fixed) {
+            $subjectSize = count($subject);
+            if (0 < $subjectSize) {
+                $chunkSize = ceil($subjectSize / $count);
+                $output = array_chunk($subject, $chunkSize, $preserveKeys);
+            }
+            // Fill the resulting array with empty items to get the desired element count
+            $elementCount = count($output);
+            if ($elementCount < $count) {
+                $output += array_fill($elementCount, $count - $elementCount, null);
+            }
+        } else {
+            $output = array_chunk($subject, $count, $preserveKeys);
+        }
+        return $this->renderChildrenWithVariableOrReturnInput($output);
+    }
 }

@@ -19,47 +19,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Menu;
  * a range of support CSS classes are available along
  * with each page record.
  *
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * DEPRECATED: use v:menu.directory instead
+ *
+ * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\Menu\DirectoryViewHelper, remove in 4.0.0
  */
-class DirectoryViewHelper extends AbstractMenuViewHelper {
-
-	/**
-	 * @var array
-	 */
-	protected $backups = array('menu');
-
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('pages', 'mixed', 'Parent page UIDs of subpages to include in the menu. Can be CSV, array or an object implementing Traversable.', TRUE);
-	}
-
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$pages = $this->processPagesArgument();
-		if (0 === count($pages)) {
-			return '';
-		}
-		$menuData = array();
-		$rootLineData = $this->pageSelect->getRootLine();
-		foreach ($pages as $pageUid) {
-			$menuData = array_merge($menuData, $this->getMenu($pageUid));
-		}
-		$menu = $this->parseMenu($menuData, $rootLineData);
-		$this->backupVariables();
-		$this->templateVariableContainer->add($this->arguments['as'], $menu);
-		$output = $this->renderContent($menu);
-		$this->templateVariableContainer->remove($this->arguments['as']);
-		$this->restoreVariables();
-		return $output;
-	}
-
+class DirectoryViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Menu\DirectoryViewHelper
+{
 }

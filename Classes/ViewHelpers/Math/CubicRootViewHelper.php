@@ -11,20 +11,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /**
  * Math: CubicRoot
  *
- * Performs pow($a, 1/3) - cubic or third root
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
+ * Performs pow($a, 1/3) - cubic or third root.
  */
-class CubicRootViewHelper extends AbstractSingleMathViewHelper {
+class CubicRootViewHelper extends AbstractSingleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @return integer
-	 */
-	protected function calculateAction($a) {
-		return pow($a, 1 / 3);
-	}
-
+    /**
+     * @param mixed $a
+     * @return integer
+     */
+    protected function calculateAction($a)
+    {
+        return pow($a, 1 / 3);
+    }
 }

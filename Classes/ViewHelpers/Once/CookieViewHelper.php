@@ -22,47 +22,47 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * In addition the ViewHelper is a ConditionViewHelper, which
  * means you can utilize the f:then and f:else child nodes as
  * well as the "then" and "else" arguments.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Once
  */
-class CookieViewHelper extends AbstractOnceViewHelper {
-	/**
-	 * @return void
-	 */
-	protected function storeIdentifier() {
-		$identifier = $this->getIdentifier();
-		$domain = TRUE === isset($this->arguments['lockToDomain']) && TRUE === $this->arguments['lockToDomain'] ? $_SERVER['HTTP_HOST'] : NULL;
-		setcookie($identifier, '1', time() + $this->arguments['ttl'], NULL, $domain);
-	}
+class CookieViewHelper extends AbstractOnceViewHelper
+{
+    /**
+     * @return void
+     */
+    protected function storeIdentifier()
+    {
+        $identifier = $this->getIdentifier();
+        $domain = $this->arguments['lockToDomain'] ? $_SERVER['HTTP_HOST'] : null;
+        setcookie($identifier, '1', time() + $this->arguments['ttl'], null, $domain);
+    }
 
-	/**
-	 * @return boolean
-	 */
-	protected function assertShouldSkip() {
-		$identifier = $this->getIdentifier();
-		return (TRUE === isset($_COOKIE[$identifier]));
-	}
+    /**
+     * @return boolean
+     */
+    protected function assertShouldSkip()
+    {
+        $identifier = $this->getIdentifier();
+        return (true === isset($_COOKIE[$identifier]));
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function removeIfExpired() {
-		$identifier = $this->getIdentifier();
-		$existsInCookie = (boolean) (TRUE === isset($_COOKIE[$identifier]));
-		if (TRUE === $existsInCookie) {
-			$this->removeCookie();
-		}
-	}
+    /**
+     * @return void
+     */
+    protected function removeIfExpired()
+    {
+        $identifier = $this->getIdentifier();
+        $existsInCookie = (boolean) (true === isset($_COOKIE[$identifier]));
+        if (true === $existsInCookie) {
+            $this->removeCookie();
+        }
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function removeCookie() {
-		$identifier = $this->getIdentifier();
-		unset($_SESSION[$identifier], $_COOKIE[$identifier]);
-		setcookie($identifier, NULL, time() - 1);
-	}
-
+    /**
+     * @return void
+     */
+    protected function removeCookie()
+    {
+        $identifier = $this->getIdentifier();
+        unset($_SESSION[$identifier], $_COOKIE[$identifier]);
+        setcookie($identifier, null, time() - 1);
+    }
 }
