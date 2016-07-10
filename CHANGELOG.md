@@ -1,7 +1,23 @@
 # VHS Change log
 
-upcoming
+3.0.0 - upcoming
 ------------------
+
+    Cosmetic change: unmodified PSR-2 CGL and shorthand array syntax adopted. Contributions must now respect this CGL (`phpcs` as well as `phpcbf` are provided in the `vendor/bin` directory once installed and can be ran using `--standard=PSR2`).
+
+- :exclamation: NEW DEPRECATIONS AND REMOVED DEPRECATED CODE
+  - [49e2295](https://github.com/FluidTYPO3/vhs/commit/49e22956fccd789fb244a7d244443de22915040a) Deprecated VHS typoLink ViewHelpers (use core versions instead)
+  - *'includeHidden'*, *'showHiddenInMenu'* attributes deprecated on all Menu ViewHelpers
+  - *'linkAccessRestrictedPages'* was deprectaed in favor of *'showAccessProtected'* on all Menu ViewHelpers
+  - *'resolveExclude'*, *'showHidden'*, *'excludeSubpageTypes'* attributes removed from all Menu ViewHelpers
+  - Removed `FluidTYPO3\Vhs\Service\PageSelectService` (use `FluidTYPO3\Vhs\Service\PageService` and TYPO3 native `TYPO3\CMS\Frontend\Page\PageRepository` instead)
+  - [#1023](https://github.com/FluidTYPO3/vhs/pull/1023) RegEx related ViewHelpers changed
+  - *v:condition.string.preg* removed and **v:variable.pregMatch** should be used instead
+  - *v:format.regularExpression* removed and **v:format.pregReplace** should be used instead
+  - [v:variable.pregMatch](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/PregMatchViewHelper.html)
+  - [v:format.pregReplace](https://fluidtypo3.org/viewhelpers/vhs/master/Format/PregReplaceViewHelper.html)
+  - [#1003](https://github.com/FluidTYPO3/vhs/pull/1003) v:switch and v:case ViewHelpers removed (use core versions instead)
+  - [7ca6865](https://github.com/FluidTYPO3/vhs/commit/7ca686598c6d54ac6f3358198b09d71bd8032e2b) Argument `arguments` on Asset ViewHelpers removed (use `variables` instead)
 
 - [#970](https://github.com/FluidTYPO3/vhs/pull/970) **PHP7** is supported
 
@@ -35,18 +51,16 @@ upcoming
 		- got *'accessProtected'* property, which indicates, that page is protected by FE groups constraints
 		- got *'accessGranted'* property, which indicates, that page is protected by FE groups, but currently logged in user can access the page
 		- *'hasSubPages'* property was renamed to **'hasSubpages'** (lowercase P)
-	-  [Source commit with more info](https://github.com/FluidTYPO3/vhs/commit/ee6956109be02d1c8fd75db6e4c4732e417bf184)
+	- [Source commit with more info](https://github.com/FluidTYPO3/vhs/commit/ee6956109be02d1c8fd75db6e4c4732e417bf184)
+	- [Followup no. 1](https://github.com/FluidTYPO3/vhs/commit/0400fb8297099db5a863cedbb3aaa1f8f9d64361)
+	- [Followup no. 2](https://github.com/FluidTYPO3/vhs/commit/5b47ccca9484b399b5e7b3710f964e6b4077a8aa)
+    - [Followup no. 3](https://github.com/FluidTYPO3/vhs/commit/342953013812788a29c58d33031d72221c737c6e)
+
 
 - :exclamation: [#1024](https://github.com/FluidTYPO3/vhs/pull/1024) v:page.link functionality was aligned with same link creation behavior, which was introdiced in menu ViewHelpers, regarding shrotcuts and protected pages
 	- Received new attributes *'showAccessProtected'*, *'classAccessProtected'*, *'classAccessGranted'*, *'useShortcutUid'*, *'useShortcutTarget'*, *'useShortcutData'*
 	- *'linkAccessRestrictedPages'* was deprectaed in favor of *'showAccessProtected'*
 	- [v:page.link](https://fluidtypo3.org/viewhelpers/vhs/master/Page/LinkViewHelper.html)
-
-- :exclamation: [#1023](https://github.com/FluidTYPO3/vhs/pull/1023) RegEx related ViewHelpers changed
-	- *v:condition.string.preg* removed and **v:variable.pregMatch** should be used instead
-	- *v:format.regularExpression* removed and **v:format.pregReplace** should be used instead
-	- [v:variable.pregMatch](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/PregMatchViewHelper.html)
-	- [v:format.pregReplace](https://fluidtypo3.org/viewhelpers/vhs/master/Format/PregReplaceViewHelper.html)
 
 - [#1022](https://github.com/FluidTYPO3/vhs/pull/1022) All the possible ViewHelpers are static compilable, which results in major performance improve
 	- Discover [Static compilable](http://blog.reelworx.at/detail/fluid-compilable-speed-it-up/)
@@ -110,6 +124,21 @@ upcoming
 - [8085f56](https://github.com/FluidTYPO3/vhs/commit/8085f5621112f1d23aaabd8c89d464dc2f7b71b8) v:media.source respect fully qualified uris
 
 - [456d709](https://github.com/FluidTYPO3/vhs/commit/456d709413351ceb2bc9a478a7e54bb032f9e5dc) src-set of image ViewHelper works correctly with `treatIdAsReference`
+
+- [4ea3cb2](https://github.com/FluidTYPO3/vhs/commit/4ea3cb289ffc99e10b321bbe45b94610576d631f) Bug fix for incorrect type cast causing translated FAL records to be incorrectly detected
+
+- [f38acef](https://github.com/FluidTYPO3/vhs/commit/f38acef2565d516b24c6cf89e7a67fec12165b3c) Bug fix for returned variable in `v:resource.collection`
+
+- [62428e8](https://github.com/FluidTYPO3/vhs/commit/62428e82e76e01191ecbc4c9355bcfbe34cbfaab) Security condition ViewHelpers fixed to work in compiled templates
+
+- [5e17260](https://github.com/FluidTYPO3/vhs/commit/5e17260ae34800fda6a183ff2b7f3353cfe70261) Bug fix for interpretation of `movable` argument on Assets
+
+- [9c739c7](https://github.com/FluidTYPO3/vhs/commit/9c739c7d8179be6ad28fa8e6aa596f0e8f14163b) Bug fix to localise all FAL records individually
+
+- [efa01ee](https://github.com/FluidTYPO3/vhs/commit/efa01eefe7a64867515682625df7faf439b356c6) Bug fix to exclude DELETED placeholders for FAL records when in workspace mode
+
+- [2614c18[(https://github.com/FluidTYPO3/vhs/commit/2614c189ba08cf1b58c9f9fbbd250b7114e593f9) Bug fix to make image sub-ViewHelpers function with changed parent class
+
 
 2.4.0 - 2015-11-19
 ------------------
