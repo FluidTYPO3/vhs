@@ -120,7 +120,7 @@ class AlternateViewHelper extends AbstractViewHelper
         $this->tagBuilder->addAttribute('rel', 'alternate');
 
         /** @var PageRenderer $pageRenderer */
-        $pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $usePageRenderer = (1 !== (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']);
         $output = '';
 
