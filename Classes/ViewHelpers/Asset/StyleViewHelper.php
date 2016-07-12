@@ -17,19 +17,27 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-class StyleViewHelper extends AbstractAssetViewHelper {
+class StyleViewHelper extends AbstractAssetViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->overrideArgument('allowMoveToFooter', 'boolean', 'If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.', FALSE, FALSE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument(
+            'movable',
+            'boolean',
+            'If TRUE, allows this Asset to be included in the document footer rather than the header. ' .
+            'Should never be allowed for CSS.',
+            false,
+            false
+        );
+    }
 
-	/**
-	 * @var string
-	 */
-	protected $type = 'css';
-
+    /**
+     * @var string
+     */
+    protected $type = 'css';
 }

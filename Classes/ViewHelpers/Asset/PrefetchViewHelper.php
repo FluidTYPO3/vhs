@@ -42,56 +42,86 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package Vhs
  * @subpackage ViewHelpers\Asset
  */
-class PrefetchViewHelper extends AbstractAssetViewHelper {
+class PrefetchViewHelper extends AbstractAssetViewHelper
+{
 
-	/**
-	 * @var string
-	 */
-	protected $type = 'link';
+    /**
+     * @var string
+     */
+    protected $type = 'link';
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('domains', 'mixed', 'Domain DNS names to prefetch. By default will add all sys_domain record DNS names', TRUE);
-		$this->registerArgument('protocol', 'string', 'Optional value of protocol as inserted in the resulting HREF value. If you experience problems with a non-protocol link, try enforcing http/https here', FALSE, NULL);
-		$this->registerArgument('protocolSeparator', 'string', 'If you do not enforce a particular protocol and wish to remove the double slashes from the hostname (your browser may not understand this!), set this attribute to an empty value (not-zero)', FALSE, '//');
-		$this->registerArgument('force', 'boolean', 'If TRUE, adds an additional meta header tag which forces prefetching to be enabled even if otherwise requested by the http daemon', FALSE, FALSE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'domains',
+            'mixed',
+            'Domain DNS names to prefetch. By default will add all sys_domain record DNS names',
+            true
+        );
+        $this->registerArgument(
+            'protocol',
+            'string',
+            'Optional value of protocol as inserted in the resulting HREF value. If you experience problems with ' .
+            'a non-protocol link, try enforcing http/https here'
+        );
+        $this->registerArgument(
+            'protocolSeparator',
+            'string',
+            'If you do not enforce a particular protocol and wish to remove the double slashes from the hostname ' .
+            '(your browser may not understand this!), set this attribute to an empty value (not-zero)',
+            false,
+            '//'
+        );
+        $this->registerArgument(
+            'force',
+            'boolean',
+            'If TRUE, adds an additional meta header tag which forces prefetching to be enabled even if otherwise ' .
+            'requested by the http daemon',
+            false,
+            false
+        );
+    }
 
 
-	/**
-	 * @return void
-	 */
-	public function render() {
-		$this->arguments['standalone'] = TRUE;
-		$this->arguments['allowMoveToFooter'] = FALSE;
-		$this->tagBuilder->forceClosingTag(FALSE);
-		$this->tagBuilder->addAttribute('rel', 'dns-prefetch');
-		$this->tagBuilder->addAttribute('href', '');
-		$this->tagBuilder->setTagName('link');
-		$this->finalize();
-	}
+    /**
+     * @return void
+     */
+    public function render()
+    {
+        $this->arguments['standalone'] = true;
+        $this->arguments['movable'] = false;
+        $this->tagBuilder->forceClosingTag(false);
+        $this->tagBuilder->addAttribute('rel', 'dns-prefetch');
+        $this->tagBuilder->addAttribute('href', '');
+        $this->tagBuilder->setTagName('link');
+        $this->finalize();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function build() {
-		$domains = $this->arguments['domains'];
-		if (FALSE === is_array($domains)) {
-			$domains = GeneralUtility::trimExplode(',', $domains, TRUE);
-		}
-		$headerCode = '';
-		if (TRUE === (boolean) $this->arguments['force']) {
-			$headerCode .= '<meta http-equiv="x-dns-prefetch-control" content="off">' . LF;
-		}
-		foreach ($domains as $domain) {
-			$this->tagBuilder->removeAttribute('href');
-			$this->tagBuilder->addAttribute('href', $this->arguments['protocol'] . $this->arguments['protocolSeparator'] . $domain);
-			$headerCode .= $this->tagBuilder->render() . LF;
-		}
-		return $headerCode;
-	}
-
+    /**
+     * @return string
+     */
+    public function build()
+    {
+        $domains = $this->arguments['domains'];
+        if (false === is_array($domains)) {
+            $domains = GeneralUtility::trimExplode(',', $domains, true);
+        }
+        $headerCode = '';
+        if (true === (boolean) $this->arguments['force']) {
+            $headerCode .= '<meta http-equiv="x-dns-prefetch-control" content="off">' . LF;
+        }
+        foreach ($domains as $domain) {
+            $this->tagBuilder->removeAttribute('href');
+            $this->tagBuilder->addAttribute(
+                'href',
+                $this->arguments['protocol'] . $this->arguments['protocolSeparator'] . $domain
+            );
+            $headerCode .= $this->tagBuilder->render() . LF;
+        }
+        return $headerCode;
+    }
 }

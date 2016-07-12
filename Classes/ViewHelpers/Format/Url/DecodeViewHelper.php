@@ -11,23 +11,20 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Url;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Urldecodes the provided string
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Format
+ * Urldecodes the provided string.
  */
-class DecodeViewHelper extends AbstractViewHelper {
+class DecodeViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $content
-	 * @return string
-	 */
-	public function render($content = NULL) {
-		if (NULL === $content) {
-			$content = $this->renderChildren();
-		}
-		return rawurldecode($content);
-	}
-
+    /**
+     * @param string $content
+     * @return string
+     */
+    public function render($content = null)
+    {
+        if (null === $content) {
+            $content = $this->renderChildren();
+        }
+        return rawurldecode($content);
+    }
 }

@@ -17,21 +17,18 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Comes in useful when handling/generating html-element-IDs
  * for usage with JavaScript.
- *
- * @author Cedric Ziel, <cedric@cedric-ziel.com>
- * @package Vhs
- * @subpackage ViewHelpers\System
  */
-class UniqIdViewHelper extends AbstractViewHelper {
+class UniqIdViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $prefix An optional prefix for making sure it's unique across environments
-	 * @param boolean $moreEntropy Add some pseudo random strings. Refer to uniqid()'s Reference.
-	 * @return string
-	 */
-	public function render($prefix = '', $moreEntropy = FALSE) {
-		$uniqueId = uniqid($prefix, $moreEntropy);
-		return $uniqueId;
-	}
-
+    /**
+     * @param string $prefix An optional prefix for making sure it's unique across environments
+     * @param boolean $moreEntropy Add some pseudo random strings. Refer to uniqid()'s Reference.
+     * @return string
+     */
+    public function render($prefix = '', $moreEntropy = false)
+    {
+        $uniqueId = uniqid($prefix, $moreEntropy);
+        return $uniqueId;
+    }
 }

@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper;
-
 /**
  * ### Page: Menu ViewHelper
  *
@@ -21,19 +19,10 @@ use FluidTYPO3\Vhs\ViewHelpers\Page\Menu\AbstractMenuViewHelper;
  * a range of support CSS classes are available along
  * with each page record.
  *
- * @author Claus Due <claus@namelesscoder.net>
- * @author Björn Fromme <fromeme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * DEPRECATED: use v:menu instead
+ *
+ * @deprecated use \FluidTYPO3\Vhs\ViewHelpers\MenuViewHelper, remove in 4.0.0
  */
-class MenuViewHelper extends AbstractMenuViewHelper {
-
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('pageUid', 'integer', 'Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel', FALSE, NULL);
-	}
-
+class MenuViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\MenuViewHelper
+{
 }

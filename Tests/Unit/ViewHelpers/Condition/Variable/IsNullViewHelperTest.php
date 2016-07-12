@@ -11,42 +11,42 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Variable;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class IsNullViewHelperTest
  */
-class IsNullViewHelperTest extends AbstractViewHelperTest {
+class IsNullViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersThenChildIfVariableIsNull() {
-		$arguments = array(
-			'value' => NULL,
-			'then' => 'then',
-			'else' => 'else'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals($arguments['then'], $result);
+    /**
+     * @test
+     */
+    public function rendersThenChildIfVariableIsNull()
+    {
+        $arguments = array(
+            'value' => null,
+            'then' => 'then',
+            'else' => 'else'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals($arguments['then'], $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersElseChildIfVariableIsNotNull() {
-		$arguments = array(
-			'value' => TRUE,
-			'then' => 'then',
-			'else' => 'else'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals($arguments['else'], $result);
+    /**
+     * @test
+     */
+    public function rendersElseChildIfVariableIsNotNull()
+    {
+        $arguments = array(
+            'value' => true,
+            'then' => 'then',
+            'else' => 'else'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals($arguments['else'], $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

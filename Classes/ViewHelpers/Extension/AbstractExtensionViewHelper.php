@@ -13,42 +13,44 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: Extension ViewHelpers
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension
  */
-abstract class AbstractExtensionViewHelper extends AbstractViewHelper {
+abstract class AbstractExtensionViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('extensionName', 'string', 'Name, in UpperCamelCase, of the extension to be checked', FALSE, NULL, TRUE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('extensionName', 'string', 'Name, in UpperCamelCase, of the extension to be checked');
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function getExtensionKey() {
-		$extensionName = $this->getExtensionName();
-		return GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-	}
+    /**
+     * @return string
+     */
+    protected function getExtensionKey()
+    {
+        $extensionName = $this->getExtensionName();
+        return GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+    }
 
-	/**
-	 * @throws \RuntimeException
-	 * @return mixed
-	 */
-	protected function getExtensionName() {
-		if (TRUE === isset($this->arguments['extensionName']) && FALSE === empty($this->arguments['extensionName'])) {
-			return $this->arguments['extensionName'];
-		}
-		$request = $this->controllerContext->getRequest();
-		$extensionName = $request->getControllerExtensionName();
-		if (TRUE === empty($extensionName)) {
-			throw new \RuntimeException('Unable to read extension name from ControllerContext and value not manually specified', 1364167519);
-		}
-		return $extensionName;
-	}
-
+    /**
+     * @throws \RuntimeException
+     * @return mixed
+     */
+    protected function getExtensionName()
+    {
+        if (isset($this->arguments['extensionName']) && !empty($this->arguments['extensionName'])) {
+            return $this->arguments['extensionName'];
+        }
+        $request = $this->controllerContext->getRequest();
+        $extensionName = $request->getControllerExtensionName();
+        if (empty($extensionName)) {
+            throw new \RuntimeException(
+                'Unable to read extension name from ControllerContext and value not manually specified',
+                1364167519
+            );
+        }
+        return $extensionName;
+    }
 }

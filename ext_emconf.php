@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array (
+$EM_CONF[$_EXTKEY] = [
   'title' => 'VHS: Fluid ViewHelpers',
   'description' => 'A collection of ViewHelpers to perform rendering tasks which are not natively supported by Fluid - for example: advanced formatters, math calculators, specialized conditions and Iterator/Array calculators and processors',
   'category' => 'misc',
@@ -11,7 +11,7 @@ $EM_CONF[$_EXTKEY] = array (
   'conflicts' => '',
   'priority' => '',
   'module' => '',
-  'state' => 'stable',
+  'state' => 'beta',
   'internal' => '',
   'uploadfolder' => 0,
   'createDirs' => '',
@@ -19,18 +19,14 @@ $EM_CONF[$_EXTKEY] = array (
   'clearCacheOnLoad' => 0,
   'lockType' => '',
   'version' => '2.4.0',
-  'constraints' => array (
-    'depends' => array(
-      'php' => '5.4.0-5.6.99',
-      'typo3' => '6.2.0-7.6.99',
-      'cms' => '',
-    ),
-    'conflicts' => array(
-    ),
-    'suggests' => array(
-    ),
-  ),
-  'suggests' => array (
-  ),
+  'constraints' => [
+    'depends' => [
+      'php' => '5.5.0-7.0.99',
+      'typo3' => '7.6.0-8.1.99',
+    ],
+    'conflicts' => [],
+    'suggests' => [],
+  ],
+  'suggests' => [],
   '_md5_values_when_last_written' => '',
-);
+];

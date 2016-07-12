@@ -18,54 +18,53 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * this array is averaged to one number. If $a is a number and
  * $b is not provided or NULL, $a is gracefully returned as an
  * average value of itself.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
-class AverageViewHelper extends AbstractMultipleMathViewHelper {
+class AverageViewHelper extends AbstractMultipleMathViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation', FALSE, NULL);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation');
+    }
 
-	/**
-	 * @return mixed
-	 * @throw Exception
-	 */
-	public function render() {
-		$a = $this->getInlineArgument();
-		$b = $this->arguments['b'];
-		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		$bIsIterable = $this->assertIsArrayOrIterator($b);
-		if (TRUE === $aIsIterable && NULL === $b) {
-			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
-			$sum = array_sum($a);
-			$distribution = count($a);
-			return $sum / $distribution;
-		} elseif (TRUE === $aIsIterable && FALSE === $bIsIterable) {
-			$a = $this->arrayFromArrayOrTraversableOrCSV($a);
-			foreach ($a as $index => $value) {
-				$a[$index] = $this->calculateAction($value, $b);
-			}
-			return $a;
-		} elseif (TRUE === isset($a) && NULL === $b) {
-			return $a;
-		}
-		return $this->calculate($a, $b);
-	}
+    /**
+     * @return mixed
+     * @throw Exception
+     */
+    public function render()
+    {
+        $a = $this->getInlineArgument();
+        $b = $this->arguments['b'];
+        $aIsIterable = $this->assertIsArrayOrIterator($a);
+        $bIsIterable = $this->assertIsArrayOrIterator($b);
+        if (true === $aIsIterable && null === $b) {
+            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            $sum = array_sum($a);
+            $distribution = count($a);
+            return $sum / $distribution;
+        } elseif (true === $aIsIterable && false === $bIsIterable) {
+            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            foreach ($a as $index => $value) {
+                $a[$index] = $this->calculateAction($value, $b);
+            }
+            return $a;
+        } elseif (true === isset($a) && null === $b) {
+            return $a;
+        }
+        return $this->calculate($a, $b);
+    }
 
-	/**
-	 * @param mixed $a
-	 * @param $b
-	 * @return mixed
-	 */
-	protected function calculateAction($a, $b) {
-		return ($a + $b) / 2;
-	}
-
+    /**
+     * @param mixed $a
+     * @param $b
+     * @return mixed
+     */
+    protected function calculateAction($a, $b)
+    {
+        return ($a + $b) / 2;
+    }
 }

@@ -11,78 +11,80 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\String;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class IsLowercaseViewHelperTest
  */
-class IsLowercaseViewHelperTest extends AbstractViewHelperTest {
+class IsLowercaseViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function rendersThenChildIfFirstCharacterIsLowercase() {
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'string' => 'foobar',
-			'fullString' => FALSE
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    /**
+     * @test
+     */
+    public function rendersThenChildIfFirstCharacterIsLowercase()
+    {
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'string' => 'foobar',
+            'fullString' => false
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersThenChildIfAllCharactersAreLowercase() {
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'string' => 'foobar',
-			'fullString' => TRUE
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    /**
+     * @test
+     */
+    public function rendersThenChildIfAllCharactersAreLowercase()
+    {
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'string' => 'foobar',
+            'fullString' => true
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersElseChildIfFirstCharacterIsNotLowercase() {
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'string' => 'FooBar',
-			'fullString' => FALSE
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    /**
+     * @test
+     */
+    public function rendersElseChildIfFirstCharacterIsNotLowercase()
+    {
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'string' => 'FooBar',
+            'fullString' => false
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	/**
-	 * @test
-	 */
-	public function rendersElseChildIfAllCharactersAreNotLowercase() {
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'string' => 'fooBar',
-			'fullString' => TRUE
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    /**
+     * @test
+     */
+    public function rendersElseChildIfAllCharactersAreNotLowercase()
+    {
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'string' => 'fooBar',
+            'fullString' => true
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

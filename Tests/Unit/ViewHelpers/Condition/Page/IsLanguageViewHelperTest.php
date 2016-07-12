@@ -11,26 +11,25 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Page;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class IsLanguageViewHelperTest
  */
-class IsLanguageViewHelperTest extends AbstractViewHelperTest {
+class IsLanguageViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRender() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTgetSingleRow'), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue(FALSE));
+    public function testRender()
+    {
+        $GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTgetSingleRow'), array(), '', false);
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue(false));
 
-		$arguments = array(
-			'then' => 'then',
-			'else' => 'else',
-			'language' => 0
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'language' => 0
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
-
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

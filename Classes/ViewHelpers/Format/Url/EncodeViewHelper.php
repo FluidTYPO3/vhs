@@ -12,22 +12,19 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Urlencodes the provided string
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
-class EncodeViewHelper extends AbstractViewHelper {
+class EncodeViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $content
-	 * @return string
-	 */
-	public function render($content = NULL) {
-		if (NULL === $content) {
-			$content = $this->renderChildren();
-		}
-		return rawurlencode($content);
-	}
-
+    /**
+     * @param string $content
+     * @return string
+     */
+    public function render($content = null)
+    {
+        if (null === $content) {
+            $content = $this->renderChildren();
+        }
+        return rawurlencode($content);
+    }
 }

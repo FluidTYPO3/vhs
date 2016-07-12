@@ -11,43 +11,44 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class TrimViewHelperTest
  */
-class TrimViewHelperTest extends AbstractViewHelperTest {
+class TrimViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function canTrimSpecificCharacters() {
-		$arguments = array(
-			'content' => 'ztrimmedy',
-			'characters' => 'zy'
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame('trimmed', $test);
-	}
+    /**
+     * @test
+     */
+    public function canTrimSpecificCharacters()
+    {
+        $arguments = array(
+            'content' => 'ztrimmedy',
+            'characters' => 'zy'
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('trimmed', $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canTrimWithArgument() {
-		$arguments = array(
-			'content' => ' trimmed '
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame('trimmed', $test);
-	}
+    /**
+     * @test
+     */
+    public function canTrimWithArgument()
+    {
+        $arguments = array(
+            'content' => ' trimmed '
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('trimmed', $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canTrimChildContent() {
-		$arguments = array();
-		$node = $this->createNode('Text', ' trimmed ');
-		$test = $this->executeViewHelper($arguments, array(), $node);
-		$this->assertSame('trimmed', $test);
-	}
-
+    /**
+     * @test
+     */
+    public function canTrimChildContent()
+    {
+        $arguments = array();
+        $node = $this->createNode('Text', ' trimmed ');
+        $test = $this->executeViewHelper($arguments, array(), $node);
+        $this->assertSame('trimmed', $test);
+    }
 }

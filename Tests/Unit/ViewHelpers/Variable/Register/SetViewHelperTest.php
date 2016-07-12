@@ -11,40 +11,41 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable\Register;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
+ * Class SetViewHelperTest
  */
-class SetViewHelperTest extends AbstractViewHelperTest {
+class SetViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function silentlyIgnoresMissingFrontendController() {
-		$result = $this->executeViewHelper(array('name' => 'name'));
-		$this->assertNull($result);
-	}
+    /**
+     * @test
+     */
+    public function silentlyIgnoresMissingFrontendController()
+    {
+        $result = $this->executeViewHelper(array('name' => 'name'));
+        $this->assertNull($result);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canSetRegister() {
-		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(array(), 1, 1));
-		$name = uniqid();
-		$value = uniqid();
-		$this->executeViewHelper(array('name' => $name, 'value' => $value));
-		$this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
-	}
+    /**
+     * @test
+     */
+    public function canSetRegister()
+    {
+        $GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(array(), 1, 1));
+        $name = uniqid();
+        $value = uniqid();
+        $this->executeViewHelper(array('name' => $name, 'value' => $value));
+        $this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canSetVariableWithValueFromTagContent() {
-		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(array(), 1, 1));
-		$name = uniqid();
-		$value = uniqid();
-		$this->executeViewHelperUsingTagContent('Text', $value, array('name' => $name));
-		$this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
-	}
-
+    /**
+     * @test
+     */
+    public function canSetVariableWithValueFromTagContent()
+    {
+        $GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(array(), 1, 1));
+        $name = uniqid();
+        $value = uniqid();
+        $this->executeViewHelperUsingTagContent('Text', $value, array('name' => $name));
+        $this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
+    }
 }

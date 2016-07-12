@@ -32,70 +32,99 @@ use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
  *
  * To have the widest Browser-Support you should consider using a polyfill like:
  * http://scottjehl.github.io/picturefill/
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
  */
-class ImageViewHelper extends AbstractImageViewHelper {
+class ImageViewHelper extends AbstractImageViewHelper
+{
 
-	use SourceSetViewHelperTrait;
+    use SourceSetViewHelperTrait;
 
-	/**
-	 * name of the tag to be created by this view helper
-	 *
-	 * @var string
-	 * @api
-	 */
-	protected $tagName = 'img';
+    /**
+     * name of the tag to be created by this view helper
+     *
+     * @var string
+     * @api
+     */
+    protected $tagName = 'img';
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('usemap', 'string', 'A hash-name reference to a map element with which to associate the image.', FALSE);
-		$this->registerTagAttribute('ismap', 'string', 'Specifies that its img element provides access to a server-side image map.', FALSE, '');
-		$this->registerTagAttribute('alt', 'string', 'Equivalent content for those who cannot process images or who have image loading disabled.', TRUE);
-		$this->registerArgument('srcset', 'mixed', 'List of width used for the srcset variants (either CSV, array or implementing Traversable)', FALSE, NULL);
-		$this->registerArgument('srcsetDefault', 'integer', 'Default width to use as a fallback for browsers that don\'t support srcset', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
+        $this->registerTagAttribute(
+            'usemap',
+            'string',
+            'A hash-name reference to a map element with which to associate the image.'
+        );
+        $this->registerTagAttribute(
+            'ismap',
+            'string',
+            'Specifies that its img element provides access to a server-side image map.',
+            false,
+            ''
+        );
+        $this->registerTagAttribute(
+            'alt',
+            'string',
+            'Equivalent content for those who cannot process images or who have image loading disabled.',
+            true
+        );
+        $this->registerArgument(
+            'srcset',
+            'mixed',
+            'List of width used for the srcset variants (either CSV, array or implementing Traversable)'
+        );
+        $this->registerArgument(
+            'srcsetDefault',
+            'integer',
+            'Default width to use as a fallback for browsers that don\'t support srcset'
+        );
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$this->preprocessImage();
+    /**
+     * Render method
+     *
+     * @return string
+     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     */
+    public function render()
+    {
+        $this->preprocessImage();
+        return $this->renderTag();
+    }
 
-		if (FALSE === empty($this->arguments['srcset'])) {
-			$srcSetVariants = $this->addSourceSet($this->tag, $this->mediaSource);
-		}
+    /**
+     * @return string
+     */
+    public function renderTag()
+    {
+        if (false === empty($this->arguments['srcset'])) {
+            $srcSetVariants = $this->addSourceSet($this->tag, $this->mediaSource);
+        }
 
-		if (FALSE === empty($srcSetVariants) && FALSE === empty($this->arguments['srcsetDefault'])) {
-			$srcSetVariantDefault = $srcSetVariants[$this->arguments['srcsetDefault']];
-			$src = $srcSetVariantDefault['src'];
-			$width = $srcSetVariantDefault['width'];
-			$height = $srcSetVariantDefault['height'];
-		} else {
-			$src = $this->preprocessSourceUri($this->mediaSource);
-			$width = $this->imageInfo[0];
-			$height = $this->imageInfo[1];
-		}
+        if (false === empty($srcSetVariants) && false === empty($this->arguments['srcsetDefault'])) {
+            $srcSetVariantDefault = $srcSetVariants[$this->arguments['srcsetDefault']];
+            $src = $srcSetVariantDefault['src'];
+            $width = $srcSetVariantDefault['width'];
+            $height = $srcSetVariantDefault['height'];
+        } else {
+            $src = $this->preprocessSourceUri($this->mediaSource);
+            $width = $this->imageInfo[0];
+            $height = $this->imageInfo[1];
+        }
 
-		$this->tag->addAttribute('width', $width);
-		$this->tag->addAttribute('height', $height);
-		$this->tag->addAttribute('src', $src);
+        $this->tag->addAttribute('width', $width);
+        $this->tag->addAttribute('height', $height);
+        $this->tag->addAttribute('src', $src);
 
-		if (TRUE === empty($this->arguments['title'])) {
-			$this->tag->addAttribute('title', $this->arguments['alt']);
-		}
-		return $this->tag->render();
-	}
-
+        if (true === empty($this->arguments['title'])) {
+            $this->tag->addAttribute('title', $this->arguments['alt']);
+        }
+        return $this->tag->render();
+    }
 }

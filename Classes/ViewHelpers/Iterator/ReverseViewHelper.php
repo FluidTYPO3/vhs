@@ -18,40 +18,38 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *
  * Reverses the order of every member of an Iterator/Array,
  * preserving the original keys.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
  */
-class ReverseViewHelper extends AbstractViewHelper {
+class ReverseViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('subject', 'mixed', 'The input array/Traversable to reverse', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('subject', 'mixed', 'The input array/Traversable to reverse');
+    }
 
-	/**
-	 * "Render" method - sorts a target list-type target. Either $array or
-	 * $objectStorage must be specified. If both are, ObjectStorage takes precedence.
-	 *
-	 * Returns the same type as $subject. Ignores NULL values which would be
-	 * OK to use in an f:for (empty loop as result)
-	 *
-	 * @throws \Exception
-	 * @return mixed
-	 */
-	public function render() {
-		$array = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-		$array = array_reverse($array, TRUE);
-		return $this->renderChildrenWithVariableOrReturnInput($array);
-	}
-
+    /**
+     * "Render" method - sorts a target list-type target. Either $array or
+     * $objectStorage must be specified. If both are, ObjectStorage takes precedence.
+     *
+     * Returns the same type as $subject. Ignores NULL values which would be
+     * OK to use in an f:for (empty loop as result)
+     *
+     * @throws \Exception
+     * @return mixed
+     */
+    public function render()
+    {
+        $array = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $array = array_reverse($array, true);
+        return $this->renderChildrenWithVariableOrReturnInput($array);
+    }
 }

@@ -12,41 +12,39 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Intersects arrays/Traversables $a and $b into an array
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Intersects arrays/Traversables $a and $b into an array.
  */
-class IntersectViewHelper extends AbstractViewHelper {
+class IntersectViewHelper extends AbstractViewHelper
+{
 
-	use ArrayConsumingViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
 
-		$this->registerArgument('a', 'mixed', 'First Array/Traversable/CSV', FALSE, NULL);
-		$this->registerArgument('b', 'mixed', 'Second Array/Traversable/CSV', TRUE);
-	}
+        $this->registerArgument('a', 'mixed', 'First Array/Traversable/CSV');
+        $this->registerArgument('b', 'mixed', 'Second Array/Traversable/CSV', true);
+    }
 
-	/**
-	 * @return array
-	 */
-	public function render() {
-		$a = $this->arguments['a'];
-		if (NULL === $a) {
-			$a = $this->renderChildren();
-		}
+    /**
+     * @return array
+     */
+    public function render()
+    {
+        $a = $this->arguments['a'];
+        if (null === $a) {
+            $a = $this->renderChildren();
+        }
 
-		$a = $this->arrayFromArrayOrTraversableOrCSV($a);
-		$b = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
+        $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+        $b = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
 
-		return array_intersect($a, $b);
-	}
-
+        return array_intersect($a, $b);
+    }
 }

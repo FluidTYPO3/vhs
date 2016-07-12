@@ -12,38 +12,36 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Returns the last element of $haystack
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Returns the last element of $haystack.
  */
-class LastViewHelper extends AbstractViewHelper {
+class LastViewHelper extends AbstractViewHelper
+{
 
-	use ArrayConsumingViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle');
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return mixed|NULL
-	 */
-	public function render() {
-		$haystack = $this->arguments['haystack'];
-		if (NULL === $haystack) {
-			$haystack = $this->renderChildren();
-		}
-		$haystack = $this->arrayFromArrayOrTraversableOrCSV($haystack);
+    /**
+     * Render method
+     *
+     * @return mixed|NULL
+     */
+    public function render()
+    {
+        $haystack = $this->arguments['haystack'];
+        if (null === $haystack) {
+            $haystack = $this->renderChildren();
+        }
+        $haystack = $this->arrayFromArrayOrTraversableOrCSV($haystack);
 
-		return array_pop($haystack);
-	}
-
+        return array_pop($haystack);
+    }
 }

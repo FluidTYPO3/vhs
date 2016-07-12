@@ -11,20 +11,19 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\System;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Cedric Ziel <cedric@cedric-ziel.com>
- * @package Vhs
+ * Class UniqIdViewHelperTest
  */
-class UniqIdViewHelperTest extends AbstractViewHelperTest {
+class UniqIdViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsUniqueIds() {
-		$arguments = array('prefix' => '', 'moreEntropy' => FALSE);
-		$result1 = $this->executeViewHelper($arguments);
-		$result2 = $this->executeViewHelper($arguments);
-		$this->assertNotEquals($result1, $result2);
-	}
-
+    /**
+     * @test
+     */
+    public function returnsUniqueIds()
+    {
+        $arguments = array('prefix' => '', 'moreEntropy' => false);
+        $result1 = $this->executeViewHelper($arguments);
+        $result2 = $this->executeViewHelper($arguments);
+        $this->assertNotEquals($result1, $result2);
+    }
 }

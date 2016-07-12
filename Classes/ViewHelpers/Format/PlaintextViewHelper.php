@@ -18,27 +18,24 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Expects that you use f:format.htmlentities or similar
  * if you do not want HTML to be displayed as HTML, or
  * simply want it stripped out.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
-class PlaintextViewHelper extends AbstractViewHelper {
+class PlaintextViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Trims content, then trims each line of content
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	public function render($content = NULL) {
-		if (NULL === $content) {
-			$content = $this->renderChildren();
-		}
-		$content = trim($content);
-		$lines = explode("\n", $content);
-		$lines = array_map('trim', $lines);
-		return implode(LF, $lines);
-	}
-
+    /**
+     * Trims content, then trims each line of content
+     *
+     * @param string $content
+     * @return string
+     */
+    public function render($content = null)
+    {
+        if (null === $content) {
+            $content = $this->renderChildren();
+        }
+        $content = trim($content);
+        $lines = explode("\n", $content);
+        $lines = array_map('trim', $lines);
+        return implode(LF, $lines);
+    }
 }

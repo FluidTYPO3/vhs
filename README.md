@@ -64,7 +64,7 @@ $asset->finalize(); // manually created Assets must be finalized before they sho
 The PHP above does the exact same as this TypoScript:
 
 ```
-plugin.tx_vhs.settngs.asset.demo.path = fileadmin/demo.js
+plugin.tx_vhs.settings.asset.demo.path = fileadmin/demo.js
 ```
 
 Which is a short form of:

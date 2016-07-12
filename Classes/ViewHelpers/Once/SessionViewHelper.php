@@ -20,54 +20,54 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * In addition the ViewHelper is a ConditionViewHelper, which
  * means you can utilize the f:then and f:else child nodes as
  * well as the "then" and "else" arguments.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Once
  */
-class SessionViewHelper extends AbstractOnceViewHelper {
+class SessionViewHelper extends AbstractOnceViewHelper
+{
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		if ('' === session_id()) {
-			session_start();
-		}
-		return parent::render();
-	}
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        if ('' === session_id()) {
+            session_start();
+        }
+        return parent::render();
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function storeIdentifier() {
-		$identifier = $this->getIdentifier();
-		$index = get_class($this);
-		if (FALSE === is_array($_SESSION[$index])) {
-			$_SESSION[$index] = array();
-		}
-		$_SESSION[$index][$identifier] = time();
-	}
+    /**
+     * @return void
+     */
+    protected function storeIdentifier()
+    {
+        $identifier = $this->getIdentifier();
+        $index = get_class($this);
+        if (false === is_array($_SESSION[$index])) {
+            $_SESSION[$index] = [];
+        }
+        $_SESSION[$index][$identifier] = time();
+    }
 
-	/**
-	 * @return boolean
-	 */
-	protected function assertShouldSkip() {
-		$identifier = $this->getIdentifier();
-		$index = get_class($this);
-		return (boolean) (TRUE === isset($_SESSION[$index][$identifier]));
-	}
+    /**
+     * @return boolean
+     */
+    protected function assertShouldSkip()
+    {
+        $identifier = $this->getIdentifier();
+        $index = get_class($this);
+        return (boolean) (true === isset($_SESSION[$index][$identifier]));
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function removeIfExpired() {
-		$identifier = $this->getIdentifier();
-		$index = get_class($this);
-		$existsInSession = (boolean) (TRUE === isset($_SESSION[$index]) && TRUE === isset($_SESSION[$index][$identifier]));
-		if (TRUE === $existsInSession && time() - $this->arguments['ttl'] >= $_SESSION[$index][$identifier]) {
-			unset($_SESSION[$index][$identifier]);
-		}
-	}
-
+    /**
+     * @return void
+     */
+    protected function removeIfExpired()
+    {
+        $id = $this->getIdentifier();
+        $index = get_class($this);
+        $existsInSession = (boolean) (true === isset($_SESSION[$index]) && true === isset($_SESSION[$index][$id]));
+        if (true === $existsInSession && time() - $this->arguments['ttl'] >= $_SESSION[$index][$id]) {
+            unset($_SESSION[$index][$id]);
+        }
+    }
 }

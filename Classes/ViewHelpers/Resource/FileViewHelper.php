@@ -11,36 +11,34 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 
 /**
- * ViewHelper to output or assign FAL sys_file records
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource
+ * ViewHelper to output or assign FAL sys_file records.
  */
-class FileViewHelper extends AbstractResourceViewHelper {
+class FileViewHelper extends AbstractResourceViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerAsArgument();
-	}
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerAsArgument();
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		$files = $this->getFiles(TRUE);
-		if (1 === count($files)) {
-			$files = array_shift($files);
-		}
-		return $this->renderChildrenWithVariableOrReturnInput($files);
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        $files = $this->getFiles(true);
+        if (1 === count($files)) {
+            $files = array_shift($files);
+        }
+        return $this->renderChildrenWithVariableOrReturnInput($files);
+    }
 }

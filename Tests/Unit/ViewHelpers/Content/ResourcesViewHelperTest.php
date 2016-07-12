@@ -11,15 +11,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Content;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class ResourcesViewHelperTest
  */
-class ResourcesViewHelperTest extends AbstractViewHelperTest {
+class ResourcesViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRenderFailsWithoutFieldArgument() {
-		$this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument was not found');
-		$this->executeViewHelper();
-	}
-
+    public function testRenderFailsWithoutFieldArgument()
+    {
+        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument was not found');
+        $this->executeViewHelper();
+    }
 }

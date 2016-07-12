@@ -11,64 +11,66 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class FilterViewHelperTest
  */
-class FilterViewHelperTest extends AbstractViewHelperTest {
+class FilterViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function nullSubjectCallsRenderChildrenToReadValue() {
-		$subject = array('test' => 'test');
-		$arguments = array(
-			'preserveKeys' => TRUE
-		);
-		$result = $this->executeViewHelperUsingTagContent('Array', $subject, $arguments);
-		$this->assertSame($subject, $result);
-	}
+    /**
+     * @test
+     */
+    public function nullSubjectCallsRenderChildrenToReadValue()
+    {
+        $subject = array('test' => 'test');
+        $arguments = array(
+            'preserveKeys' => true
+        );
+        $result = $this->executeViewHelperUsingTagContent('Array', $subject, $arguments);
+        $this->assertSame($subject, $result);
+    }
 
-	/**
-	 * @test
-	 */
-	public function filteringEmptySubjectReturnsEmptyArrayOnInvalidSubject() {
-		$arguments = array(
-			'subject' => new \DateTime('now')
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertSame($result, array());
-	}
+    /**
+     * @test
+     */
+    public function filteringEmptySubjectReturnsEmptyArrayOnInvalidSubject()
+    {
+        $arguments = array(
+            'subject' => new \DateTime('now')
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertSame($result, array());
+    }
 
-	/**
-	 * @test
-	 */
-	public function supportsIterators() {
-		$array = array('test' => 'test');
-		$iterator = new \ArrayIterator($array);
-		$arguments = array(
-			'subject' => $iterator,
-			'filter' => 'test',
-			'preserveKeys' => TRUE
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertSame($result, $array);
-	}
+    /**
+     * @test
+     */
+    public function supportsIterators()
+    {
+        $array = array('test' => 'test');
+        $iterator = new \ArrayIterator($array);
+        $arguments = array(
+            'subject' => $iterator,
+            'filter' => 'test',
+            'preserveKeys' => true
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertSame($result, $array);
+    }
 
-	/**
-	 * @test
-	 */
-	public function supportsPropertyName() {
-		$array = array(array('test' => 'test'));
-		$iterator = new \ArrayIterator($array);
-		$arguments = array(
-			'subject' => $iterator,
-			'filter' => 'test',
-			'propertyName' => 'test',
-			'preserveKeys' => TRUE
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertSame($result, $array);
-	}
-
+    /**
+     * @test
+     */
+    public function supportsPropertyName()
+    {
+        $array = array(array('test' => 'test'));
+        $iterator = new \ArrayIterator($array);
+        $arguments = array(
+            'subject' => $iterator,
+            'filter' => 'test',
+            'propertyName' => 'test',
+            'preserveKeys' => true
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertSame($result, $array);
+    }
 }

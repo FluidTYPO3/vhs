@@ -11,20 +11,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
 use FluidTYPO3\Vhs\ViewHelpers\Content\Random\RenderViewHelper;
 
 /**
- * ViewHelper for fetching a random content element in Fluid page templates
- *
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Content\Random
+ * ViewHelper for fetching a random content element in Fluid page templates.
  */
-class GetViewHelper extends RenderViewHelper {
+class GetViewHelper extends RenderViewHelper
+{
 
-	/**
-	 * Initialize ViewHelper arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->overrideArgument('render', 'boolean', 'Optional returning variable as original table rows', FALSE, FALSE);
-	}
-
+    /**
+     * Initialize ViewHelper arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument('render', 'boolean', 'Returning variable as original table rows', false, false);
+    }
 }

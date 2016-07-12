@@ -13,99 +13,104 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class HasValidatorViewHelperTest
  */
-class HasValidatorViewHelperTest extends AbstractViewHelperTest {
+class HasValidatorViewHelperTest extends AbstractViewHelperTest
+{
 
-	public function testRenderThenWithSingleProperty() {
-		$domainObject = new Foo();
-		$arguments = array(
-			'validatorName' => 'NotEmpty',
-			'property' => 'bar',
-			'object' => $domainObject,
-			'then' => 'then'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    public function testRenderThenWithSingleProperty()
+    {
+        $domainObject = new Foo();
+        $arguments = array(
+            'validatorName' => 'NotEmpty',
+            'property' => 'bar',
+            'object' => $domainObject,
+            'then' => 'then'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	public function testRenderElseWithSingleProperty() {
-		$domainObject = new Foo();
-		$arguments = array(
-			'validatorName' => 'NotEmpty',
-			'property' => 'foo',
-			'object' => $domainObject,
-			'else' => 'else'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    public function testRenderElseWithSingleProperty()
+    {
+        $domainObject = new Foo();
+        $arguments = array(
+            'validatorName' => 'NotEmpty',
+            'property' => 'foo',
+            'object' => $domainObject,
+            'else' => 'else'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	public function testRenderThenWithNestedSingleProperty() {
-		$domainObject = new Bar();
-		$arguments = array(
-			'validatorName' => 'NotEmpty',
-			'property' => 'foo.bar',
-			'object' => $domainObject,
-			'then' => 'then'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    public function testRenderThenWithNestedSingleProperty()
+    {
+        $domainObject = new Bar();
+        $arguments = array(
+            'validatorName' => 'NotEmpty',
+            'property' => 'foo.bar',
+            'object' => $domainObject,
+            'then' => 'then'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	public function testRenderElseWithNestedSingleProperty() {
-		$domainObject = new Bar();
-		$arguments = array(
-			'validatorName' => 'NotEmpty',
-			'property' => 'foo.foo',
-			'object' => $domainObject,
-			'else' => 'else'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    public function testRenderElseWithNestedSingleProperty()
+    {
+        $domainObject = new Bar();
+        $arguments = array(
+            'validatorName' => 'NotEmpty',
+            'property' => 'foo.foo',
+            'object' => $domainObject,
+            'else' => 'else'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	public function testRenderThenWithNestedMultiProperty() {
-		$domainObject = new Bar();
-		$arguments = array(
-			'validatorName' => 'NotEmpty',
-			'property' => 'bars.bar.foo.bar',
-			'object' => $domainObject,
-			'then' => 'then'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('then', $result);
+    public function testRenderThenWithNestedMultiProperty()
+    {
+        $domainObject = new Bar();
+        $arguments = array(
+            'validatorName' => 'NotEmpty',
+            'property' => 'bars.bar.foo.bar',
+            'object' => $domainObject,
+            'then' => 'then'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 
-	public function testRenderElseWithNestedMultiProperty() {
-		$domainObject = new Bar();
-		$arguments = array(
-			'validatorName' => 'NotEmpty',
-			'property' => 'bars.foo.foo',
-			'object' => $domainObject,
-			'else' => 'else'
-		);
-		$result = $this->executeViewHelper($arguments);
-		$this->assertEquals('else', $result);
+    public function testRenderElseWithNestedMultiProperty()
+    {
+        $domainObject = new Bar();
+        $arguments = array(
+            'validatorName' => 'NotEmpty',
+            'property' => 'bars.foo.foo',
+            'object' => $domainObject,
+            'else' => 'else'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
 
-		$staticResult = $this->executeViewHelperStatic($arguments);
-		$this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-	}
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

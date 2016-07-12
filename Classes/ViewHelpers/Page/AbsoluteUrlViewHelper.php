@@ -8,27 +8,34 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Returns a full, absolute URL to this page with all arguments
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * Returns a full, absolute URL to this page with all arguments.
  */
-class AbsoluteUrlViewHelper extends AbstractViewHelper {
+class AbsoluteUrlViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-		if (0 !== strpos($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
-			$url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
-		}
-		return $url;
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+        if (0 !== strpos($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
+            $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+        }
+        return $url;
+    }
 }

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * this can be done (from any extension, not just "foo")
  *
  *     <v:render.template
- * 	    file="EXT:foo/Resources/Private/Templates/Action/Show.html"
+ *      file="EXT:foo/Resources/Private/Templates/Action/Show.html"
  *      variables="{object: customLoadedObject}"
  *      paths="{v:variable.typoscript(path: 'plugin.tx_foo.view')}"
  *      format="xml" />
@@ -52,44 +52,67 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Consider using Render/RequestViewHelper if you require a
  * completely isolated rendering identical to that which takes
  * place when rendering an Extbase plugin's content object.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
-class TemplateViewHelper extends AbstractRenderViewHelper {
+class TemplateViewHelper extends AbstractRenderViewHelper
+{
 
-	/**
-	 * Renders a template using custom variables, format and paths
-	 *
-	 * @param string $file Path to template file, EXT:myext/... paths supported
-	 * @param array $variables Optional array of template variables when rendering
-	 * @param string $format Optional format of the template(s) being rendered
-	 * @param string $paths Optional array (plugin.tx_myext.view style) of paths, EXT:mypath/... paths supported
-	 * @return string
-	 */
-	public function render($file = NULL, $variables = array(), $format = NULL, $paths = NULL) {
-		if (NULL === $file) {
-			$file = $this->renderChildren();
-		}
-		$file = GeneralUtility::getFileAbsFileName($file);
-		$view = $this->getPreparedView();
-		$view->setTemplatePathAndFilename($file);
-		$view->assignMultiple($variables);
-		if (NULL !== $format) {
-			$view->setFormat($format);
-		}
-		if (TRUE === is_array($paths)) {
-			if (TRUE === isset($paths['layoutRootPath'])) {
-				$paths['layoutRootPath'] = 0 === strpos($paths['layoutRootPath'], 'EXT:') ? GeneralUtility::getFileAbsFilename($paths['layoutRootPath']) : $paths['layoutRootPath'];
-				$view->setLayoutRootPath($paths['layoutRootPath']);
-			}
-			if (TRUE === isset($paths['partialRootPath'])) {
-				$paths['partialRootPath'] = 0 === strpos($paths['partialRootPath'], 'EXT:') ? GeneralUtility::getFileAbsFilename($paths['partialRootPath']) : $paths['partialRootPath'];
-				$view->setPartialRootPath($paths['partialRootPath']);
-			}
-		}
-		return $this->renderView($view);
-	}
+    public function initializeArguments()
+    {
+        $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported', false);
+        $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering', false);
+        $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered', false);
+        $this->registerArgument(
+            'paths',
+            'array',
+            'Optional array of arrays of layout and partial root paths, EXT:mypath/... paths supported',
+            false
+        );
+    }
 
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $file = $this->arguments['file'];
+        if (null === $file) {
+            $file = $this->renderChildren();
+        }
+        $file = GeneralUtility::getFileAbsFileName($file);
+        $view = $this->getPreparedView();
+        $view->setTemplatePathAndFilename($file);
+        if (is_array($this->arguments['variables'])) {
+            $view->assignMultiple($this->arguments['variables']);
+        }
+        $format = $this->arguments['format'];
+        if (null !== $format) {
+            $view->setFormat($format);
+        }
+        $paths = $this->arguments['paths'];
+        if (is_array($paths)) {
+            if (isset($paths['layoutRootPaths']) && is_array($paths['layoutRootPaths'])) {
+                $layoutRootPaths = $this->processPathsArray($paths['layoutRootPaths']);
+                $view->setLayoutRootPaths($layoutRootPaths);
+            }
+            if (isset($paths['partialRootPaths']) && is_array($paths['partialRootPaths'])) {
+                $partialRootPaths = $this->processPathsArray($paths['partialRootPaths']);
+                $view->setPartialRootPaths($partialRootPaths);
+            }
+        }
+        return $this->renderView($view);
+    }
+
+    /**
+     * @param array $paths
+     * @return array
+     */
+    protected function processPathsArray(array $paths)
+    {
+        $pathsArray = [];
+        foreach ($paths as $key => $path) {
+            $pathsArray[$key] = (0 === strpos($path, 'EXT:')) ? GeneralUtility::getFileAbsFileName($path) : $path;
+        }
+
+        return $pathsArray;
+    }
 }

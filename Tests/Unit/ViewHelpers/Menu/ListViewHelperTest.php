@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -8,11 +8,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class ListViewHelperTest
  */
-class SwitchViewHelperTest extends AbstractViewHelperTest {
+class ListViewHelperTest extends AbstractViewHelperTest
+{
 
 }

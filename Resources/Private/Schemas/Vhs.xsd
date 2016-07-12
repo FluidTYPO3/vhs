@@ -19085,6 +19085,13 @@ default="false">
 </xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute type="xsd:boolean" name="addQueryString" default="false">
+<xsd:annotation>
+<xsd:documentation>
+<![CDATA[If TRUE, the current query parameters will be kept in the URI]]>
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 </xsd:complexType>
 </xsd:element>
 <xsd:element name="page.header.canonical">

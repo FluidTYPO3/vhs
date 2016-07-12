@@ -11,35 +11,35 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class ReplaceViewHelperTest
  */
-class ReplaceViewHelperTest extends AbstractViewHelperTest {
+class ReplaceViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function canReplaceUsingArguments() {
-		$arguments = array(
-			'content' => 'foobar',
-			'substring' => 'foo',
-			'replacement' => ''
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame('bar', $test);
-	}
+    /**
+     * @test
+     */
+    public function canReplaceUsingArguments()
+    {
+        $arguments = array(
+            'content' => 'foobar',
+            'substring' => 'foo',
+            'replacement' => ''
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('bar', $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canReplaceUsingTagContent() {
-		$arguments = array(
-			'substring' => 'foo',
-			'replacement' => ''
-		);
-		$test = $this->executeViewHelperUsingTagContent('Text', 'foobar', $arguments);
-		$this->assertSame('bar', $test);
-	}
-
+    /**
+     * @test
+     */
+    public function canReplaceUsingTagContent()
+    {
+        $arguments = array(
+            'substring' => 'foo',
+            'replacement' => ''
+        );
+        $test = $this->executeViewHelperUsingTagContent('Text', 'foobar', $arguments);
+        $this->assertSame('bar', $test);
+    }
 }

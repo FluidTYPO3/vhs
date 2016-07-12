@@ -13,43 +13,44 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Tidy-processes a string (HTML source), applying proper
  * indentation.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
-class TidyViewHelper extends AbstractViewHelper {
+class TidyViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @var boolean
-	 */
-	protected $hasTidy = FALSE;
+    /**
+     * @var boolean
+     */
+    protected $hasTidy = false;
 
-	/**
-	 * @return void
-	 */
-	public function initialize() {
-		$this->hasTidy = class_exists('tidy');
-	}
+    /**
+     * @return void
+     */
+    public function initialize()
+    {
+        $this->hasTidy = class_exists('tidy');
+    }
 
-	/**
-	 * Trims content, then trims each line of content
-	 *
-	 * @param string $content
-	 * @param string $encoding
-	 * @throws \RuntimeException
-	 * @return string
-	 */
-	public function render($content = NULL, $encoding = 'utf8') {
-		if (NULL === $content) {
-			$content = $this->renderChildren();
-		}
-		if (TRUE === $this->hasTidy) {
-			$tidy = tidy_parse_string($content, array(), $encoding);
-			$tidy->cleanRepair();
-			return (string) $tidy;
-		}
-		throw new \RuntimeException('TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.', 1352059753);
-	}
-
+    /**
+     * Trims content, then trims each line of content
+     *
+     * @param string $content
+     * @param string $encoding
+     * @throws \RuntimeException
+     * @return string
+     */
+    public function render($content = null, $encoding = 'utf8')
+    {
+        if (null === $content) {
+            $content = $this->renderChildren();
+        }
+        if (true === $this->hasTidy) {
+            $tidy = tidy_parse_string($content, [], $encoding);
+            $tidy->cleanRepair();
+            return (string) $tidy;
+        }
+        throw new \RuntimeException(
+            'TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.',
+            1352059753
+        );
+    }
 }

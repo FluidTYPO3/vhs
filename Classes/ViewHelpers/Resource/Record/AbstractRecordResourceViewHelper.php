@@ -15,171 +15,197 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource\Record
+ * Base class: Record Resource ViewHelpers
  */
-abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface {
+abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface
+{
 
-	use TemplateVariableViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @var string
-	 */
-	protected $table;
+    /**
+     * @var string
+     */
+    protected $table;
 
-	/**
-	 * @var string
-	 */
-	protected $field;
+    /**
+     * @var string
+     */
+    protected $field;
 
-	/**
-	 * @var string
-	 */
-	protected $idField = 'uid';
+    /**
+     * @var string
+     */
+    protected $idField = 'uid';
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @return void
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('table', 'string', 'The table to lookup records.', TRUE);
-		$this->registerArgument('field', 'string', 'The field of the table associated to resources.', TRUE);
-		$this->registerArgument('record', 'array', 'The actual record. Alternatively you can use the "uid" argument.', FALSE, NULL);
-		$this->registerArgument('uid', 'integer', 'The uid of the record. Alternatively you can use the "record" argument.', FALSE, NULL);
-		$this->registerArgument('as', 'string', 'If specified, a template variable with this name containing the requested data will be inserted instead of returning it.', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('table', 'string', 'The table to lookup records.', true);
+        $this->registerArgument('field', 'string', 'The field of the table associated to resources.', true);
+        $this->registerArgument(
+            'record',
+            'array',
+            'The actual record. Alternatively you can use the "uid" argument.',
+            false,
+            null
+        );
+        $this->registerArgument(
+            'uid',
+            'integer',
+            'The uid of the record. Alternatively you can use the "record" argument.',
+            false,
+            null
+        );
+        $this->registerArgument(
+            'as',
+            'string',
+            'If specified, a template variable with this name containing the requested data will be inserted ' .
+            'instead of returning it.',
+            false,
+            null
+        );
+    }
 
-	/**
-	 * @param mixed $identity
-	 * @return mixed
-	 */
-	public function getResource($identity) {
-		return $identity;
-	}
+    /**
+     * @param mixed $identity
+     * @return mixed
+     */
+    public function getResource($identity)
+    {
+        return $identity;
+    }
 
-	/**
-	 * @param array $record
-	 * @return array
-	 * @throws Exception
-	 */
-	public function getResources($record) {
-		$field = $this->getField();
+    /**
+     * @param array $record
+     * @return array
+     * @throws Exception
+     */
+    public function getResources($record)
+    {
+        $field = $this->getField();
 
-		if (FALSE === isset($record[$field])) {
-			throw new Exception('The "field" argument was not found on the selected record.', 1384612728);
-		}
+        if (false === isset($record[$field])) {
+            throw new Exception('The "field" argument was not found on the selected record.', 1384612728);
+        }
 
-		if (TRUE === empty($record[$field])) {
-			return array();
-		}
+        if (true === empty($record[$field])) {
+            return [];
+        }
 
-		return GeneralUtility::trimExplode(',', $record[$field]);
-	}
+        return GeneralUtility::trimExplode(',', $record[$field]);
+    }
 
-	/**
-	 * @return string
-	 * @throws Exception
-	 */
-	public function getTable() {
-		$table = $this->arguments['table'];
-		if (NULL === $table) {
-			$table = $this->table;
-		}
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getTable()
+    {
+        $table = $this->arguments['table'];
+        if (null === $table) {
+            $table = $this->table;
+        }
 
-		if (TRUE === empty($table) || FALSE === is_string($table)) {
-			throw new Exception('The "table" argument must be specified and must be a string.', 1384611336);
-		}
+        if (true === empty($table) || false === is_string($table)) {
+            throw new Exception('The "table" argument must be specified and must be a string.', 1384611336);
+        }
 
-		return $table;
-	}
+        return $table;
+    }
 
-	/**
-	 * @return string
-	 * @throws Exception
-	 */
-	public function getField() {
-		$field = $this->arguments['field'];
-		if (NULL === $field) {
-			$field = $this->field;
-		}
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getField()
+    {
+        $field = $this->arguments['field'];
+        if (null === $field) {
+            $field = $this->field;
+        }
 
-		if (TRUE === empty($field) || FALSE === is_string($field)) {
-			throw new Exception('The "field" argument must be specified and must be a string.', 1384611355);
-		}
+        if (true === empty($field) || false === is_string($field)) {
+            throw new Exception('The "field" argument must be specified and must be a string.', 1384611355);
+        }
 
-		return $field;
-	}
+        return $field;
+    }
 
-	/**
-	 * @param mixed $id
-	 * @return array
-	 */
-	public function getRecord($id) {
-		$table = $this->getTable();
-		$idField = $this->idField;
+    /**
+     * @param mixed $id
+     * @return array
+     */
+    public function getRecord($id)
+    {
+        $table = $this->getTable();
+        $idField = $this->idField;
 
-		$sqlIdField = $GLOBALS['TYPO3_DB']->quoteStr($idField, $table);
-		$sqlId = $GLOBALS['TYPO3_DB']->fullQuoteStr($id, $table);
+        $sqlIdField = $GLOBALS['TYPO3_DB']->quoteStr($idField, $table);
+        $sqlId = $GLOBALS['TYPO3_DB']->fullQuoteStr($id, $table);
 
-		return reset($GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $sqlIdField . ' = ' . $sqlId));
-	}
+        return reset($GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $sqlIdField . ' = ' . $sqlId));
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getActiveRecord() {
-		return $this->configurationManager->getContentObject()->data;
-	}
+    /**
+     * @return array
+     */
+    public function getActiveRecord()
+    {
+        return $this->configurationManager->getContentObject()->data;
+    }
 
-	/**
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function render() {
-		$record = $this->arguments['record'];
-		$uid = $this->arguments['uid'];
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public function render()
+    {
+        $record = $this->arguments['record'];
+        $uid = $this->arguments['uid'];
 
-		if (NULL === $record) {
-			if (NULL === $uid) {
-				$record = $this->getActiveRecord();
-			} else {
-				$record = $this->getRecord($uid);
-			}
-		}
+        if (null === $record) {
+            if (null === $uid) {
+                $record = $this->getActiveRecord();
+            } else {
+                $record = $this->getRecord($uid);
+            }
+        }
 
-		if (NULL === $record) {
-			throw new Exception('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
-		}
+        if (null === $record) {
+            throw new Exception('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
+        }
 
-		// attempt to load resources. If any Exceptions happen, transform them to
-		// ViewHelperExceptions which render as an inline text error message.
-		try {
-			$resources = $this->getResources($record);
-		} catch (\Exception $error) {
-			// we are doing the pokemon-thing and catching the very top level
-			// of Exception because the range of Exceptions that are possibly
-			// thrown by the getResources() method in subclasses are not
-			// extended from a shared base class like RuntimeException. Thus,
-			// we are forced to "catch them all" - but we also output them.
-			throw new Exception($error->getMessage(), $error->getCode());
-		}
-		return $this->renderChildrenWithVariableOrReturnInput($resources);
-	}
-
+        // attempt to load resources. If any Exceptions happen, transform them to
+        // ViewHelperExceptions which render as an inline text error message.
+        try {
+            $resources = $this->getResources($record);
+        } catch (\Exception $error) {
+            // we are doing the pokemon-thing and catching the very top level
+            // of Exception because the range of Exceptions that are possibly
+            // thrown by the getResources() method in subclasses are not
+            // extended from a shared base class like RuntimeException. Thus,
+            // we are forced to "catch them all" - but we also output them.
+            throw new Exception($error->getMessage(), $error->getCode());
+        }
+        return $this->renderChildrenWithVariableOrReturnInput($resources);
+    }
 }

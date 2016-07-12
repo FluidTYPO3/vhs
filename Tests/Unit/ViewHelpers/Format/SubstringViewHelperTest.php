@@ -11,48 +11,49 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class SubstringViewHelperTest
  */
-class SubstringViewHelperTest extends AbstractViewHelperTest {
+class SubstringViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function canRenderUsingArguments() {
-		$arguments = array(
-			'content' => 'foobar',
-			'length' => NULL,
-			'start' => 3
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame('bar', $test);
-	}
+    /**
+     * @test
+     */
+    public function canRenderUsingArguments()
+    {
+        $arguments = array(
+            'content' => 'foobar',
+            'length' => null,
+            'start' => 3
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('bar', $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canRenderWithLengthArgument() {
-		$arguments = array(
-			'content' => 'foobar',
-			'length' => 3,
-			'start' => 2
-		);
-		$test = $this->executeViewHelper($arguments);
-		$this->assertSame('oba', $test);
-	}
+    /**
+     * @test
+     */
+    public function canRenderWithLengthArgument()
+    {
+        $arguments = array(
+            'content' => 'foobar',
+            'length' => 3,
+            'start' => 2
+        );
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('oba', $test);
+    }
 
-	/**
-	 * @test
-	 */
-	public function canRenderUsingTagContent() {
-		$arguments = array(
-			'length' => NULL,
-			'start' => 3
-		);
-		$test = $this->executeViewHelperUsingTagContent('Text', 'foobar', $arguments);
-		$this->assertSame('bar', $test);
-	}
-
+    /**
+     * @test
+     */
+    public function canRenderUsingTagContent()
+    {
+        $arguments = array(
+            'length' => null,
+            'start' => 3
+        );
+        $test = $this->executeViewHelperUsingTagContent('Text', 'foobar', $arguments);
+        $this->assertSame('bar', $test);
+    }
 }

@@ -11,10 +11,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class UncacheViewHelperTest
  */
-class UncacheViewHelperTest extends AbstractViewHelperTest {
+class UncacheViewHelperTest extends AbstractViewHelperTest
+{
 
 }

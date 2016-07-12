@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -18,25 +20,23 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *     <!-- adds exactly one hour to a DateTime and formats it -->
  *     <f:format.date format="H:i">{dateTime.timestamp -> v:math.sum(b: 3600)}</f:format.date>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\System
  */
-class TimestampViewHelper extends AbstractViewHelper {
+class TimestampViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @return integer
-	 */
-	public function render() {
-		return $this->getTimestamp();
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return integer
-	 */
-	protected function getTimestamp() {
-		return time();
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        return time();
+    }
 }

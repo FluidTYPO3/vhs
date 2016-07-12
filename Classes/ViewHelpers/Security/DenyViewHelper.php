@@ -18,26 +18,18 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
  * supports the `f:then` and `f:else` child nodes.
  *
  * Is the mirror opposite of `v:security.allow`.
- *
- * @author Claus Due
- * @package Vhs
- * @subpackage ViewHelpers\Security
  */
-class DenyViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface {
+class DenyViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface
+{
 
-	/**
-	 * Render deny - i.e. render "else" child only if arguments are satisfied,
-	 * resulting in an inverse match.
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$evaluation = $this->evaluateArguments();
-		if (FALSE === $evaluation) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
-	}
-
+    /**
+     * Overridden condition evaluation - full negation of verdict
+     *
+     * @param array|null $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return !parent::evaluateCondition($arguments);
+    }
 }

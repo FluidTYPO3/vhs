@@ -11,20 +11,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 /**
  * Math: Square
  *
- * Performs $a ^ 2
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
+ * Performs $a ^ 2.
  */
-class SquareViewHelper extends AbstractSingleMathViewHelper {
+class SquareViewHelper extends AbstractSingleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @return integer
-	 */
-	protected function calculateAction($a) {
-		return pow($a, 2);
-	}
-
+    /**
+     * @param mixed $a
+     * @return integer
+     */
+    protected function calculateAction($a)
+    {
+        return pow($a, 2);
+    }
 }

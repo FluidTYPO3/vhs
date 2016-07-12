@@ -11,110 +11,111 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page\Resources
+ * Page FAL resource ViewHelper.
  */
-class FalViewHelper extends ResourcesFalViewHelper {
+class FalViewHelper extends ResourcesFalViewHelper
+{
 
-	use SlideViewHelperTrait;
+    use SlideViewHelperTrait;
 
-	const defaultTable = 'pages';
-	const defaultField = 'media';
+    const DEFAULT_TABLE = 'pages';
+    const DEFAULT_FIELD = 'media';
 
-	/**
-	 * @var string
-	 */
-	protected $table = self::defaultTable;
+    /**
+     * @var string
+     */
+    protected $table = self::DEFAULT_TABLE;
 
-	/**
-	 * @var string
-	 */
-	protected $field = self::defaultField;
+    /**
+     * @var string
+     */
+    protected $field = self::DEFAULT_FIELD;
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
 
-		$this->overrideArgument('table', 'string', 'The table to lookup records.', FALSE, self::defaultTable);
-		$this->overrideArgument('field', 'string', 'The field of the table associated to resources.', FALSE, self::defaultField);
-		$this->registerSlideArguments();
-	}
+        $this->overrideArgument('table', 'string', 'The table to lookup records.', false, self::DEFAULT_TABLE);
+        $this->overrideArgument(
+            'field',
+            'string',
+            'The field of the table associated to resources.',
+            false,
+            self::DEFAULT_FIELD
+        );
+        $this->registerSlideArguments();
+    }
 
-	/**
-	 * @param integer $pageUid
-	 * @param integer $limit
-	 * @return array
-	 */
-	protected function getSlideRecordsFromPage($pageUid, $limit) {
-		$pageRecord = $this->getRecord($pageUid);
-		if (!$this->isDefaultLanguage()) {
-			$localisation = $this->getDatabaseConntection()->exec_SELECTgetSingleRow(
-				'*',
-				'pages_language_overlay',
-				"pid = '" . $pageRecord['uid'] . "' AND sys_language_uid = '" . $this->getCurrentLanguageUid() . "'"
-			);
-			if (TRUE === is_array($localisation)) {
-				ArrayUtility::mergeRecursiveWithOverrule($pageRecord, $localisation);
-			}
-		}
-		$resources = $this->getResources($pageRecord);
-		if (NULL !== $limit && count($resources) > $limit) {
-			$resources = array_slice($resources, 0, $limit);
-		}
-		return $resources;
-	}
+    /**
+     * @param integer $id
+     * @return array
+     */
+    public function getRecord($id)
+    {
+        $record = parent::getRecord($id);
+        if (!$this->isDefaultLanguage()) {
+            $cObj = $this->configurationManager->getContentObject();
+            $localisation = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+                '*',
+                'pages_language_overlay',
+                "pid = '" . $record['uid'] . "' AND sys_language_uid = '" . $this->getCurrentLanguageUid() . "'"
+                . $cObj->enableFields('pages_language_overlay')
+            );
+            if (true === is_array($localisation)) {
+                ArrayUtility::mergeRecursiveWithOverrule($record, $localisation);
+            }
+        }
+        return $record;
+    }
 
-	/**
-	 * @return boolean
-	 */
-	protected function isDefaultLanguage() {
-		return (boolean) $this->getCurrentLanguageUid() === 0;
-	}
+    /**
+     * @param integer $pageUid
+     * @param integer $limit
+     * @return array
+     */
+    protected function getSlideRecordsFromPage($pageUid, $limit)
+    {
+        $pageRecord = $this->getRecord($pageUid);
+        $resources = $this->getResources($pageRecord);
+        if (null !== $limit && count($resources) > $limit) {
+            $resources = array_slice($resources, 0, $limit);
+        }
+        return $resources;
+    }
 
-	/**
-	 * @return integer
-	 */
-	protected function getCurrentLanguageUid() {
-		return (integer) $GLOBALS['TSFE']->sys_language_uid;
-	}
+    /**
+     * @return boolean
+     */
+    protected function isDefaultLanguage()
+    {
+        return $this->getCurrentLanguageUid() === 0;
+    }
 
-	/**
-	 * AbstractRecordResource usually uses the current cObj as reference,
-	 * but the page is needed here
-	 *
-	 * @return array
-	 */
-	public function getActiveRecord() {
-		return $GLOBALS['TSFE']->page;
-	}
+    /**
+     * @return integer
+     */
+    protected function getCurrentLanguageUid()
+    {
+        return (integer) $GLOBALS['TSFE']->sys_language_uid;
+    }
 
-	/**
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function render() {
-		$record = $this->arguments['record'];
-		$uid = $this->arguments['uid'];
-		if (NULL === $uid) {
-			if (NULL === $record) {
-				$record = $this->getActiveRecord();
-			}
-			$uid = $record['uid'];
-		}
-		if (NULL === $uid) {
-			throw new Exception('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
-		}
-		$resources = $this->getSlideRecords($uid);
-
-		return $this->renderChildrenWithVariableOrReturnInput($resources);
-	}
-
+    /**
+     * AbstractRecordResource usually uses the current cObj as reference,
+     * but the page is needed here
+     *
+     * @return array
+     */
+    public function getActiveRecord()
+    {
+        return $GLOBALS['TSFE']->page;
+    }
 }

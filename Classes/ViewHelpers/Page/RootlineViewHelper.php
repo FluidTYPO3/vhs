@@ -8,57 +8,52 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageSelectService;
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ViewHelper to get the rootline of a page
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * ViewHelper to get the rootline of a page.
  */
-class RootlineViewHelper extends AbstractViewHelper {
+class RootlineViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @var PageSelectService
-	 */
-	protected $pageSelect;
+    /**
+     * @var PageService
+     */
+    protected $pageService;
 
-	/**
-	 * @param PageSelectService $pageSelectService
-	 * @return void
-	 */
-	public function injectPageSelectService(PageSelectService $pageSelectService) {
-		$this->pageSelect = $pageSelectService;
-	}
+    /**
+     * @param PageService $pageService
+     */
+    public function injectPageService(PageService $pageService)
+    {
+        $this->pageService = $pageService;
+    }
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerAsArgument();
-		$this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', FALSE, 0);
-	}
+    /**
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerAsArgument();
+        $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		$pageUid = $this->arguments['pageUid'];
-		if (0 === $pageUid) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        $pageUid = (integer) $this->arguments['pageUid'];
+        if (0 === $pageUid) {
+            $pageUid = $GLOBALS['TSFE']->id;
+        }
+        $rootLineData = $this->pageService->getRootLine($pageUid);
 
-		$rootLineData = $this->pageSelect->getRootLine($pageUid);
-		return $this->renderChildrenWithVariableOrReturnInput($rootLineData);
-	}
-
+        return $this->renderChildrenWithVariableOrReturnInput($rootLineData);
+    }
 }

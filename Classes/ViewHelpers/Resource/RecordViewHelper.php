@@ -11,10 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\AbstractRecordResourceViewHelper;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Resource
+ * Generic FAL resource ViewHelper
  */
-class RecordViewHelper extends AbstractRecordResourceViewHelper {
+class RecordViewHelper extends AbstractRecordResourceViewHelper
+{
 
 }

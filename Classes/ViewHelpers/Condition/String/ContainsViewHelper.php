@@ -16,32 +16,28 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  *
  * Condition ViewHelper which renders the `then` child if provided
  * string $haystack contains provided string $needle.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\String
  */
-class ContainsViewHelper extends AbstractConditionViewHelper {
+class ContainsViewHelper extends AbstractConditionViewHelper
+{
 
-	use ConditionViewHelperTrait;
+    use ConditionViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('haystack', 'string', 'haystack', TRUE);
-		$this->registerArgument('needle', 'string', 'need', TRUE);
-	}
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('haystack', 'string', 'haystack', true);
+        $this->registerArgument('needle', 'string', 'need', true);
+    }
 
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		return FALSE !== strpos($arguments['haystack'], $arguments['needle']);
-	}
-
+    /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return false !== strpos($arguments['haystack'], $arguments['needle']);
+    }
 }

@@ -11,10 +11,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Page\Header;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class MetaViewHelperTest
  */
-class MetaViewHelperTest extends AbstractViewHelperTest {
+class MetaViewHelperTest extends AbstractViewHelperTest
+{
 
 }

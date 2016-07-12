@@ -15,64 +15,70 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Explode ViewHelper
  *
- * Explodes a string by $glue
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Explodes a string by $glue.
  */
-class ExplodeViewHelper extends AbstractViewHelper {
+class ExplodeViewHelper extends AbstractViewHelper
+{
 
-	use BasicViewHelperTrait;
-	use TemplateVariableViewHelperTrait;
+    use BasicViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @var string
-	 */
-	protected $method = 'explode';
+    /**
+     * @var string
+     */
+    protected $method = 'explode';
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('content', 'string', 'String to be exploded by glue', FALSE, NULL);
-		$this->registerArgument('glue', 'string', 'String used as glue in the string to be exploded. Use glue value of "constant:NAMEOFCONSTANT" (fx "constant:LF" for linefeed as glue)', FALSE, ',');
-	}
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('content', 'string', 'String to be exploded by glue');
+        $this->registerArgument(
+            'glue',
+            'string',
+            'String used as glue in the string to be exploded. Use glue value of "constant:NAMEOFCONSTANT" ' .
+            '(fx "constant:LF" for linefeed as glue)',
+            false,
+            ','
+        );
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return mixed
-	 */
-	public function render() {
-		$content = $this->getArgumentFromArgumentsOrTagContent('content');
-		$glue = $this->resolveGlue();
-		$output = call_user_func_array($this->method, array($glue, $content));
-		return $this->renderChildrenWithVariableOrReturnInput($output);
-	}
+    /**
+     * Render method
+     *
+     * @return mixed
+     */
+    public function render()
+    {
+        $content = $this->getArgumentFromArgumentsOrTagContent('content');
+        $glue = $this->resolveGlue();
+        $output = call_user_func_array($this->method, [$glue, $content]);
+        return $this->renderChildrenWithVariableOrReturnInput($output);
+    }
 
-	/**
-	 * Detects the proper glue string to use for implode/explode operation
-	 *
-	 * @return string
-	 */
-	protected function resolveGlue() {
-		$glue = $this->arguments['glue'];
-		if (FALSE !== strpos($glue, ':') && 1 < strlen($glue)) {
-			// glue contains a special type identifier, resolve the actual glue
-			list ($type, $value) = explode(':', $glue);
-			switch ($type) {
-				case 'constant':
-					$glue = constant($value);
-					break;
-				default:
-					$glue = $value;
-			}
-		}
-		return $glue;
-	}
-
+    /**
+     * Detects the proper glue string to use for implode/explode operation
+     *
+     * @return string
+     */
+    protected function resolveGlue()
+    {
+        $glue = $this->arguments['glue'];
+        if (false !== strpos($glue, ':') && 1 < strlen($glue)) {
+            // glue contains a special type identifier, resolve the actual glue
+            list ($type, $value) = explode(':', $glue);
+            switch ($type) {
+                case 'constant':
+                    $glue = constant($value);
+                    break;
+                default:
+                    $glue = $value;
+            }
+        }
+        return $glue;
+    }
 }

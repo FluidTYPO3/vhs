@@ -15,22 +15,19 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
  *
  * Returns the relative or absolute URI for the image resource
  * or it's derivate if differing dimesions are provided.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Uri
  */
-class ImageViewHelper extends AbstractImageViewHelper {
+class ImageViewHelper extends AbstractImageViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$this->preprocessImage();
-		$src = $this->preprocessSourceUri($this->mediaSource);
-		return $src;
-	}
-
+    /**
+     * Render method
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $this->preprocessImage();
+        $src = $this->preprocessSourceUri($this->mediaSource);
+        return $src;
+    }
 }

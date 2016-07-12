@@ -34,5 +34,8 @@ $autoloader->addPsr4('TYPO3\\CMS\\Lang\\', __DIR__ . '/../vendor/typo3/cms/typo3
 		'extbase_reflection' => \FluidTYPO3\Development\Bootstrap::CACHE_NULL,
 		'l10n' => \FluidTYPO3\Development\Bootstrap::CACHE_NULL,
 		'fluid_template' => \FluidTYPO3\Development\Bootstrap::CACHE_PHP_NULL
+	),
+	array(
+		'core'
 	)
 );

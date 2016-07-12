@@ -12,25 +12,22 @@ use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
 /**
  * ViewHelper used to render raw content records typically fetched
- * with <v:content.get(column: '0', render: FALSE) />
- *
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Render
+ * with `<v:content.get(column: '0', render: FALSE) />`.
  */
-class RecordViewHelper extends AbstractContentViewHelper {
+class RecordViewHelper extends AbstractContentViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @param array $record
-	 * @return string
-	 */
-	public function render(array $record = array()) {
-		if (FALSE === isset($record['uid'])) {
-			return NULL;
-		}
-		return $this->renderRecord($record);
-	}
-
+    /**
+     * Render method
+     *
+     * @param array $record
+     * @return string
+     */
+    public function render(array $record = [])
+    {
+        if (false === isset($record['uid'])) {
+            return null;
+        }
+        return $this->renderRecord($record);
+    }
 }

@@ -12,63 +12,74 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Base class for media related view helpers
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media
+ * Base class for media related view helpers.
  */
-abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper {
+abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
+{
 
-	/**
-	 *
-	 * @var string
-	 */
-	protected $mediaSource;
+    /**
+     *
+     * @var string
+     */
+    protected $mediaSource;
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('src', 'mixed', 'Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).', TRUE);
-		$this->registerArgument('relative', 'boolean', 'If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.', FALSE, TRUE);
-	}
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'src',
+            'mixed',
+            'Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, ' .
+            'array or implementing Traversable).',
+            true
+        );
+        $this->registerArgument(
+            'relative',
+            'boolean',
+            'If FALSE media URIs are rendered absolute. URIs in backend mode are always absolute.',
+            false,
+            true
+        );
+    }
 
-	/**
-	 * Turns a relative source URI into an absolute URL
-	 * if required
-	 *
-	 * @param string $src
-	 * @return string
-	 */
-	public function preprocessSourceUri($src) {
-		$src = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($src);
-		if (FALSE === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
-			$src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-		} elseif ('BE' === TYPO3_MODE || FALSE === (boolean) $this->arguments['relative']) {
-			$src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
-		}
-		return $src;
-	}
+    /**
+     * Turns a relative source URI into an absolute URL
+     * if required
+     *
+     * @param string $src
+     * @return string
+     */
+    public function preprocessSourceUri($src)
+    {
+        $src = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($src);
+        if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+            $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
+        } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
+            $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
+        }
+        return $src;
+    }
 
-	/**
-	 * Returns an array of sources resolved from src argument
-	 * which can be either an array, CSV or implement Traversable
-	 * to be consumed by ViewHelpers handling multiple sources.
-	 *
-	 * @return array
-	 */
-	public function getSourcesFromArgument() {
-		$src = $this->arguments['src'];
-		if ($src instanceof \Traversable) {
-			$src = iterator_to_array($src);
-		} elseif (TRUE === is_string($src)) {
-			$src = GeneralUtility::trimExplode(',', $src, TRUE);
-		}
-		return $src;
-	}
-
+    /**
+     * Returns an array of sources resolved from src argument
+     * which can be either an array, CSV or implement Traversable
+     * to be consumed by ViewHelpers handling multiple sources.
+     *
+     * @return array
+     */
+    public function getSourcesFromArgument()
+    {
+        $src = $this->arguments['src'];
+        if ($src instanceof \Traversable) {
+            $src = iterator_to_array($src);
+        } elseif (true === is_string($src)) {
+            $src = GeneralUtility::trimExplode(',', $src, true);
+        }
+        return $src;
+    }
 }

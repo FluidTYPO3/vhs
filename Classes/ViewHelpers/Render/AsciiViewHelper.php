@@ -31,33 +31,30 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *     {v:render.ascii(ascii: {0: 13, 1: 10})}
  *
- * Will produce a Windows line break, \r\n
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
+ * Will produce a Windows line break, \r\n.
  */
-class AsciiViewHelper extends AbstractViewHelper {
+class AsciiViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param mixed $ascii
-	 * @return string
-	 */
-	public function render($ascii = NULL) {
-		if (NULL === $ascii) {
-			$ascii = $this->renderChildren();
-		}
-		if (TRUE === is_numeric($ascii)) {
-			return chr((integer) $ascii);
-		}
-		if (TRUE === is_array($ascii) || TRUE === $ascii instanceof \Traversable) {
-			$string = '';
-			foreach ($ascii as $characterNumber) {
-				$string .= chr($characterNumber);
-			}
-			return $string;
-		}
-		return '';
-	}
-
+    /**
+     * @param mixed $ascii
+     * @return string
+     */
+    public function render($ascii = null)
+    {
+        if (null === $ascii) {
+            $ascii = $this->renderChildren();
+        }
+        if (true === is_numeric($ascii)) {
+            return chr((integer) $ascii);
+        }
+        if (true === is_array($ascii) || true === $ascii instanceof \Traversable) {
+            $string = '';
+            foreach ($ascii as $characterNumber) {
+                $string .= chr($characterNumber);
+            }
+            return $string;
+        }
+        return '';
+    }
 }

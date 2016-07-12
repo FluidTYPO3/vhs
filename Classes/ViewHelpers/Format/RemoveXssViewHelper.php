@@ -18,19 +18,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @package Vhs
  * @subpackage ViewHelpers\Format
  */
-class RemoveXssViewHelper extends AbstractViewHelper {
+class RemoveXssViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Removes XSS from string
-	 *
-	 * @param string $string
-	 * @return string
-	 */
-	public function render($string = NULL) {
-		if (NULL === $string) {
-			$string = $this->renderChildren();
-		}
-		return GeneralUtility::removeXSS($string);
-	}
-
+    /**
+     * Removes XSS from string
+     *
+     * @param string $string
+     * @return string
+     */
+    public function render($string = null)
+    {
+        if (null === $string) {
+            $string = $this->renderChildren();
+        }
+        return GeneralUtility::removeXSS($string);
+    }
 }

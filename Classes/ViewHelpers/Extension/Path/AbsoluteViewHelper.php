@@ -15,29 +15,35 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * ### Path: Absolute Extension Folder Path
  *
  * Returns the absolute path to an extension folder.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Extension\Path
  */
-class AbsoluteViewHelper extends AbstractExtensionViewHelper {
+class AbsoluteViewHelper extends AbstractExtensionViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('path', 'string', 'Optional path to append, second argument when calling \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath');
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'path',
+            'string',
+            'Optional path to append, second argument when calling ' .
+            '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath'
+        );
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$extensionKey = $this->getExtensionKey();
-		return ExtensionManagementUtility::extPath($extensionKey, TRUE === isset($this->arguments['path']) ? $this->arguments['path'] : NULL);
-	}
-
+    /**
+     * Render method
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $extensionKey = $this->getExtensionKey();
+        return ExtensionManagementUtility::extPath(
+            $extensionKey,
+            isset($this->arguments['path']) ? $this->arguments['path'] : null
+        );
+    }
 }

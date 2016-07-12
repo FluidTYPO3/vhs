@@ -19,43 +19,47 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * any and all changes in variables that happen while
  * rendering this inline code will be destroyed after
  * sub-rendering is finished.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
-class InlineViewHelper extends AbstractRenderViewHelper {
+class InlineViewHelper extends AbstractRenderViewHelper
+{
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('namespaces', 'array', 'Optional additional/overridden namespaces, array("ns" => "Tx_MyExt_ViewHelpers")', FALSE, array());
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'namespaces',
+            'array',
+            'Optional additional/overridden namespaces, ["ns" => "MyVendor\\MyExt\\ViewHelpers"]',
+            false,
+            []
+        );
+    }
 
-	/**
-	 * Renders an outside string as if it were Fluid code,
-	 * using additional (or overridden) namespaces if so
-	 * desired.
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	public function render($content = NULL) {
-		if (NULL === $content) {
-			$content = $this->renderChildren();
-		}
-		$namespaces = $this->getPreparedNamespaces();
-		$namespaceHeader = implode(LF, $namespaces);
-		foreach ($namespaces as $namespace) {
-			$content = str_replace($namespace, '', $content);
-		}
-		$view = $this->getPreparedClonedView();
-		$view->setTemplateSource($namespaceHeader . $content);
-		return $this->renderView($view);
-	}
-
+    /**
+     * Renders an outside string as if it were Fluid code,
+     * using additional (or overridden) namespaces if so
+     * desired.
+     *
+     * @param string $content
+     * @return string
+     */
+    public function render($content = null)
+    {
+        if (null === $content) {
+            $content = $this->renderChildren();
+        }
+        $namespaces = $this->getPreparedNamespaces();
+        $namespaceHeader = implode(LF, $namespaces);
+        foreach ($namespaces as $namespace) {
+            $content = str_replace($namespace, '', $content);
+        }
+        $view = $this->getPreparedClonedView();
+        $view->setTemplateSource($namespaceHeader . $content);
+        return $this->renderView($view);
+    }
 }

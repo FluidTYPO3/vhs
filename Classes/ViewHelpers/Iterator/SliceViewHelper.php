@@ -14,38 +14,36 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Slice an Iterator by $start and $length
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Slice an Iterator by $start and $length.
  */
-class SliceViewHelper extends AbstractViewHelper {
+class SliceViewHelper extends AbstractViewHelper
+{
 
-	use TemplateVariableViewHelperTrait;
-	use ArrayConsumingViewHelperTrait;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerAsArgument();
-		$this->registerArgument('haystack', 'mixed', 'The input array/Traversable to reverse', FALSE, NULL);
-	}
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('haystack', 'mixed', 'The input array/Traversable to reverse');
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @param integer $start
-	 * @param integer $length
-	 * @return array
-	 */
-	public function render($start = 0, $length = NULL) {
-		$haystack = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('haystack');
-		$output = array_slice($haystack, $start, $length, TRUE);
-		return $this->renderChildrenWithVariableOrReturnInput($output);
-	}
-
+    /**
+     * Render method
+     *
+     * @param integer $start
+     * @param integer $length
+     * @return array
+     */
+    public function render($start = 0, $length = null)
+    {
+        $haystack = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('haystack');
+        $output = array_slice($haystack, $start, $length, true);
+        return $this->renderChildrenWithVariableOrReturnInput($output);
+    }
 }

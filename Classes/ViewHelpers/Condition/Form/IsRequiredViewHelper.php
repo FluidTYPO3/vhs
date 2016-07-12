@@ -16,25 +16,25 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  *
  * Takes a property (dotted path supported) and renders the
  * then-child if the property at the given path has an
- * @validate NotEmpty annotation
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Form
+ * @validate NotEmpty annotation.
  */
-class IsRequiredViewHelper extends HasValidatorViewHelper {
+class IsRequiredViewHelper extends HasValidatorViewHelper
+{
 
-	/**
-	 * Default implementation for use in compiled templates
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$arguments['validatorName'] = 'NotEmpty';
-		return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
-	}
-
+    /**
+     * Default implementation for use in compiled templates
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $arguments['validatorName'] = 'NotEmpty';
+        return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
+    }
 }

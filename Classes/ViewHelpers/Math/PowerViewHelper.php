@@ -12,20 +12,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * Math: Power
  *
  * Performs pow($a, $b) where $a is the base and $b is the exponent.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
-class PowerViewHelper extends AbstractMultipleMathViewHelper {
+class PowerViewHelper extends AbstractMultipleMathViewHelper
+{
 
-	/**
-	 * @param mixed $a
-	 * @param mixed $b
-	 * @return integer
-	 */
-	protected function calculateAction($a, $b) {
-		return pow($a, $b);
-	}
-
+    /**
+     * @param mixed $a
+     * @param mixed $b
+     * @return integer
+     */
+    protected function calculateAction($a, $b)
+    {
+        return pow($a, $b);
+    }
 }

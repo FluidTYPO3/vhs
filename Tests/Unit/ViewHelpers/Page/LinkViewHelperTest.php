@@ -9,64 +9,71 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * @protection on
  * @package Vhs
  */
-class LinkViewHelperTest extends AbstractViewHelperTest {
+class LinkViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @return void
-	 */
-	public function setUp() {
-		parent::setUp();
-		$GLOBALS['TYPO3_DB'] = $this->getMock(
-			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
-			array('exec_SELECTquery', 'sql_fetch_assoc'),
-			array(), '', FALSE
-		);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->willReturn(NULL);
-	}
+    /**
+     * @var PageRepository
+     */
+    protected $pageRepository;
 
-	/**
-	 * @test
-	 */
-	public function generatesPageLinks() {
-		$arguments = array('pageUid' => 1);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
-		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
-		$this->assertNotEmpty($result);
-	}
+    /**
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->pageRepository = $this->getMock(PageRepository::class, array('getPage'));
+        $GLOBALS['TSFE'] = (object) array('sys_page' => $this->pageRepository);
+    }
 
-	/**
-	 * @test
-	 */
-	public function generatesNullLinkOnZeroPageUid() {
-		$arguments = array('pageUid' => 0);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(FALSE);
-		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
-		$this->assertNull($result);
-	}
+    /**
+     * @test
+     */
+    public function generatesPageLinks()
+    {
+        $this->pageRepository->expects($this->once())->method('getPage')->willReturn(array('uid' => '1', 'title' => 'test'));
+        $arguments = array('pageUid' => 1);
+        $result = $this->executeViewHelper($arguments, array(), null, 'Vhs');
+        $this->assertNotEmpty($result);
+    }
 
-	/**
-	 * @test
-	 */
-	public function generatesPageLinksWithCustomTitle() {
-		$arguments = array('pageUid' => 1, 'pageTitleAs' => 'title');
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
-		$result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments, array(), 'Vhs');
-		$this->assertContains('customtitle', $result);
-	}
+    /**
+     * @test
+     */
+    public function generatesNullLinkOnZeroPageUid()
+    {
+        $arguments = array('pageUid' => 0);
+        $this->pageRepository->expects($this->once())->method('getPage')->willReturn(null);
+        $result = $this->executeViewHelper($arguments, array(), null, 'Vhs');
+        $this->assertNull($result);
+    }
 
-	/**
-	 * @test
-	 */
-	public function generatesPageWizardLinks() {
-		$arguments = array('pageUid' => '1 2 3 4 5 foo=bar&baz=123');
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->willReturn(array('uid' => '1', 'title' => 'test'));
-		$result = $this->executeViewHelper($arguments, array(), NULL, 'Vhs');
-		$this->assertNotEmpty($result);
-	}
+    /**
+     * @test
+     */
+    public function generatesPageLinksWithCustomTitle()
+    {
+        $this->pageRepository->expects($this->never())->method('getPage');
+        $arguments = array('pageUid' => 1, 'pageTitleAs' => 'title');
+        $result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments, array(), 'Vhs');
+        $this->assertContains('customtitle', $result);
+    }
 
+    /**
+     * @test
+     */
+    public function generatesPageWizardLinks()
+    {
+        $this->pageRepository->expects($this->never())->method('getPage');
+        $arguments = array('pageUid' => '1 2 3 4 5 foo=bar&baz=123');
+        $result = $this->executeViewHelper($arguments, array(), null, 'Vhs');
+        $this->assertNotEmpty($result);
+    }
 }
