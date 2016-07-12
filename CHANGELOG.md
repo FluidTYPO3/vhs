@@ -1,9 +1,11 @@
 # VHS Change log
 
-3.0.0 - upcoming
+3.0.0 - 2016-07-12
 ------------------
 
-    Cosmetic change: unmodified PSR-2 CGL and shorthand array syntax adopted. Contributions must now respect this CGL (`phpcs` as well as `phpcbf` are provided in the `vendor/bin` directory once installed and can be ran using `--standard=PSR2`).
+    Cosmetic change: unmodified PSR-2 CGL and shorthand array syntax adopted.
+    Contributions must now respect this CGL (`phpcs` as well as `phpcbf` are provided
+    in the `vendor/bin` directory once installed and can be ran using `--standard=PSR2`).
 
 - :exclamation: NEW DEPRECATIONS AND REMOVED DEPRECATED CODE
   - [49e2295](https://github.com/FluidTYPO3/vhs/commit/49e22956fccd789fb244a7d244443de22915040a) Deprecated VHS typoLink ViewHelpers (use core versions instead)
@@ -139,6 +141,7 @@
 
 - [2614c18[(https://github.com/FluidTYPO3/vhs/commit/2614c189ba08cf1b58c9f9fbbd250b7114e593f9) Bug fix to make image sub-ViewHelpers function with changed parent class
 
+- [#1065](https://github.com/FluidTYPO3/vhs/pull/1065) Updated deprecated usage of PageRenderer
 
 2.4.0 - 2015-11-19
 ------------------
