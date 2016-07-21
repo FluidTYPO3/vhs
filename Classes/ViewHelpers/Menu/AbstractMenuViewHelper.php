@@ -432,6 +432,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $count = 0;
         $total = count($pages);
         $allowedDocumentTypes = $this->allowedDoktypeList();
+        $processedPages = [];
         foreach ($pages as $index => $page) {
             if (!in_array($page['doktype'], $allowedDocumentTypes)) {
                 continue;
@@ -487,9 +488,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $pages[$index]['linktext'] = $this->getItemTitle($pages[$index]);
             $forceAbsoluteUrl = $this->arguments['forceAbsoluteUrl'];
             $pages[$index]['link'] = $this->pageService->getItemLink($page, $forceAbsoluteUrl);
+            $processedPages[$index] = $pages[$index];
         }
 
-        return $pages;
+        return $processedPages;
     }
 
     /**
