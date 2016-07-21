@@ -103,7 +103,7 @@ class EncodeViewHelper extends AbstractViewHelper
             $value = $this->recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
             $value = $this->recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
         };
-        $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_TAG);
+        $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG);
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new Exception('The provided argument cannot be converted into JSON.', 1358440181);
         }
