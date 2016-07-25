@@ -7,6 +7,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Once: Instance
@@ -28,14 +29,16 @@ class InstanceViewHelper extends AbstractOnceViewHelper
 {
 
     /**
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    protected function getIdentifier()
+    protected static function getIdentifier(array $arguments, RenderingContextInterface $renderingContext)
     {
-        if (true === isset($this->arguments['identifier']) && null !== $this->arguments['identifier']) {
-            return $this->arguments['identifier'];
+        if (true === isset($arguments['identifier']) && null !== $arguments['identifier']) {
+            return $arguments['identifier'];
         }
-        $request = $this->controllerContext->getRequest();
+        $request = $renderingContext->getControllerContext()->getRequest();
         $identifier = implode('_', [
             $request->getControllerActionName(),
             $request->getControllerName(),
@@ -46,25 +49,24 @@ class InstanceViewHelper extends AbstractOnceViewHelper
     }
 
     /**
+     * @param string $identifier
+     * @param array $arguments
      * @return void
      */
-    protected function storeIdentifier()
+    protected static function storeIdentifier($identifier, array $arguments)
     {
-        $index = get_class($this);
-        $identifier = $this->getIdentifier();
         if (false === is_array($GLOBALS[$index])) {
-            $GLOBALS[$index] = [];
+            $GLOBALS[static::class] = [];
         }
-        $GLOBALS[$index][$identifier] = true;
+        $GLOBALS[static::class][$identifier] = true;
     }
 
     /**
+     * @param string $identifier
      * @return boolean
      */
-    protected function assertShouldSkip()
+    protected static function assertShouldSkip($identifier)
     {
-        $index = get_class($this);
-        $identifier = $this->getIdentifier();
-        return isset($GLOBALS[$index][$identifier]);
+        return isset($GLOBALS[static::class][$identifier]);
     }
 }
