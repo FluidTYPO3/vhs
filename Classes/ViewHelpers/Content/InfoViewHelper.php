@@ -109,6 +109,5 @@ class InfoViewHelper extends AbstractViewHelper
         }
 
         return $this->renderChildrenWithVariableOrReturnInput($content);
-
     }
 }

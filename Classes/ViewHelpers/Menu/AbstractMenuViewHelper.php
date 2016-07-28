@@ -381,14 +381,14 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     /**
      * @param null|integer $pageUid
      * @param integer $entryLevel
-     * @return integer
+     * @return null|integer
      */
-    protected function determinePageUid($pageUid = null, $entryLevel = 0)
+    protected function determineParentPageUid($pageUid = null, $entryLevel = 0)
     {
         $rootLineData = $this->pageService->getRootLine();
         if (null === $pageUid) {
             if (null !== $entryLevel) {
-                if (0 > $entryLevel) {
+                if ($entryLevel < 0) {
                     $entryLevel = count($rootLineData) - 1 + $entryLevel;
                 }
                 $pageUid = $rootLineData[$entryLevel]['uid'];
@@ -397,18 +397,20 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        return (integer) $pageUid;
+        return $pageUid;
     }
 
     /**
      * @param null|integer $pageUid
      * @param integer $entryLevel
-     *
      * @return array
      */
     public function getMenu($pageUid = null, $entryLevel = 0)
     {
-        $pageUid = $this->determinePageUid($pageUid, $entryLevel);
+        $pageUid = $this->determineParentPageUid($pageUid, $entryLevel);
+        if ($pageUid === null) {
+            return [];
+        }
         $showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
         $includeSpacers = (boolean) $this->arguments['includeSpacers'];
@@ -432,6 +434,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $count = 0;
         $total = count($pages);
         $allowedDocumentTypes = $this->allowedDoktypeList();
+        $processedPages = [];
         foreach ($pages as $index => $page) {
             if (!in_array($page['doktype'], $allowedDocumentTypes)) {
                 continue;
@@ -487,9 +490,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $pages[$index]['linktext'] = $this->getItemTitle($pages[$index]);
             $forceAbsoluteUrl = $this->arguments['forceAbsoluteUrl'];
             $pages[$index]['link'] = $this->pageService->getItemLink($page, $forceAbsoluteUrl);
+            $processedPages[$index] = $pages[$index];
         }
 
-        return $pages;
+        return $processedPages;
     }
 
     /**

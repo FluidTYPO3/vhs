@@ -31,7 +31,7 @@ class PregReplaceViewHelper extends AbstractViewHelper
     {
         $this->registerAsArgument();
         $this->registerArgument('pattern', 'string', 'Regex pattern to match against', true);
-        $this->registerArgument('subject', 'string', 'String to match with the regex pattern or patterns', true);
+        $this->registerArgument('subject', 'string', 'String to match with the regex pattern or patterns');
         $this->registerArgument('replacement', 'string', 'String to replace matches with', true);
     }
 
