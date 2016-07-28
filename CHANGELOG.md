@@ -1,5 +1,15 @@
 # VHS Change log
 
+3.0.1 - 2016-07-29
+------------------
+
+- [#1067](https://github.com/FluidTYPO3/vhs/pull/1067) Argument `subject` on `v:format.preg.replace` made optional to allow usage with tag content / inline
+- [#1068](https://github.com/FluidTYPO3/vhs/pull/1068) Page-related ViewHelpers operable in backend context
+- [#1073](https://github.com/FluidTYPO3/vhs/pull/1073) Bug fix to show sub menus with single item on root level pages
+- [#1074](https://github.com/FluidTYPO3/vhs/pull/1074) Bug fix to remove unintentionally shown pages from menus
+- [#1077](https://github.com/FluidTYPO3/vhs/pull/1077) Added `JSON_HEX_APOS` to default JSON encoding parameters in `v:format.json.encode`
+
+
 3.0.0 - 2016-07-12
 ------------------
 
