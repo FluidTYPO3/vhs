@@ -21,7 +21,9 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsHtmlEntities()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+        if (trim(shell_exec('which markdown')) === '') {
+            $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+        }
         $this->executeViewHelper(array('text' => 'test < test', 'trim' => true, 'htmlentities' => true));
     }
 
@@ -30,7 +32,9 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersUsingArgument()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+        if (trim(shell_exec('which markdown')) === '') {
+            $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+        }
         $this->executeViewHelper(array('text' => 'test', 'trim' => true, 'htmlentities' => false));
     }
 
@@ -39,7 +43,9 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersUsingTagContent()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+        if (trim(shell_exec('which markdown')) === '') {
+            $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+        }
         $this->executeViewHelperUsingTagContent('Text', 'test', array('trim' => true, 'htmlentities' => false));
     }
 }

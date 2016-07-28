@@ -42,6 +42,11 @@ class PageService implements SingletonInterface
     protected static $cachedRootlines = [];
 
     /**
+     * @var PageRepository
+     */
+    protected static $backendPageRepository;
+
+    /**
      * @param integer $pageUid
      * @param array $excludePages
      * @param boolean $includeNotInMenu
@@ -172,7 +177,7 @@ class PageService implements SingletonInterface
         $hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
         $pageOverlay = [];
         if (0 !== $languageUid) {
-            $pageOverlay¨ = $GLOBALS['TSFE']->sys_page->getPageOverlay($pageUid, $languageUid);
+            $pageOverlay = $GLOBALS['TSFE']->sys_page->getPageOverlay($pageUid, $languageUid);
         }
         $translationAvailable = (0 !== count($pageOverlay));
 
@@ -187,7 +192,21 @@ class PageService implements SingletonInterface
      */
     protected function getPageRepository()
     {
+        if (TYPO3_MODE === 'BE') {
+            return $this->getPageRepositoryForBackendContext();
+        }
         return clone $GLOBALS['TSFE']->sys_page;
+    }
+
+    /**
+     * @return PageRepository
+     */
+    protected function getPageRepositoryForBackendContext()
+    {
+        if (static::$backendPageRepository === null) {
+            static::$backendPageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        }
+        return static::$backendPageRepository;
     }
 
     /**

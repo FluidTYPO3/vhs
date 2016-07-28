@@ -158,6 +158,5 @@ class SanitizeStringViewHelper extends AbstractViewHelper
         $pattern = '/([^a-z0-9\-]){1,}/';
         $string = preg_replace($pattern, '-', $string);
         return trim($string, '-');
-
     }
 }
