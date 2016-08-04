@@ -126,10 +126,6 @@ class ImageViewHelper extends AbstractImageViewHelper
         $this->tag->addAttribute('height', $height);
         $this->tag->addAttribute('src', $src);
 
-        $this->tag->addAttribute('width', $width);
-        $this->tag->addAttribute('height', $height);
-        $this->tag->addAttribute('src', $src);
-
         if (true === empty($this->arguments['title'])) {
             $this->tag->addAttribute('title', $this->arguments['alt']);
         }
