@@ -268,6 +268,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $content = $this->renderChildren();
             if (0 < strlen(trim($content))) {
                 $output = $content;
+            } elseif ((boolean) $this->arguments['hideIfEmpty'] === true) {
+                $output = '';
             } else {
                 $output = $this->renderTag($this->getWrappingTagName(), $this->autoRender($menu));
             }
