@@ -108,9 +108,13 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             false,
             false
         );
-        $this->registerArgument('canvasWidth', 'integer', 'Width of an optional canvas to place the image on.', FALSE);
-        $this->registerArgument('canvasHeight', 'integer', 'Height of an optional canvas to place the image on.', FALSE);
-        $this->registerArgument('canvasColor', 'string', 'Background color of an optional canvas to place the image on (hex triplet).', FALSE);
+        $this->registerArgument('canvasWidth', 'integer', 'Width of an optional canvas to place the image on.');
+        $this->registerArgument('canvasHeight', 'integer', 'Height of an optional canvas to place the image on.');
+        $this->registerArgument(
+            'canvasColor',
+            'string',
+            'Background color of an optional canvas to place the image on (hex triplet).'
+        );
     }
 
     /**
@@ -171,10 +175,18 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $canvasColor = str_replace('#', '', $this->arguments['canvasColor']);
             $originalFilename = $this->imageInfo[3];
             $originalExtension = substr($originalFilename, -3);
-            $destinationFilename = 'typo3temp/vhs-canvas-' . md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
+            $destinationFilename = 'typo3temp/vhs-canvas-' .
+                md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
             $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);
             if (!file_exists($destinationFilepath)) {
-                $arguments = sprintf('%s -background \'#%s\' -gravity center -extent %dx%d %s', $originalFilename, $canvasColor, $canvasWidth, $canvasHeight, $destinationFilepath);
+                $arguments = sprintf(
+                    '%s -background \'#%s\' -gravity center -extent %dx%d %s',
+                    $originalFilename,
+                    $canvasColor,
+                    $canvasWidth,
+                    $canvasHeight,
+                    $destinationFilepath
+                );
                 $command = CommandUtility::imageMagickCommand('convert', $arguments);
                 CommandUtility::exec($command);
             }
