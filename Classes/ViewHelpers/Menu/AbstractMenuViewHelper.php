@@ -195,8 +195,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument(
             'doktypes',
             'mixed',
-            'CSV list or array of allowed doktypes from constant names or integer values, i.e. 1,254 or ' .
-            'DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut',
+            'DEPRECATED: Please use typical doktypes for starting points like shortcuts.',
             false,
             ''
         );
@@ -435,12 +434,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     {
         $count = 0;
         $total = count($pages);
-        $allowedDocumentTypes = $this->allowedDoktypeList();
         $processedPages = [];
         foreach ($pages as $index => $page) {
-            if (!in_array($page['doktype'], $allowedDocumentTypes)) {
-                continue;
-            }
             if (true === $this->pageService->hidePageForLanguageUid($page)) {
                 continue;
             }
@@ -692,57 +687,4 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         return $pages;
     }
 
-    /**
-     * Get a list from allowed doktypes for pages
-     *
-     * @return array
-     */
-    protected function allowedDoktypeList()
-    {
-        if (isset($this->arguments['doktypes']) && !empty($this->arguments['doktypes'])) {
-            $types = $this->parseDoktypeList($this->arguments['doktypes']);
-        } else {
-            $types = [
-                PageService::DOKTYPE_MOVE_TO_PLACEHOLDER,
-                PageRepository::DOKTYPE_DEFAULT,
-                PageRepository::DOKTYPE_LINK,
-                PageRepository::DOKTYPE_SHORTCUT,
-                PageRepository::DOKTYPE_MOUNTPOINT,
-            ];
-        }
-        if ($this->arguments['includeSpacers'] && !in_array(PageRepository::DOKTYPE_SPACER, $types)) {
-            array_push($types, PageRepository::DOKTYPE_SPACER);
-        }
-
-        return $types;
-    }
-
-    /**
-     * Parses the provided CSV list or array of doktypes to
-     * return an array of integers
-     *
-     * @param mixed $doktypes
-     * @return array
-     */
-    protected function parseDoktypeList($doktypes)
-    {
-        if (is_array($doktypes)) {
-            $types = $doktypes;
-        } else {
-            $types = GeneralUtility::trimExplode(',', $doktypes);
-        }
-        $parsed = [];
-        foreach ($types as $index => $type) {
-            if (!ctype_digit($type)) {
-                $typeNumber = constant('TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
-                if (null !== $typeNumber) {
-                    $parsed[$index] = $typeNumber;
-                }
-            } else {
-                $parsed[$index] = (integer) $type;
-            }
-        }
-
-        return $parsed;
-    }
 }
