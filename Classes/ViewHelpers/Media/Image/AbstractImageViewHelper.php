@@ -168,7 +168,6 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if (false === is_array($this->imageInfo)) {
             throw new Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
         }
-        $this->imageInfo[3] = GraphicalFunctions::pngToGifByImagemagick($this->imageInfo[3]);
         if ($this->hasArgument('canvasWidth') && $this->hasArgument('canvasHeight')) {
             $canvasWidth = (integer) $this->arguments['canvasWidth'];
             $canvasHeight = (integer) $this->arguments['canvasHeight'];
