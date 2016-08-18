@@ -63,6 +63,8 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 class Asset implements AssetInterface
 {
 
+    const INTEGRITY_METHOD = 'sha384';
+
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
@@ -137,6 +139,11 @@ class Asset implements AssetInterface
      * @var boolean
      */
     protected $rewrite = true;
+
+    /**
+     * @var boolean|string
+     */
+    protected $integrity = true;
 
     /**
      * @var array
@@ -575,6 +582,28 @@ class Asset implements AssetInterface
     public function setRemoved($removed)
     {
         $this->removed = $removed;
+        return $this;
+    }
+
+    /**
+     * @return boolean|string
+     */
+    public function getIntegrity()
+    {
+        return $this->integrity;
+    }
+
+    /**
+     * @param boolean|string $integrity
+     * @return Asset
+     */
+    public function setIntegrity($integrity)
+    {
+        // Note: force type boolean here for boolean values, to differ it later from a hash string
+        $this->integrity = filter_var($integrity, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        if (null === $this->integrity) {
+            $this->integrity = $integrity;
+        }
         return $this;
     }
 
