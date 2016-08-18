@@ -112,6 +112,7 @@ plugin.tx_vhs.settings.asset {
 }
 plugin.tx_vhs.assets {
 	mergedAssetsUseHashedFilename = 0 # If set to a 1, Assets are merged into a file named using a hash if Assets' names.
+	tagsAddSubresourceIntegrity = 0 # If set to 1 (weakest),2 or 3 (strongest), Vhs will generate and add the Subresource Integrity (SRI) for every included Asset.
 }
 ```
 
