@@ -115,6 +115,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             'string',
             'Background color of an optional canvas to place the image on (hex triplet).'
         );
+        $this->registerArgument('crop', 'string', 'Cropping information');
     }
 
     /**
@@ -133,10 +134,15 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         $format = $this->arguments['format'];
         $quality = $this->arguments['quality'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+        $crop = $this->arguments['crop'];
 
         if (is_object($src) && $src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsReference = true;
+        }
+        
+        if ($crop === null) {
+            $crop = $src instanceof FileReference ? $src->getProperty('crop') : null;
         }
 
         if ('BE' === TYPO3_MODE) {
@@ -150,6 +156,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             'maxW' => $maxW,
             'maxH' => $maxH,
             'treatIdAsReference' => $treatIdAsReference,
+            'crop' => $crop,
         ];
         if (false === empty($format)) {
             $setup['ext'] = $format;
