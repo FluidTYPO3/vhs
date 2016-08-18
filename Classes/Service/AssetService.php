@@ -241,6 +241,7 @@ class AssetService implements SingletonInterface
      */
     protected function buildAssetsChunk($assets)
     {
+        $setup = &$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'];
         $spool = [];
         foreach ($assets as $name => $asset) {
             $assetSettings = $this->extractAssetSettings($asset);
@@ -273,7 +274,15 @@ class AssetService implements SingletonInterface
                         array_push($chunks, $this->generateTagForAssetType($type, $assetContent));
                     } else {
                         if (true === $external) {
-                            array_push($chunks, $this->generateTagForAssetType($type, null, $path));
+                            if (!$setup['assets.']['assetTagsNoIntegrity']
+                                && is_string($assetSettings['integrity'])
+                            ) {
+                                $integrity = $assetSettings['integrity'];
+                            }
+                            array_push(
+                                $chunks,
+                                $this->generateTagForAssetType($type, null, $path, $integrity, $external)
+                            );
                         } else {
                             if (true === $rewrite) {
                                 array_push(
@@ -281,13 +290,21 @@ class AssetService implements SingletonInterface
                                     $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type)
                                 );
                             } else {
+                                if (!$setup['assets.']['assetTagsNoIntegrity']
+                                    && false !== $assetSettings['integrity']
+                                ) {
+                                    $integrity = true === $assetSettings['integrity']
+                                        ? $this->getFileIntegrity($path)
+                                        : $assetSettings['integrity'];
+                                }
                                 $path = substr($path, strlen(PATH_site));
                                 $path = $this->prefixPath($path);
-                                array_push($chunks, $this->generateTagForAssetType($type, null, $path));
+                                array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity));
                             }
                         }
                     }
                 }
+                unset($integrity);
             }
             if (0 < count($chunk)) {
                 $mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
@@ -319,8 +336,14 @@ class AssetService implements SingletonInterface
             || true === (boolean) $GLOBALS['TSFE']->no_cache
             || true === (boolean) $GLOBALS['TSFE']->page['no_cache']
         ) {
+            $skipIntegrity = false;
             foreach ($assets as $name => $asset) {
                 $assetSettings = $this->extractAssetSettings($asset);
+                if (false === $assetSettings['integrity']) {
+                    // Note: If the user don't want to have the integrity on one particular file, we skip it for the
+                    // whole concatenated asset file.
+                    $skipIntegrity = true;
+                }
                 if ((isset($assetSettings['namedChunks']) && 0 < $assetSettings['namedChunks']) ||
                     !isset($assetSettings['namedChunks'])) {
                     $source .= '/* ' . $name . ' */' . LF;
@@ -330,6 +353,11 @@ class AssetService implements SingletonInterface
                 $source .= "\n";
             }
             $this->writeFile($fileAbsolutePathAndFilename, $source);
+        }
+        if (!$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['assetTagsNoIntegrity']
+            && false === $skipIntegrity
+        ) {
+            $integrity = $this->getFileIntegrity($fileAbsolutePathAndFilename);
         }
         if (false === empty($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'])) {
             $timestampMode = $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'];
@@ -348,17 +376,19 @@ class AssetService implements SingletonInterface
             }
         }
         $fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
-        return $this->generateTagForAssetType($type, null, $fileRelativePathAndFilename);
+        return $this->generateTagForAssetType($type, null, $fileRelativePathAndFilename, $integrity);
     }
 
     /**
      * @param string $type
      * @param string $content
      * @param string $file
+     * @param string $integrity
+     * @param booleal $external
      * @throws \RuntimeException
      * @return string
      */
-    protected function generateTagForAssetType($type, $content, $file = null)
+    protected function generateTagForAssetType($type, $content, $file = null, $integrity = null, $external = false)
     {
         /** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
         $tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
@@ -375,6 +405,12 @@ class AssetService implements SingletonInterface
                 } else {
                     $tagBuilder->addAttribute('src', $file);
                 }
+                if (null !== $integrity && !empty($integrity)) {
+                    $tagBuilder->addAttribute('integrity', $integrity);
+                    if (true === $external) {
+                        $tagBuilder->addAttribute('crossorigin', 'anonymous');
+                    }
+                }
                 break;
             case 'css':
                 if (null === $file) {
@@ -387,6 +423,12 @@ class AssetService implements SingletonInterface
                     $tagBuilder->setTagName('link');
                     $tagBuilder->addAttribute('rel', 'stylesheet');
                     $tagBuilder->addAttribute('href', $file);
+                }
+                if (null !== $integrity && !empty($integrity)) {
+                    $tagBuilder->addAttribute('integrity', $integrity);
+                    if (true === $external) {
+                        $tagBuilder->addAttribute('crossorigin', 'anonymous');
+                    }
                 }
                 break;
             case 'meta':
@@ -730,5 +772,37 @@ class AssetService implements SingletonInterface
         } else {
             return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
         }
+    }
+
+    /**
+     * @param $file
+     * @return string
+     */
+    protected function getFileIntegrity($file)
+    {
+        if (false === file_exists($file)) {
+            return '';
+        }
+        $integrityFile = sprintf(
+            'typo3temp/vhs-assets-%s.%s',
+            str_replace('vhs-assets-', '', pathinfo($file, PATHINFO_BASENAME)),
+            Asset::INTEGRITY_METHOD
+        );
+        if (false === file_exists($integrityFile)
+            || 0 === filemtime($integrityFile)
+            || true === isset($GLOBALS['BE_USER'])
+            || true === (boolean) $GLOBALS['TSFE']->no_cache
+            || true === (boolean) $GLOBALS['TSFE']->page['no_cache']
+        ) {
+            if (extension_loaded('hash') && function_exists('hash_file')) {
+                $integrity = base64_encode(hash_file(Asset::INTEGRITY_METHOD, $file, true));
+            } elseif (extension_loaded('openssl') && function_exists('openssl_digest')) {
+                $integrity = base64_encode(openssl_digest(file_get_contents($file), Asset::INTEGRITY_METHOD, true));
+            } else {
+                return ''; // Sadly, no integrity generation possible
+            }
+            $this->writeFile($integrityFile, $integrity);
+        }
+        return sprintf('%s-%s', Asset::INTEGRITY_METHOD, $integrity ?: file_get_contents($integrityFile));
     }
 }

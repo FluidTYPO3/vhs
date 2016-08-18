@@ -217,6 +217,16 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
             false,
             false
         );
+        // Note: hash generation for external files could solved with downloading and hashing the given resource. But
+        // it's not implemented to prevent performance issues from waiting for missing resources or slow servers!
+        $this->registerArgument(
+            'integrity',
+            'mixed',
+            'A boolean value, to decide weather an integrity hash will be generated and added to the tag or not. ' .
+            'Can also be a string containing the hash (useful for external scripts, were we can\'t generate a hash)',
+            false,
+            true
+        );
     }
 
     /**
@@ -469,6 +479,11 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         }
         if (!empty($assetSettings['path']) && !$assetSettings['external']) {
             $assetSettings['path'] = GeneralUtility::getFileAbsFileName($assetSettings['path']);
+        }
+        // Note: force type boolean here for boolean values, to differ it later from a hash string
+        $integrity = filter_var($assetSettings['integrity'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        if (null !== $integrity) {
+            $assetSettings['integrity'] = $integrity;
         }
         $assetSettings['name'] = $name;
         $this->assetSettingsCache = $assetSettings;

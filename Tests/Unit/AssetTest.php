@@ -210,8 +210,15 @@ class AssetTest extends UnitTestCase
             $propertyValue = ObjectAccess::getProperty($asset, $propertyName);
             /** @var \TYPO3\CMS\Extbase\Reflection\PropertyReflection $propertyReflection */
             $propertyReflection = $objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', 'FluidTYPO3\\Vhs\\Asset', $propertyName);
-            $expectedDataType = array_pop($propertyReflection->getTagValues('var'));
-            $constraint = new \PHPUnit_Framework_Constraint_IsType($expectedDataType);
+            // Note: allow multiple types for property, like it's defined in the phpdoc
+            // @see https://phpdoc.org/docs/latest/references/phpdoc/tags/var.html
+            $expectedDataTypes = explode('|', array_pop($propertyReflection->getTagValues('var')));
+            $constraints = array();
+            foreach($expectedDataTypes as $expectedDataType) {
+                $constraints[] = new \PHPUnit_Framework_Constraint_IsType($expectedDataType);
+            }
+            $constraint = new \PHPUnit_Framework_Constraint_Or();
+            $constraint->setConstraints($constraints);
             $this->assertThat($propertyValue, $constraint);
         }
         $constraint = new \PHPUnit_Framework_Constraint_IsType('array');
@@ -265,5 +272,29 @@ class AssetTest extends UnitTestCase
     {
         $file = ExtensionManagementUtility::extPath('vhs', 'Tests/Fixtures/Files/dummy.js');
         return $file;
+    }
+
+    /**
+     * @test
+     */
+    public function assertSupportsIntegrityMethodHash()
+    {
+        if(extension_loaded('hash') && function_exists('hash_algos')) {
+            $this->assertArrayHasKey(Asset::INTEGRITY_METHOD, array_flip(hash_algos()));
+        } else {
+            $this->markTestSkipped('Hash hash support');
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function assertSupportsIntegrityMethodOpenssl()
+    {
+        if(extension_loaded('openssl') && function_exists('openssl_get_md_methods')) {
+            $this->assertArrayHasKey(Asset::INTEGRITY_METHOD, array_flip(openssl_get_md_methods(true)));
+        } else {
+            $this->markTestSkipped('No openssl support');
+        }
     }
 }
