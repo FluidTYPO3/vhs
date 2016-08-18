@@ -63,4 +63,41 @@ class AssetServiceTest extends UnitTestCase
             array(array('fluid' => $fluidAsset), true, 1)
         );
     }
+
+    /**
+     * @test
+     */
+    public function testIntegrityCalculation()
+    {
+        // Note: Maybe test this dynamic. This command could be useful:
+        //    ~> openssl dgst -sha256 -binary Tests/Fixtures/Files/dummy.js | openssl base64 -A
+
+        if((!extension_loaded('hash') || !function_exists('hash_algos'))
+            && (!extension_loaded('openssl') || !function_exists('openssl_get_md_methods'))
+        ) {
+            $this->markTestSkipped('No hash or openssl support');
+        }
+
+        $GLOBALS['TSFE'] = unserialize('O:8:"stdClass":1:{s:4:"tmpl";O:8:"stdClass":1:{s:5:"setup";a:1:{s:7:"plugin.";a:1:{s:7:"tx_vhs.";a:1:{s:7:"assets.";a:0:{}}}}}}');
+
+        // This represents the setting levels, from 0=off over 1 as the weakest to 3 as the strongest
+        $expectedIntegrities = [
+           '', // This makes sense, cause on 0, the generation should be disabled
+           'sha256-DUTqIDSUj1HagrQbSjhJtiykfXxVQ74BanobipgodCo=',
+           'sha384-aieE32yQSOy7uEhUkUvR9bVgfJgMsP+B9TthbxbjDDZ2hd4tjV5jMUoj9P8aeSHI',
+           'sha512-0bz2YVKEoytikWIUFpo6lK/k2cVVngypgaItFoRvNfux/temtdCVxsu+HxmdRT8aNOeJxxREUphbkcAK8KpkWg==',
+        ];
+        $file = 'Tests/Fixtures/Files/dummy.js';
+        $method = (new \ReflectionClass('\FluidTYPO3\Vhs\Service\AssetService'))->getMethod('getFileIntegrity');
+        $instance = $this->getMock('FluidTYPO3\\Vhs\\Service\\AssetService', array('writeFile'));
+        $instance->method('writeFile')->willReturn(null);
+
+        $method->setAccessible(true);
+        foreach($expectedIntegrities as $settingLevel => $expectedIntegrity) {
+            $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] = $settingLevel;
+            $this->assertEquals($expectedIntegrity, $method->invokeArgs($instance, array($file)));
+        }
+
+        unset($GLOBALS['TSFE']);
+    }
 }
