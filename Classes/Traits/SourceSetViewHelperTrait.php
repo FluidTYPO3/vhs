@@ -2,6 +2,7 @@
 namespace FluidTYPO3\Vhs\Traits;
 
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
