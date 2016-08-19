@@ -57,7 +57,7 @@ trait SourceSetViewHelperTrait
         $srcsetVariants = [];
 
         foreach ($srcsets as $key => $width) {
-            if (0 < $dimensions['ratio']){
+            if (0 < $dimensions['ratio']) {
                 $height = floor((int)$width/$dimensions['ratio']) . $dimensions['postHeight'];
             }
             
@@ -139,14 +139,15 @@ trait SourceSetViewHelperTrait
         return $srcsets;
     }
     
-    private function getDimensions($width, $height){
+    private function getDimensions($width, $height)
+    {
         $widthSplit = [];
         $heightSplit = [];
-        if (false === empty($width)){
+        if (false === empty($width)) {
             preg_match("/(\\d+)([a-zA-Z]+)/", $width, $widthSplit);
         }
         
-        if (false === empty($height)){
+        if (false === empty($height)) {
             preg_match("/(\\d+)([a-zA-Z]+)/", $height, $heightSplit);
         }
         
@@ -157,7 +158,7 @@ trait SourceSetViewHelperTrait
             'postHeight'=>$heightSplit[2],
             'ratio'=> 0,
         ];
-        if (0 < $dimensions['height']){
+        if (0 < $dimensions['height']) {
             $dimensions['ratio'] = $dimensions['width']/$dimensions['height'];
         }
         return $dimensions;
