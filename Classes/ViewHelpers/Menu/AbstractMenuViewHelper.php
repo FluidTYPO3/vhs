@@ -686,5 +686,4 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 
         return $pages;
     }
-
 }
