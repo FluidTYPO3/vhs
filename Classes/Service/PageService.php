@@ -177,7 +177,7 @@ class PageService implements SingletonInterface
         $hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
         $pageOverlay = [];
         if (0 !== $languageUid) {
-            $pageOverlay = $GLOBALS['TSFE']->sys_page->getPageOverlay($pageUid, $languageUid);
+            $pageOverlay = $this->getPageRepository()->getPageOverlay($pageUid, $languageUid);
         }
         $translationAvailable = (0 !== count($pageOverlay));
 
