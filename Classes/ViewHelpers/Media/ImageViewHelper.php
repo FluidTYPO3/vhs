@@ -110,6 +110,7 @@ class ImageViewHelper extends AbstractImageViewHelper
         if ($this->hasArgument('canvasWidth') || $this->hasArgument('canvasHeight')) {
             $width = $this->arguments['canvasWidth'];
             $height = $this->arguments['canvasHeight'];
+            $src = $this->mediaSource;
         } elseif (false === empty($srcSetVariants) && false === empty($this->arguments['srcsetDefault'])) {
             $srcSetVariantDefault = $srcSetVariants[$this->arguments['srcsetDefault']];
             $src = $srcSetVariantDefault['src'];
