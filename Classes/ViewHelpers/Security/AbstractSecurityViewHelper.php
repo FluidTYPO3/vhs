@@ -28,14 +28,6 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     protected $frontendUserRepository;
 
     /**
-     * @return NULL
-     */
-    public function render()
-    {
-        return null;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
      * @return void
      */
