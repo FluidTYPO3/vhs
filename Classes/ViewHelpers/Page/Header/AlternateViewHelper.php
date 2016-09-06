@@ -1,30 +1,15 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-use FluidTYPO3\Vhs\Service\PageSelectService;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -33,115 +18,131 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns the all alternate urls.
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page\Header
  */
-class AlternateViewHelper extends AbstractViewHelper {
+class AlternateViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @var PageSelectService
-	 */
-	protected $pageSelect;
+    use PageRendererTrait;
 
-	/**
-	 * @var ObjectManagerInterface
-	 */
-	protected $objectManager;
+    /**
+     * @var PageService
+     */
+    protected $pageService;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
-	 */
-	protected $tagBuilder;
+    /**
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager;
 
-	/**
-	 * @param PageSelectService $pageSelectService
-	 * @return void
-	 */
-	public function injectPageSelectService(PageSelectService $pageSelectService) {
-		$this->pageSelect = $pageSelectService;
-	}
+    /**
+     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
+     */
+    protected $tagBuilder;
 
-	/**
-	 * @param ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-		$this->tagBuilder = $this->objectManager->get('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder');
-	}
+    /**
+     * @param PageService $pageService
+     */
+    public function injectPageService(PageService $pageService)
+    {
+        $this->pageService = $pageService;
+    }
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('languages', 'mixed', 'The languages (either CSV, array or implementing Traversable)', TRUE);
-		$this->registerArgument('pageUid', 'integer', 'The page uid to check', FALSE, 0);
-		$this->registerArgument('normalWhenNoLanguage', 'boolean', 'If TRUE, a missing page overlay should be ignored', FALSE, FALSE);
-	}
+    /**
+     * @param ObjectManagerInterface $objectManager
+     * @return void
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+        $this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		if ('BE' === TYPO3_MODE) {
-			return;
-		}
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'languages',
+            'mixed',
+            'The languages (either CSV, array or implementing Traversable)',
+            true
+        );
+        $this->registerArgument('pageUid', 'integer', 'The page uid to check', false, 0);
+        $this->registerArgument(
+            'normalWhenNoLanguage',
+            'boolean',
+            'If TRUE, a missing page overlay should be ignored',
+            false,
+            false
+        );
+        $this->registerArgument(
+            'addQueryString',
+            'boolean',
+            'If TRUE, the current query parameters will be kept in the URI',
+            false,
+            false
+        );
+    }
 
-		$languages = $this->arguments['languages'];
-		if (TRUE === $languages instanceof \Traversable) {
-			$languages = iterator_to_array($languages);
-		} elseif (TRUE === is_string($languages)) {
-			$languages = GeneralUtility::trimExplode(',', $languages, TRUE);
-		} else {
-			$languages = (array) $languages;
-		}
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return null;
+        }
 
-		$pageUid = intval($this->arguments['pageUid']);
-		$normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
+        $languages = $this->arguments['languages'];
+        if (true === $languages instanceof \Traversable) {
+            $languages = iterator_to_array($languages);
+        } elseif (true === is_string($languages)) {
+            $languages = GeneralUtility::trimExplode(',', $languages, true);
+        } else {
+            $languages = (array) $languages;
+        }
 
-		if (0 === $pageUid) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
+        $pageUid = (integer) $this->arguments['pageUid'];
+        if (0 === $pageUid) {
+            $pageUid = $GLOBALS['TSFE']->id;
+        }
 
-		$currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-		unset($languages[$currentLanguageUid]);
+        $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
+        $addQueryString = $this->arguments['addQueryString'];
 
-		/** @var UriBuilder $uriBuilder */
-		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uriBuilder = $uriBuilder->reset()
-			->setTargetPageUid($pageUid)
-			->setCreateAbsoluteUri(TRUE);
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $uriBuilder->reset()
+            ->setTargetPageUid($pageUid)
+            ->setCreateAbsoluteUri(true)
+            ->setAddQueryString($addQueryString);
 
-		$this->tagBuilder->reset();
-		$this->tagBuilder->setTagName('link');
-		$this->tagBuilder->addAttribute('rel', 'alternate');
+        $this->tagBuilder->reset();
+        $this->tagBuilder->setTagName('link');
+        $this->tagBuilder->addAttribute('rel', 'alternate');
 
-		/** @var PageRenderer $pageRenderer */
-		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		$usePageRenderer = (1 !== intval($GLOBALS['TSFE']->config['config']['disableAllHeaderCode']));
-		$output = '';
+        /** @var PageRenderer $pageRenderer */
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $usePageRenderer = (1 !== (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']);
+        $output = '';
 
-		foreach ($languages as $languageUid => $languageName) {
-			if (FALSE === $this->pageSelect->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
-				$uri = $uriBuilder->setArguments(array('L' => $languageUid))->build();
-				$this->tagBuilder->addAttribute('href', $uri);
-				$this->tagBuilder->addAttribute('hreflang', $languageName);
+        foreach ($languages as $languageUid => $languageName) {
+            if (false === $this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
+                $uri = $uriBuilder->setArguments(array('L' => $languageUid))->build();
+                $this->tagBuilder->addAttribute('href', $uri);
+                $this->tagBuilder->addAttribute('hreflang', $languageName);
 
-				$renderedTag = $this->tagBuilder->render();
-				if (TRUE === $usePageRenderer) {
-					$pageRenderer->addMetaTag($renderedTag);
-				} else {
-					$output .= $renderedTag . LF;
-				}
-			}
-		}
+                $renderedTag = $this->tagBuilder->render();
+                if (true === $usePageRenderer) {
+                    $pageRenderer->addMetaTag($renderedTag);
+                } else {
+                    $output .= $renderedTag . LF;
+                }
+            }
+        }
 
-		if (FALSE === $usePageRenderer) {
-			return trim($output);
-		}
-	}
+        if (false === $usePageRenderer) {
+            return trim($output);
+        }
+
+        return null;
+    }
 }

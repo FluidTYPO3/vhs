@@ -1,29 +1,12 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Once;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 /**
  * Once: Instance
@@ -40,49 +23,48 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * In addition the ViewHelper is a ConditionViewHelper, which
  * means you can utilize the f:then and f:else child nodes as
  * well as the "then" and "else" arguments.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Once
  */
-class InstanceViewHelper extends AbstractOnceViewHelper {
+class InstanceViewHelper extends AbstractOnceViewHelper
+{
 
-	/**
-	 * @return string
-	 */
-	protected function getIdentifier() {
-		if (TRUE === isset($this->arguments['identifier']) && NULL !== $this->arguments['identifier']) {
-			return $this->arguments['identifier'];
-		}
-		$request = $this->controllerContext->getRequest();
-		$identifier = implode('_', array(
-			$request->getControllerActionName(),
-			$request->getControllerObjectName(),
-			$request->getPluginName(),
-			$request->getControllerExtensionName()
-		));
-		return $identifier;
-	}
+    /**
+     * @return string
+     */
+    protected function getIdentifier()
+    {
+        if (true === isset($this->arguments['identifier']) && null !== $this->arguments['identifier']) {
+            return $this->arguments['identifier'];
+        }
+        $request = $this->controllerContext->getRequest();
+        $identifier = implode('_', [
+            $request->getControllerActionName(),
+            $request->getControllerName(),
+            $request->getPluginName(),
+            $request->getControllerExtensionName()
+        ]);
+        return $identifier;
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function storeIdentifier() {
-		$index = get_class($this);
-		$identifier = $this->getIdentifier();
-		if (FALSE === is_array($GLOBALS[$index])) {
-			$GLOBALS[$index] = array();
-		}
-		$GLOBALS[$index][$identifier] = TRUE;
-	}
+    /**
+     * @return void
+     */
+    protected function storeIdentifier()
+    {
+        $index = get_class($this);
+        $identifier = $this->getIdentifier();
+        if (false === is_array($GLOBALS[$index])) {
+            $GLOBALS[$index] = [];
+        }
+        $GLOBALS[$index][$identifier] = true;
+    }
 
-	/**
-	 * @return boolean
-	 */
-	protected function assertShouldSkip() {
-		$index = get_class($this);
-		$identifier = $this->getIdentifier();
-		return isset($GLOBALS[$index][$identifier]);
-	}
-
+    /**
+     * @return boolean
+     */
+    protected function assertShouldSkip()
+    {
+        $index = get_class($this);
+        $identifier = $this->getIdentifier();
+        return isset($GLOBALS[$index][$identifier]);
+    }
 }

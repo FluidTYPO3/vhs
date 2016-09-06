@@ -1,64 +1,50 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class TyposcriptViewHelperTest
  */
-class TyposcriptViewHelperTest extends AbstractViewHelperTest {
+class TyposcriptViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function returnsNullIfPathIsNull() {
-		$this->assertNull($this->executeViewHelper(array('path' => NULL)));
-	}
+    /**
+     * @test
+     */
+    public function returnsNullIfPathIsNull()
+    {
+        $this->assertNull($this->executeViewHelper(array('path' => null)));
+    }
 
-	/**
-	 * @test
-	 */
-	public function returnsArrayIfPathContainsArray() {
-		$this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase.features')), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
-	}
+    /**
+     * @test
+     */
+    public function returnsArrayIfPathContainsArray()
+    {
+        $this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase.features')), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canGetPathUsingArgument() {
-		$this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features')));
-	}
+    /**
+     * @test
+     */
+    public function canGetPathUsingArgument()
+    {
+        $this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canGetPathUsingTagContent() {
-		$this->assertNotEmpty($this->executeViewHelperUsingTagContent('Text', 'config.tx_extbase.features'));
-	}
-
+    /**
+     * @test
+     */
+    public function canGetPathUsingTagContent()
+    {
+        $this->assertNotEmpty($this->executeViewHelperUsingTagContent('Text', 'config.tx_extbase.features'));
+    }
 }

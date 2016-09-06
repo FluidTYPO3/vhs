@@ -1,29 +1,12 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Once;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 /**
  * Once: Session
@@ -37,54 +20,54 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * In addition the ViewHelper is a ConditionViewHelper, which
  * means you can utilize the f:then and f:else child nodes as
  * well as the "then" and "else" arguments.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Once
  */
-class SessionViewHelper extends AbstractOnceViewHelper {
+class SessionViewHelper extends AbstractOnceViewHelper
+{
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		if ('' === session_id()) {
-			session_start();
-		}
-		return parent::render();
-	}
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        if ('' === session_id()) {
+            session_start();
+        }
+        return parent::render();
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function storeIdentifier() {
-		$identifier = $this->getIdentifier();
-		$index = get_class($this);
-		if (FALSE === is_array($_SESSION[$index])) {
-			$_SESSION[$index] = array();
-		}
-		$_SESSION[$index][$identifier] = TRUE;
-	}
+    /**
+     * @return void
+     */
+    protected function storeIdentifier()
+    {
+        $identifier = $this->getIdentifier();
+        $index = get_class($this);
+        if (false === is_array($_SESSION[$index])) {
+            $_SESSION[$index] = [];
+        }
+        $_SESSION[$index][$identifier] = time();
+    }
 
-	/**
-	 * @return boolean
-	 */
-	protected function assertShouldSkip() {
-		$identifier = $this->getIdentifier();
-		$index = get_class($this);
-		return (boolean) (TRUE === isset($_SESSION[$index][$identifier]));
-	}
+    /**
+     * @return boolean
+     */
+    protected function assertShouldSkip()
+    {
+        $identifier = $this->getIdentifier();
+        $index = get_class($this);
+        return (boolean) (true === isset($_SESSION[$index][$identifier]));
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function removeIfExpired() {
-		$identifier = $this->getIdentifier();
-		$index = get_class($this);
-		$existsInSession = (boolean) (TRUE === isset($_SESSION[$index]) && TRUE === isset($_SESSION[$index][$identifier]));
-		if (TRUE === $existsInSession && time() - $this->arguments['ttl'] >= $_SESSION[$index][$identifier]) {
-			unset($_SESSION[$index][$identifier]);
-		}
-	}
-
+    /**
+     * @return void
+     */
+    protected function removeIfExpired()
+    {
+        $id = $this->getIdentifier();
+        $index = get_class($this);
+        $existsInSession = (boolean) (true === isset($_SESSION[$index]) && true === isset($_SESSION[$index][$id]));
+        if (true === $existsInSession && time() - $this->arguments['ttl'] >= $_SESSION[$index][$id]) {
+            unset($_SESSION[$index][$id]);
+        }
+    }
 }

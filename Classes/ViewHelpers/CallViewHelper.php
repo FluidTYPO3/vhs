@@ -1,29 +1,14 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Call ViewHelper
@@ -39,33 +24,34 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  *     <v:call method="unconventionalGetter">{object}</v:call>
  *     <!-- arguments for the method -->
  *     <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+class CallViewHelper extends AbstractViewHelper
+{
 
-class CallViewHelper extends AbstractViewHelper {
-
-	/**
-	 * @param string $method
-	 * @param object $object
-	 * @param array $arguments
-	 * @throws \Exception
-	 * @return mixed
-	 */
-	public function render($method, $object = NULL, array $arguments = array()) {
-		if (NULL === $object) {
-			$object = $this->renderChildren();
-			if (FALSE === is_object($object)) {
-				throw new \RuntimeException('Using v:call requires an object either as "object" attribute, tag content or inline argument', 1356849652);
-			}
-		}
-		if (FALSE === method_exists($object, $method)) {
-			throw new \RuntimeException('Method "' . $method . '" does not exist on object of type ' . get_class($object), 1356834755);
-		}
-		return call_user_func_array(array($object, $method), $arguments);
-	}
-
+    /**
+     * @param string $method
+     * @param object $object
+     * @param array $arguments
+     * @throws \RuntimeException
+     * @return mixed
+     */
+    public function render($method, $object = null, array $arguments = [])
+    {
+        if (null === $object) {
+            $object = $this->renderChildren();
+            if (false === is_object($object)) {
+                throw new \RuntimeException(
+                    'Using v:call requires an object either as "object" attribute, tag content or inline argument',
+                    1356849652
+                );
+            }
+        }
+        if (false === method_exists($object, $method)) {
+            throw new \RuntimeException(
+                'Method "' . $method . '" does not exist on object of type ' . get_class($object),
+                1356834755
+            );
+        }
+        return call_user_func_array(array($object, $method), $arguments);
+    }
 }

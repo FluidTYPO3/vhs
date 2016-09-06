@@ -1,20 +1,16 @@
+<img src="https://fluidtypo3.org/logo.svgz" width="100%" />
+
 VHS: Fluid ViewHelpers
 ======================
 
 > Collection of general purpose ViewHelpers usable in the Fluid templating engine
 > that's bundled with the TYPO3 CMS.
 
-[![Build Status](https://travis-ci.org/FluidTYPO3/vhs.png?branch=master)](https://travis-ci.org/FluidTYPO3/vhs) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/vhs.svg)](https://coveralls.io/r/FluidTYPO3/vhs)
-
-## ViewHelper argument reference
-
-Can be found online at:
-
-http://fluidtypo3.org/viewhelpers/vhs.html
+[![Build Status](https://img.shields.io/travis/FluidTYPO3/vhs.svg?style=flat-square&label=package)](https://travis-ci.org/FluidTYPO3/vhs) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/vhs/development.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/vhs) [![Documentation](http://img.shields.io/badge/documentation-online-blue.svg?style=flat-square)](https://fluidtypo3.org/viewhelpers/vhs/master.html) [![Build Status](https://img.shields.io/travis/FluidTYPO3/fluidtypo3-testing.svg?style=flat-square&label=framework)](https://travis-ci.org/FluidTYPO3/fluidtypo3-testing/) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/fluidtypo3-testing/master.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/fluidtypo3-testing)
 
 ## Installation
 
-Download and install as TYPO3 extension. That's it. There are no configuration options apart from the arguments which each ViewHelper accepts.
+Download and install as TYPO3 extension. That's it.
 
 ## Settings
 
@@ -58,7 +54,7 @@ Which is itself a short form of:
 ```
 $asset = \FluidTYPO3\Vhs\Asset::getInstance();
 // or alternatively, if this fits better in your other code:
-$asset = $objectManager->get('FluidTYPO3\Vhs\Asset');
+$asset = $objectManager->get('FluidTYPO3\\Vhs\\Asset');
 // then:
 $asset->setName('demo');
 $asset->setPath('fileadmin/demo.js');
@@ -68,7 +64,7 @@ $asset->finalize(); // manually created Assets must be finalized before they sho
 The PHP above does the exact same as this TypoScript:
 
 ```
-plugin.tx_vhs.settngs.asset.demo.path = fileadmin/demo.js
+plugin.tx_vhs.settings.asset.demo.path = fileadmin/demo.js
 ```
 
 Which is a short form of:
@@ -116,6 +112,7 @@ plugin.tx_vhs.settings.asset {
 }
 plugin.tx_vhs.assets {
 	mergedAssetsUseHashedFilename = 0 # If set to a 1, Assets are merged into a file named using a hash if Assets' names.
+	tagsAddSubresourceIntegrity = 0 # If set to 1 (weakest),2 or 3 (strongest), Vhs will generate and add the Subresource Integrity (SRI) for every included Asset.
 }
 ```
 
@@ -128,51 +125,3 @@ plugin.tx_vhs.settings.prependPath = http://static.mydomain.com/
 ```
 
 The setting affects *every* relative-path resource ViewHelper (NB: this does not include links!) in VHS, which is why it is not placed inside the "asset" scope. If you need to output this prefix path in templates you can use the `v:page.staticPrefix` ViewHelper - it accepts no arguments and only outputs the setting if it is set. For example, using `f:image` will not prefix the image path but manually creating an `<img />` tag and using `f:uri.image` as `src` argument will allow you to prefix the path.
-
-## Usage
-
-To use the ViewHelpers in your Fluid templates simply add the namespace:
-
-```xml
-{namespace v=FluidTYPO3\Vhs\ViewHelpers}
-```
-
-Using the namespace name "v" is not required but it is recommended. It's a single character like the "f" namespace but is visually easy to distinguish from "f".
-
-### A note about chaining inline syntax
-
-Many of the VHS ViewHelpers make particular sense when used with their inline syntax. Special care was taken to allow compact notations such as this:
-
-```xml
-<f:for each="{myQueryResult -> v:iterator.sort(sortBy: 'name')}" as="record">
-	...
-</f:for>
-```
-
-In the above case the sorted QueryResult is used only in the specific loop, preserving the order of the original QueryResult.
-
-Multiple chained syntax is also possible:
-
-```xml
-{bytes->v:math.division(b: 1024)->v:math.round()->f:format.number()} KB
-```
-
-Which will first take variable {bytes} and divide by 1024 to get a float KB size. Then round that off to a whole integer and finally use f:format.number to ensure a localized display of thousands and decimal separators. Which is fairly neat considering how such an operation would appear if constructed in, for example, a Domain Object's getter method. The alternative would be to create a highly customized "Format/KilobyteSizeViewHelper" or similar.
-
-ViewHelpers for which this makes special sense are the formatting and math ViewHelpers. These work well when applied in sequences such as the above or cases such as this:
-
-```xml
-{text -> v:format.trim() -> v:format.markdown()}
-```
-
-Naturally, the tag-based usage is supported the same way as the above but with one caveat which one should always be aware of; that Fluid will render whitespace characters between tags so that when you break your nested ViewHelper tags into multiple lines you will risk
-causing data type mismatch errors - especially when using v:math which can result in quite large expressions which would be very tempting to break into individual lines.
-
-Regarding nesting of ViewHelpers you should note that v:format.trim does remove extra whitespace - but it also converts the returned value to a string which could potentially be misinterpreted when used as numeric values.
-
-It is highly recommended to use the inline annotation when your return values have a specific type before being output. Which is exactly the case when working with the v:math.* ViewHelpers.
-
-## Known issues
-
-* PHP 5.3.3: Due to errors in the class loader, you should recompile / upgrade to a more recent
-  version. PHP 5.3.7 is recommended at least

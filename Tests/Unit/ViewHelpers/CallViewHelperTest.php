@@ -1,70 +1,55 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 /**
- * @protection on
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class CallViewHelperTest
  */
-class CallViewHelperTest extends AbstractViewHelperTest {
+class CallViewHelperTest extends AbstractViewHelperTest
+{
 
-	/**
-	 * @test
-	 */
-	public function throwsRuntimeExceptionIfObjectNotFound() {
-		$this->setExpectedException('RuntimeException', NULL, 1356849652);
-		$this->executeViewHelper(array('method' => 'method', 'arguments' => array()));
-	}
+    /**
+     * @test
+     */
+    public function throwsRuntimeExceptionIfObjectNotFound()
+    {
+        $this->setExpectedException('RuntimeException', null, 1356849652);
+        $this->executeViewHelper(array('method' => 'method', 'arguments' => array()));
+    }
 
-	/**
-	 * @test
-	 */
-	public function throwsRuntimeExceptionIfMethodNotFound() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
-		$this->setExpectedException('RuntimeException', NULL, 1356834755);
-		$this->executeViewHelper(array('method' => 'notfound', 'object' => $object, 'arguments' => array()));
-	}
+    /**
+     * @test
+     */
+    public function throwsRuntimeExceptionIfMethodNotFound()
+    {
+        $object = new \ArrayIterator(array('foo', 'bar'));
+        $this->setExpectedException('RuntimeException', null, 1356834755);
+        $this->executeViewHelper(array('method' => 'notfound', 'object' => $object, 'arguments' => array()));
+    }
 
-	/**
-	 * @test
-	 */
-	public function executesMethodOnObjectFromArgument() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
-		$result = $this->executeViewHelper(array('method' => 'count', 'object' => $object, 'arguments' => array()));
-		$this->assertEquals(2, $result);
-	}
+    /**
+     * @test
+     */
+    public function executesMethodOnObjectFromArgument()
+    {
+        $object = new \ArrayIterator(array('foo', 'bar'));
+        $result = $this->executeViewHelper(array('method' => 'count', 'object' => $object, 'arguments' => array()));
+        $this->assertEquals(2, $result);
+    }
 
-	/**
-	 * @test
-	 */
-	public function executesMethodOnObjectFromChildContent() {
-		$object = new \ArrayIterator(array('foo', 'bar'));
-		$result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array('method' => 'count', 'arguments' => array()), array('v' => $object));
-		$this->assertEquals(2, $result);
-	}
-
+    /**
+     * @test
+     */
+    public function executesMethodOnObjectFromChildContent()
+    {
+        $object = new \ArrayIterator(array('foo', 'bar'));
+        $result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array('method' => 'count', 'arguments' => array()), array('v' => $object));
+        $this->assertEquals(2, $result);
+    }
 }

@@ -1,44 +1,25 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 /**
- * Returns the width of the provided image file in pixels
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Media\Image
+ * Returns the width of the provided image file in pixels.
  */
-class WidthViewHelper extends AbstractImageInfoViewHelper {
+class WidthViewHelper extends AbstractImageInfoViewHelper
+{
 
-	/**
-	 * @return int
-	 */
-	public function render() {
-		$info = $this->getInfo();
-		return TRUE === isset($info['width']) ? $info['width'] : 0;
-	}
-
+    /**
+     * @return int
+     */
+    public function render()
+    {
+        $info = $this->getInfo();
+        return true === isset($info['width']) ? $info['width'] : 0;
+    }
 }

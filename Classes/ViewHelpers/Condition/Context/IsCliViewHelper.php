@@ -1,30 +1,15 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Is context CLI?
@@ -47,30 +32,18 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *            Maybe BE, maybe FE.
  *         </f:else>
  *     </v:condition.context.isCli>
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Condition\Context
  */
-class IsCliViewHelper extends AbstractConditionViewHelper {
+class IsCliViewHelper extends AbstractConditionViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @return string
-	 */
-	public function render() {
-		if (TRUE === $this->isCliContext()) {
-			return $this->renderThenChild();
-		}
-		return $this->renderElseChild();
-	}
+    use ConditionViewHelperTrait;
 
-	/**
-	 * @return boolean
-	 */
-	protected function isCliContext() {
-		return defined('TYPO3_climode');
-	}
-
+    /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return defined('TYPO3_climode');
+    }
 }

@@ -1,30 +1,16 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Format;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -45,106 +31,116 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  * In other words, *NIX standard behavior must be used.
  *
  * See: http://daringfireball.net/projects/markdown/
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
-class MarkdownViewHelper extends AbstractViewHelper {
+class MarkdownViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @var boolean
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * @var boolean
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * @var string
-	 */
-	protected $markdownExecutablePath;
+    /**
+     * @var string
+     */
+    protected $markdownExecutablePath;
 
-	/**
-	 * @var StringFrontend
-	 */
-	protected $cache;
+    /**
+     * @var StringFrontend
+     */
+    protected $cache;
 
-	/**
-	 * @return void
-	 */
-	public function initialize() {
-		$this->cache = $GLOBALS['typo3CacheManager']->getCache('vhs_markdown');
-	}
+    /**
+     * @return void
+     */
+    public function initialize()
+    {
+        if (isset($GLOBALS['typo3CacheManager'])) {
+            $cacheManager = $GLOBALS['typo3CacheManager'];
+        } else {
+            $cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+        }
+        $this->cache = $cacheManager->getCache('vhs_markdown');
+    }
 
-	/**
-	 * @param string $text
-	 * @param boolean $trim
-	 * @param boolean $htmlentities
-	 * @throws Exception
-	 * @return string
-	 */
-	public function render($text = NULL, $trim = TRUE, $htmlentities = FALSE) {
-		if (NULL === $text) {
-			$text = $this->renderChildren();
-		}
-		if (NULL === $text) {
-			return NULL;
-		}
+    /**
+     * @param string $text
+     * @param boolean $trim
+     * @param boolean $htmlentities
+     * @throws Exception
+     * @return string
+     */
+    public function render($text = null, $trim = true, $htmlentities = false)
+    {
+        if (null === $text) {
+            $text = $this->renderChildren();
+        }
+        if (null === $text) {
+            return null;
+        }
 
-		$cacheIdentifier = sha1($text);
-		if (TRUE === $this->cache->has($cacheIdentifier)) {
-			return $this->cache->get($cacheIdentifier);
-		}
+        $cacheIdentifier = sha1($text);
+        if (true === $this->cache->has($cacheIdentifier)) {
+            return $this->cache->get($cacheIdentifier);
+        }
 
-		$this->markdownExecutablePath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('markdown');
-		if (FALSE === is_executable($this->markdownExecutablePath)) {
-			throw new Exception('Use of Markdown requires the "markdown" shell utility to be installed ' .
-				'and accessible; this binary could not be found in any of your configured paths available to this script', 1350511561);
-		}
-		if (TRUE === (boolean) $trim) {
-			$text = trim($text);
-		}
-		if (TRUE === (boolean) $htmlentities) {
-			$text = htmlentities($text);
-		}
-		$transformed = $this->transform($text);
-		$this->cache->set($cacheIdentifier, $transformed);
-		return $transformed;
-	}
+        $this->markdownExecutablePath = CommandUtility::getCommand('markdown');
+        if (false === is_executable($this->markdownExecutablePath)) {
+            throw new Exception(
+                'Use of Markdown requires the "markdown" shell utility to be installed and accessible; this binary ' .
+                'could not be found in any of your configured paths available to this script',
+                1350511561
+            );
+        }
+        if (true === (boolean) $trim) {
+            $text = trim($text);
+        }
+        if (true === (boolean) $htmlentities) {
+            $text = htmlentities($text);
+        }
+        $transformed = $this->transform($text);
+        $this->cache->set($cacheIdentifier, $transformed);
+        return $transformed;
+    }
 
-	/**
-	 * @param string $text
-	 * @throws Exception
-	 * @return string
-	 */
-	public function transform($text) {
-		$descriptorspec = array(
-			0 => array('pipe', 'r'),
-			1 => array('pipe', 'w'),
-			2 => array('pipe', 'a')
-		);
+    /**
+     * @param string $text
+     * @throws Exception
+     * @return string
+     */
+    public function transform($text)
+    {
+        $descriptorspec = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'a']
+        ];
 
-		$process = proc_open($this->markdownExecutablePath, $descriptorspec, $pipes, NULL, $GLOBALS['_ENV']);
+        $process = proc_open($this->markdownExecutablePath, $descriptorspec, $pipes, null, $GLOBALS['_ENV']);
 
-		stream_set_blocking($pipes[0], 1);
-		stream_set_blocking($pipes[1], 1);
-		stream_set_blocking($pipes[2], 1);
+        stream_set_blocking($pipes[0], 1);
+        stream_set_blocking($pipes[1], 1);
+        stream_set_blocking($pipes[2], 1);
 
-		fwrite($pipes[0], $text);
-		fclose($pipes[0]);
+        fwrite($pipes[0], $text);
+        fclose($pipes[0]);
 
-		$transformed = stream_get_contents($pipes[1]);
-		fclose($pipes[1]);
+        $transformed = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
 
-		$errors = stream_get_contents($pipes[2]);
-		fclose($pipes[2]);
+        $errors = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
 
-		$exitCode = proc_close($process);
+        $exitCode = proc_close($process);
 
-		if ('' !== trim($errors)) {
-			throw new Exception('There was an error while executing ' . $this->markdownExecutablePath . '. The return code was ' .
-				$exitCode . ' and the message reads: ' . $errors, 1350514144);
-		}
+        if ('' !== trim($errors)) {
+            throw new Exception(
+                'There was an error while executing ' . $this->markdownExecutablePath . '. The return code was ' .
+                $exitCode . ' and the message reads: ' . $errors,
+                1350514144
+            );
+        }
 
-		return $transformed;
-	}
-
+        return $transformed;
+    }
 }

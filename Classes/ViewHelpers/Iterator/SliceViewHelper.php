@@ -1,67 +1,49 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Slice an Iterator by $start and $length
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Slice an Iterator by $start and $length.
  */
-class SliceViewHelper extends AbstractViewHelper {
+class SliceViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @param mixed $haystack
-	 * @param integer $start
-	 * @param integer $length
-	 * @param string $as
-	 * @throws \Exception
-	 * @return array
-	 */
-	public function render($haystack = NULL, $start = 0, $length = NULL, $as = NULL) {
-		if (NULL === $haystack) {
-			$haystack = $this->renderChildren();
-		}
-		if (TRUE === $haystack instanceof \Traversable) {
-			$haystack = iterator_to_array($haystack, TRUE);
-		} elseif (FALSE === is_array($haystack)) {
-			throw new Exception('Cannot slice unsupported type: ' . gettype($haystack), 1353812601);
-		}
-		$output = array_slice($haystack, $start, $length, TRUE);
-		if (NULL !== $as) {
-			$variables = array($as => $output);
-			$output = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		}
-		return $output;
-	}
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument('haystack', 'mixed', 'The input array/Traversable to reverse');
+    }
+
+    /**
+     * Render method
+     *
+     * @param integer $start
+     * @param integer $length
+     * @return array
+     */
+    public function render($start = 0, $length = null)
+    {
+        $haystack = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('haystack');
+        $output = array_slice($haystack, $start, $length, true);
+        return $this->renderChildrenWithVariableOrReturnInput($output);
+    }
 }

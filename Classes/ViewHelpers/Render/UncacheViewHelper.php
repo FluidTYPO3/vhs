@@ -1,86 +1,78 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2013 Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Uncaches partials. Use like ``f:render``.
  * The partial will then be rendered each time.
  * Please be aware that this will impact render time.
  * Arguments must be serializable and will be cached.
- *
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Render
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+class UncacheViewHelper extends AbstractViewHelper
+{
 
-class UncacheViewHelper extends AbstractViewHelper {
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * Initialize
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('partial', 'string', 'Reference to a partial.', TRUE);
-		$this->registerArgument('section', 'string', 'Name of section inside the partial to render.', FALSE, NULL);
-		$this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.', FALSE, NULL);
-	}
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('partial', 'string', 'Reference to a partial.', true);
+        $this->registerArgument('section', 'string', 'Name of section inside the partial to render.', false, null);
+        $this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.', false, null);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		$partialArguments = $this->arguments['arguments'];
-		if (FALSE === is_array($partialArguments)) {
-			$partialArguments = array();
-		}
-		if (FALSE === isset($partialArguments['settings']) && TRUE === $this->templateVariableContainer->exists('settings')) {
-			$partialArguments['settings'] = $this->templateVariableContainer->get('settings');
-		}
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+        $partialArguments = $arguments['arguments'];
+        if (false === is_array($partialArguments)) {
+            $partialArguments = [];
+        }
+        if (false === isset($partialArguments['settings']) && true === $templateVariableContainer->exists('settings')) {
+            $partialArguments['settings'] = $templateVariableContainer->get('settings');
+        }
 
-		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
-		$content = '<!--' . $substKey . '-->';
-		$templateView = GeneralUtility::makeInstance('FluidTYPO3\Vhs\View\UncacheTemplateView');
+        $substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+        $content = '<!--' . $substKey . '-->';
+        $templateView = GeneralUtility::makeInstance('FluidTYPO3\\Vhs\\View\\UncacheTemplateView');
 
-		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
-			'type' => 'POSTUSERFUNC',
-			'cObj' => serialize($templateView),
-			'postUserFunc' => 'render',
-			'conf' => array(
-				'partial' => $this->arguments['partial'],
-				'section' => $this->arguments['section'],
-				'arguments' => $partialArguments,
-				'controllerContext' => $this->renderingContext->getControllerContext()
-			),
-			'content' => $content
-		);
+        $GLOBALS['TSFE']->config['INTincScript'][$substKey] = [
+            'type' => 'POSTUSERFUNC',
+            'cObj' => serialize($templateView),
+            'postUserFunc' => 'render',
+            'conf' => [
+                'partial' => $arguments['partial'],
+                'section' => $arguments['section'],
+                'arguments' => $partialArguments,
+                'controllerContext' => $renderingContext->getControllerContext()
+            ],
+            'content' => $content
+        ];
 
-		return $content;
-	}
-
+        return $content;
+    }
 }

@@ -1,28 +1,15 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Try ViewHelper
@@ -74,7 +61,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  *                     -> v:iterator.explode(glue: '_')
  *                     -> v:iterator.pop()
  *                     -> v:format.replace(substring: 'ViewHelper', replacement: ''}"
- * 	               <small>{exception.code}</small>
+ *                 <small>{exception.code}</small>
  *                 <!-- Output example: "Error in Decode <small>1358440054</small>" -->
  *             </h4>
  *             <p>
@@ -94,30 +81,25 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  *     {v:try(then: '{badObject -> v:format.json.encode()}', else: '{"validJson": "validValue"')}
  *     <!-- Note: be VERY careful about the inline JSON syntax! It's very close to Fluids. Always
  *          double quote your object variables' names, that prevents almost all issues! -->
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+class TryViewHelper extends AbstractConditionViewHelper
+{
 
-class TryViewHelper extends AbstractConditionViewHelper {
+    use TemplateVariableViewHelperTrait;
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		try {
-			$content = $this->renderThenChild();
-			if (TRUE === empty($content)) {
-				$content = $this->renderChildren();
-			}
-		} catch (\Exception $error) {
-			$variables = array('exception' => $error);
-			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-		}
-		return $content;
-	}
-
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        try {
+            $content = $this->renderThenChild();
+            if (true === empty($content)) {
+                $content = $this->renderChildren();
+            }
+        } catch (\Exception $error) {
+            $content = $this->renderChildrenWithVariables(array('exception' => $error));
+        }
+        return $content;
+    }
 }

@@ -1,30 +1,15 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Condition\String;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: String is lowercase
@@ -32,31 +17,33 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * Condition ViewHelper which renders the `then` child if provided
  * string is lowercase. By default only the first letter is tested.
  * To test the full string set $fullString to TRUE.
- *
- * @author Björn Fromme <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Condition\String
  */
-class IsLowercaseViewHelper extends AbstractConditionViewHelper {
+class IsLowercaseViewHelper extends AbstractConditionViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @param string $string
-	 * @param boolean $fullString
-	 * @return string
-	 */
-	public function render($string, $fullString = FALSE) {
-		if (TRUE === $fullString) {
-			$result = ctype_lower($string);
-		} else {
-			$result = ctype_lower(substr($string, 0, 1));
-		}
-		if (TRUE === $result) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
-	}
+    use ConditionViewHelperTrait;
 
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('string', 'string', 'string to check', true);
+        $this->registerArgument('fullString', 'string', 'need', false, false);
+    }
+
+    /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        if (true === $arguments['fullString']) {
+            $result = ctype_lower($arguments['string']);
+        } else {
+            $result = ctype_lower(substr($arguments['string'], 0, 1));
+        }
+        return true === $result;
+    }
 }

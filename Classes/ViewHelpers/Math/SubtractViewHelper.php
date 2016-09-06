@@ -1,28 +1,12 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Math;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 /**
  * Math: Subtract
@@ -33,43 +17,42 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * used to return a single numeric value. If both $a and $b are
  * arrays, each member of $a is summed against the corresponding
  * member in $b compared using index.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Math
  */
-class SubtractViewHelper extends AbstractMultipleMathViewHelper {
+class SubtractViewHelper extends AbstractMultipleMathViewHelper
+{
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation', FALSE, NULL);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation');
+    }
 
-	/**
-	 * @return mixed
-	 * @throw Exception
-	 */
-	public function render() {
-		$a = $this->getInlineArgument();
-		$b = $this->arguments['b'];
-		$aIsIterable = $this->assertIsArrayOrIterator($a);
-		if (TRUE === $aIsIterable && NULL === $b) {
-			$a = $this->convertTraversableToArray($a);
-			return -array_sum($a);
-		}
-		return $this->calculate($a, $b);
-	}
+    /**
+     * @return mixed
+     * @throw Exception
+     */
+    public function render()
+    {
+        $a = $this->getInlineArgument();
+        $b = $this->arguments['b'];
+        $aIsIterable = $this->assertIsArrayOrIterator($a);
+        if (true === $aIsIterable && null === $b) {
+            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            return -array_sum($a);
+        }
+        return $this->calculate($a, $b);
+    }
 
-	/**
-	 * @param mixed $a
-	 * @param $b
-	 * @return mixed
-	 */
-	protected function calculateAction($a, $b) {
-		return $a - $b;
-	}
-
+    /**
+     * @param mixed $a
+     * @param $b
+     * @return mixed
+     */
+    protected function calculateAction($a, $b)
+    {
+        return $a - $b;
+    }
 }

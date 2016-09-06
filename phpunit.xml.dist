@@ -1,0 +1,25 @@
+<phpunit bootstrap="./Tests/bootstrap.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertWarningsToExceptions="true"
+         forceCoversAnnotation="false"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         verbose="false">
+
+    <testsuites>
+        <testsuite name="unit">
+            <directory>Tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>Classes</directory>
+        </whitelist>
+    </filter>
+</phpunit>

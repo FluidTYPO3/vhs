@@ -1,36 +1,111 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Iterator;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class ContainsViewHelperTest
  */
-class ContainsViewHelperTest extends AbstractViewHelperTest {
+class ContainsViewHelperTest extends AbstractViewHelperTest
+{
 
+    /**
+     * @dataProvider getPositiveTestValues
+     * @param mixed $haystack
+     * @param mixed $needle
+     */
+    public function testRendersThen($haystack, $needle)
+    {
+        $arguments = array(
+            'haystack' => $haystack,
+            'needle' => $needle,
+            'then' => 'then'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('then', $result);
+
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
+
+    /**
+     * @return array
+     */
+    public function getPositiveTestValues()
+    {
+        $bar = new Bar();
+        ObjectAccess::setProperty($bar, 'uid', 1, true);
+        $foo = new Foo();
+        ObjectAccess::setProperty($foo, 'uid', 2, true);
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach($bar);
+        /** @var LazyObjectStorage $lazyObjectStorage */
+        $lazyObjectStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+            ->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
+        ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
+        $lazyObjectStorage->attach($foo);
+        return array(
+            array(array('foo'), 'foo'),
+            array('foo,bar', 'foo'),
+            array(array($foo), $foo),
+            array($objectStorage, $bar),
+            array($lazyObjectStorage, $foo)
+        );
+    }
+
+    /**
+     * @dataProvider getNegativeTestValues
+     * @param mixed $haystack
+     * @param mixed $needle
+     */
+    public function testRendersElse($haystack, $needle)
+    {
+        $arguments = array(
+            'haystack' => $haystack,
+            'needle' => $needle,
+            'else' => 'else'
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
+
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
+
+    /**
+     * @return array
+     */
+    public function getNegativeTestValues()
+    {
+        $bar = new Bar();
+        ObjectAccess::setProperty($bar, 'uid', 1, true);
+        $foo = new Foo();
+        ObjectAccess::setProperty($foo, 'uid', 2, true);
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach($bar);
+        /** @var LazyObjectStorage $lazyObjectStorage */
+        $lazyObjectStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+            ->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
+        ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
+        $lazyObjectStorage->attach($foo);
+        return array(
+            array(array('foo'), 'bar'),
+            array('foo,baz', 'bar'),
+            array($objectStorage, $foo),
+            array($lazyObjectStorage, $bar)
+        );
+    }
 }

@@ -1,36 +1,34 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Page;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
-use FluidTYPO3\Vhs\ViewHelpers\AbstractViewHelperTest;
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * @protection off
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
+ * Class IsChildPageViewHelperTest
  */
-class IsChildPageViewHelperTest extends AbstractViewHelperTest {
+class IsChildPageViewHelperTest extends AbstractViewHelperTest
+{
 
+    public function testRender()
+    {
+        $GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTquery'), array(), '', false);
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnValue(false));
+        $arguments = array(
+            'then' => 'then',
+            'else' => 'else',
+            'pageUid' => 0
+        );
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals('else', $result);
+
+        $staticResult = $this->executeViewHelperStatic($arguments);
+        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    }
 }

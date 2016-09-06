@@ -1,29 +1,18 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Link;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Cedric Ziel <cedric@cedric-ziel.com>, Internetdienstleistungen & EDV
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper as FluidTypolinkViewHelper;
 
 /**
  * ### TypolinkViewhelper
@@ -33,6 +22,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * For more info on the typolink function, please consult the offical core-documentation:
  * http://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/TypoScriptFunctions/Typolink/Index.html
+ *
+ * DEPRECATED: Use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper instead
  *
  * ### Examples
  *
@@ -46,26 +37,49 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <!-- same with a {page} variable from fluidpages -->
  *     <v:link.typolink configuration="{parameter: page.uid}" />
  *     <!-- With extensive configuration -->
- *     <v:link.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">Click Me!</v:link.typolink>
+ *     <v:link.typolink configuration="{parameter: page.uid, additionalParams: '&print=1', title: 'Follow the link'}">
+ *         Click Me!
+ *     </v:link.typolink>
  *
- * @author Cedric Ziel <cedric@cedric-ziel.com>, Cedric Ziel - Internetdienstleistungen & EDV
- * @package Vhs
- * @subpackage ViewHelpers\Link
+ * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper, remove in 4.0.0
  */
-class TypolinkViewHelper extends AbstractViewHelper {
+class TypolinkViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Initializes the arguments for the ViewHelper
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('configuration', 'array', 'The typoLink configuration', TRUE);
-	}
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		return $GLOBALS['TSFE']->cObj->typoLink($this->renderChildren(), $this->arguments['configuration']);
-	}
+    /**
+     * Initializes the arguments for the ViewHelper
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('configuration', 'array', 'The typoLink configuration', true);
+    }
 
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        GeneralUtility::deprecationLog(
+            sprintf(
+                'Deprecated TypoLinkViewHelper from VHS was used. Please use %s instead.',
+                FluidTypolinkViewHelper::class
+            )
+        );
+        if (null === $arguments['configuration']['additionalAttributes']) {
+            $arguments['configuration']['additionalAttributes'] = [];
+        }
+        return FluidTypolinkViewHelper::renderStatic(
+            $arguments['configuration'],
+            $renderChildrenClosure,
+            $renderingContext
+        );
+    }
 }

@@ -1,62 +1,51 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2013 Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
 use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
 
 /**
- * @author Danilo Bürger <danilo.buerger@hmspl.de>, Heimspiel GmbH
- * @package Vhs
- * @subpackage ViewHelpers\Page
+ * Page FAL resources ViewHelper.
  */
-class ResourcesViewHelper extends RecordViewHelper {
+class ResourcesViewHelper extends RecordViewHelper
+{
 
-	const defaultTable = 'pages';
-	const defaultField = 'media';
+    const DEFAULT_TABLE = 'pages';
+    const DEFAULT_FIELD = 'media';
 
-	/**
-	 * @var string
-	 */
-	protected $table = self::defaultTable;
+    /**
+     * @var string
+     */
+    protected $table = self::DEFAULT_TABLE;
 
-	/**
-	 * @var string
-	 */
-	protected $field = self::defaultField;
+    /**
+     * @var string
+     */
+    protected $field = self::DEFAULT_FIELD;
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
 
-		$this->overrideArgument('table', 'string', 'The table to lookup records.', FALSE, self::defaultTable);
-		$this->overrideArgument('field', 'string', 'The field of the table associated to resources.', FALSE, self::defaultField);
-	}
-
+        $this->overrideArgument('table', 'string', 'The table to lookup records.', false, self::DEFAULT_TABLE);
+        $this->overrideArgument(
+            'field',
+            'string',
+            'The field of the table associated to resources.',
+            false,
+            self::DEFAULT_FIELD
+        );
+    }
 }

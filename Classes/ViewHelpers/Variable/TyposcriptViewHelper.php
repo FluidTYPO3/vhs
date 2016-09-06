@@ -1,29 +1,16 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2014 Claus Due <claus@namelesscoder.net>
-*
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Variable: TypoScript
@@ -54,57 +41,49 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  *
  *     <!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
  *     {wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+class TyposcriptViewHelper extends AbstractViewHelper
+{
 
-class TyposcriptViewHelper extends AbstractViewHelper {
+    /**
+     * @var ConfigurationManagerInterface
+     */
+    protected $configurationManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
+    /**
+     * @param ConfigurationManagerInterface $configurationManager
+     * @return void
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
-	 * Render
-	 *
-	 * @param string $path
-	 * @return mixed
-	 */
-	public function render($path = NULL) {
-		if (NULL === $path) {
-			$path = $this->renderChildren();
-		}
-		if (TRUE === empty($path)) {
-			return NULL;
-		}
-		$all = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		$segments = explode('.', $path);
-		$value = $all;
-		foreach ($segments as $path) {
-			if (TRUE === isset($value[$path . '.'])) {
-				$value = $value[$path . '.'];
-			} else {
-				$value = $value[$path];
-			}
-		}
-		if (TRUE === is_array($value)) {
-			$value = GeneralUtility::removeDotsFromTS($value);
-		}
-		return $value;
-	}
-
+    /**
+     * Render
+     *
+     * @param string $path
+     * @return mixed
+     */
+    public function render($path = null)
+    {
+        if (null === $path) {
+            $path = $this->renderChildren();
+        }
+        if (true === empty($path)) {
+            return null;
+        }
+        $all = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+        );
+        $segments = explode('.', $path);
+        $value = $all;
+        foreach ($segments as $path) {
+            $value = (true === isset($value[$path . '.']) ? $value[$path . '.'] : $value[$path]);
+        }
+        if (true === is_array($value)) {
+            $value = GeneralUtility::removeDotsFromTS($value);
+        }
+        return $value;
+    }
 }

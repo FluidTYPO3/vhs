@@ -1,29 +1,15 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Variable: Set
@@ -66,51 +52,44 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  *
  * Using as `{value -> v:variable.set(name: 'myVar')}` makes `{myVar}` contain
  * `{value}`.
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
+class SetViewHelper extends AbstractViewHelper
+{
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-
-class SetViewHelper extends AbstractViewHelper {
-
-	/**
-	 * Set (override) the variable in $name.
-	 *
-	 * @param string $name
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function render($name, $value = NULL) {
-		if (NULL === $value) {
-			$value = $this->renderChildren();
-		}
-		if (FALSE === strpos($name, '.')) {
-			if (TRUE === $this->templateVariableContainer->exists($name)) {
-				$this->templateVariableContainer->remove($name);
-			}
-			$this->templateVariableContainer->add($name, $value);
-		} elseif (1 === substr_count($name, '.')) {
-			$parts = explode('.', $name);
-			$objectName = array_shift($parts);
-			$path = implode('.', $parts);
-			if (FALSE === $this->templateVariableContainer->exists($objectName)) {
-				return NULL;
-			}
-			$object = $this->templateVariableContainer->get($objectName);
-			try {
-				ObjectAccess::setProperty($object, $path, $value);
-				// Note: re-insert the variable to ensure unreferenced values like arrays also get updated
-				$this->templateVariableContainer->remove($objectName);
-				$this->templateVariableContainer->add($objectName, $object);
-			} catch (\Exception $error) {
-				return NULL;
-			}
-		}
-		return NULL;
-	}
-
+    /**
+     * Set (override) the variable in $name.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function render($name, $value = null)
+    {
+        if (null === $value) {
+            $value = $this->renderChildren();
+        }
+        if (false === strpos($name, '.')) {
+            if (true === $this->templateVariableContainer->exists($name)) {
+                $this->templateVariableContainer->remove($name);
+            }
+            $this->templateVariableContainer->add($name, $value);
+        } elseif (1 === substr_count($name, '.')) {
+            $parts = explode('.', $name);
+            $objectName = array_shift($parts);
+            $path = implode('.', $parts);
+            if (false === $this->templateVariableContainer->exists($objectName)) {
+                return null;
+            }
+            $object = $this->templateVariableContainer->get($objectName);
+            try {
+                ObjectAccess::setProperty($object, $path, $value);
+                // Note: re-insert the variable to ensure unreferenced values like arrays also get updated
+                $this->templateVariableContainer->remove($objectName);
+                $this->templateVariableContainer->add($objectName, $object);
+            } catch (\Exception $error) {
+                return null;
+            }
+        }
+        return null;
+    }
 }

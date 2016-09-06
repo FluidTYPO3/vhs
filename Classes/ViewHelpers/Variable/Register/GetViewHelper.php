@@ -1,29 +1,17 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Stefan Neufeind <info (at) speedpartner.de>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * ### Variable\Register: Get
@@ -33,36 +21,39 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  *
  *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
  *     {v:variable.register.get(name: 'dynamic{variableName}')}
- *
- * @author Stefan Neufeind <info (at) speedpartner.de>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+class GetViewHelper extends AbstractViewHelper
+{
 
-class GetViewHelper extends AbstractViewHelper {
+    use DefaultRenderMethodViewHelperTrait;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('name', 'string', 'Name of register', TRUE);
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('name', 'string', 'Name of register', true);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		if (FALSE === $GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController) {
-			return NULL;
-		}
-		$name = $this->arguments['name'];
-		$value = NULL;
-		if (TRUE === isset($GLOBALS['TSFE']->register[$name])) {
-			$value = $GLOBALS['TSFE']->register[$name];
-		}
-		return $value;
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            return null;
+        }
+        $name = $arguments['name'];
+        $value = null;
+        if (true === isset($GLOBALS['TSFE']->register[$name])) {
+            $value = $GLOBALS['TSFE']->register[$name];
+        }
+        return $value;
+    }
 }

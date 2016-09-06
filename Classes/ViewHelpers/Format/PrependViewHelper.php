@@ -1,28 +1,12 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Format;
-/***************************************************************
- *  Copyright notice
+
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -39,23 +23,20 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *         -> v:format.prepend(add: '@')
  *         -> v:format.date(format: 'Y-m-d H:i')}
  *     <!-- You don't have to break the syntax into lines; done here for display only -->
- *
- * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Format
  */
-class PrependViewHelper extends AbstractViewHelper {
+class PrependViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param string $add
-	 * @param string $subject
-	 * @return string
-	 */
-	public function render($add, $subject = NULL) {
-		if (NULL === $subject) {
-			$subject = $this->renderChildren();
-		}
-		return $add . $subject;
-	}
-
+    /**
+     * @param string $add
+     * @param string $subject
+     * @return string
+     */
+    public function render($add, $subject = null)
+    {
+        if (null === $subject) {
+            $subject = $this->renderChildren();
+        }
+        return $add . $subject;
+    }
 }

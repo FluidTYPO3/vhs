@@ -1,85 +1,50 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Returns random element from array
- *
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Iterator
+ * Returns random element from array.
  */
-class RandomViewHelper extends AbstractViewHelper {
+class RandomViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('as', 'string', 'Which variable to update in the TemplateVariableContainer. If left out, returns the random element instead of updating the variable', FALSE);
-	}
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
-	/**
-	 * Render method
-	 *
-	 * @param mixed $subject
-	 * @throws Exception
-	 * @return mixed
-	 */
-	public function render($subject = NULL) {
-		if (NULL === $subject && (FALSE === isset($as) || TRUE === empty($as))) {
-			$subject = $this->renderChildren();
-		}
-		$as = $this->arguments['as'];
-		$array = NULL;
-		if (TRUE === is_array($subject)) {
-			$array = $subject;
-		} elseif (TRUE === $subject instanceof QueryResultInterface) {
-			/** @var QueryResultInterface $subject */
-			$array = $subject->toArray();
-		} elseif (TRUE === $subject instanceof \Traversable) {
-			$array = iterator_to_array($subject, TRUE);
-		} elseif (NULL !== $subject) {
-			throw new Exception('Invalid variable type passed to Iterator/RandomViewHelper. Expected any of Array, QueryResult, ' .
-				' ObjectStorage or Iterator implementation but got ' . gettype($subject), 1370966821);
-		} elseif (NULL === $subject) {
-			return NULL;
-		}
-		$randomElement = $array[array_rand($array)];
-		if (TRUE === isset($as) && FALSE === empty($as)) {
-			$variables = array($as => $randomElement);
-			$content = ViewHelperUtility::renderChildrenWithVariables($this, $this->templateVariableContainer, $variables);
-			return $content;
-		}
-		return $randomElement;
-	}
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerAsArgument();
+        $this->registerArgument(
+            'subject',
+            'mixed',
+            'The subject Traversable/Array instance from which to select a random element'
+        );
+    }
 
+    /**
+     * Render method
+     *
+     * @throws Exception
+     * @return mixed
+     */
+    public function render()
+    {
+        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+        $randomElement = $subject[array_rand($subject)];
+        return $this->renderChildrenWithVariableOrReturnInput($randomElement);
+    }
 }

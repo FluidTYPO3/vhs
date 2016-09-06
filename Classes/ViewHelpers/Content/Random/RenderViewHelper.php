@@ -1,48 +1,55 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
- *  (c) 2014 Claus Due <claus@namelesscoder.net>
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
 /**
- * ViewHelper for rendering a random content element in Fluid page templates
- *
- * @author Björn Fromme, <fromme@dreipunktnull.com>, dreipunktnull
- * @package Vhs
- * @subpackage ViewHelpers\Content\Random
+ * ViewHelper for rendering a random content element in Fluid page templates.
  */
-class RenderViewHelper extends GetViewHelper {
+class RenderViewHelper extends AbstractContentViewHelper
+{
 
-	/**
-	 * Render method
-	 *
-	 * @return mixed
-	 */
-	public function render() {
-		$contentRecords = parent::render();
-		$html = implode(LF, $contentRecords);
-		return $html;
-	}
+    /**
+     * Initialize ViewHelper arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->overrideArgument('limit', 'integer', 'Optional limit number of content elements to render', false, 1);
+    }
 
+    /**
+     * Render method
+     *
+     * @return mixed
+     */
+    public function render()
+    {
+        if ('BE' === TYPO3_MODE) {
+            return '';
+        }
+        // Remove limit for getContentRecords()
+        $limit = $this->arguments['limit'];
+        $this->arguments['limit'] = null;
+        // Just using getContentRecords with a limit of 1 would not support
+        // using slideCollect as collecting would stop as soon as one record
+        // was found. As a potential optimization, $render could be overrided
+        // so all the content records that end up unused do not get rendered.
+        $contentRecords = $this->getContentRecords();
+        if (false === empty($contentRecords)) {
+            shuffle($contentRecords);
+            $contentRecords = array_slice($contentRecords, 0, $limit);
+            if (true === (boolean) $this->arguments['render']) {
+                $contentRecords = implode(LF, $contentRecords);
+            }
+        }
+        return $contentRecords;
+    }
 }
