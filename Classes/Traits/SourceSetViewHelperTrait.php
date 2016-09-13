@@ -40,7 +40,7 @@ trait SourceSetViewHelperTrait
         $format = $this->arguments['format'];
         $quality = $this->arguments['quality'];
         $dimensions = [
-            'ratio'=>0,
+            'ratio' => 0,
         ];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
         if (true === $treatIdAsReference) {
@@ -58,11 +58,19 @@ trait SourceSetViewHelperTrait
 
         foreach ($srcsets as $key => $width) {
             if (0 < $dimensions['ratio']) {
-                $height = floor((int)$width/$dimensions['ratio']) . $dimensions['postHeight'];
+                $height = floor((integer)$width / $dimensions['ratio']) . $dimensions['postHeight'];
             }
             
             $width = $width . $dimensions['postWidth'];
-            $srcsetVariant = $this->getImgResource($src, $width, $height, $format, $quality, $treatIdAsReference, $crop);
+            $srcsetVariant = $this->getImgResource(
+                $src,
+                $width,
+                $height,
+                $format,
+                $quality,
+                $treatIdAsReference,
+                $crop
+            );
 
             $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
             $srcsetVariantSrc = $this->preprocessSourceUri(GeneralUtility::rawUrlEncodeFP($srcsetVariantSrc));
@@ -139,24 +147,30 @@ trait SourceSetViewHelperTrait
         return $srcsets;
     }
     
-    private function getDimensions($width, $height)
+    /**
+     * @param integer $width
+     * @param integer $height
+     *
+     * @return array
+     */
+    protected function getDimensions($width, $height)
     {
         $widthSplit = [];
         $heightSplit = [];
         if (false === empty($width)) {
-            preg_match("/(\\d+)([a-zA-Z]+)/", $width, $widthSplit);
+            preg_match('/(\\d+)([a-zA-Z]+)/', $width, $widthSplit);
         }
         
         if (false === empty($height)) {
-            preg_match("/(\\d+)([a-zA-Z]+)/", $height, $heightSplit);
+            preg_match('/(\\d+)([a-zA-Z]+)/', $height, $heightSplit);
         }
         
         $dimensions = [
-            'width'=>(int)$widthSplit[1],
-            'height'=>(int)$heightSplit[1],
-            'postWidth'=>$widthSplit[2],
-            'postHeight'=>$heightSplit[2],
-            'ratio'=> 0,
+            'width' => (integer)$widthSplit[1],
+            'height' => (integer)$heightSplit[1],
+            'postWidth' => $widthSplit[2],
+            'postHeight' => $heightSplit[2],
+            'ratio' => 0,
         ];
         if (0 < $dimensions['height']) {
             $dimensions['ratio'] = $dimensions['width']/$dimensions['height'];
