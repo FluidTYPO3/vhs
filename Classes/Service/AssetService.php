@@ -243,7 +243,6 @@ class AssetService implements SingletonInterface
      */
     protected function buildAssetsChunk($assets)
     {
-        $setup = &$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'];
         $spool = [];
         foreach ($assets as $name => $asset) {
             $assetSettings = $this->extractAssetSettings($asset);
