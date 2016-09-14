@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\ViewHelpers\Content\Random\RenderViewHelper;
-
 /**
  * ViewHelper for fetching a random content element in Fluid page templates.
  */

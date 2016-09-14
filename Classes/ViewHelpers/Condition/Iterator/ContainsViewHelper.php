@@ -52,7 +52,6 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         return false !== self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
-        ;
     }
 
     /**
