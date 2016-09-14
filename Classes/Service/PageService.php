@@ -65,11 +65,11 @@ class PageService implements SingletonInterface
         $pageRepository = $this->getPageRepository();
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
         $cacheKey = md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
-        if (false === isset(self::$cachedMenus[$cacheKey])) {
+        if (false === isset(static::$cachedMenus[$cacheKey])) {
             if (true === (boolean) $disableGroupAccessCheck) {
                 $pageRepository->where_groupAccess = '';
             }
-            self::$cachedMenus[$cacheKey] = $pageRepository->getMenu(
+            static::$cachedMenus[$cacheKey] = $pageRepository->getMenu(
                 $pageUid,
                 '*',
                 'sorting',
@@ -77,7 +77,7 @@ class PageService implements SingletonInterface
             );
         }
 
-        return self::$cachedMenus[$cacheKey];
+        return static::$cachedMenus[$cacheKey];
     }
 
     /**
@@ -88,11 +88,11 @@ class PageService implements SingletonInterface
     public function getPage($pageUid, $disableGroupAccessCheck = false)
     {
         $cacheKey = md5($pageUid . (integer) $disableGroupAccessCheck);
-        if (false === isset(self::$cachedPages[$cacheKey])) {
-            self::$cachedPages[$cacheKey] = $this->getPageRepository()->getPage($pageUid, $disableGroupAccessCheck);
+        if (false === isset(static::$cachedPages[$cacheKey])) {
+            static::$cachedPages[$cacheKey] = $this->getPageRepository()->getPage($pageUid, $disableGroupAccessCheck);
         }
 
-        return self::$cachedPages[$cacheKey];
+        return static::$cachedPages[$cacheKey];
     }
 
     /**
@@ -107,7 +107,7 @@ class PageService implements SingletonInterface
             $pageUid = $GLOBALS['TSFE']->id;
         }
         $cacheKey = md5($pageUid . (integer) $reverse . (integer) $disableGroupAccessCheck);
-        if (false === isset(self::$cachedRootlines[$cacheKey])) {
+        if (false === isset(static::$cachedRootlines[$cacheKey])) {
             $pageRepository = $this->getPageRepository();
             if (true === (boolean) $disableGroupAccessCheck) {
                 $pageRepository->where_groupAccess = '';
@@ -116,10 +116,10 @@ class PageService implements SingletonInterface
             if (true === $reverse) {
                 $rootline = array_reverse($rootline);
             }
-            self::$cachedRootlines[$cacheKey] = $rootline;
+            static::$cachedRootlines[$cacheKey] = $rootline;
         }
 
-        return self::$cachedRootlines[$cacheKey];
+        return static::$cachedRootlines[$cacheKey];
     }
 
     /**
