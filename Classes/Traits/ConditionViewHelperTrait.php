@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+
 /**
  * This trait can be used by viewhelpers that generate image tags
  * to add srcsets based to the imagetag for better responsiveness
@@ -41,13 +43,13 @@ trait ConditionViewHelperTrait
      *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
-     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     static public function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
-        \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+        RenderingContextInterface $renderingContext
     ) {
         $hasEvaluated = true;
         if (static::evaluateCondition($arguments)) {
