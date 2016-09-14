@@ -17,6 +17,8 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Asset Handling Service
@@ -45,17 +47,17 @@ class AssetService implements SingletonInterface
     /**
      * @var array
      */
-    private static $settingsCache = null;
+    protected static $settingsCache = null;
 
     /**
      * @var array
      */
-    private static $cachedDependencies = [];
+    protected static $cachedDependencies = [];
 
     /**
      * @var boolean
      */
-    private static $cacheCleared = false;
+    protected static $cacheCleared = false;
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
@@ -100,7 +102,7 @@ class AssetService implements SingletonInterface
         }
         $settings = $this->getSettings();
         $cached = (boolean) $cached;
-        $buildTypoScriptAssets = (!self::$typoScriptAssetsBuilt && ($cached || $GLOBALS['TSFE']->no_cache));
+        $buildTypoScriptAssets = (!static::$typoScriptAssetsBuilt && ($cached || $GLOBALS['TSFE']->no_cache));
         if ($buildTypoScriptAssets && isset($settings['asset']) && is_array($settings['asset'])) {
             foreach ($settings['asset'] as $name => $typoScriptAsset) {
                 if (!isset($GLOBALS['VhsAssets'][$name]) && is_array($typoScriptAsset)) {
@@ -110,7 +112,7 @@ class AssetService implements SingletonInterface
                     Asset::createFromSettings($typoScriptAsset);
                 }
             }
-            self::$typoScriptAssetsBuilt = true;
+            static::$typoScriptAssetsBuilt = true;
         }
         if (!isset($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets'])) {
             return;
@@ -144,7 +146,7 @@ class AssetService implements SingletonInterface
         preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
         foreach ($matches[1] as $key => $match) {
             $extractedDependencies = explode(',', $matches[1][$key]);
-            self::$cachedDependencies = array_merge(self::$cachedDependencies, $extractedDependencies);
+            static::$cachedDependencies = array_merge(static::$cachedDependencies, $extractedDependencies);
             $content = str_replace($matches[0][$key], '', $content);
         }
         $caller->content = $content;
@@ -160,21 +162,21 @@ class AssetService implements SingletonInterface
      */
     public function getSettings()
     {
-        if (null === self::$settingsCache) {
+        if (null === static::$settingsCache) {
             $allTypoScript = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
             $settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
             if (false === $settingsExist) {
                 // no settings exist, but don't allow a NULL value. This prevents cache clobbering.
-                self::$settingsCache = [];
+                static::$settingsCache = [];
             } else {
-                self::$settingsCache = GeneralUtility::removeDotsFromTS(
+                static::$settingsCache = GeneralUtility::removeDotsFromTS(
                     $allTypoScript['plugin.']['tx_vhs.']['settings.']
                 );
             }
         }
-        $settings = (array) self::$settingsCache;
+        $settings = (array) static::$settingsCache;
         return $settings;
     }
 
@@ -241,7 +243,6 @@ class AssetService implements SingletonInterface
      */
     protected function buildAssetsChunk($assets)
     {
-        $setup = &$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'];
         $spool = [];
         foreach ($assets as $name => $asset) {
             $assetSettings = $this->extractAssetSettings($asset);
@@ -368,8 +369,8 @@ class AssetService implements SingletonInterface
      */
     protected function generateTagForAssetType($type, $content, $file = null, $integrity = null)
     {
-        /** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
-        $tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
+        /** @var TagBuilder $tagBuilder */
+        $tagBuilder = $this->objectManager->get(TagBuilder::class);
         if (null === $file && true === empty($content)) {
             $content = '<!-- Empty tag content -->';
         }
@@ -482,7 +483,7 @@ class AssetService implements SingletonInterface
             foreach ($dependencies as $dependency) {
                 if (true === array_key_exists($dependency, $assets)
                     && false === isset($placed[$dependency])
-                    && false === in_array($dependency, self::$cachedDependencies)
+                    && false === in_array($dependency, static::$cachedDependencies)
                 ) {
                     // shove the Asset back to the end of the queue, the dependency has
                     // not yet been encountered and moving this item to the back of the
@@ -525,8 +526,8 @@ class AssetService implements SingletonInterface
         }
         $contents = $this->buildAsset($asset);
         $variables = GeneralUtility::removeDotsFromTS($variables);
-        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-        $view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        /** @var StandaloneView $view */
+        $view = $this->objectManager->get(StandaloneView::class);
         $view->setTemplateSource($contents);
         $view->assignMultiple($variables);
         $content = $view->render();
@@ -706,7 +707,7 @@ class AssetService implements SingletonInterface
      */
     public function clearCacheCommand($parameters)
     {
-        if (true === self::$cacheCleared) {
+        if (true === static::$cacheCleared) {
             return;
         }
         if ('all' !== $parameters['cacheCmd']) {
@@ -719,7 +720,7 @@ class AssetService implements SingletonInterface
         foreach ($assetCacheFiles as $assetCacheFile) {
             touch($assetCacheFile, 0);
         }
-        self::$cacheCleared = true;
+        static::$cacheCleared = true;
     }
 
     /**

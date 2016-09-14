@@ -14,6 +14,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface;
@@ -23,7 +24,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
-use TYPO3\CMS\Fluid\Core\Widget\WidgetContext;
 
 /**
  * Class AbstractViewHelperTest
@@ -42,7 +42,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
@@ -116,20 +116,20 @@ abstract class AbstractViewHelperTest extends UnitTestCase
         $instance = $this->createInstance();
         $node = new ViewHelperNode($instance, $arguments);
         /** @var RenderingContext $this->renderingContext */
-        $this->renderingContext = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext');
+        $this->renderingContext = $this->objectManager->get(RenderingContext::class);
         /** @var TemplateVariableContainer $container */
-        $container = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
+        $container = $this->objectManager->get(TemplateVariableContainer::class);
         if (0 < count($variables)) {
             ObjectAccess::setProperty($container, 'variables', $variables, true);
         }
         ObjectAccess::setProperty($this->renderingContext, 'templateVariableContainer', $container, true);
         if (null !== $extensionName || null !== $pluginName) {
             /** @var ViewHelperVariableContainer $viewHelperContainer */
-            $viewHelperContainer = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
+            $viewHelperContainer = $this->objectManager->get(ViewHelperVariableContainer::class);
             /** @var UriBuilder $uriBuilder */
-            $uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+            $uriBuilder = $this->objectManager->get(UriBuilder::class);
             /** @var Request $request */
-            $request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
+            $request = $this->objectManager->get(Request::class);
             if (null !== $extensionName) {
                 $request->setControllerExtensionName($extensionName);
             }
@@ -137,9 +137,9 @@ abstract class AbstractViewHelperTest extends UnitTestCase
                 $request->setPluginName($pluginName);
             }
             /** @var Response $response */
-            $response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
+            $response = $this->objectManager->get(Response::class);
             /** @var ControllerContext $controllerContext */
-            $controllerContext = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
+            $controllerContext = $this->objectManager->get(ControllerContext::class);
             $controllerContext->setRequest($request);
             $controllerContext->setResponse($response);
             $controllerContext->setUriBuilder($uriBuilder);
