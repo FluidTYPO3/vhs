@@ -122,12 +122,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         // to set the tagName we should call initialize()
         $this->initialize();
 
-        $this->languageMenu = $this->parseLanguageMenu($this->arguments['order'], $this->arguments['labelOverwrite']);
+        $this->languageMenu = $this->parseLanguageMenu();
         $this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
         $content = $this->renderChildren();
         $this->templateVariableContainer->remove($this->arguments['as']);
         if (0 === strlen(trim($content))) {
-            $content = $this->autoRender($this->languageMenu);
+            $content = $this->autoRender();
         }
         return $content;
     }
@@ -320,7 +320,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         foreach ($languageMenu as $key => $value) {
             $current = $GLOBALS['TSFE']->sys_language_uid === (integer) $key ? 1 : 0;
             $inactive = $pageArray[$key] || (integer) $key === $this->defaultLangUid ? 0 : 1;
-            $url = $this->getLanguageUrl($key, $inactive);
+            $url = $this->getLanguageUrl($key);
             if (true === empty($url)) {
                 $url = GeneralUtility::getIndpEnv('REQUEST_URI');
             }
