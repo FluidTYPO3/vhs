@@ -52,6 +52,8 @@ trait TemplateVariableViewHelperTrait
     }
 
     /**
+     * @param string $variable
+     *
      * @return mixed
      */
     protected function renderChildrenWithVariableOrReturnInput($variable = null)
@@ -67,6 +69,8 @@ trait TemplateVariableViewHelperTrait
     }
 
     /**
+     * @param mixed $variable
+     * @param string $as
      * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @param \Closure $renderChildrenClosure
      * @return mixed
@@ -133,7 +137,6 @@ trait TemplateVariableViewHelperTrait
     /**
      * @param array $variables
      * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer
-     * @param \Closure $renderChildrenClosure
      * @return array
      */
     private static function backupVariables(array $variables, $templateVariableContainer)
