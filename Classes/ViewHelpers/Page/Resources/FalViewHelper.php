@@ -10,7 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
 
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -69,9 +69,10 @@ class FalViewHelper extends ResourcesFalViewHelper
                 $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                 $pageRepository->init(false);
             }
-            $localisation = $pageRepository->getPageOverlay($pageRecord, $this->getCurrentLanguageUid());
+            /** @var PageRepository $pageRepository */
+            $localisation = $pageRepository->getPageOverlay($record, $this->getCurrentLanguageUid());
             if (is_array($localisation)) {
-                 $pageRecord = $localisation;
+                $record = $localisation;
             }
         }
         return $record;
