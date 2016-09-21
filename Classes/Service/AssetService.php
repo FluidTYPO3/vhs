@@ -312,7 +312,10 @@ class AssetService implements SingletonInterface
     protected function writeCachedMergedFileAndReturnTag($assets, $type)
     {
         $source = '';
-        $assetName = implode('-', array_keys($assets));
+        $keys = array_keys($assets);
+        sort($keys);
+        $assetName = implode('-', $keys);
+        unset($keys);
         if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename'])) {
             if ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename']) {
                 $assetName = md5($assetName);
