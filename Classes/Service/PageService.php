@@ -218,7 +218,7 @@ class PageService implements SingletonInterface
     public function getItemLink(array $page, $forceAbsoluteUrl = false)
     {
         if ((integer) $page['doktype'] === PageRepository::DOKTYPE_LINK) {
-            $parameter = $page['url'];
+            $parameter = $this->getPageRepository()->getExtURL($page);
         } else {
             $parameter = $page['uid'];
         }
