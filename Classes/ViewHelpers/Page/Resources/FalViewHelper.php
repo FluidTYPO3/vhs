@@ -10,8 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
 
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Page FAL resource ViewHelper.
@@ -63,15 +63,16 @@ class FalViewHelper extends ResourcesFalViewHelper
     {
         $record = parent::getRecord($id);
         if (!$this->isDefaultLanguage()) {
-            $cObj = $this->configurationManager->getContentObject();
-            $localisation = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                '*',
-                'pages_language_overlay',
-                "pid = '" . $record['uid'] . "' AND sys_language_uid = '" . $this->getCurrentLanguageUid() . "'"
-                . $cObj->enableFields('pages_language_overlay')
-            );
-            if (true === is_array($localisation)) {
-                ArrayUtility::mergeRecursiveWithOverrule($record, $localisation);
+            if (TYPO3_MODE === 'FE') {
+                $pageRepository = $GLOBALS['TSFE']->sys_page;
+            } else {
+                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+                $pageRepository->init(false);
+            }
+            /** @var PageRepository $pageRepository */
+            $localisation = $pageRepository->getPageOverlay($record, $this->getCurrentLanguageUid());
+            if (is_array($localisation)) {
+                $record = $localisation;
             }
         }
         return $record;

@@ -8,6 +8,9 @@ namespace FluidTYPO3\Vhs\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class PageRendererTrait
  *
@@ -21,10 +24,10 @@ trait PageRendererTrait
     /**
      * Provides a shared (singleton) instance of PageRenderer
      *
-     * @return \TYPO3\CMS\Core\Page\PageRenderer
+     * @return PageRenderer
      */
     protected static function getPageRenderer()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

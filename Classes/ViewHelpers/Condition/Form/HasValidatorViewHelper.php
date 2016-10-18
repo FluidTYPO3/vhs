@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Form;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;

@@ -107,7 +107,11 @@ class ImageViewHelper extends AbstractImageViewHelper
             $srcSetVariants = $this->addSourceSet($this->tag, $this->mediaSource);
         }
 
-        if (false === empty($srcSetVariants) && false === empty($this->arguments['srcsetDefault'])) {
+        if ($this->hasArgument('canvasWidth') || $this->hasArgument('canvasHeight')) {
+            $width = $this->arguments['canvasWidth'];
+            $height = $this->arguments['canvasHeight'];
+            $src = $this->mediaSource;
+        } elseif (false === empty($srcSetVariants) && false === empty($this->arguments['srcsetDefault'])) {
             $srcSetVariantDefault = $srcSetVariants[$this->arguments['srcsetDefault']];
             $src = $srcSetVariantDefault['src'];
             $width = $srcSetVariantDefault['width'];
@@ -117,6 +121,7 @@ class ImageViewHelper extends AbstractImageViewHelper
             $width = $this->imageInfo[0];
             $height = $this->imageInfo[1];
         }
+
 
         $this->tag->addAttribute('width', $width);
         $this->tag->addAttribute('height', $height);

@@ -21,7 +21,7 @@ class ReplaceViewHelper extends AbstractViewHelper
      * @param string $content
      * @param string $replacement
      * @param integer $count
-     * @param boolean $caseSensitve
+     * @param boolean $caseSensitive
      * @return string
      */
     public function render($substring, $content = null, $replacement = '', $count = null, $caseSensitive = true)

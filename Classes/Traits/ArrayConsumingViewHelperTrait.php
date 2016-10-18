@@ -48,7 +48,10 @@ trait ArrayConsumingViewHelperTrait
      * Override of VhsViewHelperTrait equivalent. Does what
      * that function does, but also ensures an array return.
      *
+     * @param array $arguments
      * @param string $argumentName
+     * @param \Closure $renderChildrenClosure
+     *
      * @return mixed
      */
     protected function getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(

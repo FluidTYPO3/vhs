@@ -25,16 +25,6 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
 {
 
     /**
-     * @return void
-     */
-    public function testRenderOnAbstractClassReturnsNullByDefault()
-    {
-        $instance = $this->getMockForAbstractClass('FluidTYPO3\\Vhs\\ViewHelpers\\Security\\AbstractSecurityViewHelper');
-        $result = $instance->render();
-        $this->assertNull($result);
-    }
-
-    /**
      * @test
      */
     public function canCreateViewHelperInstance()
