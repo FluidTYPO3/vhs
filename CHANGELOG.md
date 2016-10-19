@@ -1,5 +1,60 @@
 # VHS Change log
 
+3.1.0 - 2016-10-18
+------------------
+
+- :exclamation: [#1081](https://github.com/FluidTYPO3/vhs/pull/1081) *'doktypes'* attribute is deprecated in v:menu
+	- not supported by TYPO3 Core as well  
+  - use e.g. shortcuts to group pages in menu instead of sysfolders
+
+- [TYPO3 8.4 supported](https://github.com/FluidTYPO3/vhs/commit/6bf3bb53664d876f2afac565899f94a5fb8d19f7)
+
+- [#1089](https://github.com/FluidTYPO3/vhs/pull/1089) Subresource Integrity - **SRI** - generation for v:asset.script and v:asset.style
+  - Subresource Integrity (SRI) is a security feature that enables browsers to verify that files they fetch (for example, from a CDN) are delivered without unexpected manipulation
+  - Activated with TS setting `plugin.tx_vhs.assets.tagsAddIntegrityAttribute`
+  - Values, accepted by TS setting: `0 = off` (default), `1 = sha256`, `2 = sha384`, `3 = sha512`
+  - [SRI](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
+
+- [#1095](https://github.com/FluidTYPO3/vhs/pull/1095) **v:const** ViewHelper added
+  - Gets a value of PHP constant
+  - [v:const](https://fluidtypo3.org/viewhelpers/vhs/master/ConstViewHelper.html)
+
+- [commit](https://github.com/FluidTYPO3/vhs/commit/9c14db5bc6dc2379a94a14432016235bfd08c1fa) **v:iterator.range** ViewHelper added
+  - Creates a new array of numbers from the low to the high given value, incremented by the step value
+  - Attributes: *'low'* (default: 1), *'high'*, *'step'* (default: 1)
+  - [v:iterator.range](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/RangeViewHelper.html)
+
+- [commit](https://github.com/FluidTYPO3/vhs/commit/78f427fab396807367b403f62afa55d46f124edf) **v:iterator.push** ViewHelper added
+  - Adds one variable to the end of the array and returns the result
+  - Attributes: *'subject'* (input to work on, Array/Traversable/...), *'add'* (member to add to end of array, *required*), *'key'* (optional key to use; if key exists the member will be overwritten!)
+  - [v:iterator.push](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/PushViewHelper.html)
+
+- [commit](https://github.com/FluidTYPO3/vhs/commit/1a356578733956c48be6c722fe0a7eba0605e622) v:media.image got *'canvasWidth'*, *'canvasHeight'* and *'canvasColor'* attributes
+  - In case attributes are present VH creates a canvas with given dimensions and background color to center an image on
+  - This is useful in cases where images of different sizes and aspect ratios need to be displayed in a clean way without having to crop them
+  - [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html)
+
+- [commit](https://github.com/FluidTYPO3/vhs/commit/3ae5313a74be327f08b7811cea6ac1e81f312a0b) v:media.image got *'crop'* attribute
+  - Contains same values, as db field *crop* of *sys_file_reference* table when UI cropping tool in TYPO3 BE is used
+  - Can be something like: {"x":22.07,"y":35.97,"width":142.92,"height":98.17,"rotate":0}
+  - [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html)
+
+- [#1085](https://github.com/FluidTYPO3/vhs/pull/1085) Prevented unintended auto rendering of v:menu when 'hideIfEmpty' attribute is used
+
+- [#1082](https://github.com/FluidTYPO3/vhs/pull/1082) Fixed render method in AbstractSecurityViewHelper, which prevented then-else rendering
+
+- [commit](https://github.com/FluidTYPO3/vhs/commit/2a4c6b9b9586d791706a98c6116476e3ebf67ea1) v:page.resources.fal respects TYPO3 localization rules, when fetching resources for localized pages
+
+- [#1115](https://github.com/FluidTYPO3/vhs/pull/1115) Fixed `Call to undefined method FluidTYPO3\Vhs\ViewHelpers\Page\Menu\SubViewHelper::isActive()`
+
+- [#1123](https://github.com/FluidTYPO3/vhs/pull/1123) Prevented ambiguous generation of assets with same content, but different name
+
+- [#1128](https://github.com/FluidTYPO3/vhs/pull/1128) Fixed `Uncaught TYPO3 Exception
+Class 'FluidTYPO3\Vhs\Traits\MathUtility' not found`
+
+- [#1130](https://github.com/FluidTYPO3/vhs/pull/1130) v:menu renders "Link to external URL" as external url - not local with redirect
+
+
 3.0.1 - 2016-07-29
 ------------------
 
@@ -47,7 +102,6 @@
 	- check the notes from PR [#1003](https://github.com/FluidTYPO3/vhs/pull/1003) for migration instruction
 
 - :exclamation: [#987](https://github.com/FluidTYPO3/vhs/pull/987) Major refactoring of menu ViewHelpers
-	- **WIP**: the list of changes and work on this isn't complete yet. Feel free to add more items here to provide a better overview of the work, which was done.
 	- All the menu ViewHelpers are relocated from *v:page.menu.[vh-name]* to **v:menu.[vh-name]**
 	- Removed `FluidTYPO3\Vhs\Service\PageSelectService` (use `FluidTYPO3\Vhs\Service\PageService` and TYPO3 native `TYPO3\CMS\Frontend\Page\PageRepository` instead)
 	- **v:condition.page.hasSubpages**
@@ -172,7 +226,7 @@
 
 - [#906](https://github.com/FluidTYPO3/vhs/pull/906) [#907](https://github.com/FluidTYPO3/vhs/pull/907) [#908](https://github.com/FluidTYPO3/vhs/pull/908) [#909](https://github.com/FluidTYPO3/vhs/pull/909) [#910](https://github.com/FluidTYPO3/vhs/pull/910) [#911](https://github.com/FluidTYPO3/vhs/pull/911) [#912](https://github.com/FluidTYPO3/vhs/pull/912) [#913](https://github.com/FluidTYPO3/vhs/pull/913) All the condition (v:condition.*) ViewHelpers are static compilable
 	- Makes these ViewHelpers compatible with TYPO3 7.3+
-	- Improves Fluid rendering speed 
+	- Improves Fluid rendering speed
 	- Discover [Static compilable](http://blog.reelworx.at/detail/fluid-compilable-speed-it-up/)
 
 - [#875](https://github.com/FluidTYPO3/vhs/pull/875) **Responsive images** support added
@@ -210,7 +264,7 @@
 	- :exclamation: Due to internal changes, attribute *'normalWhenNoLanguage'* is not used anymore and deprecated
 	- [v:page.header.canonical](https://fluidtypo3.org/viewhelpers/vhs/master/Page/Header/CanonicalViewHelper.html)
 
-- v:format.tidy got *'encoding'* attribute 
+- v:format.tidy got *'encoding'* attribute
 	- Sets string encoding for Tidy
 	- Default: `utf8`
 	- [v:format.tidy](https://fluidtypo3.org/viewhelpers/vhs/master/Format/TidyViewHelper.html)
@@ -228,7 +282,7 @@
 
 - [#763](https://github.com/FluidTYPO3/vhs/pull/763) All the menu ViewHelpers respect moved pages in workspaces
 
-- [#854](https://github.com/FluidTYPO3/vhs/pull/854) v:page.languageMenu correctly detects TYPO3 version and provides appropriate path to flag-images 
+- [#854](https://github.com/FluidTYPO3/vhs/pull/854) v:page.languageMenu correctly detects TYPO3 version and provides appropriate path to flag-images
 	- [v:page.languageMenu](https://fluidtypo3.org/viewhelpers/vhs/master/Page/LanguageMenuViewHelper.html)
 
 - [#871](https://github.com/FluidTYPO3/vhs/pull/871) v:page.languageMenu applies both: 'inactive' and 'current' classes, when this is a case
@@ -281,7 +335,7 @@
   - [v:iterator.filter](https://fluidtypo3.org/viewhelpers/vhs/master/Iterator/FilterViewHelper.html)
 
 - v:or 'arguments' array also applies on 'alternative' text
-  - Format is same, as in PHP [sprintf](http://php.net/manual/ru/function.sprintf.php) 
+  - Format is same, as in PHP [sprintf](http://php.net/manual/ru/function.sprintf.php)
   - [v:or](https://fluidtypo3.org/viewhelpers/vhs/master/OrViewHelper.html)
 
 2.3.1 - 2015-03-15
@@ -323,7 +377,7 @@
   - **Note**: these ViewHelpers will work on TYPO3 >= 6.2 only. [Read more about contexts in TYPO3](http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context)
 
 - [#771](https://github.com/FluidTYPO3/vhs/pull/771) **v:variable.extensionConfiguration** added - reads extensions settings located in ext_conf_template.txt
-  - [v:variable.extensionConfiguration](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/ExtensionConfigurationViewHelper.html) 
+  - [v:variable.extensionConfiguration](https://fluidtypo3.org/viewhelpers/vhs/master/Variable/ExtensionConfigurationViewHelper.html)
 
 - [#746](https://github.com/FluidTYPO3/vhs/pull/746) **v:resource.language** added - reads a language file and returns all the translations from it
   - [v:resource.language](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/LanguageViewHelper.html)
@@ -484,7 +538,7 @@
 
 - [#578](https://github.com/FluidTYPO3/vhs/pull/578) **v:resource.collection** added - returns a TYPO3 collection (records or files)
   - [v:resource.collection](https://fluidtypo3.org/viewhelpers/vhs/master/Resource/CollectionViewHelper.html)
-  
+
 - [#538](https://github.com/FluidTYPO3/vhs/pull/538) ImageViewHelpers got *'format'* and *'quality'* attributes
   - [v:media.image](https://fluidtypo3.org/viewhelpers/vhs/master/Media/ImageViewHelper.html)
   - [v:uri.image](https://fluidtypo3.org/viewhelpers/vhs/master/Uri/ImageViewHelper.html)
