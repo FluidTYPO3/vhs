@@ -4,16 +4,18 @@ sudo: false
 
 php:
   - "5.5"
+  - "5.6"
   - "hhvm"
 
 matrix:
   include:
-    - php: "5.6"
-      env: CHECKSTYLE="YES"
-    - php: "7"
-      env: COVERAGE="YES"
+    - php: "7.0"
+      env: COVERAGE="NO"
+    - php: "7.1"
+      env: COVERAGE="NO"
   allow_failures:
     - php: "hhvm"
+    - php: "7.1"
 
 cache:
   directories:
@@ -21,4 +23,10 @@ cache:
 
 install: composer install
 
-script: ./vendor/bin/ci-runner
+before_script: mkdir -p build/logs
+
+script: if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else ./vendor/bin/phpunit; fi
+
+after_script:
+  - ln -s Classes src
+  - if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/coveralls; fi
