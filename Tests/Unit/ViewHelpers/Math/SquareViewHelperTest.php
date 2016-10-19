@@ -27,6 +27,6 @@ class SquareViewHelperTest extends AbstractMathViewHelperTest
      */
     public function testSingleArgumentIteratorFirst()
     {
-        $this->executeSingleArgumentTest(array(2, 4), array(4, 16));
+        $this->executeSingleArgumentTest([2, 4], [4, 16]);
     }
 }

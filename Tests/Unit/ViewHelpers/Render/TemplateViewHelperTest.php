@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException;
 
 /**
  * Class TemplateViewHelperTest
@@ -18,7 +19,7 @@ class TemplateViewHelperTest extends AbstractViewHelperTest
 
     public function testRenderThrowsExceptionWithoutTemplatePath()
     {
-        $this->setExpectedException('TYPO3\\CMS\\Fluid\\View\\Exception\\InvalidTemplateResourceException');
-        $this->executeViewHelper(array('variables' => array()));
+        $this->setExpectedException(InvalidTemplateResourceException::class);
+        $this->executeViewHelper(['variables' => []]);
     }
 }

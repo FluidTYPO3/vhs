@@ -73,9 +73,9 @@ class ConvertViewHelper extends AbstractViewHelper
         if (null !== $value) {
             if ('ObjectStorage' === $type && 'array' === gettype($value)) {
                 /** @var ObjectManager $objectManager */
-                $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
                 /** @var ObjectStorage $storage */
-                $storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+                $storage = $objectManager->get(ObjectStorage::class);
                 foreach ($value as $item) {
                     $storage->attach($item);
                 }
@@ -115,8 +115,8 @@ class ConvertViewHelper extends AbstractViewHelper
                         $value = [];
                         break;
                     case 'ObjectStorage':
-                        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-                        $value = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+                        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+                        $value = $objectManager->get(ObjectStorage::class);
                         break;
                     default:
                         throw new \RuntimeException('Provided argument "type" is not valid', 1364542884);

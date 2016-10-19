@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class MarkdownViewHelperTest
@@ -22,9 +23,9 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest
     public function supportsHtmlEntities()
     {
         if (trim(shell_exec('which markdown')) === '') {
-            $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+            $this->setExpectedException(Exception::class, 'Use of Markdown requires the "markdown" shell utility to be installed');
         }
-        $this->executeViewHelper(array('text' => 'test < test', 'trim' => true, 'htmlentities' => true));
+        $this->executeViewHelper(['text' => 'test < test', 'trim' => true, 'htmlentities' => true]);
     }
 
     /**
@@ -33,9 +34,9 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingArgument()
     {
         if (trim(shell_exec('which markdown')) === '') {
-            $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+            $this->setExpectedException(Exception::class, 'Use of Markdown requires the "markdown" shell utility to be installed');
         }
-        $this->executeViewHelper(array('text' => 'test', 'trim' => true, 'htmlentities' => false));
+        $this->executeViewHelper(['text' => 'test', 'trim' => true, 'htmlentities' => false]);
     }
 
     /**
@@ -44,8 +45,8 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingTagContent()
     {
         if (trim(shell_exec('which markdown')) === '') {
-            $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Use of Markdown requires the "markdown" shell utility to be installed');
+            $this->setExpectedException(Exception::class, 'Use of Markdown requires the "markdown" shell utility to be installed');
         }
-        $this->executeViewHelperUsingTagContent('Text', 'test', array('trim' => true, 'htmlentities' => false));
+        $this->executeViewHelperUsingTagContent('Text', 'test', ['trim' => true, 'htmlentities' => false]);
     }
 }

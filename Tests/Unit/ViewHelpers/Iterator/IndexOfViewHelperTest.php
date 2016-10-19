@@ -21,11 +21,11 @@ class IndexOfViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsIndexOfElement()
     {
-        $array = array('a', 'b', 'c');
-        $arguments = array(
+        $array = ['a', 'b', 'c'];
+        $arguments = [
             'haystack' => $array,
             'needle' => 'c',
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals(2, $result);
 
@@ -38,11 +38,11 @@ class IndexOfViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNegativeOneIfNeedleDoesNotExist()
     {
-        $array = array('a', 'b', 'c');
-        $arguments = array(
+        $array = ['a', 'b', 'c'];
+        $arguments = [
             'haystack' => $array,
             'needle' => 'd',
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals(-1, $result);
 

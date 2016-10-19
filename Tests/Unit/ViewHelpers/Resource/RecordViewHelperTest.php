@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class RecordViewHelperTest
@@ -21,7 +22,7 @@ class RecordViewHelperTest extends AbstractViewHelperTest
      */
     public function testRenderFailsWithoutFieldArgument()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument must be specified');
+        $this->setExpectedException(Exception::class, 'The "field" argument must be specified');
         $this->executeViewHelper();
     }
 }

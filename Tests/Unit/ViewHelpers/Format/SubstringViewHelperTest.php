@@ -21,11 +21,11 @@ class SubstringViewHelperTest extends AbstractViewHelperTest
      */
     public function canRenderUsingArguments()
     {
-        $arguments = array(
+        $arguments = [
             'content' => 'foobar',
             'length' => null,
             'start' => 3
-        );
+        ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('bar', $test);
     }
@@ -35,11 +35,11 @@ class SubstringViewHelperTest extends AbstractViewHelperTest
      */
     public function canRenderWithLengthArgument()
     {
-        $arguments = array(
+        $arguments = [
             'content' => 'foobar',
             'length' => 3,
             'start' => 2
-        );
+        ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('oba', $test);
     }
@@ -49,10 +49,10 @@ class SubstringViewHelperTest extends AbstractViewHelperTest
      */
     public function canRenderUsingTagContent()
     {
-        $arguments = array(
+        $arguments = [
             'length' => null,
             'start' => 3
-        );
+        ];
         $test = $this->executeViewHelperUsingTagContent('Text', 'foobar', $arguments);
         $this->assertSame('bar', $test);
     }

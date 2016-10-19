@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
 
 /**
  * Class ImplodeViewHelperTest
@@ -22,7 +23,7 @@ class ImplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function implodesString()
     {
-        $arguments = array('content' => array('1', '2', '3'), 'glue' => ',');
+        $arguments = ['content' => ['1', '2', '3'], 'glue' => ','];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('1,2,3', $result);
     }
@@ -32,7 +33,7 @@ class ImplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsCustomGlue()
     {
-        $arguments = array('content' => array('1', '2', '3'), 'glue' => ';');
+        $arguments = ['content' => ['1', '2', '3'], 'glue' => ';'];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('1;2;3', $result);
     }
@@ -42,7 +43,7 @@ class ImplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsConstantsGlue()
     {
-        $arguments = array('content' => array('1', '2', '3'), 'glue' => 'constant:LF');
+        $arguments = ['content' => ['1', '2', '3'], 'glue' => 'constant:LF'];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals("1\n2\n3", $result);
     }
@@ -52,7 +53,7 @@ class ImplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function passesThroughUnknownSpecialGlue()
     {
-        $arguments = array('content' => array('1', '2', '3'), 'glue' => 'unknown:-');
+        $arguments = ['content' => ['1', '2', '3'], 'glue' => 'unknown:-'];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('1-2-3', $result);
     }
@@ -62,9 +63,9 @@ class ImplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function renderMethodCallsRenderChildrenIfContentIsNull()
     {
-        $array = array('1', '2', '3');
-        $arguments = array('glue' => ',');
-        $mock = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $array = ['1', '2', '3'];
+        $arguments = ['glue' => ','];
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $mock->setArguments($arguments);
         $mock->expects($this->once())->method('renderChildren')->will($this->returnValue($array));
         $result = $mock->render();
@@ -76,12 +77,12 @@ class ImplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function renderMethodCallsRenderChildrenAndTemplateVariableContainerAddAndRemoveIfAsArgumentGiven()
     {
-        $array = array('1', '2', '3');
-        $arguments = array('as' => 'test', 'content' => $array, 'glue' => ',');
-        $mock = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $array = ['1', '2', '3'];
+        $arguments = ['as' => 'test', 'content' => $array, 'glue' => ','];
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $mock->expects($this->once())->method('renderChildren')->will($this->returnValue('test'));
         $mock->setArguments($arguments);
-        $mockContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer', array('add', 'get', 'remove', 'exists'));
+        $mockContainer = $this->getMockBuilder(TemplateVariableContainer::class)->setMethods(['add', 'get', 'remove', 'exists'])->getMock();
         $mockContainer->expects($this->once())->method('exists')->with('test')->will($this->returnValue(true));
         $mockContainer->expects($this->exactly(2))->method('add')->with('test', '1,2,3');
         $mockContainer->expects($this->once())->method('get')->with('test')->will($this->returnValue($array));

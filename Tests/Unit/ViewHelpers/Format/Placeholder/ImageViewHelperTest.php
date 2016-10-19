@@ -19,12 +19,12 @@ class ImageViewHelperTest extends AbstractViewHelperTest
     /**
      * @var array
      */
-    protected $arguments = array(
+    protected $arguments = [
         'width' => 100,
         'height' => 100,
         'backgroundColor' => '333333',
         'textColor' => 'FFFFFF'
-    );
+    ];
 
     /**
      * @test

@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -58,7 +59,7 @@ class MarkdownViewHelper extends AbstractViewHelper
         if (isset($GLOBALS['typo3CacheManager'])) {
             $cacheManager = $GLOBALS['typo3CacheManager'];
         } else {
-            $cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         }
         $this->cache = $cacheManager->getCache('vhs_markdown');
     }

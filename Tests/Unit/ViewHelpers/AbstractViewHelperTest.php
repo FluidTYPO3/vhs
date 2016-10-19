@@ -111,7 +111,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      * @param string $pluginName
      * @return AbstractViewHelper
      */
-    protected function buildViewHelperInstance($arguments = array(), $variables = array(), $childNode = null, $extensionName = null, $pluginName = null)
+    protected function buildViewHelperInstance($arguments = [], $variables = [], $childNode = null, $extensionName = null, $pluginName = null)
     {
         $instance = $this->createInstance();
         $node = new ViewHelperNode($instance, $arguments);
@@ -149,7 +149,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
         if (null !== $childNode) {
             $node->addChildNode($childNode);
             if ($instance instanceof ChildNodeAccessInterface) {
-                $instance->setChildNodes(array($childNode));
+                $instance->setChildNodes([$childNode]);
             }
         }
         $instance->setArguments($arguments);
@@ -166,7 +166,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      * @param string $pluginName
      * @return mixed
      */
-    protected function executeViewHelper($arguments = array(), $variables = array(), $childNode = null, $extensionName = null, $pluginName = null)
+    protected function executeViewHelper($arguments = [], $variables = [], $childNode = null, $extensionName = null, $pluginName = null)
     {
         $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
         $output = $instance->initializeArgumentsAndRender();
@@ -181,7 +181,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      * @param string $pluginName
      * @return mixed
      */
-    protected function executeViewHelperStatic($arguments = array(), $variables = array(), $childNode = null, $extensionName = null, $pluginName = null)
+    protected function executeViewHelperStatic($arguments = [], $variables = [], $childNode = null, $extensionName = null, $pluginName = null)
     {
         $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
 
@@ -206,7 +206,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      * @param string $pluginName
      * @return mixed
      */
-    protected function executeViewHelperUsingTagContent($nodeType, $nodeValue, $arguments = array(), $variables = array(), $extensionName = null, $pluginName = null)
+    protected function executeViewHelperUsingTagContent($nodeType, $nodeValue, $arguments = [], $variables = [], $extensionName = null, $pluginName = null)
     {
         $childNode = $this->createNode($nodeType, $nodeValue);
         $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
@@ -223,7 +223,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      * @param string $pluginName
      * @return mixed
      */
-    protected function executeViewHelperUsingTagContentStatic($nodeType, $nodeValue, $arguments = array(), $variables = array(), $extensionName = null, $pluginName = null)
+    protected function executeViewHelperUsingTagContentStatic($nodeType, $nodeValue, $arguments = [], $variables = [], $extensionName = null, $pluginName = null)
     {
         $childNode = $this->createNode($nodeType, $nodeValue);
         $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);

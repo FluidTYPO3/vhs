@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Media\Image;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class HeightViewHelperTest
@@ -35,7 +36,7 @@ class HeightViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsZeroForEmptyArguments()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\HeightViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
 
         $this->assertEquals(0, $viewHelper->render());
@@ -46,7 +47,7 @@ class HeightViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsFileHeightAsInteger()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\HeightViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
 
         $this->assertEquals(160, $viewHelper->render());
@@ -57,10 +58,10 @@ class HeightViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionWhenFileNotFound()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\HeightViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
 
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
+        $this->setExpectedException(Exception::class);
         $viewHelper->render();
     }
 
@@ -69,10 +70,10 @@ class HeightViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\HeightViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
 
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
+        $this->setExpectedException(Exception::class);
         $viewHelper->render();
     }
 }

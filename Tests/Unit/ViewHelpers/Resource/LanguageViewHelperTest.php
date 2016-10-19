@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class LanguageViewHelperTest
@@ -21,7 +22,7 @@ class LanguageViewHelperTest extends AbstractViewHelperTest
      */
     public function testRenderFailsWhenUnableToResolveExtensionName()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Cannot read extension name from ControllerContext and value not manually specified');
+        $this->setExpectedException(Exception::class, 'Cannot read extension name from ControllerContext and value not manually specified');
         $this->executeViewHelper();
     }
 }

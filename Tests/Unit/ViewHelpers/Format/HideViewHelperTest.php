@@ -30,7 +30,7 @@ class HideViewHelperTest extends AbstractViewHelperTest
      */
     public function canBeDisabled()
     {
-        $test = $this->executeViewHelperUsingTagContent('Text', 'this is shown', array('disabled' => true));
+        $test = $this->executeViewHelperUsingTagContent('Text', 'this is shown', ['disabled' => true]);
         $this->assertSame('this is shown', $test);
     }
 }

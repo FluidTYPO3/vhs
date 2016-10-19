@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class ReverseViewHelperTest
@@ -28,7 +30,7 @@ class ReverseViewHelperTest extends AbstractViewHelperTest
             $value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
         } else {
             $value = $this->executeViewHelper($arguments);
-            $value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array(), array('v' => $arguments['subject']));
+            $value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', [], ['v' => $arguments['subject']]);
             $this->assertEquals($value, $value2);
         }
         $this->assertEquals($value, $expectedValue);
@@ -39,23 +41,17 @@ class ReverseViewHelperTest extends AbstractViewHelperTest
      */
     public function getRenderTestValues()
     {
-        $queryResult = $this->getMock(
-            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-            array('toArray', 'initialize', 'rewind', 'valid', 'count'),
-            array(),
-            '',
-            false
-        );
-        $queryResult->expects($this->any())->method('toArray')->will($this->returnValue(array('foo', 'bar')));
+        $queryResult = $this->getMockBuilder(QueryResult::class)->setMethods(['toArray', 'initialize', 'rewind', 'valid', 'count'])->disableOriginalConstructor()->getMock();
+        $queryResult->expects($this->any())->method('toArray')->will($this->returnValue(['foo', 'bar']));
         $queryResult->expects($this->any())->method('valid')->will($this->returnValue(false));
         $queryResult->expects($this->any())->method('count')->will($this->returnValue(1));
-        return array(
-            array(array('subject' => array()), array()),
-            array(array('subject' => array('foo', 'bar')), array(1 => 'bar', 0 => 'foo')),
-            array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), array(1 => 'bar', 0 => 'foo')),
-            array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), array(1 => 'bar', 0 => 'foo')),
-            array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), array(1 => 'bar', 0 => 'foo'))
-        );
+        return [
+            [['subject' => []], []],
+            [['subject' => ['foo', 'bar']], [1 => 'bar', 0 => 'foo']],
+            [['subject' => ['foo', 'bar'], 'as' => 'variable'], [1 => 'bar', 0 => 'foo']],
+            [['subject' => new \ArrayIterator(['foo', 'bar'])], [1 => 'bar', 0 => 'foo']],
+            [['subject' => new \ArrayIterator(['foo', 'bar']), 'as' => 'variable'], [1 => 'bar', 0 => 'foo']]
+        ];
     }
 
     /**
@@ -65,8 +61,8 @@ class ReverseViewHelperTest extends AbstractViewHelperTest
      */
     public function testThrowsErrorsOnInvalidSubjectType($subject)
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Unsupported input type; cannot convert to array!');
-        $this->executeViewHelper(array('subject' => $subject));
+        $this->setExpectedException(Exception::class, 'Unsupported input type; cannot convert to array!');
+        $this->executeViewHelper(['subject' => $subject]);
     }
 
     /**
@@ -74,11 +70,11 @@ class ReverseViewHelperTest extends AbstractViewHelperTest
      */
     public function getErrorTestValues()
     {
-        return array(
-            array(0),
-            array(null),
-            array(new \DateTime()),
-            array(new \stdClass()),
-        );
+        return [
+            [0],
+            [null],
+            [new \DateTime()],
+            [new \stdClass()],
+        ];
     }
 }

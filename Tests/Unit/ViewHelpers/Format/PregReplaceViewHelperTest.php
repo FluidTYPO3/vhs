@@ -21,11 +21,11 @@ class PregReplaceViewHelperTest extends AbstractViewHelperTest
      */
     public function canReplaceValues()
     {
-        $arguments = array(
+        $arguments = [
             'subject' => 'foo123bar',
             'pattern' => '/[0-9]{3}/',
             'replacement' => 'baz',
-        );
+        ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('foobazbar', $test);
     }
@@ -35,10 +35,10 @@ class PregReplaceViewHelperTest extends AbstractViewHelperTest
      */
     public function canTakeSubjectFromRenderChildren()
     {
-        $arguments = array(
+        $arguments = [
             'pattern' => '/[0-9]{3}/',
             'replacement' => 'baz',
-        );
+        ];
         $test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
         $this->assertSame('foobazbar', $test);
     }

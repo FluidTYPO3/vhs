@@ -21,7 +21,7 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNullIfPathIsNull()
     {
-        $this->assertNull($this->executeViewHelper(array('path' => null)));
+        $this->assertNull($this->executeViewHelper(['path' => null]));
     }
 
     /**
@@ -29,7 +29,7 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsArrayIfPathContainsArray()
     {
-        $this->assertThat($this->executeViewHelper(array('path' => 'config.tx_extbase.features')), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
+        $this->assertThat($this->executeViewHelper(['path' => 'config.tx_extbase.features']), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
     }
 
     /**
@@ -37,7 +37,7 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTest
      */
     public function canGetPathUsingArgument()
     {
-        $this->assertNotEmpty($this->executeViewHelper(array('path' => 'config.tx_extbase.features')));
+        $this->assertNotEmpty($this->executeViewHelper(['path' => 'config.tx_extbase.features']));
     }
 
     /**

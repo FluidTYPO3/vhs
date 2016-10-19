@@ -21,7 +21,7 @@ class CookieViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertShouldSkip()
     {
-        $mock = $this->getMock($this->getViewHelperClassName(), array('getIdentifier'));
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getIdentifier'])->getMock();
         $mock->expects($this->exactly(2))->method('getIdentifier')->willReturn('test');
         $this->assertFalse($this->callInaccessibleMethod($mock, 'assertShouldSkip'));
         $_COOKIE['test'] = 'test';
@@ -34,7 +34,7 @@ class CookieViewHelperTest extends AbstractViewHelperTest
      */
     public function testRemoveIfExpired()
     {
-        $mock = $this->getMock($this->getViewHelperClassName(), array('getIdentifier', 'removeCookie'));
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getIdentifier', 'removeCookie'])->getMock();
         $mock->expects($this->exactly(2))->method('getIdentifier')->willReturn('test');
         $mock->expects($this->once())->method('removeCookie');
         $this->callInaccessibleMethod($mock, 'removeIfExpired');

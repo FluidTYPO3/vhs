@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable\Register;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class SetViewHelperTest
@@ -21,7 +22,7 @@ class SetViewHelperTest extends AbstractViewHelperTest
      */
     public function silentlyIgnoresMissingFrontendController()
     {
-        $result = $this->executeViewHelper(array('name' => 'name'));
+        $result = $this->executeViewHelper(['name' => 'name']);
         $this->assertNull($result);
     }
 
@@ -30,10 +31,10 @@ class SetViewHelperTest extends AbstractViewHelperTest
      */
     public function canSetRegister()
     {
-        $GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(array(), 1, 1));
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $name = uniqid();
         $value = uniqid();
-        $this->executeViewHelper(array('name' => $name, 'value' => $value));
+        $this->executeViewHelper(['name' => $name, 'value' => $value]);
         $this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
     }
 
@@ -42,10 +43,10 @@ class SetViewHelperTest extends AbstractViewHelperTest
      */
     public function canSetVariableWithValueFromTagContent()
     {
-        $GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(array(), 1, 1));
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $name = uniqid();
         $value = uniqid();
-        $this->executeViewHelperUsingTagContent('Text', $value, array('name' => $name));
+        $this->executeViewHelperUsingTagContent('Text', $value, ['name' => $name]);
         $this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
     }
 }

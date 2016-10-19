@@ -19,12 +19,12 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildWithFlatComparison()
     {
-        $stack = array(array('foo'), '==', array('foo'));
-        $arguments = array(
+        $stack = [['foo'], '==', ['foo']];
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'stack' => $stack
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -37,12 +37,12 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildWithPrecedence()
     {
-        $stack = array(1, 'OR', 0, 'AND', 0);
-        $arguments = array(
+        $stack = [1, 'OR', 0, 'AND', 0];
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'stack' => $stack
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -55,12 +55,12 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildWithFlatArrayComparison()
     {
-        $stack = array(array('foo'), '==', '3');
-        $arguments = array(
+        $stack = [['foo'], '==', '3'];
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'stack' => $stack
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 
@@ -73,12 +73,12 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildWithFlatLogicalOperator()
     {
-        $stack = array(1, '==', 1, 'AND', 1);
-        $arguments = array(
+        $stack = [1, '==', 1, 'AND', 1];
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'stack' => $stack
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -91,12 +91,12 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildWithRightStack()
     {
-        $stack = array(1, '==', 1, 'AND', array(1, '!=', 0));
-        $arguments = array(
+        $stack = [1, '==', 1, 'AND', [1, '!=', 0]];
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'stack' => $stack
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -109,12 +109,12 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildWithStacks()
     {
-        $stack = array(array('foo', '!=', 'bar'), 'AND', 1, 'OR', array(1, '==', '0'));
-        $arguments = array(
+        $stack = [['foo', '!=', 'bar'], 'AND', 1, 'OR', [1, '==', '0']];
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'stack' => $stack
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -127,12 +127,12 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildWithStacks()
     {
-        $stack = array(array('foo', '!=', 'bar'), 'AND', array('foo', '==', 'bar'));
-        $arguments = array(
+        $stack = [['foo', '!=', 'bar'], 'AND', ['foo', '==', 'bar']];
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'stack' => $stack
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 
@@ -145,12 +145,12 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildWithEmptyStack()
     {
-        $stack = array();
-        $arguments = array(
+        $stack = [];
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'stack' => $stack
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 
@@ -164,8 +164,8 @@ class IfViewHelperTest extends AbstractViewHelperTest
     public function rendersElseChildWithNoLogicalOperator()
     {
         $this->setExpectedException('RuntimeException', null, 1385071197);
-        $stack = array(array('foo', '!=', 'bar'), array('foo', '==', 'bar'));
-        $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack));
+        $stack = [['foo', '!=', 'bar'], ['foo', '==', 'bar']];
+        $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'stack' => $stack]);
     }
 
     /**
@@ -174,8 +174,8 @@ class IfViewHelperTest extends AbstractViewHelperTest
     public function rendersElseChildWithWrongLogicalOperatorOrder()
     {
         $this->setExpectedException('RuntimeException', null, 1385072228);
-        $stack = array(array('foo', '!=', 'bar'), 'AND', 'AND', array('foo', '==', 'bar'));
-        $this->executeViewHelper(array('then' => 'then', 'else' => 'else', 'stack' => $stack));
+        $stack = [['foo', '!=', 'bar'], 'AND', 'AND', ['foo', '==', 'bar']];
+        $this->executeViewHelper(['then' => 'then', 'else' => 'else', 'stack' => $stack]);
     }
 
     /**
@@ -184,7 +184,7 @@ class IfViewHelperTest extends AbstractViewHelperTest
     public function evaluateLogicalOperatorAnd()
     {
         $instance = $this->createInstance();
-        $this->assertEquals(false, $this->callInaccessibleMethod($instance, 'evaluateLogicalOperator', array(true), 'AND', array(false)));
+        $this->assertEquals(false, $this->callInaccessibleMethod($instance, 'evaluateLogicalOperator', [true], 'AND', [false]));
     }
 
     /**
@@ -193,7 +193,7 @@ class IfViewHelperTest extends AbstractViewHelperTest
     public function evaluateLogicalOperatorOr()
     {
         $instance = $this->createInstance();
-        $this->assertEquals(true, $this->callInaccessibleMethod($instance, 'evaluateLogicalOperator', array(true), 'OR', array(false)));
+        $this->assertEquals(true, $this->callInaccessibleMethod($instance, 'evaluateLogicalOperator', [true], 'OR', [false]));
     }
 
     /**
@@ -203,7 +203,7 @@ class IfViewHelperTest extends AbstractViewHelperTest
     {
         $this->setExpectedException('RuntimeException', null, 1385072357);
         $instance = $this->createInstance();
-        $this->callInaccessibleMethod($instance, 'evaluateLogicalOperator', array(true), 'foo', array(false));
+        $this->callInaccessibleMethod($instance, 'evaluateLogicalOperator', [true], 'foo', [false]);
     }
 
     /**
@@ -212,7 +212,7 @@ class IfViewHelperTest extends AbstractViewHelperTest
     public function prepareSideForEvaluation()
     {
         $instance = $this->createInstance();
-        $this->assertEquals(array(true), $this->callInaccessibleMethod($instance, 'prepareSideForEvaluation', array(true)));
+        $this->assertEquals([true], $this->callInaccessibleMethod($instance, 'prepareSideForEvaluation', [true]));
     }
 
     /**
@@ -221,6 +221,6 @@ class IfViewHelperTest extends AbstractViewHelperTest
     public function prepareSideForEvaluationArray()
     {
         $instance = $this->createInstance();
-        $this->assertEquals(array(true), $this->callInaccessibleMethod($instance, 'prepareSideForEvaluation', array(array(true))));
+        $this->assertEquals([true], $this->callInaccessibleMethod($instance, 'prepareSideForEvaluation', [[true]]));
     }
 }

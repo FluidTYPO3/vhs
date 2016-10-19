@@ -32,10 +32,10 @@ class PushViewHelperTest extends AbstractViewHelperTest
      */
     public function getRenderTestValues()
     {
-        return array(
-            array(array('subject' => array('foo', 'bar'), 'add' => 'baz', 'key' => null), array('foo', 'bar', 'baz')),
-            array(array('subject' => array('f' => 'foo', 'b' => 'bar'), 'add' => 'baz', 'key' => 'c'), array('f' => 'foo', 'b' => 'bar', 'c' => 'baz')),
-            array(array('subject' => array('f' => 'foo', 'b' => 'bar'), 'add' => 'baz', 'key' => 'b'), array('f' => 'foo', 'b' => 'baz')),
-        );
+        return [
+            [['subject' => ['foo', 'bar'], 'add' => 'baz', 'key' => null], ['foo', 'bar', 'baz']],
+            [['subject' => ['f' => 'foo', 'b' => 'bar'], 'add' => 'baz', 'key' => 'c'], ['f' => 'foo', 'b' => 'bar', 'c' => 'baz']],
+            [['subject' => ['f' => 'foo', 'b' => 'bar'], 'add' => 'baz', 'key' => 'b'], ['f' => 'foo', 'b' => 'baz']],
+        ];
     }
 }

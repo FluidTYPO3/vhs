@@ -13,10 +13,12 @@ use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
+use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * Class AbstractSecurityViewHelperTest
@@ -30,7 +32,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
     public function canCreateViewHelperInstance()
     {
         $instance = $this->getMockForAbstractClass($this->getViewHelperClassName());
-        $instance->injectReflectionService($this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService'));
+        $instance->injectReflectionService($this->objectManager->get(ReflectionService::class));
         $this->assertInstanceOf($this->getViewHelperClassName(), $instance);
     }
 
@@ -41,15 +43,15 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
     {
         $instance = $this->getMockForAbstractClass(
             $this->getViewHelperClassName(),
-            array(),
+            [],
             '',
             false,
             false,
             false,
-            array('registerRenderMethodArguments')
+            ['registerRenderMethodArguments']
         );
         $instance->expects($this->any())->method('registerRenderMethodArguments');
-        $instance->injectReflectionService($this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService'));
+        $instance->injectReflectionService($this->objectManager->get(ReflectionService::class));
         $this->assertNotEmpty($instance->prepareArguments());
     }
 
@@ -61,7 +63,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testEvaluateArguments(array $arguments, array $expectedMethods, $expectedReturn)
     {
-        $instance = $this->getMock($this->getViewHelperClassName(), $expectedMethods);
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods($expectedMethods)->getMock();
         foreach ($expectedMethods as $expectedMethod) {
             $instance->expects($this->once())->method($expectedMethod)->willReturn(true);
         }
@@ -87,83 +89,83 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
         $backendUserGroup = new BackendUserGroup();
         $backendUserGroups = new ObjectStorage();
         $backendUserGroups->attach($backendUserGroup);
-        return array(
-            array(
-                array('anyFrontendUser' => true),
-                array('assertFrontendUserLoggedIn'),
+        return [
+            [
+                ['anyFrontendUser' => true],
+                ['assertFrontendUserLoggedIn'],
                 true
-            ),
-            array(
-                array('anyFrontendUserGroup' => true),
-                array('assertFrontendUserGroupLoggedIn'),
+            ],
+            [
+                ['anyFrontendUserGroup' => true],
+                ['assertFrontendUserGroupLoggedIn'],
                 true
-            ),
-            array(
-                array('frontendUser' => $frontendUser),
-                array('assertFrontendUserLoggedIn'),
+            ],
+            [
+                ['frontendUser' => $frontendUser],
+                ['assertFrontendUserLoggedIn'],
                 true
-            ),
-            array(
-                array('frontendUsers' => $frontendUsers),
-                array('assertFrontendUsersLoggedIn'),
+            ],
+            [
+                ['frontendUsers' => $frontendUsers],
+                ['assertFrontendUsersLoggedIn'],
                 true
-            ),
-            array(
-                array('frontendUserGroup' => true),
-                array('assertFrontendUserGroupLoggedIn'),
+            ],
+            [
+                ['frontendUserGroup' => true],
+                ['assertFrontendUserGroupLoggedIn'],
                 true
-            ),
-            array(
-                array('frontendUserGroups' => true),
-                array('assertFrontendUserGroupLoggedIn'),
+            ],
+            [
+                ['frontendUserGroups' => true],
+                ['assertFrontendUserGroupLoggedIn'],
                 true
-            ),
-            array(
-                array('anyBackendUser' => true),
-                array('assertBackendUserLoggedIn'),
+            ],
+            [
+                ['anyBackendUser' => true],
+                ['assertBackendUserLoggedIn'],
                 true
-            ),
-            array(
-                array('anyBackendUserGroup' => true),
-                array('assertBackendUserGroupLoggedIn'),
+            ],
+            [
+                ['anyBackendUserGroup' => true],
+                ['assertBackendUserGroupLoggedIn'],
                 true
-            ),
-            array(
-                array('backendUser' => $backendUser),
-                array('assertBackendUserLoggedIn'),
+            ],
+            [
+                ['backendUser' => $backendUser],
+                ['assertBackendUserLoggedIn'],
                 true
-            ),
-            array(
-                array('backendUsers' => $backendUsers),
-                array('assertBackendUserLoggedIn'),
+            ],
+            [
+                ['backendUsers' => $backendUsers],
+                ['assertBackendUserLoggedIn'],
                 true
-            ),
-            array(
-                array('backendUserGroup' => $backendUserGroup),
-                array('assertBackendUserGroupLoggedIn'),
+            ],
+            [
+                ['backendUserGroup' => $backendUserGroup],
+                ['assertBackendUserGroupLoggedIn'],
                 true
-            ),
-            array(
-                array('backendUserGroups' => $backendUserGroups),
-                array('assertBackendUserGroupLoggedIn'),
+            ],
+            [
+                ['backendUserGroups' => $backendUserGroups],
+                ['assertBackendUserGroupLoggedIn'],
                 true
-            ),
-            array(
-                array('admin' => true),
-                array('assertAdminLoggedIn'),
+            ],
+            [
+                ['admin' => true],
+                ['assertAdminLoggedIn'],
                 true
-            ),
-            array(
-                array('admin' => true, 'anyFrontendUser' => true, 'evaluationMode' => 'AND'),
-                array('assertAdminLoggedIn', 'assertFrontendUserLoggedIn'),
+            ],
+            [
+                ['admin' => true, 'anyFrontendUser' => true, 'evaluationMode' => 'AND'],
+                ['assertAdminLoggedIn', 'assertFrontendUserLoggedIn'],
                 true
-            ),
-            array(
-                array('admin' => true, 'anyFrontendUser' => true, 'evaluationMode' => 'OR'),
-                array('assertAdminLoggedIn', 'assertFrontendUserLoggedIn'),
+            ],
+            [
+                ['admin' => true, 'anyFrontendUser' => true, 'evaluationMode' => 'OR'],
+                ['assertAdminLoggedIn', 'assertFrontendUserLoggedIn'],
                 true
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -174,7 +176,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertFrontendUserLoggedIn($user, $resolvedUser, $expected)
     {
-        $instance = $this->getMock($this->getViewHelperClassName(), array('getCurrentFrontendUser'));
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMock();
         $instance->expects($this->once())->method('getCurrentFrontendUser')->willReturn($resolvedUser);
         $result = $this->callInaccessibleMethod($instance, 'assertFrontendUserLoggedIn', $user);
         $this->assertEquals($expected, $result);
@@ -190,13 +192,13 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
         $user2 = new FrontendUser();
         ObjectAccess::setProperty($user2, 'uid', 2, true);
 
-        return array(
-            array(null, null, false),
-            array($user1, null, false),
-            array(null, $user1, true),
-            array($user1, $user1, true),
-            array($user1, $user2, false)
-        );
+        return [
+            [null, null, false],
+            [$user1, null, false],
+            [null, $user1, true],
+            [$user1, $user1, true],
+            [$user1, $user2, false]
+        ];
     }
 
     /**
@@ -207,7 +209,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertFrontendUserGroupLoggedIn($group, $resolvedUser, $expected)
     {
-        $instance = $this->getMock($this->getViewHelperClassName(), array('getCurrentFrontendUser'));
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMock();
         $instance->expects($this->once())->method('getCurrentFrontendUser')->willReturn($resolvedUser);
         $result = $this->callInaccessibleMethod($instance, 'assertFrontendUserGroupLoggedIn', $group);
         $this->assertEquals($expected, $result);
@@ -226,16 +228,16 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
         $user2 = new FrontendUser();
         $user2->setUsergroup($frontendUserGroups);
         ObjectAccess::setProperty($user2, 'uid', 2, true);
-        return array(
-            array(null, null, false),
-            array(null, $user1, false),
-            array(null, $user2, true),
-            array($frontendUserGroup, $user1, false),
-            array($frontendUserGroup, $user2, true),
-            array($frontendUserGroups, $user1, false),
-            array($frontendUserGroups, $user2, true),
-            array('unsupportedtype', $user1, false)
-        );
+        return [
+            [null, null, false],
+            [null, $user1, false],
+            [null, $user2, true],
+            [$frontendUserGroup, $user1, false],
+            [$frontendUserGroup, $user2, true],
+            [$frontendUserGroups, $user1, false],
+            [$frontendUserGroups, $user2, true],
+            ['unsupportedtype', $user1, false]
+        ];
     }
 
     /**
@@ -246,7 +248,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertFrontendUsersLoggedIn(ObjectStorage $users, FrontendUser $currentUser, $expected)
     {
-        $instance = $this->getMock($this->getViewHelperClassName(), array('getCurrentFrontendUser'));
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMock();
         $instance->expects($this->exactly($users->count()))->method('getCurrentFrontendUser')->willReturn($currentUser);
         $result = $instance->assertFrontendUsersLoggedIn($users);
         $this->assertEquals($expected, $result);
@@ -269,10 +271,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
         $users->attach($user2);
         $contained = $user2;
         $notContained = $user3;
-        return array(
-            array($users, $notContained, false),
-            array($users, $contained, true),
-        );
+        return [
+            [$users, $notContained, false],
+            [$users, $contained, true],
+        ];
     }
 
     /**
@@ -283,8 +285,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertBackendUserLoggedIn($user, $currentUser, $expected)
     {
-        $GLOBALS['BE_USER'] = (object) array('user' => array('uid' => $currentUser));
-        $instance = $this->getMock($this->getViewHelperClassName(), array('dummy'));
+        $GLOBALS['BE_USER'] = (object) ['user' => ['uid' => $currentUser]];
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
         $result = $instance->assertBackendUserLoggedIn($user);
         unset($GLOBALS['BE_USER']->user);
         $this->assertEquals($expected, $result);
@@ -295,14 +297,14 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function getAssertBackendUserLoggedInTestValues()
     {
-        return array(
-            array(1, 0, false),
-            array(2, 4, false),
-            array(3, 3, true),
-            array(2, 2, true),
-            array(null, 1, true),
-            array(1, null, false)
-        );
+        return [
+            [1, 0, false],
+            [2, 4, false],
+            [3, 3, true],
+            [2, 2, true],
+            [null, 1, true],
+            [1, null, false]
+        ];
     }
 
     /**
@@ -313,8 +315,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertBackendUserGroupLoggedIn($group, $currentUser, $expected)
     {
-        $GLOBALS['BE_USER'] = (object) array('user' => $currentUser);
-        $instance = $this->getMock($this->getViewHelperClassName(), array('dummy'));
+        $GLOBALS['BE_USER'] = (object) ['user' => $currentUser];
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
         $result = $instance->assertBackendUserGroupLoggedIn($group);
         unset($GLOBALS['BE_USER']);
         $this->assertEquals($expected, $result);
@@ -325,18 +327,18 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function getAssertBackendUserGroupLoggedInTestValues()
     {
-        return array(
-            array(null, null, false),
-            array(array(), array('uid' => 1, 'usergroup' => '1,2,3'), false),
-            array(array(1), array('uid' => 1, 'usergroup' => ''), false),
-            array(array(1), array('uid' => 1, 'usergroup' => '1,2,3'), true),
-            array(array(1,9), array('uid' => 1, 'usergroup' => '1,2,3'), true),
-            array(array(4,5), array('uid' => 1, 'usergroup' => '1,2,3'), false),
-            array(array(1,7), array('uid' => 1, 'usergroup' => '1,2,3'), true),
-            array(array(4,8), array('uid' => 1, 'usergroup' => '1,2,3'), false),
-            array('1,7', array('uid' => 1, 'usergroup' => '1,2,3'), true),
-            array('4,8,', array('uid' => 1, 'usergroup' => '1,2,3'), false)
-        );
+        return [
+            [null, null, false],
+            [[], ['uid' => 1, 'usergroup' => '1,2,3'], false],
+            [[1], ['uid' => 1, 'usergroup' => ''], false],
+            [[1], ['uid' => 1, 'usergroup' => '1,2,3'], true],
+            [[1,9], ['uid' => 1, 'usergroup' => '1,2,3'], true],
+            [[4,5], ['uid' => 1, 'usergroup' => '1,2,3'], false],
+            [[1,7], ['uid' => 1, 'usergroup' => '1,2,3'], true],
+            [[4,8], ['uid' => 1, 'usergroup' => '1,2,3'], false],
+            ['1,7', ['uid' => 1, 'usergroup' => '1,2,3'], true],
+            ['4,8,', ['uid' => 1, 'usergroup' => '1,2,3'], false]
+        ];
     }
 
     /**
@@ -346,7 +348,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertAdminLoggedIn($currentUser, $expected)
     {
-        $instance = $this->getMock($this->getViewHelperClassName(), array('getCurrentBackendUser'));
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentBackendUser'])->getMock();
         $instance->expects($this->atLeastOnce())->method('getCurrentBackendUser')->willReturn($currentUser);
         $result = $instance->assertAdminLoggedIn();
         $this->assertEquals($expected, $result);
@@ -357,11 +359,11 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function getAssertAdminLoggedInTestValues()
     {
-        return array(
-            array(null, false),
-            array(array('uid' => 1, 'admin' => 0), false),
-            array(array('uid' => 1, 'admin' => 1), true)
-        );
+        return [
+            [null, false],
+            [['uid' => 1, 'admin' => 0], false],
+            [['uid' => 1, 'admin' => 1], true]
+        ];
     }
 
     /**
@@ -369,8 +371,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testGetCurrentFrontendUserReturnsNullIfNoFrontendUserRecordIsSetInFrontendController()
     {
-        $GLOBALS['TSFE'] = (object) array('loginUser' => '');
-        $instance = $this->getMock($this->getViewHelperClassName(), array('dummy'));
+        $GLOBALS['TSFE'] = (object) ['loginUser' => ''];
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
         $result = $instance->getCurrentFrontendUser();
         $this->assertNull($result);
         unset($GLOBALS['TSFE']);
@@ -381,18 +383,12 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testGetCurrentFrontendUserFetchesFromFrontendUserRepository()
     {
-        $GLOBALS['TSFE'] = (object) array('loginUser' => 1, 'fe_user' => (object) array('user' => array('uid' => 1)));
-        $instance = $this->getMock($this->getViewHelperClassName(), array('dummy'));
-        $query = new Query('TYPO3\\CMS\\Extbase\\Domain\\Model\\FrontendUser');
+        $GLOBALS['TSFE'] = (object) ['loginUser' => 1, 'fe_user' => (object) ['user' => ['uid' => 1]]];
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
+        $query = new Query(FrontendUser::class);
         $querySettings = new Typo3QuerySettings();
         $query->setQuerySettings($querySettings);
-        $repository = $this->getMock(
-            'TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository',
-            array('findByUid', 'createQuery', 'setDefaultQuerySettings'),
-            array(),
-            '',
-            false
-        );
+        $repository = $this->getMockBuilder(FrontendUserRepository::class)->setMethods(['findByUid', 'createQuery', 'setDefaultQuerySettings'])->disableOriginalConstructor()->getMock();
         $repository->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
         $repository->expects($this->once())->method('createQuery')->willReturn($query);
         $repository->expects($this->once())->method('findByUid')->with(1)->willReturn('test');
@@ -406,8 +402,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testRenderThenChildDisablesCacheInFrontendContext()
     {
-        $GLOBALS['TSFE'] = (object) array('no_cache' => 0);
-        $instance = $this->getMock($this->getViewHelperClassName(), array('isFrontendContext', 'renderChildren'));
+        $GLOBALS['TSFE'] = (object) ['no_cache' => 0];
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['isFrontendContext', 'renderChildren'])->getMock();
         $instance->expects($this->once())->method('renderChildren')->willReturn('test');
         $instance->expects($this->once())->method('isFrontendContext')->willReturn(true);
         $this->callInaccessibleMethod($instance, 'renderThenChild');
@@ -420,7 +416,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testIsFrontendContextReturnsFalse()
     {
-        $instance = $this->getMock($this->getViewHelperClassName(), array('dummy'));
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
         $result = $this->callInaccessibleMethod($instance, 'isFrontendContext');
         $this->assertFalse($result);
     }
