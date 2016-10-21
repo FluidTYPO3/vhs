@@ -29,6 +29,14 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
         $this->registerArgument('pageUid', 'integer', 'The page uid to check', false, 0);
         $this->registerArgument(
+            'queryStringMethod',
+            'string',
+            'From which place to add parameters. Values: "GET", "POST" and "GET,POST". See ' .
+            'https://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Typolink/Index.html, addQueryString.method',
+            false,
+            'GET'
+        );
+        $this->registerArgument(
             'normalWhenNoLanguage',
             'boolean',
             'DEPRECATED: Visibility is now handled by core\'s typolink function.'
@@ -49,12 +57,21 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
+        $queryStringMethod = $this->arguments['queryStringMethod'];
+        if (!in_array($queryStringMethod, ['GET', 'POST', 'GET,POST'], true)) {
+            throw new \InvalidArgumentException(
+                'The parameter "queryStringMethods" must be one of "GET", "POST" or "GET,POST".',
+                1475337546
+            );
+        }
+
         $uriBuilder = $this->controllerContext->getUriBuilder();
         $uri = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setUseCacheHash(true)
             ->setCreateAbsoluteUri(true)
             ->setAddQueryString(true)
+            ->setAddQueryStringMethod($queryStringMethod)
             ->setArgumentsToBeExcludedFromQueryString(['id'])
             ->build();
 
