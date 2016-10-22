@@ -140,6 +140,34 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
     }
 
     /**
+     * Get the value of this form element.
+     * Either returns arguments['value'], or the correct value for Object Access.
+     *
+     * @param boolean $convertObjects whether or not to convert objects to identifiers
+     * @return mixed Value
+     */
+    protected function getValue($convertObjects = true)
+    {
+        $value = null;
+
+        if ($this->hasArgument('value')) {
+            $value = $this->arguments['value'];
+        } elseif ($this->isObjectAccessorMode()) {
+            if ($this->hasMappingErrorOccurred()) {
+                $value = $this->getLastSubmittedFormData();
+            } else {
+                $value = $this->getPropertyValue();
+            }
+            $this->addAdditionalIdentityPropertiesIfNeeded();
+        }
+
+        if ($convertObjects) {
+            $value = $this->convertToPlainValue($value);
+        }
+        return $value;
+    }
+
+    /**
      * Render the option tags.
      *
      * @param array $options the options for the form.
