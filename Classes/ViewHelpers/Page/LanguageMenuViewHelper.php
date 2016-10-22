@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * ViewHelper for rendering TYPO3 menus in Fluid
@@ -116,7 +117,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         if (false === is_object($GLOBALS['TSFE']->sys_page)) {
             return null;
         }
-        $this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $this->tagName = $this->arguments['tagName'];
 
         // to set the tagName we should call initialize()

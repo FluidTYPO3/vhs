@@ -35,7 +35,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmptyStringForEmptyArguments()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\ExtensionViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
         $this->assertEquals('', $viewHelper->render());
     }
@@ -45,7 +45,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsExpectedExtensionForProvidedPath()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\ExtensionViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/foo.txt'));
         $this->assertEquals('txt', $viewHelper->render());
     }
@@ -55,7 +55,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmptyStringForFileWithoutExtension()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\ExtensionViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/noext'));
         $this->assertEquals('', $viewHelper->render());
     }

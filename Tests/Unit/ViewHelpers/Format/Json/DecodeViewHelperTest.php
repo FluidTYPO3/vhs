@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class DecodeViewHelperTest
@@ -21,7 +22,7 @@ class DecodeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNullForEmptyArguments()
     {
-        $viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(''));
 
         $this->assertNull($viewHelper->render());
@@ -35,14 +36,14 @@ class DecodeViewHelperTest extends AbstractViewHelperTest
 
         $fixture = '{"foo":"bar","bar":true,"baz":1,"foobar":null}';
 
-        $expected = array(
+        $expected = [
             'foo' => 'bar',
             'bar' => true,
             'baz' => 1,
             'foobar' => null,
-        );
+        ];
 
-        $viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
 
         $this->assertEquals($expected, $viewHelper->render());
@@ -55,10 +56,10 @@ class DecodeViewHelperTest extends AbstractViewHelperTest
     {
         $invalidJson = "{'foo': 'bar'}";
 
-        $viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($invalidJson));
 
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
+        $this->setExpectedException(Exception::class);
         $this->assertEquals('null', $viewHelper->render());
     }
 }

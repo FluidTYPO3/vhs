@@ -7,6 +7,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class ProductViewHelperTest
@@ -19,7 +20,7 @@ class ProductViewHelperTest extends AbstractMathViewHelperTest
      */
     public function testSingleArgumentIterator()
     {
-        $this->executeSingleArgumentTest(array(2, 8), 16);
+        $this->executeSingleArgumentTest([2, 8], 16);
     }
 
     /**
@@ -35,8 +36,8 @@ class ProductViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeMissingArgumentTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
-        $this->executeViewHelper(array());
+        $this->setExpectedException(Exception::class, 'Required argument "b" was not supplied');
+        $this->executeViewHelper([]);
     }
 
     /**
@@ -44,7 +45,7 @@ class ProductViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidArgumentTypeTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
-        $this->executeViewHelper(array('b' => 1, 'fail' => true));
+        $this->setExpectedException(Exception::class, 'Required argument "a" was not supplied');
+        $this->executeViewHelper(['b' => 1, 'fail' => true]);
     }
 }

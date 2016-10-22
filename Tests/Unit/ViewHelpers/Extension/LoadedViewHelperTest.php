@@ -21,11 +21,11 @@ class LoadedViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildIfExtensionIsLoaded()
     {
-        $arguments = array(
+        $arguments = [
             'extensionName' => 'Vhs',
             'then' => 1, '
 			else' => 0
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertSame(1, $result);
 
@@ -38,11 +38,11 @@ class LoadedViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildIfExtensionIsNotLoaded()
     {
-        $arguments = array(
+        $arguments = [
             'extensionName' => 'Void',
              'then' => 1,
              'else' => 0
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertSame(0, $result);
 

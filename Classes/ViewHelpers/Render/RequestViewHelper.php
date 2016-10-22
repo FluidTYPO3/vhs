@@ -10,6 +10,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -26,22 +29,22 @@ class RequestViewHelper extends AbstractRenderViewHelper
 {
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Dispatcher
+     * @var Dispatcher
      */
     protected $dispatcher;
 
     /**
      * @var string
      */
-    protected $requestType = 'TYPO3\CMS\Extbase\Mvc\Web\Request';
+    protected $requestType = Request::class;
 
     /**
      * @var string
      */
-    protected $responseType = 'TYPO3\CMS\Extbase\Mvc\Web\Response';
+    protected $responseType = Response::class;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Dispatcher $dispatcher
+     * @param Dispatcher $dispatcher
      * @return void
      */
     public function injectDispatcher(Dispatcher $dispatcher)
@@ -63,7 +66,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
      * @param string|NULL $pluginName
      * @param string|NULL $vendorName
      * @param array $arguments
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @return ResponseInterface
      * @throws \Exception
      * @api
      */
@@ -84,7 +87,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
             );
         }
         $temporaryContentObject = new ContentObjectRenderer();
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
+        /** @var Request $request */
         $request = $this->objectManager->get($this->requestType);
         $request->setControllerActionName($action);
         $request->setControllerName($controller);
@@ -96,7 +99,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $request->setControllerVendorName($vendorName);
         }
         try {
-            /** @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response */
+            /** @var ResponseInterface $response */
             $response = $this->objectManager->get($this->responseType);
             $this->configurationManager->setContentObject($temporaryContentObject);
             $this->configurationManager->setConfiguration(

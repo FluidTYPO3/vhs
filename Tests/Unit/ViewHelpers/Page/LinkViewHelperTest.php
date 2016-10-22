@@ -30,16 +30,15 @@ class LinkViewHelperTest extends AbstractViewHelperTest
     public function setUp()
     {
         parent::setUp();
-        $this->pageService = $this->getMock(
-            PageService::class,
-            array(
+        $this->pageService = $this->getMockBuilder(PageService::class)->setMethods(
+            [
                 'getPage',
                 'getShortcutTargetPage',
                 'shouldUseShortcutTarget',
                 'shouldUseShortcutUid',
                 'hidePageForLanguageUid'
-            )
-        );
+            ]
+        )->getMock();
         $this->pageService->expects($this->any())->method('getShortcutTargetPage')->willReturnArgument(0);
         #$GLOBALS['TSFE'] = (object) array('sys_page' => $this->pageService);
         #$GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)->setMethods('exec_SELECTgetSingleRow')->getMock();
@@ -64,9 +63,9 @@ class LinkViewHelperTest extends AbstractViewHelperTest
      */
     public function generatesPageLinks()
     {
-        $this->pageService->expects($this->once())->method('getPage')->willReturn(array('uid' => '1', 'title' => 'test'));
-        $arguments = array('pageUid' => 1);
-        $result = $this->executeViewHelper($arguments, array(), null, 'Vhs');
+        $this->pageService->expects($this->once())->method('getPage')->willReturn(['uid' => '1', 'title' => 'test']);
+        $arguments = ['pageUid' => 1];
+        $result = $this->executeViewHelper($arguments, [], null, 'Vhs');
         $this->assertNotEmpty($result);
     }
 
@@ -75,9 +74,9 @@ class LinkViewHelperTest extends AbstractViewHelperTest
      */
     public function generatesNullLinkOnZeroPageUid()
     {
-        $arguments = array('pageUid' => 0);
+        $arguments = ['pageUid' => 0];
         $this->pageService->expects($this->once())->method('getPage')->willReturn(null);
-        $result = $this->executeViewHelper($arguments, array(), null, 'Vhs');
+        $result = $this->executeViewHelper($arguments, [], null, 'Vhs');
         $this->assertNull($result);
     }
 
@@ -87,8 +86,8 @@ class LinkViewHelperTest extends AbstractViewHelperTest
     public function generatesPageLinksWithCustomTitle()
     {
         $this->pageService->expects($this->never())->method('getPage');
-        $arguments = array('pageUid' => 1, 'pageTitleAs' => 'title');
-        $result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments, array(), 'Vhs');
+        $arguments = ['pageUid' => 1, 'pageTitleAs' => 'title'];
+        $result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments, [], 'Vhs');
         $this->assertContains('customtitle', $result);
     }
 
@@ -98,8 +97,8 @@ class LinkViewHelperTest extends AbstractViewHelperTest
     public function generatesPageWizardLinks()
     {
         $this->pageService->expects($this->never())->method('getPage');
-        $arguments = array('pageUid' => '1 2 3 4 5 foo=bar&baz=123');
-        $result = $this->executeViewHelper($arguments, array(), null, 'Vhs');
+        $arguments = ['pageUid' => '1 2 3 4 5 foo=bar&baz=123'];
+        $result = $this->executeViewHelper($arguments, [], null, 'Vhs');
         $this->assertNotEmpty($result);
     }
 }

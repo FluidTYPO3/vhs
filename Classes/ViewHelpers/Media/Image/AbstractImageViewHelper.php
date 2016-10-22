@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -223,7 +224,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
         $GLOBALS['TSFE'] = new \stdClass();
-        $template = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
+        $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = 0;
         $template->init();
         $template->getFileName_backPath = constant('PATH_site');

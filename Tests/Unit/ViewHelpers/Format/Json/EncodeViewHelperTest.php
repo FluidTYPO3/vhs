@@ -10,6 +10,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class EncodeViewHelperTest
@@ -34,7 +36,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     public function encodesRecursiveDomainObject()
     {
         /** @var Foo $object */
-        $object = $this->objectManager->get('FluidTYPO3\\Vhs\\Tests\\Fixtures\\Domain\\Model\\Foo');
+        $object = $this->objectManager->get(Foo::class);
         $object->setFoo($object);
         $instance = $this->createInstance();
         $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null);
@@ -47,12 +49,12 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     public function encodesDateTimeWithFormat()
     {
         $dateTime = \DateTime::createFromFormat('U', 86401);
-        $arguments = array(
-            'value' => array(
+        $arguments = [
+            'value' => [
                 'date' => $dateTime,
-            ),
+            ],
             'dateTimeFormat' => 'Y-m-d',
-        );
+        ];
         $test = $this->executeViewHelper($arguments);
         $this->assertEquals('{"date":"1970-01-02"}', $test);
     }
@@ -62,7 +64,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function encodesTraversable()
     {
-        $traversable = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+        $traversable = $this->objectManager->get(ObjectStorage::class);
         $instance = $this->createInstance();
         $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null);
         $this->assertEquals('[]', $test);
@@ -73,7 +75,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmptyJsonObjectForEmptyArguments()
     {
-        $viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
 
         $this->assertEquals('{}', $viewHelper->render());
@@ -86,18 +88,18 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     {
 
         $storage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
-        $fixture = array(
+        $fixture = [
             'foo' => 'bar',
             'bar' => true,
             'baz' => 1,
             'foobar' => null,
             'date' => \DateTime::createFromFormat('U', 3216548),
             'traversable' => $storage
-        );
+        ];
 
         $expected = '{"foo":"bar","bar":true,"baz":1,"foobar":null,"date":3216548000,"traversable":[]}';
 
-        $viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
 
         $this->assertEquals($expected, $viewHelper->render());
@@ -108,10 +110,10 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionForInvalidArgument()
     {
-        $viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue("\xB1\x31"));
 
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
+        $this->setExpectedException(Exception::class);
         $this->assertEquals('null', $viewHelper->render());
     }
 
@@ -123,10 +125,10 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
         $date = new \DateTime('now');
         $jsTimestamp = $date->getTimestamp() * 1000;
 
-        $fixture = array('foo' => $date, 'bar' => array('baz' => $date));
+        $fixture = ['foo' => $date, 'bar' => ['baz' => $date]];
         $expected = sprintf('{"foo":%s,"bar":{"baz":%s}}', $jsTimestamp, $jsTimestamp);
 
-        $viewHelper = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
 
         $this->assertEquals($expected, $viewHelper->render());

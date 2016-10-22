@@ -22,7 +22,7 @@ class SessionViewHelperTest extends AbstractViewHelperTest
     public function testStoreIdentifier()
     {
         $instance = $this->createInstance();
-        $instance->setArguments(array('identifier' => 'test'));
+        $instance->setArguments(['identifier' => 'test']);
         $this->callInaccessibleMethod($instance, 'storeIdentifier');
         $this->assertEquals(time(), $_SESSION[get_class($instance)]['test']);
         unset($_SESSION[get_class($instance)]['test']);
@@ -34,7 +34,7 @@ class SessionViewHelperTest extends AbstractViewHelperTest
     public function testAssertShouldSkip()
     {
         $instance = $this->createInstance();
-        $instance->setArguments(array('identifier' => 'test'));
+        $instance->setArguments(['identifier' => 'test']);
         $this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
         $_SESSION[get_class($instance)]['test'] = time();
         $this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
@@ -51,11 +51,11 @@ class SessionViewHelperTest extends AbstractViewHelperTest
         $time = time() - 10;
         $_SESSION[$class]['test'] = $time;
 
-        $instance->setArguments(array('identifier' => 'test', 'ttl' => 15));
+        $instance->setArguments(['identifier' => 'test', 'ttl' => 15]);
         $this->callInaccessibleMethod($instance, 'removeIfExpired');
         $this->assertArrayHasKey('test', $_SESSION[$class]);
 
-        $instance->setArguments(array('identifier' => 'test', 'ttl' => 5));
+        $instance->setArguments(['identifier' => 'test', 'ttl' => 5]);
         $this->callInaccessibleMethod($instance, 'removeIfExpired');
         $this->assertArrayNotHasKey('test', $_SESSION[$class]);
     }

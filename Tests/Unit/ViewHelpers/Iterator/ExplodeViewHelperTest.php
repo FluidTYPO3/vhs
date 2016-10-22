@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
 
 /**
  * Class ExplodeViewHelperTest
@@ -22,9 +23,9 @@ class ExplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function explodesString()
     {
-        $arguments = array('content' => '1,2,3', 'glue' => ',');
+        $arguments = ['content' => '1,2,3', 'glue' => ','];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(array('1', '2', '3'), $result);
+        $this->assertEquals(['1', '2', '3'], $result);
     }
 
     /**
@@ -32,9 +33,9 @@ class ExplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsCustomGlue()
     {
-        $arguments = array('content' => '1;2;3', 'glue' => ';');
+        $arguments = ['content' => '1;2;3', 'glue' => ';'];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(array('1', '2', '3'), $result);
+        $this->assertEquals(['1', '2', '3'], $result);
     }
 
     /**
@@ -42,9 +43,9 @@ class ExplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsConstantsGlue()
     {
-        $arguments = array('content' => "1\n2\n3", 'glue' => 'constant:LF');
+        $arguments = ['content' => "1\n2\n3", 'glue' => 'constant:LF'];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(array('1', '2', '3'), $result);
+        $this->assertEquals(['1', '2', '3'], $result);
     }
 
     /**
@@ -52,9 +53,9 @@ class ExplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function passesThroughUnknownSpecialGlue()
     {
-        $arguments = array('content' => '1-2-3', 'glue' => 'unknown:-');
+        $arguments = ['content' => '1-2-3', 'glue' => 'unknown:-'];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(array('1', '2', '3'), $result);
+        $this->assertEquals(['1', '2', '3'], $result);
     }
 
     /**
@@ -62,9 +63,9 @@ class ExplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function renderMethodCallsRenderChildrenIfContentIsNull()
     {
-        $array = array('1', '2', '3');
-        $arguments = array('glue' => ',');
-        $mock = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $array = ['1', '2', '3'];
+        $arguments = ['glue' => ','];
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $mock->setArguments($arguments);
         $mock->expects($this->once())->method('renderChildren')->will($this->returnValue('1,2,3'));
         $result = $mock->render();
@@ -76,12 +77,12 @@ class ExplodeViewHelperTest extends AbstractViewHelperTest
      */
     public function renderMethodCallsRenderChildrenAndTemplateVariableContainerAddAndRemoveIfAsArgumentGiven()
     {
-        $array = array('1', '2', '3');
-        $arguments = array('as' => 'test', 'content' => '1,2,3', 'glue' => ',');
-        $mock = $this->getMock($this->getViewHelperClassName(), array('renderChildren'));
+        $array = ['1', '2', '3'];
+        $arguments = ['as' => 'test', 'content' => '1,2,3', 'glue' => ','];
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $mock->expects($this->once())->method('renderChildren')->will($this->returnValue('test'));
         $mock->setArguments($arguments);
-        $mockContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer', array('add', 'get', 'remove', 'exists'));
+        $mockContainer = $this->getMockBuilder(TemplateVariableContainer::class)->setMethods(['add', 'get', 'remove', 'exists'])->getMock();
         $mockContainer->expects($this->once())->method('exists')->with('test')->will($this->returnValue(true));
         $mockContainer->expects($this->exactly(2))->method('add')->with('test', $array);
         $mockContainer->expects($this->once())->method('get')->with('test')->will($this->returnValue($array));

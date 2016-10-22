@@ -10,6 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -58,8 +60,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function __construct()
     {
-        $this->resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-        $this->fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
     }
 
     /**

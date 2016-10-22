@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
@@ -69,8 +70,8 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
         }
 
         if (self::$pageService === null) {
-            $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-            self::$pageService = $objectManager->get('FluidTYPO3\Vhs\Service\PageService');
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            self::$pageService = $objectManager->get(PageService::class);
         }
 
         $menu = self::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);

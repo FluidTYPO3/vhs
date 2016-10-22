@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 
@@ -63,7 +64,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
         if (isset($GLOBALS['typo3CacheManager'])) {
             $cacheManager = $GLOBALS['typo3CacheManager'];
         } else {
-            $cacheManager =   GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+            $cacheManager =   GeneralUtility::makeInstance(CacheManager::class);
         }
         $this->cache = $cacheManager->getCache('vhs_main');
     }

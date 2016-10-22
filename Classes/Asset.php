@@ -514,7 +514,7 @@ class Asset implements AssetInterface
         foreach (array_keys($properties) as $propertyName) {
             $properties[$propertyName] = $this->$propertyName;
         }
-        if (true === method_exists('TYPO3\\CMS\\Core\\Utility\\ArrayUtility', 'mergeRecursiveWithOverrule')) {
+        if (true === method_exists(ArrayUtility::class, 'mergeRecursiveWithOverrule')) {
             ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
             ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
         } else {

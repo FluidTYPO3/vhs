@@ -27,7 +27,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTest
     public function testGetIdentifier($identifierArgument, $expectedIdentifier)
     {
         $instance = $this->createInstance();
-        $instance->setArguments(array('identifier' => $identifierArgument));
+        $instance->setArguments(['identifier' => $identifierArgument]);
         $renderingContext = new RenderingContext();
         $controllerContext = new ControllerContext();
         $request = new Request();
@@ -47,11 +47,11 @@ class InstanceViewHelperTest extends AbstractViewHelperTest
      */
     public function getIdentifierTestValues()
     {
-        return array(
-            array(null, 'p1_p2_p3_p4'),
-            array('test', 'test'),
-            array('test2', 'test2'),
-        );
+        return [
+            [null, 'p1_p2_p3_p4'],
+            ['test', 'test'],
+            ['test2', 'test2'],
+        ];
     }
 
     /**
@@ -60,7 +60,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTest
     public function testStoreIdentifier()
     {
         $instance = $this->createInstance();
-        $instance->setArguments(array('identifier' => 'test'));
+        $instance->setArguments(['identifier' => 'test']);
         $this->callInaccessibleMethod($instance, 'storeIdentifier');
         $this->assertTrue($GLOBALS[get_class($instance)]['test']);
         unset($GLOBALS[get_class($instance)]['test']);
@@ -72,7 +72,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTest
     public function testAssertShouldSkip()
     {
         $instance = $this->createInstance();
-        $instance->setArguments(array('identifier' => 'test'));
+        $instance->setArguments(['identifier' => 'test']);
         $this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
         $GLOBALS[get_class($instance)]['test'] = true;
         $this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip'));

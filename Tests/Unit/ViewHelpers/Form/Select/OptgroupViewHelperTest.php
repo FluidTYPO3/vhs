@@ -33,9 +33,9 @@ class OptgroupViewHelperTest extends AbstractViewHelperTest
      */
     public function getRenderTestValues()
     {
-        return array(
-            array(array('label' => 'test'), '', '<optgroup label="test" />'),
-            array(array('label' => 'test'), 'content', '<optgroup label="test">content</optgroup>')
-        );
+        return [
+            [['label' => 'test'], '', '<optgroup label="test" />'],
+            [['label' => 'test'], 'content', '<optgroup label="test">content</optgroup>']
+        ];
     }
 }

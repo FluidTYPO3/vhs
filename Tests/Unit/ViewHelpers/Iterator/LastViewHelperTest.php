@@ -21,10 +21,10 @@ class LastViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsLastElement()
     {
-        $array = array('a', 'b', 'c');
-        $arguments = array(
+        $array = ['a', 'b', 'c'];
+        $arguments = [
             'haystack' => $array
-        );
+        ];
         $output = $this->executeViewHelper($arguments);
         $this->assertEquals('c', $output);
     }
@@ -34,10 +34,10 @@ class LastViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsIterators()
     {
-        $array = new \ArrayIterator(array('a', 'b', 'c'));
-        $arguments = array(
+        $array = new \ArrayIterator(['a', 'b', 'c']);
+        $arguments = [
             'haystack' => $array
-        );
+        ];
         $output = $this->executeViewHelper($arguments);
         $this->assertEquals('c', $output);
     }
@@ -47,10 +47,10 @@ class LastViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsTagContent()
     {
-        $array = array('a', 'b', 'c');
-        $arguments = array(
+        $array = ['a', 'b', 'c'];
+        $arguments = [
             'haystack' => null
-        );
+        ];
         $output = $this->executeViewHelperUsingTagContent('Array', $array, $arguments);
         $this->assertEquals('c', $output);
     }
@@ -60,9 +60,9 @@ class LastViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNullIfHaystackIsEmptyArray()
     {
-        $arguments = array(
-            'haystack' => array()
-        );
+        $arguments = [
+            'haystack' => []
+        ];
         $output = $this->executeViewHelper($arguments);
         $this->assertEquals(null, $output);
     }

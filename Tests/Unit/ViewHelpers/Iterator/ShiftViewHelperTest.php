@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class ShiftViewHelperTest
@@ -28,7 +29,7 @@ class ShiftViewHelperTest extends AbstractViewHelperTest
             $value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
         } else {
             $value = $this->executeViewHelper($arguments);
-            $value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array(), array('v' => $arguments['subject']));
+            $value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', [], ['v' => $arguments['subject']]);
             $this->assertEquals($value, $value2);
         }
         $this->assertEquals($value, $expectedValue);
@@ -39,13 +40,13 @@ class ShiftViewHelperTest extends AbstractViewHelperTest
      */
     public function getRenderTestValues()
     {
-        return array(
-            array(array('subject' => array()), null),
-            array(array('subject' => array('foo', 'bar')), 'foo'),
-            array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), 'foo'),
-            array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), 'foo'),
-            array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), 'foo'),
-        );
+        return [
+            [['subject' => []], null],
+            [['subject' => ['foo', 'bar']], 'foo'],
+            [['subject' => ['foo', 'bar'], 'as' => 'variable'], 'foo'],
+            [['subject' => new \ArrayIterator(['foo', 'bar'])], 'foo'],
+            [['subject' => new \ArrayIterator(['foo', 'bar']), 'as' => 'variable'], 'foo'],
+        ];
     }
 
     /**
@@ -55,8 +56,8 @@ class ShiftViewHelperTest extends AbstractViewHelperTest
      */
     public function testThrowsErrorsOnInvalidSubjectType($subject)
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Unsupported input type; cannot convert to array!');
-        $this->executeViewHelper(array('subject' => $subject));
+        $this->setExpectedException(Exception::class, 'Unsupported input type; cannot convert to array!');
+        $this->executeViewHelper(['subject' => $subject]);
     }
 
     /**
@@ -64,11 +65,11 @@ class ShiftViewHelperTest extends AbstractViewHelperTest
      */
     public function getErrorTestValues()
     {
-        return array(
-            array(0),
-            array(null),
-            array(new \DateTime()),
-            array(new \stdClass()),
-        );
+        return [
+            [0],
+            [null],
+            [new \DateTime()],
+            [new \stdClass()],
+        ];
     }
 }

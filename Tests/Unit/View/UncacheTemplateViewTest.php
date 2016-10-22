@@ -23,8 +23,8 @@ class UncacheTemplateViewTest extends UnitTestCase
      */
     public function callUserFunctionReturnsEarlyIfPartialEmpty()
     {
-        $mock = $this->getMock($this->getClassName(), array('prepareContextsForUncachedRendering'));
-        $configuration = array('partial' => '');
+        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['prepareContextsForUncachedRendering'])->getMock();
+        $configuration = ['partial' => ''];
         $mock->expects($this->never())->method('prepareContextsForUncachedRendering');
         $mock->callUserFunction('', $configuration, '');
     }
@@ -34,9 +34,9 @@ class UncacheTemplateViewTest extends UnitTestCase
      */
     public function callUserFunctionReturnsCallsExpectedMethodSequence()
     {
-        $mock = $this->getMock($this->getClassName(), array('prepareContextsForUncachedRendering', 'renderPartialUncached'));
+        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['prepareContextsForUncachedRendering', 'renderPartialUncached'])->getMock();
         $context = new ControllerContext();
-        $configuration = array('partial' => 'dummy', 'section' => 'dummy', 'controllerContext' => $context);
+        $configuration = ['partial' => 'dummy', 'section' => 'dummy', 'controllerContext' => $context];
         $mock->expects($this->once())->method('prepareContextsForUncachedRendering');
         $mock->expects($this->once())->method('renderPartialUncached');
         $mock->callUserFunction('', $configuration, '');
@@ -48,9 +48,9 @@ class UncacheTemplateViewTest extends UnitTestCase
     public function prepareContextsForUncachedRenderingCallsExpectedMethodSequence()
     {
         $controllerContext = new ControllerContext();
-        $renderingContext = $this->getMock('TYPO3\CMS\Fluid\Core\Rendering\RenderingContext', array('setControllerContext'));
+        $renderingContext = $this->getMockBuilder(RenderingContext::class)->setMethods(['setControllerContext'])->getMock();
         $renderingContext->expects($this->once())->method('setControllerContext')->with($controllerContext);
-        $mock = $this->getMock($this->getClassName(), array('setRenderingContext'));
+        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['setRenderingContext'])->getMock();
         $mock->expects($this->once())->method('setRenderingContext')->with($renderingContext);
         $this->callInaccessibleMethod($mock, 'prepareContextsForUncachedRendering', $renderingContext, $controllerContext);
     }
@@ -61,7 +61,7 @@ class UncacheTemplateViewTest extends UnitTestCase
     public function renderPartialUncachedDelegatesToRenderPartial()
     {
         $renderingContext = new RenderingContext();
-        $mock = $this->getMock($this->getClassName(), array('renderPartial'));
+        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['renderPartial'])->getMock();
         $mock->expects($this->once())->method('renderPartial')->will($this->returnValue('test'));
         $result = $this->callInaccessibleMethod($mock, 'renderPartialUncached', $renderingContext, 'dummy');
         $this->assertEquals('test', $result);

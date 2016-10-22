@@ -8,7 +8,9 @@ namespace FluidTYPO3\Vhs\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Class SlideViewHelperTrait
@@ -79,12 +81,12 @@ trait SlideViewHelperTrait
     }
 
     /**
-     * @return \FluidTYPO3\Vhs\Service\PageService
+     * @return PageService
      */
     protected function getPageService()
     {
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        return $objectManager->get('FluidTYPO3\\Vhs\\Service\\PageService');
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        return $objectManager->get(PageService::class);
     }
 
     /**

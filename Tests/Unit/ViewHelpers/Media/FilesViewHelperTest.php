@@ -35,10 +35,10 @@ class FilesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmtpyArrayWhenArgumentsAreNotSet()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\FilesViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
 
-        $this->assertEquals(array(), $viewHelper->render());
+        $this->assertEquals([], $viewHelper->render());
     }
 
     /**
@@ -46,10 +46,10 @@ class FilesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmptyArrayWhenPathIsInaccessible()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\FilesViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist'));
 
-        $this->assertEquals(array(), $viewHelper->render());
+        $this->assertEquals([], $viewHelper->render());
     }
 
     /**
@@ -57,7 +57,7 @@ class FilesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsPopulatedArrayOfAllFoundFiles()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\FilesViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
         $actualFiles = glob($this->fixturesPath . '/*');
         $actualFilesCount = count($actualFiles);
@@ -70,9 +70,9 @@ class FilesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsPopulatedArrayOfFilteredFiles()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\FilesViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
-        $viewHelper->setArguments(array('extensionList' => 'txt'));
+        $viewHelper->setArguments(['extensionList' => 'txt']);
         $actualFiles = glob($this->fixturesPath . '/*.txt');
         $actualFilesCount = count($actualFiles);
 

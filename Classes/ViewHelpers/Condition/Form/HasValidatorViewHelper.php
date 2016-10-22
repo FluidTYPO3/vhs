@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Form;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
@@ -31,7 +32,7 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
     /**
      * @var string
      */
-    const ALTERNATE_FORM_VIEWHELPER_CLASSNAME = 'TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper';
+    const ALTERNATE_FORM_VIEWHELPER_CLASSNAME = FormViewHelper::class;
 
     /**
      * @var ReflectionService
@@ -84,8 +85,8 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         if (self::$staticReflectionService === null) {
-            $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-            self::$staticReflectionService = $objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService');
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            self::$staticReflectionService = $objectManager->get(ReflectionService::class);
         }
 
         $property = $arguments['property'];

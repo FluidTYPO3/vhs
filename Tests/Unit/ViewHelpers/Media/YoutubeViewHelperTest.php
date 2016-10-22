@@ -19,7 +19,7 @@ class YoutubeViewHelperTest extends AbstractViewHelperTest
     /**
      * @var array
      */
-    protected $arguments = array(
+    protected $arguments = [
         'videoId' => '',
         'width' => 640,
         'height' => 385,
@@ -35,7 +35,7 @@ class YoutubeViewHelperTest extends AbstractViewHelperTest
         'end' => '',
         'lightTheme' => false,
         'videoQuality' => ''
-    );
+    ];
 
     /**
      * @test

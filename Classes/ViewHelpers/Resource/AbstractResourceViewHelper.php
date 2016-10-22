@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -85,7 +86,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         $files = [];
-        $resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         if (false === empty($categories)) {
             $sqlCategories = implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'));

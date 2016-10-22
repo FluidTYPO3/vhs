@@ -52,6 +52,6 @@ class CallViewHelper extends AbstractViewHelper
                 1356834755
             );
         }
-        return call_user_func_array(array($object, $method), $arguments);
+        return call_user_func_array([$object, $method], $arguments);
     }
 }

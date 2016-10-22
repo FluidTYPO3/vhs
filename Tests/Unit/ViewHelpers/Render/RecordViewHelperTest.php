@@ -21,8 +21,8 @@ class RecordViewHelperTest extends AbstractViewHelperTest
      */
     public function requiresUid()
     {
-        $record = array('hasnouid' => 1);
-        $mock = $this->getMock($this->getViewHelperClassName(), array('renderRecord'));
+        $record = ['hasnouid' => 1];
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderRecord'])->getMock();
         $mock->expects($this->never())->method('renderRecord');
         $result = $mock->render($record);
         $this->assertNull($result);
@@ -33,8 +33,8 @@ class RecordViewHelperTest extends AbstractViewHelperTest
      */
     public function delegatesToRenderRecord()
     {
-        $record = array('uid' => 1);
-        $mock = $this->getMock($this->getViewHelperClassName(), array('renderRecord'));
+        $record = ['uid' => 1];
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderRecord'])->getMock();
         $mock->expects($this->once())->method('renderRecord')->with($record)->willReturn('rendered');
         $result = $mock->render($record);
         $this->assertEquals('rendered', $result);

@@ -16,6 +16,6 @@ class LViewHelperTest extends AbstractViewHelperTest
 
     public function testRender()
     {
-        $this->assertEmpty($this->executeViewHelper(array('extensionName' => 'Vhs')));
+        $this->assertEmpty($this->executeViewHelper(['extensionName' => 'Vhs']));
     }
 }

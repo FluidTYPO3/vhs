@@ -23,7 +23,7 @@ class PlaintextViewHelperTest extends AbstractViewHelperTest
     {
         $input = "	This string\n	is plain-text formatted";
         $expected = "This string\nis plain-text formatted";
-        $result = $this->executeViewHelper(array('content' => $input));
+        $result = $this->executeViewHelper(['content' => $input]);
         $result2 = $this->executeViewHelperUsingTagContent('Text', $input);
         $this->assertEquals($expected, $result);
         $this->assertEquals($result, $result2);

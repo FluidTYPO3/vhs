@@ -84,7 +84,7 @@ class AssetService implements SingletonInterface
      */
     public function usePageCache($caller, $shouldUsePageCache)
     {
-        $this->buildAll(array(), $caller);
+        $this->buildAll([], $caller);
         return $shouldUsePageCache;
     }
 
@@ -283,7 +283,7 @@ class AssetService implements SingletonInterface
                             if (true === $rewrite) {
                                 array_push(
                                     $chunks,
-                                    $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type)
+                                    $this->writeCachedMergedFileAndReturnTag([$name => $asset], $type)
                                 );
                             } else {
                                 $integrity = $this->getFileIntegrity($path);

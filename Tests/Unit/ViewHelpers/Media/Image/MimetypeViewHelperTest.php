@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Media\Image;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class MimetypeViewHelperTest
@@ -35,7 +36,7 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsZeroForEmptyArguments()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
 
         $this->assertEquals('', $viewHelper->render());
@@ -46,7 +47,7 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsFileMimetypeAsString()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
 
         $this->assertEquals('image/jpeg', $viewHelper->render());
@@ -57,10 +58,10 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionWhenFileNotFound()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
 
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
+        $this->setExpectedException(Exception::class);
         $viewHelper->render();
     }
 
@@ -69,10 +70,10 @@ class MimetypeViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\Image\MimetypeViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
 
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
+        $this->setExpectedException(Exception::class);
         $viewHelper->render();
     }
 }

@@ -7,6 +7,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class MaximumViewHelperTest
@@ -19,7 +20,7 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
      */
     public function testSingleArgument()
     {
-        $this->executeSingleArgumentTest(array(1, 3), 3);
+        $this->executeSingleArgumentTest([1, 3], 3);
     }
 
     /**
@@ -35,7 +36,7 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
      */
     public function testDualArgumentBothIterators()
     {
-        $this->executeDualArgumentTest(array(4, 8), array(8, 8), array(8, 8));
+        $this->executeDualArgumentTest([4, 8], [8, 8], [8, 8]);
     }
 
     /**
@@ -43,8 +44,8 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeMissingArgumentTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
-        $result = $this->executeViewHelper(array());
+        $this->setExpectedException(Exception::class, 'Required argument "b" was not supplied');
+        $result = $this->executeViewHelper([]);
     }
 
     /**
@@ -52,7 +53,7 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidArgumentTypeTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
-        $this->executeViewHelper(array('b' => 1, 'fail' => true));
+        $this->setExpectedException(Exception::class, 'Required argument "a" was not supplied');
+        $this->executeViewHelper(['b' => 1, 'fail' => true]);
     }
 }

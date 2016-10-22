@@ -19,7 +19,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     /**
      * @var array
      */
-    protected $arguments = array(
+    protected $arguments = [
         'caseSensitive' => true,
         'characters' => null,
         'strings' => null,
@@ -30,7 +30,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
         'digits' => false,
         'letters' => false,
         'nonAscii' => false
-    );
+    ];
 
     /**
      * @test
@@ -161,7 +161,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     public function removesCharactersAsArray()
     {
         $arguments = $this->arguments;
-        $arguments['characters'] = array('a', 'b', 'c');
+        $arguments['characters'] = ['a', 'b', 'c'];
         $result = $this->executeViewHelperUsingTagContent('Text', 'abcdef', $arguments);
         $this->assertSame('def', $result);
     }
@@ -195,7 +195,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     public function removesStringsAsArray()
     {
         $arguments = $this->arguments;
-        $arguments['strings'] = array('abc', 'def', 'ghi');
+        $arguments['strings'] = ['abc', 'def', 'ghi'];
         $result = $this->executeViewHelperUsingTagContent('Text', 'abcdefghijkl', $arguments);
         $this->assertSame('jkl', $result);
     }

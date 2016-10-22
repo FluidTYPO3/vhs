@@ -21,9 +21,9 @@ class InfoViewHelperTest extends AbstractViewHelperTest
     {
         $expectedFieldValue = 42;
 
-        $pageRepository = $this->getMock(PageRepository::class, array('dummy'));
-        $GLOBALS['TSFE'] = (object) array('sys_page' => $pageRepository);
-        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array('exec_SELECTgetSingleRow'), array(), '', false);
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->setMethods(['dummy'])->getMock();
+        $GLOBALS['TSFE'] = (object) ['sys_page' => $pageRepository];
+        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)->setMethods(['exec_SELECTgetSingleRow'])->disableOriginalConstructor()->getMock();
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->willReturn(['tx_foo_bar' => $expectedFieldValue]);
         $this->assertEquals($expectedFieldValue, $this->executeViewHelper(['pageUid' => 12, 'field' => 'tx_foo_bar']));
     }
@@ -32,9 +32,9 @@ class InfoViewHelperTest extends AbstractViewHelperTest
     {
         $expectedRow = ['uid' => 42, 'tx_foo_bar' => 'baz'];
 
-        $pageRepository = $this->getMock(PageRepository::class, array('dummy'));
-        $GLOBALS['TSFE'] = (object) array('sys_page' => $pageRepository);
-        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array('exec_SELECTgetSingleRow'), array(), '', false);
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->setMethods(['dummy'])->getMock();
+        $GLOBALS['TSFE'] = (object) ['sys_page' => $pageRepository];
+        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)->setMethods(['exec_SELECTgetSingleRow'])->disableOriginalConstructor()->getMock();
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->willReturn($expectedRow);
         $this->assertEquals($expectedRow, $this->executeViewHelper(['pageUid' => 42]));
     }

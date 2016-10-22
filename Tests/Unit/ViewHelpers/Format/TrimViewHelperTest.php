@@ -21,10 +21,10 @@ class TrimViewHelperTest extends AbstractViewHelperTest
      */
     public function canTrimSpecificCharacters()
     {
-        $arguments = array(
+        $arguments = [
             'content' => 'ztrimmedy',
             'characters' => 'zy'
-        );
+        ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('trimmed', $test);
     }
@@ -34,9 +34,9 @@ class TrimViewHelperTest extends AbstractViewHelperTest
      */
     public function canTrimWithArgument()
     {
-        $arguments = array(
+        $arguments = [
             'content' => ' trimmed '
-        );
+        ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('trimmed', $test);
     }
@@ -46,9 +46,9 @@ class TrimViewHelperTest extends AbstractViewHelperTest
      */
     public function canTrimChildContent()
     {
-        $arguments = array();
+        $arguments = [];
         $node = $this->createNode('Text', ' trimmed ');
-        $test = $this->executeViewHelper($arguments, array(), $node);
+        $test = $this->executeViewHelper($arguments, [], $node);
         $this->assertSame('trimmed', $test);
     }
 }
