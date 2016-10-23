@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
@@ -15,6 +16,8 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 /**
  * If (condition) ViewHelper supporting a stack of conditions
  * instead of a single condition.
+ *
+ * @deprecated
  */
 class IfViewHelper extends AbstractConditionViewHelper
 {
@@ -73,6 +76,7 @@ class IfViewHelper extends AbstractConditionViewHelper
      */
     public function initializeArguments()
     {
+        GeneralUtility::deprecationLog(static::class . ' is deprecated, will be removed when VHS supports TYPO3v8 LTS as minimum');
         self::registerArgument('stack', 'array', 'The stack to be evaluated', true);
     }
 
