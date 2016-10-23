@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -30,7 +31,6 @@ class FirstViewHelper extends AbstractViewHelper
     /**
      * Render method
      *
-     * @throws Exception
      * @return mixed|NULL
      */
     public function render()
@@ -40,7 +40,7 @@ class FirstViewHelper extends AbstractViewHelper
             $haystack = $this->renderChildren();
         }
         if (false === is_array($haystack) && false === $haystack instanceof \Iterator && null !== $haystack) {
-            throw new Exception(
+            ErrorUtility::throwViewHelperException(
                 'Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
                 gettype($haystack),
                 1351958398

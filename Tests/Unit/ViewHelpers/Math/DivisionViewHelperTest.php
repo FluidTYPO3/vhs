@@ -7,7 +7,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class DivisionViewHelperTest
@@ -36,7 +35,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeMissingArgumentTest()
     {
-        $this->setExpectedException(Exception::class, 'Required argument "b" was not supplied');
+        $this->expectViewHelperException('Required argument "b" was not supplied');
         $this->executeViewHelper([]);
     }
 
@@ -45,7 +44,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidFirstArgumentTypeTest()
     {
-        $this->setExpectedException(Exception::class, 'Required argument "a" was not supplied');
+        $this->expectViewHelperException('Required argument "a" was not supplied');
         $this->executeViewHelper(['b' => 1, 'fail' => true]);
     }
 
@@ -54,7 +53,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidSecondArgumentTypeTest()
     {
-        $this->setExpectedException(Exception::class, 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator');
+        $this->expectViewHelperException('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator');
         $this->executeViewHelper(['a' => 1, 'b' => [1], 'fail' => true]);
     }
 }

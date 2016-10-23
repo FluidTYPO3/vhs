@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -99,7 +100,7 @@ trait ArrayConsumingViewHelperTrait
         } elseif (true === is_array($candidate)) {
             return $candidate;
         }
-        throw new Exception('Unsupported input type; cannot convert to array!');
+        ErrorUtility::throwViewHelperException('Unsupported input type; cannot convert to array!');
     }
 
     /**

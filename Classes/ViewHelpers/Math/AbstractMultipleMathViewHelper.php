@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -44,12 +45,11 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
      * @param mixed $a
      * @param mixed $b
      * @return mixed
-     * @throws Exception
      */
     protected function calculate($a, $b = null)
     {
         if ($b === null) {
-            throw new Exception('Required argument "b" was not supplied', 1237823699);
+            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
         $aIsIterable = $this->assertIsArrayOrIterator($a);
         $bIsIterable = $this->assertIsArrayOrIterator($b);
@@ -62,7 +62,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
             return $a;
         } elseif (true === $bIsIterable) {
             // condition matched if $a is not iterable but $b is.
-            throw new Exception(
+            ErrorUtility::throwViewHelperException(
                 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, ' .
                 'or only $a, must be array/Iterator',
                 1351890876

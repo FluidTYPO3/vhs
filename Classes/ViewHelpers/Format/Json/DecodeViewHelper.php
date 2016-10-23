@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -19,7 +20,6 @@ class DecodeViewHelper extends AbstractViewHelper
 
     /**
      * @param string $json
-     * @throws Exception
      * @return mixed
      */
     public function render($json = null)
@@ -34,7 +34,7 @@ class DecodeViewHelper extends AbstractViewHelper
         $value = json_decode($json, true);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new Exception('The provided argument is invalid JSON.', 1358440054);
+            ErrorUtility::throwViewHelperException('The provided argument is invalid JSON.', 1358440054);
         }
 
         return $value;

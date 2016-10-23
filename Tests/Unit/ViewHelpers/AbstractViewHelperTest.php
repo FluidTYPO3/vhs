@@ -234,4 +234,17 @@ abstract class AbstractViewHelperTest extends UnitTestCase
         $viewHelperClassName = $this->getViewHelperClassName();
         return $viewHelperClassName::renderStatic($arguments, $childClosure, $this->renderingContext);
     }
+
+    /**
+     * @param null|string $message
+     * @param null|integer $code
+     */
+    protected function expectViewHelperException($message = null, $code = null)
+    {
+        if (class_exists(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class)) {
+            $this->setExpectedException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class, $message, $code);
+        } else {
+            $this->setExpectedException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class, $message, $code);
+        }
+    }
 }

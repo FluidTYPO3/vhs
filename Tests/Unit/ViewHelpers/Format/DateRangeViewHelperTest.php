@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class DateRangeViewHelperTest
@@ -127,7 +126,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         unset($arguments['end'], $arguments['intervalFormat']);
-        $this->setExpectedException(Exception::class, 'Either end or intervalFormat has to be provided.');
+        $this->expectViewHelperException('Either end or intervalFormat has to be provided.');
         $this->executeViewHelper($arguments);
     }
 
@@ -139,7 +138,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
         $arguments = $this->arguments;
         $arguments['intervalFormat'] = 'what is this then';
         unset($arguments['end']);
-        $this->setExpectedException(Exception::class, '"what is this then" could not be parsed by \\DateInterval constructor');
+        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateInterval constructor');
         $this->executeViewHelper($arguments);
     }
 
@@ -150,7 +149,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['start'] = 'what is this then';
-        $this->setExpectedException(Exception::class, '"what is this then" could not be parsed by \\DateTime constructor');
+        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateTime constructor');
         $this->executeViewHelper($arguments);
     }
 
@@ -161,7 +160,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['end'] = 'what is this then';
-        $this->setExpectedException(Exception::class, '"what is this then" could not be parsed by \\DateTime constructor');
+        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateTime constructor');
         $this->executeViewHelper($arguments);
     }
 }

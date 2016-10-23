@@ -7,7 +7,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class AverageViewHelperTest
@@ -60,7 +59,7 @@ class AverageViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeMissingArgumentTest()
     {
-        $this->setExpectedException(Exception::class, 'Required argument "b" was not supplied');
+        $this->expectViewHelperException('Required argument "b" was not supplied');
         $this->executeViewHelper([]);
     }
 }

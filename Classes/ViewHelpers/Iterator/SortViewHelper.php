@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\BasicViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
@@ -207,7 +208,6 @@ class SortViewHelper extends AbstractViewHelper
      * Parses the supplied flags into the proper value for the sorting
      * function.
      * @return int
-     * @throws Exception
      */
     protected function getSortFlags()
     {
@@ -215,7 +215,7 @@ class SortViewHelper extends AbstractViewHelper
         $flags = 0;
         foreach ($constants as $constant) {
             if (false === in_array($constant, $this->allowedSortFlags)) {
-                throw new Exception(
+                ErrorUtility::throwViewHelperException(
                     'The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed ' .
                     'constants are: ' . implode(', ', $this->allowedSortFlags) . '.',
                     1404220538

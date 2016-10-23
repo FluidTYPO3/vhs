@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Media\Image;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class WidthViewHelperTest
@@ -61,7 +60,7 @@ class WidthViewHelperTest extends AbstractViewHelperTest
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
 
-        $this->setExpectedException(Exception::class);
+        $this->expectViewHelperException();
         $viewHelper->render();
     }
 
@@ -73,7 +72,7 @@ class WidthViewHelperTest extends AbstractViewHelperTest
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
 
-        $this->setExpectedException(Exception::class);
+        $this->expectViewHelperException();
         $viewHelper->render();
     }
 }

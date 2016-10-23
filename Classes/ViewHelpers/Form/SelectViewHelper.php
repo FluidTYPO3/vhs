@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Form;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
@@ -187,7 +188,6 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
     /**
      * Render the option tags.
      *
-     * @throws Exception
      * @return array
      */
     protected function getOptions()
@@ -205,7 +205,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
                         if (true === method_exists($key, '__toString')) {
                             $key = (string) $key;
                         } else {
-                            throw new Exception(
+                            ErrorUtility::throwViewHelperException(
                                 'Identifying value for object of class "' . get_class($value) . '" was an object.',
                                 1247827428
                             );
@@ -216,7 +216,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
                 } elseif (true === method_exists($value, '__toString')) {
                     $key = (string) $value;
                 } else {
-                    throw new Exception(
+                    ErrorUtility::throwViewHelperException(
                         'No identifying value for object of class "' . get_class($value) . '" found.',
                         1247826696
                     );
@@ -228,7 +228,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
                         if (true === method_exists($value, '__toString')) {
                             $value = (string) $value;
                         } else {
-                            throw new Exception(
+                            ErrorUtility::throwViewHelperException(
                                 'Label value for object of class "' . get_class($value) . '" was an object without ' .
                                 'a __toString() method.',
                                 1247827553
