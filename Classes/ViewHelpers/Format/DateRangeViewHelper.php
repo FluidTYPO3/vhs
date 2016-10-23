@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -141,14 +142,14 @@ class DateRangeViewHelper extends AbstractViewHelper
         }
 
         if (null === $intervalFormat && null === $endDateTime) {
-            throw new Exception('Either end or intervalFormat has to be provided.', 1369573110);
+            ErrorUtility::throwViewHelperException('Either end or intervalFormat has to be provided.', 1369573110);
         }
 
         if (true === isset($intervalFormat) && null !== $intervalFormat) {
             try {
                 $interval = new \DateInterval($intervalFormat);
             } catch (\Exception $exception) {
-                throw new Exception(
+                ErrorUtility::throwViewHelperException(
                     '"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.',
                     1369573111
                 );
@@ -202,7 +203,6 @@ class DateRangeViewHelper extends AbstractViewHelper
     /**
      * @param mixed $date
      * @return \DateTime
-     * @throws Exception
      */
     protected function enforceDateTime($date)
     {
@@ -215,7 +215,7 @@ class DateRangeViewHelper extends AbstractViewHelper
                 }
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             } catch (\Exception $exception) {
-                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
+                ErrorUtility::throwViewHelperException('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
             }
         }
         return $date;

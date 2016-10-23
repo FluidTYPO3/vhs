@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class DecodeViewHelperTest
@@ -59,7 +58,7 @@ class DecodeViewHelperTest extends AbstractViewHelperTest
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($invalidJson));
 
-        $this->setExpectedException(Exception::class);
+        $this->expectViewHelperException();
         $this->assertEquals('null', $viewHelper->render());
     }
 }

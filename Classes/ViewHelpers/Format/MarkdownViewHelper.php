@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -87,7 +88,7 @@ class MarkdownViewHelper extends AbstractViewHelper
 
         $this->markdownExecutablePath = CommandUtility::getCommand('markdown');
         if (false === is_executable($this->markdownExecutablePath)) {
-            throw new Exception(
+            ErrorUtility::throwViewHelperException(
                 'Use of Markdown requires the "markdown" shell utility to be installed and accessible; this binary ' .
                 'could not be found in any of your configured paths available to this script',
                 1350511561
@@ -106,7 +107,6 @@ class MarkdownViewHelper extends AbstractViewHelper
 
     /**
      * @param string $text
-     * @throws Exception
      * @return string
      */
     public function transform($text)
@@ -135,7 +135,7 @@ class MarkdownViewHelper extends AbstractViewHelper
         $exitCode = proc_close($process);
 
         if ('' !== trim($errors)) {
-            throw new Exception(
+            ErrorUtility::throwViewHelperException(
                 'There was an error while executing ' . $this->markdownExecutablePath . '. The return code was ' .
                 $exitCode . ' and the message reads: ' . $errors,
                 1350514144

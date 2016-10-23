@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -57,7 +58,6 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @throws Exception
      * @return mixed
      */
     protected function getInlineArgument()
@@ -67,7 +67,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
             $a = $this->arguments['a'];
         }
         if (null === $a && true === (boolean) $this->arguments['fail']) {
-            throw new Exception('Required argument "a" was not supplied', 1237823699);
+            ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
         return $a;
     }
@@ -77,8 +77,6 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
      *
      * @param mixed $a
      * @param mixed|null $b
-     *
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      */
     protected function calculate($a, $b = null)
     {

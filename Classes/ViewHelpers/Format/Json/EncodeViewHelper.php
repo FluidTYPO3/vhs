@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -83,7 +84,6 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param boolean $preventRecursion
      * @param string $recursionMarker
      * @param string $dateTimeFormat
-     * @throws Exception
      * @return mixed
      */
     protected function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat)
@@ -105,7 +105,7 @@ class EncodeViewHelper extends AbstractViewHelper
         };
         $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG);
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new Exception('The provided argument cannot be converted into JSON.', 1358440181);
+            ErrorUtility::throwViewHelperException('The provided argument cannot be converted into JSON.', 1358440181);
         }
         return $json;
     }

@@ -9,8 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class ReverseViewHelperTest
@@ -61,7 +59,7 @@ class ReverseViewHelperTest extends AbstractViewHelperTest
      */
     public function testThrowsErrorsOnInvalidSubjectType($subject)
     {
-        $this->setExpectedException(Exception::class, 'Unsupported input type; cannot convert to array!');
+        $this->expectViewHelperException('Unsupported input type; cannot convert to array!');
         $this->executeViewHelper(['subject' => $subject]);
     }
 
