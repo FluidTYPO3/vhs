@@ -28,7 +28,7 @@ class IsArrayViewHelper extends AbstractConditionViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('value', 'string', 'value to check', true);
+        $this->registerArgument('value', 'mixed', 'value to check', true);
     }
 
     /**
