@@ -9,10 +9,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Record Resource ViewHelpers
@@ -97,14 +97,13 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
     /**
      * @param array $record
      * @return array
-     * @throws Exception
      */
     public function getResources($record)
     {
         $field = $this->getField();
 
         if (false === isset($record[$field])) {
-            throw new Exception('The "field" argument was not found on the selected record.', 1384612728);
+            ErrorUtility::throwViewHelperException('The "field" argument was not found on the selected record.', 1384612728);
         }
 
         if (true === empty($record[$field])) {
@@ -116,7 +115,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     /**
      * @return string
-     * @throws Exception
      */
     public function getTable()
     {
@@ -126,7 +124,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         }
 
         if (true === empty($table) || false === is_string($table)) {
-            throw new Exception('The "table" argument must be specified and must be a string.', 1384611336);
+            ErrorUtility::throwViewHelperException('The "table" argument must be specified and must be a string.', 1384611336);
         }
 
         return $table;
@@ -134,7 +132,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     /**
      * @return string
-     * @throws Exception
      */
     public function getField()
     {
@@ -144,7 +141,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         }
 
         if (true === empty($field) || false === is_string($field)) {
-            throw new Exception('The "field" argument must be specified and must be a string.', 1384611355);
+            ErrorUtility::throwViewHelperException('The "field" argument must be specified and must be a string.', 1384611355);
         }
 
         return $field;
@@ -175,7 +172,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     /**
      * @return mixed
-     * @throws Exception
      */
     public function render()
     {
@@ -191,7 +187,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         }
 
         if (null === $record) {
-            throw new Exception('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
+            ErrorUtility::throwViewHelperException('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
         }
 
         // attempt to load resources. If any Exceptions happen, transform them to
@@ -204,7 +200,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             // thrown by the getResources() method in subclasses are not
             // extended from a shared base class like RuntimeException. Thus,
             // we are forced to "catch them all" - but we also output them.
-            throw new Exception($error->getMessage(), $error->getCode());
+            ErrorUtility::throwViewHelperException($error->getMessage(), $error->getCode());
         }
         return $this->renderChildrenWithVariableOrReturnInput($resources);
     }
