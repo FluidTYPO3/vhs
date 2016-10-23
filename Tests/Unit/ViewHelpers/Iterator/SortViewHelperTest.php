@@ -23,6 +23,6 @@ class SortViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = ['sortFlags' => 'FOOBAR'];
         $this->expectViewHelperException('The constant "FOOBAR" you\'re trying to use as a sortFlag is not allowed.');
-        $this->executeViewHelperUsingTagContent('Array', ['a', 'b', 'c'], $arguments);
+        $this->executeViewHelperUsingTagContent(['a', 'b', 'c'], $arguments);
     }
 }

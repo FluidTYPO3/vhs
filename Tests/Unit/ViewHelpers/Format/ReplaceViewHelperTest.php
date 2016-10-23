@@ -39,7 +39,7 @@ class ReplaceViewHelperTest extends AbstractViewHelperTest
             'substring' => 'foo',
             'replacement' => ''
         ];
-        $test = $this->executeViewHelperUsingTagContent('Text', 'foobar', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('foobar', $arguments);
         $this->assertSame('bar', $test);
     }
 }

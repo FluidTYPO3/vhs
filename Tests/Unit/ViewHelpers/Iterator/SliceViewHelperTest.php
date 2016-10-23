@@ -25,12 +25,12 @@ class SliceViewHelperTest extends AbstractViewHelperTest
     public function testRender(array $arguments, $expectedValue)
     {
         if (true === isset($arguments['as'])) {
-            $value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
+            $value = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('variable'), $arguments);
         } else {
             $value = $this->executeViewHelper($arguments);
             $haystack = $arguments['haystack'];
             unset($arguments['haystack']);
-            $value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', $arguments, ['v' => $haystack]);
+            $value2 = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('v'), $arguments, ['v' => $haystack]);
             $this->assertEquals($value, $value2);
         }
         $this->assertEquals($value, $expectedValue);

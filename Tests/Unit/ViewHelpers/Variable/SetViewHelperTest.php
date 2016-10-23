@@ -74,7 +74,7 @@ class SetViewHelperTest extends AbstractViewHelperTest
     public function canSetVariableWithValueFromTagContent()
     {
         $variables = new \ArrayObject(['test' => true]);
-        $this->executeViewHelperUsingTagContent('Boolean', false, ['name' => 'test'], $variables);
+        $this->executeViewHelperUsingTagContent(false, ['name' => 'test'], $variables);
         $this->assertFalse($variables['test']);
     }
 }

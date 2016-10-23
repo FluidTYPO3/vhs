@@ -25,7 +25,7 @@ class SanitizeStringViewHelperTest extends AbstractViewHelperTest
     public function sanitizesString($input, $expectedOutput)
     {
         $result1 = $this->executeViewHelper(['string' => $input]);
-        $result2 = $this->executeViewHelperUsingTagContent('Text', $input);
+        $result2 = $this->executeViewHelperUsingTagContent($input);
         $this->assertEquals($expectedOutput, $result1);
         $this->assertEquals($result1, $result2);
     }

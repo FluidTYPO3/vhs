@@ -27,7 +27,7 @@ class CaseViewHelperTest extends AbstractViewHelperTest
     public function convertsToExpectedFormat($input, $case, $expectedOutput)
     {
         $result1 = $this->executeViewHelper(['string' => $input, 'case' => $case]);
-        $result2 = $this->executeViewHelperUsingTagContent('Text', $input, ['case' => $case]);
+        $result2 = $this->executeViewHelperUsingTagContent($input, ['case' => $case]);
         $this->assertEquals($expectedOutput, $result1);
         $this->assertEquals($expectedOutput, $result2);
     }

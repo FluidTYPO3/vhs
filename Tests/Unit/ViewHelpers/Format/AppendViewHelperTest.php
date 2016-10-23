@@ -37,7 +37,7 @@ class AppendViewHelperTest extends AbstractViewHelperTest
         $arguments = [
             'add' => 'after'
         ];
-        $test = $this->executeViewHelperUsingTagContent('Text', 'before', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('before', $arguments);
         $this->assertStringEndsWith($arguments['add'], $test);
     }
 }

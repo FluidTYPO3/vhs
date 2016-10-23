@@ -23,7 +23,7 @@ class TagViewHelperTest extends AbstractViewHelperTest
      */
     public function renderTag(array $arguments, $content, $expected)
     {
-        $result = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
+        $result = $this->executeViewHelperUsingTagContent($content, $arguments);
         $this->assertEquals($expected, $result);
     }
 

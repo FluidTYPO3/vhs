@@ -45,6 +45,6 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTest
      */
     public function canGetPathUsingTagContent()
     {
-        $this->assertNotEmpty($this->executeViewHelperUsingTagContent('Text', 'config.tx_extbase.features'));
+        $this->assertNotEmpty($this->executeViewHelperUsingTagContent('config.tx_extbase.features'));
     }
 }

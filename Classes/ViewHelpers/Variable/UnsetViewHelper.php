@@ -8,10 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
 
 /**
  * ### Variable: Unset
@@ -37,31 +34,19 @@ use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
  */
 class UnsetViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
 
     /**
+     * Unsets variable $name if it exists in the container
+     *
+     * @param string $name
      * @return void
      */
-    public function initializeArguments()
+    public function render($name)
     {
-        $this->registerArgument('name', 'string', 'Name of variable in variable container', true);
-    }
-
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return void
-     */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $name = $arguments['name'];
-        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
-        if ($variableProvider->exists($name)) {
-            $variableProvider->remove($name);
+        if (property_exists($this, 'variableProvider')) {
+            unset($this->variableProvider[$name]);
+        } elseif (true === $this->templateVariableContainer->exists($name)) {
+            $this->templateVariableContainer->remove($name);
         }
     }
 }

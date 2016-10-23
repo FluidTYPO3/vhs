@@ -39,7 +39,7 @@ class FalViewHelperTest extends AbstractViewHelperTest
             )
             ->will($this->returnValue(['foo']));
         $viewHelper = $this->createInstance();
-        $viewHelperNode = new ViewHelperNode($viewHelper, []);
+        $viewHelperNode = $this->createViewHelperNode($viewHelper, []);
         $GLOBALS['BE_USER']->workspaceRec['uid'] = 1234;
         $result = $this->executeViewHelper(['table' => 'pages', 'field' => 'media'], [], $viewHelperNode);
     }
@@ -66,7 +66,7 @@ class FalViewHelperTest extends AbstractViewHelperTest
             )
             ->will($this->returnValue(['foo']));
         $viewHelper = $this->createInstance();
-        $viewHelperNode = new ViewHelperNode($viewHelper, []);
+        $viewHelperNode = $this->createViewHelperNode($viewHelper, []);
         $result = $this->executeViewHelper(['table' => 'pages', 'field' => 'media'], [], $viewHelperNode);
     }
 }

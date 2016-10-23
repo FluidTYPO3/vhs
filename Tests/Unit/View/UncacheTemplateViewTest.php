@@ -9,7 +9,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\View;
  */
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
@@ -35,6 +37,7 @@ class UncacheTemplateViewTest extends UnitTestCase
     public function callUserFunctionReturnsCallsExpectedMethodSequence()
     {
         $mock = $this->getMockBuilder($this->getClassName())->setMethods(['prepareContextsForUncachedRendering', 'renderPartialUncached'])->getMock();
+        $mock->injectObjectManager(GeneralUtility::makeInstance(ObjectManager::class));
         $context = new ControllerContext();
         $configuration = ['partial' => 'dummy', 'section' => 'dummy', 'controllerContext' => $context];
         $mock->expects($this->once())->method('prepareContextsForUncachedRendering');

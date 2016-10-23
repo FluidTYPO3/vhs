@@ -51,7 +51,7 @@ class LastViewHelperTest extends AbstractViewHelperTest
         $arguments = [
             'haystack' => null
         ];
-        $output = $this->executeViewHelperUsingTagContent('Array', $array, $arguments);
+        $output = $this->executeViewHelperUsingTagContent($array, $arguments);
         $this->assertEquals('c', $output);
     }
 

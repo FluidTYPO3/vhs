@@ -27,7 +27,7 @@ class KeysViewHelperTest extends AbstractViewHelperTest
             'subject' => $array,
         ];
         $output = $this->executeViewHelper($arguments);
-        $output2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', [], ['v' => $array]);
+        $output2 = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('v'), [], ['v' => $array]);
         $this->assertEquals($expected, $output);
         $this->assertEquals($output, $output2);
     }
@@ -39,7 +39,7 @@ class KeysViewHelperTest extends AbstractViewHelperTest
     {
         $array = ['a' => 'A', 'b' => 'B', 'c' => 'C'];
         $arguments = ['as' => 'v', 'subject' => $array];
-        $result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v.1', $arguments);
+        $result = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('v.1'), $arguments);
         $this->assertEquals('b', $result);
     }
 }

@@ -40,7 +40,7 @@ class TidyViewHelperTest extends AbstractViewHelperTest
         }
         $source = '<foo> <bar>
 			</bar>			</foo>';
-        $test = $this->executeViewHelperUsingTagContent('Text', $source, ['encoding' => 'utf8']);
+        $test = $this->executeViewHelperUsingTagContent($source, ['encoding' => 'utf8']);
         $this->assertNotSame($source, $test);
     }
 
