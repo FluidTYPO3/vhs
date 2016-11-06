@@ -235,7 +235,11 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function render()
     {
-        $this->finalize();
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling'])
+            || !$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling']
+        ) {
+            $this->finalize();
+        }
     }
 
     /**

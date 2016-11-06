@@ -1,0 +1,2 @@
+  # cat=basic/enable; type=boolean; label=Disable VHS Assets: Sites which use VHS but do not require asset handling (including in dependency extensions) can toggle this ON to disable all handling of assets done by VHS. Doing so will slightly improve the frontend rendering time, but of course prevents all but the normal TYPO3 asset handling.
+disableAssetHandling = 0
