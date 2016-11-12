@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -20,15 +22,41 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class UniqIdViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
-     * @param string $prefix An optional prefix for making sure it's unique across environments
-     * @param boolean $moreEntropy Add some pseudo random strings. Refer to uniqid()'s Reference.
-     * @return string
+     * @return void
      */
-    public function render($prefix = '', $moreEntropy = false)
+    public function initializeArguments()
     {
-        $uniqueId = uniqid($prefix, $moreEntropy);
+        $this->registerArgument(
+            'prefix',
+            'string',
+            'An optional prefix for making sure it\'s unique across environments',
+            false,
+            ''
+        );
+        $this->registerArgument(
+            'moreEntropy',
+            'boolean',
+            'Add some pseudo random strings. Refer to uniqid()\'s Reference.',
+            false,
+            false
+        );
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $uniqueId = uniqid($arguments['prefix'], $arguments['moreEntropy']);
         return $uniqueId;
     }
 }
