@@ -8,11 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
 
 /**
  * ### ExtConf ViewHelper
@@ -27,8 +27,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ExtensionConfigurationViewHelper extends AbstractViewHelper
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithRenderStatic;
 
     /**
      * @var array
@@ -74,7 +73,11 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
         if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
             return null;
         } elseif (!array_key_exists($extensionKey, static::$configurations)) {
-            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+            if (is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
+                $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+            } else {
+                $extConf = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey];
+            }
             static::$configurations[$extensionKey] = GeneralUtility::removeDotsFromTS($extConf);
         }
 
