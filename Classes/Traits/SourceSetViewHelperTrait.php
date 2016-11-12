@@ -31,7 +31,7 @@ trait SourceSetViewHelperTrait
         $srcsets = $this->getSourceSetWidths();
 
         if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::simulateFrontendEnvironment();
+            $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
         }
 
         $format = $this->arguments['format'];
@@ -61,7 +61,7 @@ trait SourceSetViewHelperTrait
         $tag->addAttribute('srcset', implode(',', $srcsetVariants));
 
         if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::resetFrontendEnvironment();
+            FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
         }
 
         return $imageSources;
