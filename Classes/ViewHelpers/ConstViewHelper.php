@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Const ViewHelper
@@ -17,16 +18,18 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ConstViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $name
-     * @return mixed
+     * @return void
      */
-    public function render($name)
+    public function initializeArguments()
     {
-        if ($name === null) {
-            $name = $this->renderChildren();
-        }
-        return constant($name);
+        $this->registerArgument('name', 'string', 'Name of constant to retrieve');
+    }
+
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
+    {
+        return constant($renderChildrenClosure());
     }
 }
