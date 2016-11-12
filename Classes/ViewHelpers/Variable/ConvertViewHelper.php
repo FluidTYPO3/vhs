@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -26,14 +26,14 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class ConvertViewHelper extends AbstractViewHelper
 {
 
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * Initialize arguments
      */
     public function initializeArguments()
     {
-        $this->registerArgument('value', 'mixed', 'Value to convert into a different type', false, null);
+        $this->registerArgument('value', 'mixed', 'Value to convert into a different type');
         $this->registerArgument(
             'type',
             'string',
@@ -61,11 +61,7 @@ class ConvertViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (true === isset($arguments['value'])) {
-            $value = $arguments['value'];
-        } else {
-            $value = $renderChildrenClosure();
-        }
+        $value = $renderChildrenClosure();
         $type = $arguments['type'];
         if (gettype($value) === $type) {
             return $value;

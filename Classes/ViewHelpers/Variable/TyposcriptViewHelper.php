@@ -10,7 +10,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Variable: TypoScript
@@ -44,11 +46,17 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TyposcriptViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @var ConfigurationManagerInterface
      */
-    protected $configurationManager;
+    protected static $configurationManager;
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
@@ -56,24 +64,33 @@ class TyposcriptViewHelper extends AbstractViewHelper
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
-        $this->configurationManager = $configurationManager;
+        static::$configurationManager = $configurationManager;
     }
 
     /**
-     * Render
-     *
-     * @param string $path
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('path', 'string', 'Path to TypoScript value or configuration array');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render($path = null)
-    {
-        if (null === $path) {
-            $path = $this->renderChildren();
-        }
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $path = $renderChildrenClosure();
         if (true === empty($path)) {
             return null;
         }
-        $all = $this->configurationManager->getConfiguration(
+        $all = static::$configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
         $segments = explode('.', $path);
