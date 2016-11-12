@@ -123,29 +123,25 @@ abstract class AbstractViewHelperTest extends UnitTestCase
             ObjectAccess::setProperty($container, 'variables', $variables, true);
         }
         ObjectAccess::setProperty($this->renderingContext, 'templateVariableContainer', $container, true);
-        if (null !== $extensionName || null !== $pluginName) {
-            /** @var ViewHelperVariableContainer $viewHelperContainer */
-            $viewHelperContainer = $this->objectManager->get(ViewHelperVariableContainer::class);
-            /** @var UriBuilder $uriBuilder */
-            $uriBuilder = $this->objectManager->get(UriBuilder::class);
-            /** @var Request $request */
-            $request = $this->objectManager->get(Request::class);
-            if (null !== $extensionName) {
-                $request->setControllerExtensionName($extensionName);
-            }
-            if (null !== $pluginName) {
-                $request->setPluginName($pluginName);
-            }
-            /** @var Response $response */
-            $response = $this->objectManager->get(Response::class);
-            /** @var ControllerContext $controllerContext */
-            $controllerContext = $this->objectManager->get(ControllerContext::class);
-            $controllerContext->setRequest($request);
-            $controllerContext->setResponse($response);
-            $controllerContext->setUriBuilder($uriBuilder);
-            ObjectAccess::setProperty($this->renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, true);
-            $this->renderingContext->setControllerContext($controllerContext);
-        }
+
+        /** @var ViewHelperVariableContainer $viewHelperContainer */
+        $viewHelperContainer = $this->objectManager->get(ViewHelperVariableContainer::class);
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        /** @var Request $request */
+        $request = $this->objectManager->get(Request::class);
+        $request->setControllerExtensionName($extensionName);
+        $request->setPluginName($pluginName);
+        /** @var Response $response */
+        $response = $this->objectManager->get(Response::class);
+        /** @var ControllerContext $controllerContext */
+        $controllerContext = $this->objectManager->get(ControllerContext::class);
+        $controllerContext->setRequest($request);
+        $controllerContext->setResponse($response);
+        $controllerContext->setUriBuilder($uriBuilder);
+        ObjectAccess::setProperty($this->renderingContext, 'viewHelperVariableContainer', $viewHelperContainer, true);
+        $this->renderingContext->setControllerContext($controllerContext);
+
         if (null !== $childNode) {
             $node->addChildNode($childNode);
             if ($instance instanceof ChildNodeAccessInterface) {
