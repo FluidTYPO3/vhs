@@ -8,8 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
 
 /**
  * ### Variable: Get
@@ -48,24 +51,45 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class GetViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
-     * @param string $name
-     * @param boolean $useRawKeys
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('name', 'string', 'Name of variable to retrieve');
+        $this->registerArgument(
+            'useRawKeys', 
+            'boolean', 
+            'If TRUE, the path is directly passed to ObjectAccess. If FALSE, a custom and compatible VHS method is used'
+        );
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render($name, $useRawKeys = false)
-    {
+    public static function renderStatic(
+        array $arguments, 
+        \Closure $renderChildrenClosure, 
+        RenderingContextInterface $renderingContext
+    ) {
+        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $name = $arguments['name'];
+        $useRawKeys = $arguments['useRawKeys'];
         if (false === strpos($name, '.')) {
-            if (true === $this->templateVariableContainer->exists($name)) {
-                return $this->templateVariableContainer->get($name);
+            if (true === $variableProvider->exists($name)) {
+                return $variableProvider->get($name);
             }
         } else {
             $segments = explode('.', $name);
             $lastSegment = array_shift($segments);
             $templateVariableRootName = $lastSegment;
-            if (true === $this->templateVariableContainer->exists($templateVariableRootName)) {
-                $templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
+            if (true === $variableProvider->exists($templateVariableRootName)) {
+                $templateVariableRoot = $variableProvider->get($templateVariableRootName);
                 if (true === $useRawKeys) {
                     return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
                 }
