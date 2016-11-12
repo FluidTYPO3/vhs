@@ -55,7 +55,7 @@ trait ArrayConsumingViewHelperTrait
      *
      * @return mixed
      */
-    protected function getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
+    protected static function getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
         array $arguments,
         $argumentName,
         \Closure $renderChildrenClosure
@@ -65,7 +65,7 @@ trait ArrayConsumingViewHelperTrait
         } else {
             $value = $arguments[$argumentName];
         }
-        return $this->arrayFromArrayOrTraversableOrCSV($value);
+        return static::arrayFromArrayOrTraversableOrCSVStatic($value);
     }
 
     /**

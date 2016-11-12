@@ -23,7 +23,8 @@
         }
     },
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=5.5.0",
+        "namelesscoder/typo3-cms-fluid-gap": "*"
     },
     "require-dev": {
         "fluidtypo3/development": "^3.0"
