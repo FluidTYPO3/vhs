@@ -13,9 +13,6 @@ matrix:
       env: COVERAGE="NO"
     - php: "7.1"
       env: COVERAGE="NO"
-  allow_failures:
-    - php: "hhvm"
-    - php: "7.1"
 
 cache:
   directories:
