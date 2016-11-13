@@ -87,7 +87,7 @@ trait ArrayConsumingViewHelperTrait
      * @return array
      * @throws Exception
      */
-    protected function arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys = true)
+    protected static function arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys = true)
     {
         if (true === $candidate instanceof \Traversable) {
             return iterator_to_array($candidate, $useKeys);
