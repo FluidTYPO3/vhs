@@ -36,38 +36,35 @@ class SessionViewHelper extends AbstractOnceViewHelper
     }
 
     /**
-     * @return void
-     */
-    protected function storeIdentifier()
-    {
-        $identifier = $this->getIdentifier();
-        $index = get_class($this);
-        if (false === is_array($_SESSION[$index])) {
-            $_SESSION[$index] = [];
-        }
-        $_SESSION[$index][$identifier] = time();
-    }
-
-    /**
+     * @param string $identifier
      * @return boolean
      */
-    protected function assertShouldSkip()
+    protected static function assertShouldSkip($identifier)
     {
-        $identifier = $this->getIdentifier();
-        $index = get_class($this);
-        return (boolean) (true === isset($_SESSION[$index][$identifier]));
+        return isset($_SESSION[static::class][$identifier]);
+    }
+
+    /**
+     * @param mixed $identifier
+     * @param array $arguments
+     * @return void
+     */
+    protected static function storeIdentifier($identifier, array $arguments)
+    {
+        if (!is_array($_SESSION[static::class])) {
+            $_SESSION[static::class] = [];
+        }
+        $_SESSION[static::class][$identifier] = time();
     }
 
     /**
      * @return void
      */
-    protected function removeIfExpired()
+    protected static function removeIfExpired($identifier, $ttl = self::DEFAULT_TTL)
     {
-        $id = $this->getIdentifier();
-        $index = get_class($this);
-        $existsInSession = (boolean) (true === isset($_SESSION[$index]) && true === isset($_SESSION[$index][$id]));
-        if (true === $existsInSession && time() - $this->arguments['ttl'] >= $_SESSION[$index][$id]) {
-            unset($_SESSION[$index][$id]);
+        $existsInSession = (boolean) (isset($_SESSION[static::class]) && isset($_SESSION[static::class][$identifier]));
+        if (true === $existsInSession && time() - $ttl >= $_SESSION[static::class][$identifier]) {
+            unset($_SESSION[static::class][$identifier]);
         }
     }
 }

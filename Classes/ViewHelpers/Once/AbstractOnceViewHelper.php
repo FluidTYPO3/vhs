@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -16,6 +17,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
 {
+
+    const DEFAULT_TTL = 86400;
 
     /**
      * Standard storage - static variable meaning uniqueness of $identifier
@@ -52,88 +55,63 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
             'integer',
             'Time-to-live for skip registration, number of seconds. After this expires the registration is unset',
             false,
-            86400
+            static::DEFAULT_TTL
         );
     }
 
     /**
-     * Standard render method. Implementers should override
-     * the assertShouldSkip() method and/or the getIdentifier()
-     * and storeIdentifier() methods as applies to each
-     * implementers method of storing identifiers.
-     *
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render()
+    protected static function getIdentifier(array $arguments, RenderingContextInterface $renderingContext)
     {
-        $this->removeIfExpired();
-        $evaluation = $this->assertShouldSkip();
-        if (false === $evaluation) {
-            $content = $this->renderThenChild();
+        return $arguments['identifier'];
+    }
+
+    /**
+     * @param array|null $arguments
+     * @return boolean
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        $identifier = static::getIdentifier($arguments);
+        $verdict = !static::assertShouldSkip($identifier);
+        if ($verdict) {
+            $GLOBALS['TSFE']->no_cache = 1;
+            static::removeIfExpired($identifier, $arguments['ttl']);
         } else {
-            $content = $this->renderElseChild();
+            static::storeIdentifier($identifier);
         }
-        $this->storeIdentifier();
-        return $content;
+        return $verdict;
     }
 
     /**
-     * @return string
+     * @param string $identifier
+     * @return boolean
      */
-    protected function getIdentifier()
+    protected static function assertShouldSkip($identifier)
     {
-        if (true === isset($this->arguments['identifier'])) {
-            return $this->arguments['identifier'];
-        }
-        return get_class($this);
+        return isset(static::$identifiers[$identifier]);
     }
 
     /**
-     * @retrun void
+     * @param string $identifier
+     * @param array $arguments
+     * @return void
      */
-    protected function storeIdentifier()
+    protected static function storeIdentifier($identifier, array $arguments)
     {
-        $identifier = $this->getIdentifier();
-        if (false === isset(self::$identifiers[$identifier])) {
-            self::$identifiers[$identifier] = time();
-        }
+        static::$identifiers[$identifier] = time();
     }
 
     /**
      * @return void
      */
-    protected function removeIfExpired()
+    protected static function removeIfExpired($identifier, $ttl = self::DEFAULT_TTL)
     {
-        $id = $this->getIdentifier();
-        if (isset(self::$identifiers[$id]) && self::$identifiers[$id] <= time() - $this->arguments['ttl']) {
-            unset(self::$identifiers[$id]);
+        if (isset(static::$identifiers[$identifier]) && static::$identifiers[$identifier] <= time() - $ttl) {
+            unset(static::$identifiers[$identifier]);
         }
-    }
-
-    /**
-     * @return boolean
-     */
-    protected function assertShouldSkip()
-    {
-        $identifier = $this->getIdentifier();
-        return (true === isset(self::$identifiers[$identifier]));
-    }
-
-    /**
-     * Override: forcibly disables page caching - a TRUE condition
-     * in this ViewHelper means page content would be depending on
-     * the current visitor's session/cookie/auth etc.
-     *
-     * Returns value of "then" attribute.
-     * If then attribute is not set, iterates through child nodes and renders ThenViewHelper.
-     * If then attribute is not set and no ThenViewHelper and no ElseViewHelper is found, all child nodes are rendered
-     *
-     * @return string rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
-     * @api
-     */
-    protected function renderThenChild()
-    {
-        $GLOBALS['TSFE']->no_cache = 1;
-        return parent::renderThenChild();
     }
 }

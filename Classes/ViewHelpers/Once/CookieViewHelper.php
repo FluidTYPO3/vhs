@@ -26,43 +26,35 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
 class CookieViewHelper extends AbstractOnceViewHelper
 {
     /**
+     * @param string $identifier
+     * @param array $arguments
      * @return void
      */
-    protected function storeIdentifier()
+    protected static function storeIdentifier($identifier, array $arguments)
     {
-        $identifier = $this->getIdentifier();
-        $domain = $this->arguments['lockToDomain'] ? $_SERVER['HTTP_HOST'] : null;
-        setcookie($identifier, '1', time() + $this->arguments['ttl'], null, $domain);
+        $domain = $arguments['lockToDomain'] ? $_SERVER['HTTP_HOST'] : null;
+        setcookie($identifier, '1', time() + $arguments['ttl'], null, $domain);
     }
 
     /**
+     * @param string $identifier
      * @return boolean
      */
-    protected function assertShouldSkip()
+    protected static function assertShouldSkip($identifier)
     {
-        $identifier = $this->getIdentifier();
-        return (true === isset($_COOKIE[$identifier]));
+        return isset($_COOKIE[$identifier]);
     }
 
     /**
-     * @return void
+     * @param string $identifier
+     * @param integer $ttl
      */
-    protected function removeIfExpired()
+    protected static function removeIfExpired($identifier, $ttl = self::DEFAULT_TTL)
     {
-        $identifier = $this->getIdentifier();
-        $existsInCookie = (boolean) (true === isset($_COOKIE[$identifier]));
-        if (true === $existsInCookie) {
-            $this->removeCookie();
+        $existsInCookie = isset($_COOKIE[$identifier]);
+        if ($existsInCookie) {
+            unset($_SESSION[$identifier], $_COOKIE[$identifier]);
+            setcookie($identifier, null, time() - 1);
         }
-    }
-
-    /**
-     * @return void
-     */
-    protected function removeCookie()
-    {
-        $identifier = $this->getIdentifier();
-        unset($_SESSION[$identifier], $_COOKIE[$identifier]);
-        setcookie($identifier, null, time() - 1);
     }
 }
