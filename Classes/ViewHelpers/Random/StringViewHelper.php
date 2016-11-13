@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -22,18 +24,31 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class StringViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
+    public function initializeArguments()
+    {
+        $this->registerArgument('length', 'integer', 'Length of string to generate');
+        $this->registerArgument('minimumLength', 'integer', 'Minimum length of string if random length', false, 32);
+        $this->registerArgument('mmaximumLength', 'integer', 'Minimum length of string if random length', false, 32);
+        $this->registerArgument('characters', 'string', 'Characters to use in string', false, '0123456789abcdef');
+    }
 
     /**
-     * @param integer $length
-     * @param integer $minimumLength
-     * @param integer $maximumLength
-     * @param string $characters
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render($length = null, $minimumLength = 32, $maximumLength = 32, $characters = '0123456789abcdef')
-    {
-        $minimumLength = intval($minimumLength);
-        $maximumLength = intval($maximumLength);
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $length = $arguments['length'];
+        $minimumLength = (integer) $arguments['minimumLength'];
+        $maximumLength = (integer) $arguments['maximumLength'];
+        $characters = $arguments['characters'];
         if ($minimumLength != $maximumLength) {
             $length = rand($minimumLength, $maximumLength);
         } else {
