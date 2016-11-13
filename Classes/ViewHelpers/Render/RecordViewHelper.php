@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
+use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ViewHelper used to render raw content records typically fetched
@@ -16,18 +18,31 @@ use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
  */
 class RecordViewHelper extends AbstractContentViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
-     * Render method
-     *
-     * @param array $record
-     * @return string
+     * Initialize
      */
-    public function render(array $record = [])
+    public function initializeArguments()
     {
-        if (false === isset($record['uid'])) {
+        parent::initializeArguments();
+        $this->registerArgument('record', 'array', 'Record to render');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return NULL|string
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        if (false === isset($arguments['record']['uid'])) {
             return null;
         }
-        return $this->renderRecord($record);
+        return static::renderRecord($arguments['record']);
     }
 }

@@ -79,7 +79,7 @@ class TemplateViewHelper extends AbstractRenderViewHelper
             $file = $this->renderChildren();
         }
         $file = GeneralUtility::getFileAbsFileName($file);
-        $view = $this->getPreparedView();
+        $view = static::getPreparedView();
         $view->setTemplatePathAndFilename($file);
         if (is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
@@ -99,7 +99,7 @@ class TemplateViewHelper extends AbstractRenderViewHelper
                 $view->setPartialRootPaths($partialRootPaths);
             }
         }
-        return $this->renderView($view);
+        return static::renderView($view, $this->arguments);
     }
 
     /**
