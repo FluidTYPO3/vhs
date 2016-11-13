@@ -74,10 +74,11 @@ class RequestViewHelper extends AbstractRenderViewHelper
         $extensionName = $arguments['extensionName'];
         $pluginName = $arguments['pluginName'];
         $vendorName = $arguments['vendorName'];
+        $arguments = is_array($arguments['arguments']) ? $arguments['arguments'] : null;
         $configurationManager = static::getConfigurationManager();
         $objectManager = static::getObjectManager();
         $contentObjectBackup = $configurationManager->getContentObject();
-        $request = $renderingContext->getRequest();
+        $request = $renderingContext->getControllerContext()->getRequest();
         $configurationBackup = $configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
             $request->getControllerExtensionName(),
@@ -91,12 +92,14 @@ class RequestViewHelper extends AbstractRenderViewHelper
         $request->setControllerName($controller);
         $request->setPluginName($pluginName);
         $request->setControllerExtensionName($extensionName);
-        $request->setArguments($arguments['arguments']);
+        if ($arguments !== null) {
+            $request->setArguments($arguments);
+        }
         $request->setControllerVendorName($vendorName);
 
         try {
             /** @var ResponseInterface $response */
-            $response = $objectManager->get(static::responseType);
+            $response = $objectManager->get(static::$responseType);
             $configurationManager->setContentObject($temporaryContentObject);
             $configurationManager->setConfiguration(
                 $configurationManager->getConfiguration(
