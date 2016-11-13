@@ -181,7 +181,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         }
         $elements = [];
         foreach ($rows as $row) {
-            array_push($elements, $this->renderRecord($row));
+            array_push($elements, static::renderRecord($row));
         }
         if (false === empty($this->arguments['loadRegister'])) {
             $this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
@@ -198,7 +198,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      * @param array $row
      * @return string|NULL
      */
-    protected function renderRecord(array $row)
+    protected static function renderRecord(array $row)
     {
         if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
             return null;

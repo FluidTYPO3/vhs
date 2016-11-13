@@ -8,11 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -27,102 +31,105 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class RequestViewHelper extends AbstractRenderViewHelper
 {
-
-    /**
-     * @var Dispatcher
-     */
-    protected $dispatcher;
+    use CompileWithRenderStatic;
 
     /**
      * @var string
      */
-    protected $requestType = Request::class;
+    protected static $requestType = Request::class;
 
     /**
      * @var string
      */
-    protected $responseType = Response::class;
+    protected static $responseType = Response::class;
 
     /**
-     * @param Dispatcher $dispatcher
-     * @return void
-     */
-    public function injectDispatcher(Dispatcher $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * Dispatch Request
-     *
-     * Dispatches (as a completely new Request) a Request that will
-     * execute a configured Plugin->Controller->action() which means
-     * that the Plugin, Controller and Action you use must be allowed
-     * by the plugin configuration of the target controller.
-     *
-     * @param string|NULL $action
-     * @param string|NULL $controller
-     * @param string|NULL $extensionName
-     * @param string|NULL $pluginName
-     * @param string|NULL $vendorName
      * @param array $arguments
-     * @return ResponseInterface
+     * @param \Closure $renderChildrenClosure
+     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return string|ResponseInterface
      * @throws \Exception
-     * @api
      */
-    public function render(
-        $action = null,
-        $controller = null,
-        $extensionName = null,
-        $pluginName = null,
-        $vendorName = null,
-        array $arguments = []
-    ) {
-        $contentObjectBackup = $this->configurationManager->getContentObject();
-        if (true === isset($this->request)) {
-            $configurationBackup = $this->configurationManager->getConfiguration(
-                ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
-                $this->request->getControllerExtensionName(),
-                $this->request->getPluginName()
-            );
-        }
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+    )
+    {
+        $action = $arguments['action'];
+        $controller = $arguments['controller'];
+        $extensionName = $arguments['extensionName'];
+        $pluginName = $arguments['pluginName'];
+        $vendorName = $arguments['vendorName'];
+        $configurationManager = static::getConfigurationManager();
+        $objectManager = static::getObjectManager();
+        $contentObjectBackup = $configurationManager->getContentObject();
+        $request = $renderingContext->getRequest();
+        $configurationBackup = $configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            $request->getControllerExtensionName(),
+            $request->getPluginName()
+        );
+
         $temporaryContentObject = new ContentObjectRenderer();
         /** @var Request $request */
-        $request = $this->objectManager->get($this->requestType);
+        $request = $objectManager->get(static::$requestType);
         $request->setControllerActionName($action);
         $request->setControllerName($controller);
         $request->setPluginName($pluginName);
         $request->setControllerExtensionName($extensionName);
-        $request->setArguments($arguments);
-        // TODO: remove for 6.2 LTS
-        if (false === empty($vendorName)) {
-            $request->setControllerVendorName($vendorName);
-        }
+        $request->setArguments($arguments['arguments']);
+        $request->setControllerVendorName($vendorName);
+
         try {
             /** @var ResponseInterface $response */
-            $response = $this->objectManager->get($this->responseType);
-            $this->configurationManager->setContentObject($temporaryContentObject);
-            $this->configurationManager->setConfiguration(
-                $this->configurationManager->getConfiguration(
+            $response = $objectManager->get(static::responseType);
+            $configurationManager->setContentObject($temporaryContentObject);
+            $configurationManager->setConfiguration(
+                $configurationManager->getConfiguration(
                     ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
                     $extensionName,
                     $pluginName
                 )
             );
-            $this->dispatcher->dispatch($request, $response);
-            $this->configurationManager->setContentObject($contentObjectBackup);
+            static::getDispatcher()->dispatch($request, $response);
+            $configurationManager->setContentObject($contentObjectBackup);
             if (true === isset($configurationBackup)) {
-                $this->configurationManager->setConfiguration($configurationBackup);
+                $configurationManager->setConfiguration($configurationBackup);
             }
             return $response;
         } catch (\Exception $error) {
-            if (false === (boolean) $this->arguments['graceful']) {
+            if (false === (boolean) $arguments['graceful']) {
                 throw $error;
             }
-            if (false === empty($this->arguments['onError'])) {
-                return sprintf($this->arguments['onError'], [$error->getMessage()], $error->getCode());
+            if (false === empty($arguments['onError'])) {
+                return sprintf($arguments['onError'], [$error->getMessage()], $error->getCode());
             }
             return $error->getMessage() . ' (' . $error->getCode() . ')';
         }
+    }
+
+    /**
+     * @return ObjectManagerInterface
+     */
+    protected static function getObjectManager()
+    {
+        return GeneralUtility::makeInstance(ObjectManager::class);
+    }
+
+    /**
+     * @return Dispatcher
+     */
+    protected static function getDispatcher()
+    {
+        return static::getObjectManager()->get(Dispatcher::class);
+    }
+
+    /**
+     * @return ConfigurationManagerInterface
+     */
+    protected static function getConfigurationManager()
+    {
+        return static::getObjectManager()->get(ConfigurationManagerInterface::class);
     }
 }
