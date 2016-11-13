@@ -17,6 +17,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -44,18 +45,30 @@ class RequestViewHelper extends AbstractRenderViewHelper
     protected static $responseType = Response::class;
 
     /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('action', 'string', 'Controller action to call in request');
+        $this->registerArgument('controller', 'string', 'Controller name to call in request');
+        $this->registerArgument('extensionName', 'string', 'Extension name scope to use in request');
+        $this->registerArgument('vendorName', 'string', 'Vendor name scope to use in request');
+        $this->registerArgument('pluginName', 'string', 'Plugin name scope to use in request');
+    }
+
+    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
-     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @param RenderingContextInterface $renderingContext
      * @return string|ResponseInterface
      * @throws \Exception
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
-        \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-    )
-    {
+        RenderingContextInterface $renderingContext
+    ) {
         $action = $arguments['action'];
         $controller = $arguments['controller'];
         $extensionName = $arguments['extensionName'];
