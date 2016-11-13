@@ -7,6 +7,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Once: Session
@@ -23,25 +24,31 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  */
 class SessionViewHelper extends AbstractOnceViewHelper
 {
-
     /**
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         if ('' === session_id()) {
             session_start();
         }
-        return parent::render();
+        return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
 
     /**
+     * @param array $arguments
      * @return void
      */
-    protected function storeIdentifier()
+    protected static function storeIdentifier(array $arguments)
     {
-        $identifier = $this->getIdentifier();
-        $index = get_class($this);
+        $identifier = static::getIdentifier($arguments);
+        $index = static::class;
         if (false === is_array($_SESSION[$index])) {
             $_SESSION[$index] = [];
         }
@@ -49,24 +56,26 @@ class SessionViewHelper extends AbstractOnceViewHelper
     }
 
     /**
+     * @param array $arguments
      * @return boolean
      */
-    protected function assertShouldSkip()
+    protected static function assertShouldSkip(array $arguments)
     {
-        $identifier = $this->getIdentifier();
-        $index = get_class($this);
+        $identifier = static::getIdentifier($arguments);
+        $index = static::class;
         return (boolean) (true === isset($_SESSION[$index][$identifier]));
     }
 
     /**
+     * @param array $arguments
      * @return void
      */
-    protected function removeIfExpired()
+    protected static function removeIfExpired(array $arguments)
     {
-        $id = $this->getIdentifier();
-        $index = get_class($this);
+        $id = static::getIdentifier($arguments);
+        $index = static::class;
         $existsInSession = (boolean) (true === isset($_SESSION[$index]) && true === isset($_SESSION[$index][$id]));
-        if (true === $existsInSession && time() - $this->arguments['ttl'] >= $_SESSION[$index][$id]) {
+        if (true === $existsInSession && time() - $arguments['ttl'] >= $_SESSION[$index][$id]) {
             unset($_SESSION[$index][$id]);
         }
     }
