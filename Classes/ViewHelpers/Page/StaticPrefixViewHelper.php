@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -23,8 +23,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class StaticPrefixViewHelper extends AbstractViewHelper
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithRenderStatic;
 
     /**
      * @param array $arguments
