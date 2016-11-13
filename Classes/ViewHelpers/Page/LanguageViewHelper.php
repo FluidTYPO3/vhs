@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -20,8 +20,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class LanguageViewHelper extends AbstractViewHelper
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithRenderStatic;
 
     /**
      * @var PageService
@@ -100,9 +99,6 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected static function getPageService()
     {
-        if (!static::$pageService) {
-            static::$pageService = GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
-        }
-        return static::$pageService;
+        return static::$pageService = GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
     }
 }
