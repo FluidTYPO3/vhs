@@ -15,5 +15,4 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class UncacheViewHelperTest extends AbstractViewHelperTest
 {
-
 }

@@ -10,13 +10,35 @@ namespace FluidTYPO3\Vhs\Tests\Unit\View;
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 
 /**
  * Class UncacheTemplateViewTest
  */
 class UncacheTemplateViewTest extends UnitTestCase
 {
+
+
+    /**
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager;
+
+    /**
+     * Setup global
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+    }
 
     /**
      * @test
@@ -35,8 +57,20 @@ class UncacheTemplateViewTest extends UnitTestCase
     public function callUserFunctionReturnsCallsExpectedMethodSequence()
     {
         $mock = $this->getMockBuilder($this->getClassName())->setMethods(['prepareContextsForUncachedRendering', 'renderPartialUncached'])->getMock();
-        $context = new ControllerContext();
-        $configuration = ['partial' => 'dummy', 'section' => 'dummy', 'controllerContext' => $context];
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        /** @var Request $request */
+        $request = $this->objectManager->get(Request::class);
+        $request->setControllerExtensionName('');
+        $request->setPluginName('');
+        /** @var Response $response */
+        $response = $this->objectManager->get(Response::class);
+        /** @var ControllerContext $controllerContext */
+        $controllerContext = $this->objectManager->get(ControllerContext::class);
+        $controllerContext->setRequest($request);
+        $controllerContext->setResponse($response);
+        $controllerContext->setUriBuilder($uriBuilder);
+
+        $configuration = ['partial' => 'dummy', 'section' => 'dummy', 'controllerContext' => $controllerContext];
         $mock->expects($this->once())->method('prepareContextsForUncachedRendering');
         $mock->expects($this->once())->method('renderPartialUncached');
         $mock->callUserFunction('', $configuration, '');
