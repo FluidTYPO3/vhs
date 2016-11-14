@@ -44,7 +44,7 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
     public function executeMissingArgumentTest()
     {
         $this->expectViewHelperException('Required argument "b" was not supplied');
-        $result = $this->executeViewHelper([]);
+        $result = $this->executeViewHelper(['a' => 1, 'fail' => true]);
     }
 
     /**

@@ -7,6 +7,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Math: Subtract
@@ -20,6 +23,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class SubtractViewHelper extends AbstractMultipleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+    use ArrayConsumingViewHelperTrait;
 
     /**
      * @return void
@@ -31,28 +36,21 @@ class SubtractViewHelper extends AbstractMultipleMathViewHelper
     }
 
     /**
+     * @param mixed $a
+     * @param mixed $b
+     * @param array $arguments
      * @return mixed
-     * @throw Exception
      */
-    public function render()
+    protected static function calculateAction($a, $b, array $arguments)
     {
-        $a = $this->getInlineArgument();
-        $b = $this->arguments['b'];
-        $aIsIterable = $this->assertIsArrayOrIterator($a);
+        $aIsIterable = static::assertIsArrayOrIterator($a);
         if (true === $aIsIterable && null === $b) {
-            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             return -array_sum($a);
         }
-        return $this->calculate($a, $b);
-    }
-
-    /**
-     * @param mixed $a
-     * @param $b
-     * @return mixed
-     */
-    protected function calculateAction($a, $b)
-    {
+        if ($b === null && (boolean) $arguments['fail']) {
+            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
+        }
         return $a - $b;
     }
 }

@@ -123,4 +123,13 @@ trait ArrayConsumingViewHelperTrait
         ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
         return $array1;
     }
+
+    /**
+     * @param mixed $subject
+     * @return boolean
+     */
+    protected static function assertIsArrayOrIterator($subject)
+    {
+        return (boolean) (true === is_array($subject) || true === $subject instanceof \Traversable);
+    }
 }
