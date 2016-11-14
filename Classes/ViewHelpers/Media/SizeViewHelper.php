@@ -11,12 +11,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Returns the size of the provided file in bytes.
  */
 class SizeViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @var boolean
@@ -35,19 +38,17 @@ class SizeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @throws Exception
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return integer
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-
-        $path = $this->arguments['path'];
+        $path = $renderChildrenClosure();
 
         if (null === $path) {
-            $path = $this->renderChildren();
-            if (null === $path) {
-                return 0;
-            }
+            return 0;
         }
 
         $file = GeneralUtility::getFileAbsFileName($path);

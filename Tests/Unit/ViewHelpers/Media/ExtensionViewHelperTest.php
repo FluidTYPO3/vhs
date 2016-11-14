@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Class ExtensionViewHelperTest
@@ -36,7 +38,10 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     public function returnsEmptyStringForEmptyArguments()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
+        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
+        $viewHelper->setArguments([]);
         $this->assertEquals('', $viewHelper->render());
     }
 
@@ -47,6 +52,9 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/foo.txt'));
+        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
+        $viewHelper->setArguments([]);
         $this->assertEquals('txt', $viewHelper->render());
     }
 
@@ -57,6 +65,9 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/noext'));
+        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
+        $viewHelper->setArguments([]);
         $this->assertEquals('', $viewHelper->render());
     }
 }
