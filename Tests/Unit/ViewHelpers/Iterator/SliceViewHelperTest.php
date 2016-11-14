@@ -35,7 +35,8 @@ class SliceViewHelperTest extends AbstractViewHelperTest
         return [
             [['haystack' => [], 'length' => 0, 'start' => 0], []],
             [['haystack' => ['foo', 'bar'], 'length' => 1, 'start' => 0], ['foo']],
-            [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1], [1 => 'bar']],
+            [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1, 'preserveKeys' => true], [1 => 'bar']],
+            [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1, 'preserveKeys' => false], [0 => 'bar']],
         ];
     }
 }

@@ -9,6 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -26,9 +29,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Even numbers 0-10: {v:iterator.implode(glue: ',') -> v:iterator.range(low: 0, high: 10, step: 2)}
  * ```
  */
-class RangeViewHelper extends AbstractViewHelper
+class RangeViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -38,19 +41,28 @@ class RangeViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
         $this->registerArgument('low', 'integer', 'The low number of the range to be generated', false, 1);
         $this->registerArgument('high', 'integer', 'The high number of the range to be generated', true);
         $this->registerArgument('step', 'integer', 'The step (increment amount) between each number', false, 1);
+        $this->registerAsArgument();
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render()
-    {
-        return $this->renderChildrenWithVariableOrReturnInput(
-            range($this->arguments['low'], $this->arguments['high'], $this->arguments['step'])
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            range($arguments['low'], $arguments['high'], $arguments['step']),
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
         );
     }
 }

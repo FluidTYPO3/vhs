@@ -10,14 +10,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Creates chunks from an input Array/Traversable with option to allocate items to a fixed number of chunks
  */
-class ChunkViewHelper extends AbstractViewHelper
+class ChunkViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -26,22 +29,40 @@ class ChunkViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
+        $this->registerArgument('subject', 'mixed', 'The subject Traversable/Array instance to shift');
+        $this->registerArgument('count', 'integer', 'Number of items/chunk or if fixed then number of chunks', true);
         $this->registerAsArgument();
-        $this->registerArgument('subject', 'mixed', 'The subject Traversable/Array instance to shift', false, null);
+        $this->registerArgument(
+            'fixed',
+            'boolean',
+            'If true, creates $count chunks instead of $count values per chunk',
+            false,
+            false
+        );
+        $this->registerArgument(
+            'preserveKeys',
+            'boolean',
+            'If set to true, the original array keys will be preserved',
+            false,
+            false
+        );
     }
 
     /**
-     * Render method
-     *
-     * @param integer $count The count of items per chunk or if fixed number of chunks
-     * @param boolean $fixed Whether to allocate items to a fixed number of chunks or not
-     * @param boolean $preserveKeys If set to true, the original array keys will be preserved in the chunks
-     * @throws \Exception
-     * @return array
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return array|mixed
      */
-    public function render($count, $fixed = false, $preserveKeys = false)
-    {
-        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $count = (integer) $arguments['count'];
+        $fixed = (boolean) $arguments['fixed'];
+        $preserveKeys = (boolean) $arguments['preserveKeys'];
+        $subject = isset($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
         $output = [];
         if (0 >= $count) {
             return $output;
@@ -60,6 +81,12 @@ class ChunkViewHelper extends AbstractViewHelper
         } else {
             $output = array_chunk($subject, $count, $preserveKeys);
         }
-        return $this->renderChildrenWithVariableOrReturnInput($output);
+
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $output,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 }

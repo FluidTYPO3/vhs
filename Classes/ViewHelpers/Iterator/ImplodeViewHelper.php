@@ -8,18 +8,22 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Implode ViewHelper
  *
  * Implodes an array or array-convertible object by $glue.
  */
-class ImplodeViewHelper extends ExplodeViewHelper
+class ImplodeViewHelper extends ExplodeViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @var string
      */
-    protected $method = 'implode';
+    protected static $method = 'implode';
 
     /**
      * Initialize
@@ -30,13 +34,5 @@ class ImplodeViewHelper extends ExplodeViewHelper
     {
         parent::initializeArguments();
         $this->overrideArgument('content', 'string', 'Array or array-convertible object to be imploded by glue');
-        $this->overrideArgument(
-            'glue',
-            'string',
-            'String used as glue in the content to be imploded. Use glue value of "constant:NAMEOFCONSTANT" ' .
-            '(fx "constant:LF" for linefeed as glue)',
-            false,
-            ','
-        );
     }
 }

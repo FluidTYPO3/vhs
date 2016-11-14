@@ -20,6 +20,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -32,7 +33,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *         // iterating data which is ONLY sorted while rendering this particular loop
  *     </f:for>
  */
-class SortViewHelper extends AbstractViewHelper
+class SortViewHelper extends AbstractViewHelper implements CompilableInterface
 {
 
     use BasicViewHelperTrait;

@@ -10,15 +10,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\VhsViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Gets keys from an iterator.
  */
-class KeysViewHelper extends AbstractViewHelper
+class KeysViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -27,17 +29,26 @@ class KeysViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
         $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
+        $this->registerAsArgument();
     }
 
     /**
-     * @return array
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
-    {
-        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-        $content = array_keys($subject);
-        return $this->renderChildrenWithVariableOrReturnInput($content);
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            array_keys(static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure())),
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 }
