@@ -28,14 +28,15 @@ class InstanceViewHelper extends AbstractOnceViewHelper
 {
 
     /**
+     * @param array $arguments
      * @return string
      */
-    protected function getIdentifier()
+    protected static function getIdentifier(array $arguments)
     {
-        if (true === isset($this->arguments['identifier']) && null !== $this->arguments['identifier']) {
-            return $this->arguments['identifier'];
+        if (true === isset($arguments['identifier']) && null !== $arguments['identifier']) {
+            return $arguments['identifier'];
         }
-        $request = $this->controllerContext->getRequest();
+        $request = static::$currentRenderingContext->getControllerContext()->getRequest();
         $identifier = implode('_', [
             $request->getControllerActionName(),
             $request->getControllerName(),
@@ -46,12 +47,13 @@ class InstanceViewHelper extends AbstractOnceViewHelper
     }
 
     /**
+     * @param array $arguments
      * @return void
      */
-    protected function storeIdentifier()
+    protected static function storeIdentifier(array $arguments)
     {
-        $index = get_class($this);
-        $identifier = $this->getIdentifier();
+        $index = static::class;
+        $identifier = static::getIdentifier($arguments);
         if (false === is_array($GLOBALS[$index])) {
             $GLOBALS[$index] = [];
         }
@@ -59,12 +61,13 @@ class InstanceViewHelper extends AbstractOnceViewHelper
     }
 
     /**
+     * @param array $arguments
      * @return boolean
      */
-    protected function assertShouldSkip()
+    protected static function assertShouldSkip(array $arguments)
     {
-        $index = get_class($this);
-        $identifier = $this->getIdentifier();
+        $index = static::class;
+        $identifier = static::getIdentifier($arguments);
         return isset($GLOBALS[$index][$identifier]);
     }
 }
