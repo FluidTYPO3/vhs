@@ -61,7 +61,7 @@ class OptionViewHelper extends AbstractFormFieldViewHelper
                 } else if(true === ($value instanceof ObjectStorage) && false === is_numeric($this->arguments['value'])) {
                     // Requires that the option values are UIDs of objects in ObjectStorage
                     foreach ($value as $object) {
-                        if($object->getUid() == $this->arguments['value']) {
+                        if($object->getUid() === (integer) $this->arguments['value']) {
                             $selected = 'selected';
                             break;
                         }
