@@ -58,7 +58,7 @@ class OptionViewHelper extends AbstractFormFieldViewHelper
             if (false === is_object($this->arguments['value']) && false === is_array($this->arguments['value'])) {
                 if (true === is_array($value)) {
                     $selected = true === in_array($this->arguments['value'], $value) ? 'selected' : '';
-                } else if(true === ($value instanceof ObjectStorage) && false === is_numeric($this->arguments['value'])) {
+                } else if(true === ($value instanceof ObjectStorage) && true === is_numeric($this->arguments['value'])) {
                     // Requires that the option values are UIDs of objects in ObjectStorage
                     foreach ($value as $object) {
                         if($object->getUid() === (integer) $this->arguments['value']) {
