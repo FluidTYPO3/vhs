@@ -9,14 +9,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Const ViewHelper
  *
  * Renders the value of a PHP constant
  */
-class ConstViewHelper extends AbstractViewHelper
+class ConstViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
 

@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\ViewHelpers\Security\AbstractSecurityViewHelper;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
@@ -40,9 +41,6 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function canPrepareArguments()
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['registerRenderMethodArguments'])->getMockForAbstractClass();
-        $instance->expects($this->any())->method('registerRenderMethodArguments');
-        $this->assertNotEmpty($instance->prepareArguments());
     }
 
     /**

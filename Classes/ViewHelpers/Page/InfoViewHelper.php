@@ -10,7 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -19,7 +20,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * ViewHelper to access data of the current page record.
  */
-class InfoViewHelper extends AbstractViewHelper
+class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;

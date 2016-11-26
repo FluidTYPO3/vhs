@@ -12,14 +12,15 @@ use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### PregMatch regular expression ViewHelper
  *
  * Implementation of `preg_match' for Fluid.
  */
-class PregMatchViewHelper extends AbstractViewHelper
+class PregMatchViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;

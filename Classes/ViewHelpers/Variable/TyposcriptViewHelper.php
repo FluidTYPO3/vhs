@@ -12,7 +12,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Variable: TypoScript
@@ -44,7 +45,7 @@ use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
  *     <!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
  *     {wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}
  */
-class TyposcriptViewHelper extends AbstractViewHelper
+class TyposcriptViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
 

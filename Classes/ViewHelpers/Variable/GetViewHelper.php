@@ -12,7 +12,8 @@ use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### Variable: Get
@@ -49,7 +50,7 @@ use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
  * default is set to `FALSE`.
  * ```
  */
-class GetViewHelper extends AbstractViewHelper
+class GetViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
 

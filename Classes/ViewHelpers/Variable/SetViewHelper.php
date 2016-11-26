@@ -12,7 +12,8 @@ use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Variable: Set
@@ -56,7 +57,7 @@ use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
  * Using as `{value -> v:variable.set(name: 'myVar')}` makes `{myVar}` contain
  * `{value}`.
  */
-class SetViewHelper extends AbstractViewHelper
+class SetViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
 

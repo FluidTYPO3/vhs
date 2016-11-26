@@ -25,15 +25,7 @@ class RandomViewHelperTest extends AbstractViewHelperTest
      */
     public function testRender(array $arguments, array $asArray)
     {
-        if (true === isset($arguments['as'])) {
-            $value = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('variable'), $arguments);
-        } else {
-            $value = $this->executeViewHelper($arguments);
-            $value2 = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('v'), [], ['v' => $arguments['subject']]);
-            if (null !== $value2) {
-                $this->assertContains($value2, $asArray);
-            }
-        }
+        $value = $this->executeViewHelper($arguments);
         if (null !== $value) {
             $this->assertContains($value, $asArray);
         } else {
@@ -52,11 +44,8 @@ class RandomViewHelperTest extends AbstractViewHelperTest
         $queryResult->expects($this->any())->method('valid')->will($this->returnValue(false));
         return [
             [['subject' => ['foo', 'bar']], ['foo', 'bar']],
-            [['subject' => ['foo', 'bar'], 'as' => 'variable'], ['foo', 'bar']],
             [['subject' => new \ArrayIterator(['foo', 'bar'])], ['foo', 'bar']],
-            [['subject' => new \ArrayIterator(['foo', 'bar']), 'as' => 'variable'], ['foo', 'bar']],
             [['subject' => $queryResult], ['foo', 'bar']],
-            [['subject' => $queryResult, 'as' => 'variable'], ['foo', 'bar']]
         ];
     }
 }

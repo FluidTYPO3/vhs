@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -35,7 +36,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Will produce a Windows line break, \r\n.
  */
-class AsciiViewHelper extends AbstractViewHelper
+class AsciiViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
 
@@ -44,7 +45,7 @@ class AsciiViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('ascii', 'string', 'ASCII character to render');
+        $this->registerArgument('ascii', 'mixed', 'ASCII character to render');
     }
 
     /**

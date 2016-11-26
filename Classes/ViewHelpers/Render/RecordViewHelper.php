@@ -9,14 +9,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ViewHelper used to render raw content records typically fetched
  * with `<v:content.get(column: '0', render: FALSE) />`.
  */
-class RecordViewHelper extends AbstractContentViewHelper
+class RecordViewHelper extends AbstractContentViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
 

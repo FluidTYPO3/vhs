@@ -12,13 +12,14 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Converts a string to an array with $length number of bytes
  * per new array element. Wrapper for PHP's `str_split`.
  */
-class SplitViewHelper extends AbstractViewHelper
+class SplitViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;

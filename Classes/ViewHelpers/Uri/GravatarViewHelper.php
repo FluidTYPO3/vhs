@@ -10,14 +10,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
 
 
 use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Renders Gravatar URI.
  */
-class GravatarViewHelper extends AbstractViewHelper
+class GravatarViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
 

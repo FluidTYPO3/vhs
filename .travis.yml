@@ -13,6 +13,8 @@ env: TYPO3_VERSION=">=7.6.13, <7.6.99"
 matrix:
   include:
     - php: "7.0"
+      env: COVERAGE="NO" TYPO3_VERSION="dev-master"
+    - php: "7.0"
       env: COVERAGE="NO" TYPO3_VERSION=">=7.6.13, <7.6.99"
     - php: "7.0"
       env: COVERAGE="NO" TYPO3_VERSION="^8.4.1"

@@ -10,7 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Call ViewHelper
@@ -27,7 +28,7 @@ use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
  *     <!-- arguments for the method -->
  *     <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
  */
-class CallViewHelper extends AbstractViewHelper
+class CallViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
 
