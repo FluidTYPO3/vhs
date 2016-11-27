@@ -9,14 +9,18 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Returns the first element of $haystack.
  */
-class FirstViewHelper extends AbstractViewHelper
+class FirstViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * Initialize arguments
@@ -29,16 +33,17 @@ class FirstViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render method
-     *
-     * @return mixed|NULL
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return null
      */
-    public function render()
-    {
-        $haystack = $this->arguments['haystack'];
-        if (null === $haystack) {
-            $haystack = $this->renderChildren();
-        }
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $haystack = $renderChildrenClosure();
         if (false === is_array($haystack) && false === $haystack instanceof \Iterator && null !== $haystack) {
             ErrorUtility::throwViewHelperException(
                 'Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .

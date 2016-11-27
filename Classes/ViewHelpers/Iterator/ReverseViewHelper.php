@@ -10,6 +10,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -18,9 +21,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Reverses the order of every member of an Iterator/Array,
  * preserving the original keys.
  */
-class ReverseViewHelper extends AbstractViewHelper
+class ReverseViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -31,8 +34,8 @@ class ReverseViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
         $this->registerArgument('subject', 'mixed', 'The input array/Traversable to reverse');
+        $this->registerAsArgument();
     }
 
     /**
@@ -42,13 +45,23 @@ class ReverseViewHelper extends AbstractViewHelper
      * Returns the same type as $subject. Ignores NULL values which would be
      * OK to use in an f:for (empty loop as result)
      *
-     * @throws \Exception
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render()
-    {
-        $array = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $array = static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure());
         $array = array_reverse($array, true);
-        return $this->renderChildrenWithVariableOrReturnInput($array);
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $array,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 }

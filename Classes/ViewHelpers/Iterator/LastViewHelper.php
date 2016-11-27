@@ -9,14 +9,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns the last element of $haystack.
  */
-class LastViewHelper extends AbstractViewHelper
+class LastViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -30,18 +33,16 @@ class LastViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render method
-     *
-     * @return mixed|NULL
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
-    {
-        $haystack = $this->arguments['haystack'];
-        if (null === $haystack) {
-            $haystack = $this->renderChildren();
-        }
-        $haystack = $this->arrayFromArrayOrTraversableOrCSV($haystack);
-
-        return array_pop($haystack);
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        return array_pop(static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure()));
     }
 }

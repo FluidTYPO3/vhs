@@ -9,14 +9,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Merges arrays/Traversables $a and $b into an array.
  */
-class MergeViewHelper extends AbstractViewHelper
+class MergeViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -29,20 +32,29 @@ class MergeViewHelper extends AbstractViewHelper
             'mixed',
             'First array/Traversable - if not set, the ViewHelper can be in a chain (inline-notation)'
         );
+        $this->registerArgument('b', 'mixed', 'Second array or Traversable');
+        $this->registerArgument(
+            'useKeys',
+            'boolean',
+            'If TRUE comparison is done while also observing and merging the keys used in each array',
+            false,
+            false
+        );
     }
 
     /**
-     * Merges arrays/Traversables $a and $b into an array
-     *
-     * @param mixed $b Second array/Traversable
-     * @param boolean $useKeys If TRUE comparison is done while also observing and merging the keys used in each array
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return array
      */
-    public function render($b, $useKeys = true)
-    {
-        $a = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('a');
-        $b = $this->arrayFromArrayOrTraversableOrCSV($b, $useKeys);
-        $merged = $this->mergeArrays($a, $b);
-        return $merged;
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $a = static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure());
+        $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b'], $arguments['useKeys']);
+        return static::mergeArraysStatic($a, $b);
     }
 }

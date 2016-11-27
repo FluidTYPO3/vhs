@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class RandomViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-    use CompileWithRenderStatic;
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -30,12 +30,12 @@ class RandomViewHelper extends AbstractViewHelper implements CompilableInterface
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
         $this->registerArgument(
             'subject',
             'mixed',
             'The subject Traversable/Array instance from which to select a random element'
         );
+        $this->registerAsArgument();
     }
 
     /**
@@ -49,11 +49,7 @@ class RandomViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = static::getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
-            $arguments,
-            'subject',
-            $renderChildrenClosure
-        );
+        $subject = static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure());
         if (empty($subject)) {
             return null;
         }

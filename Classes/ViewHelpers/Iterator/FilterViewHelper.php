@@ -8,7 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,33 +24,58 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Iterators and ObjectStorage etc. are supported.
  */
-class FilterViewHelper extends AbstractViewHelper
+class FilterViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * Render method
-     *
-     * @param mixed $subject The subject iterator/array to be filtered
-     * @param mixed $filter The comparison value
-     * @param string $propertyName Optional property name to extract and use for comparison instead of the object;
-     *                             use on ObjectStorage etc. Note: supports dot-path expressions.
-     * @param boolean $preserveKeys If TRUE, keys in the array are preserved - even if they are numeric
-     * @param boolean $invert Invert the behavior of the view helper
-     * @param boolean $nullFilter If TRUE and $filter is NULL (not set) - to filter NULL or empty values
-     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('subject', 'mixed', 'The subject iterator/array to be filtered');
+        $this->registerArgument('filter', 'mixed', 'The comparison value');
+        $this->registerArgument(
+            'propertyName',
+            'string',
+            'Optional property name to extract and use for comparison instead of the object; use on ObjectStorage ' .
+            'etc. Note: supports dot-path expressions'
+        );
+        $this->registerArgument(
+            'preserveKeys',
+            'boolean',
+            'If TRUE, keys in the array are preserved - even if they are numeric',
+            false,
+            false
+        );
+        $this->registerArgument('invert', 'boolean', 'Invert the behavior of the filtering', false, false);
+        $this->registerArgument(
+            'nullFilter',
+            'boolean',
+            'If TRUE and $filter is NULL (not set) includes only NULL values. Useful with $invert.',
+            false,
+            false
+        );
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render(
-        $subject = null,
-        $filter = null,
-        $propertyName = null,
-        $preserveKeys = false,
-        $invert = false,
-        $nullFilter = false
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
     ) {
-        if (null === $subject) {
-            $subject = $this->renderChildren();
-        }
+        $subject = $renderChildrenClosure();
+        $filter = $arguments['filter'];
+        $propertyName = $arguments['propertyName'];
+        $preserveKeys = (boolean) $arguments['preserveKeys'];
+        $invert = (boolean) $arguments['invert'];
+        $nullFilter = (boolean) $arguments['nullFilter'];
+
         if (null === $subject || (false === is_array($subject) && false === $subject instanceof \Traversable)) {
             return [];
         }
@@ -61,7 +89,7 @@ class FilterViewHelper extends AbstractViewHelper
         $invert = (boolean) $invert;
         $invertFlag = true === $invert ? false : true;
         foreach ($subject as $key => $item) {
-            if ($invertFlag === $this->filter($item, $filter, $propertyName)) {
+            if ($invertFlag === static::filter($item, $filter, $propertyName)) {
                 $items[$key] = $item;
             }
         }
@@ -79,7 +107,7 @@ class FilterViewHelper extends AbstractViewHelper
      * @param string $propertyName
      * @return boolean
      */
-    protected function filter($item, $filter, $propertyName)
+    protected static function filter($item, $filter, $propertyName)
     {
         if (false === empty($propertyName) && (true === is_object($item) || true === is_array($item))) {
             $value = ObjectAccess::getPropertyPath($item, $propertyName);

@@ -26,23 +26,6 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
     protected $fixture;
 
     /**
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        $this->fixture = $this->getMockBuilder(ExtractViewHelper::class)->setMethods(['hasArgument'])->getMock();
-    }
-
-    /**
-     * @return void
-     */
-    public function tearDown()
-    {
-        unset($this->fixture);
-    }
-
-    /**
      * @return array
      */
     public function simpleStructures()
@@ -81,7 +64,7 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
         $user3 = new FrontendUser();
         $user1->setFirstName('Peter');
         $user2->setFirstName('Paul');
-        $user3->setFirstName('Marry');
+        $user3->setFirstName('Mary');
         $storage->attach($user1);
         $storage->attach($user2);
         $storage->attach($user3);
@@ -177,7 +160,7 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
                 [
                     'Peter',
                     'Paul',
-                    'Marry'
+                    'Mary'
                 ]
             ],
         ];
@@ -192,9 +175,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
     public function recursivelyExtractKey($structure, $key, $expected)
     {
         $recursive = true;
-        $this->assertSame(
+        $this->assertEquals(
             $expected,
-            $this->fixture->render($key, $structure, $recursive)
+            $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => true, 'single' => false])
         );
     }
 
@@ -204,9 +187,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
      */
     public function extractByKeyExtractsKeyByPath($structure, $key, $expected)
     {
-        $this->assertSame(
+        $this->assertEquals(
             $expected,
-            $this->fixture->extractByKey($structure, $key)
+            $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => false, 'single' => false])
         );
     }
 }

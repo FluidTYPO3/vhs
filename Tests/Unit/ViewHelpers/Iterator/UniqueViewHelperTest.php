@@ -11,17 +11,18 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
- * Class ValuesViewHelperTest
+ * Class UniqueViewHelperTest
  */
-class ValuesViewHelperTest extends AbstractViewHelperTest
+class UniqueViewHelperTest extends AbstractViewHelperTest
 {
+
     /**
      * @test
      */
     public function returnsValuesUsingArgument()
     {
-        $result = $this->executeViewHelper(['subject' => ['foo' => 'bar']]);
-        $this->assertEquals(['bar'], $result);
+        $result = $this->executeViewHelper(['subject' => ['foo' => 'bar', 'baz' => 'bar']]);
+        $this->assertEquals(['foo' =>  'bar'], $result);
     }
 
     /**
@@ -29,7 +30,7 @@ class ValuesViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsIterators()
     {
-        $result = $this->executeViewHelper(['subject' => new \ArrayIterator(['foo' => 'bar'])]);
-        $this->assertEquals(['bar'], $result);
+        $result = $this->executeViewHelper(['subject' => new \ArrayIterator(['foo' => 'bar', 'baz' => 'bar'])]);
+        $this->assertEquals(['foo' => 'bar'], $result);
     }
 }
