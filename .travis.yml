@@ -5,20 +5,27 @@ sudo: false
 php:
   - "5.5"
   - "5.6"
+  - "7.0"
   - "hhvm"
+
+env: TYPO3_VERSION=">=7.6.13, <7.6.99"
 
 matrix:
   include:
     - php: "7.0"
-      env: COVERAGE="NO"
+      env: COVERAGE="NO" TYPO3_VERSION=">=7.6.13, <7.6.99"
+    - php: "7.0"
+      env: COVERAGE="NO" TYPO3_VERSION="^8.4.1"
     - php: "7.1"
-      env: COVERAGE="NO"
+      env: COVERAGE="NO" TYPO3_VERSION="^8.4.1"
 
 cache:
   directories:
     - $HOME/.composer/cache
 
-install: composer install
+install:
+  - composer require "typo3/cms:$TYPO3_VERSION"
+  - composer install
 
 before_script: mkdir -p build/logs
 

@@ -31,8 +31,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function canCreateViewHelperInstance()
     {
-        $instance = $this->getMockForAbstractClass($this->getViewHelperClassName());
-        $instance->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->getMock();
         $this->assertInstanceOf($this->getViewHelperClassName(), $instance);
     }
 
@@ -41,17 +40,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function canPrepareArguments()
     {
-        $instance = $this->getMockForAbstractClass(
-            $this->getViewHelperClassName(),
-            [],
-            '',
-            false,
-            false,
-            false,
-            ['registerRenderMethodArguments']
-        );
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['registerRenderMethodArguments'])->getMockForAbstractClass();
         $instance->expects($this->any())->method('registerRenderMethodArguments');
-        $instance->injectReflectionService($this->objectManager->get(ReflectionService::class));
         $this->assertNotEmpty($instance->prepareArguments());
     }
 
@@ -63,7 +53,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testEvaluateArguments(array $arguments, array $expectedMethods, $expectedReturn)
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods($expectedMethods)->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods($expectedMethods)->getMockForAbstractClass();
         foreach ($expectedMethods as $expectedMethod) {
             $instance->expects($this->once())->method($expectedMethod)->willReturn(true);
         }
@@ -176,7 +166,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertFrontendUserLoggedIn($user, $resolvedUser, $expected)
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMockForAbstractClass();
         $instance->expects($this->once())->method('getCurrentFrontendUser')->willReturn($resolvedUser);
         $result = $this->callInaccessibleMethod($instance, 'assertFrontendUserLoggedIn', $user);
         $this->assertEquals($expected, $result);
@@ -209,7 +199,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertFrontendUserGroupLoggedIn($group, $resolvedUser, $expected)
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMockForAbstractClass();
         $instance->expects($this->once())->method('getCurrentFrontendUser')->willReturn($resolvedUser);
         $result = $this->callInaccessibleMethod($instance, 'assertFrontendUserGroupLoggedIn', $group);
         $this->assertEquals($expected, $result);
@@ -248,7 +238,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertFrontendUsersLoggedIn(ObjectStorage $users, FrontendUser $currentUser, $expected)
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentFrontendUser'])->getMockForAbstractClass();
         $instance->expects($this->exactly($users->count()))->method('getCurrentFrontendUser')->willReturn($currentUser);
         $result = $instance->assertFrontendUsersLoggedIn($users);
         $this->assertEquals($expected, $result);
@@ -286,7 +276,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
     public function testAssertBackendUserLoggedIn($user, $currentUser, $expected)
     {
         $GLOBALS['BE_USER'] = (object) ['user' => ['uid' => $currentUser]];
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMockForAbstractClass();
         $result = $instance->assertBackendUserLoggedIn($user);
         unset($GLOBALS['BE_USER']->user);
         $this->assertEquals($expected, $result);
@@ -316,7 +306,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
     public function testAssertBackendUserGroupLoggedIn($group, $currentUser, $expected)
     {
         $GLOBALS['BE_USER'] = (object) ['user' => $currentUser];
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMockForAbstractClass();
         $result = $instance->assertBackendUserGroupLoggedIn($group);
         unset($GLOBALS['BE_USER']);
         $this->assertEquals($expected, $result);
@@ -348,7 +338,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertAdminLoggedIn($currentUser, $expected)
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentBackendUser'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentBackendUser'])->getMockForAbstractClass();
         $instance->expects($this->atLeastOnce())->method('getCurrentBackendUser')->willReturn($currentUser);
         $result = $instance->assertAdminLoggedIn();
         $this->assertEquals($expected, $result);
@@ -372,7 +362,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
     public function testGetCurrentFrontendUserReturnsNullIfNoFrontendUserRecordIsSetInFrontendController()
     {
         $GLOBALS['TSFE'] = (object) ['loginUser' => ''];
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMockForAbstractClass();
         $result = $instance->getCurrentFrontendUser();
         $this->assertNull($result);
         unset($GLOBALS['TSFE']);
@@ -384,7 +374,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
     public function testGetCurrentFrontendUserFetchesFromFrontendUserRepository()
     {
         $GLOBALS['TSFE'] = (object) ['loginUser' => 1, 'fe_user' => (object) ['user' => ['uid' => 1]]];
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMockForAbstractClass();
         $query = new Query(FrontendUser::class);
         $querySettings = new Typo3QuerySettings();
         $query->setQuerySettings($querySettings);
@@ -403,7 +393,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
     public function testRenderThenChildDisablesCacheInFrontendContext()
     {
         $GLOBALS['TSFE'] = (object) ['no_cache' => 0];
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['isFrontendContext', 'renderChildren'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['isFrontendContext', 'renderChildren'])->getMockForAbstractClass();
         $instance->expects($this->once())->method('renderChildren')->willReturn('test');
         $instance->expects($this->once())->method('isFrontendContext')->willReturn(true);
         $this->callInaccessibleMethod($instance, 'renderThenChild');
@@ -416,7 +406,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testIsFrontendContextReturnsFalse()
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMockForAbstractClass();
         $result = $this->callInaccessibleMethod($instance, 'isFrontendContext');
         $this->assertFalse($result);
     }

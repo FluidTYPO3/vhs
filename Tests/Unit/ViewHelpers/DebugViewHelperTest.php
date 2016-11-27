@@ -38,9 +38,9 @@ class DebugViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsDebugOutput()
     {
-        $viewHelper = $this->createInstance();
-        $viewHelperNode = new ViewHelperNode($viewHelper, []);
-        $result = $this->executeViewHelper([], [], $viewHelperNode);
+        $viewHelper2 = $this->buildViewHelperInstance();
+        $viewHelper = $this->buildViewHelperInstance([], [], $this->createViewHelperNode($viewHelper2, []));
+        $result = $viewHelper->render();
         $this->assertContains('ViewHelper Debug ViewHelper', $result);
         $this->assertContains('[ARGUMENTS]', $result);
         $this->assertContains('[CURRENT ARGUMENTS]', $result);
@@ -52,15 +52,8 @@ class DebugViewHelperTest extends AbstractViewHelperTest
      */
     public function debugsChildNodeObjectAccessors()
     {
-        $viewHelper = $this->createInstance();
-        $viewHelperNode = new ViewHelperNode($viewHelper, []);
-        $result = $this->executeViewHelperUsingTagContent(
-            'ObjectAccessor',
-            'test.test',
-            ['test' => ['test' => 'test']],
-            [],
-            $viewHelperNode
-        );
+        $viewHelper = $this->buildViewHelperInstance([], ['test' => ['test' => 'test']], $this->createObjectAccessorNode('test.test'));
+        $result = $viewHelper->render();
         $this->assertContains('[VARIABLE ACCESSORS]', $result);
     }
 }

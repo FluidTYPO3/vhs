@@ -25,7 +25,7 @@ class FilterViewHelperTest extends AbstractViewHelperTest
         $arguments = [
             'preserveKeys' => true
         ];
-        $result = $this->executeViewHelperUsingTagContent('Array', $subject, $arguments);
+        $result = $this->executeViewHelperUsingTagContent($subject, $arguments);
         $this->assertSame($subject, $result);
     }
 

@@ -46,6 +46,6 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest
         if (trim(shell_exec('which markdown')) === '') {
             $this->expectViewHelperException('Use of Markdown requires the "markdown" shell utility to be installed');
         }
-        $this->executeViewHelperUsingTagContent('Text', 'test', ['trim' => true, 'htmlentities' => false]);
+        $this->executeViewHelperUsingTagContent('test', ['trim' => true, 'htmlentities' => false]);
     }
 }

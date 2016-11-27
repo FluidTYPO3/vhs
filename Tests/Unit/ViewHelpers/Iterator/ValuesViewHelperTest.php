@@ -30,7 +30,7 @@ class ValuesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsValuesUsingTagContent()
     {
-        $result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'test', [], ['test' => ['foo' => 'bar']]);
+        $result = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('test'), [], ['test' => ['foo' => 'bar']]);
         $this->assertEquals(['bar'], $result);
     }
 
@@ -39,7 +39,7 @@ class ValuesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsValuesUsingTagContentAndAsArgument()
     {
-        $result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'test.0', ['as' => 'test', 'subject' => ['foo' => 'bar']], []);
+        $result = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('test.0'), ['as' => 'test', 'subject' => ['foo' => 'bar']]);
         $this->assertEquals('bar', $result);
     }
 

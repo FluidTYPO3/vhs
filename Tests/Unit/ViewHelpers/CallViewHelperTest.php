@@ -49,7 +49,7 @@ class CallViewHelperTest extends AbstractViewHelperTest
     public function executesMethodOnObjectFromChildContent()
     {
         $object = new \ArrayIterator(['foo', 'bar']);
-        $result = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', ['method' => 'count', 'arguments' => []], ['v' => $object]);
+        $result = $this->executeViewHelperUsingTagContent($object, ['method' => 'count', 'arguments' => []]);
         $this->assertEquals(2, $result);
     }
 }

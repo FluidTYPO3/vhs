@@ -25,7 +25,7 @@ class OrViewHelperTest extends AbstractViewHelperTest
         $result = $this->executeViewHelper($arguments);
         $content = $arguments['content'];
         unset($arguments['content']);
-        $result2 = $this->executeViewHelperUsingTagContent('Text', (string) $content, $arguments);
+        $result2 = $this->executeViewHelperUsingTagContent((string) $content, $arguments);
         $this->assertEquals($expected, $result);
         $this->assertEquals($result, $result2);
     }

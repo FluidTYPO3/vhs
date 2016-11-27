@@ -26,10 +26,10 @@ class RandomViewHelperTest extends AbstractViewHelperTest
     public function testRender(array $arguments, array $asArray)
     {
         if (true === isset($arguments['as'])) {
-            $value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
+            $value = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('variable'), $arguments);
         } else {
             $value = $this->executeViewHelper($arguments);
-            $value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', [], ['v' => $arguments['subject']]);
+            $value2 = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('v'), [], ['v' => $arguments['subject']]);
             if (null !== $value2) {
                 $this->assertContains($value2, $asArray);
             }

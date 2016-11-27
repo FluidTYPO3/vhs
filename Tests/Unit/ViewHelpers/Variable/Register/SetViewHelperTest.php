@@ -46,7 +46,7 @@ class SetViewHelperTest extends AbstractViewHelperTest
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $name = uniqid();
         $value = uniqid();
-        $this->executeViewHelperUsingTagContent('Text', $value, ['name' => $name]);
+        $this->executeViewHelperUsingTagContent($value, ['name' => $name]);
         $this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
     }
 }

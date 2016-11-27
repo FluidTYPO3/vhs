@@ -46,9 +46,7 @@ class TrimViewHelperTest extends AbstractViewHelperTest
      */
     public function canTrimChildContent()
     {
-        $arguments = [];
-        $node = $this->createNode('Text', ' trimmed ');
-        $test = $this->executeViewHelper($arguments, [], $node);
+        $test = $this->executeViewHelperUsingTagContent(' trimmed ', []);
         $this->assertSame('trimmed', $test);
     }
 }

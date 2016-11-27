@@ -87,7 +87,7 @@ class LinkViewHelperTest extends AbstractViewHelperTest
     {
         $this->pageService->expects($this->never())->method('getPage');
         $arguments = ['pageUid' => 1, 'pageTitleAs' => 'title'];
-        $result = $this->executeViewHelperUsingTagContent('Text', 'customtitle', $arguments, [], 'Vhs');
+        $result = $this->executeViewHelperUsingTagContent('customtitle', $arguments, [], 'Vhs');
         $this->assertContains('customtitle', $result);
     }
 

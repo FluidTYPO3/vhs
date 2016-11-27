@@ -27,7 +27,7 @@ class WordWrapViewHelperTest extends AbstractViewHelperTest
             'break' => PHP_EOL,
             'glue' => '|',
         ];
-        $test = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
+        $test = $this->executeViewHelperUsingTagContent($content, $arguments);
         $this->assertRegExp('/.{0,25}\|/', $test);
     }
 }

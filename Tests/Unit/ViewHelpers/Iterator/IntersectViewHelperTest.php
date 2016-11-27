@@ -36,7 +36,7 @@ class IntersectViewHelperTest extends AbstractViewHelperTest
         $array1 = ['a' => 'green', 'red', 'blue'];
         $array2 = ['b' => 'green', 'yellow', 'red'];
         $arguments = ['b' => $array2];
-        $result = $this->executeViewHelperUsingTagContent('Array', $array1, $arguments);
+        $result = $this->executeViewHelperUsingTagContent($array1, $arguments);
         $this->assertEquals(['a' => 'green', 0 => 'red'], $result);
     }
 }

@@ -37,7 +37,7 @@ class PregMatchViewHelperTest extends AbstractViewHelperTest
         $arguments = [
             'pattern' => '/[0-9]{3}/',
         ];
-        $test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('foo123bar', $arguments);
         $this->assertSame(1, count($test));
     }
 }

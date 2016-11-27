@@ -53,7 +53,7 @@ class SubstringViewHelperTest extends AbstractViewHelperTest
             'length' => null,
             'start' => 3
         ];
-        $test = $this->executeViewHelperUsingTagContent('Text', 'foobar', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('foobar', $arguments);
         $this->assertSame('bar', $test);
     }
 }
