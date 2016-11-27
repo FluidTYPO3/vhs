@@ -8,6 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Math: Median
  *
@@ -18,17 +21,18 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class MedianViewHelper extends AbstractSingleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+    use ArrayConsumingViewHelperTrait;
 
     /**
+     * @param mixed $a
      * @return mixed
-     * @throw Exception
      */
-    public function render()
+    protected static function calculateAction($a)
     {
-        $a = $this->getInlineArgument();
-        $aIsIterable = $this->assertIsArrayOrIterator($a);
+        $aIsIterable = static::assertIsArrayOrIterator($a);
         if (true === $aIsIterable) {
-            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+            $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             sort($a, SORT_NUMERIC);
             $size = count($a);
             $midpoint = $size / 2;

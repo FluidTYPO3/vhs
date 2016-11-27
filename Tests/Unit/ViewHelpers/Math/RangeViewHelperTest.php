@@ -13,15 +13,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 class RangeViewHelperTest extends AbstractMathViewHelperTest
 {
-
-    /**
-     * @test
-     */
-    public function testSingleArgumentNotIteratorPassesThrough()
-    {
-        $this->executeSingleArgumentTest(1, 1);
-    }
-
     /**
      * @test
      */
