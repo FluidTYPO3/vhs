@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -22,7 +23,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Has built-in insurance that first character of random string is
  * an alphabetic character (allowing safe use as DOM id for example).
  */
-class StringViewHelper extends AbstractViewHelper
+class StringViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
 

@@ -15,34 +15,6 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class ValuesViewHelperTest extends AbstractViewHelperTest
 {
-
-    /**
-     * @test
-     */
-    public function returnsValuesUsingArgument()
-    {
-        $result = $this->executeViewHelper(['subject' => ['foo' => 'bar']]);
-        $this->assertEquals(['bar'], $result);
-    }
-
-    /**
-     * @test
-     */
-    public function returnsValuesUsingTagContent()
-    {
-        $result = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('test'), [], ['test' => ['foo' => 'bar']]);
-        $this->assertEquals(['bar'], $result);
-    }
-
-    /**
-     * @test
-     */
-    public function returnsValuesUsingTagContentAndAsArgument()
-    {
-        $result = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('test.0'), ['as' => 'test', 'subject' => ['foo' => 'bar']]);
-        $this->assertEquals('bar', $result);
-    }
-
     /**
      * @test
      */

@@ -11,7 +11,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### L (localisation) ViewHelper
@@ -28,7 +29,7 @@ use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
  *     <v:l key="some.label" />
  *     <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
  */
-class LViewHelper extends AbstractViewHelper
+class LViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
 

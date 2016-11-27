@@ -24,16 +24,7 @@ class SliceViewHelperTest extends AbstractViewHelperTest
      */
     public function testRender(array $arguments, $expectedValue)
     {
-        if (true === isset($arguments['as'])) {
-            $value = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('variable'), $arguments);
-        } else {
-            $value = $this->executeViewHelper($arguments);
-            $haystack = $arguments['haystack'];
-            unset($arguments['haystack']);
-            $value2 = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('v'), $arguments, ['v' => $haystack]);
-            $this->assertEquals($value, $value2);
-        }
-        $this->assertEquals($value, $expectedValue);
+        $this->assertEquals($this->executeViewHelper($arguments), $expectedValue);
     }
 
     /**
@@ -44,9 +35,7 @@ class SliceViewHelperTest extends AbstractViewHelperTest
         return [
             [['haystack' => [], 'length' => 0, 'start' => 0], []],
             [['haystack' => ['foo', 'bar'], 'length' => 1, 'start' => 0], ['foo']],
-            [['haystack' => ['foo', 'bar'], 'length' => 1, 'start' => 0, 'as' => 'variable'], ['foo']],
             [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1], [1 => 'bar']],
-            [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1, 'as' => 'variable'], [1 => 'bar']],
         ];
     }
 }

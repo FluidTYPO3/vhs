@@ -24,14 +24,7 @@ class ReverseViewHelperTest extends AbstractViewHelperTest
      */
     public function testRender(array $arguments, $expectedValue)
     {
-        if (true === isset($arguments['as'])) {
-            $value = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('variable'), $arguments);
-        } else {
-            $value = $this->executeViewHelper($arguments);
-            $value2 = $this->executeViewHelperUsingTagContent($this->createObjectAccessorNode('v'), [], ['v' => $arguments['subject']]);
-            $this->assertEquals($value, $value2);
-        }
-        $this->assertEquals($value, $expectedValue);
+        $this->assertEquals($this->executeViewHelper($arguments), $expectedValue);
     }
 
     /**
@@ -46,9 +39,7 @@ class ReverseViewHelperTest extends AbstractViewHelperTest
         return [
             [['subject' => []], []],
             [['subject' => ['foo', 'bar']], [1 => 'bar', 0 => 'foo']],
-            [['subject' => ['foo', 'bar'], 'as' => 'variable'], [1 => 'bar', 0 => 'foo']],
             [['subject' => new \ArrayIterator(['foo', 'bar'])], [1 => 'bar', 0 => 'foo']],
-            [['subject' => new \ArrayIterator(['foo', 'bar']), 'as' => 'variable'], [1 => 'bar', 0 => 'foo']]
         ];
     }
 

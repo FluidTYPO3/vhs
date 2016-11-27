@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use NamelessCoder\FluidGap\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -46,7 +47,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  * interact with the PageRenderer or other "live" objects; this
  * includes many of the VHS ViewHelpers!
  */
-class CacheViewHelper extends AbstractRenderViewHelper
+class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
 

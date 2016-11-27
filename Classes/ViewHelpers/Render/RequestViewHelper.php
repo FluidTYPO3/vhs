@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
@@ -30,7 +31,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * in GET/POST parameters but must be provided as if the
  * arguments were sent directly to the Controller action.
  */
-class RequestViewHelper extends AbstractRenderViewHelper
+class RequestViewHelper extends AbstractRenderViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
 

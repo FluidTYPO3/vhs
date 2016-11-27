@@ -12,7 +12,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### ExtConf ViewHelper
@@ -25,7 +26,7 @@ use NamelessCoder\FluidGap\Traits\CompileWithRenderStatic;
  *
  * Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt`.
  */
-class ExtensionConfigurationViewHelper extends AbstractViewHelper
+class ExtensionConfigurationViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
 

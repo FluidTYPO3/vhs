@@ -11,7 +11,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as LegacyFluidObjectAccessorNode;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as StandaloneFluidObjectAccessorNode;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as LegacyFluidViewHelperNode;
 use \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as StandaloneFluidViewHelperNode;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -166,10 +167,10 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
     public function setChildNodes(array $childNodes)
     {
         foreach ($childNodes as $childNode) {
-            if (true === $childNode instanceof ViewHelperNode || $childNode instanceof FluidStandaloneViewHelperNode) {
+            if (true === $childNode instanceof LegacyFluidViewHelperNode || $childNode instanceof StandaloneFluidViewHelperNode) {
                 array_push($this->childViewHelperNodes, $childNode);
             }
-            if (true === $childNode instanceof ObjectAccessorNode || $childNode instanceof LegacyFluidViewHelperNode) {
+            if (true === $childNode instanceof LegacyFluidObjectAccessorNode || $childNode instanceof StandaloneFluidObjectAccessorNode) {
                 array_push($this->childObjectAccessorNodes, $childNode);
             }
         }
