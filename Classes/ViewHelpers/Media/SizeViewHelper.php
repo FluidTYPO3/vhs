@@ -19,6 +19,11 @@ class SizeViewHelper extends AbstractViewHelper
 {
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize arguments.
      *
      * @return void

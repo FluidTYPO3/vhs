@@ -18,4 +18,5 @@ abstract class AbstractMediaTagViewHelper extends AbstractMediaViewHelper
 {
 
     use TagViewHelperTrait;
+
 }

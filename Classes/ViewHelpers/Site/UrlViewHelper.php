@@ -25,6 +25,11 @@ class UrlViewHelper extends AbstractViewHelper implements CompilableInterface
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

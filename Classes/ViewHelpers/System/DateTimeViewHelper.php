@@ -23,6 +23,11 @@ class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterfa
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return integer
      */
     protected static function getTimestamp()

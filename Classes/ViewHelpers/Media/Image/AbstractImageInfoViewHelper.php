@@ -27,6 +27,11 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
     protected $resourceFactory;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Construct resource factory
      */
     public function __construct()

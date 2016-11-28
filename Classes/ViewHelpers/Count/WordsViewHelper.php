@@ -27,6 +27,11 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 class WordsViewHelper extends AbstractViewHelper
 {
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

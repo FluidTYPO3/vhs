@@ -31,6 +31,11 @@ class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
     protected static $pageService;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

@@ -23,6 +23,11 @@ class FirstViewHelper extends AbstractViewHelper implements CompilableInterface
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize arguments
      *
      * @return void

@@ -38,6 +38,11 @@ class CallViewHelper extends AbstractViewHelper implements CompilableInterface
     protected $escapeOutput = false;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

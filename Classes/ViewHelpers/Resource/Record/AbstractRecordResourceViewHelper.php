@@ -43,6 +43,11 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
     protected $configurationManager;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @return void
      */

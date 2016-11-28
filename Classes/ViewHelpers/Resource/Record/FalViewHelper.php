@@ -56,6 +56,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     protected $fileRepository;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Constructor
      */
     public function __construct()

@@ -30,6 +30,10 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected $configurationManager;
 
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager

@@ -77,12 +77,18 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
      * @var ObjectAccessorNode[]
      */
     protected $childObjectAccessorNodes = [];
+
+
     /**
-     * With this flag, you can disable the escaping interceptor inside this ViewHelper.
-     * THIS MIGHT CHANGE WITHOUT NOTICE, NO PUBLIC API!
      * @var boolean
      */
-    protected $escapingInterceptorEnabled = false;
+    protected $escapeOutput = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
     /**
      * @return string
      */

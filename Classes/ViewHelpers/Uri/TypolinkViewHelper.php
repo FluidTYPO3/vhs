@@ -47,6 +47,11 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initializes the arguments for the ViewHelper
      */
     public function initializeArguments()

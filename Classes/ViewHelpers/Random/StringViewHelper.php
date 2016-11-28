@@ -27,6 +27,14 @@ class StringViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     use CompileWithRenderStatic;
 
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @return void
+     */
     public function initializeArguments()
     {
         $this->registerArgument('length', 'integer', 'Length of string to generate');

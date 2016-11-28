@@ -45,6 +45,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     private $backupValues = [];
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @param PageService $pageService
      */
     public function injectPageService(PageService $pageService)

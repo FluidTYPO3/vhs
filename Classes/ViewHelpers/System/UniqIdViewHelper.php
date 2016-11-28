@@ -26,6 +26,11 @@ class UniqIdViewHelper extends AbstractViewHelper implements CompilableInterface
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

@@ -23,6 +23,11 @@ class GravatarViewHelper extends AbstractViewHelper implements CompilableInterfa
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Base url
      *
      * @var string

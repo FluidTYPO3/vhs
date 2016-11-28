@@ -25,6 +25,11 @@ class UncacheViewHelper extends AbstractViewHelper implements CompilableInterfac
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize
      *
      * @return void
