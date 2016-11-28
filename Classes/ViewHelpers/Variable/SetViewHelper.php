@@ -62,6 +62,11 @@ class SetViewHelper extends AbstractViewHelper implements CompilableInterface
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

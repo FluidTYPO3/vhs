@@ -26,6 +26,11 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper implement
     use ArrayConsumingViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

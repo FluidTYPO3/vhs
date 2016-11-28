@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,7 +26,12 @@ class RootlineViewHelper extends AbstractViewHelper implements CompilableInterfa
     use TemplateVariableViewHelperTrait;
 
     /**
-     * @api
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @return void
      */
     public function initializeArguments()
     {
@@ -34,8 +40,17 @@ class RootlineViewHelper extends AbstractViewHelper implements CompilableInterfa
         $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.');
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
-    {
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $pageUid = (integer) $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;

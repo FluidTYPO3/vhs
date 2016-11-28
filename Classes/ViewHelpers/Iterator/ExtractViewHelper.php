@@ -84,6 +84,11 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

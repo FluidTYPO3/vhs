@@ -27,6 +27,11 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 class SubstringViewHelper extends AbstractViewHelper
 {
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

@@ -27,6 +27,11 @@ class TimestampViewHelper extends AbstractViewHelper implements CompilableInterf
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

@@ -21,6 +21,11 @@ class PreviousViewHelper extends ContainsViewHelper implements CompilableInterfa
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Default implementation for use in compiled templates
      *
      * @param array $arguments

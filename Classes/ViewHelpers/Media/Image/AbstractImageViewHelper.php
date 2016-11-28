@@ -52,6 +52,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     protected $imageInfo;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @param ConfigurationManagerInterface $configurationManager
      * @return void
      */

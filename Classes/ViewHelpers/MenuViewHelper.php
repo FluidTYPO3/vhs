@@ -24,6 +24,9 @@ use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
 class MenuViewHelper extends AbstractMenuViewHelper
 {
 
+    /**
+     * @return void
+     */
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -31,9 +34,7 @@ class MenuViewHelper extends AbstractMenuViewHelper
             'pageUid',
             'integer',
             'Optional parent page UID to use as top level of menu. If left out will be detected from ' .
-            'rootLine using $entryLevel',
-            false,
-            null
+            'rootLine using $entryLevel'
         );
     }
 }

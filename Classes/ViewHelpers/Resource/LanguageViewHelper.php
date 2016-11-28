@@ -37,6 +37,11 @@ class LanguageViewHelper extends AbstractViewHelper
     const LOCALLANG_DEFAULT = 'locallang.xlf';
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Registers all arguments for this ViewHelper.
      *
      * @return void

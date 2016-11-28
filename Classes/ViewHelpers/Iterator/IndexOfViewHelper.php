@@ -21,6 +21,11 @@ class IndexOfViewHelper extends ContainsViewHelper
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Default implementation for use in compiled templates
      *
      * @param array $arguments

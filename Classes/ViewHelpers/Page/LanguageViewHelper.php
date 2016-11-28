@@ -24,6 +24,11 @@ class LanguageViewHelper extends AbstractViewHelper implements CompilableInterfa
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var PageService
      */
     protected static $pageService;
