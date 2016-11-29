@@ -27,7 +27,7 @@ cache:
 
 install:
   - composer require "typo3/cms:$TYPO3_VERSION"
-  - composer install
+  - composer install --prefer-dist
 
 before_script: mkdir -p build/logs
 
