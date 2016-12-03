@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual.
@@ -54,13 +55,18 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
         $rawRootLineData = $this->pageService->getRootLine($pageUid);
         $rawRootLineData = array_reverse($rawRootLineData);
         $rawRootLineData = array_slice($rawRootLineData, $entryLevel, $endLevel);
-        $rootLineData = $rawRootLineData;
-        if (false === (boolean) $this->arguments['showHiddenInMenu']) {
-            $rootLineData = [];
-            foreach ($rawRootLineData as $record) {
-                if (false === (boolean) $record['nav_hide']) {
-                    array_push($rootLineData, $record);
-                }
+        $rootLineData = [];
+        $showHidden = (boolean) $this->arguments['showHiddenInMenu'];
+        foreach ($rawRootLineData as $record) {
+            $isHidden = (boolean) $record['nav_hide'];
+            $isAllowedDoktype = in_array((int) $record['doktype'], [
+                PageRepository::DOKTYPE_DEFAULT,
+                PageRepository::DOKTYPE_LINK,
+                PageRepository::DOKTYPE_SHORTCUT,
+                PageRepository::DOKTYPE_MOUNTPOINT
+            ]);
+            if ((true === $showHidden && true === $isHidden || false === $isHidden) && true === $isAllowedDoktype) {
+                array_push($rootLineData, $record);
             }
         }
         $rootLine = $this->parseMenu($rootLineData);
