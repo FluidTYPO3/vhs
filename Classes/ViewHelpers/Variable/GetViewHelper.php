@@ -35,7 +35,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * If your target object is an array with unsequential yet
  * numeric indices (e.g. {123: 'value1', 513: 'value2'},
  * commonly seen in reindexed UID map arrays) use
- * `useRawIndex="TRUE"` to indicate you do not want your
+ * `useRawKeys="TRUE"` to indicate you do not want your
  * array/QueryResult/Iterator to be accessed by locating
  * the Nth element - which is the default behavior.
  *
