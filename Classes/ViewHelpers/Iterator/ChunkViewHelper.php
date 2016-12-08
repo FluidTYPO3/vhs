@@ -67,7 +67,10 @@ class ChunkViewHelper extends AbstractViewHelper implements CompilableInterface
         $count = (integer) $arguments['count'];
         $fixed = (boolean) $arguments['fixed'];
         $preserveKeys = (boolean) $arguments['preserveKeys'];
-        $subject = isset($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
+        $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
+            isset($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure(),
+            $preserveKeys
+        );
         $output = [];
         if (0 >= $count) {
             return $output;
