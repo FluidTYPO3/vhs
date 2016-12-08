@@ -77,6 +77,16 @@ class FalViewHelper extends ResourcesFalViewHelper
         }
         return $record;
     }
+    
+    /**
+     * @param array $record
+     * @return array
+     * @throws Exception
+     */
+    public function getResources($record)
+    {
+        return $this->getSlideRecords($record['uid']);
+    }
 
     /**
      * @param integer $pageUid
@@ -86,7 +96,7 @@ class FalViewHelper extends ResourcesFalViewHelper
     protected function getSlideRecordsFromPage($pageUid, $limit)
     {
         $pageRecord = $this->getRecord($pageUid);
-        $resources = $this->getResources($pageRecord);
+        $resources = parent::getResources($pageRecord);
         if (null !== $limit && count($resources) > $limit) {
             $resources = array_slice($resources, 0, $limit);
         }
