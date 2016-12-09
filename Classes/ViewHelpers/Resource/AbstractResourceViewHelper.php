@@ -93,7 +93,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
                 'uid_foreign',
                 'sys_category_record_mm',
-                'tablenames = \'sys_file\' AND uid_local IN (' . $sqlCategories . ')'
+                'tablenames = \'sys_file_metadata\' AND uid_local IN (' . $sqlCategories . ')'
             );
 
             $fileUids = [];
