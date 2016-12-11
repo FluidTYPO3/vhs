@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Counts number of lines in a string.
@@ -26,6 +27,8 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class SubstringViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * @var boolean
      */
@@ -42,18 +45,6 @@ class SubstringViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return integer
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
@@ -65,7 +56,7 @@ class SubstringViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         return mb_substr_count(
-            isset($arguments['haystack']) ? $arguments['haystack'] : $renderChildrenClosure(), $arguments['string']
+            $renderChildrenClosure(), $arguments['string']
         );
     }
 }

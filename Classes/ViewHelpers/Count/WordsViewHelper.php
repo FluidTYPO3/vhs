@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Counts words in a string.
@@ -26,6 +27,8 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class WordsViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * @var boolean
      */
@@ -38,18 +41,6 @@ class WordsViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('string', 'string', 'String to count, if not provided as tag content');
-    }
-
-    /**
-     * @return integer
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**
@@ -70,7 +61,7 @@ class WordsViewHelper extends AbstractViewHelper
                     str_replace(
                         '><',
                         '> <',
-                        isset($arguments['string']) ? $arguments['string'] : $renderChildrenClosure()
+                        $renderChildrenClosure()
                     )
                 )
             )

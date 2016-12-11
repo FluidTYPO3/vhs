@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Counts number of lines in a string.
@@ -26,6 +27,8 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class LinesViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * @var boolean
      */
@@ -41,18 +44,6 @@ class LinesViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return integer
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
@@ -63,7 +54,7 @@ class LinesViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $value = isset($arguments['string']) ? $arguments['string'] : $renderChildrenClosure();
+        $value = $renderChildrenClosure();
         if ((string) $value === '') {
             return 0;
         }
