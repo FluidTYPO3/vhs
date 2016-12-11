@@ -10,8 +10,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Lipsum ViewHelper
@@ -20,45 +23,14 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class LipsumViewHelper extends AbstractViewHelper
 {
-
-    /**
-     * @var string
-     */
-    protected $lipsum;
-
-    /**
-     * @var     ContentObjectRenderer
-     */
-    protected $contentObject;
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
-     * @return void
-     */
-    public function initialize()
-    {
-        $this->lipsum = $this->getDefaultLoremIpsum();
-    }
-
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-        $this->contentObject = $this->configurationManager->getContentObject();
-    }
+    use CompileWithRenderStatic;
 
     /**
      * Initialize arguments
      */
     public function initializeArguments()
     {
+        $this->registerArgument('lipsum', 'string', 'Optional, custom lipsum source');
         $this->registerArgument('paragraphs', 'integer', 'Number of paragraphs to output');
         $this->registerArgument('wordsPerParagraph', 'integer', 'Number of words per paragraph');
         $this->registerArgument(
@@ -79,17 +51,16 @@ class LipsumViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Renders Lorem Ipsum paragraphs. If $lipsum is provided it
-     * will be used as source text. If not provided as an argument
-     * or as inline argument, $lipsum is fetched from TypoScript settings.
-     *
-     * @param string $lipsum String of paragraphs file path or EXT:myext/path/to/file
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed|string
      */
-    public function render($lipsum = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        $lipsum = $argguments['lipsump'];
         if (strlen($lipsum) === 0) {
-            $lipsum = $this->lipsum;
+            $lipsum = static::getDefaultLoremIpsum();
         }
         if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
             // argument is most likely a file reference.
@@ -103,23 +74,23 @@ class LipsumViewHelper extends AbstractViewHelper
                     'vhs',
                     GeneralUtility::SYSLOG_SEVERITY_WARNING
                 );
-                $lipsum = $this->lipsum;
+                $lipsum = static::getDefaultLoremIpsum();
             }
         }
         $lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
         $paragraphs = explode("\n", $lipsum);
-        $paragraphs = array_slice($paragraphs, 0, intval($this->arguments['paragraphs']));
+        $paragraphs = array_slice($paragraphs, 0, intval($arguments['paragraphs']));
         foreach ($paragraphs as $index => $paragraph) {
-            $length = $this->arguments['wordsPerParagraph']
-                + rand(0 - intval($this->arguments['skew']), intval($this->arguments['skew']));
+            $length = $arguments['wordsPerParagraph']
+                + rand(0 - intval($arguments['skew']), intval($arguments['skew']));
             $words = explode(' ', $paragraph);
             $paragraphs[$index] = implode(' ', array_slice($words, 0, $length));
         }
 
         $lipsum = implode("\n", $paragraphs);
-        if ($this->arguments['html']) {
-            $tsParserPath = $this->arguments['parseFuncTSPath'] ? '< ' . $this->arguments['parseFuncTSPath'] : null;
-            $lipsum = $this->contentObject->parseFunc($lipsum, [], $tsParserPath);
+        if ($arguments['html']) {
+            $tsParserPath = $arguments['parseFuncTSPath'] ? '< ' . $arguments['parseFuncTSPath'] : null;
+            $lipsum = static::getContentObject()->parseFunc($lipsum, [], $tsParserPath);
         }
         return $lipsum;
     }
@@ -132,8 +103,13 @@ class LipsumViewHelper extends AbstractViewHelper
      *
      * @return string
      */
-    protected function getDefaultLoremIpsum()
+    protected static function getDefaultLoremIpsum()
     {
+        static $safeLipsum;
+
+        if (isset($safeLipsum)) {
+            return $safeLipsum;
+        }
         // Note: this MAY look suspicious but it really is just a whole lot of Lipsum
         // in a compressed state. Just to make sure that you trust the block, we run
         // strip_tags and htmlentities on the string before it is returned. This is not
@@ -185,7 +161,15 @@ x6M5TL9+9eRSN6k7qIfMQASX3oQXVGMtmPSfLjuBzGGeNjszJMznOLW8FUMbkptifPaZV13sSQyF0qOd
 DMIQpga2uYYtOVQwtd838NhauhXzLF9AYQu16hr9u1C42SO8/kznuFkuu8wtkKoFbuoDxm3Cvn8OMziHcxkfZKgc+egBghffP+bZb9GrsmjORQPza31VR4
 fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
         $uncompressed = gzuncompress(base64_decode($lipsum));
-        $safe = htmlentities(strip_tags($uncompressed));
-        return $safe;
+        $safeLipsum = htmlentities(strip_tags($uncompressed));
+        return $safeLipsum;
+    }
+
+    /**
+     * @return ContentObjectRenderer
+     */
+    protected static function getContentObject()
+    {
+        return GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class)->contentObject;
     }
 }

@@ -9,22 +9,32 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Url;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Urldecodes the provided string.
  */
 class DecodeViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $content
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('content', 'string', 'Content to decode from URI');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render($content = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
-        return rawurldecode($content);
+        return rawurldecode($renderChildrenClosure());
     }
 }

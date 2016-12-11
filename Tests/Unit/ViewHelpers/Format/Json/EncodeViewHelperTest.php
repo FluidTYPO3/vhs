@@ -74,10 +74,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmptyJsonObjectForEmptyArguments()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
-
-        $this->assertEquals('{}', $viewHelper->render());
+        $this->assertEquals('{}', $this->executeViewHelper([]));
     }
 
     /**
@@ -98,10 +95,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
 
         $expected = '{"foo":"bar","bar":true,"baz":1,"foobar":null,"date":3216548000,"traversable":[]}';
 
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
-
-        $this->assertEquals($expected, $viewHelper->render());
+        $this->assertEquals($expected, $this->executeViewHelper(['value' => $fixture]));
     }
 
     /**
@@ -109,11 +103,8 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionForInvalidArgument()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue("\xB1\x31"));
-
         $this->expectViewHelperException();
-        $this->assertEquals('null', $viewHelper->render());
+        $this->assertEquals('null', $this->executeViewHelper(['value' => "\xB1\x31"]));
     }
 
     /**
@@ -127,9 +118,6 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
         $fixture = ['foo' => $date, 'bar' => ['baz' => $date]];
         $expected = sprintf('{"foo":%s,"bar":{"baz":%s}}', $jsTimestamp, $jsTimestamp);
 
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
-
-        $this->assertEquals($expected, $viewHelper->render());
+        $this->assertEquals($expected, $this->executeViewHelper(['value' => $fixture]));
     }
 }
