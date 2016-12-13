@@ -9,26 +9,41 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Replaces $substring in $content with $replacement.
  */
 class ReplaceViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $substring
-     * @param string $content
-     * @param string $replacement
-     * @param integer $count
-     * @param boolean $caseSensitive
-     * @return string
+     * @return void
      */
-    public function render($substring, $content = null, $replacement = '', $count = null, $caseSensitive = true)
+    public function initializeArguments()
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
+        $this->registerArgument('content', 'string', 'Content in which to perform replacement');
+        $this->registerArgument('substring', 'string', 'Substring to replace', true);
+        $this->registerArgument('replacement', 'string', 'Replacement to insert', false, '');
+        $this->registerArgument('count', 'integer', 'Maximum number of times to perform replacement');
+        $this->registerArgument('caseSensitive', 'boolean', 'If true, perform case-sensitive replacement', false, true);
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $content = $renderChildrenClosure();
+        $substring = $arguments['substring'];
+        $replacement = $arguments['replacement'];
+        $count = (integer) $arguments['count'];
+        $caseSensitive = (boolean) $arguments['caseSensitive'];
         $function = (true === $caseSensitive ? 'str_replace' : 'str_ireplace');
         return $function($substring, $replacement, $content, $count);
     }

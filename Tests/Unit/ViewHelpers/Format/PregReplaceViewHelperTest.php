@@ -29,17 +29,4 @@ class PregReplaceViewHelperTest extends AbstractViewHelperTest
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('foobazbar', $test);
     }
-
-    /**
-     * @test
-     */
-    public function canTakeSubjectFromRenderChildren()
-    {
-        $arguments = [
-            'pattern' => '/[0-9]{3}/',
-            'replacement' => 'baz',
-        ];
-        $test = $this->executeViewHelperUsingTagContent('foo123bar', $arguments);
-        $this->assertSame('foobazbar', $test);
-    }
 }

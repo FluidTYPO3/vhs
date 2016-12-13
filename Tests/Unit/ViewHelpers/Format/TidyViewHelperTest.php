@@ -9,7 +9,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\ViewHelpers\Format\TidyViewHelper;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Class TidyViewHelperTest
@@ -22,32 +24,17 @@ class TidyViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsErrorWhenNoTidyIsInstalled()
     {
-        $instance = $this->createInstance();
-        ObjectAccess::setProperty($instance, 'hasTidy', false, true);
-        $this->setExpectedException('RuntimeException', null, 1352059753);
-        $instance->render('test', 'utf8');
-    }
-
-    /**
-     * @test
-     */
-    public function canTidySourceFromTagContent()
-    {
-        $instance = $this->createInstance();
-        if (false === class_exists('tidy')) {
-            $this->markTestSkipped('No tidy support');
-            return;
+        if (!class_exists('tidy')) {
+            // Note: CI setup has tidy on some but not all variants. We can only test for exceptions on those that don't.
+            $this->setExpectedException('RuntimeException', null, 1352059753);
         }
-        $source = '<foo> <bar>
-			</bar>			</foo>';
-        $test = $this->executeViewHelperUsingTagContent($source, ['encoding' => 'utf8']);
-        $this->assertNotSame($source, $test);
+        TidyViewHelper::renderStatic(['content' => 'test', 'encoding' => 'utf8'], function () {}, $this->objectManager->get(RenderingContext::class));
     }
 
     /**
      * @test
      */
-    public function canTidySourceFromArgument()
+    public function canTidySource()
     {
         $instance = $this->createInstance();
         if (false === class_exists('tidy')) {

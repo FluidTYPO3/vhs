@@ -43,17 +43,4 @@ class SubstringViewHelperTest extends AbstractViewHelperTest
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('oba', $test);
     }
-
-    /**
-     * @test
-     */
-    public function canRenderUsingTagContent()
-    {
-        $arguments = [
-            'length' => null,
-            'start' => 3
-        ];
-        $test = $this->executeViewHelperUsingTagContent('foobar', $arguments);
-        $this->assertSame('bar', $test);
-    }
 }

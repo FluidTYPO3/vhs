@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Processes output as plaintext. Will trim whitespace off
@@ -21,18 +23,27 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class PlaintextViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('content', 'string', 'Content to trim each line of text within');
+    }
 
     /**
      * Trims content, then trims each line of content
      *
-     * @param string $content
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render($content = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
+        $content = $renderChildrenClosure();
         $content = trim($content);
         $lines = explode("\n", $content);
         $lines = array_map('trim', $lines);

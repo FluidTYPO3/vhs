@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Trims $content by stripping off $characters (string list
@@ -16,19 +18,29 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TrimViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('content', 'string', 'String to trim');
+        $this->registerArgument('characters', 'string', 'List of characters to trim, no separators, e.g. "abc123"');
+    }
 
     /**
      * Trims content by stripping off $characters
      *
-     * @param string $content
-     * @param string $characters
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render($content = null, $characters = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
+        $characters = $arguments['characters'];
+        $content = $renderChildrenClosure();
         if (false === empty($characters)) {
             $content = trim($content, $characters);
         } else {

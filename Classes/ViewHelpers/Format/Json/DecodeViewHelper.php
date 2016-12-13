@@ -11,26 +11,36 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Converts the JSON encoded argument into a PHP variable.
  */
 class DecodeViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $json
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('json', 'string', 'JSON string to decode');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render($json = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $json) {
-            $json = $this->renderChildren();
-            if (true === empty($json)) {
-                return null;
-            }
+        $json = $renderChildrenClosure();
+        if (true === empty($json)) {
+            return null;
         }
-
         $value = json_decode($json, true);
 
         if (JSON_ERROR_NONE !== json_last_error()) {

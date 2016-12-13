@@ -9,6 +9,10 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Placeholder;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class LipsumViewHelperTest
@@ -43,6 +47,9 @@ class LipsumViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsHtmlArgument()
     {
+        $mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)->setMethods(['parseFunc'])->getMock();
+        $mockContentObject->expects($this->once())->method('parseFunc')->willReturn('foobar');
+        GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class)->contentObject = $mockContentObject;
         $arguments = $this->arguments;
         $arguments['html'] = true;
         $test = $this->executeViewHelper($arguments);
