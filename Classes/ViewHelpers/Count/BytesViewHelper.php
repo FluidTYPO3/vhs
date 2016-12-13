@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Counts bytes (multibyte-safe) in a string.
@@ -26,6 +27,8 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class BytesViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * @var boolean
      */
@@ -42,18 +45,6 @@ class BytesViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return integer
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
@@ -64,6 +55,6 @@ class BytesViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return mb_strlen(isset($arguments['string']) ? $arguments['string'] : $renderChildrenClosure(), $arguments['encoding']);
+        return mb_strlen($renderChildrenClosure(), $arguments['encoding']);
     }
 }
