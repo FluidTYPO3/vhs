@@ -10,12 +10,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Returns an array of files found in the provided path.
  */
 class FilesViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * Initialize arguments.
@@ -25,7 +28,7 @@ class FilesViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('path', 'string', 'Path to the folder containing the files to be listed.', true);
+        $this->registerArgument('path', 'string', 'Path to the folder containing the files to be listed.');
         $this->registerArgument(
             'extensionList',
             'string',
@@ -57,23 +60,19 @@ class FilesViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return array
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return array|string
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $path = $this->arguments['path'];
+        $path = $renderChildrenClosure();
 
-        if (null === $path) {
-            $path = $this->renderChildren();
-            if (null === $path) {
-                return [];
-            }
-        }
-
-        $extensionList  = $this->arguments['extensionList'];
-        $prependPath    = $this->arguments['prependPath'];
-        $order          = $this->arguments['order'];
-        $excludePattern = $this->arguments['excludePattern'];
+        $extensionList = $arguments['extensionList'];
+        $prependPath = $arguments['prependPath'];
+        $order = $arguments['order'];
+        $excludePattern = $arguments['excludePattern'];
 
         $files = GeneralUtility::getFilesInDir($path, $extensionList, $prependPath, $order, $excludePattern);
 
