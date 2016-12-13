@@ -19,26 +19,13 @@ class PrependViewHelperTest extends AbstractViewHelperTest
     /**
      * @test
      */
-    public function canPrependValueToArgument()
+    public function canPrependValue()
     {
         $arguments = [
             'subject' => 'before',
             'add' => 'after'
         ];
         $test = $this->executeViewHelper($arguments);
-        $this->assertStringStartsWith($arguments['add'], $test);
-    }
-
-    /**
-     * @test
-     */
-    public function canPrependValueToChildContent()
-    {
-        $arguments = [
-            'add' => 'after'
-        ];
-        $node = $this->createNode('Text', 'before');
-        $test = $this->executeViewHelper($arguments, [], $node);
         $this->assertStringStartsWith($arguments['add'], $test);
     }
 }

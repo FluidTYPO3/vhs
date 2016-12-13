@@ -19,7 +19,7 @@ class ReplaceViewHelperTest extends AbstractViewHelperTest
     /**
      * @test
      */
-    public function canReplaceUsingArguments()
+    public function canReplace()
     {
         $arguments = [
             'content' => 'foobar',
@@ -30,16 +30,4 @@ class ReplaceViewHelperTest extends AbstractViewHelperTest
         $this->assertSame('bar', $test);
     }
 
-    /**
-     * @test
-     */
-    public function canReplaceUsingTagContent()
-    {
-        $arguments = [
-            'substring' => 'foo',
-            'replacement' => ''
-        ];
-        $test = $this->executeViewHelperUsingTagContent('foobar', $arguments);
-        $this->assertSame('bar', $test);
-    }
 }

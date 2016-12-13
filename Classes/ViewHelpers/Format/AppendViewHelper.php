@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Format: Append string content
@@ -37,17 +39,25 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class AppendViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $add
-     * @param string $subject
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('subject', 'string', 'String to append other string to');
+        $this->registerArgument('add', 'string', 'String to append');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render($add, $subject = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $subject) {
-            $subject = $this->renderChildren();
-        }
-        return $subject . $add;
+        return $renderChildrenClosure() . $arguments['add'];
     }
 }

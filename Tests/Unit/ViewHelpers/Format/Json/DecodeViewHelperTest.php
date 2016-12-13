@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\ViewHelpers\Format\Json\DecodeViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Class DecodeViewHelperTest
@@ -21,10 +23,8 @@ class DecodeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNullForEmptyArguments()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(''));
-
-        $this->assertNull($viewHelper->render());
+        $result = DecodeViewHelper::renderStatic([], function () {}, $this->objectManager->get(RenderingContext::class));
+        $this->assertNull($result);
     }
 
     /**
@@ -42,10 +42,8 @@ class DecodeViewHelperTest extends AbstractViewHelperTest
             'foobar' => null,
         ];
 
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($fixture));
-
-        $this->assertEquals($expected, $viewHelper->render());
+        $result = $this->executeViewHelper(['json' => $fixture]);
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -54,11 +52,7 @@ class DecodeViewHelperTest extends AbstractViewHelperTest
     public function throwsExceptionForInvalidArgument()
     {
         $invalidJson = "{'foo': 'bar'}";
-
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($invalidJson));
-
         $this->expectViewHelperException();
-        $this->assertEquals('null', $viewHelper->render());
+        $this->executeViewHelper(['json' => $invalidJson]);
     }
 }

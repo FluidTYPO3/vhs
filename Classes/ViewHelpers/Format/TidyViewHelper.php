@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Tidy-processes a string (HTML source), applying proper
@@ -16,34 +18,29 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TidyViewHelper extends AbstractViewHelper
 {
-
-    /**
-     * @var boolean
-     */
-    protected $hasTidy = false;
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @return void
      */
-    public function initialize()
+    public function initializeArguments()
     {
-        $this->hasTidy = class_exists('tidy');
+        $this->registerArgument('content', 'string', 'Content to tidy');
+        $this->registerArgument('encoding', 'string', 'Encoding of string', false, 'utf8');
     }
 
     /**
-     * Trims content, then trims each line of content
-     *
-     * @param string $content
-     * @param string $encoding
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @throws \RuntimeException
      * @return string
      */
-    public function render($content = null, $encoding = 'utf8')
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
-        if (true === $this->hasTidy) {
+        $content = $renderChildrenClosure();
+        $encoding = $arguments['encoding'];
+        if (true === class_exists('tidy')) {
             $tidy = tidy_parse_string($content, [], $encoding);
             $tidy->cleanRepair();
             return (string) $tidy;
