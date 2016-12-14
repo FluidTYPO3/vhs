@@ -88,12 +88,14 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         $files = [];
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
+        $tablename = $this->getTablenameForSystemConfiguration();
+        
         if (false === empty($categories)) {
             $sqlCategories = implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'));
             $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
                 'uid_foreign',
                 'sys_category_record_mm',
-                'tablenames = \'sys_file_metadata\' AND uid_local IN (' . $sqlCategories . ')'
+                'tablenames = ' . $tablename . ' AND uid_local IN (' . $sqlCategories . ')'
             );
 
             $fileUids = [];
@@ -171,5 +173,25 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         return $argument;
+    }
+    
+    /**
+     * This fuction decides if sys_file or sys_file_metadata is used for a query on sys_category_record_mm
+     * This is neccessary because it depends on the TYPO3 Version and the state of the extension filemetadata if
+     * 'sys_file' should be used or 'sys_file_metadata'
+     *
+     * @return string
+     */
+    private function getTablenameForSystemConfiguration()
+    {
+        $sys_file_metadata_is_used = ExtensionManagementUtility::isLoaded('filemetadata');
+
+        if ($sys_file_metadata_is_used || version_compare(TYPO3_version, '8.0.0', '>')) {
+            $tablenames = '\'sys_file_metadata\'';
+            return $tablenames;
+        } else {
+            $tablenames = '\'sys_file\'';
+            return $tablenames;
+        }
     }
 }
