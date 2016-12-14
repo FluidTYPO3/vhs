@@ -89,7 +89,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         if (false === empty($categories)) {
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+            $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 'uid_foreign',
                 'sys_category_record_mm',
                 sprintf(
