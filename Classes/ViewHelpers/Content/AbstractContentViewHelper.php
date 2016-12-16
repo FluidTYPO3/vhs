@@ -149,7 +149,36 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $conditions .= ' AND t3ver_state <= 1';
 
         $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
+
+        if ($GLOBALS['TSFE']->sys_page->versioningPreview) {
+            $sortings = $this->getWorkspaceSortingValues($rows);
+            usort($rows, function ($a, $b) use ($sortings) {
+                $sortingA = isset($sortings[$a['uid']]) ? $sortings[$a['uid']] : $a['sorting'];
+                $sortingB = isset($sortings[$b['uid']]) ? $sortings[$b['uid']] : $b['sorting'];
+                return ($sortingA < $sortingB) ? -1 : 1;
+            });
+        }
+
         return $rows;
+    }
+
+    /**
+     * Gets an array of sorting values indexed by record UID.
+     *
+     * @param array $records
+     * @return array
+     */
+    protected function getWorkspaceSortingValues(array $records) {
+        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+            't3ver_move_id,sorting',
+            'tt_content',
+            sprintf(
+                't3ver_move_id IN (%s) AND t3ver_wsid = %d',
+                implode(', ', array_column($records, 'uid')),
+                $GLOBALS['TSFE']->sys_page->versioningWorkspaceId
+            )
+        );
+        return array_combine(array_column($rows, 't3ver_move_id'), array_column($rows, 'sorting'));
     }
 
     /**
