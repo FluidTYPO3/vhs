@@ -21,11 +21,11 @@ class IsObjectViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildIfConditionMatched()
     {
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'value' => new \DateTime('now')
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -38,11 +38,11 @@ class IsObjectViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildIfConditionNotMatched()
     {
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'value' => 1
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 

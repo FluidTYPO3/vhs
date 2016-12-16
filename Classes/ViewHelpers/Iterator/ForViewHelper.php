@@ -7,13 +7,18 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Repeats rendering of children with a typical for loop: starting at
  * index $from it will loop until the index has reached $to.
  */
-class ForViewHelper extends AbstractLoopViewHelper
+class ForViewHelper extends AbstractLoopViewHelper implements CompilableInterface
 {
+    use CompileWithRenderStatic;
 
     /**
      * @return void
@@ -33,16 +38,22 @@ class ForViewHelper extends AbstractLoopViewHelper
     }
 
     /**
-     * @throws \RuntimeException
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
-    {
-        $to = intval($this->arguments['to']);
-        $from = intval($this->arguments['from']);
-        $step = intval($this->arguments['step']);
-        $iteration = $this->arguments['iteration'];
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $to = intval($arguments['to']);
+        $from = intval($arguments['from']);
+        $step = intval($arguments['step']);
+        $iteration = $arguments['iteration'];
         $content = '';
+        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
 
         if (0 === $step) {
             throw new \RuntimeException('"step" may not be 0.', 1383267698);
@@ -54,25 +65,25 @@ class ForViewHelper extends AbstractLoopViewHelper
             throw new \RuntimeException('"step" must be smaller than 0 if "from" is greater than "to".', 1383268415);
         }
 
-        if (true === $this->templateVariableContainer->exists($iteration)) {
-            $backupVariable = $this->templateVariableContainer->get($iteration);
-            $this->templateVariableContainer->remove($iteration);
+        if (true === $variableProvider->exists($iteration)) {
+            $backupVariable = $variableProvider->get($iteration);
+            $variableProvider->remove($iteration);
         }
 
         if ($from === $to) {
-            $content = $this->renderIteration($from, $from, $to, $step, $iteration);
+            $content = static::renderIteration($from, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
         } elseif ($from < $to) {
             for ($i = $from; $i <= $to; $i += $step) {
-                $content .= $this->renderIteration($i, $from, $to, $step, $iteration);
+                $content .= static::renderIteration($i, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
             }
         } else {
             for ($i = $from; $i >= $to; $i += $step) {
-                $content .= $this->renderIteration($i, $from, $to, $step, $iteration);
+                $content .= static::renderIteration($i, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
             }
         }
 
         if (true === isset($backupVariable)) {
-            $this->templateVariableContainer->add($iteration, $backupVariable);
+            $variableProvider->add($iteration, $backupVariable);
         }
 
         return $content;

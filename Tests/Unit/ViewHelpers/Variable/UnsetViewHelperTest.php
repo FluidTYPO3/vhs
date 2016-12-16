@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * Class UnsetViewHelperTest
@@ -21,8 +22,16 @@ class UnsetViewHelperTest extends AbstractViewHelperTest
      */
     public function canUnsetVariable()
     {
-        $variables = new \ArrayObject(array('test' => true));
-        $this->executeViewHelper(array('name' => 'test'), $variables);
-        $this->assertNotContains('test', $variables);
+        $variables = new \ArrayObject(['test' => 'test']);
+        $instance = $this->buildViewHelperInstance(['name' => 'test']);
+        $context = ObjectAccess::getProperty($instance, 'renderingContext', true);
+        if (method_exists($context, 'getVariableProvider')) {
+            $provider = $context->getVariableProvider();
+        } else {
+            $provider = $context->getTemplateVariableContainer();
+        }
+        $provider['test'] = 'test';
+        $instance->initializeArgumentsAndRender();
+        $this->assertNotContains('test', $provider->getAll());
     }
 }

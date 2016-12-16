@@ -27,7 +27,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function testDualArgumentIteratorFirst()
     {
-        $this->executeDualArgumentTest(array(4, 8), 2, array(2, 4));
+        $this->executeDualArgumentTest([4, 8], 2, [2, 4]);
     }
 
     /**
@@ -35,8 +35,8 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeMissingArgumentTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
-        $this->executeViewHelper(array());
+        $this->expectViewHelperException('Required argument "b" was not supplied');
+        $this->executeViewHelper(['a' => 1, 'fail' => true]);
     }
 
     /**
@@ -44,8 +44,8 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidFirstArgumentTypeTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
-        $this->executeViewHelper(array('b' => 1, 'fail' => true));
+        $this->expectViewHelperException('Required argument "a" was not supplied');
+        $this->executeViewHelper(['b' => 1, 'fail' => true]);
     }
 
     /**
@@ -53,7 +53,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidSecondArgumentTypeTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator');
-        $this->executeViewHelper(array('a' => 1, 'b' => array(1), 'fail' => true));
+        $this->expectViewHelperException('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator');
+        $this->executeViewHelper(['a' => 1, 'b' => [1], 'fail' => true]);
     }
 }

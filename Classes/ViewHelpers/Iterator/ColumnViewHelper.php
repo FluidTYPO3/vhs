@@ -10,6 +10,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -70,19 +73,22 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * the model of the entity and even then support is limited to first
  * level properties' values without dots in their names*.
  */
-class ColumnViewHelper extends AbstractViewHelper
+class ColumnViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @return void
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
         $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
         $this->registerArgument(
             'columnKey',
@@ -94,15 +100,27 @@ class ColumnViewHelper extends AbstractViewHelper
             'string',
             'Name of the column whose values will become the index of the new array'
         );
+        $this->registerAsArgument();
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render()
-    {
-        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-        $output = array_column($subject, $this->arguments['columnKey'], $this->arguments['indexKey']);
-        return $this->renderChildrenWithVariableOrReturnInput($output);
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $subject = isset($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
+        $output = array_column($subject, $arguments['columnKey'], $arguments['indexKey']);
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $output,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 }

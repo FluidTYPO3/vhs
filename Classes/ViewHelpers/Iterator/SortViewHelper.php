@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\BasicViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
@@ -19,6 +20,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -31,7 +33,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  *         // iterating data which is ONLY sorted while rendering this particular loop
  *     </f:for>
  */
-class SortViewHelper extends AbstractViewHelper
+class SortViewHelper extends AbstractViewHelper implements CompilableInterface
 {
 
     use BasicViewHelperTrait;
@@ -169,14 +171,14 @@ class SortViewHelper extends AbstractViewHelper
     protected function sortObjectStorage($storage)
     {
         /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var ObjectStorage $temp */
-        $temp = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+        $temp = $objectManager->get(ObjectStorage::class);
         foreach ($storage as $item) {
             $temp->attach($item);
         }
         $sorted = $this->sortArray($storage);
-        $storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+        $storage = $objectManager->get(ObjectStorage::class);
         foreach ($sorted as $item) {
             $storage->attach($item);
         }
@@ -207,7 +209,6 @@ class SortViewHelper extends AbstractViewHelper
      * Parses the supplied flags into the proper value for the sorting
      * function.
      * @return int
-     * @throws Exception
      */
     protected function getSortFlags()
     {
@@ -215,7 +216,7 @@ class SortViewHelper extends AbstractViewHelper
         $flags = 0;
         foreach ($constants as $constant) {
             if (false === in_array($constant, $this->allowedSortFlags)) {
-                throw new Exception(
+                ErrorUtility::throwViewHelperException(
                     'The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed ' .
                     'constants are: ' . implode(', ', $this->allowedSortFlags) . '.',
                     1404220538

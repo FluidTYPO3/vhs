@@ -21,11 +21,11 @@ class IsNumericViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildIfConditionMatched()
     {
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'value' => '123'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -38,11 +38,11 @@ class IsNumericViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildIfConditionNotMatched()
     {
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'value' => 'z123'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 

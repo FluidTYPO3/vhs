@@ -21,10 +21,10 @@ class PregMatchViewHelperTest extends AbstractViewHelperTest
      */
     public function canMatchValues()
     {
-        $arguments = array(
+        $arguments = [
             'subject' => 'foo123bar',
             'pattern' => '/[0-9]{3}/',
-        );
+        ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame(1, count($test));
     }
@@ -34,10 +34,10 @@ class PregMatchViewHelperTest extends AbstractViewHelperTest
      */
     public function canTakeSubjectFromRenderChildren()
     {
-        $arguments = array(
+        $arguments = [
             'pattern' => '/[0-9]{3}/',
-        );
-        $test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
+        ];
+        $test = $this->executeViewHelperUsingTagContent('foo123bar', $arguments);
         $this->assertSame(1, count($test));
     }
 }

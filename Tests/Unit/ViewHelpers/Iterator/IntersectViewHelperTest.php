@@ -21,11 +21,11 @@ class IntersectViewHelperTest extends AbstractViewHelperTest
      */
     public function intersectTest()
     {
-        $array1 = array('a' => 'green', 'red', 'blue');
-        $array2 = array('b' => 'green', 'yellow', 'red');
-        $arguments = array('a' => $array1, 'b' => $array2);
+        $array1 = ['a' => 'green', 'red', 'blue'];
+        $array2 = ['b' => 'green', 'yellow', 'red'];
+        $arguments = ['a' => $array1, 'b' => $array2];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(array('a' => 'green', 0 => 'red'), $result);
+        $this->assertEquals(['a' => 'green', 0 => 'red'], $result);
     }
 
     /**
@@ -33,10 +33,10 @@ class IntersectViewHelperTest extends AbstractViewHelperTest
      */
     public function intersectTestWithTagContent()
     {
-        $array1 = array('a' => 'green', 'red', 'blue');
-        $array2 = array('b' => 'green', 'yellow', 'red');
-        $arguments = array('b' => $array2);
-        $result = $this->executeViewHelperUsingTagContent('Array', $array1, $arguments);
-        $this->assertEquals(array('a' => 'green', 0 => 'red'), $result);
+        $array1 = ['a' => 'green', 'red', 'blue'];
+        $array2 = ['b' => 'green', 'yellow', 'red'];
+        $arguments = ['b' => $array2];
+        $result = $this->executeViewHelperUsingTagContent($array1, $arguments);
+        $this->assertEquals(['a' => 'green', 0 => 'red'], $result);
     }
 }

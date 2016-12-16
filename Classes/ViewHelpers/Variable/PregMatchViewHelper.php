@@ -12,17 +12,23 @@ use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### PregMatch regular expression ViewHelper
  *
  * Implementation of `preg_match' for Fluid.
  */
-class PregMatchViewHelper extends AbstractViewHelper
+class PregMatchViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @return void
@@ -46,7 +52,7 @@ class PregMatchViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (empty($arguments['subject'])) {
+        if (!isset($arguments['subject']) && !isset($arguments['as'])) {
             $subject = $renderChildrenClosure();
         } else {
             $subject = $arguments['subject'];

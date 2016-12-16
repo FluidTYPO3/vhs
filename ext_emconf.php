@@ -11,7 +11,7 @@ $EM_CONF[$_EXTKEY] = [
   'conflicts' => '',
   'priority' => '',
   'module' => '',
-  'state' => 'stable',
+  'state' => 'beta',
   'internal' => '',
   'uploadfolder' => 0,
   'createDirs' => '',
@@ -22,7 +22,7 @@ $EM_CONF[$_EXTKEY] = [
   'constraints' => [
     'depends' => [
       'php' => '5.5.0-7.0.99',
-      'typo3' => '7.6.0-8.4.99',
+      'typo3' => '7.6.13-8.4.99',
     ],
     'conflicts' => [],
     'suggests' => [],

@@ -8,6 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Math: Range
  *
@@ -17,24 +20,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class RangeViewHelper extends AbstractSingleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+    use ArrayConsumingViewHelperTrait;
 
     /**
+     * @param mixed $a
      * @return mixed
      * @throw Exception
      */
-    public function render()
+    protected static function calculateAction($a)
     {
-        $a = $this->getInlineArgument();
-        $aIsIterable = $this->assertIsArrayOrIterator($a);
-        if (true === $aIsIterable) {
-            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
-            sort($a, SORT_NUMERIC);
-            if (1 === count($a)) {
-                return [reset($a), reset($a)];
-            } else {
-                return [array_shift($a), array_pop($a)];
-            }
-        }
-        return $a;
+        return [min($a), max($a)];
     }
 }

@@ -18,7 +18,7 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
 
     public function testRenderFailsWithoutFieldArgument()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument was not found');
+        $this->expectViewHelperException('The "field" argument was not found');
         $this->executeViewHelper();
     }
 }

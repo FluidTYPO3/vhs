@@ -9,8 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -19,10 +20,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * ViewHelper to access data of the current page record.
  */
-class InfoViewHelper extends AbstractViewHelper
+class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -30,6 +30,14 @@ class InfoViewHelper extends AbstractViewHelper
      */
     protected static $pageService;
 
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @return void
+     */
     public function initializeArguments()
     {
         $this->registerAsArgument();

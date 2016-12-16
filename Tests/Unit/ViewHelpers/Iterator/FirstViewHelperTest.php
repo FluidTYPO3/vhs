@@ -21,10 +21,10 @@ class FirstViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsFirstElement()
     {
-        $array = array('a', 'b', 'c');
-        $arguments = array(
+        $array = ['a', 'b', 'c'];
+        $arguments = [
             'haystack' => $array
-        );
+        ];
         $output = $this->executeViewHelper($arguments);
         $this->assertEquals('a', $output);
     }
@@ -34,10 +34,10 @@ class FirstViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsIterators()
     {
-        $array = new \ArrayIterator(array('a', 'b', 'c'));
-        $arguments = array(
+        $array = new \ArrayIterator(['a', 'b', 'c']);
+        $arguments = [
             'haystack' => $array
-        );
+        ];
         $output = $this->executeViewHelper($arguments);
         $this->assertEquals('a', $output);
     }
@@ -47,11 +47,11 @@ class FirstViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsTagContent()
     {
-        $array = array('a', 'b', 'c');
-        $arguments = array(
+        $array = ['a', 'b', 'c'];
+        $arguments = [
             'haystack' => null
-        );
-        $output = $this->executeViewHelperUsingTagContent('Array', $array, $arguments);
+        ];
+        $output = $this->executeViewHelperUsingTagContent($array, $arguments);
         $this->assertEquals('a', $output);
     }
 
@@ -60,9 +60,9 @@ class FirstViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNullIfHaystackIsNull()
     {
-        $arguments = array(
+        $arguments = [
             'haystack' => null
-        );
+        ];
         $output = $this->executeViewHelper($arguments);
         $this->assertEquals(null, $output);
     }
@@ -72,9 +72,9 @@ class FirstViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNullIfHaystackIsEmptyArray()
     {
-        $arguments = array(
-            'haystack' => array()
-        );
+        $arguments = [
+            'haystack' => []
+        ];
         $output = $this->executeViewHelper($arguments);
         $this->assertEquals(null, $output);
     }
@@ -84,10 +84,10 @@ class FirstViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionOnUnsupportedHaystacks()
     {
-        $arguments = array(
+        $arguments = [
             'haystack' => new \DateTime('now')
-        );
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got');
+        ];
+        $this->expectViewHelperException('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got');
         $this->executeViewHelper($arguments);
     }
 }

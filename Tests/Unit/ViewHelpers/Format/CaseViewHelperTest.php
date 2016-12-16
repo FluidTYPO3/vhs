@@ -26,10 +26,8 @@ class CaseViewHelperTest extends AbstractViewHelperTest
      */
     public function convertsToExpectedFormat($input, $case, $expectedOutput)
     {
-        $result1 = $this->executeViewHelper(array('string' => $input, 'case' => $case));
-        $result2 = $this->executeViewHelperUsingTagContent('Text', $input, array('case' => $case));
-        $this->assertEquals($expectedOutput, $result1);
-        $this->assertEquals($expectedOutput, $result2);
+        $result = $this->executeViewHelper(['string' => $input, 'case' => $case]);
+        $this->assertEquals($expectedOutput, $result);
     }
 
     /**
@@ -37,18 +35,18 @@ class CaseViewHelperTest extends AbstractViewHelperTest
      */
     public function getInputsAndExpectedOutputs()
     {
-        return array(
+        return [
             /*
 			array('lowerstring', CaseViewHelper::CASE_UPPER, 'LOWERSTRING'),
 			array('UPPERSTRING', CaseViewHelper::CASE_LOWER, 'upperstring'),
 			array('lowerstring', CaseViewHelper::CASE_UCFIRST, 'Lowerstring'),
 			array('UPPERSTRING', CaseViewHelper::CASE_LCFIRST, 'uPPERSTRING'),
 			*/
-            array('lots of words', CaseViewHelper::CASE_UCWORDS, 'Lots Of Words'),
-            array('lowercase_underscored', CaseViewHelper::CASE_CAMELCASE, 'LowercaseUnderscored'),
-            array('lowercase_underscored', CaseViewHelper::CASE_LOWERCAMELCASE, 'lowercaseUnderscored'),
-            array('CamelCase', CaseViewHelper::CASE_UNDERSCORED, 'camel_case'),
-            array('unknown format MIXED WITH All Cases', 'unsupported', 'unknown format MIXED WITH All Cases')
-        );
+            ['lots of words', CaseViewHelper::CASE_UCWORDS, 'Lots Of Words'],
+            ['lowercase_underscored', CaseViewHelper::CASE_CAMELCASE, 'LowercaseUnderscored'],
+            ['lowercase_underscored', CaseViewHelper::CASE_LOWERCAMELCASE, 'lowercaseUnderscored'],
+            ['CamelCase', CaseViewHelper::CASE_UNDERSCORED, 'camel_case'],
+            ['unknown format MIXED WITH All Cases', 'unsupported', 'unknown format MIXED WITH All Cases']
+        ];
     }
 }

@@ -22,8 +22,7 @@ class SessionViewHelperTest extends AbstractViewHelperTest
     public function testStoreIdentifier()
     {
         $instance = $this->createInstance();
-        $instance->setArguments(array('identifier' => 'test'));
-        $this->callInaccessibleMethod($instance, 'storeIdentifier');
+        $this->callInaccessibleMethod($instance, 'storeIdentifier', ['identifier' => 'test']);
         $this->assertEquals(time(), $_SESSION[get_class($instance)]['test']);
         unset($_SESSION[get_class($instance)]['test']);
     }
@@ -34,10 +33,9 @@ class SessionViewHelperTest extends AbstractViewHelperTest
     public function testAssertShouldSkip()
     {
         $instance = $this->createInstance();
-        $instance->setArguments(array('identifier' => 'test'));
-        $this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
+        $this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip', ['identifier' => 'test']));
         $_SESSION[get_class($instance)]['test'] = time();
-        $this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip'));
+        $this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip', ['identifier' => 'test']));
         unset($_SESSION[get_class($instance)]['test']);
     }
 
@@ -51,12 +49,10 @@ class SessionViewHelperTest extends AbstractViewHelperTest
         $time = time() - 10;
         $_SESSION[$class]['test'] = $time;
 
-        $instance->setArguments(array('identifier' => 'test', 'ttl' => 15));
-        $this->callInaccessibleMethod($instance, 'removeIfExpired');
+        $this->callInaccessibleMethod($instance, 'removeIfExpired', ['identifier' => 'test', 'ttl' => 15]);
         $this->assertArrayHasKey('test', $_SESSION[$class]);
 
-        $instance->setArguments(array('identifier' => 'test', 'ttl' => 5));
-        $this->callInaccessibleMethod($instance, 'removeIfExpired');
+        $this->callInaccessibleMethod($instance, 'removeIfExpired', ['identifier' => 'test', 'ttl' => 5]);
         $this->assertArrayNotHasKey('test', $_SESSION[$class]);
     }
 }

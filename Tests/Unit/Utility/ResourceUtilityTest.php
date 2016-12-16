@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\Utility;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -22,11 +24,11 @@ class ResourceUtilityTest extends UnitTestCase
      */
     public function canGetFileInformationArrayFromFileObject()
     {
-        $propertiesFromFile = array('foo' => 123, 'bar' => 321);
-        $propertiesFromStorage = array('foo' => 'abc', 'baz' => 123);
+        $propertiesFromFile = ['foo' => 123, 'bar' => 321];
+        $propertiesFromStorage = ['foo' => 'abc', 'baz' => 123];
         $expectation = array_merge($propertiesFromFile, $propertiesFromStorage);
-        $mockStorage = $this->getMock('TYPO3\CMS\Core\Resource\Storage', array('getFileInfo'));
-        $mockFile = $this->getMock('TYPO3\CMS\Core\Resource\File', array('getProperties', 'getStorage', 'toArray'), array(), '', false);
+        $mockStorage = $this->getMockBuilder(ResourceStorage::class)->setMethods(['getFileInfo'])->disableOriginalConstructor()->getMock();
+        $mockFile = $this->getMockBuilder(File::class)->setMethods(['getProperties', 'getStorage', 'toArray'])->disableOriginalConstructor()->getMock();
         $mockFile->expects($this->once())->method('getProperties')->will($this->returnValue($propertiesFromFile));
         $mockFile->expects($this->once())->method('getStorage')->will($this->returnValue($mockStorage));
         $mockStorage->expects($this->once())->method('getFileInfo')->will($this->returnValue($propertiesFromStorage));

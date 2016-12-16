@@ -12,7 +12,9 @@ use FluidTYPO3\Vhs\Asset;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Reflection\PropertyReflection;
 
 /**
  * Class AssetTest
@@ -25,7 +27,7 @@ class AssetTest extends UnitTestCase
      */
     public function setUp()
     {
-        $GLOBALS['VhsAssets'] = array();
+        $GLOBALS['VhsAssets'] = [];
     }
 
     /**
@@ -45,7 +47,7 @@ class AssetTest extends UnitTestCase
     public function canCreateAssetInstanceFromStaticFactory()
     {
         $asset = Asset::getInstance();
-        $this->assertInstanceOf('FluidTYPO3\Vhs\Asset', $asset);
+        $this->assertInstanceOf(Asset::class, $asset);
     }
 
     /**
@@ -56,7 +58,7 @@ class AssetTest extends UnitTestCase
         $file = 'Tests/Fixtures/Files/dummy.js';
         $expected = $this->getAbsoluteAssetFixturePath();
         $asset = Asset::createFromFile($file);
-        $this->assertInstanceOf('FluidTYPO3\Vhs\Asset', $asset);
+        $this->assertInstanceOf(Asset::class, $asset);
         $this->assertStringEndsWith($file, $asset->getPath());
         $this->assertNotEquals($file, $asset->getPath());
     }
@@ -68,7 +70,7 @@ class AssetTest extends UnitTestCase
     {
         $file = $this->getAbsoluteAssetFixturePath();
         $asset = Asset::createFromFile($file);
-        $this->assertInstanceOf('FluidTYPO3\Vhs\Asset', $asset);
+        $this->assertInstanceOf(Asset::class, $asset);
         $this->assertEquals($file, $asset->getPath());
     }
 
@@ -79,7 +81,7 @@ class AssetTest extends UnitTestCase
     {
         $url = 'http://localhost';
         $asset = Asset::createFromUrl($url);
-        $this->assertInstanceOf('FluidTYPO3\Vhs\Asset', $asset);
+        $this->assertInstanceOf(Asset::class, $asset);
         $this->assertEquals($url, $asset->getPath());
         $this->assertSame(true, $asset->getStandalone());
         $this->assertSame(true, $asset->getExternal());
@@ -91,11 +93,11 @@ class AssetTest extends UnitTestCase
     public function canCreateAssetInstanceFromStaticSettingsFactory()
     {
         $file = $this->getAbsoluteAssetFixturePath();
-        $settings = array(
+        $settings = [
             'file' => $file
-        );
+        ];
         $asset = Asset::createFromSettings($settings);
-        $this->assertInstanceOf('FluidTYPO3\Vhs\Asset', $asset);
+        $this->assertInstanceOf(Asset::class, $asset);
     }
 
     /**
@@ -108,7 +110,7 @@ class AssetTest extends UnitTestCase
         foreach ($settableProperties as $propertyName) {
             $setter = 'set' . ucfirst($propertyName);
             $asset = $asset->$setter(null);
-            $this->assertInstanceOf('FluidTYPO3\Vhs\Asset', $asset, 'The ' . $setter . ' method does not support chaining');
+            $this->assertInstanceOf(Asset::class, $asset, 'The ' . $setter . ' method does not support chaining');
         }
     }
 
@@ -202,14 +204,14 @@ class AssetTest extends UnitTestCase
         $file = $this->getAbsoluteAssetFixturePath();
         $asset = Asset::createFromFile($file);
         $gettableProperties = ObjectAccess::getGettablePropertyNames($asset);
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         foreach ($gettableProperties as $propertyName) {
-            if (false === property_exists('FluidTYPO3\Vhs\Asset', $propertyName)) {
+            if (false === property_exists(Asset::class, $propertyName)) {
                 continue;
             }
             $propertyValue = ObjectAccess::getProperty($asset, $propertyName);
             /** @var \TYPO3\CMS\Extbase\Reflection\PropertyReflection $propertyReflection */
-            $propertyReflection = $objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', 'FluidTYPO3\\Vhs\\Asset', $propertyName);
+            $propertyReflection = $objectManager->get(PropertyReflection::class, Asset::class, $propertyName);
             $expectedDataType = array_pop($propertyReflection->getTagValues('var'));
             $constraint = new \PHPUnit_Framework_Constraint_IsType($expectedDataType);
             $this->assertThat($propertyValue, $constraint);

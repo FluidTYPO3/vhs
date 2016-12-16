@@ -21,10 +21,10 @@ class MergeViewHelperTest extends AbstractViewHelperTest
      */
     public function testMergesArraysWithOverrule()
     {
-        $array1 = array('foo');
-        $array2 = array('bar');
-        $expected = array('bar');
-        $result = $this->executeViewHelper(array('a' => $array1, 'b' => $array2, 'useKeys' => false));
+        $array1 = ['foo'];
+        $array2 = ['bar'];
+        $expected = ['bar'];
+        $result = $this->executeViewHelper(['a' => $array1, 'b' => $array2, 'useKeys' => false]);
         $this->assertEquals($expected, $result);
     }
 }

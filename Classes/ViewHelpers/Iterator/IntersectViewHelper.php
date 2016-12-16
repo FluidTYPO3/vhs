@@ -9,14 +9,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Intersects arrays/Traversables $a and $b into an array.
  */
-class IntersectViewHelper extends AbstractViewHelper
+class IntersectViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -33,17 +36,20 @@ class IntersectViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return array
      */
-    public function render()
-    {
-        $a = $this->arguments['a'];
-        if (null === $a) {
-            $a = $this->renderChildren();
-        }
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $a = $renderChildrenClosure();
 
-        $a = $this->arrayFromArrayOrTraversableOrCSV($a);
-        $b = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['b']);
+        $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
+        $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b']);
 
         return array_intersect($a, $b);
     }

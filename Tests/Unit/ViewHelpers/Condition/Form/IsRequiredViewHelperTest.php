@@ -21,11 +21,11 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
     public function testRenderThenWithSingleProperty()
     {
         $domainObject = new Foo();
-        $arguments = array(
+        $arguments = [
             'property' => 'bar',
             'object' => $domainObject,
             'then' => 'then'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -36,11 +36,11 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
     public function testRenderElseWithSingleProperty()
     {
         $domainObject = new Foo();
-        $arguments = array(
+        $arguments = [
             'property' => 'foo',
             'object' => $domainObject,
             'else' => 'else'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 
@@ -51,11 +51,11 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
     public function testRenderThenWithNestedSingleProperty()
     {
         $domainObject = new Bar();
-        $arguments = array(
+        $arguments = [
             'property' => 'foo.bar',
             'object' => $domainObject,
             'then' => 'then'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -66,11 +66,11 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
     public function testRenderElseWithNestedSingleProperty()
     {
         $domainObject = new Bar();
-        $arguments = array(
+        $arguments = [
             'property' => 'foo.foo',
             'object' => $domainObject,
             'else' => 'else'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 
@@ -81,11 +81,11 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
     public function testRenderThenWithNestedMultiProperty()
     {
         $domainObject = new Bar();
-        $arguments = array(
+        $arguments = [
             'property' => 'bars.bar.foo.bar',
             'object' => $domainObject,
             'then' => 'then'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -96,11 +96,11 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
     public function testRenderElseWithNestedMultiProperty()
     {
         $domainObject = new Bar();
-        $arguments = array(
+        $arguments = [
             'property' => 'bars.foo.foo',
             'object' => $domainObject,
             'else' => 'else'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 

@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -24,6 +25,15 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      * @var array
      */
     protected static $identifiers = [];
+
+    /**
+     * Always-current but statically assigned instance of rendering context
+     * which applied at the exact time that the ViewHelper was asked to
+     * evaluate whether or not to render content.
+     *
+     * @var RenderingContextInterface
+     */
+    protected static $currentRenderingContext;
 
     /**
      * Initialize arguments
@@ -57,66 +67,87 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * Standard render method. Implementers should override
-     * the assertShouldSkip() method and/or the getIdentifier()
-     * and storeIdentifier() methods as applies to each
-     * implementers method of storing identifiers.
-     *
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
-    {
-        $this->removeIfExpired();
-        $evaluation = $this->assertShouldSkip();
-        if (false === $evaluation) {
-            $content = $this->renderThenChild();
-        } else {
-            $content = $this->renderElseChild();
-        }
-        $this->storeIdentifier();
-        return $content;
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        static::$currentRenderingContext = $renderingContext;
+        return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
 
     /**
-     * @return string
+     * @param array|null $arguments
+     * @return boolean
      */
-    protected function getIdentifier()
+    protected static function evaluateCondition($arguments = null)
     {
-        if (true === isset($this->arguments['identifier'])) {
-            return $this->arguments['identifier'];
-        }
-        return get_class($this);
+        static::removeIfExpired($arguments);
+        return static::assertShouldSkip($arguments) === false;
     }
 
     /**
+     * @param array $arguments
+     * @return string
+     */
+    protected static function getIdentifier(array $arguments)
+    {
+        if (true === isset($arguments['identifier'])) {
+            return $arguments['identifier'];
+        }
+        return static::class;
+    }
+
+    /**
+     * @param array $arguments
      * @retrun void
      */
-    protected function storeIdentifier()
+    protected static function storeIdentifier(array $arguments)
     {
-        $identifier = $this->getIdentifier();
+        $identifier = static::getIdentifier($arguments);
         if (false === isset(self::$identifiers[$identifier])) {
             self::$identifiers[$identifier] = time();
         }
     }
 
     /**
+     * @param array $arguments
      * @return void
      */
-    protected function removeIfExpired()
+    protected static function removeIfExpired(array $arguments)
     {
-        $id = $this->getIdentifier();
-        if (isset(self::$identifiers[$id]) && self::$identifiers[$id] <= time() - $this->arguments['ttl']) {
+        $id = static::getIdentifier($arguments);
+        if (isset(self::$identifiers[$id]) && self::$identifiers[$id] <= time() - $arguments['ttl']) {
             unset(self::$identifiers[$id]);
         }
     }
 
     /**
+     * @param array $arguments
      * @return boolean
      */
-    protected function assertShouldSkip()
+    protected static function assertShouldSkip(array $arguments)
     {
-        $identifier = $this->getIdentifier();
+        $identifier = static::getIdentifier($arguments);
         return (true === isset(self::$identifiers[$identifier]));
+    }
+
+    /**
+     * @param array $arguments
+     * @param boolean $hasEvaluated
+     * @return string
+     */
+    protected static function renderStaticThenChild($arguments, &$hasEvaluated)
+    {
+        if (TYPO3_MODE === 'FE') {
+            $GLOBALS['TSFE']->no_cache = 1;
+        }
+        return parent::renderStaticThenChild($arguments, $hasEvaluated);
     }
 
     /**
@@ -133,7 +164,9 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      */
     protected function renderThenChild()
     {
-        $GLOBALS['TSFE']->no_cache = 1;
+        if (TYPO3_MODE === 'FE') {
+            $GLOBALS['TSFE']->no_cache = 1;
+        }
         return parent::renderThenChild();
     }
 }

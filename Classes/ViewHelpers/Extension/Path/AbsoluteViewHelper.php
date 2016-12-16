@@ -10,6 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension\Path;
 
 use FluidTYPO3\Vhs\ViewHelpers\Extension\AbstractExtensionViewHelper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### Path: Absolute Extension Folder Path
@@ -18,6 +20,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class AbsoluteViewHelper extends AbstractExtensionViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
      * @return void
@@ -34,16 +37,16 @@ class AbsoluteViewHelper extends AbstractExtensionViewHelper
     }
 
     /**
-     * Render method
-     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $extensionKey = $this->getExtensionKey();
         return ExtensionManagementUtility::extPath(
-            $extensionKey,
-            isset($this->arguments['path']) ? $this->arguments['path'] : null
+            static::getExtensionKey($arguments, $renderingContext),
+            isset($arguments['path']) ? $arguments['path'] : null
         );
     }
 }

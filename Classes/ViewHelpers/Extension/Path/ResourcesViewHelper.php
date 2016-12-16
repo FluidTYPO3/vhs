@@ -10,6 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension\Path;
 
 use FluidTYPO3\Vhs\ViewHelpers\Extension\AbstractExtensionViewHelper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### Path: Relative Extension Resource Path
@@ -18,6 +20,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class ResourcesViewHelper extends AbstractExtensionViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
      * @return void
@@ -33,14 +36,15 @@ class ResourcesViewHelper extends AbstractExtensionViewHelper
     }
 
     /**
-     * Render method
-     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $extensionKey = $this->getExtensionKey();
-        $path = true === empty($this->arguments['path']) ? '' : $this->arguments['path'];
-        return ExtensionManagementUtility::extRelPath($extensionKey) . 'Resources/Public/' . $path;
+        $path = true === empty($arguments['path']) ? '' : $arguments['path'];
+        return ExtensionManagementUtility::extRelPath(static::getExtensionKey($arguments, $renderingContext)) .
+            'Resources/Public/' . $path;
     }
 }
