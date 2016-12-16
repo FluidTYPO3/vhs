@@ -54,8 +54,8 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('src', 'string', 'Path to the image.', true);
-        $this->registerArgument('alt', 'string', 'Text for the alt tag.', true);
-        $this->registerArgument('title', 'string', 'Text for the alt tag.');
+        $this->registerArgument('alt', 'string', 'Text for the alt attribute.', true);
+        $this->registerArgument('title', 'string', 'Text for the title attribute.');
     }
 
     /**
@@ -81,7 +81,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $defaultImage->addAttribute('alt', $this->arguments['alt']);
 
         if (false === empty($this->arguments['title'])) {
-            $defaultImage->addAttribute('title', $this->arguments['alt']);
+            $defaultImage->addAttribute('title', $this->arguments['title']);
         }
         $content .= $defaultImage->render();
 
