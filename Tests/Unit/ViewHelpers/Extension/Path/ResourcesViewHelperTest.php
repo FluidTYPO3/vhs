@@ -23,7 +23,7 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingArgument()
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs', 'path' => 'ext_icon.gif']);
-        $this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
     }
 
     /**
@@ -32,7 +32,7 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingControllerContext()
     {
         $test = $this->executeViewHelper(['path' => 'ext_icon.gif'], [], null, 'Vhs');
-        $this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
     }
 
     /**

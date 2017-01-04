@@ -44,7 +44,7 @@ class ResourcesViewHelper extends AbstractExtensionViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $path = true === empty($arguments['path']) ? '' : $arguments['path'];
-        return ExtensionManagementUtility::extRelPath(static::getExtensionKey($arguments, $renderingContext)) .
+        return ExtensionManagementUtility::siteRelPath(static::getExtensionKey($arguments, $renderingContext)) .
             'Resources/Public/' . $path;
     }
 }
