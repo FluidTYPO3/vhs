@@ -35,6 +35,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerTagAttribute('rel', 'string', 'Property: rel');
         $this->registerTagAttribute('href', 'string', 'Property: href');
         $this->registerTagAttribute('type', 'string', 'Property: type');
