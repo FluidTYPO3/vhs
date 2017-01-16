@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
@@ -75,7 +76,9 @@ class LanguageViewHelper extends AbstractViewHelper
     {
         $path = $this->getResolvedPath();
         $languageKey = $this->getLanguageKey();
-        $locallang = GeneralUtility::readLLfile($path, $languageKey);
+        /** @var $languageFactory LocalizationFactory */
+        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+        $locallang = $languageFactory->getParsedData($path, $languageKey);
         $labels = $this->getLabelsByLanguageKey($locallang, $languageKey);
         $labels = $this->getLabelsFromTarget($labels);
         return $this->renderChildrenWithVariableOrReturnInput($labels);
