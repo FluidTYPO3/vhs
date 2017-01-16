@@ -51,7 +51,7 @@ class InlineViewHelper extends AbstractRenderViewHelper implements CompilableInt
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
-        $namespaces = static::getPreparedNamespaces($arguments['namespaces']);
+        $namespaces = static::getPreparedNamespaces($arguments);
         $namespaceHeader = implode(LF, $namespaces);
         foreach ($namespaces as $namespace) {
             $content = str_replace($namespace, '', $content);
