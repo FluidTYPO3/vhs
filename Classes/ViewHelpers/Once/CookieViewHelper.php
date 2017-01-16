@@ -37,6 +37,7 @@ class CookieViewHelper extends AbstractOnceViewHelper
     }
 
     /**
+     * @param array $arguments
      * @return boolean
      */
     protected static function assertShouldSkip(array $arguments)

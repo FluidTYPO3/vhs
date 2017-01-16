@@ -186,7 +186,7 @@ class EncodeViewHelper extends AbstractViewHelper
      * value type. The type is checked and another recursive call is used to
      * convert any nested objects.
      *
-     * @param Tx_Extbase_DomainObject_DomainObjectInterface[] $domainObjects
+     * @param DomainObjectInterface[] $domainObjects
      * @param boolean $preventRecursion
      * @param mixed $recursionMarker
      * @return array
