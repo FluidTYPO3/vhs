@@ -77,11 +77,11 @@ class FalViewHelper extends ResourcesFalViewHelper
         }
         return $record;
     }
-    
+
     /**
      * @param array $record
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public function getResources($record)
     {

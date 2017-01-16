@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,7 +63,6 @@ class MarkdownViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $text = $renderChildrenClosure();
         $trim = (boolean) $arguments['trim'];
         $htmlentities = (boolean) $arguments['htmlentities'];
         $text = $renderChildrenClosure();

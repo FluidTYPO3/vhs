@@ -34,7 +34,8 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
      * @param integer $to
      * @param integer $step
      * @param string $iterationArgument
-     * @param RenderingContextInterface
+     * @param RenderingContextInterface $renderingContext
+     * @param \Closure $renderChildrenClosure
      * @return string
      */
     protected static function renderIteration(

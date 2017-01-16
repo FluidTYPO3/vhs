@@ -429,11 +429,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         }
         $settings = self::$settingsCache;
         if (is_array($this->localSettings)) {
-            if (true === method_exists(ArrayUtility::class, 'mergeRecursiveWithOverrule')) {
-                ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
-            } else {
-                $settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
-            }
+            ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
         }
         return $settings;
     }

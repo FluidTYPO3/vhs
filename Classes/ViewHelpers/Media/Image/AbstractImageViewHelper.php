@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
 
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -146,7 +147,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         }
 
         if ($crop === null) {
-            $crop = (is_object($src) && $src instanceof FileReference) ? $src->getProperty('crop') : null;
+            $crop = (is_object($src) && $src instanceof FileReference) ? $src->_getProperty('crop') : null;
         }
 
         if ('BE' === TYPO3_MODE) {

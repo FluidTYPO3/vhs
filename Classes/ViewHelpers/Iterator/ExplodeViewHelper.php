@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\BasicViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
@@ -74,6 +73,7 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     /**
      * Detects the proper glue string to use for implode/explode operation
      *
+     * @param array $arguments
      * @return string
      */
     protected static function resolveGlue(array $arguments)
