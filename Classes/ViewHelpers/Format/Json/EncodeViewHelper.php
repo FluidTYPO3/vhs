@@ -106,12 +106,12 @@ class EncodeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param string $value
+     * @param mixed $value
      * @param boolean $useTraversableKeys
      * @param boolean $preventRecursion
      * @param string $recursionMarker
      * @param string $dateTimeFormat
-     * @return mixed
+     * @return string
      * @throws Exception
      */
     protected static function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat)
@@ -130,7 +130,7 @@ class EncodeViewHelper extends AbstractViewHelper
         if (true === is_array($value)) {
             $value = static::recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
             $value = static::recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
-        };
+        }
         $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG);
         if (JSON_ERROR_NONE !== json_last_error()) {
             ErrorUtility::throwViewHelperException('The provided argument cannot be converted into JSON.', 1358440181);
