@@ -736,18 +736,14 @@ class AssetService implements SingletonInterface
     }
 
     /**
-     * @param $array1
-     * @param $array2
+     * @param array $array1
+     * @param array $array2
      * @return array
      */
     protected function mergeArrays($array1, $array2)
     {
-        if (6.2 <= (float) substr(TYPO3_version, 0, 3)) {
-            ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
-            return $array1;
-        } else {
-            return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
-        }
+        ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
+        return $array1;
     }
 
     /**
