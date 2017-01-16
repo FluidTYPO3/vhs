@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -86,6 +87,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         $files = [];
+        /** @var ResourceFactory $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         if (false === empty($categories)) {
@@ -171,7 +173,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 
         return $argument;
     }
-    
+
     /**
      * This fuction decides if sys_file or sys_file_metadata is used for a query on sys_category_record_mm
      * This is neccessary because it depends on the TYPO3 version and the state of the extension filemetadata if
