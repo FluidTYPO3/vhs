@@ -514,13 +514,9 @@ class Asset implements AssetInterface
         foreach (array_keys($properties) as $propertyName) {
             $properties[$propertyName] = $this->$propertyName;
         }
-        if (true === method_exists(ArrayUtility::class, 'mergeRecursiveWithOverrule')) {
-            ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
-            ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
-        } else {
-            $settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->settings);
-            $settings = GeneralUtility::array_merge_recursive_overrule($settings, $properties);
-        }
+
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
+        ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
         return $settings;
     }
 
