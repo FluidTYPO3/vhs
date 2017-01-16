@@ -189,6 +189,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
      * Render the option tags.
      *
      * @return array
+     * @throws Exception
      */
     protected function getOptions()
     {

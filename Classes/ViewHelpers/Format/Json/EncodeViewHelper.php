@@ -112,6 +112,7 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param string $recursionMarker
      * @param string $dateTimeFormat
      * @return mixed
+     * @throws Exception
      */
     protected static function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat)
     {

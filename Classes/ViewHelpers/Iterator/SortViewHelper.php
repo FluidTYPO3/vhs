@@ -94,7 +94,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
      * Returns the same type as $subject. Ignores NULL values which would be
      * OK to use in an f:for (empty loop as result)
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function render()
     {
@@ -116,7 +116,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
                 // a NULL value is respected and ignored, but any
                 // unrecognized value other than this is considered a
                 // fatal error.
-                throw new \Exception(
+                ErrorUtility::throwViewHelperException(
                     'Unsortable variable type passed to Iterator/SortViewHelper. Expected any of Array, QueryResult, ' .
                     ' ObjectStorage or Iterator implementation but got ' . gettype($subject),
                     1351958941
@@ -209,6 +209,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
      * Parses the supplied flags into the proper value for the sorting
      * function.
      * @return int
+     * @throws Exception
      */
     protected function getSortFlags()
     {
