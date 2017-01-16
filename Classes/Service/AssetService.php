@@ -736,8 +736,8 @@ class AssetService implements SingletonInterface
     }
 
     /**
-     * @param $array1
-     * @param $array2
+     * @param array $array1
+     * @param array $array2
      * @return array
      */
     protected function mergeArrays($array1, $array2)
