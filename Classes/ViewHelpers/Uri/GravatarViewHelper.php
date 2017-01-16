@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  */
 
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;

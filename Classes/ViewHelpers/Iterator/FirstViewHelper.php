@@ -42,6 +42,7 @@ class FirstViewHelper extends AbstractViewHelper implements CompilableInterface
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return null
+     * @throws Exception
      */
     public static function renderStatic(
         array $arguments,

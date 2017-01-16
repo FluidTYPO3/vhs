@@ -8,10 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
@@ -53,6 +50,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
      * @param mixed $b
      * @param array $arguments
      * @return mixed
+     * @throws Exception
      */
     protected static function calculate($a, $b = null, array $arguments = [])
     {
