@@ -127,7 +127,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
      */
     public function render()
     {
-        $sources = static::getSourcesFromArgument();
+        $sources = static::getSourcesFromArgument($this->arguments);
         if (0 === count($sources)) {
             throw new Exception('No audio sources provided.', 1359382189);
         }
