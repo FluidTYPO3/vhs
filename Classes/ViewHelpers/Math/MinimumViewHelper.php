@@ -8,6 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Math: Minimum
  *
@@ -16,6 +20,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class MinimumViewHelper extends AbstractMultipleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+    use ArrayConsumingViewHelperTrait;
 
     /**
      * @return void
@@ -27,28 +33,21 @@ class MinimumViewHelper extends AbstractMultipleMathViewHelper
     }
 
     /**
-     * @return mixed
-     * @throw Exception
-     */
-    public function render()
-    {
-        $a = $this->getInlineArgument();
-        $b = $this->arguments['b'];
-        $aIsIterable = $this->assertIsArrayOrIterator($a);
-        if (true === $aIsIterable && null === $b) {
-            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
-            return min($a);
-        }
-        return $this->calculate($a, $b);
-    }
-
-    /**
      * @param mixed $a
      * @param mixed $b
+     * @param array $arguments
      * @return mixed
      */
-    protected function calculateAction($a, $b)
+    protected static function calculateAction($a, $b, array $arguments)
     {
+        $aIsIterable = static::assertIsArrayOrIterator($a);
+        if (true === $aIsIterable && null === $b) {
+            $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
+            return min($a);
+        }
+        if ($b === null && (boolean) $arguments['fail']) {
+            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
+        }
         return min($a, $b);
     }
 }

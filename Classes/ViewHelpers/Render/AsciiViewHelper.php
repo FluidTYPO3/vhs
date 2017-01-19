@@ -8,6 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -33,18 +36,35 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Will produce a Windows line break, \r\n.
  */
-class AsciiViewHelper extends AbstractViewHelper
+class AsciiViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param mixed $ascii
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('ascii', 'mixed', 'ASCII character to render');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render($ascii = null)
-    {
-        if (null === $ascii) {
-            $ascii = $this->renderChildren();
-        }
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $ascii = $renderChildrenClosure();
         if (true === is_numeric($ascii)) {
             return chr((integer) $ascii);
         }

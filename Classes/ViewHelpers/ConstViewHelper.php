@@ -8,25 +8,44 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Const ViewHelper
  *
  * Renders the value of a PHP constant
  */
-class ConstViewHelper extends AbstractViewHelper
+class ConstViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $name
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('name', 'string', 'Name of constant to retrieve');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render($name)
-    {
-        if ($name === null) {
-            $name = $this->renderChildren();
-        }
-        return constant($name);
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        return constant($renderChildrenClosure());
     }
 }

@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -32,11 +34,21 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
      * @param integer $to
      * @param integer $step
      * @param string $iterationArgument
+     * @param RenderingContextInterface $renderingContext
+     * @param \Closure $renderChildrenClosure
      * @return string
      */
-    protected function renderIteration($i, $from, $to, $step, $iterationArgument)
-    {
+    protected static function renderIteration(
+        $i,
+        $from,
+        $to,
+        $step,
+        $iterationArgument,
+        RenderingContextInterface $renderingContext,
+        \Closure $renderChildrenClosure
+    ) {
         if (false === empty($iterationArgument)) {
+            $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
             $cycle = intval(($i - $from) / $step) + 1;
             $iteration = [
                 'index' => $i,
@@ -44,13 +56,13 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
                 'isOdd' => (0 === $cycle % 2 ? false : true),
                 'isEven' => (0 === $cycle % 2 ? true : false),
                 'isFirst' => ($i === $from ? true : false),
-                'isLast' => $this->isLast($i, $from, $to, $step)
+                'isLast' => static::isLast($i, $from, $to, $step)
             ];
-            $this->templateVariableContainer->add($iterationArgument, $iteration);
-            $content = $this->renderChildren();
-            $this->templateVariableContainer->remove($iterationArgument);
+            $variableProvider->add($iterationArgument, $iteration);
+            $content = $renderChildrenClosure();
+            $variableProvider->remove($iterationArgument);
         } else {
-            $content = $this->renderChildren();
+            $content = $renderChildrenClosure();
         }
 
         return $content;
@@ -63,7 +75,7 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
      * @param integer $step
      * @return boolean
      */
-    protected function isLast($i, $from, $to, $step)
+    protected static function isLast($i, $from, $to, $step)
     {
         if ($from === $to) {
             $isLast = true;

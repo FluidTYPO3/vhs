@@ -24,14 +24,7 @@ class PopViewHelperTest extends AbstractViewHelperTest
      */
     public function testRender(array $arguments, $expectedValue)
     {
-        if (true === isset($arguments['as'])) {
-            $value = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'variable', $arguments);
-        } else {
-            $value = $this->executeViewHelper($arguments);
-            $value2 = $this->executeViewHelperUsingTagContent('ObjectAccessor', 'v', array(), array('v' => $arguments['subject']));
-            $this->assertEquals($value, $value2);
-        }
-        $this->assertEquals($value, $expectedValue);
+        $this->assertEquals($this->executeViewHelper($arguments), $expectedValue);
     }
 
     /**
@@ -39,13 +32,11 @@ class PopViewHelperTest extends AbstractViewHelperTest
      */
     public function getRenderTestValues()
     {
-        return array(
-            array(array('subject' => array()), null),
-            array(array('subject' => array('foo', 'bar')), 'bar'),
-            array(array('subject' => array('foo', 'bar'), 'as' => 'variable'), 'bar'),
-            array(array('subject' => new \ArrayIterator(array('foo', 'bar'))), 'bar'),
-            array(array('subject' => new \ArrayIterator(array('foo', 'bar')), 'as' => 'variable'), 'bar'),
-        );
+        return [
+            [['subject' => []], null],
+            [['subject' => ['foo', 'bar']], 'bar'],
+            [['subject' => new \ArrayIterator(['foo', 'bar'])], 'bar'],
+        ];
     }
 
     /**
@@ -55,8 +46,8 @@ class PopViewHelperTest extends AbstractViewHelperTest
      */
     public function testThrowsErrorsOnInvalidSubjectType($subject)
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Unsupported input type; cannot convert to array!');
-        $this->executeViewHelper(array('subject' => $subject));
+        $this->expectViewHelperException('Unsupported input type; cannot convert to array!');
+        $this->executeViewHelper(['subject' => $subject]);
     }
 
     /**
@@ -64,11 +55,11 @@ class PopViewHelperTest extends AbstractViewHelperTest
      */
     public function getErrorTestValues()
     {
-        return array(
-            array(0),
-            array(null),
-            array(new \DateTime()),
-            array(new \stdClass()),
-        );
+        return [
+            [0],
+            [null],
+            [new \DateTime()],
+            [new \stdClass()],
+        ];
     }
 }

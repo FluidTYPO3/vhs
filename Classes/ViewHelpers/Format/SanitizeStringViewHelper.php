@@ -8,9 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * URL text segment sanitizer. Sanitizes the content into a
@@ -41,8 +41,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class SanitizeStringViewHelper extends AbstractViewHelper
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * Basic character map
@@ -139,13 +138,12 @@ class SanitizeStringViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $string = $arguments['string'];
+        $string = $renderChildrenClosure();
+
         if (null === $string) {
-            $string = $renderChildrenClosure();
-            if (null === $string) {
-                return null;
-            }
+            return null;
         }
+
         $characterMap = static::$characterMap;
         $customMap = $arguments['customMap'];
         if (true === is_array($customMap) && 0 < count($customMap)) {

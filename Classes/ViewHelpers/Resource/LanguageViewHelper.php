@@ -9,11 +9,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Resource: Language
@@ -35,6 +36,11 @@ class LanguageViewHelper extends AbstractViewHelper
     use TemplateVariableViewHelperTrait;
 
     const LOCALLANG_DEFAULT = 'locallang.xlf';
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * Registers all arguments for this ViewHelper.
@@ -70,7 +76,9 @@ class LanguageViewHelper extends AbstractViewHelper
     {
         $path = $this->getResolvedPath();
         $languageKey = $this->getLanguageKey();
-        $locallang = GeneralUtility::readLLfile($path, $languageKey);
+        /** @var $languageFactory LocalizationFactory */
+        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+        $locallang = $languageFactory->getParsedData($path, $languageKey);
         $labels = $this->getLabelsByLanguageKey($locallang, $languageKey);
         $labels = $this->getLabelsFromTarget($labels);
         return $this->renderChildrenWithVariableOrReturnInput($labels);
@@ -81,7 +89,6 @@ class LanguageViewHelper extends AbstractViewHelper
      * tries to resolve it from the controller context if not set.
      *
      * @return string
-     * @throws Exception
      */
     protected function getResolvedExtensionName()
     {
@@ -93,7 +100,7 @@ class LanguageViewHelper extends AbstractViewHelper
         }
 
         if (true === empty($extensionName)) {
-            throw new Exception('Cannot read extension name from ControllerContext and value not manually specified');
+            ErrorUtility::throwViewHelperException('Cannot read extension name from ControllerContext and value not manually specified');
         }
 
         return $extensionName;

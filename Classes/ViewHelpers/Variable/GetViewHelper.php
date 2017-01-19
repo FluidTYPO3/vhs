@@ -8,8 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### Variable: Get
@@ -31,7 +35,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * If your target object is an array with unsequential yet
  * numeric indices (e.g. {123: 'value1', 513: 'value2'},
  * commonly seen in reindexed UID map arrays) use
- * `useRawIndex="TRUE"` to indicate you do not want your
+ * `useRawKeys="TRUE"` to indicate you do not want your
  * array/QueryResult/Iterator to be accessed by locating
  * the Nth element - which is the default behavior.
  *
@@ -46,26 +50,47 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * default is set to `FALSE`.
  * ```
  */
-class GetViewHelper extends AbstractViewHelper
+class GetViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithRenderStatic;
 
     /**
-     * @param string $name
-     * @param boolean $useRawKeys
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('name', 'string', 'Name of variable to retrieve');
+        $this->registerArgument(
+            'useRawKeys', 
+            'boolean', 
+            'If TRUE, the path is directly passed to ObjectAccess. If FALSE, a custom and compatible VHS method is used'
+        );
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render($name, $useRawKeys = false)
-    {
+    public static function renderStatic(
+        array $arguments, 
+        \Closure $renderChildrenClosure, 
+        RenderingContextInterface $renderingContext
+    ) {
+        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $name = $arguments['name'];
+        $useRawKeys = $arguments['useRawKeys'];
         if (false === strpos($name, '.')) {
-            if (true === $this->templateVariableContainer->exists($name)) {
-                return $this->templateVariableContainer->get($name);
+            if (true === $variableProvider->exists($name)) {
+                return $variableProvider->get($name);
             }
         } else {
             $segments = explode('.', $name);
             $lastSegment = array_shift($segments);
             $templateVariableRootName = $lastSegment;
-            if (true === $this->templateVariableContainer->exists($templateVariableRootName)) {
-                $templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
+            if (true === $variableProvider->exists($templateVariableRootName)) {
+                $templateVariableRoot = $variableProvider->get($templateVariableRootName);
                 if (true === $useRawKeys) {
                     return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
                 }

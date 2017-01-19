@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Character/string/whitespace elimination ViewHelper
@@ -18,6 +20,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class EliminateViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * Initialize arguments
@@ -26,6 +29,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
+        $this->registerArgument('content', 'string', 'String in which to perform replacement');
         $this->registerArgument(
             'caseSensitive',
             'boolean',
@@ -74,43 +78,43 @@ class EliminateViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param string $content
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render($content = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
+        $content = $renderChildrenClosure();
+        if (true === isset($arguments['characters'])) {
+            $content = static::eliminateCharacters($content, $arguments['characters'], (boolean) $arguments['caseSensitive']);
         }
-        if (true === isset($this->arguments['characters'])) {
-            $content = $this->eliminateCharacters($content, $this->arguments['characters']);
+        if (true === isset($arguments['strings'])) {
+            $content = static::eliminateStrings($content, $arguments['strings'], (boolean) $arguments['caseSensitive']);
         }
-        if (true === isset($this->arguments['strings'])) {
-            $content = $this->eliminateStrings($content, $this->arguments['strings']);
+        if (true === $arguments['whitespace']) {
+            $content = static::eliminateWhitespace($content);
         }
-        if (true === $this->arguments['whitespace']) {
-            $content = $this->eliminateWhitespace($content);
+        if (true === $arguments['whitespaceBetweenHtmlTags']) {
+            $content = static::eliminateWhitespaceBetweenHtmlTags($content);
         }
-        if (true === $this->arguments['whitespaceBetweenHtmlTags']) {
-            $content = $this->eliminateWhitespaceBetweenHtmlTags($content);
+        if (true === $arguments['tabs']) {
+            $content = static::eliminateTabs($content);
         }
-        if (true === $this->arguments['tabs']) {
-            $content = $this->eliminateTabs($content);
+        if (true === $arguments['unixBreaks']) {
+            $content = static::eliminateUnixBreaks($content);
         }
-        if (true === $this->arguments['unixBreaks']) {
-            $content = $this->eliminateUnixBreaks($content);
+        if (true === $arguments['windowsBreaks']) {
+            $content = static::eliminateWindowsCarriageReturns($content);
         }
-        if (true === $this->arguments['windowsBreaks']) {
-            $content = $this->eliminateWindowsCarriageReturns($content);
+        if (true === $arguments['digits']) {
+            $content = static::eliminateDigits($content);
         }
-        if (true === $this->arguments['digits']) {
-            $content = $this->eliminateDigits($content);
+        if (true === $arguments['letters']) {
+            $content = static::eliminateLetters($content, (boolean) $arguments['caseSensitive']);
         }
-        if (true === $this->arguments['letters']) {
-            $content = $this->eliminateLetters($content);
-        }
-        if (true === $this->arguments['nonAscii']) {
-            $content = $this->eliminateNonAscii($content);
+        if (true === $arguments['nonAscii']) {
+            $content = static::eliminateNonAscii($content, (boolean) $arguments['caseSensitive']);
         }
         return $content;
     }
@@ -118,11 +122,11 @@ class EliminateViewHelper extends AbstractViewHelper
     /**
      * @param string $content
      * @param mixed $characters
+     * @param boolean $caseSensitive
      * @return string
      */
-    protected function eliminateCharacters($content, $characters)
+    protected static function eliminateCharacters($content, $characters, $caseSensitive)
     {
-        $caseSensitive = (boolean) $this->arguments['caseSensitive'];
         if (true === is_array($characters)) {
             $subjects = $characters;
         } else {
@@ -141,11 +145,11 @@ class EliminateViewHelper extends AbstractViewHelper
     /**
      * @param string $content
      * @param mixed $strings
+     * @param boolean $caseSensitive
      * @return string
      */
-    protected function eliminateStrings($content, $strings)
+    protected static function eliminateStrings($content, $strings, $caseSensitive)
     {
-        $caseSensitive = (boolean) $this->arguments['caseSensitive'];
         if (true === is_array($strings)) {
             $subjects = $strings;
         } else {
@@ -165,7 +169,7 @@ class EliminateViewHelper extends AbstractViewHelper
      * @param string $content
      * @return string
      */
-    protected function eliminateWhitespace($content)
+    protected static function eliminateWhitespace($content)
     {
         $content = preg_replace('/\s+/', '', $content);
         return $content;
@@ -175,7 +179,7 @@ class EliminateViewHelper extends AbstractViewHelper
      * @param string $content
      * @return string
      */
-    protected function eliminateWhitespaceBetweenHtmlTags($content)
+    protected static function eliminateWhitespaceBetweenHtmlTags($content)
     {
         $content = trim(preg_replace('/>\s+</', '><', $content));
         return $content;
@@ -185,7 +189,7 @@ class EliminateViewHelper extends AbstractViewHelper
      * @param string $content
      * @return string
      */
-    protected function eliminateTabs($content)
+    protected static function eliminateTabs($content)
     {
         $content = str_replace("\t", '', $content);
         return $content;
@@ -195,7 +199,7 @@ class EliminateViewHelper extends AbstractViewHelper
      * @param string $content
      * @return string
      */
-    protected function eliminateUnixBreaks($content)
+    protected static function eliminateUnixBreaks($content)
     {
         $content = str_replace("\n", '', $content);
         return $content;
@@ -205,7 +209,7 @@ class EliminateViewHelper extends AbstractViewHelper
      * @param string $content
      * @return string
      */
-    protected function eliminateWindowsCarriageReturns($content)
+    protected static function eliminateWindowsCarriageReturns($content)
     {
         $content = str_replace("\r", '', $content);
         return $content;
@@ -215,7 +219,7 @@ class EliminateViewHelper extends AbstractViewHelper
      * @param string $content
      * @return string
      */
-    protected function eliminateDigits($content)
+    protected static function eliminateDigits($content)
     {
         $content = preg_replace('#[0-9]#', '', $content);
         return $content;
@@ -223,11 +227,11 @@ class EliminateViewHelper extends AbstractViewHelper
 
     /**
      * @param string $content
+     * @param boolean $caseSensitive
      * @return string
      */
-    protected function eliminateLetters($content)
+    protected static function eliminateLetters($content, $caseSensitive)
     {
-        $caseSensitive = (boolean) $this->arguments['caseSensitive'];
         if (true === $caseSensitive) {
             $content = preg_replace('#[a-z]#', '', $content);
         } else {
@@ -238,11 +242,11 @@ class EliminateViewHelper extends AbstractViewHelper
 
     /**
      * @param string $content
+     * @param boolean $caseSensitive
      * @return string
      */
-    protected function eliminateNonAscii($content)
+    protected static function eliminateNonAscii($content, $caseSensitive)
     {
-        $caseSensitive = (boolean) $this->arguments['caseSensitive'];
         $caseSensitiveIndicator = true === $caseSensitive ? 'i' : '';
         $content = preg_replace('/[^(\x20-\x7F)]*/' . $caseSensitiveIndicator, '', $content);
         return $content;

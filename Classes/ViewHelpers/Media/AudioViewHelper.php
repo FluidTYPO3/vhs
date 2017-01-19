@@ -127,7 +127,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
      */
     public function render()
     {
-        $sources = $this->getSourcesFromArgument();
+        $sources = static::getSourcesFromArgument($this->arguments);
         if (0 === count($sources)) {
             throw new Exception('No audio sources provided.', 1359382189);
         }
@@ -159,7 +159,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
                     throw new Exception('Invalid audio type "' . $type . '".', 1359381260);
             }
             $type = $this->mimeTypesMap[$type];
-            $src = $this->preprocessSourceUri($src);
+            $src = static::preprocessSourceUri($src, $this->arguments);
             $this->renderChildTag('source', ['src' => $src, 'type' => $type], false, 'append');
         }
         $tagAttributes = [

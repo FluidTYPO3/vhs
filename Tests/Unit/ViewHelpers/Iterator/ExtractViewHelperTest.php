@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -25,46 +26,29 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
     protected $fixture;
 
     /**
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        $this->fixture = $this->getAccessibleMock('FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper', array('hasArgument'));
-    }
-
-    /**
-     * @return void
-     */
-    public function tearDown()
-    {
-        unset($this->fixture);
-    }
-
-    /**
      * @return array
      */
     public function simpleStructures()
     {
-        $structures = array(
+        $structures = [
             // structure, key, expected
-            'flat associative array' => array(
-                array('myKey' => 'myValue'),
+            'flat associative array' => [
+                ['myKey' => 'myValue'],
                 'myKey',
                 'myValue'
-            ),
-            'deeper associative array' => array(
-                array(
-                    'myFirstKey' => array(
-                        'mySecondKey' => array(
+            ],
+            'deeper associative array' => [
+                [
+                    'myFirstKey' => [
+                        'mySecondKey' => [
                             'myThirdKey' => 'myValue'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'myFirstKey.mySecondKey.myThirdKey',
                 'myValue'
-            ),
-        );
+            ],
+        ];
 
         return $structures;
     }
@@ -80,7 +64,7 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
         $user3 = new FrontendUser();
         $user1->setFirstName('Peter');
         $user2->setFirstName('Paul');
-        $user3->setFirstName('Marry');
+        $user3->setFirstName('Mary');
         $storage->attach($user1);
         $storage->attach($user2);
         $storage->attach($user3);
@@ -111,75 +95,75 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
      */
     public function nestedStructures()
     {
-        $structures = array(
+        $structures = [
             // structure, key, expected
-            'simple indexed_search searchWords array' => array(
-                array(
-                    0 => array(
+            'simple indexed_search searchWords array' => [
+                [
+                    0 => [
                         'sword' => 'firstWord',
                         'oper' => 'AND'
-                    ),
-                ),
+                    ],
+                ],
                 'sword',
-                array(
+                [
                     'firstWord'
-                )
-            ),
-            'interesting indexed_search searchWords array' => array(
-                array(
-                    0 => array(
+                ]
+            ],
+            'interesting indexed_search searchWords array' => [
+                [
+                    0 => [
                         'sword' => 'firstWord',
                         'oper' => 'AND'
-                    ),
-                    1 => array(
+                    ],
+                    1 => [
                         'sword' => 'secondWord',
                         'oper' => 'AND'
-                    ),
-                    3 => array(
+                    ],
+                    3 => [
                         'sword' => 'thirdWord',
                         'oper' => 'AND'
-                    )
-                ),
+                    ]
+                ],
                 'sword',
-                array(
+                [
                     'firstWord',
                     'secondWord',
                     'thirdWord'
-                )
-            ),
-            'ridiculously nested array' => array(
-                array(
-                    array(
-                        array(
-                            array(
-                                array(
-                                    array(
+                ]
+            ],
+            'ridiculously nested array' => [
+                [
+                    [
+                        [
+                            [
+                                [
+                                    [
                                         'l' => 'some'
-                                    )
-                                )
-                            ),
-                            array(
+                                    ]
+                                ]
+                            ],
+                            [
                                 'l' => 'text'
-                            )
-                        )
-                    )
-                ),
+                            ]
+                        ]
+                    ]
+                ],
                 'l',
-                array(
+                [
                     0 => 'some',
                     1 => 'text',
-                )
-            ),
-            'ObjectStorage containing FrontendUser' => array(
+                ]
+            ],
+            'ObjectStorage containing FrontendUser' => [
                 $this->constructObjectStorageContainingFrontendUser(),
                 'firstname',
-                array(
+                [
                     'Peter',
                     'Paul',
-                    'Marry'
-                )
-            ),
-        );
+                    'Mary'
+                ]
+            ],
+        ];
 
         return $structures;
     }
@@ -191,9 +175,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
     public function recursivelyExtractKey($structure, $key, $expected)
     {
         $recursive = true;
-        $this->assertSame(
+        $this->assertEquals(
             $expected,
-            $this->fixture->render($key, $structure, $recursive)
+            $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => true, 'single' => false])
         );
     }
 
@@ -203,9 +187,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
      */
     public function extractByKeyExtractsKeyByPath($structure, $key, $expected)
     {
-        $this->assertSame(
+        $this->assertEquals(
             $expected,
-            $this->fixture->extractByKey($structure, $key)
+            $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => false, 'single' => false])
         );
     }
 }

@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -21,17 +22,16 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * Using as `{value -> v:variable.register.set(name: 'myVar')}` makes $GLOBALS["TSFE"]->register['myVar']
  * contain `{value}`.
  */
-class SetViewHelper extends AbstractViewHelper
+class SetViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @return void
      */
     public function initializeArguments()
     {
-        $this->registerArgument('value', 'mixed', 'Value to set', false, null);
+        $this->registerArgument('value', 'mixed', 'Value to set');
         $this->registerArgument('name', 'string', 'Name of register', true);
     }
 
@@ -49,12 +49,7 @@ class SetViewHelper extends AbstractViewHelper
         if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             return null;
         }
-        $name = $arguments['name'];
-        $value = $arguments['value'];
-        if (null === $value) {
-            $value = $renderChildrenClosure();
-        }
-        $GLOBALS['TSFE']->register[$name] = $value;
+        $GLOBALS['TSFE']->register[$arguments['name']] = $renderChildrenClosure();
         return null;
     }
 }

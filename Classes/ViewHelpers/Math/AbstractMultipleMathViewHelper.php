@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -17,9 +18,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelper
 {
-
-    use ArrayConsumingViewHelperTrait;
-
     /**
      * @return void
      */
@@ -30,44 +28,42 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
-     * @throw Exception
      */
-    public function render()
-    {
-        $a = $this->getInlineArgument();
-        $b = $this->arguments['b'];
-        return $this->calculate($a, $b);
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $value = $renderChildrenClosure();
+        if (null === $value && true === (boolean) $arguments['fail']) {
+            ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
+        }
+        return static::calculate($value, $arguments['b'], $arguments);
     }
 
     /**
      * @param mixed $a
      * @param mixed $b
+     * @param array $arguments
      * @return mixed
      * @throws Exception
      */
-    protected function calculate($a, $b = null)
+    protected static function calculate($a, $b = null, array $arguments = [])
     {
-        if ($b === null) {
-            throw new Exception('Required argument "b" was not supplied', 1237823699);
-        }
-        $aIsIterable = $this->assertIsArrayOrIterator($a);
-        $bIsIterable = $this->assertIsArrayOrIterator($b);
-        if (true === $aIsIterable) {
-            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
-            foreach ($a as $index => $value) {
-                $bSideValue = true === $bIsIterable ? $b[$index] : $b;
-                $a[$index] = $this->calculateAction($value, $bSideValue);
-            }
-            return $a;
-        } elseif (true === $bIsIterable) {
+        $aIsIterable = static::assertIsArrayOrIterator($a);
+        $bIsIterable = static::assertIsArrayOrIterator($b);
+        if (false === $aIsIterable && true === $bIsIterable) {
             // condition matched if $a is not iterable but $b is.
-            throw new Exception(
+            ErrorUtility::throwViewHelperException(
                 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, ' .
                 'or only $a, must be array/Iterator',
                 1351890876
             );
         }
-        return $this->calculateAction($a, $b);
+        return static::calculateAction($a, $b, $arguments);
     }
 }

@@ -11,6 +11,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Case Formatting ViewHelper
@@ -19,6 +21,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class CaseViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     const CASE_UPPER = 'upper';
     const CASE_LOWER = 'lower';
@@ -30,15 +33,26 @@ class CaseViewHelper extends AbstractViewHelper
     const CASE_UNDERSCORED = 'lowercase_underscored';
 
     /**
-     * @param string $string
-     * @param string $case
-     * @return string
+     * @return void
      */
-    public function render($string = null, $case = null)
+    public function initializeArguments()
     {
-        if (null === $string) {
-            $string = $this->renderChildren();
-        }
+        $this->registerArgument('string', 'string', 'String to case format');
+        $this->registerArgument('case', 'string', 'Case to convert to');
+    }
+
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $string = $renderChildrenClosure();
+        $case = $arguments['case'];
+
         if ('BE' === TYPO3_MODE) {
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
         }

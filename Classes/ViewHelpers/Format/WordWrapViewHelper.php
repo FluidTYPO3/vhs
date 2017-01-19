@@ -8,9 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Wordwrap: Wrap a string at provided character count
@@ -22,15 +22,14 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class WordWrapViewHelper extends AbstractViewHelper
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @return void
      */
     public function initializeArguments()
     {
-        $this->registerArgument('subject', 'string', 'Text to wrap', false);
+        $this->registerArgument('subject', 'string', 'Text to wrap');
         $this->registerArgument('limit', 'integer', 'Maximum length of resulting parts after wrapping', false, 80);
         $this->registerArgument('break', 'string', 'Character to wrap text at', false, PHP_EOL);
         $this->registerArgument('glue', 'string', 'Character to concatenate parts with after wrapping', false, PHP_EOL);
@@ -47,15 +46,12 @@ class WordWrapViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = $arguments['subject'];
-        if (true === empty($subject)) {
-            $subject = $renderChildrenClosure();
-        }
+        $subject = $renderChildrenClosure();
         $limit = (integer) $arguments['limit'];
         $break = $arguments['break'];
         $glue = $arguments['glue'];
         $subject = preg_replace('/ +/', ' ', $subject);
-        $subject = str_replace(array("\r\n", "\r"), PHP_EOL, $subject);
+        $subject = str_replace(["\r\n", "\r"], PHP_EOL, $subject);
         $subject = wordwrap($subject, $limit, $break, false);
         $output = '';
         foreach (explode($break, $subject) as $line) {

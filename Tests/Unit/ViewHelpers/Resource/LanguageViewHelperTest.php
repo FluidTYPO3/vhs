@@ -21,7 +21,7 @@ class LanguageViewHelperTest extends AbstractViewHelperTest
      */
     public function testRenderFailsWhenUnableToResolveExtensionName()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Cannot read extension name from ControllerContext and value not manually specified');
+        $this->expectViewHelperException('Cannot read extension name from ControllerContext and value not manually specified');
         $this->executeViewHelper();
     }
 }

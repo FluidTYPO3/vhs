@@ -25,7 +25,7 @@ class OrViewHelperTest extends AbstractViewHelperTest
         $result = $this->executeViewHelper($arguments);
         $content = $arguments['content'];
         unset($arguments['content']);
-        $result2 = $this->executeViewHelperUsingTagContent('Text', (string) $content, $arguments);
+        $result2 = $this->executeViewHelperUsingTagContent((string) $content, $arguments);
         $this->assertEquals($expected, $result);
         $this->assertEquals($result, $result2);
     }
@@ -35,11 +35,11 @@ class OrViewHelperTest extends AbstractViewHelperTest
      */
     public function getRenderTestValues()
     {
-        return array(
-            array(array('extensionName' => 'Vhs', 'content' => 'alt', 'alternative' => 'alternative'), 'alt'),
-            array(array('extensionName' => 'Vhs', 'content' => '', 'alternative' => 'alternative'), 'alternative'),
-            array(array('extensionName' => 'Vhs', 'content' => null, 'alternative' => 'alternative'), 'alternative'),
-            array(array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'alternative'), 'alternative'),
+        return [
+            [['extensionName' => 'Vhs', 'content' => 'alt', 'alternative' => 'alternative'], 'alt'],
+            [['extensionName' => 'Vhs', 'content' => '', 'alternative' => 'alternative'], 'alternative'],
+            [['extensionName' => 'Vhs', 'content' => null, 'alternative' => 'alternative'], 'alternative'],
+            [['extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'alternative'], 'alternative'],
             /*
 			array(
 				array(
@@ -59,10 +59,10 @@ class OrViewHelperTest extends AbstractViewHelperTest
 				'Extension Manager'
 			),
 			*/
-            array(
-                array('extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'LLL:notfound'),
+            [
+                ['extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'LLL:notfound'],
                 'LLL:notfound'
-            ),
-        );
+            ],
+        ];
     }
 }

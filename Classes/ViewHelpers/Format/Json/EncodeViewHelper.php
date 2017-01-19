@@ -8,10 +8,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### JSON Encoding ViewHelper
@@ -42,70 +45,95 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class EncodeViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @var array
      */
-    protected $encounteredClasses = [];
+    protected static $encounteredClasses = [];
 
     /**
-     * @param mixed $value Array or Traversable
-     * @param boolean $useTraversableKeys If TRUE, preserves keys from Traversables converted to arrays.
-     *                                    Not recommended for ObjectStorages!
-     * @param boolean $preventRecursion If FALSE, allows recursion to occur which could potentially be fatal to the
-     *                                  output unless managed
-     * @param mixed $recursionMarker Any value - string, integer, boolean, object or NULL - inserted instead of
-     *                               recursive instances of objects
-     * @param string $dateTimeFormat A date() format for converting DateTime values to JSON-compatible values.
-     *                               NULL means JS UNIXTIME (time()*1000)
-     * @return string
+     * @return void
      */
-    public function render(
-        $value = null,
-        $useTraversableKeys = false,
-        $preventRecursion = true,
-        $recursionMarker = null,
-        $dateTimeFormat = null
-    ) {
-        if (null === $value) {
-            $value = $this->renderChildren();
-            if (true === empty($value)) {
-                return '{}';
-            }
+    public function initializeArguments()
+    {
+        $this->registerArgument('value', 'mixed', 'Value to encode as JSON');
+        $this->registerArgument(
+            'useTraversableKeys',
+            'boolean',
+            'If TRUE, preserves keys from Traversables converted to arrays. Not recommended for ObjectStorages!',
+            false,
+            false
+        );
+        $this->registerArgument(
+            'preventRecursion',
+            'boolean',
+            'If FALSE, allows recursion to occur which could potentially be fatal to the output unless managed',
+            false,
+            true
+        );
+        $this->registerArgument(
+            'recursionMarker',
+            'mixed',
+            'Any value - string, integer, boolean, object or NULL - inserted instead of recursive instances of objects'
+        );
+        $this->registerArgument(
+            'dateTimeFormat',
+            'string',
+            'A date() format for DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)'
+        );
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $renderChildrenClosure();
+        $useTraversableKeys = (boolean) $arguments['useTraversableKeys'];
+        $preventRecursion = (boolean) $arguments['preventRecursion'];
+        $recursionMarker = $arguments['recursionMarker'];
+        $dateTimeFormat = $arguments['dateTimeFormat'];
+        if (true === empty($value)) {
+            return '{}';
         }
-        $json = $this->encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat);
+        static::$encounteredClasses = [];
+        $json = static::encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat);
         return $json;
     }
 
     /**
-     * @param string $value
+     * @param mixed $value
      * @param boolean $useTraversableKeys
      * @param boolean $preventRecursion
      * @param string $recursionMarker
      * @param string $dateTimeFormat
+     * @return string
      * @throws Exception
-     * @return mixed
      */
-    protected function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat)
+    protected static function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat)
     {
         if (true === $value instanceof \Traversable) {
             // Note: also converts ObjectStorage to \Vendor\Extname\Domain\Model\ObjectType[] which are each converted
             $value = iterator_to_array($value, $useTraversableKeys);
         } elseif (true === $value instanceof DomainObjectInterface) {
             // Convert to associative array,
-            $value = $this->recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
+            $value = static::recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
         } elseif (true === $value instanceof \DateTime) {
-            $value = $this->dateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
+            $value = static::dateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
         }
 
         // process output of conversion, catching specially supported object types such as DomainObject and DateTime
         if (true === is_array($value)) {
-            $value = $this->recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
-            $value = $this->recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
-        };
+            $value = static::recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
+            $value = static::recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
+        }
         $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG);
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new Exception('The provided argument cannot be converted into JSON.', 1358440181);
+            ErrorUtility::throwViewHelperException('The provided argument cannot be converted into JSON.', 1358440181);
         }
         return $json;
     }
@@ -122,13 +150,13 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param string $dateTimeFormat
      * @return array
      */
-    protected function recursiveDateTimeToUnixtimeMiliseconds(array $array, $dateTimeFormat)
+    protected static function recursiveDateTimeToUnixtimeMiliseconds(array $array, $dateTimeFormat)
     {
         foreach ($array as $key => $possibleDateTime) {
             if (true === $possibleDateTime instanceof \DateTime) {
-                $array[$key] = $this->dateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
+                $array[$key] = static::dateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
             } elseif (true === is_array($possibleDateTime)) {
-                $array[$key] = $this->recursiveDateTimeToUnixtimeMiliseconds($array[$key], $dateTimeFormat);
+                $array[$key] = static::recursiveDateTimeToUnixtimeMiliseconds($array[$key], $dateTimeFormat);
             }
         }
         return $array;
@@ -159,23 +187,23 @@ class EncodeViewHelper extends AbstractViewHelper
      * value type. The type is checked and another recursive call is used to
      * convert any nested objects.
      *
-     * @param Tx_Extbase_DomainObject_DomainObjectInterface[] $domainObjects
+     * @param DomainObjectInterface[] $domainObjects
      * @param boolean $preventRecursion
      * @param mixed $recursionMarker
      * @return array
      */
-    protected function recursiveArrayOfDomainObjectsToArray(array $domainObjects, $preventRecursion, $recursionMarker)
+    protected static function recursiveArrayOfDomainObjectsToArray(array $domainObjects, $preventRecursion, $recursionMarker)
     {
         foreach ($domainObjects as $key => $possibleDomainObject) {
             if (true === $possibleDomainObject instanceof DomainObjectInterface) {
-                $domainObjects[$key] = $this->recursiveDomainObjectToArray(
+                $domainObjects[$key] = static::recursiveDomainObjectToArray(
                     $possibleDomainObject,
                     $preventRecursion,
                     $recursionMarker
                 );
             } elseif (true === $possibleDomainObject instanceof \Traversable) {
                 $traversableAsArray = iterator_to_array($possibleDomainObject);
-                $domainObjects[$key] = $this->recursiveArrayOfDomainObjectsToArray(
+                $domainObjects[$key] = static::recursiveArrayOfDomainObjectsToArray(
                     $traversableAsArray,
                     $preventRecursion,
                     $recursionMarker
@@ -195,18 +223,18 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param mixed $recursionMarker
      * @return array
      */
-    protected function recursiveDomainObjectToArray(
+    protected static function recursiveDomainObjectToArray(
         DomainObjectInterface $domainObject,
         $preventRecursion,
         $recursionMarker
     ) {
         $hash = spl_object_hash($domainObject);
-        if (true === $preventRecursion && true === in_array($hash, $this->encounteredClasses)) {
+        if (true === $preventRecursion && true === in_array($hash, static::$encounteredClasses)) {
             return $recursionMarker;
         }
         $converted = ObjectAccess::getGettableProperties($domainObject);
-        array_push($this->encounteredClasses, $hash);
-        $converted = $this->recursiveArrayOfDomainObjectsToArray($converted, $preventRecursion, $recursionMarker);
+        static::$encounteredClasses[] = $hash;
+        $converted = static::recursiveArrayOfDomainObjectsToArray($converted, $preventRecursion, $recursionMarker);
         return $converted;
     }
 }

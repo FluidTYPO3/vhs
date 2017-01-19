@@ -8,10 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### PregReplace regular expression ViewHeloer
@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class PregReplaceViewHelper extends AbstractViewHelper
 {
 
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -29,10 +29,10 @@ class PregReplaceViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
-        $this->registerArgument('pattern', 'string', 'Regex pattern to match against', true);
         $this->registerArgument('subject', 'string', 'String to match with the regex pattern or patterns');
+        $this->registerArgument('pattern', 'string', 'Regex pattern to match against', true);
         $this->registerArgument('replacement', 'string', 'String to replace matches with', true);
+        $this->registerAsArgument();
     }
 
     /**
@@ -46,11 +46,7 @@ class PregReplaceViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (empty($arguments['subject'])) {
-            $subject = $renderChildrenClosure();
-        } else {
-            $subject = $arguments['subject'];
-        }
+        $subject = $renderChildrenClosure();
         $value = preg_replace($arguments['pattern'], $arguments['replacement'], $subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $value,

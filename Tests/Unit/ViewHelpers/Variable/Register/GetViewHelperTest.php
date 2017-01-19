@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable\Register;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class GetViewHelperTest
@@ -21,7 +22,7 @@ class GetViewHelperTest extends AbstractViewHelperTest
      */
     public function silentlyIgnoresMissingFrontendController()
     {
-        $result = $this->executeViewHelper(array('name' => 'name'));
+        $result = $this->executeViewHelper(['name' => 'name']);
         $this->assertNull($result);
     }
 
@@ -30,9 +31,9 @@ class GetViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNullIfRegisterDoesNotExist()
     {
-        $GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', false);
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $name = uniqid();
-        $this->assertEquals(null, $this->executeViewHelper(array('name' => $name)));
+        $this->assertEquals(null, $this->executeViewHelper(['name' => $name]));
     }
 
     /**
@@ -40,10 +41,10 @@ class GetViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsValueIfRegisterExists()
     {
-        $GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', false);
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $name = uniqid();
         $value = uniqid();
         $GLOBALS['TSFE']->register[$name] = $value;
-        $this->assertEquals($value, $this->executeViewHelper(array('name' => $name)));
+        $this->assertEquals($value, $this->executeViewHelper(['name' => $name]));
     }
 }

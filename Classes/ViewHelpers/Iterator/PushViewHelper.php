@@ -10,6 +10,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -21,37 +24,47 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     ...
  *     </f:for>
  */
-class PushViewHelper extends AbstractViewHelper
+class PushViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
-
 
     /**
      * @return void
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
         $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
         $this->registerArgument('add', 'mixed', 'Member to add to end of array', true);
         $this->registerArgument('key', 'mixed', 'Optional key to use. If key exists the member will be overwritten!');
+        $this->registerAsArgument();
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render()
-    {
-        $subject = $this->getArgumentFromArgumentsOrTagContentAndConvertToArray('subject');
-        $add = $this->arguments['add'];
-        $key = $this->arguments['key'];
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $subject = $renderChildrenClosure();
+        $add = $arguments['add'];
+        $key = $arguments['key'];
         if ($key) {
             $subject[$key] = $add;
         } else {
             $subject[] = $add;
         }
-        return $this->renderChildrenWithVariableOrReturnInput($subject);
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $subject,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 }

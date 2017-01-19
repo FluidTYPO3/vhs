@@ -8,28 +8,28 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Service\PageService;
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to access data of the current page record.
  */
-class InfoViewHelper extends AbstractViewHelper
+class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
-     * @var PageService
+     * @var boolean
      */
-    protected static $pageService;
+    protected $escapeOutput = false;
 
+    /**
+     * @return void
+     */
     public function initializeArguments()
     {
         $this->registerAsArgument();
@@ -48,17 +48,6 @@ class InfoViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return PageService
-     */
-    protected static function getPageService()
-    {
-        if (!static::$pageService) {
-            static::$pageService = GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
-        }
-        return static::$pageService;
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
@@ -73,12 +62,12 @@ class InfoViewHelper extends AbstractViewHelper
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = static::getPageService()->getPage($pageUid);
+        $page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($pageUid);
         $field = $arguments['field'];
         $content = null;
         if (true === empty($field)) {
             $content = $page;
-        } elseif (true === isset($page[$field])) {
+        } elseif (true === is_array($page) && true === isset($page[$field])) {
             $content = $page[$field];
         }
 

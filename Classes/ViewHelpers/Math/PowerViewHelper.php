@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Math: Power
  *
@@ -15,13 +17,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class PowerViewHelper extends AbstractMultipleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @param mixed $a
      * @param mixed $b
      * @return integer
      */
-    protected function calculateAction($a, $b)
+    protected static function calculateAction($a, $b)
     {
         return pow($a, $b);
     }

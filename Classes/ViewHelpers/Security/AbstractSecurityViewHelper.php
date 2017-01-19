@@ -62,7 +62,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         );
         $this->registerArgument(
             'frontendUser',
-            'TYPO3\CMS\Extbase\Domain\Model\FrontendUser',
+            FrontendUser::class,
             'The FrontendUser to allow/deny'
         );
         $this->registerArgument(
@@ -72,7 +72,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         );
         $this->registerArgument(
             'frontendUserGroup',
-            'TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup',
+            FrontendUserGroup::class,
             'The FrontendUserGroup to allow/deny'
         );
         $this->registerArgument(

@@ -10,12 +10,20 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Returns the extension of the provided file.
  */
 class ExtensionViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * Initialize arguments.
@@ -25,23 +33,21 @@ class ExtensionViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('file', 'string', 'Path to the file to determine extension for.', false);
+        $this->registerArgument('file', 'string', 'Path to the file to determine extension for.');
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        $filePath = $renderChildrenClosure();
 
-        $filePath = $this->arguments['file'];
-
-        if (true === empty($filePath)) {
-            $filePath = $this->renderChildren();
-
-            if (null === $filePath) {
-                return '';
-            }
+        if (null === $filePath) {
+            return '';
         }
 
         $file = GeneralUtility::getFileAbsFileName($filePath);

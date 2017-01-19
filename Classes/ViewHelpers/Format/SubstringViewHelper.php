@@ -9,26 +9,39 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Gets a substring from a string or string-compatible value.
  */
 class SubstringViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('content', 'string', 'Content string to substring');
+        $this->registerArgument('start', 'integer', 'Positive or negative offset', false, 0);
+        $this->registerArgument('length', 'integer', 'Positive or negative length');
+    }
 
     /**
      * Substrings a string or string-compatible value
      *
-     * @param string $content Content string to substring
-     * @param integer $start Positive or negative offset
-     * @param integer $length Positive or negative length
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render($content = null, $start = 0, $length = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
+        $content = $renderChildrenClosure();
+        $start = (integer) $arguments['start'];
+        $length = $arguments['length'];
         if (null !== $length) {
             return substr($content, $start, $length);
         }

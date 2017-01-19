@@ -8,7 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Call ViewHelper
@@ -25,26 +28,49 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <!-- arguments for the method -->
  *     <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
  */
-class CallViewHelper extends AbstractViewHelper
+class CallViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $method
-     * @param object $object
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('object', 'object', 'Instance to call method on');
+        $this->registerArgument('method', 'string', 'Name of method to call on instance', true);
+        $this->registerArgument('arguments', 'array', 'Array of arguments if method requires arguments', false, []);
+    }
+
+    /**
      * @param array $arguments
-     * @throws \RuntimeException
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render($method, $object = null, array $arguments = [])
-    {
-        if (null === $object) {
-            $object = $this->renderChildren();
-            if (false === is_object($object)) {
-                throw new \RuntimeException(
-                    'Using v:call requires an object either as "object" attribute, tag content or inline argument',
-                    1356849652
-                );
-            }
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $object = $renderChildrenClosure();
+        $method = $arguments['method'];
+        $methodArguments = $arguments['arguments'];
+        if (false === is_object($object)) {
+            throw new \RuntimeException(
+                'Using v:call requires an object either as "object" attribute, tag content or inline argument',
+                1356849652
+            );
         }
         if (false === method_exists($object, $method)) {
             throw new \RuntimeException(
@@ -52,6 +78,6 @@ class CallViewHelper extends AbstractViewHelper
                 1356834755
             );
         }
-        return call_user_func_array(array($object, $method), $arguments);
+        return call_user_func_array([$object, $method], $methodArguments);
     }
 }

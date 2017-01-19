@@ -8,9 +8,13 @@ namespace FluidTYPO3\Vhs\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
+use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3\CMS\Fluid\Core\Parser\TemplateParser;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\View\TemplateView;
@@ -20,6 +24,29 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  */
 class UncacheTemplateView extends TemplateView
 {
+    /**
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager;
+
+    /**
+     * @var TemplateParser|\TYPO3Fluid\Fluid\Core\Parser\TemplateParser
+     */
+    protected $templateParser;
+
+    /**
+     * @var TemplateCompiler|\TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler
+     */
+    protected $templateCompiler;
+
+    /**
+     * @param ObjectManagerInterface $objectManager
+     * @return void
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
     /**
      * @param string $postUserFunc
@@ -32,20 +59,20 @@ class UncacheTemplateView extends TemplateView
         $partial = $conf['partial'];
         $section = $conf['section'];
         $arguments = true === is_array($conf['arguments']) ? $conf['arguments'] : [];
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
+        /** @var ControllerContext $controllerContext */
         $controllerContext = $conf['controllerContext'];
         if (true === empty($partial)) {
             return '';
         }
         /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext');
+        $renderingContext = $this->objectManager->get(RenderingContext::class);
         $this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
 
     /**
-     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+     * @param RenderingContextInterface $renderingContext
+     * @param ControllerContext $controllerContext
      * @return void
      */
     protected function prepareContextsForUncachedRendering(
@@ -54,18 +81,26 @@ class UncacheTemplateView extends TemplateView
     ) {
         $renderingContext->setControllerContext($controllerContext);
         $this->setRenderingContext($renderingContext);
-        $this->templateParser = TemplateParserBuilder::build();
-        $this->templateCompiler = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler');
-        if (isset($GLOBALS['typo3CacheManager'])) {
-            $cacheManager = $GLOBALS['typo3CacheManager'];
+        if (method_exists($renderingContext, 'getTemplateParser')) {
+            $this->templateParser = $renderingContext->getTemplateParser();
         } else {
-            $cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+            $this->templateParser = TemplateParserBuilder::build();
         }
-        $this->templateCompiler->setTemplateCache($cacheManager->getCache('fluid_template'));
+        if (method_exists($renderingContext, 'getTemplateCompiler')) {
+            $this->templateCompiler = $renderingContext->getTemplateCompiler();
+        } else {
+            $this->templateCompiler = $this->objectManager->get(TemplateCompiler::class);
+            if (isset($GLOBALS['typo3CacheManager'])) {
+                $cacheManager = $GLOBALS['typo3CacheManager'];
+            } else {
+                $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+            }
+            $this->templateCompiler->setTemplateCache($cacheManager->getCache('fluid_template'));
+        }
     }
 
     /**
-     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @param RenderingContextInterface $renderingContext
      * @param string $partial
      * @param string $section
      * @param array $arguments

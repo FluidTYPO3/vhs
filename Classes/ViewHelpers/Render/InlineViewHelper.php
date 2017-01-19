@@ -7,6 +7,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Render: Inline
@@ -20,8 +23,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * rendering this inline code will be destroyed after
  * sub-rendering is finished.
  */
-class InlineViewHelper extends AbstractRenderViewHelper
+class InlineViewHelper extends AbstractRenderViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * Initialize arguments
@@ -31,6 +35,7 @@ class InlineViewHelper extends AbstractRenderViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('content', 'string', 'Template code to render as Fluid (usually from a variable)');
         $this->registerArgument(
             'namespaces',
             'array',
@@ -40,26 +45,19 @@ class InlineViewHelper extends AbstractRenderViewHelper
         );
     }
 
-    /**
-     * Renders an outside string as if it were Fluid code,
-     * using additional (or overridden) namespaces if so
-     * desired.
-     *
-     * @param string $content
-     * @return string
-     */
-    public function render($content = null)
-    {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
-        $namespaces = $this->getPreparedNamespaces();
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $content = $renderChildrenClosure();
+        $namespaces = static::getPreparedNamespaces($arguments);
         $namespaceHeader = implode(LF, $namespaces);
         foreach ($namespaces as $namespace) {
             $content = str_replace($namespace, '', $content);
         }
-        $view = $this->getPreparedClonedView();
+        $view = static::getPreparedClonedView($renderingContext);
         $view->setTemplateSource($namespaceHeader . $content);
-        return $this->renderView($view);
+        return static::renderView($view, $arguments);
     }
 }

@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -22,17 +23,17 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
  *     {v:variable.register.get(name: 'dynamic{variableName}')}
  */
-class GetViewHelper extends AbstractViewHelper
+class GetViewHelper extends AbstractViewHelper implements CompilableInterface
 {
 
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @return void
      */
     public function initializeArguments()
     {
-        $this->registerArgument('name', 'string', 'Name of register', true);
+        $this->registerArgument('name', 'string', 'Name of register');
     }
 
     /**
@@ -46,10 +47,10 @@ class GetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        $name = $renderChildrenClosure();
         if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             return null;
         }
-        $name = $arguments['name'];
         $value = null;
         if (true === isset($GLOBALS['TSFE']->register[$name])) {
             $value = $GLOBALS['TSFE']->register[$name];

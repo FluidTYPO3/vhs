@@ -84,7 +84,7 @@ class AssetService implements SingletonInterface
      */
     public function usePageCache($caller, $shouldUsePageCache)
     {
-        $this->buildAll(array(), $caller);
+        $this->buildAll([], $caller);
         return $shouldUsePageCache;
     }
 
@@ -283,7 +283,7 @@ class AssetService implements SingletonInterface
                             if (true === $rewrite) {
                                 array_push(
                                     $chunks,
-                                    $this->writeCachedMergedFileAndReturnTag(array($name => $asset), $type)
+                                    $this->writeCachedMergedFileAndReturnTag([$name => $asset], $type)
                                 );
                             } else {
                                 $integrity = $this->getFileIntegrity($path);
@@ -736,18 +736,14 @@ class AssetService implements SingletonInterface
     }
 
     /**
-     * @param $array1
-     * @param $array2
+     * @param array $array1
+     * @param array $array2
      * @return array
      */
     protected function mergeArrays($array1, $array2)
     {
-        if (6.2 <= (float) substr(TYPO3_version, 0, 3)) {
-            ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
-            return $array1;
-        } else {
-            return GeneralUtility::array_merge_recursive_overrule($array1, $array2);
-        }
+        ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
+        return $array1;
     }
 
     /**

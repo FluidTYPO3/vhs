@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Class SizeViewHelperTest
@@ -35,9 +37,11 @@ class SizeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsZeroForEmptyArguments()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\SizeViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
+        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
-
+        $viewHelper->setArguments([]);
         $this->assertEquals(0, $viewHelper->render());
     }
 
@@ -46,9 +50,11 @@ class SizeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsFileSizeAsInteger()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\SizeViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
+        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
-
+        $viewHelper->setArguments([]);
         $this->assertEquals(7094, $viewHelper->render());
     }
 
@@ -57,10 +63,12 @@ class SizeViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionWhenFileNotFound()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\SizeViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
+        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
-
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
+        $viewHelper->setArguments([]);
+        $this->expectViewHelperException();
         $viewHelper->render();
     }
 
@@ -69,10 +77,12 @@ class SizeViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
     {
-        $viewHelper = $this->getMock('FluidTYPO3\Vhs\ViewHelpers\Media\SizeViewHelper', array('renderChildren'));
+        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
+        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
-
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception');
+        $viewHelper->setArguments([]);
+        $this->expectViewHelperException();
         $viewHelper->render();
     }
 }

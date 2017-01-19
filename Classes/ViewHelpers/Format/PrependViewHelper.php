@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Format: Prepend string content
@@ -26,17 +28,25 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class PrependViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $add
-     * @param string $subject
-     * @return string
+     * @return void
      */
-    public function render($add, $subject = null)
+    public function initializeArguments()
     {
-        if (null === $subject) {
-            $subject = $this->renderChildren();
-        }
-        return $add . $subject;
+        $this->registerArgument('subject', 'string', 'String to prepend other string to');
+        $this->registerArgument('add', 'string', 'String to prepend');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return $arguments['add'] . $renderChildrenClosure();
     }
 }

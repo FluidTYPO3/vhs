@@ -21,8 +21,8 @@ class SortViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionOnUnsupportedSortFlag()
     {
-        $arguments = array('sortFlags' => 'FOOBAR');
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The constant "FOOBAR" you\'re trying to use as a sortFlag is not allowed.');
-        $this->executeViewHelperUsingTagContent('Array', array('a', 'b', 'c'), $arguments);
+        $arguments = ['sortFlags' => 'FOOBAR'];
+        $this->expectViewHelperException('The constant "FOOBAR" you\'re trying to use as a sortFlag is not allowed.');
+        $this->executeViewHelperUsingTagContent(['a', 'b', 'c'], $arguments);
     }
 }

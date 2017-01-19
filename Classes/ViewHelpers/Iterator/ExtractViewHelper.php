@@ -8,8 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -76,29 +79,49 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().
  *     {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
  */
-class ExtractViewHelper extends AbstractViewHelper
+class ExtractViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param string $key The name of the key from which you wish to extract the value
-     * @param mixed $content The array or Iterator that contains either the value or arrays of values
-     * @param boolean $recursive If TRUE, attempts to extract the key from deep nested arrays
-     * @param boolean $single If TRUE, returns only one value - always the first one - instead of an array of values
-     * @return array
+     * @var boolean
      */
-    public function render($key, $content = null, $recursive = true, $single = false)
+    protected $escapeOutput = false;
+
+    /**
+     * @return void
+     */
+    public function initializeArguments()
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
+        $this->registerArgument('content', 'mixed', 'The array or Iterator that contains either the value or arrays of values');
+        $this->registerArgument('key', 'string', 'The name of the key from which you wish to extract the value', true);
+        $this->registerArgument('recursive', 'boolean', 'If TRUE, attempts to extract the key from deep nested arrays', false, true);
+        $this->registerArgument('single', 'boolean', 'If TRUE, returns only one value - always the first one - instead of an array of values', false, false);
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $content = $renderChildrenClosure();
+        $key = $arguments['key'];
+        $recursive = (boolean) $arguments['recursive'];
+        $single = (boolean) $arguments['single'];
         try {
             // extraction from Iterators could potentially use a getter method which throws
             // exceptions - although this would be bad practice. Catch the exception here
             // and turn it into a WARNING log message so that output does not break.
             if (true === (boolean) $recursive) {
-                $result = $this->recursivelyExtractKey($content, $key);
+                $result = static::recursivelyExtractKey($content, $key);
             } else {
-                $result = $this->extractByKey($content, $key);
+                $result = static::extractByKey($content, $key);
             }
         } catch (\Exception $error) {
             GeneralUtility::sysLog($error->getMessage(), 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
@@ -120,7 +143,7 @@ class ExtractViewHelper extends AbstractViewHelper
      * @return mixed NULL or whatever we found at $key
      * @throws \Exception
      */
-    public function extractByKey($iterator, $key)
+    protected static function extractByKey($iterator, $key)
     {
         if (false === is_array($iterator) && false === $iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
@@ -139,7 +162,7 @@ class ExtractViewHelper extends AbstractViewHelper
      * @return string
      * @throws \Exception
      */
-    public function recursivelyExtractKey($iterator, $key)
+    protected static function recursivelyExtractKey($iterator, $key)
     {
         $content = [];
 
@@ -149,11 +172,11 @@ class ExtractViewHelper extends AbstractViewHelper
             if (null !== $result) {
                 $content[] = $result;
             } elseif (true === is_array($v) || true === $v instanceof \Traversable) {
-                $content[] = $this->recursivelyExtractKey($v, $key);
+                $content[] = static::recursivelyExtractKey($v, $key);
             }
         }
 
-        $content = $this->flattenArray($content);
+        $content = static::flattenArray($content);
 
         return $content;
     }
@@ -165,11 +188,11 @@ class ExtractViewHelper extends AbstractViewHelper
      * @param array $flattened
      * @return array
      */
-    public function flattenArray(array $content, $flattened = null)
+    protected static function flattenArray(array $content, $flattened = null)
     {
         foreach ($content as $sub) {
             if (true === is_array($sub)) {
-                $flattened = $this->flattenArray($sub, $flattened);
+                $flattened = static::flattenArray($sub, $flattened);
             } else {
                 $flattened[] = $sub;
             }

@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -23,17 +24,17 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * sensible defaults are assigned or $default which obviously has to
  * be of $type as well.
  */
-class ConvertViewHelper extends AbstractViewHelper
+class ConvertViewHelper extends AbstractViewHelper implements CompilableInterface
 {
 
-    use DefaultRenderMethodViewHelperTrait;
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * Initialize arguments
      */
     public function initializeArguments()
     {
-        $this->registerArgument('value', 'mixed', 'Value to convert into a different type', false, null);
+        $this->registerArgument('value', 'mixed', 'Value to convert into a different type');
         $this->registerArgument(
             'type',
             'string',
@@ -61,11 +62,7 @@ class ConvertViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (true === isset($arguments['value'])) {
-            $value = $arguments['value'];
-        } else {
-            $value = $renderChildrenClosure();
-        }
+        $value = $renderChildrenClosure();
         $type = $arguments['type'];
         if (gettype($value) === $type) {
             return $value;
@@ -73,9 +70,9 @@ class ConvertViewHelper extends AbstractViewHelper
         if (null !== $value) {
             if ('ObjectStorage' === $type && 'array' === gettype($value)) {
                 /** @var ObjectManager $objectManager */
-                $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
                 /** @var ObjectStorage $storage */
-                $storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+                $storage = $objectManager->get(ObjectStorage::class);
                 foreach ($value as $item) {
                     $storage->attach($item);
                 }
@@ -115,8 +112,8 @@ class ConvertViewHelper extends AbstractViewHelper
                         $value = [];
                         break;
                     case 'ObjectStorage':
-                        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-                        $value = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+                        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+                        $value = $objectManager->get(ObjectStorage::class);
                         break;
                     default:
                         throw new \RuntimeException('Provided argument "type" is not valid', 1364542884);

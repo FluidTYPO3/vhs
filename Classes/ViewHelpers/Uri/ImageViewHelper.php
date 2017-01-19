@@ -27,7 +27,7 @@ class ImageViewHelper extends AbstractImageViewHelper
     public function render()
     {
         $this->preprocessImage();
-        $src = $this->preprocessSourceUri($this->mediaSource);
+        $src = static::preprocessSourceUri($this->mediaSource, $this->arguments);
         return $src;
     }
 }

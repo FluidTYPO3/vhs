@@ -8,6 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Math: Average
  *
@@ -21,6 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class AverageViewHelper extends AbstractMultipleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+    use ArrayConsumingViewHelperTrait;
 
     /**
      * @return void
@@ -32,39 +37,32 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
     }
 
     /**
+     * @param mixed $a
+     * @param mixed $b
+     * @param array $arguments
      * @return mixed
-     * @throw Exception
      */
-    public function render()
+    protected static function calculateAction($a, $b, array $arguments)
     {
-        $a = $this->getInlineArgument();
-        $b = $this->arguments['b'];
-        $aIsIterable = $this->assertIsArrayOrIterator($a);
-        $bIsIterable = $this->assertIsArrayOrIterator($b);
-        if (true === $aIsIterable && null === $b) {
-            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
-            $sum = array_sum($a);
-            $distribution = count($a);
-            return $sum / $distribution;
-        } elseif (true === $aIsIterable && false === $bIsIterable) {
-            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
+        $aIsIterable = static::assertIsArrayOrIterator($a);
+        $bIsIterable = static::assertIsArrayOrIterator($b);
+        if (true === $aIsIterable) {
+            $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
+            if ($b === null) {
+                return array_sum($a) / count($a);
+            }
+            if ($bIsIterable) {
+                $b = static::arrayFromArrayOrTraversableOrCSVStatic($b);
+            }
             foreach ($a as $index => $value) {
-                $a[$index] = $this->calculateAction($value, $b);
+                $bSide = $bIsIterable ? $b[$index] : $b;
+                $a[$index] = static::calculateAction($value, $bSide, $arguments);
             }
             return $a;
-        } elseif (true === isset($a) && null === $b) {
+        }
+        if (null === $b) {
             return $a;
         }
-        return $this->calculate($a, $b);
-    }
-
-    /**
-     * @param mixed $a
-     * @param $b
-     * @return mixed
-     */
-    protected function calculateAction($a, $b)
-    {
         return ($a + $b) / 2;
     }
 }

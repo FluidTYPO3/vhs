@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -41,10 +42,14 @@ use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper as FluidTypolinkViewHelpe
  *
  * @deprecated Use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper, remove in 4.0.0
  */
-class TypolinkViewHelper extends AbstractViewHelper
+class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithRenderStatic;
 
-    use DefaultRenderMethodViewHelperTrait;
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * Initializes the arguments for the ViewHelper
