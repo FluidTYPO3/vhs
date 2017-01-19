@@ -95,6 +95,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             'Quality of the processed image. If blank/not present falls back to the default quality defined ' .
             'in install tool.'
         );
+	    $this->registerArgument('relative', 'integer', 'Prevent change of relative source URI into an absolute URL');
     }
 
     /**
