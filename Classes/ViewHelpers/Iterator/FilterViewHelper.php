@@ -86,7 +86,7 @@ class FilterViewHelper extends AbstractViewHelper implements CompilableInterface
             $subject = iterator_to_array($subject);
         }
         $items = [];
-        $invertFlag = !(boolean) $invert;
+        $invertFlag = !$invert;
         foreach ($subject as $key => $item) {
             if ($invertFlag === static::filter($item, $filter, $propertyName)) {
                 $items[$key] = $item;
