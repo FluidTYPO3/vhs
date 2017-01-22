@@ -142,8 +142,8 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
                 $languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
             }
             $languageCondition .= ')';
-            $conditions = "pid = '" . (integer) $pageUid . "' AND colPos = '" . (integer) $column . "' AND hidden = 0" .
-                $this->contentObject->enableFields('tt_content', false, ['pid' => true]) . ' AND ' . $languageCondition;
+            $conditions = "colPos = '" . (integer) $column . "'" .
+                $this->contentObject->enableFields('tt_content', false, ['pid' => true, 'hidden' => true]) . ' AND ' . $languageCondition;
         }
         if (true === (boolean) $this->arguments['sectionIndexOnly']) {
             $conditions .= ' AND sectionIndex = 1';
@@ -151,6 +151,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if (ExtensionManagementUtility::isLoaded('workspaces')) {
             $conditions .= BackendUtility::versioningPlaceholderClause('tt_content');
         }
+        $conditions .= sprintf(' AND pid = %d ', $pageUid);
 
         $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
 
