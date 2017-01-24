@@ -2,7 +2,7 @@ Latest release: 3.1.0 (2016/12/09)
 
 All previous release change logs:
 
-* [3.1.0 (2016/12/09)](Documentation/Changelog/3.1.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/3.0.1...3.1.0)
+* [3.1.0 (2016/10/18)](Documentation/Changelog/3.1.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/3.0.1...3.1.0)
 * [3.0.1 (2016/07/28)](Documentation/Changelog/3.0.1.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/3.0.0...3.0.1)
 * [3.0.0 (2016/07/11)](Documentation/Changelog/3.0.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/2.4.0...3.0.0)
 * [2.4.0 (2015/09/18)](Documentation/Changelog/2.4.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/2.3.3...2.4.0)
