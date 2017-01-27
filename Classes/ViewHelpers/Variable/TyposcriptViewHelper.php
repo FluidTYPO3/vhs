@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -60,15 +61,6 @@ class TyposcriptViewHelper extends AbstractViewHelper implements CompilableInter
     protected static $configurationManager;
 
     /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        static::$configurationManager = $configurationManager;
-    }
-
-    /**
      * @return void
      */
     public function initializeArguments()
@@ -91,7 +83,7 @@ class TyposcriptViewHelper extends AbstractViewHelper implements CompilableInter
         if (true === empty($path)) {
             return null;
         }
-        $all = static::$configurationManager->getConfiguration(
+        $all = static::getConfigurationManager()->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
         $segments = explode('.', $path);
@@ -103,5 +95,21 @@ class TyposcriptViewHelper extends AbstractViewHelper implements CompilableInter
             $value = GeneralUtility::removeDotsFromTS($value);
         }
         return $value;
+    }
+
+    /**
+     * Returns instance of the configuration manager
+     *
+     * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected static function getConfigurationManager()
+    {
+        if (null !== static::$configurationManager) {
+            return static::$configurationManager;
+        }
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+        static::$configurationManager = $configurationManager;
+        return $configurationManager;
     }
 }
