@@ -11,8 +11,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as LegacyFluidObjectAccessorNode;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as StandaloneFluidObjectAccessorNode;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as LegacyFluidViewHelperNode;
+use \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as StandaloneFluidViewHelperNode;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
 
@@ -75,12 +77,18 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
      * @var ObjectAccessorNode[]
      */
     protected $childObjectAccessorNodes = [];
+
+
     /**
-     * With this flag, you can disable the escaping interceptor inside this ViewHelper.
-     * THIS MIGHT CHANGE WITHOUT NOTICE, NO PUBLIC API!
      * @var boolean
      */
-    protected $escapingInterceptorEnabled = false;
+    protected $escapeOutput = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
     /**
      * @return string
      */
@@ -165,10 +173,10 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
     public function setChildNodes(array $childNodes)
     {
         foreach ($childNodes as $childNode) {
-            if (true === $childNode instanceof ViewHelperNode) {
+            if (true === $childNode instanceof LegacyFluidViewHelperNode || $childNode instanceof StandaloneFluidViewHelperNode) {
                 array_push($this->childViewHelperNodes, $childNode);
             }
-            if (true === $childNode instanceof ObjectAccessorNode) {
+            if (true === $childNode instanceof LegacyFluidObjectAccessorNode || $childNode instanceof StandaloneFluidObjectAccessorNode) {
                 array_push($this->childObjectAccessorNodes, $childNode);
             }
         }

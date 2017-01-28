@@ -31,7 +31,7 @@ trait SourceSetViewHelperTrait
         $srcsets = $this->getSourceSetWidths();
 
         if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::simulateFrontendEnvironment();
+            $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
         }
 
         $format = $this->arguments['format'];
@@ -48,7 +48,7 @@ trait SourceSetViewHelperTrait
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference);
 
             $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
-            $srcsetVariantSrc = $this->preprocessSourceUri(GeneralUtility::rawUrlEncodeFP($srcsetVariantSrc));
+            $srcsetVariantSrc = static::preprocessSourceUri(GeneralUtility::rawUrlEncodeFP($srcsetVariantSrc), $this->arguments);
 
             $imageSources[$srcsetVariant[0]] = [
                 'src' => $srcsetVariantSrc,
@@ -61,7 +61,7 @@ trait SourceSetViewHelperTrait
         $tag->addAttribute('srcset', implode(',', $srcsetVariants));
 
         if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::resetFrontendEnvironment();
+            FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
         }
 
         return $imageSources;

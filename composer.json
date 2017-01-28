@@ -23,7 +23,8 @@
         }
     },
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=7.0.0",
+        "typo3/cms": ">=7.6.13, <=7.6.99|^8.4.1"
     },
     "require-dev": {
         "fluidtypo3/development": "^3.0"

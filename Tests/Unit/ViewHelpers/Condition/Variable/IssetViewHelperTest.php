@@ -21,14 +21,14 @@ class IssetViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildIfVariableIsSet()
     {
-        $arguments = array(
+        $arguments = [
             'name' => 'test',
             'then' => 'then',
             'else' => 'else'
-        );
-        $variables = array(
+        ];
+        $variables = [
             'test' => true
-        );
+        ];
         $result = $this->executeViewHelper($arguments, $variables);
         $this->assertEquals($arguments['then'], $result);
 
@@ -41,12 +41,12 @@ class IssetViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildIfVariableIsNotSet()
     {
-        $arguments = array(
+        $arguments = [
             'name' => 'test',
             'then' => 'then',
             'else' => 'else'
-        );
-        $variables = array();
+        ];
+        $variables = [];
         $result = $this->executeViewHelper($arguments, $variables);
         $this->assertEquals($arguments['else'], $result);
 

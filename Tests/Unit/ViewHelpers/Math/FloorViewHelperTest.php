@@ -27,6 +27,6 @@ class FloorViewHelperTest extends AbstractMathViewHelperTest
      */
     public function testSingleArgumentIteratorFirst()
     {
-        $this->executeSingleArgumentTest(array(1.5, 2.5), array(1, 2));
+        $this->executeSingleArgumentTest([1.5, 2.5], [1, 2]);
     }
 }

@@ -8,6 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Math: Sum
  *
@@ -20,6 +24,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class SumViewHelper extends AbstractMultipleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+    use ArrayConsumingViewHelperTrait;
 
     /**
      * @return void
@@ -31,28 +37,27 @@ class SumViewHelper extends AbstractMultipleMathViewHelper
     }
 
     /**
-     * @return mixed
-     * @throw Exception
-     */
-    public function render()
-    {
-        $a = $this->getInlineArgument();
-        $b = $this->arguments['b'];
-        $aIsIterable = $this->assertIsArrayOrIterator($a);
-        if (true === $aIsIterable && null === $b) {
-            $a = $this->arrayFromArrayOrTraversableOrCSV($a);
-            return array_sum($a);
-        }
-        return $this->calculate($a, $b);
-    }
-
-    /**
      * @param mixed $a
-     * @param $b
+     * @param mixed $b
+     * @param array $arguments
      * @return mixed
      */
-    protected function calculateAction($a, $b)
+    protected static function calculateAction($a, $b, array $arguments)
     {
+        if ($b === null && (boolean) $arguments['fail']) {
+            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
+        }
+        $aIsIterable = static::assertIsArrayOrIterator($a);
+        if (true === $aIsIterable) {
+            if (null === $b) {
+                $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
+                return array_sum($a);
+            }
+            foreach ($a as $index => $value) {
+                $a[$index] = static::calculateAction($value, $b, $arguments);
+            }
+            return $a;
+        }
         return $a + $b;
     }
 }

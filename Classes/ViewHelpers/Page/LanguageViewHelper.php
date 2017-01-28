@@ -9,7 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -18,10 +19,14 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Returns the current language from languages depending on l18n settings.
  */
-class LanguageViewHelper extends AbstractViewHelper
+class LanguageViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithRenderStatic;
 
-    use DefaultRenderMethodViewHelperTrait;
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @var PageService
@@ -100,9 +105,6 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected static function getPageService()
     {
-        if (!static::$pageService) {
-            static::$pageService = GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
-        }
-        return static::$pageService;
+        return static::$pageService = GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
     }
 }

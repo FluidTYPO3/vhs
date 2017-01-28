@@ -52,14 +52,15 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
      * if required
      *
      * @param string $src
+     * @param array $arguments
      * @return string
      */
-    public function preprocessSourceUri($src)
+    public static function preprocessSourceUri($src, array $arguments)
     {
         $src = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($src);
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-        } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
+        } elseif ('BE' === TYPO3_MODE || false === (boolean) $arguments['relative']) {
             $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
         }
         return $src;
@@ -70,11 +71,12 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
      * which can be either an array, CSV or implement Traversable
      * to be consumed by ViewHelpers handling multiple sources.
      *
+     * @param array $arguments
      * @return array
      */
-    public function getSourcesFromArgument()
+    public static function getSourcesFromArgument(array $arguments)
     {
-        $src = $this->arguments['src'];
+        $src = $arguments['src'];
         if ($src instanceof \Traversable) {
             $src = iterator_to_array($src);
         } elseif (true === is_string($src)) {

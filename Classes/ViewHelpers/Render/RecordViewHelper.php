@@ -9,25 +9,41 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ViewHelper used to render raw content records typically fetched
  * with `<v:content.get(column: '0', render: FALSE) />`.
  */
-class RecordViewHelper extends AbstractContentViewHelper
+class RecordViewHelper extends AbstractContentViewHelper implements CompilableInterface
 {
+    use CompileWithRenderStatic;
 
     /**
-     * Render method
-     *
-     * @param array $record
-     * @return string
+     * Initialize
      */
-    public function render(array $record = [])
+    public function initializeArguments()
     {
-        if (false === isset($record['uid'])) {
+        parent::initializeArguments();
+        $this->registerArgument('record', 'array', 'Record to render');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return NULL|string
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        if (false === isset($arguments['record']['uid'])) {
             return null;
         }
-        return $this->renderRecord($record);
+        return static::renderRecord($arguments['record']);
     }
 }

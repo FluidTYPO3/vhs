@@ -49,6 +49,11 @@ class TypolinkViewHelper extends AbstractViewHelper
     use DefaultRenderMethodViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initializes the arguments for the ViewHelper
      */
     public function initializeArguments()

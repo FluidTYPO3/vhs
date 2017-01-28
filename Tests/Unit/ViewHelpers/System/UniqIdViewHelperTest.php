@@ -21,7 +21,7 @@ class UniqIdViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsUniqueIds()
     {
-        $arguments = array('prefix' => '', 'moreEntropy' => false);
+        $arguments = ['prefix' => '', 'moreEntropy' => false];
         $result1 = $this->executeViewHelper($arguments);
         $result2 = $this->executeViewHelper($arguments);
         $this->assertNotEquals($result1, $result2);

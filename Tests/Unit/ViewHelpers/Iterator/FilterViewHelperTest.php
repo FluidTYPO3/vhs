@@ -21,11 +21,11 @@ class FilterViewHelperTest extends AbstractViewHelperTest
      */
     public function nullSubjectCallsRenderChildrenToReadValue()
     {
-        $subject = array('test' => 'test');
-        $arguments = array(
+        $subject = ['test' => 'test'];
+        $arguments = [
             'preserveKeys' => true
-        );
-        $result = $this->executeViewHelperUsingTagContent('Array', $subject, $arguments);
+        ];
+        $result = $this->executeViewHelperUsingTagContent($subject, $arguments);
         $this->assertSame($subject, $result);
     }
 
@@ -34,11 +34,11 @@ class FilterViewHelperTest extends AbstractViewHelperTest
      */
     public function filteringEmptySubjectReturnsEmptyArrayOnInvalidSubject()
     {
-        $arguments = array(
+        $arguments = [
             'subject' => new \DateTime('now')
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertSame($result, array());
+        $this->assertSame($result, []);
     }
 
     /**
@@ -46,13 +46,13 @@ class FilterViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsIterators()
     {
-        $array = array('test' => 'test');
+        $array = ['test' => 'test'];
         $iterator = new \ArrayIterator($array);
-        $arguments = array(
+        $arguments = [
             'subject' => $iterator,
             'filter' => 'test',
             'preserveKeys' => true
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertSame($result, $array);
     }
@@ -62,14 +62,14 @@ class FilterViewHelperTest extends AbstractViewHelperTest
      */
     public function supportsPropertyName()
     {
-        $array = array(array('test' => 'test'));
+        $array = [['test' => 'test']];
         $iterator = new \ArrayIterator($array);
-        $arguments = array(
+        $arguments = [
             'subject' => $iterator,
             'filter' => 'test',
             'propertyName' => 'test',
             'preserveKeys' => true
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertSame($result, $array);
     }

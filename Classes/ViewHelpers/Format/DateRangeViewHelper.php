@@ -8,8 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Date range calculation/formatting ViewHelper
@@ -61,6 +64,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class DateRangeViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @var boolean
@@ -116,39 +120,39 @@ class DateRangeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render method
-     *
-     * @throws Exception
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
+     * @throws Exception
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (true === isset($this->arguments['start']) && false === empty($this->arguments['start'])) {
-            $start = $this->arguments['start'];
-        } else {
+        $start = $renderChildrenClosure();
+        if (empty($arguments['start'])) {
             $start = 'now';
         }
-        $startDateTime = $this->enforceDateTime($start);
+        $startDateTime = static::enforceDateTime($start);
 
-        if (true === isset($this->arguments['end']) && false === empty($this->arguments['end'])) {
-            $endDateTime = $this->enforceDateTime($this->arguments['end']);
+        if (true === isset($arguments['end']) && false === empty($arguments['end'])) {
+            $endDateTime = static::enforceDateTime($arguments['end']);
         } else {
             $endDateTime = null;
         }
 
-        if (true === isset($this->arguments['intervalFormat']) && false === empty($this->arguments['intervalFormat'])) {
-            $intervalFormat = $this->arguments['intervalFormat'];
+        if (true === isset($arguments['intervalFormat']) && false === empty($arguments['intervalFormat'])) {
+            $intervalFormat = $arguments['intervalFormat'];
         }
 
         if (null === $intervalFormat && null === $endDateTime) {
-            throw new Exception('Either end or intervalFormat has to be provided.', 1369573110);
+            ErrorUtility::throwViewHelperException('Either end or intervalFormat has to be provided.', 1369573110);
         }
 
         if (true === isset($intervalFormat) && null !== $intervalFormat) {
             try {
                 $interval = new \DateInterval($intervalFormat);
             } catch (\Exception $exception) {
-                throw new Exception(
+                ErrorUtility::throwViewHelperException(
                     '"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.',
                     1369573111
                 );
@@ -163,23 +167,23 @@ class DateRangeViewHelper extends AbstractViewHelper
             $endDateTime->add($interval);
         }
 
-        $return = $this->arguments['return'];
+        $return = $arguments['return'];
         if (null === $return) {
-            $spaceGlue = (boolean) $this->arguments['spaceGlue'];
-            $glue = strval($this->arguments['glue']);
-            $startFormat = $this->arguments['format'];
-            $endFormat = $this->arguments['format'];
-            if (null !== $this->arguments['startFormat'] && false === empty($this->arguments['startFormat'])) {
-                $startFormat = $this->arguments['startFormat'];
+            $spaceGlue = (boolean) $arguments['spaceGlue'];
+            $glue = strval($arguments['glue']);
+            $startFormat = $arguments['format'];
+            $endFormat = $arguments['format'];
+            if (null !== $arguments['startFormat'] && false === empty($arguments['startFormat'])) {
+                $startFormat = $arguments['startFormat'];
             }
-            if (null !== $this->arguments['endFormat'] && false === empty($this->arguments['endFormat'])) {
-                $endFormat = $this->arguments['endFormat'];
+            if (null !== $arguments['endFormat'] && false === empty($arguments['endFormat'])) {
+                $endFormat = $arguments['endFormat'];
             }
-            $output  = $this->formatDate($startDateTime, $startFormat);
+            $output = static::formatDate($startDateTime, $startFormat);
             $output .= true === $spaceGlue ? ' ' : '';
             $output .= $glue;
             $output .= true === $spaceGlue ? ' ' : '';
-            $output .= $this->formatDate($endDateTime, $endFormat);
+            $output .= static::formatDate($endDateTime, $endFormat);
         } elseif ('DateTime' === $return) {
             $output = $endDateTime;
         } elseif (true === is_string($return)) {
@@ -202,9 +206,8 @@ class DateRangeViewHelper extends AbstractViewHelper
     /**
      * @param mixed $date
      * @return \DateTime
-     * @throws Exception
      */
-    protected function enforceDateTime($date)
+    protected static function enforceDateTime($date)
     {
         if (false === $date instanceof \DateTime) {
             try {
@@ -215,7 +218,7 @@ class DateRangeViewHelper extends AbstractViewHelper
                 }
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             } catch (\Exception $exception) {
-                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
+                ErrorUtility::throwViewHelperException('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
             }
         }
         return $date;
@@ -226,7 +229,7 @@ class DateRangeViewHelper extends AbstractViewHelper
      * @param string $format
      * @return string
      */
-    protected function formatDate($date, $format = 'Y-m-d')
+    protected static function formatDate($date, $format = 'Y-m-d')
     {
         if (false !== strpos($format, '%')) {
             return strftime($format, $date->format('U'));

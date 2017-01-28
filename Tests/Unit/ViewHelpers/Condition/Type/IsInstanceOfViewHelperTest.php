@@ -22,12 +22,12 @@ class IsInstanceOfViewHelperTest extends AbstractViewHelperTest
     public function rendersThenChildIfConditionMatched()
     {
         $dateTime = new \DateTime('now');
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'value' => $dateTime,
             'class' => 'DateTime'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -40,12 +40,12 @@ class IsInstanceOfViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildIfConditionNotMatched()
     {
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'value' => 1,
             'class' => 'DateTime'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 

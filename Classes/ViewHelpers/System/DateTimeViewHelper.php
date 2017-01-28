@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\DefaultRenderMethodViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -17,10 +18,14 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Returns the current system UNIX timestamp as DateTime.
  */
-class DateTimeViewHelper extends AbstractViewHelper
+class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithRenderStatic;
 
-    use DefaultRenderMethodViewHelperTrait;
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @return integer

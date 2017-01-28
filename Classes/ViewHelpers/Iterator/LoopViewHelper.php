@@ -7,12 +7,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Repeats rendering of children $count times while updating $iteration.
  */
-class LoopViewHelper extends AbstractLoopViewHelper
+class LoopViewHelper extends AbstractLoopViewHelper implements CompilableInterface
 {
+    use CompileWithRenderStatic;
 
     /**
      * Initialize
@@ -28,16 +33,17 @@ class LoopViewHelper extends AbstractLoopViewHelper
         $this->registerArgument('maximum', 'integer', 'Maxiumum number of loops before stopping', false, PHP_INT_MAX);
     }
 
-    /**
-     * @return string
-     */
-    public function render()
-    {
-        $count = intval($this->arguments['count']);
-        $minimum = intval($this->arguments['minimum']);
-        $maximum = intval($this->arguments['maximum']);
-        $iteration = $this->arguments['iteration'];
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $count = intval($arguments['count']);
+        $minimum = intval($arguments['minimum']);
+        $maximum = intval($arguments['maximum']);
+        $iteration = $arguments['iteration'];
         $content = '';
+        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
 
         if ($count < $minimum) {
             $count = $minimum;
@@ -45,17 +51,17 @@ class LoopViewHelper extends AbstractLoopViewHelper
             $count = $maximum;
         }
 
-        if (true === $this->templateVariableContainer->exists($iteration)) {
-            $backupVariable = $this->templateVariableContainer->get($iteration);
-            $this->templateVariableContainer->remove($iteration);
+        if (true === $variableProvider->exists($iteration)) {
+            $backupVariable = $variableProvider->get($iteration);
+            $variableProvider->remove($iteration);
         }
 
         for ($i = 0; $i < $count; $i++) {
-            $content .= $this->renderIteration($i, 0, $count, 1, $iteration);
+            $content .= static::renderIteration($i, 0, $count, 1, $iteration, $renderingContext, $renderChildrenClosure);
         }
 
         if (true === isset($backupVariable)) {
-            $this->templateVariableContainer->add($iteration, $backupVariable);
+            $variableProvider->add($iteration, $backupVariable);
         }
 
         return $content;
@@ -68,7 +74,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
      * @param integer $step
      * @return boolean
      */
-    protected function isLast($i, $from, $to, $step)
+    protected static function isLast($i, $from, $to, $step)
     {
         return ($i + $step >= $to);
     }

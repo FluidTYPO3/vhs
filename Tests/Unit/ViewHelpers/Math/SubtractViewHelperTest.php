@@ -19,7 +19,7 @@ class SubtractViewHelperTest extends AbstractMathViewHelperTest
      */
     public function testSingleArgumentIterator()
     {
-        $this->executeSingleArgumentTest(array(8, 2), -10);
+        $this->executeSingleArgumentTest([8, 2], -10);
     }
 
     /**
@@ -35,8 +35,8 @@ class SubtractViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeMissingArgumentTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "b" was not supplied');
-        $result = $this->executeViewHelper(array());
+        $this->expectViewHelperException('Required argument "b" was not supplied');
+        $result = $this->executeViewHelper(['a' => 1, 'fail' => true]);
     }
 
     /**
@@ -44,7 +44,7 @@ class SubtractViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidArgumentTypeTest()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Required argument "a" was not supplied');
-        $result = $this->executeViewHelper(array('b' => 1, 'fail' => true));
+        $this->expectViewHelperException('Required argument "a" was not supplied');
+        $result = $this->executeViewHelper(['b' => 1, 'fail' => true]);
     }
 }

@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Returns the all alternate urls.
@@ -54,7 +55,7 @@ class AlternateViewHelper extends AbstractViewHelper
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
+        $this->tagBuilder = $this->objectManager->get(TagBuilder::class);
     }
 
     public function initializeArguments()
@@ -126,7 +127,7 @@ class AlternateViewHelper extends AbstractViewHelper
 
         foreach ($languages as $languageUid => $languageName) {
             if (false === $this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
-                $uri = $uriBuilder->setArguments(array('L' => $languageUid))->build();
+                $uri = $uriBuilder->setArguments(['L' => $languageUid])->build();
                 $this->tagBuilder->addAttribute('href', $uri);
                 $this->tagBuilder->addAttribute('hreflang', $languageName);
 

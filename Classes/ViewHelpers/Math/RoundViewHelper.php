@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Math: Round
  *
@@ -17,6 +19,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class RoundViewHelper extends AbstractSingleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @return void
@@ -29,10 +32,18 @@ class RoundViewHelper extends AbstractSingleMathViewHelper
 
     /**
      * @param mixed $a
+     * @param null $b
+     * @param array $arguments
      * @return integer
      */
-    protected function calculateAction($a)
+    protected static function calculateAction($a, $b, array $arguments)
     {
-        return round($a, $this->arguments['decimals']);
+        if (static::assertIsArrayOrIterator($a)) {
+            foreach ($a as $index => $value) {
+                $a[$index] = static::calculateAction($value, $b, $arguments);
+            }
+            return $a;
+        }
+        return round($a, $arguments['decimals']);
     }
 }

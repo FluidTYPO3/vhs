@@ -18,7 +18,7 @@ class IsTestingViewHelperTest extends AbstractViewHelperTest
 
     public function testRender()
     {
-        $arguments = array('then' => 'then', 'else' => 'else');
+        $arguments = ['then' => 'then', 'else' => 'else'];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 

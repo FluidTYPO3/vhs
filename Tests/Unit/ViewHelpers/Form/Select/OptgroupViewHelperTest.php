@@ -24,7 +24,7 @@ class OptgroupViewHelperTest extends AbstractViewHelperTest
      */
     public function testRender(array $arguments, $content, $expected)
     {
-        $result = $this->executeViewHelperUsingTagContent('Text', $content, $arguments);
+        $result = $this->executeViewHelperUsingTagContent($content, $arguments);
         $this->assertEquals($expected, $result);
     }
 
@@ -33,9 +33,9 @@ class OptgroupViewHelperTest extends AbstractViewHelperTest
      */
     public function getRenderTestValues()
     {
-        return array(
-            array(array('label' => 'test'), '', '<optgroup label="test" />'),
-            array(array('label' => 'test'), 'content', '<optgroup label="test">content</optgroup>')
-        );
+        return [
+            [['label' => 'test'], '', '<optgroup label="test" />'],
+            [['label' => 'test'], 'content', '<optgroup label="test">content</optgroup>']
+        ];
     }
 }

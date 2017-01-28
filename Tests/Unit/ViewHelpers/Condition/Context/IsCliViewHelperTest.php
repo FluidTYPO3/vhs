@@ -31,7 +31,7 @@ class IsCliViewHelperTest extends AbstractViewHelperTest
      */
     public function testRender()
     {
-        $arguments = array('then' => true, 'else' => false);
+        $arguments = ['then' => true, 'else' => false];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals(false, $result);
 

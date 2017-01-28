@@ -10,6 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Removes XSS from $string
@@ -20,18 +22,24 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class RemoveXssViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * Removes XSS from string
-     *
-     * @param string $string
-     * @return string
+     * @return void
      */
-    public function render($string = null)
+    public function initializeArguments()
     {
-        if (null === $string) {
-            $string = $this->renderChildren();
-        }
-        return GeneralUtility::removeXSS($string);
+        $this->registerArgument('string', 'string', 'String in which to remove XSS');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return GeneralUtility::removeXSS($renderChildrenClosure());
     }
 }

@@ -21,7 +21,7 @@ class RecordViewHelperTest extends AbstractViewHelperTest
      */
     public function testRenderFailsWithoutFieldArgument()
     {
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'The "field" argument must be specified');
+        $this->expectViewHelperException('The "field" argument must be specified');
         $this->executeViewHelper();
     }
 }

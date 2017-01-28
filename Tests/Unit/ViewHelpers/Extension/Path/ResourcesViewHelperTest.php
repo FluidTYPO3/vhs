@@ -22,8 +22,8 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersUsingArgument()
     {
-        $test = $this->executeViewHelper(array('extensionName' => 'Vhs', 'path' => 'ext_icon.gif'));
-        $this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+        $test = $this->executeViewHelper(['extensionName' => 'Vhs', 'path' => 'ext_icon.gif']);
+        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
     }
 
     /**
@@ -31,8 +31,8 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersUsingControllerContext()
     {
-        $test = $this->executeViewHelper(array('path' => 'ext_icon.gif'), array(), null, 'Vhs');
-        $this->assertSame(ExtensionManagementUtility::extRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+        $test = $this->executeViewHelper(['path' => 'ext_icon.gif'], [], null, 'Vhs');
+        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
     }
 
     /**
@@ -41,6 +41,6 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
     public function throwsErrorWhenUnableToDetectExtensionName()
     {
         $this->setExpectedException('RuntimeException', null, 1364167519);
-        $this->executeViewHelper(array(), array(), null, null, 'FakePlugin');
+        $this->executeViewHelper([], [], null, null, 'FakePlugin');
     }
 }

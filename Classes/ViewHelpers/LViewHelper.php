@@ -10,6 +10,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### L (localisation) ViewHelper
@@ -26,8 +29,14 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *     <v:l key="some.label" />
  *     <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
  */
-class LViewHelper extends AbstractViewHelper
+class LViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * Initialize arguments
@@ -35,7 +44,6 @@ class LViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('key', 'string', 'Translation Key');
-        $this->registerArgument('id', 'string', 'Translation Key compatible to TYPO3 Flow');
         $this->registerArgument(
             'default',
             'string',
@@ -52,33 +60,26 @@ class LViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render method
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
-    {
-        if (true === isset($this->arguments['id']) && false === empty($this->arguments['id'])) {
-            $id = $this->arguments['id'];
-        } else {
-            $id = $this->arguments['key'];
-        }
-        $default = $this->arguments['default'];
-        $htmlEscape = (boolean) $this->arguments['htmlEscape'];
-        $arguments = $this->arguments['arguments'];
-        $extensionName = $this->arguments['extensionName'];
-        if (true === empty($id)) {
-            $id = $this->renderChildren();
-        }
+    public static function renderStatic(
+        array $arguments, 
+        \Closure $renderChildrenClosure, 
+        RenderingContextInterface $renderingContext
+    ) {
+        $default = $arguments['default'];
+        $htmlEscape = (boolean) $arguments['htmlEscape'];
+        $arguments = $arguments['arguments'];
+        $extensionName = $arguments['extensionName'];
+        $id = $renderChildrenClosure();
         if (true === empty($default)) {
             $default = $id;
         }
         if (true === empty($extensionName)) {
-            if (true === method_exists($this, 'getControllerContext')) {
-                $request = $this->getControllerContext()->getRequest();
-            } else {
-                $request = $this->controllerContext->getRequest();
-            }
-            $extensionName = $request->getControllerExtensionName();
+            $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
         }
         $value = LocalizationUtility::translate($id, $extensionName, $arguments);
         if (true === empty($value)) {
@@ -91,4 +92,5 @@ class LViewHelper extends AbstractViewHelper
         }
         return $value;
     }
+
 }

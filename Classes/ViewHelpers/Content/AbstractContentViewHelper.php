@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -30,6 +32,10 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected $configurationManager;
 
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
@@ -136,15 +142,33 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
                 $languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
             }
             $languageCondition .= ')';
-            $conditions = "pid = '" . (integer) $pageUid . "' AND colPos = '" . (integer) $column . "'" .
-                $GLOBALS['TSFE']->cObj->enableFields('tt_content') . ' AND ' . $languageCondition;
+            $conditions = "colPos = '" . (integer) $column . "'" .
+                $this->contentObject->enableFields('tt_content', false, ['pid' => true, 'hidden' => true]) . ' AND ' . $languageCondition;
         }
         if (true === (boolean) $this->arguments['sectionIndexOnly']) {
             $conditions .= ' AND sectionIndex = 1';
         }
-        $conditions .= ' AND t3ver_state <= 1';
+        if (ExtensionManagementUtility::isLoaded('workspaces')) {
+            $conditions .= BackendUtility::versioningPlaceholderClause('tt_content');
+        }
+        $conditions .= sprintf(' AND pid = %d ', $pageUid);
 
         $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
+
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+            return $rows;
+        }
+
+        $workspaceId = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->workspace : 0;
+        if ($workspaceId) {
+            foreach ($rows as $index => $row) {
+                if (BackendUtility::getMovePlaceholder('tt_content', $row['uid'])) {
+                    unset($rows[$index]);
+                } else {
+                    $rows[$index] = $row;
+                }
+            }
+        }
         return $rows;
     }
 
@@ -181,7 +205,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         }
         $elements = [];
         foreach ($rows as $row) {
-            array_push($elements, $this->renderRecord($row));
+            array_push($elements, static::renderRecord($row));
         }
         if (false === empty($this->arguments['loadRegister'])) {
             $this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
@@ -198,7 +222,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      * @param array $row
      * @return string|NULL
      */
-    protected function renderRecord(array $row)
+    protected static function renderRecord(array $row)
     {
         if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
             return null;

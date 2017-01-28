@@ -27,6 +27,6 @@ class CeilViewHelperTest extends AbstractMathViewHelperTest
      */
     public function testSingleArgumentIteratorFirst()
     {
-        $this->executeSingleArgumentTest(array(0.5, 0.8), array(1, 1));
+        $this->executeSingleArgumentTest([0.5, 0.8], [1, 1]);
     }
 }
