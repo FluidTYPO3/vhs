@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -29,11 +30,11 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
      */
     public function testRendersThen($haystack, $needle)
     {
-        $arguments = array(
+        $arguments = [
             'haystack' => $haystack,
             'needle' => $needle,
             'then' => 'then'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -53,17 +54,16 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($bar);
         /** @var LazyObjectStorage $lazyObjectStorage */
-        $lazyObjectStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
-            ->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
+        $lazyObjectStorage = GeneralUtility::makeInstance(ObjectManager::class)->get(LazyObjectStorage::class, $bar, 'foo', 0);
         ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
         $lazyObjectStorage->attach($foo);
-        return array(
-            array(array('foo'), 'foo'),
-            array('foo,bar', 'foo'),
-            array(array($foo), $foo),
-            array($objectStorage, $bar),
-            array($lazyObjectStorage, $foo)
-        );
+        return [
+            [['foo'], 'foo'],
+            ['foo,bar', 'foo'],
+            [[$foo], $foo],
+            [$objectStorage, $bar],
+            [$lazyObjectStorage, $foo]
+        ];
     }
 
     /**
@@ -73,11 +73,11 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
      */
     public function testRendersElse($haystack, $needle)
     {
-        $arguments = array(
+        $arguments = [
             'haystack' => $haystack,
             'needle' => $needle,
             'else' => 'else'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 
@@ -97,15 +97,14 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($bar);
         /** @var LazyObjectStorage $lazyObjectStorage */
-        $lazyObjectStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
-            ->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $bar, 'foo', 0);
+        $lazyObjectStorage = GeneralUtility::makeInstance(ObjectManager::class)->get(LazyObjectStorage::class, $bar, 'foo', 0);
         ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
         $lazyObjectStorage->attach($foo);
-        return array(
-            array(array('foo'), 'bar'),
-            array('foo,baz', 'bar'),
-            array($objectStorage, $foo),
-            array($lazyObjectStorage, $bar)
-        );
+        return [
+            [['foo'], 'bar'],
+            ['foo,baz', 'bar'],
+            [$objectStorage, $foo],
+            [$lazyObjectStorage, $bar]
+        ];
     }
 }

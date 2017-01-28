@@ -19,7 +19,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     /**
      * @var array
      */
-    protected $arguments = array(
+    protected $arguments = [
         'start' => 1,
         'end' => 86401,
         'intervalFormat' => null,
@@ -28,7 +28,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
         'glue' => '-',
         'spaceGlue' => true,
         'return' => null,
-    );
+    ];
 
     /**
      * @test
@@ -80,9 +80,9 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     public function canReturnIntervalComponentArray()
     {
         $arguments = $this->arguments;
-        $arguments['return'] = array('d', 's');
+        $arguments['return'] = ['d', 's'];
         $test = $this->executeViewHelper($arguments);
-        $this->assertSame(array('1', '0'), $test);
+        $this->assertSame(['1', '0'], $test);
     }
 
     /**
@@ -126,7 +126,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         unset($arguments['end'], $arguments['intervalFormat']);
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', 'Either end or intervalFormat has to be provided.');
+        $this->expectViewHelperException('Either end or intervalFormat has to be provided.');
         $this->executeViewHelper($arguments);
     }
 
@@ -138,7 +138,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
         $arguments = $this->arguments;
         $arguments['intervalFormat'] = 'what is this then';
         unset($arguments['end']);
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', '"what is this then" could not be parsed by \\DateInterval constructor');
+        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateInterval constructor');
         $this->executeViewHelper($arguments);
     }
 
@@ -149,7 +149,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['start'] = 'what is this then';
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', '"what is this then" could not be parsed by \\DateTime constructor');
+        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateTime constructor');
         $this->executeViewHelper($arguments);
     }
 
@@ -160,7 +160,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['end'] = 'what is this then';
-        $this->setExpectedException('TYPO3\CMS\Fluid\Core\ViewHelper\Exception', '"what is this then" could not be parsed by \\DateTime constructor');
+        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateTime constructor');
         $this->executeViewHelper($arguments);
     }
 }

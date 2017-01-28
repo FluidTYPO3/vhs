@@ -21,10 +21,8 @@ class ImageViewHelperTest extends AbstractViewHelperTest
      */
     public function callsExpectedMethodSequence()
     {
-        $mock = $this->getMock($this->getViewHelperClassName(), array('preprocessImage', 'preprocessSourceUri'));
-        $mock->expects($this->at(0))->method('preprocessImage');
-        $mock->expects($this->at(1))->method('preprocessSourceUri')->will($this->returnValue('foobar'));
-        $result = $this->callInaccessibleMethod($mock, 'render');
-        $this->assertEquals('foobar', $result);
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['preProcessImage'])->getMock();
+        $mock->setArguments(['src' => 'foobar']);
+        $this->assertStringStartsWith('http://', $mock->render());
     }
 }

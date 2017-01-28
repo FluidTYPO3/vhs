@@ -21,12 +21,12 @@ class PreviousViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsPreviousElement()
     {
-        $array = array('a', 'b', 'c');
+        $array = ['a', 'b', 'c'];
         next($array);
-        $arguments = array(
+        $arguments = [
             'haystack' => $array,
             'needle' => 'c',
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('b', $result);
 

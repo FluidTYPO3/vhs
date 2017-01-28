@@ -24,7 +24,7 @@ class AsciiViewHelperTest extends AbstractViewHelperTest
      */
     public function testRender($ascii, $expected)
     {
-        $result = $this->executeViewHelper(array('ascii' => $ascii));
+        $result = $this->executeViewHelper(['ascii' => $ascii]);
         $this->assertEquals($expected, $result);
     }
 
@@ -33,12 +33,12 @@ class AsciiViewHelperTest extends AbstractViewHelperTest
      */
     public function getTestRenderValues()
     {
-        return array(
-            array(10, "\n"),
-            array(32, ' '),
-            array(64, '@'),
-            array(array(65, 66, 67), 'ABC'),
-            array(new \ArrayIterator(array(67, 66, 65)), 'CBA')
-        );
+        return [
+            [10, "\n"],
+            [32, ' '],
+            [64, '@'],
+            [[65, 66, 67], 'ABC'],
+            [new \ArrayIterator([67, 66, 65]), 'CBA']
+        ];
     }
 }

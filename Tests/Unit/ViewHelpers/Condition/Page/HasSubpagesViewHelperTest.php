@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 
 /**
@@ -18,14 +19,14 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTest
 
     public function testRenderWithAPageThatHasSubpages()
     {
-        $pageService = $this->getMock('FluidTYPO3\Vhs\Service\PageService', array('getMenu'), array(), '', false);
-        $pageService->expects($this->any())->method('getMenu')->will($this->returnValue(array('childpage')));
+        $pageService = $this->getMockBuilder(PageService::class)->setMethods(['getMenu'])->disableOriginalConstructor()->getMock();
+        $pageService->expects($this->any())->method('getMenu')->will($this->returnValue(['childpage']));
 
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'pageUid' => 1
-        );
+        ];
         $instance = $this->buildViewHelperInstance($arguments);
         $instance::setPageService($pageService);
         $result = $instance->initializeArgumentsAndRender();
@@ -37,14 +38,14 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTest
 
     public function testRenderWithAPageWithoutSubpages()
     {
-        $pageService = $this->getMock('FluidTYPO3\Vhs\Service\PageService', array('getMenu'), array(), '', false);
-        $pageService->expects($this->any())->method('getMenu')->will($this->returnValue(array()));
+        $pageService = $this->getMockBuilder(PageService::class)->setMethods(['getMenu'])->disableOriginalConstructor()->getMock();
+        $pageService->expects($this->any())->method('getMenu')->will($this->returnValue([]));
 
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'pageUid' => 1
-        );
+        ];
         $instance = $this->buildViewHelperInstance($arguments);
         $instance::setPageService($pageService);
         $result = $instance->initializeArgumentsAndRender();

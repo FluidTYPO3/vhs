@@ -19,10 +19,10 @@ class GravatarViewHelperTest extends AbstractViewHelperTest
     /**
      * @var array
      */
-    protected $arguments = array(
+    protected $arguments = [
         'email' => 'juanmanuel.vergessolanas@gmail.com',
         'secure' => false,
-    );
+    ];
 
     /**
      * @test
@@ -32,13 +32,13 @@ class GravatarViewHelperTest extends AbstractViewHelperTest
         $expectedSource = 'http://www.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007';
         $this->assertSame($expectedSource, $this->executeViewHelper($this->arguments));
         $expectedSource = 'https://secure.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007?s=160&d=404&r=pg';
-        $this->arguments = array(
+        $this->arguments = [
             'email' => 'juanmanuel.vergessolanas@gmail.com',
             'size' => 160,
             'imageSet' => '404',
             'maximumRating' => 'pg',
             'secure' => true,
-        );
+        ];
         $this->assertSame($expectedSource, $this->executeViewHelper($this->arguments));
     }
 }

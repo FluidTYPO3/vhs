@@ -8,10 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * ### Base class for all rendering ViewHelpers.
@@ -31,6 +36,11 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -75,12 +85,13 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
      * @return array
      */
-    protected function getPreparedNamespaces()
+    protected static function getPreparedNamespaces(array $arguments)
     {
         $namespaces = [];
-        foreach ((array) $this->arguments['namespaces'] as $namespaceIdentifier => $namespace) {
+        foreach ((array) $arguments['namespaces'] as $namespaceIdentifier => $namespace) {
             $addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . '}';
             array_push($namespaces, $addedOverriddenNamespace);
         }
@@ -88,42 +99,53 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param RenderingContextInterface $renderingContext
      * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
-    protected function getPreparedClonedView()
+    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext)
     {
-        $view = $this->getPreparedView();
-        $view->setControllerContext(clone $this->controllerContext);
-        $view->setFormat($this->controllerContext->getRequest()->getFormat());
-        $view->assignMultiple($this->templateVariableContainer->getAll());
-        return $view;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
-     */
-    protected function getPreparedView()
-    {
-        /** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
-        $view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $view = static::getPreparedView();
+        if (method_exists($renderingContext, 'getControllerContext')) {
+            $controllerContext = clone $renderingContext->getControllerContext();
+            $view->setControllerContext($controllerContext);
+            $view->setFormat($controllerContext->getRequest()->getFormat());
+        }
+        $view->assignMultiple(ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext)->getAll());
         return $view;
     }
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
+     * @param array $arguments
      * @throws \Exception
      * @return string
      */
-    protected function renderView(ViewInterface $view)
+    protected static function renderView(ViewInterface $view, array $arguments)
     {
         try {
             $content = $view->render();
         } catch (\Exception $error) {
-            if (!$this->arguments['graceful']) {
+            if (!$arguments['graceful']) {
                 throw $error;
             }
             $content = $error->getMessage() . ' (' . $error->getCode() . ')';
         }
         return $content;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     */
+    protected static function getPreparedView()
+    {
+        return static::getObjectManager()->get(StandaloneView::class);
+    }
+
+    /**
+     * @return ObjectManagerInterface
+     */
+    protected static function getObjectManager()
+    {
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 }

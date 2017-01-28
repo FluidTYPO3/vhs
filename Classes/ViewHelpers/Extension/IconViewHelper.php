@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
  */
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### Extension: Icon ViewHelper
@@ -18,15 +20,16 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class IconViewHelper extends AbstractExtensionViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
-     * Render method
-     *
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $extensionKey = $this->getExtensionKey();
-        return ExtensionManagementUtility::extPath($extensionKey, 'ext_icon.gif');
+        return ExtensionManagementUtility::extPath(static::getExtensionKey($arguments, $renderingContext), 'ext_icon.gif');
     }
 }

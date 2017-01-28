@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -85,21 +87,21 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         $files = [];
-        $resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+        /** @var ResourceFactory $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         if (false === empty($categories)) {
-            $sqlCategories = implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'));
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+            $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 'uid_foreign',
                 'sys_category_record_mm',
-                'tablenames = \'sys_file\' AND uid_local IN (' . $sqlCategories . ')'
+                sprintf(
+                    'tablenames = \'%s\' AND uid_local IN (%s)',
+                    $this->getCategoryRelationTableName(),
+                    implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'))
+                )
             );
 
-            $fileUids = [];
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-                $fileUids[] = intval($row['uid_foreign']);
-            }
-            $fileUids = array_unique($fileUids);
+            $fileUids = array_unique(array_column($rows, 'uid_foreign'));
 
             if (true === empty($identifier)) {
                 foreach ($fileUids as $fileUid) {
@@ -170,5 +172,20 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         return $argument;
+    }
+
+    /**
+     * This fuction decides if sys_file or sys_file_metadata is used for a query on sys_category_record_mm
+     * This is neccessary because it depends on the TYPO3 version and the state of the extension filemetadata if
+     * 'sys_file' should be used or 'sys_file_metadata'
+     *
+     * @return string
+     */
+    private function getTablenameForSystemConfiguration()
+    {
+        if (ExtensionManagementUtility::isLoaded('filemetadata') || version_compare(TYPO3_version, '8.0.0', '>=')) {
+            return 'sys_file_metadata';
+        }
+        return 'sys_file';
     }
 }

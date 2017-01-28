@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -16,6 +17,10 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractExtensionViewHelper extends AbstractViewHelper
 {
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * @return void
@@ -26,24 +31,28 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    protected function getExtensionKey()
+    protected static function getExtensionKey(array $arguments, RenderingContextInterface $renderingContext)
     {
-        $extensionName = $this->getExtensionName();
+        $extensionName = static::getExtensionName($arguments, $renderingContext);
         return GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
     }
 
     /**
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
      * @throws \RuntimeException
      * @return mixed
      */
-    protected function getExtensionName()
+    protected static function getExtensionName(array $arguments, RenderingContextInterface $renderingContext)
     {
-        if (isset($this->arguments['extensionName']) && !empty($this->arguments['extensionName'])) {
-            return $this->arguments['extensionName'];
+        if (isset($arguments['extensionName']) && !empty($arguments['extensionName'])) {
+            return $arguments['extensionName'];
         }
-        $request = $this->controllerContext->getRequest();
+        $request = $renderingContext->getControllerContext()->getRequest();
         $extensionName = $request->getControllerExtensionName();
         if (empty($extensionName)) {
             throw new \RuntimeException(

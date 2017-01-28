@@ -22,9 +22,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     public function encodesUrlDecodedStrings()
     {
         $decoded = 'Url Decoded';
-        $result1 = $this->executeViewHelper(array('content' => $decoded));
-        $result2 = $this->executeViewHelperUsingTagContent('Text', $decoded);
-        $this->assertEquals(rawurlencode($decoded), $result1);
-        $this->assertEquals($result1, $result2);
+        $result = $this->executeViewHelper(['content' => $decoded]);
+        $this->assertEquals(rawurlencode($decoded), $result);
     }
 }

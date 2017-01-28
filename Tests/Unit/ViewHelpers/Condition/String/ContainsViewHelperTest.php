@@ -21,12 +21,12 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersThenChildIfConditionMatched()
     {
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'haystack' => 'foobar',
             'needle' => 'bar'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
 
@@ -39,12 +39,12 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersElseChildIfConditionNotMatched()
     {
-        $arguments = array(
+        $arguments = [
             'then' => 'then',
             'else' => 'else',
             'haystack' => 'foobar',
             'needle' => 'baz'
-        );
+        ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
 

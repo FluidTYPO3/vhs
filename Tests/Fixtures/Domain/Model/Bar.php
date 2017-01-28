@@ -14,72 +14,79 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Class Bar
  */
-class Bar extends AbstractEntity {
+class Bar extends AbstractEntity
+{
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * @var \FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo
-	 */
-	protected $foo;
+    /**
+     * @var \FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo
+     */
+    protected $foo;
 
-	/**
-	 * @var ObjectStorage<\FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar>
-	 */
-	protected $bars = array();
+    /**
+     * @var ObjectStorage<\FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar>
+     */
+    protected $bars = [];
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->bars = new ObjectStorage();
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->bars = new ObjectStorage();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
+    /**
+     * @param string $name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * @return Foo
-	 */
-	public function getFoo() {
-		return $this->foo;
-	}
+    /**
+     * @return Foo
+     */
+    public function getFoo()
+    {
+        return $this->foo;
+    }
 
-	/**
-	 * @param Foo $foo
-	 * @return void
-	 */
-	public function setFoo(Foo $foo) {
-		$this->foo = $foo;
-	}
+    /**
+     * @param Foo $foo
+     * @return void
+     */
+    public function setFoo(Foo $foo)
+    {
+        $this->foo = $foo;
+    }
 
-	/**
-	 * @return ObjectStorage<Bar>
-	 */
-	public function getBars() {
-		return $this->bars;
-	}
+    /**
+     * @return ObjectStorage<Bar>
+     */
+    public function getBars()
+    {
+        return $this->bars;
+    }
 
-	/**
-	 * @param ObjectStorage<Bar> $bars
-	 */
-	public function setbars($bars) {
-		$this->bars = $bars;
-	}
-
+    /**
+     * @param ObjectStorage<Bar> $bars
+     */
+    public function setbars($bars)
+    {
+        $this->bars = $bars;
+    }
 }

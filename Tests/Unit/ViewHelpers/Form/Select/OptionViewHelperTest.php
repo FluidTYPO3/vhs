@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form\Select;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
@@ -45,15 +46,14 @@ class OptionViewHelperTest extends AbstractViewHelperTest
      */
     public function testRender(array $arguments, $selectedValue, $content, $expected)
     {
-        $instance = $this->buildViewHelperInstance($arguments, array(), null, 'Vhs');
+        $instance = $this->buildViewHelperInstance($arguments, [], null, 'Vhs');
         $viewHelperVariableContainer = new ViewHelperVariableContainer();
-        $viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'options', array());
-        $viewHelperVariableContainer->add('FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper', 'value', $selectedValue);
+        $viewHelperVariableContainer->add(SelectViewHelper::class, 'options', []);
+        $viewHelperVariableContainer->add(SelectViewHelper::class, 'value', $selectedValue);
         ObjectAccess::setProperty($instance, 'viewHelperVariableContainer', $viewHelperVariableContainer, true);
         $instance->setArguments($arguments);
         $instance->setRenderChildrenClosure(function () use ($content) {
             return $content;
-
         });
         $result = $instance->render();
         $this->assertEquals($expected, $result);
@@ -64,23 +64,23 @@ class OptionViewHelperTest extends AbstractViewHelperTest
      */
     public function getRenderTestValues()
     {
-        return array(
-            array(array(), '', '', '<option selected="selected" />'),
-            array(array(), 'notfound', '', '<option />'),
-            array(array(), 'notfound', 'content', '<option>content</option>'),
-            array(array('selected' => true), 'notfound', 'content', '<option selected="selected">content</option>'),
-            array(
-                array('value' => 'notfound'),
+        return [
+            [[], '', '', '<option selected="selected" />'],
+            [[], 'notfound', '', '<option />'],
+            [[], 'notfound', 'content', '<option>content</option>'],
+            [['selected' => true], 'notfound', 'content', '<option selected="selected">content</option>'],
+            [
+                ['value' => 'notfound'],
                 'notfound',
                 'content',
                 '<option selected="selected" value="notfound">content</option>'
-            ),
-            array(
-                array('value' => 'a'),
-                array('a', 'b'),
+            ],
+            [
+                ['value' => 'a'],
+                ['a', 'b'],
                 'content',
                 '<option selected="selected" value="a">content</option>'
-            ),
-        );
+            ],
+        ];
     }
 }

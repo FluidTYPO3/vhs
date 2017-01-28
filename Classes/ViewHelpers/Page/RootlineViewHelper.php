@@ -10,50 +10,64 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to get the rootline of a page.
  */
-class RootlineViewHelper extends AbstractViewHelper
+class RootlineViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
+    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
-     * @var PageService
+     * @var boolean
      */
-    protected $pageService;
+    protected $escapeOutput = false;
 
     /**
-     * @param PageService $pageService
-     */
-    public function injectPageService(PageService $pageService)
-    {
-        $this->pageService = $pageService;
-    }
-
-    /**
-     * @api
+     * @return void
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerAsArgument();
-        $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
+        $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.');
     }
 
     /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render()
-    {
-        $pageUid = (integer) $this->arguments['pageUid'];
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $pageUid = (integer) $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $rootLineData = $this->pageService->getRootLine($pageUid);
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            static::getPageService()->getRootLine($pageUid),
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
+    }
 
-        return $this->renderChildrenWithVariableOrReturnInput($rootLineData);
+    /**
+     * @return PageService
+     */
+    protected static function getPageService()
+    {
+        return GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
     }
 }

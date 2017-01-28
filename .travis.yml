@@ -3,22 +3,33 @@ language: php
 sudo: false
 
 php:
-  - "5.5"
-  - "hhvm"
+  - "7.0"
+
+env: COVERAGE="YES" TYPO3_VERSION=">=7.6.13, <7.6.99"
 
 matrix:
   include:
-    - php: "5.6"
-      env: CHECKSTYLE="YES"
-    - php: "7"
-      env: COVERAGE="YES"
-  allow_failures:
-    - php: "hhvm"
+    - php: "7.0"
+      env: COVERAGE="NO" TYPO3_VERSION="dev-master"
+    - php: "7.0"
+      env: COVERAGE="NO" TYPO3_VERSION=">=7.6.13, <7.6.99"
+    - php: "7.0"
+      env: COVERAGE="NO" TYPO3_VERSION="^8.4.1"
+    - php: "7.1"
+      env: COVERAGE="NO" TYPO3_VERSION="^8.4.1"
 
 cache:
   directories:
     - $HOME/.composer/cache
 
-install: composer install
+install:
+  - composer require --no-update "typo3/cms:$TYPO3_VERSION"
+  - composer install --prefer-dist
 
-script: ./vendor/bin/ci-runner
+before_script: mkdir -p build/logs
+
+script: if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else ./vendor/bin/phpunit; fi
+
+after_script:
+  - ln -s Classes src
+  - if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/coveralls; fi

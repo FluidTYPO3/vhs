@@ -8,11 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
+use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Markdown Transformation ViewHelper
@@ -34,59 +38,48 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class MarkdownViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @var boolean
      */
-    protected $escapingInterceptorEnabled = false;
-
-    /**
-     * @var string
-     */
-    protected $markdownExecutablePath;
-
-    /**
-     * @var StringFrontend
-     */
-    protected $cache;
+    protected $escapeOutput = false;
 
     /**
      * @return void
      */
-    public function initialize()
+    public function initializeArguments()
     {
-        if (isset($GLOBALS['typo3CacheManager'])) {
-            $cacheManager = $GLOBALS['typo3CacheManager'];
-        } else {
-            $cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
-        }
-        $this->cache = $cacheManager->getCache('vhs_markdown');
+        $this->registerArgument('text', 'string', 'Markdown to convert to HTML');
+        $this->registerArgument('trim', 'boolean', 'Trim content before converting', false, true);
+        $this->registerArgument('htmlentities', 'boolean', 'If true, escapes converted HTML', false, false);
     }
 
     /**
-     * @param string $text
-     * @param boolean $trim
-     * @param boolean $htmlentities
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed|null|string
      * @throws Exception
-     * @return string
      */
-    public function render($text = null, $trim = true, $htmlentities = false)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $text) {
-            $text = $this->renderChildren();
-        }
+        $trim = (boolean) $arguments['trim'];
+        $htmlentities = (boolean) $arguments['htmlentities'];
+        $text = $renderChildrenClosure();
         if (null === $text) {
             return null;
         }
 
         $cacheIdentifier = sha1($text);
-        if (true === $this->cache->has($cacheIdentifier)) {
-            return $this->cache->get($cacheIdentifier);
+        $fromCache = static::getCache()->get($cacheIdentifier);
+        if (!empty($fromCache)) {
+            return $fromCache;
         }
 
-        $this->markdownExecutablePath = CommandUtility::getCommand('markdown');
-        if (false === is_executable($this->markdownExecutablePath)) {
-            throw new Exception(
+        $markdownExecutablePath = CommandUtility::getCommand('markdown');
+        if (false === is_executable($markdownExecutablePath)) {
+            ErrorUtility::throwViewHelperException(
                 'Use of Markdown requires the "markdown" shell utility to be installed and accessible; this binary ' .
                 'could not be found in any of your configured paths available to this script',
                 1350511561
@@ -98,17 +91,17 @@ class MarkdownViewHelper extends AbstractViewHelper
         if (true === (boolean) $htmlentities) {
             $text = htmlentities($text);
         }
-        $transformed = $this->transform($text);
-        $this->cache->set($cacheIdentifier, $transformed);
+        $transformed = static::transform($text, $markdownExecutablePath);
+        static::getCache()->set($cacheIdentifier, $transformed);
         return $transformed;
     }
 
     /**
      * @param string $text
-     * @throws Exception
+     * @param string $markdownExecutablePath
      * @return string
      */
-    public function transform($text)
+    public static function transform($text, $markdownExecutablePath)
     {
         $descriptorspec = [
             0 => ['pipe', 'r'],
@@ -116,7 +109,7 @@ class MarkdownViewHelper extends AbstractViewHelper
             2 => ['pipe', 'a']
         ];
 
-        $process = proc_open($this->markdownExecutablePath, $descriptorspec, $pipes, null, $GLOBALS['_ENV']);
+        $process = proc_open($markdownExecutablePath, $descriptorspec, $pipes, null, $GLOBALS['_ENV']);
 
         stream_set_blocking($pipes[0], 1);
         stream_set_blocking($pipes[1], 1);
@@ -134,13 +127,30 @@ class MarkdownViewHelper extends AbstractViewHelper
         $exitCode = proc_close($process);
 
         if ('' !== trim($errors)) {
-            throw new Exception(
-                'There was an error while executing ' . $this->markdownExecutablePath . '. The return code was ' .
+            ErrorUtility::throwViewHelperException(
+                'There was an error while executing ' . $markdownExecutablePath . '. The return code was ' .
                 $exitCode . ' and the message reads: ' . $errors,
                 1350514144
             );
         }
 
         return $transformed;
+    }
+
+    /**
+     * @return VariableFrontend
+     */
+    protected static function getCache()
+    {
+        static $cache;
+        if (!isset($cache)) {
+            if (isset($GLOBALS['typo3CacheManager'])) {
+                $cacheManager = $GLOBALS['typo3CacheManager'];
+            } else {
+                $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+            }
+            $cache = $cacheManager->getCache('vhs_markdown');
+        }
+        return $cache;
     }
 }

@@ -16,6 +16,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Base class for ViewHelpers capable of registering assets
@@ -114,7 +115,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->tagBuilder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
+        $this->tagBuilder = $this->objectManager->get(TagBuilder::class);
     }
 
     /**
@@ -234,7 +235,11 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function render()
     {
-        $this->finalize();
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling'])
+            || !$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling']
+        ) {
+            $this->finalize();
+        }
     }
 
     /**
@@ -424,11 +429,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         }
         $settings = self::$settingsCache;
         if (is_array($this->localSettings)) {
-            if (true === method_exists('TYPO3\\CMS\\Core\\Utility\\ArrayUtility', 'mergeRecursiveWithOverrule')) {
-                ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
-            } else {
-                $settings = GeneralUtility::array_merge_recursive_overrule($settings, $this->localSettings);
-            }
+            ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
         }
         return $settings;
     }

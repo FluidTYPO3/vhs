@@ -8,8 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\BasicViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -17,16 +19,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Explodes a string by $glue.
  */
-class ExplodeViewHelper extends AbstractViewHelper
+class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
-    use BasicViewHelperTrait;
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
      * @var string
      */
-    protected $method = 'explode';
+    protected static $method = 'explode';
 
     /**
      * Initialize
@@ -35,7 +36,6 @@ class ExplodeViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
         $this->registerArgument('content', 'string', 'String to be exploded by glue');
         $this->registerArgument(
             'glue',
@@ -45,29 +45,40 @@ class ExplodeViewHelper extends AbstractViewHelper
             false,
             ','
         );
+        $this->registerAsArgument();
     }
 
     /**
-     * Render method
-     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render()
-    {
-        $content = $this->getArgumentFromArgumentsOrTagContent('content');
-        $glue = $this->resolveGlue();
-        $output = call_user_func_array($this->method, [$glue, $content]);
-        return $this->renderChildrenWithVariableOrReturnInput($output);
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $content = isset($arguments['as']) ? $arguments['content'] : $renderChildrenClosure();
+        $glue = static::resolveGlue($arguments);
+        $output = call_user_func_array(static::$method, [$glue, $content]);
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $output,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 
     /**
      * Detects the proper glue string to use for implode/explode operation
      *
+     * @param array $arguments
      * @return string
      */
-    protected function resolveGlue()
+    protected static function resolveGlue(array $arguments)
     {
-        $glue = $this->arguments['glue'];
+        $glue = $arguments['glue'];
         if (false !== strpos($glue, ':') && 1 < strlen($glue)) {
             // glue contains a special type identifier, resolve the actual glue
             list ($type, $value) = explode(':', $glue);

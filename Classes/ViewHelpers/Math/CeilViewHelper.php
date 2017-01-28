@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+
 /**
  * Math: Ceil
  *
@@ -17,13 +19,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 class CeilViewHelper extends AbstractSingleMathViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
 
     /**
      * @param mixed $a
      * @return integer
      */
-    protected function calculateAction($a)
+    protected static function calculateAction($a)
     {
+        if (static::assertIsArrayOrIterator($a)) {
+            return array_map('ceil', static::arrayFromArrayOrTraversableOrCSVStatic($a));
+        }
         return ceil($a);
     }
 }

@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -17,20 +18,12 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class IndexOfViewHelper extends ContainsViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
-     * Render
-     *
-     * @return string
+     * @var boolean
      */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
+    protected $escapeOutput = false;
 
     /**
      * Default implementation for use in compiled templates

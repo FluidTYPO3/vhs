@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Form\Select;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Form\SelectViewHelper;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
@@ -57,6 +58,14 @@ class OptionViewHelper extends AbstractFormFieldViewHelper
             if (false === is_object($this->arguments['value']) && false === is_array($this->arguments['value'])) {
                 if (true === is_array($value)) {
                     $selected = true === in_array($this->arguments['value'], $value) ? 'selected' : '';
+                } else if (true === ($value instanceof ObjectStorage) && true === is_numeric($this->arguments['value'])) {
+                    // Requires that the option values are UIDs of objects in ObjectStorage
+                    foreach ($value as $object) {
+                        if($object->getUid() === (integer) $this->arguments['value']) {
+                            $selected = 'selected';
+                            break;
+                        }
+                    }
                 } else {
                     $selected = (string) $this->arguments['value'] == (string) $value ? 'selected' : '';
                 }

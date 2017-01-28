@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
@@ -47,11 +48,11 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('pageUid', 'integer', 'Parent page to check', false, null);
+        $this->registerArgument('pageUid', 'integer', 'Parent page to check');
         $this->registerArgument('includeHidden', 'boolean', 'DEPRECATED: Include hidden pages', false, false);
         $this->registerArgument('includeAccessProtected', 'boolean', 'Include access protected pages', false, false);
         $this->registerArgument('includeHiddenInMenu', 'boolean', 'Include pages hidden in menu', false, false);
-        $this->registerArgument('showHiddenInMenu', 'boolean', 'DEPRECATED: Use includeHiddenInMenu', false, false);
+        $this->registerArgument('showHiddenInMenu', 'boolean', 'DEPRECATED: Use includeHiddenInMenu');
     }
 
     /**
@@ -61,7 +62,12 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         $pageUid = $arguments['pageUid'];
-        $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
+        //TODO: remove fallback with removal of deprecated argument
+        if (null !== $arguments['showHiddenInMenu']) {
+            $includeHiddenInMenu = (boolean) $arguments['showHiddenInMenu'];
+        } else {
+            $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
+        }
         $includeAccessProtected = (boolean) $arguments['includeAccessProtected'];
 
         if (null === $pageUid || true === empty($pageUid) || 0 === (integer) $pageUid) {
@@ -69,8 +75,8 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
         }
 
         if (self::$pageService === null) {
-            $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-            self::$pageService = $objectManager->get('FluidTYPO3\Vhs\Service\PageService');
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            self::$pageService = $objectManager->get(PageService::class);
         }
 
         $menu = self::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);

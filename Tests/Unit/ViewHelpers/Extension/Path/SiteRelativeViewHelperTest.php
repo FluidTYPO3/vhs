@@ -22,7 +22,7 @@ class SiteRelativeViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersUsingArgument()
     {
-        $test = $this->executeViewHelper(array('extensionName' => 'Vhs'));
+        $test = $this->executeViewHelper(['extensionName' => 'Vhs']);
         $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
     }
 
@@ -31,7 +31,7 @@ class SiteRelativeViewHelperTest extends AbstractViewHelperTest
      */
     public function rendersUsingControllerContext()
     {
-        $test = $this->executeViewHelper(array(), array(), null, 'Vhs');
+        $test = $this->executeViewHelper([], [], null, 'Vhs');
         $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
     }
 
@@ -41,6 +41,6 @@ class SiteRelativeViewHelperTest extends AbstractViewHelperTest
     public function throwsErrorWhenUnableToDetectExtensionName()
     {
         $this->setExpectedException('RuntimeException', null, 1364167519);
-        $this->executeViewHelper(array(), array(), null, null, 'FakePlugin');
+        $this->executeViewHelper([], [], null, null, 'FakePlugin');
     }
 }

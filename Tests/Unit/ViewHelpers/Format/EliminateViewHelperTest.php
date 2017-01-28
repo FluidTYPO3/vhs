@@ -19,7 +19,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     /**
      * @var array
      */
-    protected $arguments = array(
+    protected $arguments = [
         'caseSensitive' => true,
         'characters' => null,
         'strings' => null,
@@ -30,7 +30,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
         'digits' => false,
         'letters' => false,
         'nonAscii' => false
-    );
+    ];
 
     /**
      * @test
@@ -39,7 +39,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['nonAscii'] = true;
-        $test = $this->executeViewHelperUsingTagContent('Text', 'fooøæåbar', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('fooøæåbar', $arguments);
         $this->assertSame('foobar', $test);
     }
 
@@ -50,7 +50,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['letters'] = true;
-        $test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('foo123bar', $arguments);
         $this->assertSame('123', $test);
     }
 
@@ -62,7 +62,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
         $arguments = $this->arguments;
         $arguments['letters'] = true;
         $arguments['caseSensitive'] = false;
-        $test = $this->executeViewHelperUsingTagContent('Text', 'FOO123bar', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('FOO123bar', $arguments);
         $this->assertSame('123', $test);
     }
 
@@ -73,7 +73,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['digits'] = true;
-        $test = $this->executeViewHelperUsingTagContent('Text', 'foo123bar', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('foo123bar', $arguments);
         $this->assertSame('foobar', $test);
     }
 
@@ -84,7 +84,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['windowsBreaks'] = true;
-        $test = $this->executeViewHelperUsingTagContent('Text', "breaks\rbreaks", $arguments);
+        $test = $this->executeViewHelperUsingTagContent("breaks\rbreaks", $arguments);
         $this->assertSame('breaksbreaks', $test);
     }
 
@@ -95,7 +95,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['unixBreaks'] = true;
-        $test = $this->executeViewHelperUsingTagContent('Text', "breaks\nbreaks", $arguments);
+        $test = $this->executeViewHelperUsingTagContent("breaks\nbreaks", $arguments);
         $this->assertSame('breaksbreaks', $test);
     }
 
@@ -106,7 +106,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['tabs'] = true;
-        $test = $this->executeViewHelperUsingTagContent('Text', 'tabs	tabs', $arguments);
+        $test = $this->executeViewHelperUsingTagContent('tabs	tabs', $arguments);
         $this->assertSame('tabstabs', $test);
     }
 
@@ -117,7 +117,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['whitespace'] = true;
-        $test = $this->executeViewHelperUsingTagContent('Text', ' trimmed ', $arguments);
+        $test = $this->executeViewHelperUsingTagContent(' trimmed ', $arguments);
         $this->assertSame('trimmed', $test);
     }
 
@@ -128,7 +128,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['whitespaceBetweenHtmlTags'] = true;
-        $test = $this->executeViewHelperUsingTagContent('Text', ' <p> Foo </p> <p> Bar </p> ', $arguments);
+        $test = $this->executeViewHelperUsingTagContent(' <p> Foo </p> <p> Bar </p> ', $arguments);
         $this->assertSame('<p> Foo </p><p> Bar </p>', $test);
     }
 
@@ -140,7 +140,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
         $arguments = $this->arguments;
         $arguments['characters'] = 'abc';
         $arguments['caseSensitive'] = false;
-        $result = $this->executeViewHelperUsingTagContent('Text', 'ABCdef', $arguments);
+        $result = $this->executeViewHelperUsingTagContent('ABCdef', $arguments);
         $this->assertSame('def', $result);
     }
 
@@ -151,7 +151,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['characters'] = 'abc';
-        $result = $this->executeViewHelperUsingTagContent('Text', 'abcdef', $arguments);
+        $result = $this->executeViewHelperUsingTagContent('abcdef', $arguments);
         $this->assertSame('def', $result);
     }
 
@@ -161,8 +161,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     public function removesCharactersAsArray()
     {
         $arguments = $this->arguments;
-        $arguments['characters'] = array('a', 'b', 'c');
-        $result = $this->executeViewHelperUsingTagContent('Text', 'abcdef', $arguments);
+        $arguments['characters'] = ['a', 'b', 'c'];
+        $result = $this->executeViewHelperUsingTagContent('abcdef', $arguments);
         $this->assertSame('def', $result);
     }
 
@@ -174,7 +174,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
         $arguments = $this->arguments;
         $arguments['strings'] = 'abc,def,ghi';
         $arguments['caseSensitive'] = false;
-        $result = $this->executeViewHelperUsingTagContent('Text', 'aBcDeFgHijkl', $arguments);
+        $result = $this->executeViewHelperUsingTagContent('aBcDeFgHijkl', $arguments);
         $this->assertSame('jkl', $result);
     }
 
@@ -185,7 +185,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['strings'] = 'abc,def,ghi';
-        $result = $this->executeViewHelperUsingTagContent('Text', 'abcdefghijkl', $arguments);
+        $result = $this->executeViewHelperUsingTagContent('abcdefghijkl', $arguments);
         $this->assertSame('jkl', $result);
     }
 
@@ -195,8 +195,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     public function removesStringsAsArray()
     {
         $arguments = $this->arguments;
-        $arguments['strings'] = array('abc', 'def', 'ghi');
-        $result = $this->executeViewHelperUsingTagContent('Text', 'abcdefghijkl', $arguments);
+        $arguments['strings'] = ['abc', 'def', 'ghi'];
+        $result = $this->executeViewHelperUsingTagContent('abcdefghijkl', $arguments);
         $this->assertSame('jkl', $result);
     }
 }
