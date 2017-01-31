@@ -15,7 +15,7 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  *
  * ### Render a single content element by its UID
  *
- * Let's assume that the variable `settings.element.uid` contains the ID
+ * Let's assume that the variable `settings.element.uid` contains the uid
  * of a content element.
  * It can be rendered as follows:
  *
