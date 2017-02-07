@@ -25,6 +25,11 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     use TemplateVariableViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var string
      */
     protected static $method = 'explode';
