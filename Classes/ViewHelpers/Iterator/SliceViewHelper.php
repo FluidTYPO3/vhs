@@ -25,6 +25,11 @@ class SliceViewHelper extends AbstractViewHelper implements CompilableInterface
     use ArrayConsumingViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    
+    protected $escapeOutput = false;
+    /**
      * Initialize arguments
      *
      * @return void

@@ -41,7 +41,7 @@ class IndexOfViewHelper extends ContainsViewHelper
         $evaluation = self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
 
         if (false !== $evaluation) {
-            return intval($evaluation);
+            return (integer) $evaluation;
         }
         return -1;
     }

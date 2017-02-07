@@ -28,6 +28,11 @@ class ReverseViewHelper extends AbstractViewHelper implements CompilableInterfac
     use ArrayConsumingViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize arguments
      *
      * @return void

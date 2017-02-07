@@ -20,6 +20,11 @@ class LoopViewHelper extends AbstractLoopViewHelper implements CompilableInterfa
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize
      *
      * @return void
@@ -38,9 +43,9 @@ class LoopViewHelper extends AbstractLoopViewHelper implements CompilableInterfa
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $count = intval($arguments['count']);
-        $minimum = intval($arguments['minimum']);
-        $maximum = intval($arguments['maximum']);
+        $count = (integer) $arguments['count'];
+        $minimum = (integer) $arguments['minimum'];
+        $maximum = (integer) $arguments['maximum'];
         $iteration = $arguments['iteration'];
         $content = '';
         $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);

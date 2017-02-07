@@ -24,6 +24,11 @@ class SplitViewHelper extends AbstractViewHelper implements CompilableInterface
     use TemplateVariableViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()
