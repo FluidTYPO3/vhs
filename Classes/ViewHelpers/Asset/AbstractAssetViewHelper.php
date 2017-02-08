@@ -38,6 +38,11 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     use ArrayConsumingViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
