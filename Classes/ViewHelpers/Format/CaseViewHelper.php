@@ -33,6 +33,16 @@ class CaseViewHelper extends AbstractViewHelper
     const CASE_UNDERSCORED = 'lowercase_underscored';
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

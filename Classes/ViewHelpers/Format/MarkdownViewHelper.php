@@ -43,6 +43,11 @@ class MarkdownViewHelper extends AbstractViewHelper
     /**
      * @var boolean
      */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
     protected $escapeOutput = false;
 
     /**

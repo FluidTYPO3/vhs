@@ -69,6 +69,16 @@ class DateRangeViewHelper extends AbstractViewHelper
     /**
      * @var boolean
      */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @var boolean
+     */
     protected $escapingInterceptorEnabled = false;
 
     /**

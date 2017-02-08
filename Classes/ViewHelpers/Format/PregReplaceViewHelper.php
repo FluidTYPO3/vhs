@@ -25,6 +25,16 @@ class PregReplaceViewHelper extends AbstractViewHelper
     use TemplateVariableViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

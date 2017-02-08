@@ -39,6 +39,16 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 class AppendViewHelper extends AbstractViewHelper
 {
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
     use CompileWithContentArgumentAndRenderStatic;
 
     /**

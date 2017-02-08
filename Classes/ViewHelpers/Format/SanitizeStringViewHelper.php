@@ -44,6 +44,16 @@ class SanitizeStringViewHelper extends AbstractViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Basic character map
      *
      * @var array

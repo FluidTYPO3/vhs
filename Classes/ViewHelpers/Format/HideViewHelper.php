@@ -22,6 +22,16 @@ class HideViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize
      *
      * @return void
