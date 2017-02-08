@@ -26,6 +26,11 @@ class AlternateViewHelper extends AbstractViewHelper
     use PageRendererTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+    
+    /**
      * @var PageService
      */
     protected $pageService;
