@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Extension: Loaded (Condition) ViewHelper
@@ -28,8 +27,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class LoadedViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
 
     /**
      * Initialize arguments

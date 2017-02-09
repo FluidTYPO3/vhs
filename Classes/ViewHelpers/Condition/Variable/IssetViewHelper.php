@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Variable;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Variable: Isset
@@ -31,8 +30,10 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class IssetViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
+    /**
+     * @var RenderingContextInterface
+     */
+    protected static $storedRenderingContext;
 
     /**
      * Initialize arguments
@@ -57,6 +58,15 @@ class IssetViewHelper extends AbstractConditionViewHelper
     }
 
     /**
+     * @param array $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        return (true === static::$storedRenderingContext->getTemplateVariableContainer()->exists($arguments['name']));
+    }
+
+    /**
      * Default implementation for use in compiled templates
      *
      * @param array $arguments
@@ -69,22 +79,9 @@ class IssetViewHelper extends AbstractConditionViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $hasEvaluated = true;
-
-        if (true === $renderingContext->getTemplateVariableContainer()->exists($arguments['name'])) {
-            $result = static::renderStaticThenChild($arguments, $hasEvaluated);
-            if ($hasEvaluated) {
-                return $result;
-            }
-
-            return $renderChildrenClosure();
-        } else {
-            $result = static::renderStaticElseChild($arguments, $hasEvaluated);
-            if ($hasEvaluated) {
-                return $result;
-            }
-        }
-
-        return '';
+        static::$storedRenderingContext = $renderingContext;
+        $result = parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
+        static::$storedRenderingContext = null;
+        return $result;
     }
 }
