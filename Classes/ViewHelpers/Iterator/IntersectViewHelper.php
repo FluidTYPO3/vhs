@@ -23,6 +23,11 @@ class IntersectViewHelper extends AbstractViewHelper implements CompilableInterf
     use ArrayConsumingViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize
      *
      * @return void

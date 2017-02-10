@@ -27,6 +27,11 @@ class PregMatchViewHelper extends AbstractViewHelper implements CompilableInterf
     /**
      * @var boolean
      */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
     protected $escapeOutput = false;
 
     /**

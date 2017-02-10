@@ -16,6 +16,8 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 /**
  * ViewHelper used to render raw content records typically fetched
  * with `<v:content.get(column: '0', render: FALSE) />`.
+ *
+ * If you simply want to render a content element, try `<v:content.render>`.
  */
 class RecordViewHelper extends AbstractContentViewHelper implements CompilableInterface
 {
