@@ -40,7 +40,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     /**
      * @var boolean
      */
-    protected $escapeOutput = false;
+    protected $escapeChildren = false;
 
     /**
      * @var ConfigurationManagerInterface
