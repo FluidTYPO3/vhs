@@ -474,7 +474,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                 $pages[$index]['current'] = true;
                 $class[] = $this->arguments['classCurrent'];
             }
-            if (0 < count($this->pageService->getMenu($originalPageUid))) {
+            if (0 < count($this->getMenu($originalPageUid))) {
                 $pages[$index]['hasSubPages'] = true;
                 //TODO: Remove deprecated argument in next major version
                 $class[] = $this->arguments[
