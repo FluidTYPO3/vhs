@@ -21,11 +21,6 @@ class ForViewHelper extends AbstractLoopViewHelper implements CompilableInterfac
     use CompileWithRenderStatic;
 
     /**
-     * @var boolean
-     */
-    protected $escapeOutput = false;
-
-    /**
      * @return void
      */
     public function initializeArguments()
