@@ -56,6 +56,11 @@ class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInte
     const ID_SEPARATOR = '-';
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
      * @return void
      */
     public function initializeArguments()

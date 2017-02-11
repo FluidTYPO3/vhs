@@ -28,6 +28,11 @@ class InlineViewHelper extends AbstractRenderViewHelper implements CompilableInt
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
      * Initialize arguments
      *
      * @return void
