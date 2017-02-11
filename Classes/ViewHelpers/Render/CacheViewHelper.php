@@ -81,7 +81,6 @@ class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInte
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = $renderChildrenClosure();
         $identity = $arguments['identity'];
         if (false === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
             if (true === $identity instanceof DomainObjectInterface) {
@@ -102,6 +101,7 @@ class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInte
         if (true === static::has($identity)) {
             return static::retrieve($identity);
         }
+        $content = $renderChildrenClosure();
         static::store($content, $identity);
         return $content;
     }
