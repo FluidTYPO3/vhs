@@ -41,6 +41,11 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
     use ArrayConsumingViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Contains all flags that are allowed to be used
      * with the sorting functions
      *
@@ -196,7 +201,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
         $field = $this->arguments['sortBy'];
         $value = ObjectAccess::getPropertyPath($object, $field);
         if (true === $value instanceof \DateTime) {
-            $value = intval($value->format('U'));
+            $value = (integer) $value->format('U');
         } elseif (true === $value instanceof ObjectStorage || true === $value instanceof LazyObjectStorage) {
             $value = $value->count();
         } elseif (is_array($value)) {

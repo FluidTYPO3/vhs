@@ -53,6 +53,11 @@ class TyposcriptViewHelper extends AbstractViewHelper implements CompilableInter
     /**
      * @var boolean
      */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
     protected $escapeOutput = false;
 
     /**

@@ -11,7 +11,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 
 /**
- * ViewHelper used to render content elements in Fluid page templates.
+ * ViewHelper used to render content elements in Fluid templates.
+ *
+ * ### Render a single content element by its UID
+ *
+ * Let's assume that the variable `settings.element.uid` contains the uid
+ * of a content element.
+ * It can be rendered as follows:
+ *
+ *     <v:content.render contentUids="{0: settings.element.uid}"/>
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {
