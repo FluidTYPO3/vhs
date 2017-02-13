@@ -46,11 +46,6 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-     */
-    protected $environmentService;
-
-    /**
      * @param ConfigurationManagerInterface $configurationManager
      * @return void
      */
@@ -58,14 +53,6 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     {
         $this->configurationManager = $configurationManager;
         $this->contentObject = $this->configurationManager->getContentObject();
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
-     */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
-    {
-        $this->environmentService = $environmentService;
     }
 
     /**
@@ -178,7 +165,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
             if (GeneralUtility::isValidUrl($src)) {
                 $src = ltrim($src, '/');
-            } elseif ($this->environmentService->isEnvironmentInFrontendMode()) {
+            } elseif (defined('TYPO3_MODE') && TYPO3_MODE === 'FE') {
                 $src = $GLOBALS['TSFE']->absRefPrefix . ltrim($src, '/');
             } else {
                 $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
