@@ -27,6 +27,11 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     /**
      * @var boolean
      */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
     protected $escapeOutput = false;
 
     /**

@@ -26,11 +26,6 @@ class ImplodeViewHelper extends ExplodeViewHelper implements CompilableInterface
     protected static $method = 'implode';
 
     /**
-     * @var boolean
-     */
-    protected $escapeOutput = false;
-
-    /**
      * Initialize
      *
      * @return void
