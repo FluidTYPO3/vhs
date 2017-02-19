@@ -28,6 +28,13 @@ class FileViewHelper extends AbstractResourceViewHelper
     {
         parent::initializeArguments();
         $this->registerAsArgument();
+        $this->registerArgument(
+            'onlyAttributes',
+            'boolean',
+            'Whether to return only the attributes array of the sys_file record and not the File object itself',
+            false,
+            true
+        );
     }
 
     /**
@@ -35,7 +42,7 @@ class FileViewHelper extends AbstractResourceViewHelper
      */
     public function render()
     {
-        $files = $this->getFiles(true);
+        $files = $this->getFiles($this->arguments['onlyAttributes']);
         if (1 === count($files)) {
             $files = array_shift($files);
         }
