@@ -17,6 +17,9 @@ matrix:
       env: COVERAGE="NO" TYPO3_VERSION="8.5.*"
     - php: "7.1"
       env: COVERAGE="NO" TYPO3_VERSION="8.5.*"
+  allow_failures:
+    - php: "7.0"
+      env: COVERAGE="NO" TYPO3_VERSION="dev-master"
 
 cache:
   directories:
