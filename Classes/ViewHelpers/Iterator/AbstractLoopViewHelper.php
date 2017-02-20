@@ -19,6 +19,16 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
 {
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize
      *
      * @return void

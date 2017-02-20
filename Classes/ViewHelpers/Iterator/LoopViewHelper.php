@@ -20,11 +20,6 @@ class LoopViewHelper extends AbstractLoopViewHelper implements CompilableInterfa
     use CompileWithRenderStatic;
 
     /**
-     * @var boolean
-     */
-    protected $escapeOutput = false;
-
-    /**
      * Initialize
      *
      * @return void

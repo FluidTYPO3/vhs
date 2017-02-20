@@ -25,6 +25,11 @@ class MergeViewHelper extends AbstractViewHelper implements CompilableInterface
     /**
      * @var boolean
      */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
     protected $escapeOutput = false;
 
     /**
