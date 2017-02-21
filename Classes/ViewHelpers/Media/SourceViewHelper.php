@@ -165,7 +165,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
             if (GeneralUtility::isValidUrl($src)) {
                 $src = ltrim($src, '/');
-            } elseif (defined('TYPO3_MODE') && TYPO3_MODE === 'FE') {
+            } elseif (TYPO3_MODE === 'FE') {
                 $src = $GLOBALS['TSFE']->absRefPrefix . ltrim($src, '/');
             } else {
                 $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
