@@ -97,15 +97,10 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     }
 
     /**
-     * getResources
-     *
      * @param array $record
-     * @param string $uidFieldName
-     * @param string $table
-     *
      * @return array
      */
-    public function getResources($record, $uidFieldName = 't3ver_oid', $table = null)
+    public function getResources($record)
     {
         $databaseConnection = $this->getDatabaseConnection();
         $table = $this->getTable();
