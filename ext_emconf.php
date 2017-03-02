@@ -48,7 +48,7 @@ $EM_CONF[$_EXTKEY] = array (
   array(
       'psr-4' =>
       array(
-          'FluidTYPO3\\Vhs\\' => 'Tests/',
+          'FluidTYPO3\\Vhs\\Tests\\' => 'Tests/',
       ),
   ),
 );
