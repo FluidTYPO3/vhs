@@ -22,6 +22,11 @@
             "FluidTYPO3\\Vhs\\": "Classes/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "FluidTYPO3\\Vhs\\Tests\\": "Tests/"
+        }
+    },
     "require": {
         "php": ">=7.0.0",
         "typo3/cms": ">=7.6.13, <=7.6.99|^8.4.1"
