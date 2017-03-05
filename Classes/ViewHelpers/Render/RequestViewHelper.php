@@ -56,6 +56,7 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $this->registerArgument('extensionName', 'string', 'Extension name scope to use in request');
         $this->registerArgument('vendorName', 'string', 'Vendor name scope to use in request');
         $this->registerArgument('pluginName', 'string', 'Plugin name scope to use in request');
+        $this->registerArgument('arguments', 'array', 'Arguments to use in request');
     }
 
     /**

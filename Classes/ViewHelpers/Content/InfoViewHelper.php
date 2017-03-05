@@ -21,6 +21,11 @@ class InfoViewHelper extends AbstractViewHelper
     use TemplateVariableViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
@@ -61,7 +66,7 @@ class InfoViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $contentUid = intval($this->arguments['contentUid']);
+        $contentUid = (integer) $this->arguments['contentUid'];
         if (0 === $contentUid) {
             $cObj = $this->configurationManager->getContentObject();
             $record = $cObj->data;
@@ -82,7 +87,7 @@ class InfoViewHelper extends AbstractViewHelper
             );
 
             // Add the page overlay
-            $languageUid = intval($GLOBALS['TSFE']->sys_language_uid);
+            $languageUid = (integer) $GLOBALS['TSFE']->sys_language_uid;
             if (0 !== $languageUid && $GLOBALS['TSFE']->sys_language_contentOL) {
                 $record = $GLOBALS['TSFE']->sys_page->getRecordOverlay(
                     'tt_content',

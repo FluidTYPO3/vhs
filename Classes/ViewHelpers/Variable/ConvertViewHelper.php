@@ -30,6 +30,16 @@ class ConvertViewHelper extends AbstractViewHelper implements CompilableInterfac
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize arguments
      */
     public function initializeArguments()

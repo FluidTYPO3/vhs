@@ -48,9 +48,9 @@ class ForViewHelper extends AbstractLoopViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $to = intval($arguments['to']);
-        $from = intval($arguments['from']);
-        $step = intval($arguments['step']);
+        $to = (integer) $arguments['to'];
+        $from = (integer) $arguments['from'];
+        $step = (integer) $arguments['step'];
         $iteration = $arguments['iteration'];
         $content = '';
         $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);

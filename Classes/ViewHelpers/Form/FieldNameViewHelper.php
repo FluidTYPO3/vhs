@@ -23,6 +23,11 @@ class FieldNameViewHelper extends AbstractViewHelper
 {
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
