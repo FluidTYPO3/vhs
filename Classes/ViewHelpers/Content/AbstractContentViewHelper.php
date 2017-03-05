@@ -101,7 +101,11 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
 
         $pageUid = $this->getPageUid();
 
-        $contentRecords = $this->getSlideRecords($pageUid, $limit);
+        if ((integer) $this->arguments['slide'] === 0) {
+            $contentRecords = $this->getSlideRecordsFromPage($pageUid, $limit);
+        } else {
+            $contentRecords = $this->getSlideRecords($pageUid, $limit);
+        }
 
         if (true === (boolean) $this->arguments['render']) {
             $contentRecords = $this->getRenderedRecords($contentRecords);
