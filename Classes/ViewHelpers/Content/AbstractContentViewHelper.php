@@ -154,7 +154,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $conditions .= BackendUtility::versioningPlaceholderClause('tt_content');
         }
 
-        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
+        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($this->arguments['render'] ? 'uid' : '*', 'tt_content', $conditions, '', $order, $limit);
 
         if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return $rows;
