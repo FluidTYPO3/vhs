@@ -126,32 +126,33 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             }
             $order = $order . ' ' . $sortDirection;
         }
+        $hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
+        $currentLanguage = $GLOBALS['TSFE']->sys_language_content;
+        $languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
+        if (0 < $currentLanguage) {
+            if (true === $hideUntranslated) {
+                $languageCondition .= ' AND l18n_parent > 0';
+            }
+            $nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' .
+                $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
+            $languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
+        }
+        $languageCondition .= ')';
+
         $contentUids = $this->arguments['contentUids'];
         if (true === is_array($contentUids)) {
             $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
         } else {
-            $hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
-            $currentLanguage = $GLOBALS['TSFE']->sys_language_content;
-            $languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
-            if (0 < $currentLanguage) {
-                if (true === $hideUntranslated) {
-                    $languageCondition .= ' AND l18n_parent > 0';
-                }
-                $nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' .
-                    $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
-                $languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
-            }
-            $languageCondition .= ')';
-            $conditions = "colPos = '" . (integer) $column . "'" .
-                $this->contentObject->enableFields('tt_content', false, ['pid' => true, 'hidden' => true]) . ' AND ' . $languageCondition;
+            $conditions = 'colPos = \'' . $column . '\' AND pid = '. (integer) $pageUid;
         }
+
+        $conditions .= $this->contentObject->enableFields('tt_content', false, ['pid' => true, 'hidden' => true]) . ' AND ' . $languageCondition;
         if (true === (boolean) $this->arguments['sectionIndexOnly']) {
             $conditions .= ' AND sectionIndex = 1';
         }
         if (ExtensionManagementUtility::isLoaded('workspaces')) {
             $conditions .= BackendUtility::versioningPlaceholderClause('tt_content');
         }
-        $conditions .= sprintf(' AND pid = %d ', $pageUid);
 
         $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
 

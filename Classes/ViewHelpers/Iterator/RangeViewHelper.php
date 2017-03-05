@@ -35,6 +35,16 @@ class RangeViewHelper extends AbstractViewHelper implements CompilableInterface
     use TemplateVariableViewHelperTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize arguments
      *
      * @return void

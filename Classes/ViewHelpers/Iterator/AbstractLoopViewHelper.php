@@ -19,6 +19,16 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
 {
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize
      *
      * @return void
@@ -49,13 +59,13 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
     ) {
         if (false === empty($iterationArgument)) {
             $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
-            $cycle = intval(($i - $from) / $step) + 1;
+            $cycle = (integer) (($i - $from) / $step) + 1;
             $iteration = [
                 'index' => $i,
                 'cycle' => $cycle,
-                'isOdd' => (0 === $cycle % 2 ? false : true),
-                'isEven' => (0 === $cycle % 2 ? true : false),
-                'isFirst' => ($i === $from ? true : false),
+                'isOdd' => 0 === $cycle % 2 ? false : true,
+                'isEven' => 0 === $cycle % 2 ? true : false,
+                'isFirst' => $i === $from ? true : false,
                 'isLast' => static::isLast($i, $from, $to, $step)
             ];
             $variableProvider->add($iterationArgument, $iteration);

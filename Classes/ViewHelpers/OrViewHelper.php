@@ -16,6 +16,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class OrViewHelper extends AbstractViewHelper
 {
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * Initialize

@@ -28,6 +28,11 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper implement
     /**
      * @var boolean
      */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
     protected $escapeOutput = false;
 
     /**
