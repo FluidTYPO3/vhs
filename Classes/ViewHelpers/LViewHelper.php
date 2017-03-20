@@ -77,8 +77,8 @@ class LViewHelper extends AbstractViewHelper implements CompilableInterface
     ) {
         $default = $arguments['default'];
         $htmlEscape = (boolean) $arguments['htmlEscape'];
-        $arguments = $arguments['arguments'];
         $extensionName = $arguments['extensionName'];
+        $translationArguments = $arguments['arguments'];
         $id = $renderChildrenClosure();
         if (true === empty($default)) {
             $default = $id;
@@ -86,11 +86,11 @@ class LViewHelper extends AbstractViewHelper implements CompilableInterface
         if (true === empty($extensionName)) {
             $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
         }
-        $value = LocalizationUtility::translate($id, $extensionName, $arguments);
+        $value = LocalizationUtility::translate($id, $extensionName, $translationArguments);
         if (true === empty($value)) {
             $value = $default;
-            if (true === is_array($arguments)) {
-                $value = vsprintf($value, $arguments);
+            if (true === is_array($translationArguments)) {
+                $value = vsprintf($value, $translationArguments);
             }
         } elseif (true === $htmlEscape) {
             $value = htmlspecialchars($value);
