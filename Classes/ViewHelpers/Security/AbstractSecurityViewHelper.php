@@ -46,6 +46,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument(
             'anyFrontendUser',
             'boolean',
