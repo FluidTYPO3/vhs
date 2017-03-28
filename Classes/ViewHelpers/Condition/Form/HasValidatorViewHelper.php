@@ -44,6 +44,7 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument(
             'property',
             'string',
