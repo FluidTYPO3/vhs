@@ -101,7 +101,11 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
 
         $pageUid = $this->getPageUid();
 
-        $contentRecords = $this->getSlideRecords($pageUid, $limit);
+        if ((integer) $this->arguments['slide'] === 0) {
+            $contentRecords = $this->getSlideRecordsFromPage($pageUid, $limit);
+        } else {
+            $contentRecords = $this->getSlideRecords($pageUid, $limit);
+        }
 
         if (true === (boolean) $this->arguments['render']) {
             $contentRecords = $this->getRenderedRecords($contentRecords);
@@ -154,7 +158,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $conditions .= BackendUtility::versioningPlaceholderClause('tt_content');
         }
 
-        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $conditions, '', $order, $limit);
+        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($this->arguments['render'] ? 'uid' : '*', 'tt_content', $conditions, '', $order, $limit);
 
         if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return $rows;

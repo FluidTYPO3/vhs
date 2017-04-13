@@ -47,21 +47,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 class UnlessViewHelper extends AbstractConditionViewHelper
 {
     /**
-     * {@inheritdoc}
-     */
-    public function initializeArguments()
-    {
-        /*
-         * arguments 'condition' and 'then' are registered in AbstractConditionViewHelper::__construct
-         * when CMS <= 7.6.
-         */
-        if (false === array_key_exists('condition', $this->argumentDefinitions)) {
-            $this->registerArgument('then', 'mixed', 'Value to be returned if the condition if met.', false);
-            $this->registerArgument('condition', 'boolean', 'Condition expression conforming to Fluid boolean rules', false, false);
-        }
-    }
-
-    /**
      * Rendering with inversion and ignoring any f:then / f:else children.
      *
      * @return string|NULL

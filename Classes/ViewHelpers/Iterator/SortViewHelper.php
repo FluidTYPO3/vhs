@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\BasicViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,6 +20,8 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -35,8 +36,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  */
 class SortViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
-    use BasicViewHelperTrait;
+    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -56,7 +56,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
      *
      * @var array
      */
-    protected $allowedSortFlags = [
+    protected static $allowedSortFlags = [
         'SORT_REGULAR',
         'SORT_STRING',
         'SORT_NUMERIC',
@@ -103,25 +103,31 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
      *
      * Returns the same type as $subject. Ignores NULL values which would be
      * OK to use in an f:for (empty loop as result)
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
-     * @throws Exception
      */
-    public function render()
-    {
-        $subject = $this->getArgumentFromArgumentsOrTagContent('subject');
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $subject = static::getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic($arguments, 'subject', $renderChildrenClosure);
         $sorted = null;
         if (true === is_array($subject)) {
-            $sorted = $this->sortArray($subject);
+            $sorted = static::sortArray($subject, $arguments);
         } else {
             if (true === $subject instanceof ObjectStorage || true === $subject instanceof LazyObjectStorage) {
-                $sorted = $this->sortObjectStorage($subject);
+                $sorted = static::sortObjectStorage($subject, $arguments);
             } elseif (true === $subject instanceof \Iterator) {
                 /** @var \Iterator $subject */
                 $array = iterator_to_array($subject, true);
-                $sorted = $this->sortArray($array);
+                $sorted = static::sortArray($array, $arguments);
             } elseif (true === $subject instanceof QueryResultInterface) {
                 /** @var QueryResultInterface $subject */
-                $sorted = $this->sortArray($subject->toArray());
+                $sorted = static::sortArray($subject->toArray(), $arguments);
             } elseif (null !== $subject) {
                 // a NULL value is respected and ignored, but any
                 // unrecognized value other than this is considered a
@@ -133,30 +139,37 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
                 );
             }
         }
-        return $this->renderChildrenWithVariableOrReturnInput($sorted);
+
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $sorted,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 
     /**
      * Sort an array
      *
      * @param array|\Iterator $array
+     * @param array $arguments
      * @return array
      */
-    protected function sortArray($array)
+    protected static function sortArray($array, $arguments)
     {
         $sorted = [];
         foreach ($array as $index => $object) {
-            if (true === isset($this->arguments['sortBy'])) {
-                $index = $this->getSortValue($object);
+            if (true === isset($arguments['sortBy'])) {
+                $index = static::getSortValue($object, $arguments);
             }
             while (isset($sorted[$index])) {
                 $index .= '.1';
             }
             $sorted[$index] = $object;
         }
-        if ('ASC' === $this->arguments['order']) {
-            ksort($sorted, $this->getSortFlags());
-        } elseif ('RAND' === $this->arguments['order']) {
+        if ('ASC' === $arguments['order']) {
+            ksort($sorted, static::getSortFlags($arguments));
+        } elseif ('RAND' === $arguments['order']) {
             $sortedKeys = array_keys($sorted);
             shuffle($sortedKeys);
             $backup = $sorted;
@@ -164,10 +177,10 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
             foreach ($sortedKeys as $sortedKey) {
                 $sorted[$sortedKey] = $backup[$sortedKey];
             }
-        } elseif ('SHUFFLE' === $this->arguments['order']) {
+        } elseif ('SHUFFLE' === $arguments['order']) {
             shuffle($sorted);
         } else {
-            krsort($sorted, $this->getSortFlags());
+            krsort($sorted, static::getSortFlags($arguments));
         }
         return $sorted;
     }
@@ -176,9 +189,10 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
      * Sort an ObjectStorage instance
      *
      * @param ObjectStorage $storage
+     * @param array $arguments
      * @return ObjectStorage
      */
-    protected function sortObjectStorage($storage)
+    protected static function sortObjectStorage($storage, $arguments)
     {
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -187,7 +201,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
         foreach ($storage as $item) {
             $temp->attach($item);
         }
-        $sorted = $this->sortArray($storage);
+        $sorted = static::sortArray($storage, $arguments);
         $storage = $objectManager->get(ObjectStorage::class);
         foreach ($sorted as $item) {
             $storage->attach($item);
@@ -199,11 +213,12 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
      * Gets the value to use as sorting value from $object
      *
      * @param mixed $object
+     * @param array $arguments
      * @return mixed
      */
-    protected function getSortValue($object)
+    protected static function getSortValue($object, $arguments)
     {
-        $field = $this->arguments['sortBy'];
+        $field = $arguments['sortBy'];
         $value = ObjectAccess::getPropertyPath($object, $field);
         if (true === $value instanceof \DateTime) {
             $value = (integer) $value->format('U');
@@ -218,18 +233,20 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
     /**
      * Parses the supplied flags into the proper value for the sorting
      * function.
+     *
+     * @param array $arguments
      * @return int
      * @throws Exception
      */
-    protected function getSortFlags()
+    protected static function getSortFlags($arguments)
     {
-        $constants = $this->arrayFromArrayOrTraversableOrCSV($this->arguments['sortFlags']);
+        $constants = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['sortFlags']);
         $flags = 0;
         foreach ($constants as $constant) {
-            if (false === in_array($constant, $this->allowedSortFlags)) {
+            if (false === in_array($constant, static::$allowedSortFlags)) {
                 ErrorUtility::throwViewHelperException(
                     'The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed ' .
-                    'constants are: ' . implode(', ', $this->allowedSortFlags) . '.',
+                    'constants are: ' . implode(', ', static::$allowedSortFlags) . '.',
                     1404220538
                 );
             }
