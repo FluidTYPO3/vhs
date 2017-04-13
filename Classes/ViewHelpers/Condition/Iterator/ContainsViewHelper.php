@@ -34,6 +34,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('needle', 'mixed', 'Needle to search for in haystack', true);
         $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle', true);
         $this->registerArgument(

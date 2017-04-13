@@ -114,11 +114,11 @@ trait ArrayConsumingViewHelperTrait
     }
 
     /**
-     * @param $array1
-     * @param $array2
+     * @param array $array1
+     * @param array $array2
      * @return array
      */
-    protected function mergeArraysStatic($array1, $array2)
+    protected static function mergeArraysStatic($array1, $array2)
     {
         ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
         return $array1;
