@@ -14,7 +14,9 @@
         "fedext",
         "fluid"
     ],
-    "preferred-install": "dist",
+    "config": {
+      "preferred-install": "dist"
+    },
     "homepage": "https://fluidtypo3.org",
     "license": "GPL-2.0+",
     "autoload": {
