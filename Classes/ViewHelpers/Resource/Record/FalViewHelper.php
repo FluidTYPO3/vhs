@@ -78,7 +78,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         $file = $fileReference->getOriginalFile();
         $fileReferenceProperties = $fileReference->getProperties();
         $fileProperties = ResourceUtility::getFileArray($file);
-        ArrayUtility::mergeRecursiveWithOverrule($fileProperties, $fileReferenceProperties, true, false, false);
+        ArrayUtility::mergeRecursiveWithOverrule($fileProperties, $fileReferenceProperties, true, true, false);
         return $fileProperties;
     }
 
