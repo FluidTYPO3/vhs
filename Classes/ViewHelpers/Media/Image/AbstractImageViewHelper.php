@@ -200,9 +200,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         }
 
         $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
-        $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
-        $publicUrl = rawurldecode($this->imageInfo[3]);
-        $this->mediaSource = GeneralUtility::rawUrlEncodeFP($publicUrl);
+        $this->mediaSource = rawurldecode($this->imageInfo[3]);
         if (TYPO3_MODE === 'BE') {
             $this->resetFrontendEnvironment();
         }
