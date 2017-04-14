@@ -257,7 +257,12 @@ abstract class AbstractViewHelperTest extends UnitTestCase
                     ->getMock();
                 $this->renderingContext->setViewHelperResolver($resolver);
             }
-            $node = $this->getMockBuilder(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class)
+            if (class_exists(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class)) {
+                $nodeClassName = \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class;
+            } else {
+                $nodeClassName = \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class;
+            }
+            $node = $this->getMockBuilder($nodeClassName)
                 ->disableOriginalConstructor()
                 ->getMock();
         } else {
