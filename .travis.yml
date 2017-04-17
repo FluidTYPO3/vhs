@@ -31,7 +31,7 @@ install:
 
 before_script: mkdir -p build/logs
 
-script: if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else ./vendor/bin/phpunit; fi
+script: if [[ "$COVERAGE" != "NO" ]]; then TYPO3_PATH_ROOT=`pwd` ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else TYPO3_PATH_ROOT=`pwd` ./vendor/bin/phpunit; fi
 
 after_script:
   - ln -s Classes src
