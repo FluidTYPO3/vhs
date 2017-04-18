@@ -25,6 +25,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
     const SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
     const SCOPE_VARIABLE_SRC = 'src';
+    const SCOPE_VARIABLE_ID = 'treatIdAsReference';
     const SCOPE_VARIABLE_DEFAULT_SOURCE = 'default-source';
 
     /**
@@ -105,7 +106,8 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $src = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_SRC);
+        $imageSource = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_SRC);
+        $treatIdAsRerefence = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_ID);
 
         if ('BE' === TYPO3_MODE) {
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
@@ -117,7 +119,8 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             'minW' => $this->arguments['minW'],
             'minH' => $this->arguments['minH'],
             'maxW' => $this->arguments['maxW'],
-            'maxH' => $this->arguments['maxH']
+            'maxH' => $this->arguments['maxH'],
+            'treatIdAsReference' => $treatIdAsRerefence,
         ];
         $quality = $this->arguments['quality'];
         $format = $this->arguments['format'];
@@ -130,10 +133,10 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             $setup['params'] .= ' -quality ' . $quality;
         }
 
-        if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
-            $src = substr($src, 3);
+        if (is_string($imageSource) && 'BE' === TYPO3_MODE && '../' === substr($imageSource, 0, 3)) {
+            $imageSource = substr($imageSource, 3);
         }
-        $result = $this->contentObject->getImgResource($src, $setup);
+        $result = $this->contentObject->getImgResource($imageSource, $setup);
 
         if ('BE' === TYPO3_MODE) {
             FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
