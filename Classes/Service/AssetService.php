@@ -226,7 +226,9 @@ class AssetService implements SingletonInterface
         if (false === strpos($GLOBALS['TSFE']->content, $assetMarker)) {
             $inFooter = (boolean) (false !== strpos($markerName, 'Footer'));
             $tag = true === $inFooter ? '</body>' : '</head>';
-            $GLOBALS['TSFE']->content = str_replace($tag, $assetMarker . LF . $tag, $GLOBALS['TSFE']->content);
+            $content = $GLOBALS['TSFE']->content;
+            $position = strrpos($content, $tag);
+            $GLOBALS['TSFE']->content = substr_replace($content, $assetMarker . LF, $position, 0);
         }
         if (true === is_array($assets)) {
             $chunk = $this->buildAssetsChunk($assets);
