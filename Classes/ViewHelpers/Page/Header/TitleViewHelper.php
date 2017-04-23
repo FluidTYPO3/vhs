@@ -50,6 +50,16 @@ class TitleViewHelper extends AbstractViewHelper
     use PageRendererTrait;
 
     /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Arguments initialization
      *
      * @return void
