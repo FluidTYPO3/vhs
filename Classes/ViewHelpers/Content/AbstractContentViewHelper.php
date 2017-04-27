@@ -52,7 +52,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('column', 'integer', 'Name of the column to render', false, 0);
+        $this->registerArgument('column', 'integer', 'Name of the column to render', false, null);
         $this->registerArgument(
             'order',
             'string',
@@ -121,7 +121,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected function getSlideRecordsFromPage($pageUid, $limit)
     {
-        $column = (integer) $this->arguments['column'];
         $order = $this->arguments['order'];
         if (false === empty($order)) {
             $sortDirection = strtoupper(trim($this->arguments['sortDirection']));
@@ -147,10 +146,10 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if (true === is_array($contentUids)) {
             $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
         } else {
-            if ($column < 0) {
+            if ($this->arguments['column'] === null) {
                 $conditions = 'pid = '. (integer) $pageUid;
             } else {
-                $conditions = 'colPos = \'' . $column . '\' AND pid = '. (integer) $pageUid;
+                $conditions = 'colPos = \'' . $this->arguments['column'] . '\' AND pid = '. (integer) $pageUid;
             }
         }
 
