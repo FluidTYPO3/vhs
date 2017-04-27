@@ -147,7 +147,11 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if (true === is_array($contentUids)) {
             $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
         } else {
-            $conditions = 'colPos = \'' . $column . '\' AND pid = '. (integer) $pageUid;
+            if ($column < 0) {
+                $conditions = 'pid = '. (integer) $pageUid;
+            } else {
+                $conditions = 'colPos = \'' . $column . '\' AND pid = '. (integer) $pageUid;
+            }
         }
 
         $conditions .= $this->contentObject->enableFields('tt_content', false, ['pid' => true, 'hidden' => true]) . ' AND ' . $languageCondition;
