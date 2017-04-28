@@ -290,7 +290,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         // reorders languageMenu
         if (false === empty($order)) {
             foreach ($order as $value) {
-                $languageMenu[$value] = $tempArray[$value];
+                if(isset($tempArray[$value])) {
+                    $languageMenu[$value] = $tempArray[$value];
+                }
             }
         } else {
             $languageMenu = $tempArray;
