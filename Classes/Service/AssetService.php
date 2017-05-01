@@ -245,6 +245,7 @@ class AssetService implements SingletonInterface
      */
     protected function buildAssetsChunk($assets)
     {
+        $setup = &$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'];
         $spool = [];
         foreach ($assets as $name => $asset) {
             $assetSettings = $this->extractAssetSettings($asset);
@@ -746,6 +747,51 @@ class AssetService implements SingletonInterface
     {
         ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
         return $array1;
+    }
+
+    /**
+     * @param $file
+     * @return string
+     */
+    protected function getFileIntegrity($file)
+    {
+        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'])) {
+            // Note: 3 predefined hashing strategies (the ones suggestes in the rfc sheet)
+            if (0 < $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity']
+                && $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] < 4
+            ) {
+                if (false === file_exists($file)) {
+                    return '';
+                }
+
+                $integrityMethod = ['sha256','sha384','sha512'][
+                    $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] - 1
+                ];
+                $integrityFile = sprintf(
+                    'typo3temp/vhs-assets-%s.%s',
+                    str_replace('vhs-assets-', '', pathinfo($file, PATHINFO_BASENAME)),
+                    $integrityMethod
+                );
+
+                if (false === file_exists($integrityFile)
+                    || 0 === filemtime($integrityFile)
+                    || true === isset($GLOBALS['BE_USER'])
+                    || true === (boolean) $GLOBALS['TSFE']->no_cache
+                    || true === (boolean) $GLOBALS['TSFE']->page['no_cache']
+                ) {
+                    if (extension_loaded('hash') && function_exists('hash_file')) {
+                        $integrity = base64_encode(hash_file($integrityMethod, $file, true));
+                    } elseif (extension_loaded('openssl') && function_exists('openssl_digest')) {
+                        $integrity = base64_encode(openssl_digest(file_get_contents($file), $integrityMethod, true));
+                    } else {
+                        return ''; // Sadly, no integrity generation possible
+                    }
+                    $this->writeFile($integrityFile, $integrity);
+                }
+                return sprintf('%s-%s', $integrityMethod, $integrity ?: file_get_contents($integrityFile));
+            }
+        }
+        return '';
     }
 
     /**
