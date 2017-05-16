@@ -132,7 +132,8 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         }
         $hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
         $currentLanguage = $GLOBALS['TSFE']->sys_language_content;
-        $languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
+        $defaultLanguage = $GLOBALS['TSFE']->sys_language_contentOL;
+        $languageCondition = '(sys_language_uid IN (-1,' . $defaultLanguage . ',' . $currentLanguage . ')';
         if (0 < $currentLanguage) {
             if (true === $hideUntranslated) {
                 $languageCondition .= ' AND l18n_parent > 0';
