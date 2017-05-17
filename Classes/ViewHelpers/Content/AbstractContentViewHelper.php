@@ -139,7 +139,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $languageUids[] = $GLOBALS['TSFE']->sys_language_contentOL;
         }
 
-        $languageCondition = sprintf('(sys_language_uid IN (%s)', explode(", ", $languageUids));
+        $languageCondition = sprintf('(sys_language_uid IN (%s)', implode(", ", $languageUids));
         if (0 < $currentLanguage) {
             if (true === $hideUntranslated) {
                 $languageCondition .= ' AND l18n_parent > 0';
