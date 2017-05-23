@@ -41,6 +41,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $this->registerTagAttribute('type', 'string', 'Property: type');
         $this->registerTagAttribute('lang', 'string', 'Property: lang');
         $this->registerTagAttribute('dir', 'string', 'Property: dir');
+        $this->registerTagAttribute('sizes', 'string', 'Property: sizes');
     }
 
     /**
