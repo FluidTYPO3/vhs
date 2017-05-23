@@ -152,7 +152,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
 
         $contentUids = $this->arguments['contentUids'];
         if (true === is_array($contentUids)) {
-            $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
+            $conditions = '(uid IN (' . implode(',', $contentUids) . ') OR l18n_parent IN (' . implode(',', $contentUids) . '))';
         } else {
             $conditions = 'colPos = \'' . $column . '\' AND pid = '. (integer) $pageUid;
         }
