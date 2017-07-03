@@ -39,6 +39,16 @@ class UncacheTemplateView extends TemplateView
      */
     protected $templateCompiler;
 
+    public function __sleep()
+    {
+        return ['renderingStack'];
+    }
+
+    public function __wakeup()
+    {
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManagerInterface::class);
+    }
+
     /**
      * @param ObjectManagerInterface $objectManager
      * @return void
@@ -90,11 +100,8 @@ class UncacheTemplateView extends TemplateView
             $this->templateCompiler = $renderingContext->getTemplateCompiler();
         } else {
             $this->templateCompiler = $this->objectManager->get(TemplateCompiler::class);
-            if (isset($GLOBALS['typo3CacheManager'])) {
-                $cacheManager = $GLOBALS['typo3CacheManager'];
-            } else {
-                $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-            }
+            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+
             $this->templateCompiler->setTemplateCache($cacheManager->getCache('fluid_template'));
         }
     }
