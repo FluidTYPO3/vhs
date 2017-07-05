@@ -226,7 +226,9 @@ class AssetService implements SingletonInterface
         if (false === strpos($GLOBALS['TSFE']->content, $assetMarker)) {
             $inFooter = (boolean) (false !== strpos($markerName, 'Footer'));
             $tag = true === $inFooter ? '</body>' : '</head>';
-            $GLOBALS['TSFE']->content = str_replace($tag, $assetMarker . LF . $tag, $GLOBALS['TSFE']->content);
+            $content = $GLOBALS['TSFE']->content;
+            $position = strrpos($content, $tag);
+            $GLOBALS['TSFE']->content = substr_replace($content, $assetMarker . LF, $position, 0);
         }
         if (true === is_array($assets)) {
             $chunk = $this->buildAssetsChunk($assets);
@@ -617,6 +619,7 @@ class AssetService implements SingletonInterface
                 } else {
                     if (false === file_exists($temporaryFile)) {
                         copy($realPath, $temporaryFile);
+                        GeneralUtility::fixPermissions($temporaryFile);
                     }
                     $replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
                 }
@@ -732,7 +735,7 @@ class AssetService implements SingletonInterface
      */
     protected function writeFile($file, $contents)
     {
-        file_put_contents($file, $contents);
+        GeneralUtility::writeFile($file, $contents);
     }
 
     /**

@@ -171,7 +171,7 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param string $dateTimeFormat
      * @return integer
      */
-    protected function dateTimeToUnixtimeMiliseconds(\DateTime $dateTime, $dateTimeFormat)
+    protected static function dateTimeToUnixtimeMiliseconds(\DateTime $dateTime, $dateTimeFormat)
     {
         if (null === $dateTimeFormat) {
             return intval($dateTime->format('U')) * 1000;
