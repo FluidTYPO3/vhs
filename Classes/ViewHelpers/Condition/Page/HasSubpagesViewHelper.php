@@ -62,12 +62,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         $pageUid = $arguments['pageUid'];
-        //TODO: remove fallback with removal of deprecated argument
-        if (null !== $arguments['showHiddenInMenu']) {
-            $includeHiddenInMenu = (boolean) $arguments['showHiddenInMenu'];
-        } else {
-            $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
-        }
+        $showHiddenInMenu = (boolean) $arguments['showHiddenInMenu'];
         $includeAccessProtected = (boolean) $arguments['includeAccessProtected'];
 
         if (null === $pageUid || true === empty($pageUid) || 0 === (integer) $pageUid) {
@@ -79,7 +74,12 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
             self::$pageService = $objectManager->get(PageService::class);
         }
 
-        $menu = self::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);
+        $options = [
+            'showHiddenInMenu' => $showHiddenInMenu,
+            'includeAccessProtected' => $includeAccessProtected,
+        ];
+
+        $menu = self::$pageService->getMenu($pageUid, $options);
 
         return (0 < count($menu));
     }

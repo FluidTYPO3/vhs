@@ -210,6 +210,14 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             'Optional divider to insert between each menu item. Note that this does not mix well with automatic ' .
             'rendering due to the use of an ul > li structure'
         );
+        $this->registerArgument(
+            'excludeSubpageTypes',
+            'mixed',
+            'CSV list or array of doktypes to not consider as subpages. Can be constant names or integer values, ' .
+            'i.e. 1,254 or DEFAULT,SYSFOLDER,SHORTCUT or just default,sysfolder,shortcut',
+            false,
+            'SYSFOLDER'
+        );
     }
 
     /**
@@ -417,18 +425,16 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         if ($pageUid === null) {
             return [];
         }
-        $showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
-        $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
-        $includeSpacers = (boolean) $this->arguments['includeSpacers'];
-        $excludePages = $this->processPagesArgument($this->arguments['excludePages']);
 
-        return $this->pageService->getMenu(
-            $pageUid,
-            $excludePages,
-            $showHiddenInMenu,
-            $includeSpacers,
-            $showAccessProtected
-        );
+        $options = [
+            'showHiddenInMenu' => (boolean) $this->arguments['showHiddenInMenu'],
+            'showAccessProtected' => (boolean) $this->arguments['showAccessProtected'],
+            'includeSpacers' => (boolean) $this->arguments['includeSpacers'],
+            'excludePages' => $this->processPagesArgument($this->arguments['excludePages']),
+            'excludeSubpageTypes' => $this->parseDoktypeList($this->arguments['excludeSubpageTypes']),
+        ];
+
+        return $this->pageService->getMenu($pageUid, $options);
     }
 
     /**
@@ -690,5 +696,32 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         return $pages;
+    }
+
+    /**
+     * Parses the provided CSV list or array of doktypes to
+     * return an array of integers
+     *
+     * @param mixed $doktypes
+     * @return array
+     */
+    protected function parseDoktypeList($doktypes) {
+        if (true === is_array($doktypes)) {
+            $types = $doktypes;
+        } else {
+            $types = GeneralUtility::trimExplode(',', $doktypes);
+        }
+        $parsed = [];
+        foreach ($types as $index => $type) {
+            if (false === ctype_digit($type)) {
+                $typeNumber = constant('TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_' . strtoupper($type));
+                if (null !== $typeNumber) {
+                    $parsed[$index] = $typeNumber;
+                }
+            } else {
+                $parsed[$index] = (int) $type;
+            }
+        }
+        return $parsed;
     }
 }
