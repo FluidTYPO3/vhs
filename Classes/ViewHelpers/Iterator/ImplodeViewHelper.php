@@ -33,6 +33,6 @@ class ImplodeViewHelper extends ExplodeViewHelper implements CompilableInterface
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->overrideArgument('content', 'string', 'Array or array-convertible object to be imploded by glue');
+        $this->overrideArgument('content', 'array', 'Array or array-convertible object to be imploded by glue');
     }
 }
