@@ -70,19 +70,6 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     }
 
     /**
-     * @param FileReference $fileReference
-     * @return array
-     */
-    public function getResource($fileReference)
-    {
-        $file = $fileReference->getOriginalFile();
-        $fileReferenceProperties = $fileReference->getProperties();
-        $fileProperties = ResourceUtility::getFileArray($file);
-        ArrayUtility::mergeRecursiveWithOverrule($fileProperties, $fileReferenceProperties, true, true, false);
-        return $fileProperties;
-    }
-
-    /**
      * Fetch a fileReference from the file repository
      *
      * @param string $table name of the table to get the file reference for
@@ -154,7 +141,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         foreach ($fileReferences as $file) {
             // Exclude workspace deleted files references
             if ($file->getProperty('t3ver_state') !== VersionState::DELETE_PLACEHOLDER) {
-                $resources[] = $this->getResource($file);
+                $resources[] = $file;
             }
         }
         return $resources;
