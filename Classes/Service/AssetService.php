@@ -390,6 +390,9 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('src', $file);
                 }
                 if (null !== $integrity && !empty($integrity)) {
+                    if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                        $tagBuilder->addAttribute('crossorigin', 'anonymous');
+                    }
                     $tagBuilder->addAttribute('integrity', $integrity);
                 }
                 break;
@@ -406,6 +409,9 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('href', $file);
                 }
                 if (null !== $integrity && !empty($integrity)) {
+                    if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                        $tagBuilder->addAttribute('crossorigin', 'anonymous');
+                    }
                     $tagBuilder->addAttribute('integrity', $integrity);
                 }
                 break;
@@ -619,6 +625,7 @@ class AssetService implements SingletonInterface
                 } else {
                     if (false === file_exists($temporaryFile)) {
                         copy($realPath, $temporaryFile);
+                        GeneralUtility::fixPermissions($temporaryFile);
                     }
                     $replacements[$matches[1][$matchCount]] = $wrap[0] . $temporaryFileName . $suffix . $wrap[1];
                 }
@@ -734,7 +741,7 @@ class AssetService implements SingletonInterface
      */
     protected function writeFile($file, $contents)
     {
-        file_put_contents($file, $contents);
+        GeneralUtility::writeFile($file, $contents);
     }
 
     /**

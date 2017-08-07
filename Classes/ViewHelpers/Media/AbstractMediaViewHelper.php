@@ -31,6 +31,7 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument(
             'src',
             'mixed',

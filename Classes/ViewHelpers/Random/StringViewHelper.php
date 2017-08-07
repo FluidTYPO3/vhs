@@ -39,7 +39,7 @@ class StringViewHelper extends AbstractViewHelper implements CompilableInterface
     {
         $this->registerArgument('length', 'integer', 'Length of string to generate');
         $this->registerArgument('minimumLength', 'integer', 'Minimum length of string if random length', false, 32);
-        $this->registerArgument('mmaximumLength', 'integer', 'Minimum length of string if random length', false, 32);
+        $this->registerArgument('maximumLength', 'integer', 'Minimum length of string if random length', false, 32);
         $this->registerArgument('characters', 'string', 'Characters to use in string', false, '0123456789abcdef');
     }
 

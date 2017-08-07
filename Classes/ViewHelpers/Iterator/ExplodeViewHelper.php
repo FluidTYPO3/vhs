@@ -8,11 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Explode ViewHelper
@@ -21,8 +22,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-    use CompileWithContentArgumentAndRenderStatic;
+    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
     /**
      * @var boolean
@@ -69,7 +71,7 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = isset($arguments['as']) ? $arguments['content'] : $renderChildrenClosure();
+        $content = isset($arguments['content']) ? $arguments['content'] : $renderChildrenClosure();
         $glue = static::resolveGlue($arguments);
         $output = call_user_func_array(static::$method, [$glue, $content]);
         return static::renderChildrenWithVariableOrReturnInputStatic(

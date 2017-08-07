@@ -58,6 +58,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerPageRecordArguments();
         $this->registerTagAttribute('target', 'string', 'Target of link', false);

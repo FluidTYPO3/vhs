@@ -130,8 +130,15 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $order = $order . ' ' . $sortDirection;
         }
         $hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
+
         $currentLanguage = $GLOBALS['TSFE']->sys_language_content;
-        $languageCondition = '(sys_language_uid IN (-1,' . $currentLanguage . ')';
+        $languageUids = [-1, $currentLanguage];
+
+        if (null !== $GLOBALS['TSFE']->sys_language_contentOL) {
+            $languageUids[] = $GLOBALS['TSFE']->sys_language_contentOL;
+        }
+
+        $languageCondition = sprintf('(sys_language_uid IN (%s)', implode(", ", $languageUids));
         if (0 < $currentLanguage) {
             if (true === $hideUntranslated) {
                 $languageCondition .= ' AND l18n_parent > 0';
