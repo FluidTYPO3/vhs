@@ -45,7 +45,7 @@ class InfoViewHelperTest extends AbstractViewHelperTest
         if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
             $this->markTestSkipped('Test is skippped on TYPO3v8 for now, due to tested code having tight coupling to Doctrine');
         }
-
+        unset($GLOBALS['TSFE']);
         $this->expectViewHelperException();
         $this->executeViewHelper(['pageUid' => 42]);
     }
