@@ -105,6 +105,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
         $this->registerArgument('configuration', 'array', 'Additional typoLink configuration', false, []);
         $this->registerArgument('excludeQueryVars', 'string', 'Comma-separate list of variables to exclude', false, '');
+        $this->registerArgument('limitLanguages', 'string', 'Comma-separate list of languages to render', false, '');
     }
 
     /**
@@ -277,7 +278,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
         $select = 'uid, title, flag';
         $from = 'sys_language';
-        $where = '1=1' . $this->cObj->enableFields('sys_language');
+        $limitLanguages = (!empty($this->arguments['limitLanguages']) ?
+            GeneralUtility::intExplode(',', $this->arguments['limitLanguages']) : []);
+        $where = (!empty($limitLanguages) ?  'uid IN (' . implode(',', $limitLanguages) . ')' : '1=1') .
+            $this->cObj->enableFields('sys_language');
         $sysLanguage = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select, $from, $where);
 
         foreach ($sysLanguage as $value) {
