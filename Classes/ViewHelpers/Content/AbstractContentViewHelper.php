@@ -52,7 +52,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('column', 'integer', 'Name of the column to render', false, null);
+        $this->registerArgument('column', 'integer', 'Name of the column to render');
         $this->registerArgument(
             'order',
             'string',
@@ -146,10 +146,10 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if (true === is_array($contentUids)) {
             $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
         } else {
-            if ($this->arguments['column'] === null) {
-                $conditions = 'pid = '. (integer) $pageUid;
-            } else {
+            if ($this->arguments['column']) {
                 $conditions = 'colPos = \'' . $this->arguments['column'] . '\' AND pid = '. (integer) $pageUid;
+            } else {
+                $conditions = 'pid = '. (integer) $pageUid;
             }
         }
 
