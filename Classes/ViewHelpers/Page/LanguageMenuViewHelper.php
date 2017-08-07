@@ -49,6 +49,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerArgument(
             'tagName',

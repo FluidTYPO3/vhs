@@ -63,6 +63,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerPageRecordArguments();
         $this->registerArgument('tagName', 'string', 'Tag name to use for enclosing container', false, 'ul');

@@ -65,6 +65,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
         $this->registerArgument('media', 'string', 'Media query for which breakpoint this sources applies');
         $this->registerArgument(
             'width',

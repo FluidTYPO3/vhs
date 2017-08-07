@@ -24,8 +24,12 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'link';
 
+    /**
+     * @return void
+     */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerArgument('pageUid', 'integer', 'The page uid to check', false, 0);
         $this->registerArgument(
