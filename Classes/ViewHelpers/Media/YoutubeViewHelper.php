@@ -43,6 +43,8 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
         $this->registerArgument('videoId', 'string', 'YouTube id of the video to embed.', true);
         $this->registerArgument(
             'width',
