@@ -154,9 +154,9 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
         } else {
             if ($this->arguments['column']) {
-                $conditions = 'colPos = \'' . $this->arguments['column'] . '\' AND pid = '. (integer) $pageUid;
+                $conditions = 'colPos = \'' . $this->arguments['column'] . '\' AND pid = ' . (integer) $pageUid;
             } else {
-                $conditions = 'pid = '. (integer) $pageUid;
+                $conditions = 'pid = ' . (integer) $pageUid;
             }
         }
 
