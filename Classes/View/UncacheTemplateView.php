@@ -39,11 +39,17 @@ class UncacheTemplateView extends TemplateView
      */
     protected $templateCompiler;
 
+    /**
+     * @return void
+     */
     public function __sleep()
     {
         return ['renderingStack'];
     }
 
+    /**
+     * @return void
+     */
     public function __wakeup()
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManagerInterface::class);
