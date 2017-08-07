@@ -2,6 +2,7 @@
     "name": "fluidtypo3/vhs",
     "description": "The vhs package from FluidTYPO3",
     "type": "typo3-cms-extension",
+    "non-feature-branches": ["development"],
     "support": {
         "irc": "irc://irc.freenode.org/fedext",
         "issues": "https://github.com/FluidTYPO3/vhs/issues"
@@ -31,7 +32,7 @@
     },
     "require": {
         "php": ">=7.0.0",
-        "typo3/cms": ">=7.6.13, <=7.6.99|^8.4.1"
+        "typo3/cms": ">=7.6.13, <=7.6.99|^8.4.1|dev-master"
     },
     "replace": {
         "vhs": "self.version",
