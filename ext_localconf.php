@@ -3,6 +3,13 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
+/**
+ * Polyfill ext-mbstring if not present. Can be removed with TYPO3 8.7 minimum-compatibility.
+ */
+if (false === function_exists('mb_strlen') || false === function_exists('mb_chr')) {
+    include_once \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:vhs/bootstrap.php');
+}
+
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup'] = unserialize($_EXTCONF);
 if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling']) || !$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling']) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'][] = 'FluidTYPO3\\Vhs\\Service\\AssetService';
