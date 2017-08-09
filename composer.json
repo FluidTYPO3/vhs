@@ -43,5 +43,17 @@
     },
     "suggest": {
         "ext-tidy": "Allows to make use of the tidy ViewHelper"
+    },
+    "scripts": {
+      "post-autoload-dump": [
+        "mkdir -p build/web/typo3conf/ext/",
+        "[ -L build/web/typo3conf/ext/vhs ] || ln -snvf ../../../../. build/web/typo3conf/ext/vhs"
+      ]
+    },
+    "extra": {
+        "typo3/cms": {
+          "cms-package-dir": "{$vendor-dir}/typo3/cms",
+          "web-dir": "build/web"
+        }
     }
 }
