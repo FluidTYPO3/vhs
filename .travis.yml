@@ -25,11 +25,13 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+before_script:
+  - mkdir -p build/logs
+  - export TYPO3_PATH_WEB=$PWD/build/web
+
 install:
   - composer require --no-update "typo3/cms:$TYPO3_VERSION"
   - composer install --prefer-dist
-
-before_script: mkdir -p build/logs
 
 script: if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else ./vendor/bin/phpunit; fi
 
