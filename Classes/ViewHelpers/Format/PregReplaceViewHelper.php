@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### PregReplace regular expression ViewHeloer
@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 class PregReplaceViewHelper extends AbstractViewHelper
 {
 
-    use CompileWithContentArgumentAndRenderStatic;
+    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -46,7 +46,7 @@ class PregReplaceViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = $renderChildrenClosure();
+        $subject = $arguments['subject'] ?? $renderChildrenClosure();
         $value = preg_replace($arguments['pattern'], $arguments['replacement'], $subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $value,

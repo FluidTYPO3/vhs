@@ -41,7 +41,7 @@ class FalViewHelperTest extends AbstractViewHelperTest
         $viewHelper = $this->createInstance();
         $viewHelperNode = $this->createViewHelperNode($viewHelper, []);
         $GLOBALS['BE_USER']->workspaceRec['uid'] = 1234;
-        $result = $this->executeViewHelper(['table' => 'pages', 'field' => 'media'], [], $viewHelperNode);
+        $this->executeViewHelper(['table' => 'pages', 'field' => 'media'], [], $viewHelperNode);
     }
 
     /**
@@ -49,24 +49,8 @@ class FalViewHelperTest extends AbstractViewHelperTest
      */
     public function testFalViewhHelperWithoutWorkspaces()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)->getMock();
-        $GLOBALS['TYPO3_DB']->expects($this->once())
-            ->method('exec_SELECTgetRows')
-            ->with(
-                'uid',
-                'sys_file_reference',
-                'tablenames=' .
-                ' AND uid_foreign=0' .
-                ' AND fieldname='
-                . 'AND sys_file_reference.deleted=0 AND sys_file_reference.t3ver_state<=0 AND sys_file_reference.pid<>-1 AND sys_file_reference.hidden=0',
-                '',
-                'sorting_foreign',
-                '',
-                'uid'
-            )
-            ->will($this->returnValue(['foo']));
         $viewHelper = $this->createInstance();
         $viewHelperNode = $this->createViewHelperNode($viewHelper, []);
-        $result = $this->executeViewHelper(['table' => 'pages', 'field' => 'media'], [], $viewHelperNode);
+        $this->executeViewHelper(['table' => 'pages', 'field' => 'media'], [], $viewHelperNode);
     }
 }

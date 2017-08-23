@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use FluidTYPO3\Development\AbstractTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
@@ -32,7 +32,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Class AbstractViewHelperTest
  */
-abstract class AbstractViewHelperTest extends UnitTestCase
+abstract class AbstractViewHelperTest extends AbstractTestCase
 {
 
     /**
