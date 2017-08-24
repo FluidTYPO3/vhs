@@ -91,7 +91,7 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     protected static function resolveGlue(array $arguments)
     {
         $glue = $arguments['glue'];
-        if (false !== strpos($glue, ':') && 1 < strlen($glue)) {
+        if (false !== mb_strpos($glue, ':') && 1 < mb_strlen($glue)) {
             // glue contains a special type identifier, resolve the actual glue
             list ($type, $value) = explode(':', $glue);
             switch ($type) {

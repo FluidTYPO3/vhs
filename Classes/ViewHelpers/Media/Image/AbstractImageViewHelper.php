@@ -172,7 +172,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         }
 
         if (TYPO3_MODE === 'BE' && strpos($src, '../') === 0) {
-            $src = substr($src, 3);
+            $src = mb_substr($src, 3);
         }
         $this->imageInfo = $this->contentObject->getImgResource($src, $setup);
         $GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
@@ -185,7 +185,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $canvasHeight = (integer) $this->arguments['canvasHeight'];
             $canvasColor = str_replace('#', '', $this->arguments['canvasColor']);
             $originalFilename = $this->imageInfo[3];
-            $originalExtension = substr($originalFilename, -3);
+            $originalExtension = mb_substr($originalFilename, -3);
             $destinationFilename = 'typo3temp/vhs-canvas-' .
                 md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
             $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);

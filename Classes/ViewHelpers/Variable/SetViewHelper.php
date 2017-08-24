@@ -91,7 +91,7 @@ class SetViewHelper extends AbstractViewHelper implements CompilableInterface
                 $variableProvider->remove($name);
             }
             $variableProvider->add($name, $value);
-        } elseif (1 === substr_count($name, '.')) {
+        } elseif (1 === mb_substr_count($name, '.')) {
             $parts = explode('.', $name);
             $objectName = array_shift($parts);
             $path = implode('.', $parts);

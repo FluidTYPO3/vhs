@@ -59,10 +59,10 @@ class LipsumViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $lipsum = $arguments['lipsum'];
-        if (strlen($lipsum) === 0) {
+        if (mb_strlen($lipsum) === 0) {
             $lipsum = static::getDefaultLoremIpsum();
         }
-        if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
+        if ((mb_strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === mb_strpos($lipsum, 'EXT:')) {
             // argument is most likely a file reference.
             $sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
             if (file_exists($sourceFile)) {
