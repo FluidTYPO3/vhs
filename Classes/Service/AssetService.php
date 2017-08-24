@@ -289,7 +289,7 @@ class AssetService implements SingletonInterface
                                 );
                             } else {
                                 $integrity = $this->getFileIntegrity($path);
-                                $path = substr($path, strlen(PATH_site));
+                                $path = mb_substr($path, mb_strlen(PATH_site));
                                 $path = $this->prefixPath($path);
                                 array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity));
                             }

@@ -136,9 +136,9 @@ class AudioViewHelper extends AbstractMediaViewHelper
             if (is_string($source)) {
                 if (false !== strpos($source, '//')) {
                     $src = $source;
-                    $type = substr($source, strrpos($source, '.') + 1);
+                    $type = mb_substr($source, mb_strrpos($source, '.') + 1);
                 } else {
-                    $src = substr(GeneralUtility::getFileAbsFileName($source), strlen(PATH_site));
+                    $src = mb_substr(GeneralUtility::getFileAbsFileName($source), mb_strlen(PATH_site));
                     $type = pathinfo($src, PATHINFO_EXTENSION);
                 }
             } elseif (is_array($source)) {
@@ -154,7 +154,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
                 // skip invalid source
                 continue;
             }
-            $type = strtolower($type);
+            $type = mb_strtolower($type);
             if (!in_array($type, $this->validTypes)) {
                     throw new Exception('Invalid audio type "' . $type . '".', 1359381260);
             }

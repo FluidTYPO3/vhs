@@ -270,7 +270,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $this->unsetDeferredVariableStorage();
         } else {
             $content = $this->renderChildren();
-            if (0 < strlen(trim($content))) {
+            if (0 < mb_strlen(trim($content))) {
                 $output = $content;
             } elseif ((boolean) $this->arguments['hideIfEmpty'] === true) {
                 $output = '';
