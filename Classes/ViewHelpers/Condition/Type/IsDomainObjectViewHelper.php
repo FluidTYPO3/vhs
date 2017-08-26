@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Type;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Value is a domain object
@@ -21,8 +20,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class IsDomainObjectViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
 
     /**
      * Initialize arguments

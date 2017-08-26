@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Type;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Type of value is string
@@ -19,8 +18,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class IsStringViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
 
     /**
      * Initialize arguments

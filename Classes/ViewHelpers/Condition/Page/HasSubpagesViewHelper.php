@@ -12,7 +12,6 @@ use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Page has subpages
@@ -25,8 +24,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class HasSubpagesViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
 
     /**
      * @var PageService
