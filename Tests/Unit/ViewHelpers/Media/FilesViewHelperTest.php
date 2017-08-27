@@ -38,7 +38,9 @@ class FilesViewHelperTest extends AbstractViewHelperTest
     public function returnsEmtpyArrayWhenArgumentsAreNotSet()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
         $viewHelper->setArguments([]);
@@ -51,7 +53,9 @@ class FilesViewHelperTest extends AbstractViewHelperTest
     public function returnsEmptyArrayWhenPathIsInaccessible()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist'));
         $viewHelper->setArguments([]);
@@ -65,7 +69,9 @@ class FilesViewHelperTest extends AbstractViewHelperTest
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $actualFiles = glob($this->fixturesPath . '/*');
         $actualFilesCount = count($actualFiles);
@@ -81,7 +87,9 @@ class FilesViewHelperTest extends AbstractViewHelperTest
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
         $viewHelper->setArguments(['extensionList' => 'txt']);
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $actualFiles = glob($this->fixturesPath . '/*.txt');
         $actualFilesCount = count($actualFiles);
