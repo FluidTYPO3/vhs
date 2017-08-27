@@ -129,9 +129,9 @@ class VideoViewHelper extends AbstractMediaViewHelper
             if (true === is_string($source)) {
                 if (false !== strpos($source, '//')) {
                     $src = $source;
-                    $type = substr($source, strrpos($source, '.') + 1);
+                    $type = mb_substr($source, mb_strrpos($source, '.') + 1);
                 } else {
-                    $src = substr(GeneralUtility::getFileAbsFileName($source), strlen(PATH_site));
+                    $src = mb_substr(GeneralUtility::getFileAbsFileName($source), mb_strlen(PATH_site));
                     $type = pathinfo($src, PATHINFO_EXTENSION);
                 }
             } elseif (true === is_array($source)) {
@@ -172,7 +172,7 @@ class VideoViewHelper extends AbstractMediaViewHelper
             $tagAttributes['muted'] = 'muted';
         }
         if (true === in_array($this->arguments['preload'], $this->validPreloadModes)) {
-            $tagAttributes['preload'] = 'preload';
+            $tagAttributes['preload'] = $this->arguments['preload'];
         }
         if (null !== $this->arguments['poster']) {
             $tagAttributes['poster'] = $this->arguments['poster'];

@@ -34,6 +34,8 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
         $this->registerArgument(
             'spotifyUri',
             'string',

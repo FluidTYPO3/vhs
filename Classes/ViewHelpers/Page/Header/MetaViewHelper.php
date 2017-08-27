@@ -36,6 +36,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerTagAttribute('name', 'string', 'Name property of meta tag');
         $this->registerTagAttribute('property', 'string', 'Property of meta tag');
         $this->registerTagAttribute('content', 'string', 'Content of meta tag');

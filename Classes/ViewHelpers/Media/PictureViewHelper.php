@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
@@ -34,6 +35,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
 {
     const SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
     const SCOPE_VARIABLE_SRC = 'src';
+    const SCOPE_VARIABLE_ID = 'treatIdAsReference';
     const SCOPE_VARIABLE_DEFAULT_SOURCE = 'default-source';
 
     /**
@@ -53,9 +55,17 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('src', 'string', 'Path to the image.', true);
+        $this->registerArgument('src', 'mixed', 'Path to the image or FileReference.', true);
+        $this->registerArgument(
+            'treatIdAsReference',
+            'boolean',
+            'When TRUE treat given src argument as sys_file_reference record.',
+            false,
+            false
+        );
         $this->registerArgument('alt', 'string', 'Text for the alt attribute.', true);
         $this->registerArgument('title', 'string', 'Text for the title attribute.');
+        $this->registerArgument('class', 'string', 'CSS class(es) to set.');
     }
 
     /**
@@ -66,10 +76,17 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         $src = $this->arguments['src'];
+        $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+        if (is_object($src) && $src instanceof FileReference) {
+            $src = $src->getUid();
+            $treatIdAsReference = true;
+        }
 
         $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_SRC, $src);
+        $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_ID, $treatIdAsReference);
         $content = $this->renderChildren();
         $this->viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_SRC);
+        $this->viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_ID);
 
         if (false === $this->viewHelperVariableContainer->exists(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
             throw new Exception('Please add a source without a media query as a default.', 1438116616);
@@ -86,6 +103,9 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $content .= $defaultImage->render();
 
         $this->tag->setContent($content);
+        if (false === empty($this->arguments['class'])) {
+            $this->tag->addAttribute('class', $this->arguments['class']);
+        }
         return $this->tag->render();
     }
 }
