@@ -127,7 +127,7 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
     {
         $instance = $this->createInstance();
         $node = $this->createViewHelperNode($instance, $arguments);
-        if (class_exists(CmsVariableProvider::class)) {
+        if (method_exists($this->renderingContext, 'getVariableProvider')) {
             $this->renderingContext->getVariableProvider()->setSource($variables);
         } else {
             /** @var TemplateVariableContainer $container */
@@ -197,8 +197,6 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
      */
     protected function executeViewHelperStatic($arguments = [], $variables = [], $childNode = null, $extensionName = null, $pluginName = null)
     {
-        $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
-
         if ($childNode !== null) {
             $childClosure = function () use ($childNode) {
                 return $childNode->evaluate($this->renderingContext);
