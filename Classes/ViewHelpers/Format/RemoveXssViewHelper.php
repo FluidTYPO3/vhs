@@ -10,8 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Removes XSS from $string
@@ -19,27 +17,24 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Class RemoveXssViewHelper
  * @package Vhs
  * @subpackage ViewHelpers\Format
+ * @deprecated Since VHS 4.3
  */
 class RemoveXssViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @return void
      */
     public function initializeArguments()
     {
-        $this->registerArgument('string', 'string', 'String in which to remove XSS');
+        GeneralUtility::deprecationLog('ViewHelper v:format.removeXSS is deprecated - escaping is now enabled by default');
+        parent::initializeArguments();
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        return GeneralUtility::removeXSS($renderChildrenClosure());
+        return $this->renderChildren();
     }
 }
