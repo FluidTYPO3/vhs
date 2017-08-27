@@ -29,8 +29,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Can be used inline, i.e.:
  *
- *
- *     <f:for each="{dataset -> vhs:iterator.sort(sortBy: 'name')}" as="item">
+ *     <f:for each="{dataset -> v:iterator.sort(sortBy: 'name')}" as="item">
  *         // iterating data which is ONLY sorted while rendering this particular loop
  *     </f:for>
  */

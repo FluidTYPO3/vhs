@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use FluidTYPO3\Development\AbstractTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -17,7 +17,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 /**
  * Class UncacheTemplateViewTest
  */
-class UncacheTemplateViewTest extends UnitTestCase
+class UncacheTemplateViewTest extends AbstractTestCase
 {
 
     /**

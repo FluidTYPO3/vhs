@@ -39,7 +39,7 @@ class StringViewHelper extends AbstractViewHelper implements CompilableInterface
     {
         $this->registerArgument('length', 'integer', 'Length of string to generate');
         $this->registerArgument('minimumLength', 'integer', 'Minimum length of string if random length', false, 32);
-        $this->registerArgument('mmaximumLength', 'integer', 'Minimum length of string if random length', false, 32);
+        $this->registerArgument('maximumLength', 'integer', 'Minimum length of string if random length', false, 32);
         $this->registerArgument('characters', 'string', 'Characters to use in string', false, '0123456789abcdef');
     }
 
@@ -65,7 +65,7 @@ class StringViewHelper extends AbstractViewHelper implements CompilableInterface
         }
         $string = '';
         for ($i = 0; $i < $length; $i++) {
-            $randomIndex = mt_rand(0, strlen($characters) - 1);
+            $randomIndex = mt_rand(0, mb_strlen($characters) - 1);
             $string .= $characters{$randomIndex};
         }
         return $string;

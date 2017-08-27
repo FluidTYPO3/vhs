@@ -49,6 +49,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerArgument(
             'tagName',
@@ -105,6 +106,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
         $this->registerArgument('configuration', 'array', 'Additional typoLink configuration', false, []);
         $this->registerArgument('excludeQueryVars', 'string', 'Comma-separate list of variables to exclude', false, '');
+        $this->registerArgument('languages', 'mixed', 'Array, CSV or Traversable containing UIDs of languages to render');
     }
 
     /**
@@ -127,7 +129,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
         $content = $this->renderChildren();
         $this->templateVariableContainer->remove($this->arguments['as']);
-        if (0 === strlen(trim($content))) {
+        if (0 === mb_strlen(trim($content))) {
             $content = $this->autoRender();
         }
         return $content;
@@ -277,7 +279,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
         $select = 'uid, title, flag';
         $from = 'sys_language';
-        $where = '1=1' . $this->cObj->enableFields('sys_language');
+        $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
+        if (empty($limitLanguages)) {
+            $where = 'uid IN (' . implode(',', $limitLanguages) . ')';
+        } else {
+            $where = '1=1';
+        }
+        $where .= $this->cObj->enableFields('sys_language');
         $sysLanguage = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select, $from, $where);
 
         foreach ($sysLanguage as $value) {
@@ -290,7 +298,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         // reorders languageMenu
         if (false === empty($order)) {
             foreach ($order as $value) {
-                $languageMenu[$value] = $tempArray[$value];
+                if (isset($tempArray[$value])) {
+                    $languageMenu[$value] = $tempArray[$value];
+                }
             }
         } else {
             $languageMenu = $tempArray;

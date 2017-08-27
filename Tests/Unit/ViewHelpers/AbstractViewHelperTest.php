@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use FluidTYPO3\Development\AbstractTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
@@ -32,7 +32,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Class AbstractViewHelperTest
  */
-abstract class AbstractViewHelperTest extends UnitTestCase
+abstract class AbstractViewHelperTest extends AbstractTestCase
 {
 
     /**
@@ -127,7 +127,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
     {
         $instance = $this->createInstance();
         $node = $this->createViewHelperNode($instance, $arguments);
-        if (class_exists(CmsVariableProvider::class)) {
+        if (method_exists($this->renderingContext, 'getVariableProvider')) {
             $this->renderingContext->getVariableProvider()->setSource($variables);
         } else {
             /** @var TemplateVariableContainer $container */
@@ -197,8 +197,6 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      */
     protected function executeViewHelperStatic($arguments = [], $variables = [], $childNode = null, $extensionName = null, $pluginName = null)
     {
-        $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
-
         if ($childNode !== null) {
             $childClosure = function () use ($childNode) {
                 return $childNode->evaluate($this->renderingContext);
@@ -247,7 +245,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      */
     protected function createViewHelperNode($instance, array $arguments)
     {
-        if (class_exists(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class)) {
+        if (!$this->usesLegacyFluidVersion()) {
             $className = get_class($instance);
             $cutoff = strpos($className, '\\ViewHelpers\\');
             $viewHelperName = substr($className, $cutoff + 13, -10);
@@ -273,7 +271,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode|\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode
      */
     protected function createObjectAccessorNode($accessor) {
-        if (class_exists(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class)) {
+        if (!$this->usesLegacyFluidVersion()) {
             return new \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode($accessor);
         }
         return new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode($accessor);
@@ -285,10 +283,18 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      */
     protected function expectViewHelperException($message = null, $code = null)
     {
-        if (class_exists(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class)) {
-            $this->setExpectedException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class, $message, $code);
-        } else {
+        if ($this->usesLegacyFluidVersion()) {
             $this->setExpectedException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class, $message, $code);
+        } else {
+            $this->setExpectedException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class, $message, $code);
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function usesLegacyFluidVersion()
+    {
+        return version_compare(TYPO3_version, '8.0', '<');
     }
 }

@@ -42,6 +42,7 @@ class IssetViewHelper extends AbstractConditionViewHelper
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'name of the variable', true);
     }
+
     /**
      * Render
      *
@@ -71,7 +72,9 @@ class IssetViewHelper extends AbstractConditionViewHelper
     ) {
         $hasEvaluated = true;
 
-        if (true === $renderingContext->getTemplateVariableContainer()->exists($arguments['name'])) {
+        $variableProvider = method_exists($renderingContext, 'getVariableProvider') ? $renderingContext->getVariableProvider() : $renderingContext->getTemplateVariableContainer();
+
+        if (true === $variableProvider->exists($arguments['name'])) {
             $result = static::renderStaticThenChild($arguments, $hasEvaluated);
             if ($hasEvaluated) {
                 return $result;
