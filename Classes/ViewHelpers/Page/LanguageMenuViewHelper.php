@@ -265,7 +265,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     {
         $order = $this->arguments['order'] ? GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
         $labelOverwrite = $this->arguments['labelOverwrite'];
-        if (!empty($labelOverwrite)) {
+        if (false === empty($labelOverwrite)) {
             $labelOverwrite = GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']);
         }
 
@@ -280,7 +280,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $select = 'uid, title, flag';
         $from = 'sys_language';
         $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
-        if (empty($limitLanguages)) {
+        if (false === empty($limitLanguages)) {
             $where = 'uid IN (' . implode(',', $limitLanguages) . ')';
         } else {
             $where = '1=1';
