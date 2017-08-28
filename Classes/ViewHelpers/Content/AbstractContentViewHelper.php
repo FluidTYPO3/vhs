@@ -53,7 +53,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('column', 'integer', 'Name of the column to render');
+        $this->registerArgument('column', 'integer', 'Column position number (colPos) of the column to render');
         $this->registerArgument(
             'order',
             'string',
