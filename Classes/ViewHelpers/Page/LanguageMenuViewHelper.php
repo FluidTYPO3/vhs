@@ -280,7 +280,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $select = 'uid, title, flag';
         $from = 'sys_language';
         $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
-        if (empty($limitLanguages)) {
+        if (!empty($limitLanguages)) {
             $where = 'uid IN (' . implode(',', $limitLanguages) . ')';
         } else {
             $where = '1=1';
