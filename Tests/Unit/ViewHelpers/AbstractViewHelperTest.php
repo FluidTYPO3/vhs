@@ -257,7 +257,7 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
                 ->getMock();
         } else {
             $node = $this->getMockBuilder(ViewHelperNode::class)
-                ->setMethods(['getUninitializedViewHelper'])
+                ->setMethods(['getChildNodes', 'getUninitializedViewHelper'])
                 ->setConstructorArgs([$instance, $arguments])
                 ->getMock();
         }
