@@ -153,11 +153,11 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $languageCondition .= ')';
 
         $contentUids = $this->arguments['contentUids'];
-        if (true === is_array($contentUids)) {
+        if (true === is_array($contentUids) && !empty($contentUids)) {
             $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
         } else {
-            if ($this->arguments['column']) {
-                $conditions = 'colPos = \'' . $this->arguments['column'] . '\' AND pid = ' . (integer) $pageUid;
+            if (is_numeric($this->arguments['column'])) {
+                $conditions = sprintf('colPos = %d AND pid = %d', (integer) $this->arguments['column'], (integer) $pageUid);
             } else {
                 $conditions = 'pid = ' . (integer) $pageUid;
             }
