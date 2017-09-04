@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\View;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
 use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
@@ -52,7 +53,7 @@ class UncacheTemplateView extends TemplateView
      */
     public function __wakeup()
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManagerInterface::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
