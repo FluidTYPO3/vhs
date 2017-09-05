@@ -52,6 +52,7 @@ class PageService implements SingletonInterface
      * @param boolean $includeNotInMenu
      * @param boolean $includeMenuSeparator
      * @param boolean $disableGroupAccessCheck
+     * @param boolean $checkShortcuts
      *
      * @return array
      */
@@ -60,7 +61,8 @@ class PageService implements SingletonInterface
         array $excludePages = [],
         $includeNotInMenu = false,
         $includeMenuSeparator = false,
-        $disableGroupAccessCheck = false
+        $disableGroupAccessCheck = false,
+        $checkShortcuts = true
     ) {
         $pageRepository = $this->getPageRepository();
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
@@ -73,7 +75,8 @@ class PageService implements SingletonInterface
                 $pageUid,
                 '*',
                 'sorting',
-                $pageConstraints
+                $pageConstraints,
+                $checkShortcuts
             );
         }
 

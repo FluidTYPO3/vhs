@@ -121,6 +121,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             false,
             false
         );
+        $this->registerArgument(
+            'checkShortcuts',
+            'boolean',
+            'Check if shortcuts exist, checks by default',
+            false,
+            true
+        );
         $this->registerArgument('showCurrent', 'boolean', 'If FALSE, does not display the current page', false, true);
         $this->registerArgument(
             'linkCurrent',
@@ -421,13 +428,15 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
         $includeSpacers = (boolean) $this->arguments['includeSpacers'];
         $excludePages = $this->processPagesArgument($this->arguments['excludePages']);
+        $checkShortcuts = (boolean) $this->arguments['checkShortcuts'];
 
         return $this->pageService->getMenu(
             $pageUid,
             $excludePages,
             $showHiddenInMenu,
             $includeSpacers,
-            $showAccessProtected
+            $showAccessProtected,
+            $checkShortcuts
         );
     }
 
