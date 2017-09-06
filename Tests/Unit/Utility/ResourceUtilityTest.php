@@ -8,15 +8,15 @@ namespace FluidTYPO3\Vhs\Utility;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Development\AbstractTestCase;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * @protection on
  * @package Vhs
  */
-class ResourceUtilityTest extends UnitTestCase
+class ResourceUtilityTest extends AbstractTestCase
 {
 
     /**

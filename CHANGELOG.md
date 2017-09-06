@@ -1,7 +1,8 @@
-Latest release: 4.2.0 (2017/04/13)
+Latest release: 4.3.0 (2017/08/27)
 
 All previous release change logs:
 
+* [4.3.0 (2017/08/27)](Documentation/Changelog/4.3.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/4.2.0...4.3.0)
 * [4.2.0 (2017/04/13)](Documentation/Changelog/4.2.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/4.1.0...4.2.0)
 * [4.1.0 (2017/03/05)](Documentation/Changelog/4.1.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/4.0.0...4.1.0)
 * [4.0.0 (2017/01/28)](Documentation/Changelog/4.0.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/3.1.0...4.0.0)

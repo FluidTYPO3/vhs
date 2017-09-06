@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Development\AbstractTestCase;
 use FluidTYPO3\Vhs\Asset;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Reflection\PropertyReflection;
 /**
  * Class AssetTest
  */
-class AssetTest extends UnitTestCase
+class AssetTest extends AbstractTestCase
 {
 
     /**

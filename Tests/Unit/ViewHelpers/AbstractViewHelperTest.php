@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use FluidTYPO3\Development\AbstractTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
@@ -32,7 +32,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Class AbstractViewHelperTest
  */
-abstract class AbstractViewHelperTest extends UnitTestCase
+abstract class AbstractViewHelperTest extends AbstractTestCase
 {
 
     /**
@@ -127,7 +127,7 @@ abstract class AbstractViewHelperTest extends UnitTestCase
     {
         $instance = $this->createInstance();
         $node = $this->createViewHelperNode($instance, $arguments);
-        if (class_exists(CmsVariableProvider::class)) {
+        if (method_exists($this->renderingContext, 'getVariableProvider')) {
             $this->renderingContext->getVariableProvider()->setSource($variables);
         } else {
             /** @var TemplateVariableContainer $container */
@@ -163,10 +163,15 @@ abstract class AbstractViewHelperTest extends UnitTestCase
         $instance->setRenderingContext($this->renderingContext);
         $instance->setViewHelperNode($node);
         $instance->setArguments($arguments);
-        if ($childNode && method_exists($instance, 'setChildNodes')) {
-            $node->addChildNode($childNode);
-            $instance->setChildNodes([$childNode]);
+        if ($childNode) {
+            $node->expects($this->any())->method('getChildNodes')->willReturn([$childNode]);
+            if (method_exists($instance, 'setChildNodes')) {
+                $instance->setChildNodes([$childNode]);
+            }
+        } else {
+            $node->expects($this->any())->method('getChildNodes')->willReturn([]);
         }
+
         if (method_exists($instance, 'injectReflectionService')) {
             $instance->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
@@ -197,8 +202,6 @@ abstract class AbstractViewHelperTest extends UnitTestCase
      */
     protected function executeViewHelperStatic($arguments = [], $variables = [], $childNode = null, $extensionName = null, $pluginName = null)
     {
-        $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
-
         if ($childNode !== null) {
             $childClosure = function () use ($childNode) {
                 return $childNode->evaluate($this->renderingContext);
@@ -248,19 +251,13 @@ abstract class AbstractViewHelperTest extends UnitTestCase
     protected function createViewHelperNode($instance, array $arguments)
     {
         if (!$this->usesLegacyFluidVersion()) {
-            $className = get_class($instance);
-            $cutoff = strpos($className, '\\ViewHelpers\\');
-            $viewHelperName = substr($className, $cutoff + 13, -10);
-            $resolver = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver::class)
-                ->setMethods(['getUninitializedViewHelper'])
-                ->getMock();
-            $this->renderingContext->setViewHelperResolver($resolver);
             $node = $this->getMockBuilder(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class)
+                ->setMethods(['getChildNodes', 'getUninitializedViewHelper'])
                 ->disableOriginalConstructor()
                 ->getMock();
         } else {
             $node = $this->getMockBuilder(ViewHelperNode::class)
-                ->setMethods(['getUninitializedViewHelper'])
+                ->setMethods(['getChildNodes', 'getUninitializedViewHelper'])
                 ->setConstructorArgs([$instance, $arguments])
                 ->getMock();
         }

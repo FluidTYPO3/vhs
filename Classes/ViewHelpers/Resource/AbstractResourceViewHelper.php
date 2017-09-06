@@ -28,6 +28,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument(
             'identifier',
             'mixed',

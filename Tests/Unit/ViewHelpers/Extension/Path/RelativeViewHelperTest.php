@@ -23,7 +23,7 @@ class RelativeViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingArgument()
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs']);
-        $this->assertSame(ExtensionManagementUtility::extRelPath('vhs'), $test);
+        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
     }
 
     /**
@@ -32,7 +32,7 @@ class RelativeViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingControllerContext()
     {
         $test = $this->executeViewHelper([], [], null, 'Vhs');
-        $this->assertSame(ExtensionManagementUtility::extRelPath('vhs'), $test);
+        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
     }
 
     /**

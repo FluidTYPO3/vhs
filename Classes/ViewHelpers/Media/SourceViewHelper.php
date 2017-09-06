@@ -65,6 +65,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
         $this->registerArgument('media', 'string', 'Media query for which breakpoint this sources applies');
         $this->registerArgument(
             'width',
@@ -133,8 +134,8 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             $setup['params'] .= ' -quality ' . $quality;
         }
 
-        if (is_string($imageSource) && 'BE' === TYPO3_MODE && '../' === substr($imageSource, 0, 3)) {
-            $imageSource = substr($imageSource, 3);
+        if (is_string($imageSource) && 'BE' === TYPO3_MODE && '../' === mb_substr($imageSource, 0, 3)) {
+            $imageSource = mb_substr($imageSource, 3);
         }
         $result = $this->contentObject->getImgResource($imageSource, $setup);
 

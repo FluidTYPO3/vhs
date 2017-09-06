@@ -38,7 +38,9 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     public function returnsEmptyStringForEmptyArguments()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
         $viewHelper->setArguments([]);
@@ -52,7 +54,9 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/foo.txt'));
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->setArguments([]);
         $this->assertEquals('txt', $viewHelper->render());
@@ -65,7 +69,9 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/noext'));
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->setArguments([]);
         $this->assertEquals('', $viewHelper->render());
