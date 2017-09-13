@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -52,7 +53,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('column', 'integer', 'Name of the column to render', false, 0);
+        $this->registerArgument('column', 'integer', 'Column position number (colPos) of the column to render');
         $this->registerArgument(
             'order',
             'string',
@@ -121,7 +122,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected function getSlideRecordsFromPage($pageUid, $limit)
     {
-        $column = (integer) $this->arguments['column'];
         $order = $this->arguments['order'];
         if (false === empty($order)) {
             $sortDirection = strtoupper(trim($this->arguments['sortDirection']));
@@ -144,17 +144,23 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             if (true === $hideUntranslated) {
                 $languageCondition .= ' AND l18n_parent > 0';
             }
-            $nestedQuery = $GLOBALS['TYPO3_DB']->SELECTquery('l18n_parent', 'tt_content', 'sys_language_uid = ' .
-                $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
+            $nestedQuery = $this->generateSelectQuery(
+                'l18n_parent',
+                'sys_language_uid = ' . $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content')
+            );
             $languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
         }
         $languageCondition .= ')';
 
         $contentUids = $this->arguments['contentUids'];
-        if (true === is_array($contentUids)) {
+        if (true === is_array($contentUids) && !empty($contentUids)) {
             $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
         } else {
-            $conditions = 'colPos = \'' . $column . '\' AND pid = '. (integer) $pageUid;
+            if (is_numeric($this->arguments['column'])) {
+                $conditions = sprintf('colPos = %d AND pid = %d', (integer) $this->arguments['column'], (integer) $pageUid);
+            } else {
+                $conditions = 'pid = ' . (integer) $pageUid;
+            }
         }
 
         $conditions .= $this->contentObject->enableFields('tt_content', false, ['pid' => true, 'hidden' => true]) . ' AND ' . $languageCondition;
@@ -165,7 +171,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $conditions .= BackendUtility::versioningPlaceholderClause('tt_content');
         }
 
-        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($this->arguments['render'] ? 'uid' : '*', 'tt_content', $conditions, '', $order, $limit);
+        $rows = $this->executeSelectQuery($this->arguments['render'] ? 'uid' : '*', $conditions, $order, $limit);
 
         if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return $rows;
@@ -257,5 +263,44 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             --$GLOBALS['TSFE']->recordRegister[$parent];
         }
         return $html;
+    }
+
+    /**
+     * @param string $fields
+     * @param string $condition
+     * @param string $order
+     * @param integer $limit
+     * @return array
+     */
+    protected function executeSelectQuery($fields, $condition, $order, $limit)
+    {
+        if (class_exists(ConnectionPool::class)) {
+            $queryBuilder = (new ConnectionPool())->getConnectionForTable('tt_content')->createQueryBuilder();
+            $queryBuilder->select($fields)->from('tt_content')->where($condition);
+            if ($order) {
+                $orderings = explode(' ', $order);
+                $queryBuilder->orderBy($orderings[0], $orderings[1]);
+            }
+            if ($limit) {
+                $queryBuilder->setMaxResults((integer) $limit);
+            }
+            return $queryBuilder->execute()->fetchAll();
+        }
+        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, 'tt_content', $condition, '', $order, $limit);
+    }
+
+    /**
+     * @param string $fields
+     * @param string $condition
+     * @return string
+     */
+    protected function generateSelectQuery($fields, $condition)
+    {
+        if (class_exists(ConnectionPool::class)) {
+            $queryBuilder = (new ConnectionPool())->getConnectionForTable('tt_content')->createQueryBuilder();
+            $queryBuilder->select($fields)->from('tt_content')->where($condition);
+            return $queryBuilder->getSQL();
+        }
+        return $GLOBALS['TYPO3_DB']->SELECTquery($fields, 'tt_content', $condition);
     }
 }

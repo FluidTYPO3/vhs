@@ -289,7 +289,7 @@ class AssetService implements SingletonInterface
                                 );
                             } else {
                                 $integrity = $this->getFileIntegrity($path);
-                                $path = substr($path, strlen(PATH_site));
+                                $path = mb_substr($path, mb_strlen(PATH_site));
                                 $path = $this->prefixPath($path);
                                 array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity));
                             }
@@ -390,6 +390,9 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('src', $file);
                 }
                 if (null !== $integrity && !empty($integrity)) {
+                    if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                        $tagBuilder->addAttribute('crossorigin', 'anonymous');
+                    }
                     $tagBuilder->addAttribute('integrity', $integrity);
                 }
                 break;
@@ -406,6 +409,9 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('href', $file);
                 }
                 if (null !== $integrity && !empty($integrity)) {
+                    if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                        $tagBuilder->addAttribute('crossorigin', 'anonymous');
+                    }
                     $tagBuilder->addAttribute('integrity', $integrity);
                 }
                 break;

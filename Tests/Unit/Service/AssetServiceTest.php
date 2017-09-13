@@ -1,16 +1,16 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Service;
 
+use FluidTYPO3\Development\AbstractTestCase;
 use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\Service\AssetService;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Class AssetServiceTest
  */
-class AssetServiceTest extends UnitTestCase
+class AssetServiceTest extends AbstractTestCase
 {
 
     /**

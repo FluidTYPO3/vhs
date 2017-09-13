@@ -14,24 +14,23 @@ matrix:
     - php: "7.0"
       env: COVERAGE="NO" TYPO3_VERSION=">=7.6.13, <7.6.99"
     - php: "7.0"
-      env: COVERAGE="NO" TYPO3_VERSION="8.5.*"
+      env: COVERAGE="NO" TYPO3_VERSION="^8.7"
     - php: "7.1"
-      env: COVERAGE="NO" TYPO3_VERSION="8.5.*"
-  allow_failures:
-    - php: "7.0"
-      env: COVERAGE="NO" TYPO3_VERSION="dev-master"
+      env: COVERAGE="NO" TYPO3_VERSION="^8.7"
 
 cache:
   directories:
     - $HOME/.composer/cache
 
+before_script:
+  - mkdir -p build/logs
+  - export TYPO3_PATH_WEB=$PWD/build/web
+
 install:
   - composer require --no-update "typo3/cms:$TYPO3_VERSION"
   - composer install --prefer-dist
 
-before_script: mkdir -p build/logs
-
-script: if [[ "$COVERAGE" != "NO" ]]; then TYPO3_PATH_ROOT=`pwd` ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else TYPO3_PATH_ROOT=`pwd` ./vendor/bin/phpunit; fi
+script: if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else ./vendor/bin/phpunit; fi
 
 after_script:
   - ln -s Classes src
