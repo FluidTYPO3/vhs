@@ -80,7 +80,7 @@ if (FALSE === is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfi
 	];
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['v'][] = 'FluidTYPO3\\Vhs\\ViewHelpers';
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['v'][0] = 'FluidTYPO3\\Vhs\\ViewHelpers';
 
 // add navigtion hide, url and urltype to fix the rendering of external url doktypes
 if (isset($GLOBALS['TCA']['pages']['columns']['urltype'])) {
