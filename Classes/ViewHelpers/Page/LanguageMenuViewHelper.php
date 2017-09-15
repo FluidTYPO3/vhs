@@ -278,6 +278,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $select = 'uid,title,flag';
         $from = 'sys_language';
         $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
+        $limitLanguages = array_filter($limitLanguages);
+
         if (!empty($limitLanguages)) {
             $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => -1, 'uidInList' => implode(',', $limitLanguages)]);
         } else {
