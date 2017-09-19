@@ -9,9 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -130,63 +128,40 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             }
             $order = $order . ' ' . $sortDirection;
         }
-        $hideUntranslated = (boolean) $this->arguments['hideUntranslated'];
-
-        $currentLanguage = $GLOBALS['TSFE']->sys_language_content;
-        $languageUids = [-1, $currentLanguage];
-
-        if (null !== $GLOBALS['TSFE']->sys_language_contentOL) {
-            $languageUids[] = $GLOBALS['TSFE']->sys_language_contentOL;
-        }
-
-        $languageCondition = sprintf('(sys_language_uid IN (%s)', implode(", ", $languageUids));
-        if (0 < $currentLanguage) {
-            if (true === $hideUntranslated) {
-                $languageCondition .= ' AND l18n_parent > 0';
-            }
-            $nestedQuery = $this->generateSelectQuery(
-                'l18n_parent',
-                'sys_language_uid = ' . $currentLanguage . $GLOBALS['TSFE']->cObj->enableFields('tt_content')
-            );
-            $languageCondition .= ' AND uid NOT IN (' . $nestedQuery . ')';
-        }
-        $languageCondition .= ')';
 
         $contentUids = $this->arguments['contentUids'];
         if (true === is_array($contentUids) && !empty($contentUids)) {
-            $conditions = 'uid IN (' . implode(',', $contentUids) . ')';
-        } else {
-            if (is_numeric($this->arguments['column'])) {
-                $conditions = sprintf('colPos = %d AND pid = %d', (integer) $this->arguments['column'], (integer) $pageUid);
-            } else {
-                $conditions = 'pid = ' . (integer) $pageUid;
-            }
+            return $GLOBALS['TSFE']->cObj->getRecords(
+                'tt_content',
+                [
+                    'uidInList' => implode(',', $contentUids),
+                    'orderBy' => $order,
+                    'max' => $limit,
+                    'pidInList' => '-1',
+                    'includeRecordsWithoutDefaultTranslation' => !$this->arguments['hideUntranslated']
+                ]
+            );
         }
 
-        $conditions .= $this->contentObject->enableFields('tt_content', false, ['pid' => true, 'hidden' => true]) . ' AND ' . $languageCondition;
+        $conditions = '1=1';
+        if (is_numeric($this->arguments['column'])) {
+            $conditions = sprintf('colPos = %d', (integer) $this->arguments['column']);
+        }
         if (true === (boolean) $this->arguments['sectionIndexOnly']) {
             $conditions .= ' AND sectionIndex = 1';
         }
-        if (ExtensionManagementUtility::isLoaded('workspaces')) {
-            $conditions .= BackendUtility::versioningPlaceholderClause('tt_content');
-        }
 
-        $rows = $this->executeSelectQuery($this->arguments['render'] ? 'uid' : '*', $conditions, $order, $limit);
+        $rows = $GLOBALS['TSFE']->cObj->getRecords(
+            'tt_content',
+            [
+                'where' => $conditions,
+                'orderBy' => $order,
+                'max' => $limit,
+                'pidInList' => $pageUid,
+                'includeRecordsWithoutDefaultTranslation' => !$this->arguments['hideUntranslated']
+            ]
+        );
 
-        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
-            return $rows;
-        }
-
-        $workspaceId = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->workspace : 0;
-        if ($workspaceId) {
-            foreach ($rows as $index => $row) {
-                if (BackendUtility::getMovePlaceholder('tt_content', $row['uid'])) {
-                    unset($rows[$index]);
-                } else {
-                    $rows[$index] = $row;
-                }
-            }
-        }
         return $rows;
     }
 
