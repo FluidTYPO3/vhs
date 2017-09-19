@@ -20,6 +20,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
 /**
  * Class AbstractSecurityViewHelperTest
@@ -51,7 +52,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testEvaluateArguments(array $arguments, array $expectedMethods, $expectedReturn)
     {
+        $node = $this->getMockBuilder(ViewHelperNode::class)->setMethods(['getChildNodes'])->disableOriginalConstructor()->getMock();
+        $node->expects($this->any())->method('getChildNodes')->willReturn([]);
         $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods($expectedMethods)->getMockForAbstractClass();
+        $instance->setViewHelperNode($node);
         foreach ($expectedMethods as $expectedMethod) {
             $instance->expects($this->once())->method($expectedMethod)->willReturn(true);
         }
@@ -391,7 +395,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
     public function testRenderThenChildDisablesCacheInFrontendContext()
     {
         $GLOBALS['TSFE'] = (object) ['no_cache' => 0];
+        $node = $this->getMockBuilder(ViewHelperNode::class)->setMethods(['getChildNodes'])->disableOriginalConstructor()->getMock();
+        $node->expects($this->any())->method('getChildNodes')->willReturn([]);
         $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['isFrontendContext', 'renderChildren'])->getMockForAbstractClass();
+        $instance->setViewHelperNode($node);
         $instance->expects($this->once())->method('renderChildren')->willReturn('test');
         $instance->expects($this->once())->method('isFrontendContext')->willReturn(true);
         $this->callInaccessibleMethod($instance, 'renderThenChild');

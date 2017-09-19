@@ -163,10 +163,15 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
         $instance->setRenderingContext($this->renderingContext);
         $instance->setViewHelperNode($node);
         $instance->setArguments($arguments);
-        if ($childNode && method_exists($instance, 'setChildNodes')) {
-            $node->addChildNode($childNode);
-            $instance->setChildNodes([$childNode]);
+        if ($childNode) {
+            $node->expects($this->any())->method('getChildNodes')->willReturn([$childNode]);
+            if (method_exists($instance, 'setChildNodes')) {
+                $instance->setChildNodes([$childNode]);
+            }
+        } else {
+            $node->expects($this->any())->method('getChildNodes')->willReturn([]);
         }
+
         if (method_exists($instance, 'injectReflectionService')) {
             $instance->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
@@ -246,19 +251,13 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
     protected function createViewHelperNode($instance, array $arguments)
     {
         if (!$this->usesLegacyFluidVersion()) {
-            $className = get_class($instance);
-            $cutoff = strpos($className, '\\ViewHelpers\\');
-            $viewHelperName = substr($className, $cutoff + 13, -10);
-            $resolver = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver::class)
-                ->setMethods(['getUninitializedViewHelper'])
-                ->getMock();
-            $this->renderingContext->setViewHelperResolver($resolver);
             $node = $this->getMockBuilder(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class)
+                ->setMethods(['getChildNodes', 'getUninitializedViewHelper'])
                 ->disableOriginalConstructor()
                 ->getMock();
         } else {
             $node = $this->getMockBuilder(ViewHelperNode::class)
-                ->setMethods(['getUninitializedViewHelper'])
+                ->setMethods(['getChildNodes', 'getUninitializedViewHelper'])
                 ->setConstructorArgs([$instance, $arguments])
                 ->getMock();
         }
