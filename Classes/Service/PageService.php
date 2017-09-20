@@ -48,22 +48,28 @@ class PageService implements SingletonInterface
 
     /**
      * @param integer $pageUid
-     * @param array $excludePages
-     * @param boolean $includeNotInMenu
-     * @param boolean $includeMenuSeparator
-     * @param boolean $disableGroupAccessCheck
+     * @param array $options
      *
      * @return array
      */
-    public function getMenu(
-        $pageUid,
-        array $excludePages = [],
-        $includeNotInMenu = false,
-        $includeMenuSeparator = false,
-        $disableGroupAccessCheck = false
-    ) {
+    public function getMenu($pageUid, array $options = []) {
+        $excludePages = isset($options['excludePages']) ?
+            $options['excludePages'] : [];
+        $includeNotInMenu = isset($options['includeNotInMenu']) ?
+            $options['includeNotInMenu'] : false;
+        $includeMenuSeparator = isset($options['includeMenuSeparator']) ?
+            $options['includeMenuSeparator'] : false;
+        $disableGroupAccessCheck = isset($options['disableGroupAccessCheck']) ?
+            $options['disableGroupAccessCheck'] : false;
+        $excludeSubpageTypes = isset($options['excludeSubpageTypes']) ?
+            $options['excludeSubpageTypes'] : [ PageRepository::DOKTYPE_SYSFOLDER ];
         $pageRepository = $this->getPageRepository();
-        $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
+        $pageConstraints = $this->getPageConstraints(
+            $excludePages,
+            $excludeSubpageTypes,
+            $includeNotInMenu,
+            $includeMenuSeparator
+        );
         $cacheKey = md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
         if (false === isset(static::$cachedMenus[$cacheKey])) {
             if (true === (boolean) $disableGroupAccessCheck) {
@@ -124,20 +130,25 @@ class PageService implements SingletonInterface
 
     /**
      * @param array $excludePages
+     * @param array $excludeSubpageTypes
      * @param boolean $includeNotInMenu
      * @param boolean $includeMenuSeparator
-     *
      * @return string
      */
     protected function getPageConstraints(
         array $excludePages = [],
+        array $excludeSubpageTypes = [],
         $includeNotInMenu = false,
         $includeMenuSeparator = false
     ) {
         $constraints = [];
 
         $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' .
-            PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
+            PageRepository::DOKTYPE_RECYCLER . ')';
+
+        if (0 < count($excludeSubpageTypes)) {
+            $constraints[] = 'doktype NOT IN (' . implode(', ', $excludeSubpageTypes) . ')';
+        }
 
         if ($includeNotInMenu === false) {
             $constraints[] = 'nav_hide = 0';
