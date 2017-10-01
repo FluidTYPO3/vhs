@@ -136,6 +136,16 @@ class Asset implements AssetInterface
     /**
      * @var boolean
      */
+    protected $async = false;
+
+    /**
+     * @var boolean
+     */
+    protected $defer = false;
+
+    /**
+     * @var boolean
+     */
     protected $rewrite = true;
 
     /**
@@ -362,6 +372,42 @@ class Asset implements AssetInterface
     public function getStandalone()
     {
         return $this->standalone;
+    }
+
+    /**
+     * @param boolean $async
+     * @return Asset
+     */
+    public function setAsync($async)
+    {
+        $this->async = $async;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAsync()
+    {
+        return $this->async;
+    }
+
+    /**
+     * @param boolean $defer
+     * @return Asset
+     */
+    public function setDefer($defer)
+    {
+        $this->defer = $defer;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDefer()
+    {
+        return $this->defer;
     }
 
     /**

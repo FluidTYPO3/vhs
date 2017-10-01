@@ -178,6 +178,16 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
             'If TRUE, excludes this Asset from any concatenation which may be applied'
         );
         $this->registerArgument(
+            'async',
+            'boolean',
+            'If TRUE, adds "async" attribute to script tag (only works when standalone is set and type is js)'
+        );
+        $this->registerArgument(
+            'defer',
+            'boolean',
+            'If TRUE, adds "defer" attribute to script tag (only works when standalone is set and type is js)'
+        );
+        $this->registerArgument(
             'rewrite',
             'boolean',
             'If FALSE, this Asset will be included as is without any processing of contained urls',
