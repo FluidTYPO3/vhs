@@ -118,7 +118,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
 
         $fileReferences = [];
         if (empty($GLOBALS['TSFE']->sys_page) === false) {
-            $fileReferences = $this->getFileReferences($table, $this->getField(), $sqlRecordUid);
+            $fileReferences = $GLOBALS['TSFE']->sys_page->getFileReferences($table, $this->getField(), $record);
         } else {
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $versionWhere = 'AND sys_file_reference.deleted=0 AND (sys_file_reference.t3ver_wsid=0 OR ' .
