@@ -10,12 +10,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * If content is empty use alternative text (can also be LLL:labelname shortcut or LLL:EXT: file paths).
  */
 class OrViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * @var boolean
      */
@@ -33,44 +37,42 @@ class OrViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
+        $this->registerArgument('content', 'mixed', 'Input to either use, if not empty');
         $this->registerArgument('alternative', 'mixed', 'Alternative if content is empty, can use LLL: shortcut');
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCase extension name without vendor prefix');
     }
 
     /**
-     * @param $content string
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render($content = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (null === $content) {
-            $content = $this->renderChildren();
-        }
-        if (true === empty($content)) {
-            $content = $this->getAlternativeValue();
-        }
+        $content = $renderChildrenClosure() ?: static::getAlternativeValue($arguments, $renderingContext);
         return $content;
     }
 
     /**
      * @return mixed
      */
-    protected function getAlternativeValue()
+    protected static function getAlternativeValue(array $arguments, RenderingContextInterface $renderingContext)
     {
-        $alternative = $this->arguments['alternative'];
-        $arguments = (array) $this->arguments['arguments'];
+        $alternative = $arguments['alternative'];
+        $arguments = (array) $arguments['arguments'];
         if (0 === count($arguments)) {
             $arguments = null;
         }
         if (0 === strpos($alternative, 'LLL:EXT:')) {
             $alternative = LocalizationUtility::translate($alternative, null, $arguments);
         } elseif (0 === strpos($alternative, 'LLL:')) {
-            $extensionName = $this->arguments['extensionName'];
+            $extensionName = $arguments['extensionName'];
             if (null === $extensionName) {
-                $extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
+                $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
             }
-            $translated = LocalizationUtility::translate(substr($alternative, 4), $extensionName, $arguments);
+            $translated = LocalizationUtility::translate(substr($alternative, 4), $extensionName ?: 'core', $arguments);
             if (null !== $translated) {
                 $alternative = $translated;
             }
