@@ -158,6 +158,17 @@ class EliminateViewHelperTest extends AbstractViewHelperTest
     /**
      * @test
      */
+    public function removesMultibyteCharactersAsString()
+    {
+        $arguments = $this->arguments;
+        $arguments['characters'] = 'æ本';
+        $result = $this->executeViewHelperUsingTagContent('aäæå本bc', $arguments);
+        $this->assertSame('aäåbc', $result);
+    }
+
+    /**
+     * @test
+     */
     public function removesCharactersAsArray()
     {
         $arguments = $this->arguments;
