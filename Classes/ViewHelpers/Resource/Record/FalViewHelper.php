@@ -120,7 +120,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         if (empty($GLOBALS['TSFE']->sys_page) === false) {
             $fileReferences = $GLOBALS['TSFE']->sys_page->getFileReferences($table, $this->getField(), $record);
 
-            if ($fileReferences->count() == 0) {
+            if (count($fileReferences) === 0) {
                 $fileReferences = $this->fileRepository->findByRelation($table, $this->getField(), $sqlRecordUid);
             }
         } else {
