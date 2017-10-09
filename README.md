@@ -96,8 +96,8 @@ plugin.tx_vhs.settings.asset.ASSETNAME {
 	group = Text a-zA-Z0-9_ # Group name, default "fluid". By grouping Assets the settings used on the group will apply to Assets
 	debug = Integer 0/1 # If `1` enables debug output of each asset
 	standalone = Integer 0/1 # If `1` instructs VHS to process this Asset as standalone, excluding it from merging
-  async = Integer 0/1 # If 1, adds "async" attribute to script tag (only works when standalone is set and type is js)
-  defer = Integer 0/1 # If 1, adds "defer" attribute to script tag (only works when standalone is set and type is js)
+	async = Integer 0/1 # If 1, adds "async" attribute to script tag (only works when standalone is set and type is js)
+	defer = Integer 0/1 # If 1, adds "defer" attribute to script tag (only works when standalone is set and type is js)
 	movable = Integer 0/1 # If `0` prevents Assets from being included in the page footer. Used by style-type Assets. Default is `1` unless type is CSS which forces movable=0
 	trim = Integer 0/1 # If `1` enables trimming of whitespace from beginning and end of lines when merging Assets
 	namedChunks = Integer 0/1 # If `0` prevents Asset name from being inserted as comment above the Asset body in merged files
