@@ -366,7 +366,7 @@ class AssetService implements SingletonInterface
         if( 1 === count($assets) ) {
             $extractedAssetSettings = $this->extractAssetSettings($assets[array_keys($assets)[0]]);
             if( true === (boolean) $extractedAssetSettings['standalone'] ) {
-                $assetSettings = $assetSettings;
+                $assetSettings = $extractedAssetSettings;
             }
         }
 
