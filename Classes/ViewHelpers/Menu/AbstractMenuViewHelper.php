@@ -464,7 +464,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                     $pages[$index] = $targetPage;
                 }
                 if ($this->pageService->shouldUseShortcutUid($this->arguments)) {
-                    $page['uid'] = $targetPage['uid'];
+                    $page[$index]['uid'] = $targetPage['uid'];
                 }
             }
             if (true === $this->pageService->isActive($originalPageUid, $showAccessProtected)) {
