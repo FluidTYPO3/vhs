@@ -274,12 +274,12 @@ class AssetService implements SingletonInterface
                     }
                     if (true === empty($path)) {
                         $assetContent = $this->extractAssetContent($asset);
-                        array_push($chunks, $this->generateTagForAssetType($type, $assetContent, $assetSettings));
+                        array_push($chunks, $this->generateTagForAssetType($type, $assetContent, null, null, $assetSettings));
                     } else {
                         if (true === $external) {
                             array_push(
                                 $chunks,
-                                $this->generateTagForAssetType($type, null, $assetSettings, $path)
+                                $this->generateTagForAssetType($type, null, $path, null, $assetSettings)
                             );
                         } else {
                             if (true === $rewrite) {
@@ -291,7 +291,7 @@ class AssetService implements SingletonInterface
                                 $integrity = $this->getFileIntegrity($path);
                                 $path = mb_substr($path, mb_strlen(PATH_site));
                                 $path = $this->prefixPath($path);
-                                array_push($chunks, $this->generateTagForAssetType($type, null, $assetSettings, $path, $integrity));
+                                array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity, $assetSettings));
                             }
                         }
                     }
@@ -361,20 +361,28 @@ class AssetService implements SingletonInterface
         }
         $fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
         $integrity = $this->getFileIntegrity($fileAbsolutePathAndFilename);
-        $standaloneAssetSettings = 1 == count($assets) ? $this->extractAssetSettings($assets[array_keys($assets)[0]]) : null;
-        return $this->generateTagForAssetType($type, null, $standaloneAssetSettings, $fileRelativePathAndFilename, $integrity);
+
+        $assetSettings = null;
+        if( 1 === count($assets) ) {
+            $extractedAssetSettings = $this->extractAssetSettings($assets[array_keys($assets)[0]]);
+            if( true === (boolean) $extractedAssetSettings['standalone'] ) {
+                $assetSettings = $assetSettings;
+            }
+        }
+
+        return $this->generateTagForAssetType($type, null, $fileRelativePathAndFilename, $integrity, $assetSettings);
     }
 
     /**
      * @param string $type
      * @param string $content
-     * @param array  $standaloneAssetSettings
      * @param string $file
      * @param string $integrity
+     * @param array $standaloneAssetSettings
      * @throws \RuntimeException
      * @return string
      */
-    protected function generateTagForAssetType($type, $content, $standaloneAssetSettings = null, $file = null, $integrity = null)
+    protected function generateTagForAssetType($type, $content, $file = null, $integrity = null, $standaloneAssetSettings = null)
     {
         /** @var TagBuilder $tagBuilder */
         $tagBuilder = $this->objectManager->get(TagBuilder::class);
