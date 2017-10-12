@@ -378,11 +378,11 @@ class AssetService implements SingletonInterface
      * @param string $content
      * @param string $file
      * @param string $integrity
-     * @param array $standaloneAssetSettings
+     * @param array|null $standaloneAssetSettings
      * @throws \RuntimeException
      * @return string
      */
-    protected function generateTagForAssetType($type, $content, $file = null, $integrity = null, $standaloneAssetSettings = null)
+    protected function generateTagForAssetType($type, $content, $file = null, $integrity = null, array $standaloneAssetSettings = null)
     {
         /** @var TagBuilder $tagBuilder */
         $tagBuilder = $this->objectManager->get(TagBuilder::class);
