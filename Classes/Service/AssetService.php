@@ -363,7 +363,7 @@ class AssetService implements SingletonInterface
         $integrity = $this->getFileIntegrity($fileAbsolutePathAndFilename);
 
         $assetSettings = null;
-        if (($assets) === 1) {
+        if (count($assets) === 1) {
             $extractedAssetSettings = $this->extractAssetSettings($assets[array_keys($assets)[0]]);
             if ($extractedAssetSettings['standalone']) {
                 $assetSettings = $extractedAssetSettings;
