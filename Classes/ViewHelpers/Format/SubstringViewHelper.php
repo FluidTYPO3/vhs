@@ -14,6 +14,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 
 /**
  * Gets a substring from a string or string-compatible value.
+ *
+ * Also see the `<f:format.crop>` view helper.
  */
 class SubstringViewHelper extends AbstractViewHelper
 {
