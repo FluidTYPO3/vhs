@@ -243,9 +243,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             ->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
             ->build();
         $this->tag->addAttribute('href', $uri);
-        $strClass = trim($this->arguments['class'] . ' ' . $additionalCssClasses);
-        if (!empty($strClass)) {
-            $this->tag->addAttribute('class', $strClass);
+        $classes = trim($this->arguments['class'] . ' ' . $additionalCssClasses);
+        if (!empty($classes)) {
+            $this->tag->addAttribute('class', $classes);
         } else {
             $this->tag->removeAttribute('class');
         }
