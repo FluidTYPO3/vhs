@@ -36,12 +36,16 @@ class ScriptViewHelper extends AbstractAssetViewHelper
         $this->registerArgument(
             'async',
             'boolean',
-            'If TRUE, adds "async" attribute to script tag (only works when standalone is set)'
+            'If TRUE, adds "async" attribute to script tag (only works when standalone is set)',
+            false,
+            false
         );
         $this->registerArgument(
             'defer',
             'boolean',
-            'If TRUE, adds "defer" attribute to script tag (only works when standalone is set)'
+            'If TRUE, adds "defer" attribute to script tag (only works when standalone is set)',
+            false,
+            false
         );
     }
 }
