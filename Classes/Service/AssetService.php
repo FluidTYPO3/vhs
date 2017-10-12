@@ -363,9 +363,9 @@ class AssetService implements SingletonInterface
         $integrity = $this->getFileIntegrity($fileAbsolutePathAndFilename);
 
         $assetSettings = null;
-        if(1 === count($assets)) {
+        if (($assets) === 1) {
             $extractedAssetSettings = $this->extractAssetSettings($assets[array_keys($assets)[0]]);
-            if(true === (boolean) $extractedAssetSettings['standalone']) {
+            if ($extractedAssetSettings['standalone']) {
                 $assetSettings = $extractedAssetSettings;
             }
         }
@@ -405,7 +405,7 @@ class AssetService implements SingletonInterface
                     }
                     $tagBuilder->addAttribute('integrity', $integrity);
                 }
-                if (null !== $standaloneAssetSettings) {
+                if ($standaloneAssetSettings) {
                     // using async and defer simultaneously does not make sense technically, but do not enforce
                     if ($standaloneAssetSettings['async']) {
                         $tagBuilder->addAttribute('async', 'async');
