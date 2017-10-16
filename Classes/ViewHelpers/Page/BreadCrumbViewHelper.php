@@ -59,12 +59,13 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
         $showHidden = (boolean) $this->arguments['showHiddenInMenu'];
         foreach ($rawRootLineData as $record) {
             $isHidden = (boolean) $record['nav_hide'];
-            $isAllowedDoktype = in_array((int) $record['doktype'], [
-                PageRepository::DOKTYPE_DEFAULT,
-                PageRepository::DOKTYPE_LINK,
-                PageRepository::DOKTYPE_SHORTCUT,
-                PageRepository::DOKTYPE_MOUNTPOINT
-            ]);
+
+            if (true === (boolean) $this->arguments['includeSpacers']) {
+                $isAllowedDoktype = (int) $record['doktype'] <= PageRepository::DOKTYPE_SPACER;
+            } else {
+                $isAllowedDoktype = (int) $record['doktype'] < PageRepository::DOKTYPE_SPACER;
+            }
+
             if ((true === $showHidden && true === $isHidden || false === $isHidden) && true === $isAllowedDoktype) {
                 array_push($rootLineData, $record);
             }

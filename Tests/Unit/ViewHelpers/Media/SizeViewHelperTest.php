@@ -38,7 +38,9 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     public function returnsZeroForEmptyArguments()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
         $viewHelper->setArguments([]);
@@ -51,7 +53,9 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     public function returnsFileSizeAsInteger()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
         $viewHelper->setArguments([]);
@@ -64,7 +68,9 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     public function throwsExceptionWhenFileNotFound()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
         $viewHelper->setArguments([]);
@@ -78,7 +84,9 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        if (method_exists($viewHelper, 'injectReflectionService')) {
+            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
+        }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
         $viewHelper->setArguments([]);

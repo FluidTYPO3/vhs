@@ -49,6 +49,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerArgument(
             'tagName',
@@ -105,6 +106,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
         $this->registerArgument('configuration', 'array', 'Additional typoLink configuration', false, []);
         $this->registerArgument('excludeQueryVars', 'string', 'Comma-separate list of variables to exclude', false, '');
+        $this->registerArgument('languages', 'mixed', 'Array, CSV or Traversable containing UIDs of languages to render');
     }
 
     /**
@@ -119,15 +121,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $this->tagName = $this->arguments['tagName'];
-
-        // to set the tagName we should call initialize()
-        $this->initialize();
+        $this->tag->setTagName($this->tagName);
 
         $this->languageMenu = $this->parseLanguageMenu();
         $this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
         $content = $this->renderChildren();
         $this->templateVariableContainer->remove($this->arguments['as']);
-        if (0 === strlen(trim($content))) {
+        if (0 === mb_strlen(trim($content))) {
             $content = $this->autoRender();
         }
         return $content;
@@ -275,10 +275,16 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             'flag' => $this->arguments['defaultIsoFlag']
         ];
 
-        $select = 'uid, title, flag';
+        $select = 'uid,title,flag';
         $from = 'sys_language';
-        $where = '1=1' . $this->cObj->enableFields('sys_language');
-        $sysLanguage = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select, $from, $where);
+        $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
+        $limitLanguages = array_filter($limitLanguages);
+
+        if (!empty($limitLanguages)) {
+            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => -1, 'uidInList' => implode(',', $limitLanguages)]);
+        } else {
+            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => 'root']);
+        }
 
         foreach ($sysLanguage as $value) {
             $tempArray[$value['uid']] = [
@@ -290,7 +296,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         // reorders languageMenu
         if (false === empty($order)) {
             foreach ($order as $value) {
-                $languageMenu[$value] = $tempArray[$value];
+                if (isset($tempArray[$value])) {
+                    $languageMenu[$value] = $tempArray[$value];
+                }
             }
         } else {
             $languageMenu = $tempArray;
@@ -306,21 +314,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         // Select all pages_language_overlay records on the current page. Each represents a possibility for a language.
-        $pageArray = [];
         $table = 'pages_language_overlay';
-        $whereClause = 'pid=' . $this->getPageUid() . ' ';
-        $whereClause .= $GLOBALS['TSFE']->sys_page->enableFields($table);
-        $sysLang = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('DISTINCT sys_language_uid', $table, $whereClause);
-
-        if (false === empty($sysLang)) {
-            foreach ($sysLang as $val) {
-                $pageArray[$val['sys_language_uid']] = $val['sys_language_uid'];
-            }
-        }
+        $sysLang = $GLOBALS['TSFE']->cObj->getRecords($table, ['selectFields' => 'sys_language_uid', 'pidInList' => $this->getPageUid()]);
+        $languageUids = array_column($sysLang, 'sys_language_uid');
 
         foreach ($languageMenu as $key => $value) {
             $current = $GLOBALS['TSFE']->sys_language_uid === (integer) $key ? 1 : 0;
-            $inactive = $pageArray[$key] || (integer) $key === $this->defaultLangUid ? 0 : 1;
+            $inactive = in_array($key, $languageUids) || (integer) $key === $this->defaultLangUid ? 0 : 1;
             $url = $this->getLanguageUrl($key);
             if (true === empty($url)) {
                 $url = GeneralUtility::getIndpEnv('REQUEST_URI');

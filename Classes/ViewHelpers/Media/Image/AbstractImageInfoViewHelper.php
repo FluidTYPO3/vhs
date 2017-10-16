@@ -88,7 +88,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 
         if (is_object($src) && $src instanceof FileReference) {
             $src = $src->getUid();
-            $treatIdAsUid = true;
+            $treatIdAsUid = false;
             $treatIdAsReference = true;
         }
 

@@ -150,7 +150,6 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         foreach ($files as $file) {
             $imageInfo = $this->contentObject->getImgResource($file->getUid(), $setup);
 
-            $GLOBALS['TSFE']->lastImageInfo = $imageInfo;
             if (false === is_array($imageInfo)) {
                 throw new Exception(
                     'Could not get image resource for "' . htmlspecialchars($file->getCombinedIdentifier()) . '".',
@@ -158,18 +157,13 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
                 );
             }
 
-            if ((float) substr(TYPO3_version, 0, 3) < 7.1) {
-                $imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($imageInfo[3]);
-            } else {
-                $imageInfo[3] = GraphicalFunctions::pngToGifByImagemagick($imageInfo[3]);
-            }
-            $imageInfo[3] = GeneralUtility::png_to_gif_by_imagemagick($imageInfo[3]);
+            $GLOBALS['TSFE']->lastImageInfo = $imageInfo;
             $GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
 
             if (true === GeneralUtility::isValidUrl($imageInfo[3])) {
                 $imageSource = $imageInfo[3];
             } else {
-                $imageSource = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($imageInfo[3]);
+                $imageSource = $GLOBALS['TSFE']->absRefPrefix . str_replace('%2F', '/', rawurlencode($imageInfo[3]));
             }
 
             if (true === $onlyProperties) {

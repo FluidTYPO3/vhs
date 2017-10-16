@@ -90,6 +90,9 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         $parentUid = (integer) (null !== $this->arguments['pageUid'] ? $pageUid : $currentPage['pid']);
         $parentPage = $this->pageService->getPage($parentUid, $showAccessProtected);
         $menuData = $this->getMenu($parentUid);
+        if (empty($menuData)) {
+            return !empty($this->arguments['as']) ? $this->renderChildren() : '';
+        }
         $pageUids = array_keys($menuData);
         $uidCount = count($pageUids);
         $firstUid = $pageUids[0];

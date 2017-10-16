@@ -130,7 +130,7 @@ class EliminateViewHelper extends AbstractViewHelper
         if (true === is_array($characters)) {
             $subjects = $characters;
         } else {
-            $subjects = str_split($characters);
+            $subjects = preg_split('//u', $characters, null, PREG_SPLIT_NO_EMPTY);
         }
         foreach ($subjects as $subject) {
             if (true === $caseSensitive) {

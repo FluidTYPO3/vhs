@@ -45,8 +45,8 @@ class SubstringViewHelper extends AbstractViewHelper
         $start = (integer) $arguments['start'];
         $length = $arguments['length'];
         if (null !== $length) {
-            return substr($content, $start, $length);
+            return mb_substr($content, $start, $length);
         }
-        return substr($content, $start);
+        return mb_substr($content, $start);
     }
 }

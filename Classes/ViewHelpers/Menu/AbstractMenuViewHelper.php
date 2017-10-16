@@ -63,6 +63,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerPageRecordArguments();
         $this->registerArgument('tagName', 'string', 'Tag name to use for enclosing container', false, 'ul');
@@ -269,7 +270,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $this->unsetDeferredVariableStorage();
         } else {
             $content = $this->renderChildren();
-            if (0 < strlen(trim($content))) {
+            if (0 < mb_strlen(trim($content))) {
                 $output = $content;
             } elseif ((boolean) $this->arguments['hideIfEmpty'] === true) {
                 $output = '';
@@ -463,7 +464,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                     $pages[$index] = $targetPage;
                 }
                 if ($this->pageService->shouldUseShortcutUid($this->arguments)) {
-                    $page['uid'] = $targetPage['uid'];
+                    $page[$index]['uid'] = $targetPage['uid'];
                 }
             }
             if (true === $this->pageService->isActive($originalPageUid, $showAccessProtected)) {

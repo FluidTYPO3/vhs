@@ -59,21 +59,17 @@ class LipsumViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $lipsum = $arguments['lipsum'];
-        if (strlen($lipsum) === 0) {
+        if (mb_strlen($lipsum) === 0) {
             $lipsum = static::getDefaultLoremIpsum();
         }
-        if ((strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === strpos($lipsum, 'EXT:')) {
+        if ((mb_strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === mb_strpos($lipsum, 'EXT:')) {
             // argument is most likely a file reference.
             $sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
             if (file_exists($sourceFile)) {
                 $lipsum = file_get_contents($sourceFile);
             } else {
-                GeneralUtility::sysLog(
-                    'Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
-                    'The file was: ' . $sourceFile,
-                    'vhs',
-                    GeneralUtility::SYSLOG_SEVERITY_WARNING
-                );
+                return 'Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
+                    'The file was: ' . $sourceFile;
                 $lipsum = static::getDefaultLoremIpsum();
             }
         }

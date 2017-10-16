@@ -34,6 +34,8 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
         $this->registerArgument('videoId', 'string', 'Vimeo ID of the video to embed.', true);
         $this->registerArgument(
             'width',
@@ -49,7 +51,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
             false,
             360
         );
-        $this->registerArgument('title', 'boolean', 'Show the title on the video. Defaults to TRUE.', false, true);
+        $this->overrideArgument('title', 'boolean', 'Show the title on the video. Defaults to TRUE.', false, true);
         $this->registerArgument(
             'byline',
             'boolean',
