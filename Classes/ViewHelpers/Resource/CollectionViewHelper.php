@@ -38,13 +38,21 @@ class CollectionViewHelper extends AbstractResourceViewHelper
     }
 
     /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('uid', 'integer', 'UID of the collection to be rendered', true);
+    }
+
+    /**
      * Returns a specific collection referenced by uid.
      *
-     * @param integer $uid
      * @return mixed
      */
-    public function render($uid)
+    public function render()
     {
+        $uid = $this->arguments['uid'];
         if (null !== $uid) {
             /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
             $collection = $this->collectionRepository->findByUid($uid);

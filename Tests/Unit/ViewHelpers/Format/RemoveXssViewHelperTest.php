@@ -19,11 +19,9 @@ class RemoveXssViewHelperTest extends AbstractViewHelperTest
     /**
      * @return void
      */
-    public function testRender()
+    public function setUp()
     {
-        if ($this->usesLegacyFluidVersion()) {
-            $this->markTestSkipped('Test skipped, covers deprecated code');
-        }
+        $this->markTestSkipped('Test skipped, covers deprecated code');
         $this->assertEmpty($this->executeViewHelper());
     }
 }
