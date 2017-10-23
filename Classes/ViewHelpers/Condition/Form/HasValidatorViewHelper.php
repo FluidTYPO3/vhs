@@ -14,7 +14,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 
 /**
@@ -26,9 +25,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
  */
 class HasValidatorViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
-
     /**
      * @var string
      */
