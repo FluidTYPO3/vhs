@@ -15,6 +15,16 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class IssetViewHelperTest extends AbstractViewHelperTest
 {
+    /**
+     * @return void
+     */
+    public function setUp()
+    {
+        if (version_compare(TYPO3_version, '8.0', '<')) {
+            $this->markTestSkipped('Skipped, ViewHelper does not work on 7.6');
+        }
+        parent::setUp();
+    }
 
     /**
      * @test

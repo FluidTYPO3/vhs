@@ -76,7 +76,7 @@ trait SlideViewHelperTrait
             'from the parent pages below those. You can invert this behaviour (actual page elements at bottom) ' .
             'by setting this flag))',
             false,
-            0
+            false
         );
     }
 
@@ -115,7 +115,7 @@ trait SlideViewHelperTrait
         $slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
         $slideCollect = (integer) $this->arguments['slideCollect'];
 
-        if (0 < $slideCollect) {
+        if ($slideCollect && !$slide) {
             $slide = $slideCollect;
         }
 
@@ -128,13 +128,12 @@ trait SlideViewHelperTrait
             if (true === $slideCollectReverse && 0 !== $slideCollect) {
                 $reverse = true;
             }
-            $rootLine = $this->getPageService()->getRootLine($pageUid, null, $reverse);
+            $rootLine = $this->getPageService()->getRootLine($pageUid, null);
             if (-1 !== $slide) {
-                if (true === $reverse) {
-                    $rootLine = array_slice($rootLine, - $slide);
-                } else {
-                    $rootLine = array_slice($rootLine, 0, $slide);
-                }
+                $rootLine = array_slice($rootLine, 0, $slide);
+            }
+            if ($reverse) {
+                $rootLine = array_reverse($rootLine);
             }
             foreach ($rootLine as $page) {
                 $storagePageUids[] = (integer) $page['uid'];

@@ -156,7 +156,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         foreach ($fileReferences as $file) {
             // Exclude workspace deleted files references
             if ($file->getProperty('t3ver_state') !== VersionState::DELETE_PLACEHOLDER) {
-                $resources[] = $this->getResource($file);
+                try {
+                    $resources[] = $this->getResource($file);
+                } catch (\InvalidArgumentException $error) {
+                    // Pokemon-style, catch-all and suppress. This exception type is thrown if a file gets removed.
+                }
             }
         }
         return $resources;

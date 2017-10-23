@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Placeholder Image ViewHelper
@@ -17,7 +18,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class ImageViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * @var string
      */
@@ -32,6 +32,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
+        $this->registerArgument('text', 'string', 'Text to render as image');
         $this->registerArgument('width', 'integer', 'Width of rendered placeholder image', false, 640);
         $this->registerArgument('height', 'integer', 'Height of rendered placeholder image', false, false);
         $this->registerArgument('backgroundColor', 'string', 'Background color', false, '333333');
@@ -39,11 +40,11 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @param string $text
      * @return string
      */
-    public function render($text = null)
+    public function render()
     {
+        $text = $this->arguments['text'];
         if (null === $text) {
             $text = $this->renderChildren();
         }
