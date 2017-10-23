@@ -254,7 +254,10 @@ class Asset implements AssetInterface
     {
         $name = $this->getName();
         if (true === empty($name)) {
-            $name = md5(spl_object_hash($this));
+            $name = md5($this->standalone . '//' . $this->type . '//' . $this->path . '//' . $this->content);
+            if ($this->fluid) {
+                $name .= '_' . md5(serialize($this->variables));
+            }
         }
         if (false === isset($GLOBALS['VhsAssets']) || false === is_array($GLOBALS['VhsAssets'])) {
             $GLOBALS['VhsAssets'] = [];
