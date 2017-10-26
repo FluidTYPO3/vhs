@@ -36,11 +36,12 @@ class UncacheTemplateViewTest extends AbstractTestCase
      */
     public function callUserFunctionReturnsCallsExpectedMethodSequence()
     {
-        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['prepareContextsForUncachedRendering', 'renderPartialUncached'])->getMock();
+        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['prepareContextsForUncachedRendering', 'setControllerContext', 'renderPartialUncached'])->getMock();
         $mock->injectObjectManager(GeneralUtility::makeInstance(ObjectManager::class));
         $context = new ControllerContext();
         $configuration = ['partial' => 'dummy', 'section' => 'dummy', 'controllerContext' => $context];
         $mock->expects($this->once())->method('prepareContextsForUncachedRendering');
+        $mock->expects($this->once())->method('setControllerContext');
         $mock->expects($this->once())->method('renderPartialUncached');
         $mock->callUserFunction('', $configuration, '');
     }

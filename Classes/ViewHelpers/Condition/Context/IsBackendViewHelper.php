@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Is context Backend?
@@ -35,9 +34,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class IsBackendViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
-
     /**
      * @param array $arguments
      * @return bool

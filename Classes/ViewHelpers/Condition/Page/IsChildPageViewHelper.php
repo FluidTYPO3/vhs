@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Page is child page
@@ -22,9 +21,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class IsChildPageViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
-
     /**
      * Initialize arguments
      */

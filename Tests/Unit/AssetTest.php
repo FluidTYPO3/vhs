@@ -210,9 +210,12 @@ class AssetTest extends AbstractTestCase
                 continue;
             }
             $propertyValue = ObjectAccess::getProperty($asset, $propertyName);
-            /** @var \TYPO3\CMS\Extbase\Reflection\PropertyReflection $propertyReflection */
-            $propertyReflection = $objectManager->get(PropertyReflection::class, Asset::class, $propertyName);
-            $expectedDataType = array_pop($propertyReflection->getTagValues('var'));
+            /** @var \ReflectionProperty $propertyReflection */
+            $propertyReflection = $objectManager->get(\ReflectionProperty::class, Asset::class, $propertyName);
+            $docComment = $propertyReflection->getDocComment();
+            $matches = [];
+            preg_match('/@var ([a-z\\\\0-9_]+)/i', $docComment, $matches);
+            $expectedDataType = $matches[1];
             $constraint = new \PHPUnit_Framework_Constraint_IsType($expectedDataType);
             $this->assertThat($propertyValue, $constraint);
         }

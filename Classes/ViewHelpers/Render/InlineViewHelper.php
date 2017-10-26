@@ -39,7 +39,6 @@ class InlineViewHelper extends AbstractRenderViewHelper implements CompilableInt
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('content', 'string', 'Template code to render as Fluid (usually from a variable)');
         $this->registerArgument(
             'namespaces',
@@ -48,6 +47,7 @@ class InlineViewHelper extends AbstractRenderViewHelper implements CompilableInt
             false,
             []
         );
+        parent::initializeArguments();
     }
 
     public static function renderStatic(

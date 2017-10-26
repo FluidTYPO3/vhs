@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Type;
 
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Value is a query result
@@ -20,9 +19,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class IsQueryResultViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
-
     /**
      * Initialize arguments
      */

@@ -105,6 +105,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         $databaseConnection = $this->getDatabaseConnection();
         if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
             $sqlRecordUid = $record['t3ver_oid'];
+        } elseif (isset($record['_LOCALIZED_UID'])) {
+            $sqlRecordUid = $record['_LOCALIZED_UID'];
         } else {
             $sqlRecordUid = $record[$this->idField];
         }
@@ -154,7 +156,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         foreach ($fileReferences as $file) {
             // Exclude workspace deleted files references
             if ($file->getProperty('t3ver_state') !== VersionState::DELETE_PLACEHOLDER) {
-                $resources[] = $this->getResource($file);
+                try {
+                    $resources[] = $this->getResource($file);
+                } catch (\InvalidArgumentException $error) {
+                    // Pokemon-style, catch-all and suppress. This exception type is thrown if a file gets removed.
+                }
             }
         }
         return $resources;

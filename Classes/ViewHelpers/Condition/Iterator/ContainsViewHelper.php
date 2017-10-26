@@ -14,7 +14,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * Condition ViewHelper. Renders the then-child if Iterator/array
@@ -26,9 +25,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class ContainsViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
-
     /**
      * Initialize arguments
      */
