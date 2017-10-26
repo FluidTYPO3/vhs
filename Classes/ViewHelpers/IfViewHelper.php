@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * If (condition) ViewHelper supporting a stack of conditions
@@ -21,9 +20,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class IfViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
-
     const OPERATOR_IS_EQUAL = '==';
     const OPERATOR_IS_NOT_EQUAL = '!=';
     const OPERATOR_IS_GREATER_OR_EQUAL = '>=';

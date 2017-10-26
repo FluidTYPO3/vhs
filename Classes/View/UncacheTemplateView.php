@@ -84,6 +84,7 @@ class UncacheTemplateView extends TemplateView
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->objectManager->get(RenderingContext::class);
         $this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
+        $this->setControllerContext($controllerContext);
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
 
