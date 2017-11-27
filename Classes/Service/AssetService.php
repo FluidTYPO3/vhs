@@ -744,7 +744,7 @@ class AssetService implements SingletonInterface
      */
     protected function writeFile($file, $contents)
     {
-        GeneralUtility::writeFile($file, $contents);
+        GeneralUtility::writeFile($file, $contents, true);
     }
 
     /**
