@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Extension\Path;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class RelativeViewHelperTest
@@ -23,7 +24,11 @@ class RelativeViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingArgument()
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs']);
-        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
+
+        $extPath = ExtensionManagementUtility::extPath('vhs');
+        $extPath = PathUtility::stripPathSitePrefix($extPath);
+
+        $this->assertSame($extPath, $test);
     }
 
     /**
@@ -32,7 +37,11 @@ class RelativeViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingControllerContext()
     {
         $test = $this->executeViewHelper([], [], null, 'Vhs');
-        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs'), $test);
+
+        $extPath = ExtensionManagementUtility::extPath('vhs');
+        $extPath = PathUtility::stripPathSitePrefix($extPath);
+
+        $this->assertSame($extPath, $test);
     }
 
     /**
