@@ -31,7 +31,7 @@ class SiteRelativeViewHelper extends AbstractExtensionViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (true === version_compare('9.0', TYPO3_branch, '<=')) {
+        if (true === version_compare('9.0', TYPO3_branch, '>=')) {
             return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath(static::getExtensionKey($arguments, $renderingContext)));
         }
 
