@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -94,8 +96,14 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $request->setControllerName($controller);
         $request->setPluginName($pluginName);
         $request->setControllerExtensionName($extensionName);
-        if ($arguments !== null) {
-            $request->setArguments($arguments);
+
+        $extensionService = static::getObjectManager()->get(ExtensionService::class);
+        $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
+        $requestArguments = GeneralUtility::_GP($pluginNamespace) ?: [];
+        ArrayUtility::mergeRecursiveWithOverrule($requestArguments, $arguments ?: []);
+
+        if ($requestArguments !== null) {
+            $request->setArguments($requestArguments);
         }
         $request->setControllerVendorName($vendorName);
 
