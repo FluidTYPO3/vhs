@@ -59,6 +59,7 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $this->registerArgument('vendorName', 'string', 'Vendor name scope to use in request');
         $this->registerArgument('pluginName', 'string', 'Plugin name scope to use in request');
         $this->registerArgument('arguments', 'array', 'Arguments to use in request');
+        $this->registerArgument('fetchRequestArguments', 'bool', 'Whether the arguments should be fetched from the request (GET/POST)');
     }
 
     /**
@@ -78,7 +79,7 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $extensionName = $arguments['extensionName'];
         $pluginName = $arguments['pluginName'];
         $vendorName = $arguments['vendorName'];
-        $arguments = is_array($arguments['arguments']) ? $arguments['arguments'] : null;
+        $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
         $objectManager = static::getObjectManager();
         $contentObjectBackup = $configurationManager->getContentObject();
@@ -97,14 +98,20 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $request->setPluginName($pluginName);
         $request->setControllerExtensionName($extensionName);
 
-        $extensionService = static::getObjectManager()->get(ExtensionService::class);
-        $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
-        $requestArguments = GeneralUtility::_GP($pluginNamespace) ?: [];
-        ArrayUtility::mergeRecursiveWithOverrule($requestArguments, $arguments ?: []);
+        if ($arguments['fetchRequestArguments']) {
+            $extensionService = static::getObjectManager()->get(ExtensionService::class);
+            $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
 
-        if ($requestArguments !== null) {
+            $fetchedRequestArguments = GeneralUtility::_GP($pluginNamespace) ?: [];
+            ArrayUtility::mergeRecursiveWithOverrule($fetchedRequestArguments, $requestArguments ?: []);
+
+            $requestArguments = $fetchedRequestArguments;
+        }
+
+        if (!empty($requestArguments)) {
             $request->setArguments($requestArguments);
         }
+
         $request->setControllerVendorName($vendorName);
 
         try {
