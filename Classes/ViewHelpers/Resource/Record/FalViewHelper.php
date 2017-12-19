@@ -107,13 +107,21 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $sqlRecordUid = $record['t3ver_oid'];
         } elseif (isset($record['_LOCALIZED_UID'])) {
             $sqlRecordUid = $record['_LOCALIZED_UID'];
+        } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+            $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
         } else {
             $sqlRecordUid = $record[$this->idField];
         }
 
         $fileReferences = [];
         if (empty($GLOBALS['TSFE']->sys_page) === false) {
-            $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $sqlRecordUid);
+            if($GLOBALS['TSFE']->sys_language_uid == 0 && $this->getTable() == 'pages') {
+                $fileReferences = $this->getFileReferences('pages', $this->getField(), $sqlRecordUid);
+            } elseif ($GLOBALS['TSFE']->sys_language_uid > 0 && $this->getTable() == 'pages') {
+                $fileReferences = $this->getFileReferences('pages_language_overlay', $this->getField(), $sqlRecordUid);
+            } else {
+                $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $sqlRecordUid);
+            }
         } else {
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $versionWhere = 'AND sys_file_reference.deleted=0 AND (sys_file_reference.t3ver_wsid=0 OR ' .
