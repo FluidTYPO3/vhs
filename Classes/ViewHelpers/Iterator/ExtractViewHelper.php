@@ -169,6 +169,10 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
      */
     protected static function recursivelyExtractKey($iterator, $key)
     {
+        if (false === is_array($iterator) && false === $iterator instanceof \Traversable) {
+            throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1515498714);
+        }
+        
         $content = [];
 
         foreach ($iterator as $v) {

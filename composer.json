@@ -19,7 +19,7 @@
       "preferred-install": "dist"
     },
     "homepage": "https://fluidtypo3.org",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
             "FluidTYPO3\\Vhs\\": "Classes/"

@@ -96,6 +96,10 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $defaultImage = new TagBuilder('img');
         $defaultImage->addAttribute('src', $defaultSource);
         $defaultImage->addAttribute('alt', $this->arguments['alt']);
+        
+        if (false === empty($this->arguments['class'])) {
+            $defaultImage->addAttribute('class', $this->arguments['class']);
+        }
 
         if (false === empty($this->arguments['title'])) {
             $defaultImage->addAttribute('title', $this->arguments['title']);
@@ -103,9 +107,6 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $content .= $defaultImage->render();
 
         $this->tag->setContent($content);
-        if (false === empty($this->arguments['class'])) {
-            $this->tag->addAttribute('class', $this->arguments['class']);
-        }
         return $this->tag->render();
     }
 }
