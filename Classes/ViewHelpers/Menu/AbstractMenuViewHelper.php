@@ -475,12 +475,19 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                 $pages[$index]['current'] = true;
                 $class[] = $this->arguments['classCurrent'];
             }
-            if (0 < count($this->getMenu($originalPageUid))) {
-                $pages[$index]['hasSubPages'] = true;
-                //TODO: Remove deprecated argument in next major version
-                $class[] = $this->arguments[
-                    $this->hasArgument('classHasSubpages') ? 'classHasSubpages' : 'classHasSubPages'
-                ];
+            // simply check if current page uid can have sub-pages
+            $subMenuPages = $this->getMenu($originalPageUid);
+            if (0 < count($subMenuPages)) {
+                // make recursive call to check if all sub-pages are valid for current language (see above)
+                $parsedMenu = $this->parseMenu($subMenuPages);
+                if (0 < count($parsedMenu)) {
+                    $pages[$index]['hasSubPages'] = true;
+                    
+                    //TODO: Remove deprecated argument in next major version
+                    $class[] = $this->arguments[
+                        $this->hasArgument('classHasSubpages') ? 'classHasSubpages' : 'classHasSubPages'
+                    ];
+                }
             }
             if (1 === $count) {
                 $class[] = $this->arguments['classFirst'];
