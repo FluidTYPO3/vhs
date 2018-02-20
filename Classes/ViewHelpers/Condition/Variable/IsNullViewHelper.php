@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Variable;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
 
 /**
  * ### Condition: Value is NULL
@@ -19,9 +18,6 @@ use FluidTYPO3\Vhs\Traits\ConditionViewHelperTrait;
  */
 class IsNullViewHelper extends AbstractConditionViewHelper
 {
-
-    use ConditionViewHelperTrait;
-
     /**
      * Initialize arguments
      */

@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Resolve FAL relations and return file records.
@@ -56,6 +57,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     protected $fileRepository;
 
     /**
+     * @var \TYPO3\CMS\Frontend\Page\PageRepository
+     */
+    protected $pageRepository;
+
+    /**
      * @var boolean
      */
     protected $escapeOutput = false;
@@ -67,6 +73,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     {
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
     }
 
     /**
@@ -87,12 +94,29 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      *
      * @param string $table name of the table to get the file reference for
      * @param string $field name of the field referencing a file
-     * @param integer $uid uid of the related record
+     * @param array|integer $uidOrRecord Database row
      * @return array
      */
-    protected function getFileReferences($table, $field, $uid)
+    protected function getFileReferences($table, $field, $uidOrRecord)
     {
-        $fileObjects = $this->fileRepository->findByRelation($table, $field, $uid);
+        if (is_array($uidOrRecord)) {
+            $record = $uidOrRecord;
+        } else {
+            $record = $this->getRecord($uidOrRecord);
+        }
+
+        if ($table === 'pages') {
+            $fileObjects = $this->pageRepository->getFileReferences($table, $field, $record);
+        } else {
+            if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
+                $sqlRecordUid = $record['t3ver_oid'];
+            } elseif (isset($record['_LOCALIZED_UID'])) {
+                $sqlRecordUid = $record['_LOCALIZED_UID'];
+            } else {
+                $sqlRecordUid = $record[$this->idField];
+            }
+            $fileObjects = $this->fileRepository->findByRelation($table, $field, $sqlRecordUid);
+        }
         return $fileObjects;
     }
 
@@ -103,16 +127,17 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     public function getResources($record)
     {
         $databaseConnection = $this->getDatabaseConnection();
-        if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
-            $sqlRecordUid = $record['t3ver_oid'];
-        } else {
-            $sqlRecordUid = $record[$this->idField];
-        }
-
         $fileReferences = [];
         if (empty($GLOBALS['TSFE']->sys_page) === false) {
-            $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $sqlRecordUid);
+            $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $record);
         } else {
+            if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
+                $sqlRecordUid = $record['t3ver_oid'];
+            } elseif (isset($record['_LOCALIZED_UID'])) {
+                $sqlRecordUid = $record['_LOCALIZED_UID'];
+            } else {
+                $sqlRecordUid = $record[$this->idField];
+            }
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $versionWhere = 'AND sys_file_reference.deleted=0 AND (sys_file_reference.t3ver_wsid=0 OR ' .
                     'sys_file_reference.t3ver_wsid=' . $GLOBALS['BE_USER']->workspaceRec['uid'] .
@@ -154,7 +179,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         foreach ($fileReferences as $file) {
             // Exclude workspace deleted files references
             if ($file->getProperty('t3ver_state') !== VersionState::DELETE_PLACEHOLDER) {
-                $resources[] = $this->getResource($file);
+                try {
+                    $resources[] = $this->getResource($file);
+                } catch (\InvalidArgumentException $error) {
+                    // Pokemon-style, catch-all and suppress. This exception type is thrown if a file gets removed.
+                }
             }
         }
         return $resources;

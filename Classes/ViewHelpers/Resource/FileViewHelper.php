@@ -42,7 +42,7 @@ class FileViewHelper extends AbstractResourceViewHelper
      */
     public function render()
     {
-        $files = $this->getFiles($this->arguments['onlyProperties']);
+        $files = (array) $this->getFiles($this->arguments['onlyProperties']);
         if (1 === count($files)) {
             $files = array_shift($files);
         }

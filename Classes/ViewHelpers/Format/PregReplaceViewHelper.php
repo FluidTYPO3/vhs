@@ -14,7 +14,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * ### PregReplace regular expression ViewHeloer
+ * ### PregReplace regular expression ViewHelper
  *
  * Implementation of `preg_replace` for Fluid.
  */

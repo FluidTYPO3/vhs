@@ -315,7 +315,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
         // Select all pages_language_overlay records on the current page. Each represents a possibility for a language.
         $table = 'pages_language_overlay';
-        $sysLang = $GLOBALS['TSFE']->cObj->getRecords($table, ['selectFields' => 'sys_language_uid', 'pidInList' => $this->getPageUid()]);
+        $sysLang = $GLOBALS['TSFE']->cObj->getRecords($table, ['selectFields' => 'sys_language_uid', 'pidInList' => $this->getPageUid(), 'languageField' => 0]);
         $languageUids = array_column($sysLang, 'sys_language_uid');
 
         foreach ($languageMenu as $key => $value) {
