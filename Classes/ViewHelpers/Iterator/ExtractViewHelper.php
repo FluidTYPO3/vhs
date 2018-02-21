@@ -172,7 +172,7 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
         if (false === is_array($iterator) && false === $iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1515498714);
         }
-        
+
         $content = [];
 
         foreach ($iterator as $v) {
@@ -199,6 +199,10 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
      */
     protected static function flattenArray(array $content, $flattened = null)
     {
+        if (empty($content)) {
+            return $content;
+        }
+
         foreach ($content as $sub) {
             if (true === is_array($sub)) {
                 $flattened = static::flattenArray($sub, $flattened);
