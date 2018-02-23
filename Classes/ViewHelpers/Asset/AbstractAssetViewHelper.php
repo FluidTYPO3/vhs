@@ -265,7 +265,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function build()
     {
         if (false === isset($this->arguments['path']) || true === empty($this->arguments['path'])) {
-            return $this->getContent();
+            return $this->content;
         }
         if (true === isset($this->arguments['external']) && true === (boolean) $this->arguments['external']) {
             $path = $this->arguments['path'];
