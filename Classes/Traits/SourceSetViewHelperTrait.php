@@ -36,6 +36,7 @@ trait SourceSetViewHelperTrait
 
         $format = $this->arguments['format'];
         $quality = $this->arguments['quality'];
+        $crop = $this->arguments['crop'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
         if (true === $treatIdAsReference) {
             $src = $this->arguments['src'];
@@ -45,7 +46,7 @@ trait SourceSetViewHelperTrait
         $srcsetVariants = [];
 
         foreach ($srcsets as $key => $width) {
-            $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference);
+            $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference, null, $crop);
 
             $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
             $srcsetVariantSrc = static::preprocessSourceUri(GeneralUtility::rawUrlEncodeFP($srcsetVariantSrc), $this->arguments);
@@ -76,14 +77,16 @@ trait SourceSetViewHelperTrait
      * @param string $quality quality of the resulting copy
      * @param string $treatIdAsReference given src argument is a sys_file_reference record
      * @param array $params additional params for the image rendering
+     * @param string $crop image editor cropping configuration
      * @return string
      */
-    public function getImgResource($src, $width, $format, $quality, $treatIdAsReference, $params = null)
+    public function getImgResource($src, $width, $format, $quality, $treatIdAsReference, $params = null, $crop = null)
     {
 
         $setup = [
             'width' => $width,
-            'treatIdAsReference' => $treatIdAsReference
+            'treatIdAsReference' => $treatIdAsReference,
+            'crop' => $crop
         ];
         if (false === empty($format)) {
             $setup['ext'] = $format;
