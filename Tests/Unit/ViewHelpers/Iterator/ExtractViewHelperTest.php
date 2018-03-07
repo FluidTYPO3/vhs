@@ -26,34 +26,6 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
     protected $fixture;
 
     /**
-     * @return array
-     */
-    public function simpleStructures()
-    {
-        $structures = [
-            // structure, key, expected
-            'flat associative array' => [
-                ['myKey' => 'myValue'],
-                'myKey',
-                'myValue'
-            ],
-            'deeper associative array' => [
-                [
-                    'myFirstKey' => [
-                        'mySecondKey' => [
-                            'myThirdKey' => 'myValue'
-                        ]
-                    ]
-                ],
-                'myFirstKey.mySecondKey.myThirdKey',
-                'myValue'
-            ],
-        ];
-
-        return $structures;
-    }
-
-    /**
      * @return ObjectStorage
      */
     public function constructObjectStorageContainingFrontendUser()
@@ -88,6 +60,19 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
         $storage->attach($user2);
 
         return $storage;
+    }
+
+    /**
+     * @test
+     * @dataProvider nestedStructures
+     */
+    public function recursivelyExtractKey($structure, $key, $expected)
+    {
+        $recursive = true;
+        $this->assertEquals(
+            $expected,
+            $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => true, 'single' => false])
+        );
     }
 
     /**
@@ -163,22 +148,14 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
                     'Mary'
                 ]
             ],
+            'empty array' => [
+                [],
+                'qux',
+                [],
+            ],
         ];
 
         return $structures;
-    }
-
-    /**
-     * @test
-     * @dataProvider nestedStructures
-     */
-    public function recursivelyExtractKey($structure, $key, $expected)
-    {
-        $recursive = true;
-        $this->assertEquals(
-            $expected,
-            $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => true, 'single' => false])
-        );
     }
 
     /**
@@ -191,5 +168,38 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
             $expected,
             $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => false, 'single' => false])
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function simpleStructures()
+    {
+        $structures = [
+            // structure, key, expected
+            'flat associative array' => [
+                ['myKey' => 'myValue'],
+                'myKey',
+                'myValue'
+            ],
+            'deeper associative array' => [
+                [
+                    'myFirstKey' => [
+                        'mySecondKey' => [
+                            'myThirdKey' => 'myValue'
+                        ]
+                    ]
+                ],
+                'myFirstKey.mySecondKey.myThirdKey',
+                'myValue'
+            ],
+            'empty array' => [
+                [],
+                'qux',
+                null,
+            ],
+        ];
+
+        return $structures;
     }
 }
