@@ -25,8 +25,8 @@ class ReplaceViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('content', 'string', 'Content in which to perform replacement');
-        $this->registerArgument('substring', 'string', 'Substring to replace', true);
-        $this->registerArgument('replacement', 'string', 'Replacement to insert', false, '');
+        $this->registerArgument('substring', 'string', 'Substring to replace. Using constants is possible with "constant:NAMEOFCONSTANT" (for example: constant:LF" for linefeed)', true);
+        $this->registerArgument('replacement', 'string', 'Replacement to insert. Using constants is possible with "constant:NAMEOFCONSTANT" (for example: constant:LF" for linefeed)', false, '');
         $this->registerArgument('count', 'integer', 'Maximum number of times to perform replacement');
         $this->registerArgument('caseSensitive', 'boolean', 'If true, perform case-sensitive replacement', false, true);
     }
@@ -40,11 +40,34 @@ class ReplaceViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $content = $renderChildrenClosure();
-        $substring = $arguments['substring'];
-        $replacement = $arguments['replacement'];
+        $substring = static::resolveValue($arguments['substring']);
+        $replacement = static::resolveValue($arguments['replacement']);
         $count = (integer) $arguments['count'];
         $caseSensitive = (boolean) $arguments['caseSensitive'];
         $function = (true === $caseSensitive ? 'str_replace' : 'str_ireplace');
         return $function($substring, $replacement, $content, $count);
+    }
+
+    /**
+     * Resolve value (special handling for constants)
+     *
+     * @param string $source
+     * @return string
+     */
+    protected static function resolveValue($source)
+    {
+        $return = $source;
+        if (false !== mb_strpos($source, ':') && 1 < mb_strlen($source)) {
+            // glue contains a special type identifier, resolve the actual glue
+            list ($type, $value) = explode(':', $source);
+            switch ($type) {
+                case 'constant':
+                    $return = constant($value);
+                    break;
+                default:
+                    $return = $value;
+            }
+        }
+        return $return;
     }
 }
