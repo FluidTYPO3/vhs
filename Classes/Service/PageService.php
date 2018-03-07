@@ -72,7 +72,7 @@ class PageService implements SingletonInterface
 
             // evaluate menu pages and filter them by validation of current language uid
             $pages = $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints);
-            static::$cachedMenus[$cacheKey] = array_filter($pages, function($page){
+            static::$cachedMenus[$cacheKey] = array_filter($pages, function($page) {
                 return $this->hidePageForLanguageUid($page) === false;
             });
         }
