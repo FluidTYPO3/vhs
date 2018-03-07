@@ -69,12 +69,12 @@ class PageService implements SingletonInterface
             if (true === (boolean) $disableGroupAccessCheck) {
                 $pageRepository->where_groupAccess = '';
             }
-            static::$cachedMenus[$cacheKey] = $pageRepository->getMenu(
-                $pageUid,
-                '*',
-                'sorting',
-                $pageConstraints
-            );
+
+            // evaluate menu pages and filter them by validation of current language uid
+            $pages = $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints);
+            static::$cachedMenus[$cacheKey] = array_filter($pages, function($page){
+                return $this->hidePageForLanguageUid($page) === false;
+            });
         }
 
         return static::$cachedMenus[$cacheKey];

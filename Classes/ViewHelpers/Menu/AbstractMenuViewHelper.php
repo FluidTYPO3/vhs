@@ -441,9 +441,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $total = count($pages);
         $processedPages = [];
         foreach ($pages as $index => $page) {
-            if (true === $this->pageService->hidePageForLanguageUid($page)) {
-                continue;
-            }
             $count++;
             $class = [];
             $originalPageUid = $page['uid'];
