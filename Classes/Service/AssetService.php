@@ -326,7 +326,7 @@ class AssetService implements SingletonInterface
                 $assetName = md5($assetName);
             }
         }
-        $fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.' . $type;
+        $fileRelativePathAndFilename = $this->getTempPath() . 'vhs-assets-' . $assetName . '.' . $type;
         $fileAbsolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
         if (false === file_exists($fileAbsolutePathAndFilename)
             || 0 === filemtime($fileAbsolutePathAndFilename)
@@ -633,7 +633,7 @@ class AssetService implements SingletonInterface
                 $newPath = basename($path);
                 $extension = pathinfo($newPath, PATHINFO_EXTENSION);
                 $temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
-                $temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
+                $temporaryFile = constant('PATH_site') . $this->getTempPath() . $temporaryFileName;
                 $rawPath = GeneralUtility::getFileAbsFileName(
                     $originalDirectory . (empty($originalDirectory) ? '' : '/')
                 ) . $path;
@@ -747,7 +747,7 @@ class AssetService implements SingletonInterface
         if ('all' !== $parameters['cacheCmd']) {
             return;
         }
-        $assetCacheFiles = glob(GeneralUtility::getFileAbsFileName('typo3temp/vhs-assets-*'));
+        $assetCacheFiles = glob(GeneralUtility::getFileAbsFileName($this->getTempPath() . 'vhs-assets-*'));
         if (false === $assetCacheFiles) {
             return;
         }
@@ -796,7 +796,7 @@ class AssetService implements SingletonInterface
                     $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] - 1
                 ];
                 $integrityFile = sprintf(
-                    'typo3temp/vhs-assets-%s.%s',
+                    $this->getTempPath() . 'vhs-assets-%s.%s',
                     str_replace('vhs-assets-', '', pathinfo($file, PATHINFO_BASENAME)),
                     $integrityMethod
                 );
@@ -820,5 +820,21 @@ class AssetService implements SingletonInterface
             }
         }
         return '';
+    }
+
+    /**
+     * Returns the typo3temp path name.
+     *
+     * Since TYPO3 8.0 publicly accessible files should be written to typo3temp/assets/.
+     *
+     * @return string
+     */
+    private function getTempPath()
+    {
+        if (version_compare(TYPO3_version, 8.0, '>=')) {
+            return 'typo3temp/assets/';
+        } else {
+            return 'typo3temp/';
+        }
     }
 }
