@@ -87,7 +87,8 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         } else {
             $colorspace = 'RGB';
         }
-        $path = GeneralUtility::getFileAbsFileName('typo3temp/vhs-pdf-' . $filename . '-page' . $page . '.png');
+        $tempPath = (version_compare(TYPO3_version, 8.0, '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
+        $path = GeneralUtility::getFileAbsFileName($tempPath . 'vhs-pdf-' . $filename . '-page' . $page . '.png');
         if (false === file_exists($path) || true === $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
             if (0 < (integer) $density) {

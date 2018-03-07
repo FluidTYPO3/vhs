@@ -18,6 +18,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to access data of the current page record.
+ *
+ * Does not work in the TYPO3 backend.
  */
 class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
 {
