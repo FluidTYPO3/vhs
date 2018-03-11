@@ -441,9 +441,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $total = count($pages);
         $processedPages = [];
         foreach ($pages as $index => $page) {
-            if (true === $this->pageService->hidePageForLanguageUid($page)) {
-                continue;
-            }
             $count++;
             $class = [];
             $originalPageUid = $page['uid'];
@@ -464,7 +461,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                     $pages[$index] = $targetPage;
                 }
                 if ($this->pageService->shouldUseShortcutUid($this->arguments)) {
-                    $page[$index]['uid'] = $targetPage['uid'];
+                    $page['uid'] = $targetPage['uid'];
                 }
             }
             if (true === $this->pageService->isActive($originalPageUid, $showAccessProtected)) {
