@@ -277,12 +277,12 @@ class AssetService implements SingletonInterface
                     }
                     if (true === empty($path)) {
                         $assetContent = $this->extractAssetContent($asset);
-                        array_push($chunks, $this->generateTagForAssetType($type, $assetContent));
+                        array_push($chunks, $this->generateTagForAssetType($type, $assetContent, null, null, $assetSettings));
                     } else {
                         if (true === $external) {
                             array_push(
                                 $chunks,
-                                $this->generateTagForAssetType($type, null, $path)
+                                $this->generateTagForAssetType($type, null, $path, null, $assetSettings)
                             );
                         } else {
                             if (true === $rewrite) {
@@ -294,7 +294,7 @@ class AssetService implements SingletonInterface
                                 $integrity = $this->getFileIntegrity($path);
                                 $path = mb_substr($path, mb_strlen(PATH_site));
                                 $path = $this->prefixPath($path);
-                                array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity));
+                                array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity, $assetSettings));
                             }
                         }
                     }
@@ -326,7 +326,7 @@ class AssetService implements SingletonInterface
                 $assetName = md5($assetName);
             }
         }
-        $fileRelativePathAndFilename = 'typo3temp/vhs-assets-' . $assetName . '.' . $type;
+        $fileRelativePathAndFilename = $this->getTempPath() . 'vhs-assets-' . $assetName . '.' . $type;
         $fileAbsolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
         if (false === file_exists($fileAbsolutePathAndFilename)
             || 0 === filemtime($fileAbsolutePathAndFilename)
@@ -364,7 +364,16 @@ class AssetService implements SingletonInterface
         }
         $fileRelativePathAndFilename = $this->prefixPath($fileRelativePathAndFilename);
         $integrity = $this->getFileIntegrity($fileAbsolutePathAndFilename);
-        return $this->generateTagForAssetType($type, null, $fileRelativePathAndFilename, $integrity);
+
+        $assetSettings = null;
+        if (count($assets) === 1) {
+            $extractedAssetSettings = $this->extractAssetSettings($assets[array_keys($assets)[0]]);
+            if ($extractedAssetSettings['standalone']) {
+                $assetSettings = $extractedAssetSettings;
+            }
+        }
+
+        return $this->generateTagForAssetType($type, null, $fileRelativePathAndFilename, $integrity, $assetSettings);
     }
 
     /**
@@ -372,10 +381,11 @@ class AssetService implements SingletonInterface
      * @param string $content
      * @param string $file
      * @param string $integrity
+     * @param array|null $standaloneAssetSettings
      * @throws \RuntimeException
      * @return string
      */
-    protected function generateTagForAssetType($type, $content, $file = null, $integrity = null)
+    protected function generateTagForAssetType($type, $content, $file = null, $integrity = null, array $standaloneAssetSettings = null)
     {
         /** @var TagBuilder $tagBuilder */
         $tagBuilder = $this->objectManager->get(TagBuilder::class);
@@ -397,6 +407,15 @@ class AssetService implements SingletonInterface
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
                     $tagBuilder->addAttribute('integrity', $integrity);
+                }
+                if ($standaloneAssetSettings) {
+                    // using async and defer simultaneously does not make sense technically, but do not enforce
+                    if ($standaloneAssetSettings['async']) {
+                        $tagBuilder->addAttribute('async', 'async');
+                    }
+                    if ($standaloneAssetSettings['defer']) {
+                        $tagBuilder->addAttribute('defer', 'defer');
+                    }
                 }
                 break;
             case 'css':
@@ -614,7 +633,7 @@ class AssetService implements SingletonInterface
                 $newPath = basename($path);
                 $extension = pathinfo($newPath, PATHINFO_EXTENSION);
                 $temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
-                $temporaryFile = constant('PATH_site') . 'typo3temp/' . $temporaryFileName;
+                $temporaryFile = constant('PATH_site') . $this->getTempPath() . $temporaryFileName;
                 $rawPath = GeneralUtility::getFileAbsFileName(
                     $originalDirectory . (empty($originalDirectory) ? '' : '/')
                 ) . $path;
@@ -728,7 +747,7 @@ class AssetService implements SingletonInterface
         if ('all' !== $parameters['cacheCmd']) {
             return;
         }
-        $assetCacheFiles = glob(GeneralUtility::getFileAbsFileName('typo3temp/vhs-assets-*'));
+        $assetCacheFiles = glob(GeneralUtility::getFileAbsFileName($this->getTempPath() . 'vhs-assets-*'));
         if (false === $assetCacheFiles) {
             return;
         }
@@ -744,7 +763,7 @@ class AssetService implements SingletonInterface
      */
     protected function writeFile($file, $contents)
     {
-        GeneralUtility::writeFile($file, $contents);
+        GeneralUtility::writeFile($file, $contents, true);
     }
 
     /**
@@ -777,7 +796,7 @@ class AssetService implements SingletonInterface
                     $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] - 1
                 ];
                 $integrityFile = sprintf(
-                    'typo3temp/vhs-assets-%s.%s',
+                    $this->getTempPath() . 'vhs-assets-%s.%s',
                     str_replace('vhs-assets-', '', pathinfo($file, PATHINFO_BASENAME)),
                     $integrityMethod
                 );
@@ -801,5 +820,21 @@ class AssetService implements SingletonInterface
             }
         }
         return '';
+    }
+
+    /**
+     * Returns the typo3temp path name.
+     *
+     * Since TYPO3 8.0 publicly accessible files should be written to typo3temp/assets/.
+     *
+     * @return string
+     */
+    private function getTempPath()
+    {
+        if (version_compare(TYPO3_version, 8.0, '>=')) {
+            return 'typo3temp/assets/';
+        } else {
+            return 'typo3temp/';
+        }
     }
 }

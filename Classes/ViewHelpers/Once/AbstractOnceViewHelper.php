@@ -105,7 +105,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
 
     /**
      * @param array $arguments
-     * @retrun void
+     * @return void
      */
     protected static function storeIdentifier(array $arguments)
     {

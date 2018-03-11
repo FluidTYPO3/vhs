@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Extension\Path;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class ResourcesViewHelperTest
@@ -23,7 +24,9 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingArgument()
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs', 'path' => 'ext_icon.gif']);
-        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+        $extPath = ExtensionManagementUtility::extPath('vhs', 'Resources/Public/ext_icon.gif');
+        $extPath = PathUtility::stripPathSitePrefix($extPath);
+        $this->assertSame($extPath, $test);
     }
 
     /**
@@ -32,7 +35,9 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingControllerContext()
     {
         $test = $this->executeViewHelper(['path' => 'ext_icon.gif'], [], null, 'Vhs');
-        $this->assertSame(ExtensionManagementUtility::siteRelPath('vhs') . 'Resources/Public/ext_icon.gif', $test);
+        $extPath = ExtensionManagementUtility::extPath('vhs', 'Resources/Public/ext_icon.gif');
+        $extPath = PathUtility::stripPathSitePrefix($extPath);
+        $this->assertSame($extPath, $test);
     }
 
     /**
