@@ -5,20 +5,16 @@ sudo: false
 php:
   - "7.0"
 
-env: COVERAGE="YES" TYPO3_VERSION=">=7.6.13, <7.6.99"
-
 matrix:
   include:
     - php: "7.2"
       env: COVERAGE="NO" TYPO3_VERSION="dev-master"
     - php: "7.0"
-      env: COVERAGE="NO" TYPO3_VERSION=">=7.6.13, <7.6.99"
-    - php: "7.0"
       env: COVERAGE="NO" TYPO3_VERSION="^8.7"
     - php: "7.1"
       env: COVERAGE="NO" TYPO3_VERSION="^8.7"
     - php: "7.2"
-      env: COVERAGE="NO" TYPO3_VERSION="^8.7"
+      env: COVERAGE="YES" TYPO3_VERSION="^8.7"
   allow_failures:
     - env: COVERAGE="NO" TYPO3_VERSION="dev-master"
 
@@ -31,7 +27,11 @@ before_script:
   - export TYPO3_PATH_WEB=$PWD/build/web
 
 install:
-  - composer require --no-update "typo3/cms:$TYPO3_VERSION"
+  - composer require --no-update "typo3/cms-core:$TYPO3_VERSION"
+  - composer require --no-update "typo3/cms-extbase:$TYPO3_VERSION"
+  - composer require --no-update "typo3/cms-fluid:$TYPO3_VERSION"
+  - composer require --no-update "typo3/cms-backend:$TYPO3_VERSION"
+  - composer require --no-update "typo3/cms-frontend:$TYPO3_VERSION"
   - composer install --prefer-dist
 
 script: if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else ./vendor/bin/phpunit; fi
