@@ -230,7 +230,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
         $additionalCssClasses = implode(' ', $class);
 
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uri = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($this->arguments['pageType'])
