@@ -34,11 +34,11 @@
     },
     "require": {
         "php": ">=7.0.0",
-        "typo3/cms-core": "^8.7 || dev-master",
-        "typo3/cms-extbase": "^8.7 || dev-master",
-        "typo3/cms-fluid": "^8.7 || dev-master",
-        "typo3/cms-frontend": "^8.7 || dev-master",
-        "typo3/cms-backend": "^8.7 || dev-master"
+        "typo3/cms-core": "^8.7 || ^9 || dev-master",
+        "typo3/cms-extbase": "^8.7 || ^9 || dev-master",
+        "typo3/cms-fluid": "^8.7 || ^9 || dev-master",
+        "typo3/cms-frontend": "^8.7 || ^9 || dev-master",
+        "typo3/cms-backend": "^8.7 || ^9 || dev-master"
     },
     "replace": {
         "vhs": "self.version",
