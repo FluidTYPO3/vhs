@@ -24,7 +24,7 @@ class SiteRelativeViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingArgument()
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs']);
-        $this->assertSame(PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('vhs')), $test);
+        $this->assertSame(PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('vhs')), $test);
     }
 
     /**
@@ -33,7 +33,7 @@ class SiteRelativeViewHelperTest extends AbstractViewHelperTest
     public function rendersUsingControllerContext()
     {
         $test = $this->executeViewHelper([], [], null, 'Vhs');
-        $this->assertSame(PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('vhs')), $test);
+        $this->assertSame(PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('vhs')), $test);
     }
 
     /**

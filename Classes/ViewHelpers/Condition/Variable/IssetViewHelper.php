@@ -63,7 +63,7 @@ class IssetViewHelper extends AbstractConditionViewHelper
     public function render()
     {
         static::setStaticRenderingContext($this->renderingContext);
-        return parent::render();
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**
