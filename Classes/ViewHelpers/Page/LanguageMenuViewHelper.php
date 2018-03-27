@@ -100,8 +100,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             'string',
             'If used, stores the menu pages as an array in a variable named according to this value and renders ' .
             'the tag content - which means automatic rendering is disabled if this attribute is used',
-            false,
-            'languageMenu'
+            false
         );
         $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
         $this->registerArgument('configuration', 'array', 'Additional typoLink configuration', false, []);
@@ -124,13 +123,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->tag->setTagName($this->tagName);
 
         $this->languageMenu = $this->parseLanguageMenu();
-        $this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
-        $content = $this->renderChildren();
-        $this->templateVariableContainer->remove($this->arguments['as']);
-        if (0 === mb_strlen(trim($content))) {
-            $content = $this->autoRender();
+        if (null !== $this->arguments['as']) {
+            $this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
+            $content = $this->renderChildren();
+            $this->templateVariableContainer->remove($this->arguments['as']);
+            return $content;
         }
-        return $content;
+        return $this->autoRender();
     }
 
     /**
