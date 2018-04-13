@@ -34,5 +34,7 @@ class ImplodeViewHelper extends ExplodeViewHelper implements CompilableInterface
     {
         parent::initializeArguments();
         $this->overrideArgument('content', 'array', 'Array or array-convertible object to be imploded by glue');
+        // `implode()` doesn't have the `limit` argument!
+        unset($this->argumentDefinitions['limit']);
     }
 }
