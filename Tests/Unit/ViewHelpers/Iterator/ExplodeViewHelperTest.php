@@ -59,4 +59,14 @@ class ExplodeViewHelperTest extends AbstractViewHelperTest
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals(['1', '2', '3'], $result);
     }
+
+    /**
+     * @test
+     */
+    public function supportsLimitArgument()
+    {
+        $arguments = ['content' => '1;2;3', 'glue' => ';', 'limit' => '2'];
+        $result = $this->executeViewHelper($arguments);
+        $this->assertEquals(['1', '2;3'], $result);
+    }
 }
