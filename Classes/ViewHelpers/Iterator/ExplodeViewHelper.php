@@ -37,11 +37,6 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     protected $escapeOutput = false;
 
     /**
-     * @var string
-     */
-    protected static $method = 'explode';
-
-    /**
      * Initialize
      *
      * @return void
@@ -56,6 +51,15 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
             '(fx "constant:LF" for linefeed as glue)',
             false,
             ','
+        );
+        $this->registerArgument(
+            'limit',
+            'int',
+            'If limit is set and positive, the returned array will contain a maximum of limit elements with the last ' .
+            'element containing the rest of string. If the limit parameter is negative, all components except the ' .
+            'last-limit are returned. If the limit parameter is zero, then this is treated as 1.',
+            false,
+            PHP_INT_MAX
         );
         $this->registerAsArgument();
     }
@@ -73,7 +77,8 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     ) {
         $content = isset($arguments['content']) ? $arguments['content'] : $renderChildrenClosure();
         $glue = static::resolveGlue($arguments);
-        $output = call_user_func_array(static::$method, [$glue, $content]);
+        $limit = isset($arguments['limit']) ? $arguments['limit'] : PHP_INT_MAX;
+        $output = explode($glue, $content, $limit);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $arguments['as'],
