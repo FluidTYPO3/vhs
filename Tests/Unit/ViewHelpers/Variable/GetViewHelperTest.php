@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Class GetViewHelperTest
@@ -64,5 +65,13 @@ class GetViewHelperTest extends AbstractViewHelperTest
     {
         $user = new Foo();
         $this->assertEquals(null, $this->executeViewHelper(['name' => 'test.void'], ['test' => $user]));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsNullOnNonExistingObjectStorageProperty() {
+        $objectStorage = new ObjectStorage();
+        $this->assertNull($this->executeViewHelper(['name' => 'storage.15'], ['storage' => $objectStorage]));
     }
 }
