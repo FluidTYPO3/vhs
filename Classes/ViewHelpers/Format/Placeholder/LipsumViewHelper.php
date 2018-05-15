@@ -70,7 +70,6 @@ class LipsumViewHelper extends AbstractViewHelper
             } else {
                 return 'Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
                     'The file was: ' . $sourceFile;
-                $lipsum = static::getDefaultLoremIpsum();
             }
         }
         $lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
