@@ -49,8 +49,7 @@ class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
         $this->registerArgument(
             'glue',
             'string',
-            'String used as glue in the string to be exploded. Use glue value of "constant:NAMEOFCONSTANT" ' .
-            '(fx "constant:LF" for linefeed as glue)',
+            'String used as glue in the string to be exploded. To use a constant (like PHP_EOL) use v:const to read it.',
             false,
             ','
         );
@@ -69,7 +68,7 @@ class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
         RenderingContextInterface $renderingContext
     ) {
         $content = isset($arguments['content']) ? $arguments['content'] : $renderChildrenClosure();
-        $glue = static::resolveGlue($arguments);
+        $glue = $arguments['glue'];
         $output = implode($glue, $content);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
@@ -77,28 +76,5 @@ class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
             $renderingContext,
             $renderChildrenClosure
         );
-    }
-
-    /**
-     * Detects the proper glue string to use for implode/explode operation
-     *
-     * @param array $arguments
-     * @return string
-     */
-    protected static function resolveGlue(array $arguments)
-    {
-        $glue = $arguments['glue'];
-        if (false !== mb_strpos($glue, ':') && 1 < mb_strlen($glue)) {
-            // glue contains a special type identifier, resolve the actual glue
-            list ($type, $value) = explode(':', $glue);
-            switch ($type) {
-                case 'constant':
-                    $glue = constant($value);
-                    break;
-                default:
-                    $glue = $value;
-            }
-        }
-        return $glue;
     }
 }
