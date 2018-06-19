@@ -97,9 +97,6 @@ class EncodeViewHelper extends AbstractViewHelper
         $preventRecursion = (boolean) $arguments['preventRecursion'];
         $recursionMarker = $arguments['recursionMarker'];
         $dateTimeFormat = $arguments['dateTimeFormat'];
-        if (true === empty($value)) {
-            return '{}';
-        }
         static::$encounteredClasses = [];
         $json = static::encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat);
         return $json;
