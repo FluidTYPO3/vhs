@@ -100,14 +100,19 @@ class GetViewHelper extends AbstractViewHelper implements CompilableInterface
                         if (true === ctype_digit($segment)) {
                             $segment = intval($segment);
                             $index = 0;
+                            $found = false;
                                 // Note: this loop approach is not a stupid solution. If you doubt this,
                                 // attempt to feth a number at a numeric index from ObjectStorage ;)
                             foreach ($value as $possibleValue) {
                                 if ($index === $segment) {
                                     $value = $possibleValue;
+                                    $found = true;
                                     break;
                                 }
                                 ++ $index;
+                            }
+                            if (!$found) {
+                                return null;
                             }
                             continue;
                         }

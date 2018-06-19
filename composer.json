@@ -18,6 +18,8 @@
     "config": {
       "preferred-install": "dist"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "homepage": "https://fluidtypo3.org",
     "license": "GPL-2.0-or-later",
     "autoload": {
@@ -32,14 +34,19 @@
     },
     "require": {
         "php": ">=7.0.0",
-        "typo3/cms": ">=7.6.13, <=7.6.99|^8.4.1|dev-master"
+        "typo3/cms-core": "^8.7 || ^9 || dev-master",
+        "typo3/cms-extbase": "^8.7 || ^9 || dev-master",
+        "typo3/cms-fluid": "^8.7 || ^9 || dev-master",
+        "typo3/cms-frontend": "^8.7 || ^9 || dev-master",
+        "typo3/cms-backend": "^8.7 || ^9 || dev-master"
     },
     "replace": {
         "vhs": "self.version",
-        "typo3-ter/vhs": "self.version"
+        "typo3-ter/vhs": "self.version",
+        "typo3/cms-version": "*"
     },
     "require-dev": {
-        "fluidtypo3/development": "^3.0"
+        "fluidtypo3/development": "^4.0"
     },
     "suggest": {
         "ext-tidy": "Allows to make use of the tidy ViewHelper"

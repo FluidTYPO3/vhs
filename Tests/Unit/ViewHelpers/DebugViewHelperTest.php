@@ -25,8 +25,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
-
 /**
  * Class DebugViewHelperTest
  */

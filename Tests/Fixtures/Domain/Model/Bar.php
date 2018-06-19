@@ -28,6 +28,11 @@ class Bar extends AbstractEntity
     protected $foo;
 
     /**
+     * @var \FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo
+     */
+    protected $legacyFoo;
+
+    /**
      * @var ObjectStorage<\FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar>
      */
     protected $bars = [];
@@ -72,6 +77,22 @@ class Bar extends AbstractEntity
     public function setFoo(Foo $foo)
     {
         $this->foo = $foo;
+    }
+
+    /**
+     * @return Foo
+     */
+    public function getLegacyFoo()
+    {
+        return $this->legacyFoo;
+    }
+
+    /**
+     * @param Foo $legacyFoo
+     */
+    public function setLegacyFoo(LegacyFoo $legacyFoo)
+    {
+        $this->legacyFoo = $legacyFoo;
     }
 
     /**
