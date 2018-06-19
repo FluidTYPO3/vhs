@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
 use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
+use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
 
 /**
  * Renders an image tag for the given resource including all valid
