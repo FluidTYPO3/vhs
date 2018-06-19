@@ -10,7 +10,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Form;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Class IsRequiredViewHelperTest
@@ -18,46 +20,32 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 class IsRequiredViewHelperTest extends AbstractViewHelperTest
 {
 
-    public function testRenderThenWithSingleProperty()
+    protected function getInstanceOfFoo()
     {
-        $domainObject = new Foo();
-        $arguments = [
-            'property' => 'bar',
-            'object' => $domainObject,
-            'then' => 'then'
-        ];
-        $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
+        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+            return new Foo();
+        }
+        return new LegacyFoo();
+    }
 
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    protected function getNestedPathToFoo()
+    {
+        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+            return 'foo';
+        }
+        return 'legacyFoo';
     }
 
     public function testRenderElseWithSingleProperty()
     {
-        $domainObject = new Foo();
+        $domainObject = $this->getInstanceOfFoo();
         $arguments = [
-            'property' => 'foo',
+            'property' => $this->getNestedPathToFoo(),
             'object' => $domainObject,
             'else' => 'else'
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-    }
-
-    public function testRenderThenWithNestedSingleProperty()
-    {
-        $domainObject = new Bar();
-        $arguments = [
-            'property' => 'foo.bar',
-            'object' => $domainObject,
-            'then' => 'then'
-        ];
-        $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
 
         $staticResult = $this->executeViewHelperStatic($arguments);
         $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
@@ -66,8 +54,9 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
     public function testRenderElseWithNestedSingleProperty()
     {
         $domainObject = new Bar();
+        $prefix = $this->getNestedPathToFoo();
         $arguments = [
-            'property' => 'foo.foo',
+            'property' => $prefix . '.foo',
             'object' => $domainObject,
             'else' => 'else'
         ];
@@ -78,26 +67,12 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
         $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
-    public function testRenderThenWithNestedMultiProperty()
-    {
-        $domainObject = new Bar();
-        $arguments = [
-            'property' => 'bars.bar.foo.bar',
-            'object' => $domainObject,
-            'then' => 'then'
-        ];
-        $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-    }
-
     public function testRenderElseWithNestedMultiProperty()
     {
         $domainObject = new Bar();
+        $prefix = $this->getNestedPathToFoo();
         $arguments = [
-            'property' => 'bars.foo.foo',
+            'property' => 'bars.' . $prefix . '.foo',
             'object' => $domainObject,
             'else' => 'else'
         ];
