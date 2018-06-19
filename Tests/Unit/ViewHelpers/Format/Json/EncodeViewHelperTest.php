@@ -82,9 +82,49 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     /**
      * @test
      */
-    public function returnsEmptyJsonObjectForEmptyArguments()
+    public function returnsEmptyObjectOnTopLevel()
     {
-        $this->assertEquals('{}', $this->executeViewHelper([]));
+        $this->assertEquals('{}', $this->executeViewHelper(['value' => new \stdClass()]));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsEmptyArrayOnTopLevel()
+    {
+        $this->assertEquals('[]', $this->executeViewHelper(['value' => []]));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsFalseOnTopLevel()
+    {
+        $this->assertEquals('false', $this->executeViewHelper(['value' => false]));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsTrueOnTopLevel()
+    {
+        $this->assertEquals('true', $this->executeViewHelper(['value' => true]));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsNumberOnTopLevel()
+    {
+        $this->assertEquals('1.0', $this->executeViewHelper(['value' => 1.0]));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsNullOnTopLevel()
+    {
+        $this->assertEquals('null', $this->executeViewHelper(['value' => null]));
     }
 
     /**
