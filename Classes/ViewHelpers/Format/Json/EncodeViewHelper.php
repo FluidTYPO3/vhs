@@ -11,9 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -97,9 +97,6 @@ class EncodeViewHelper extends AbstractViewHelper
         $preventRecursion = (boolean) $arguments['preventRecursion'];
         $recursionMarker = $arguments['recursionMarker'];
         $dateTimeFormat = $arguments['dateTimeFormat'];
-        if (true === empty($value)) {
-            return '{}';
-        }
         static::$encounteredClasses = [];
         $json = static::encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat);
         return $json;

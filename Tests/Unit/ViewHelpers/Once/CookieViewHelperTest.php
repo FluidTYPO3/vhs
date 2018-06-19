@@ -21,6 +21,6 @@ class CookieViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertShouldSkip()
     {
-        $this->assertNull($this->executeViewHelper(['identifier' => 'test']));
+        $this->assertEmpty($this->executeViewHelper(['identifier' => 'test']));
     }
 }

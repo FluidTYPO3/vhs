@@ -8,22 +8,33 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Implode ViewHelper
  *
  * Implodes an array or array-convertible object by $glue.
  */
-class ImplodeViewHelper extends ExplodeViewHelper implements CompilableInterface
+class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-    use CompileWithContentArgumentAndRenderStatic;
+    use CompileWithRenderStatic;
+    use TemplateVariableViewHelperTrait;
+    use ArrayConsumingViewHelperTrait;
 
     /**
-     * @var string
+     * @var boolean
      */
-    protected static $method = 'implode';
+    protected $escapeChildren = false;
+
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
     /**
      * Initialize
@@ -33,6 +44,37 @@ class ImplodeViewHelper extends ExplodeViewHelper implements CompilableInterface
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->overrideArgument('content', 'array', 'Array or array-convertible object to be imploded by glue');
+
+        $this->registerArgument('content', 'array', 'Array or array-convertible object to be imploded by glue');
+        $this->registerArgument(
+            'glue',
+            'string',
+            'String used as glue in the string to be exploded. To use a constant (like PHP_EOL) use v:const to read it.',
+            false,
+            ','
+        );
+        $this->registerAsArgument();
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $content = !empty($arguments['as']) ? $arguments['content'] : ($arguments['content'] ?? $renderChildrenClosure());
+        $glue = $arguments['glue'];
+        $output = implode($glue, $content);
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            $output,
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 }

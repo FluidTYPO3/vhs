@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\ViewHelpers\Format\TidyViewHelper;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
