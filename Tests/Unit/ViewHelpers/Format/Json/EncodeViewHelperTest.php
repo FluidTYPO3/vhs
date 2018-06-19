@@ -9,7 +9,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
  */
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -17,6 +19,14 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class EncodeViewHelperTest extends AbstractViewHelperTest
 {
+
+    protected function getInstanceOfFoo()
+    {
+        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+            return new Foo();
+        }
+        return new LegacyFoo();
+    }
 
     /**
      * @test
@@ -35,7 +45,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     public function encodesRecursiveDomainObject()
     {
         /** @var Foo $object */
-        $object = $this->objectManager->get(Foo::class);
+        $object = $this->getInstanceOfFoo();
         $object->setFoo($object);
         $instance = $this->createInstance();
         $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null);

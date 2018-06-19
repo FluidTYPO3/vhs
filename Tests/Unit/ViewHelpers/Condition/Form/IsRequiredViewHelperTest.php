@@ -28,46 +28,24 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
         return new LegacyFoo();
     }
 
-    public function testRenderThenWithSingleProperty()
+    protected function getNestedPathToFoo()
     {
-        $domainObject = $this->getInstanceOfFoo();
-        $arguments = [
-            'property' => 'bar',
-            'object' => $domainObject,
-            'then' => 'then'
-        ];
-        $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+            return 'foo';
+        }
+        return 'legacyFoo';
     }
 
     public function testRenderElseWithSingleProperty()
     {
         $domainObject = $this->getInstanceOfFoo();
         $arguments = [
-            'property' => 'foo',
+            'property' => $this->getNestedPathToFoo(),
             'object' => $domainObject,
             'else' => 'else'
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-    }
-
-    public function testRenderThenWithNestedSingleProperty()
-    {
-        $domainObject = new Bar();
-        $arguments = [
-            'property' => 'foo.bar',
-            'object' => $domainObject,
-            'then' => 'then'
-        ];
-        $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
 
         $staticResult = $this->executeViewHelperStatic($arguments);
         $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
@@ -76,8 +54,9 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
     public function testRenderElseWithNestedSingleProperty()
     {
         $domainObject = new Bar();
+        $prefix = $this->getNestedPathToFoo();
         $arguments = [
-            'property' => 'foo.foo',
+            'property' => $prefix . '.foo',
             'object' => $domainObject,
             'else' => 'else'
         ];
@@ -88,26 +67,12 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
         $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
-    public function testRenderThenWithNestedMultiProperty()
-    {
-        $domainObject = new Bar();
-        $arguments = [
-            'property' => 'bars.bar.foo.bar',
-            'object' => $domainObject,
-            'then' => 'then'
-        ];
-        $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
-    }
-
     public function testRenderElseWithNestedMultiProperty()
     {
         $domainObject = new Bar();
+        $prefix = $this->getNestedPathToFoo();
         $arguments = [
-            'property' => 'bars.foo.foo',
+            'property' => 'bars.' . $prefix . '.foo',
             'object' => $domainObject,
             'else' => 'else'
         ];

@@ -22,7 +22,7 @@ class LegacyFoo extends Foo
     protected $bar;
 
     /**
-     * @var Foo
+     * @var LegacyFoo
      */
     protected $foo;
 
@@ -57,7 +57,7 @@ class LegacyFoo extends Foo
     }
 
     /**
-     * @param Foo $foo
+     * @param LegacyFoo $foo
      */
     public function setFoo($foo)
     {
@@ -65,7 +65,7 @@ class LegacyFoo extends Foo
     }
 
     /**
-     * @return Foo
+     * @return LegacyFoo
      */
     public function getFoo()
     {

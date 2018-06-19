@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * Class Foo
