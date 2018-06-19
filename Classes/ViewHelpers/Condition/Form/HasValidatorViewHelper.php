@@ -50,29 +50,15 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
         $this->registerArgument(
             'validatorName',
             'string',
-            'The class name of the Validator that indicates the property is required.'
+            'The name of the validator that must exist for the condition to be true.',
+            true
         );
         $this->registerArgument(
             'object',
             DomainObjectInterface::class,
-            'Optional object - if not specified, grabs the associated form object.'
+            'Optional object - if not specified, grabs the associated form object.',
+            true
         );
-    }
-
-    /**
-     * @param ViewHelperVariableContainer $viewHelperVariableContainer
-     * @param string $formClassName
-     * @return DomainObjectInterface|NULL
-     */
-    protected static function getFormObject($viewHelperVariableContainer, $formClassName = FormViewHelper::class)
-    {
-        if (true === $viewHelperVariableContainer->exists($formClassName, 'formObject')) {
-            return $viewHelperVariableContainer->get($formClassName, 'formObject');
-        }
-        if (self::ALTERNATE_FORM_VIEWHELPER_CLASSNAME !== $formClassName) {
-            return self::getFormObject($viewHelperVariableContainer, self::ALTERNATE_FORM_VIEWHELPER_CLASSNAME);
-        }
-        return null;
     }
 
     /**
@@ -90,9 +76,6 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
         $validatorName = isset($arguments['validatorName']) ? $arguments['validatorName'] : null;
         $object = isset($arguments['object']) ? $arguments['object'] : null;
 
-        if (null === $object) {
-            $object = static::getFormObject($renderingContext->getViewHelperVariableContainer());
-        }
         $className = get_class($object);
         if (false !== strpos($property, '.')) {
             $pathSegments = explode('.', $property);
