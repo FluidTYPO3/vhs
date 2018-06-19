@@ -119,7 +119,7 @@ class ColumnViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = isset($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
+        $subject = !empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
         $output = array_column($subject, $arguments['columnKey'], $arguments['indexKey']);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,

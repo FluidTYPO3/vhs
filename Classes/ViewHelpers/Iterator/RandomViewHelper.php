@@ -58,7 +58,9 @@ class RandomViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['subject'] ?? $renderChildrenClosure());
+        $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
+            !empty($arguments['as']) ? $arguments['subject'] : ($arguments['subject'] ?? $renderChildrenClosure())
+        );
         if (empty($subject)) {
             return null;
         }

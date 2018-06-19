@@ -65,7 +65,7 @@ class ReverseViewHelper extends AbstractViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $array = static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure());
+        $array = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure());
         $array = array_reverse($array, true);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $array,

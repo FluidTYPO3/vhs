@@ -62,7 +62,7 @@ class PushViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = $renderChildrenClosure();
+        $subject = !empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
         $add = $arguments['add'];
         $key = $arguments['key'];
         if ($key) {

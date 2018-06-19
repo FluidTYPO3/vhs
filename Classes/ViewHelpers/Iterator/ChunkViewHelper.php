@@ -73,7 +73,7 @@ class ChunkViewHelper extends AbstractViewHelper implements CompilableInterface
         $fixed = (boolean) $arguments['fixed'];
         $preserveKeys = (boolean) $arguments['preserveKeys'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            isset($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure(),
+            !empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure(),
             $preserveKeys
         );
         $output = [];

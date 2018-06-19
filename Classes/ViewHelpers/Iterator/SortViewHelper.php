@@ -113,7 +113,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = static::getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic($arguments, 'subject', $renderChildrenClosure);
+        $subject = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure());
         $sorted = null;
         if (true === is_array($subject)) {
             $sorted = static::sortArray($subject, $arguments);

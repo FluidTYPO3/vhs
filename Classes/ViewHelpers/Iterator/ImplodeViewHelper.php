@@ -67,7 +67,7 @@ class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = isset($arguments['content']) ? $arguments['content'] : $renderChildrenClosure();
+        $content = !empty($arguments['as']) ? $arguments['content'] : ($arguments['content'] ?? $renderChildrenClosure());
         $glue = $arguments['glue'];
         $output = implode($glue, $content);
         return static::renderChildrenWithVariableOrReturnInputStatic(

@@ -20,7 +20,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class PregReplaceViewHelper extends AbstractViewHelper
 {
-
     use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
 
@@ -46,7 +45,7 @@ class PregReplaceViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = $arguments['subject'] ?? $renderChildrenClosure();
+        $subject = isset($arguments['as']) ? $arguments['subject'] : ($arguments['subject'] ?? $renderChildrenClosure());
         $value = preg_replace($arguments['pattern'], $arguments['replacement'], $subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $value,

@@ -55,7 +55,7 @@ class KeysViewHelper extends AbstractViewHelper implements CompilableInterface
         RenderingContextInterface $renderingContext
     ) {
         return static::renderChildrenWithVariableOrReturnInputStatic(
-            array_keys(static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure())),
+            array_keys(static::arrayFromArrayOrTraversableOrCSVStatic(isset($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure())),
             $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
