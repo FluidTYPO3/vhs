@@ -8,23 +8,16 @@ namespace FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Class Foo
  */
-class Foo extends AbstractEntity
+class LegacyFoo extends Foo
 {
-
     /**
      * @var string
-     */
-    protected $name;
-
-    /**
-     * @var string
-     * @Extbase\Validate NotEmpty
+     * @validate NotEmpty
      */
     protected $bar;
 
@@ -37,12 +30,6 @@ class Foo extends AbstractEntity
      * @var ObjectStorage<Foo>
      */
     protected $children;
-
-    public function __construct()
-    {
-        $this->bar = 'baz';
-        $this->children = new ObjectStorage();
-    }
 
     /**
      * @return string

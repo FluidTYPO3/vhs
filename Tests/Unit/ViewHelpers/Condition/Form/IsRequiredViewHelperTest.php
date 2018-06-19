@@ -10,7 +10,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Form;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
+use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Class IsRequiredViewHelperTest
@@ -18,9 +20,17 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 class IsRequiredViewHelperTest extends AbstractViewHelperTest
 {
 
+    protected function getInstanceOfFoo()
+    {
+        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+            return new Foo();
+        }
+        return new LegacyFoo();
+    }
+
     public function testRenderThenWithSingleProperty()
     {
-        $domainObject = new Foo();
+        $domainObject = $this->getInstanceOfFoo();
         $arguments = [
             'property' => 'bar',
             'object' => $domainObject,
@@ -35,7 +45,7 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTest
 
     public function testRenderElseWithSingleProperty()
     {
-        $domainObject = new Foo();
+        $domainObject = $this->getInstanceOfFoo();
         $arguments = [
             'property' => 'foo',
             'object' => $domainObject,
