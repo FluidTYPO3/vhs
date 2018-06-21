@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -35,7 +35,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class SortViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-    use CompileWithRenderStatic;
+    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -71,7 +71,6 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
      */
     public function initializeArguments()
     {
-        $this->registerAsArgument();
         $this->registerArgument('subject', 'mixed', 'The array/Traversable instance to sort');
         $this->registerArgument(
             'sortBy',
@@ -94,6 +93,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
             false,
             'SORT_REGULAR'
         );
+        $this->registerAsArgument();
     }
 
     /**
