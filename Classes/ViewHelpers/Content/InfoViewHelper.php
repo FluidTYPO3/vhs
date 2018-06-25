@@ -9,6 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -80,11 +83,26 @@ class InfoViewHelper extends AbstractViewHelper
             } else {
                 $selectFields = '*';
             }
-            $record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-                $selectFields,
-                'tt_content',
-                sprintf('uid=%d', $contentUid)
-            );
+
+            if (class_exists(ConnectionPool::class)) {
+                /** @var QueryBuilder $queryBuilder */
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+
+                $record = $queryBuilder
+                    ->select($selectFields)
+                    ->from('tt_content')
+                    ->where(
+                        $queryBuilder->expr()->eq('uid', $contentUid)
+                    )
+                    ->execute()
+                    ->fetch();
+            } else {
+                $record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+                    $selectFields,
+                    'tt_content',
+                    sprintf('uid=%d', $contentUid)
+                );
+            }
 
             // Add the page overlay
             $languageUid = (integer) $GLOBALS['TSFE']->sys_language_uid;
