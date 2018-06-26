@@ -84,25 +84,17 @@ class InfoViewHelper extends AbstractViewHelper
                 $selectFields = '*';
             }
 
-            if (class_exists(ConnectionPool::class)) {
-                /** @var QueryBuilder $queryBuilder */
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
 
-                $record = $queryBuilder
-                    ->select($selectFields)
-                    ->from('tt_content')
-                    ->where(
-                        $queryBuilder->expr()->eq('uid', $contentUid)
-                    )
-                    ->execute()
-                    ->fetch();
-            } else {
-                $record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-                    $selectFields,
-                    'tt_content',
-                    sprintf('uid=%d', $contentUid)
-                );
-            }
+            $record = $queryBuilder
+                ->select($selectFields)
+                ->from('tt_content')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', $contentUid)
+                )
+                ->execute()
+                ->fetch();
 
             // Add the page overlay
             $languageUid = (integer) $GLOBALS['TSFE']->sys_language_uid;

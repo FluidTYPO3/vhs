@@ -163,24 +163,17 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         $table = $this->getTable();
         $idField = $this->idField;
 
-        if (class_exists(ConnectionPool::class)) {
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
-            return reset($queryBuilder
-                    ->select('*')
-                    ->from($table)
-                    ->where(
-                        $queryBuilder->expr()->eq($idField, $id)
-                    )
-                    ->execute()
-                    ->fetchAll());
-        } else {
-            $sqlIdField = $GLOBALS['TYPO3_DB']->quoteStr($idField, $table);
-            $sqlId = $GLOBALS['TYPO3_DB']->fullQuoteStr($id, $table);
-
-            return reset($GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $sqlIdField . ' = ' . $sqlId));
-        }
+        return reset($queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq($idField, $id)
+                )
+                ->execute()
+                ->fetchAll());
     }
 
     /**

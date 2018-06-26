@@ -47,21 +47,17 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         if (true === is_numeric($language)) {
             $languageUid = intval($language);
         } else {
-            if (class_exists(ConnectionPool::class)) {
-                /** @var QueryBuilder $queryBuilder */
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
 
-                $row = $queryBuilder
-                    ->select('uid')
-                    ->from('sys_language')
-                    ->where(
-                        $queryBuilder->expr()->eq('title', '"' . $language . '"')
-                    )
-                    ->execute()
-                    ->fetch();
-            } else {
-                $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'sys_language', "title='" . $language . "'");
-            }
+            $row = $queryBuilder
+                ->select('uid')
+                ->from('sys_language')
+                ->where(
+                    $queryBuilder->expr()->eq('title', '"' . $language . '"')
+                )
+                ->execute()
+                ->fetch();
 
             if (false !== $row) {
                 $languageUid = intval($row['uid']);
