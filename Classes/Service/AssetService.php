@@ -763,6 +763,20 @@ class AssetService implements SingletonInterface
      */
     protected function writeFile($file, $contents)
     {
+        $type = pathinfo($file, PATHINFO_EXTENSION);
+        $type = strtoupper($type);
+
+        if (($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['compressCss'] == 1 && $type == 'CSS')
+            || ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['compressJs'] == 1 && $type == 'JS')) {
+
+            $minifierClassName = '\\MatthiasMullie\\Minify\\' . $type;
+
+            $minifier = new $minifierClassName();
+            $minifier->add($contents);
+
+            $contents = $minifier->minify();
+        }
+
         GeneralUtility::writeFile($file, $contents, true);
     }
 
