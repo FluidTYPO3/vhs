@@ -427,8 +427,16 @@ class AssetService implements SingletonInterface
                 } else {
                     $tagBuilder->forceClosingTag(false);
                     $tagBuilder->setTagName('link');
-                    $tagBuilder->addAttribute('rel', 'stylesheet');
                     $tagBuilder->addAttribute('href', $file);
+
+                    // Preload?
+                    if ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['preloadCss'] == 1) {
+                        $tagBuilder->addAttribute('rel', 'preload');
+                        $tagBuilder->addAttribute('as', 'style');
+                        $tagBuilder->addAttribute('onload', "this.onload=null;this.rel='stylesheet'");
+                    } else {
+                        $tagBuilder->addAttribute('rel', 'stylesheet');
+                    }
                 }
                 if (null !== $integrity && !empty($integrity)) {
                     if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
