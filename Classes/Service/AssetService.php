@@ -62,6 +62,11 @@ class AssetService implements SingletonInterface
     protected static $cacheCleared = false;
 
     /**
+     * @var string
+     */
+    protected $minifySignal = 'minifyAssets';
+
+    /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @return void
      */
@@ -765,12 +770,9 @@ class AssetService implements SingletonInterface
      */
     protected function writeFile($file, $contents)
     {
-        // Minify assets with vhsminify
-        if (ExtensionManagementUtility::isLoaded('vhsminify')) {
-            /** @var Dispatcher $signalSlotDispatcher */
-            $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-            $signalSlotDispatcher->dispatch(__CLASS__, 'minifyAssets', [$file, &$contents]);
-        }
+        /** @var Dispatcher $signalSlotDispatcher */
+        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $signalSlotDispatcher->dispatch(__CLASS__, $this->minifySignal, [$file, &$contents]);
 
         GeneralUtility::writeFile($file, $contents, true);
     }
