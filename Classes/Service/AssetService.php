@@ -12,10 +12,12 @@ use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -763,6 +765,13 @@ class AssetService implements SingletonInterface
      */
     protected function writeFile($file, $contents)
     {
+        // Minify assets with vhsminify
+        if (ExtensionManagementUtility::isLoaded('vhsminify')) {
+            /** @var Dispatcher $signalSlotDispatcher */
+            $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+            $signalSlotDispatcher->dispatch(__CLASS__, 'minifyAssets', [$file, &$contents]);
+        }
+
         GeneralUtility::writeFile($file, $contents, true);
     }
 
