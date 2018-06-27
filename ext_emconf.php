@@ -42,6 +42,8 @@ $EM_CONF[$_EXTKEY] = array (
     'psr-4' => 
     array (
       'FluidTYPO3\\Vhs\\' => 'Classes/',
+      'MatthiasMullie\\Minify\\' => 'Classes/Minify/',
+      'MatthiasMullie\\PathConverter\\' => 'Classes/PathConverter/',
     ),
   ),
   'autoload-dev' => 
