@@ -32,6 +32,11 @@ class AssetService implements SingletonInterface
 {
 
     /**
+     * @var string
+     */
+    const MINIFY_SIGNAL = 'minifyAssets';
+
+    /**
      * @var boolean
      */
     protected static $typoScriptAssetsBuilt = false;
@@ -60,11 +65,6 @@ class AssetService implements SingletonInterface
      * @var boolean
      */
     protected static $cacheCleared = false;
-
-    /**
-     * @var string
-     */
-    protected $minifySignal = 'minifyAssets';
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
@@ -772,7 +772,7 @@ class AssetService implements SingletonInterface
     {
         /** @var Dispatcher $signalSlotDispatcher */
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $signalSlotDispatcher->dispatch(__CLASS__, $this->minifySignal, [$file, &$contents]);
+        $signalSlotDispatcher->dispatch(__CLASS__, static::MINIFY_SIGNAL, [$file, &$contents]);
 
         GeneralUtility::writeFile($file, $contents, true);
     }
