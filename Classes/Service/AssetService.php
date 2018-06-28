@@ -34,7 +34,7 @@ class AssetService implements SingletonInterface
     /**
      * @var string
      */
-    const MINIFY_SIGNAL = 'minifyAssets';
+    const ASSET_SIGNAL = 'writeAssetFile';
 
     /**
      * @var boolean
@@ -772,7 +772,7 @@ class AssetService implements SingletonInterface
     {
         /** @var Dispatcher $signalSlotDispatcher */
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $signalSlotDispatcher->dispatch(__CLASS__, static::MINIFY_SIGNAL, [$file, &$contents]);
+        $signalSlotDispatcher->dispatch(__CLASS__, static::ASSET_SIGNAL, [&$file, &$contents]);
 
         GeneralUtility::writeFile($file, $contents, true);
     }
