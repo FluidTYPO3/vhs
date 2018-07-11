@@ -52,6 +52,7 @@ class PageService implements SingletonInterface
      * @param boolean $includeNotInMenu
      * @param boolean $includeMenuSeparator
      * @param boolean $disableGroupAccessCheck
+     * @param boolean $normalWhenNoLanguage
      *
      * @return array
      */
@@ -60,7 +61,8 @@ class PageService implements SingletonInterface
         array $excludePages = [],
         $includeNotInMenu = false,
         $includeMenuSeparator = false,
-        $disableGroupAccessCheck = false
+        $disableGroupAccessCheck = false,
+        $normalWhenNoLanguage = false
     ) {
         $pageRepository = $this->getPageRepository();
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
@@ -72,8 +74,8 @@ class PageService implements SingletonInterface
 
             static::$cachedMenus[$cacheKey] = array_filter(
                 $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints),
-                function($page) {
-                    return $this->hidePageForLanguageUid($page) === false;
+                function($page) use ($normalWhenNoLanguage) {
+                    return $this->hidePageForLanguageUid($page, -1, $normalWhenNoLanguage) === false;
                 }
             );
         }
