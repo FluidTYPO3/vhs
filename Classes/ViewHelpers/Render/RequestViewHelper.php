@@ -76,7 +76,7 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $extensionName = $arguments['extensionName'];
         $pluginName = $arguments['pluginName'];
         $vendorName = $arguments['vendorName'];
-        $arguments = is_array($arguments['arguments']) ? $arguments['arguments'] : null;
+        $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
         $objectManager = static::getObjectManager();
         $contentObjectBackup = $configurationManager->getContentObject();
@@ -94,8 +94,8 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $request->setControllerName($controller);
         $request->setPluginName($pluginName);
         $request->setControllerExtensionName($extensionName);
-        if ($arguments !== null) {
-            $request->setArguments($arguments);
+        if (!empty($requestArguments)) {
+            $request->setArguments($requestArguments);
         }
         $request->setControllerVendorName($vendorName);
 
