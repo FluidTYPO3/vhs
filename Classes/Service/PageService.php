@@ -71,7 +71,7 @@ class PageService implements SingletonInterface
             }
 
             static::$cachedMenus[$cacheKey] = array_filter(
-                $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints),
+                $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints, false),
                 function($page) {
                     return $this->hidePageForLanguageUid($page) === false;
                 }
