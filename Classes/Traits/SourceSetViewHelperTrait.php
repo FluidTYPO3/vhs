@@ -49,7 +49,7 @@ trait SourceSetViewHelperTrait
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference, null, $crop);
 
             $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
-            $srcsetVariantSrc = static::preprocessSourceUri(GeneralUtility::rawUrlEncodeFP($srcsetVariantSrc), $this->arguments);
+            $srcsetVariantSrc = static::preprocessSourceUri($srcsetVariantSrc, $this->arguments);
 
             $imageSources[$srcsetVariant[0]] = [
                 'src' => $srcsetVariantSrc,
