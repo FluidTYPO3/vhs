@@ -91,21 +91,91 @@ class SetViewHelper extends AbstractViewHelper implements CompilableInterface
                 $variableProvider->remove($name);
             }
             $variableProvider->add($name, $value);
-        } elseif (1 === mb_substr_count($name, '.')) {
+        } else {
             $parts = explode('.', $name);
             $objectName = array_shift($parts);
-            $path = implode('.', $parts);
             if (false === $variableProvider->exists($objectName)) {
                 return null;
             }
-            $object = $variableProvider->get($objectName);
-            try {
-                ObjectAccess::setProperty($object, $path, $value);
-                // Note: re-insert the variable to ensure unreferenced values like arrays also get updated
-                $variableProvider->remove($objectName);
-                $variableProvider->add($objectName, $object);
-            } catch (\Exception $error) {
-                return null;
+            $rootObject = $variableProvider->get($objectName);
+            $property = array_pop($parts);
+
+            // Setting deeply nested properties when arrays are involved is a bit involved:
+            // Since they are not objects, ObjectAccess::getProperty will only return the value
+            // of the (sub)array. For any value change to actually take effect, the changed array
+            // would have to be reinjected into its context.
+            // To do this, we traverse the path looking for the beginning of the last nested array
+            // we encounter. If in the end we still are inside that array (and not in an object),
+            // we must modify the value inside that array and then inject the modified form into
+            // its parent element. The parent element might be the variable container directly or
+            // another object encountered while traversing. The modification of the value is done
+            // by traversing the array again, but this time by reference, so that the desired
+            // property can be overriden.
+
+            // Reference to outermost array encountered inside the array currently being traversed
+            $outermostArray = null;
+            // Parent object of $outermostArray (null if variable container)
+            $outermostArrayParent = null;
+            // Property of $outermostArrayParent that holds $outermostArray (for reinjection)
+            $outermostArrayParentProperty = null;
+            if (is_array($rootObject)) {
+                // If root is an array, use as starting point
+                $outermostArray = &$rootObject;
+            }
+            // Path traversed inside the current array
+            $arrayPath = [];
+            // Object/array updated during traversal
+            $subject = $rootObject;
+            foreach ($parts as $part) {
+                // Remember current subject as parent to use below if we encounter the start of an array
+                $parent = $subject;
+                // Traverse one level
+                $subject = ObjectAccess::getProperty($subject, $part);
+
+                if ($subject === null) {
+                    return null;
+                } else if (is_array($subject)) {
+                    if ($outermostArray === null) {
+                        // Nested array has beguin
+                        $outermostArray = &$subject;
+                        $outermostArrayParent = $parent;
+                        $outermostArrayParentProperty = $part;
+                    } else {
+                        // Nested array continues
+                        $arrayPath[] = $part;
+                    }
+                } else {
+                    // Not in an array any more, forget everything
+                    // $outermostArray is a reference, so destroy it before setting to null
+                    unset($outermostArray);
+                    $outermostArray = null;
+                    $arrayPath = [];
+                }
+            }
+
+            if ($outermostArray !== null) {
+                // Actually set property in array
+                $subject = &$outermostArray;
+                foreach ($arrayPath as $path) {
+                    $subject = &$subject[$path];
+                }
+                $subject[$property] = $value;
+
+                if ($outermostArray === $rootObject) {
+                    // Re-insert array in variable container since it is unreferenced
+                    $variableProvider->remove($objectName);
+                    $variableProvider->add($objectName, $rootObject);
+                } else {
+                    // Re-insert in structure
+                    ObjectAccess::setProperty($outermostArrayParent, $outermostArrayParentProperty, $outermostArray);
+                }
+            } else {
+                // Final value is an object, just set property and do not re-inject
+                try {
+                    ObjectAccess::setProperty($subject, $property, $value);
+                } catch (\Exception $error) {
+                    return null;
+                }
             }
         }
         return null;
