@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -92,17 +94,27 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         if (false === empty($categories)) {
-            $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-                'uid_foreign',
-                'sys_category_record_mm',
-                sprintf(
-                    'tablenames = \'%s\' AND uid_local IN (%s)',
-                    $this->getCategoryRelationTableName(),
-                    implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'))
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
+
+            $rows = $queryBuilder
+                ->select('uid_foreign')
+                ->from('sys_category_record_mm')
+                ->where(
+                    $queryBuilder->expr()->eq('tablenames', '"' . $this->getTablenameForSystemConfiguration() . '"')
                 )
-            );
+                ->andWhere(
+                    $queryBuilder->expr()->in('uid_local', $categories)
+                )
+                ->execute()
+                ->fetchAll();
 
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));
+
+            // Now FIX UIDs if they are sys_file_metadata UIDs
+            if (false === empty($fileUids) && $this->getTablenameForSystemConfiguration() == 'sys_file_metadata') {
+                $fileUids = $this->getFileUidsFromFileReferences($fileUids);
+            }
 
             if (true === empty($identifier)) {
                 foreach ($fileUids as $fileUid) {
@@ -188,5 +200,36 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             return 'sys_file_metadata';
         }
         return 'sys_file';
+    }
+
+    /**
+     * @param array $afileUids
+     * gets an array of file UIDs (sys_files) from an array of Reference UIDs (sys_file_reference)
+     */
+    private function getFileUidsFromFileReferences($aFileUids)
+    {
+        if (is_array($aFileUids)) {
+            $aFileUids = $aFileUids;
+        } elseif (true === is_string($aFileUids)) {
+            $aFileUids = GeneralUtility::trimExplode(',', $aFileUids, true);
+        } else {
+            $aFileUids = (array) $aFileUids;
+        }
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
+
+        $rows = $queryBuilder
+            ->select('file')
+            ->from($this->getTablenameForSystemConfiguration())
+            ->where(
+                $queryBuilder->expr()->in('uid', implode(",", $aFileUids))
+            )
+            ->execute()
+            ->fetchAll();
+
+        $fileUids = array_unique(array_column($rows, 'file'));
+
+        return $fileUids;
     }
 }
