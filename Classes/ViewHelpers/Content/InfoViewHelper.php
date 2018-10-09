@@ -86,12 +86,13 @@ class InfoViewHelper extends AbstractViewHelper
 
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            $queryBuilder->createNamedParameter($contentUid, \PDO::PARAM_INT, ':uid');
 
             $record = $queryBuilder
                 ->select($selectFields)
                 ->from('tt_content')
                 ->where(
-                    $queryBuilder->expr()->eq('uid', $contentUid)
+                    $queryBuilder->expr()->eq('uid', ':uid')
                 )
                 ->execute()
                 ->fetch();

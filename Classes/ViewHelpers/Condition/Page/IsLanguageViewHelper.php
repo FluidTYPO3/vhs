@@ -50,11 +50,13 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
 
+            $queryBuilder->createNamedParameter($language, \PDO::PARAM_STR, ':title');
+
             $row = $queryBuilder
                 ->select('uid')
                 ->from('sys_language')
                 ->where(
-                    $queryBuilder->expr()->eq('title', '"' . $language . '"')
+                    $queryBuilder->expr()->eq('title', ':title')
                 )
                 ->execute()
                 ->fetch();

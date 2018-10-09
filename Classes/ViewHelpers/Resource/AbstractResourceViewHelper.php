@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -96,15 +97,17 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         if (false === empty($categories)) {
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
+            $queryBuilder->createNamedParameter($this->getTablenameForSystemConfiguration(), \PDO::PARAM_STR, ':tablenames');
+            $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
 
             $rows = $queryBuilder
                 ->select('uid_foreign')
                 ->from('sys_category_record_mm')
                 ->where(
-                    $queryBuilder->expr()->eq('tablenames', '"' . $this->getTablenameForSystemConfiguration() . '"')
+                    $queryBuilder->expr()->eq('tablenames', ':tablenames')
                 )
                 ->andWhere(
-                    $queryBuilder->expr()->in('uid_local', $categories)
+                    $queryBuilder->expr()->in('uid_local', ':categories')
                 )
                 ->execute()
                 ->fetchAll();
@@ -218,12 +221,13 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
+        $queryBuilder->createNamedParameter($aFileUids, Connection::PARAM_INT_ARRAY, ':uids');
 
         $rows = $queryBuilder
             ->select('file')
             ->from($this->getTablenameForSystemConfiguration())
             ->where(
-                $queryBuilder->expr()->in('uid', implode(",", $aFileUids))
+                $queryBuilder->expr()->in('uid', ':uids')
             )
             ->execute()
             ->fetchAll();

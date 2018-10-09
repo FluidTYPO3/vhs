@@ -165,12 +165,13 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
         return reset($queryBuilder
                 ->select('*')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq($idField, $id)
+                    $queryBuilder->expr()->eq($idField, ':id')
                 )
                 ->execute()
                 ->fetchAll());

@@ -144,20 +144,25 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
 
+            $queryBuilder->createNamedParameter($this->getTable(), \PDO::PARAM_STR, ':tablenames');
+            $queryBuilder->createNamedParameter($sqlRecordUid, \PDO::PARAM_INT, ':uid_foreign');
+            $queryBuilder->createNamedParameter($this->getField(), \PDO::PARAM_STR, ':fieldname');
+
             $references = $queryBuilder
                 ->select('uid')
                 ->from('sys_file_reference')
                 ->where(
-                    $queryBuilder->expr()->eq('tablenames', '"' . $this->getTable() . '"')
+                    $queryBuilder->expr()->eq('tablenames', ':tablenames')
                 )
                 ->andWhere(
-                    $queryBuilder->expr()->eq('uid_foreign', (int) $sqlRecordUid)
+                    $queryBuilder->expr()->eq('uid_foreign', ':uid_foreign' )
                 )
                 ->andWhere(
-                    $queryBuilder->expr()->eq('fieldname', '"' . $this->getField() . '"')
+                    $queryBuilder->expr()->eq('fieldname', ':fieldname')
                 );
 
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
+                $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->workspaceRec['uid'], \PDO::PARAM_INT, ':t3ver_wsid');
                 $references = $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->eq('deleted', 0)
@@ -165,7 +170,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     ->andWhere(
                         $queryBuilder->expr()->eq('t3ver_wsid', 0)
                         . ' OR ' .
-                        $queryBuilder->expr()->eq('t3ver_wsid', $GLOBALS['BE_USER']->workspaceRec['uid'])
+                        $queryBuilder->expr()->eq('t3ver_wsid', ':t3ver_wsid')
                     )
                     ->andWhere(
                         $queryBuilder->expr()->neq('pid', -1)
