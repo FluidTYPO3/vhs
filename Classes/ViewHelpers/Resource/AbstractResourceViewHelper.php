@@ -114,11 +114,6 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));
 
-            // Now FIX UIDs if they are sys_file_metadata UIDs
-            if (false === empty($fileUids) && $this->getTablenameForSystemConfiguration() == 'sys_file_metadata') {
-                $fileUids = $this->getFileUidsFromFileReferences($fileUids);
-            }
-
             if (true === empty($identifier)) {
                 foreach ($fileUids as $fileUid) {
                     try {
@@ -203,37 +198,5 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             return 'sys_file_metadata';
         }
         return 'sys_file';
-    }
-
-    /**
-     * @param array $afileUids
-     * gets an array of file UIDs (sys_files) from an array of Reference UIDs (sys_file_reference)
-     */
-    private function getFileUidsFromFileReferences($aFileUids)
-    {
-        if (is_array($aFileUids)) {
-            $aFileUids = $aFileUids;
-        } elseif (true === is_string($aFileUids)) {
-            $aFileUids = GeneralUtility::trimExplode(',', $aFileUids, true);
-        } else {
-            $aFileUids = (array) $aFileUids;
-        }
-
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
-        $queryBuilder->createNamedParameter($aFileUids, Connection::PARAM_INT_ARRAY, ':uids');
-
-        $rows = $queryBuilder
-            ->select('file')
-            ->from($this->getTablenameForSystemConfiguration())
-            ->where(
-                $queryBuilder->expr()->in('uid', ':uids')
-            )
-            ->execute()
-            ->fetchAll();
-
-        $fileUids = array_unique(array_column($rows, 'file'));
-
-        return $fileUids;
     }
 }
