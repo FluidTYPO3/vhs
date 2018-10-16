@@ -10,6 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -161,10 +163,18 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         $table = $this->getTable();
         $idField = $this->idField;
 
-        $sqlIdField = $GLOBALS['TYPO3_DB']->quoteStr($idField, $table);
-        $sqlId = $GLOBALS['TYPO3_DB']->fullQuoteStr($id, $table);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        return reset($GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $sqlIdField . ' = ' . $sqlId));
+        return reset($queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq($idField, ':id')
+                )
+                ->execute()
+                ->fetchAll());
     }
 
     /**
