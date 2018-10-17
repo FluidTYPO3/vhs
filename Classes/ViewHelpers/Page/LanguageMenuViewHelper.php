@@ -313,8 +313,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        // Select all pages_language_overlay records on the current page. Each represents a possibility for a language.
-        $table = 'pages_language_overlay';
+        // Select all language overlay records on the current page. Each represents a possibility for a language.
+        $table = version_compare(TYPO3_branch, '9.5', '<') ? 'pages_language_overlay' : 'pages';
         $sysLang = $GLOBALS['TSFE']->cObj->getRecords($table, ['selectFields' => 'sys_language_uid', 'pidInList' => $this->getPageUid(), 'languageField' => 0]);
         $languageUids = array_column($sysLang, 'sys_language_uid');
 
