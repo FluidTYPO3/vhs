@@ -86,7 +86,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         );
         $this->registerArgument('useCHash', 'boolean', 'Use cHash for typolink', false, true);
         $this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', false, '');
-        $this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', false, 'png');
+        $this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', false, 'svg');
         $this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', false, true);
         $this->registerArgument(
             'classCurrent',
