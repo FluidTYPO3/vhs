@@ -128,7 +128,6 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function getResources($record)
     {
-        $databaseConnection = $this->getDatabaseConnection();
         $fileReferences = [];
         if (empty($GLOBALS['TSFE']->sys_page) === false) {
             $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $record);
@@ -234,13 +233,5 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             }
         }
         return $resources;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
