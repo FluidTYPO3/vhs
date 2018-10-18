@@ -25,7 +25,10 @@ class CoreUtility
      */
     public static function getLanguageFlagIconPath()
     {
-        return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/SVG/';
+        if (version_compare(self::getCurrentCoreVersion(), 9.0, '<')) {
+            return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/PNG/';
+        }
+        return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/';
     }
 
     /**
