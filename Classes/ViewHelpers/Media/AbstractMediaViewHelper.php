@@ -58,11 +58,11 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
      */
     public static function preprocessSourceUri($src, array $arguments)
     {
-        $src = $GLOBALS['TSFE']->absRefPrefix . str_replace('%2F', '/', rawurlencode($src));
+        $src = $GLOBALS['TSFE']->absRefPrefix . \str_replace('%2F', '/', \rawurlencode($src));
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
         } elseif ('BE' === TYPO3_MODE || false === (boolean) $arguments['relative']) {
-            $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
+            $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . \ltrim($src, '/');
         }
         return $src;
     }
@@ -79,8 +79,8 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
     {
         $src = $arguments['src'];
         if ($src instanceof \Traversable) {
-            $src = iterator_to_array($src);
-        } elseif (true === is_string($src)) {
+            $src = \iterator_to_array($src);
+        } elseif (true === \is_string($src)) {
             $src = GeneralUtility::trimExplode(',', $src, true);
         }
         return $src;

@@ -26,8 +26,8 @@ class CubicRootViewHelper extends AbstractSingleMathViewHelper
     protected static function calculateAction($a)
     {
         if (static::assertIsArrayOrIterator($a)) {
-            return array_map([static::class, 'calculateAction'], static::arrayFromArrayOrTraversableOrCSVStatic($a));
+            return \array_map([static::class, 'calculateAction'], static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
-        return pow($a, 1 / 3);
+        return \pow($a, 1 / 3);
     }
 }

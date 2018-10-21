@@ -40,7 +40,7 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
         $pageUid = $arguments['pageUid'];
         $respectSiteRoot = $arguments['respectSiteRoot'];
 
-        if (null === $pageUid || true === empty($pageUid) || 0 === intval($pageUid)) {
+        if (null === $pageUid || true === empty($pageUid) || 0 === \intval($pageUid)) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
         $pageSelect = new PageRepository();

@@ -207,7 +207,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
         }
 
         if (false === empty($params)) {
-            $src .= $seperator . implode('&', $params);
+            $src .= $seperator . \implode('&', $params);
         }
 
         return $src;

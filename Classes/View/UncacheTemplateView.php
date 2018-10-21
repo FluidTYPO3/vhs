@@ -75,7 +75,7 @@ class UncacheTemplateView extends TemplateView
     {
         $partial = $conf['partial'];
         $section = $conf['section'];
-        $arguments = true === is_array($conf['arguments']) ? $conf['arguments'] : [];
+        $arguments = true === \is_array($conf['arguments']) ? $conf['arguments'] : [];
         /** @var ControllerContext $controllerContext */
         $controllerContext = $conf['controllerContext'];
         if (true === empty($partial)) {
@@ -99,12 +99,12 @@ class UncacheTemplateView extends TemplateView
     ) {
         $renderingContext->setControllerContext($controllerContext);
         $this->setRenderingContext($renderingContext);
-        if (method_exists($renderingContext, 'getTemplateParser')) {
+        if (\method_exists($renderingContext, 'getTemplateParser')) {
             $this->templateParser = $renderingContext->getTemplateParser();
         } else {
             $this->templateParser = TemplateParserBuilder::build();
         }
-        if (method_exists($renderingContext, 'getTemplateCompiler')) {
+        if (\method_exists($renderingContext, 'getTemplateCompiler')) {
             $this->templateCompiler = $renderingContext->getTemplateCompiler();
         } else {
             $this->templateCompiler = $this->objectManager->get(TemplateCompiler::class);
@@ -127,12 +127,12 @@ class UncacheTemplateView extends TemplateView
         $section = null,
         array $arguments = []
     ) {
-        array_push(
+        \array_push(
             $this->renderingStack,
             ['type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
         );
         $rendered = $this->renderPartial($partial, $section, $arguments);
-        array_pop($this->renderingStack);
+        \array_pop($this->renderingStack);
         return $rendered;
     }
 }

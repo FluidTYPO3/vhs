@@ -30,7 +30,7 @@ class GravatarViewHelperTest extends AbstractViewHelperTest
     public function generatesExpectedImgForEmailAddress()
     {
         $expectedSource = 'http://www.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007';
-        preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
+        \preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
         $this->assertSame($expectedSource, $actualSource[1]);
         $expectedSource = 'https://secure.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007?s=160&amp;d=404&amp;r=pg';
         $this->arguments = [
@@ -40,7 +40,7 @@ class GravatarViewHelperTest extends AbstractViewHelperTest
             'maximumRating' => 'pg',
             'secure' => true,
         ];
-        preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
+        \preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
         $this->assertSame($expectedSource, $actualSource[1]);
     }
 }

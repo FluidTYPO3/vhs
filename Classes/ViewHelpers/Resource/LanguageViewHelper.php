@@ -117,7 +117,7 @@ class LanguageViewHelper extends AbstractViewHelper
         $path = $this->arguments['path'];
         $absoluteFileName = GeneralUtility::getFileAbsFileName($this->arguments['path']);
 
-        if (false === file_exists($absoluteFileName)) {
+        if (false === \file_exists($absoluteFileName)) {
             $extensionName = $this->getResolvedExtensionName();
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
             $absoluteFileName = ExtensionManagementUtility::extPath($extensionKey, $path);
@@ -155,7 +155,7 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected function getLabelsFromTarget($labels)
     {
-        if (true === is_array($labels)) {
+        if (true === \is_array($labels)) {
             foreach ($labels as $labelKey => $label) {
                 $labels[$labelKey] = $label[0]['target'];
             }
@@ -193,7 +193,7 @@ class LanguageViewHelper extends AbstractViewHelper
 
         if ('FE' === TYPO3_MODE) {
             $language = $GLOBALS['TSFE']->lang;
-        } elseif (true === is_object($GLOBALS['LANG'])) {
+        } elseif (true === \is_object($GLOBALS['LANG'])) {
             $language = $GLOBALS['LANG']->lang;
         }
 

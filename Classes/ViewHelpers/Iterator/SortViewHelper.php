@@ -115,14 +115,14 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
     ) {
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure());
         $sorted = null;
-        if (true === is_array($subject)) {
+        if (true === \is_array($subject)) {
             $sorted = static::sortArray($subject, $arguments);
         } else {
             if (true === $subject instanceof ObjectStorage || true === $subject instanceof LazyObjectStorage) {
                 $sorted = static::sortObjectStorage($subject, $arguments);
             } elseif (true === $subject instanceof \Iterator) {
                 /** @var \Iterator $subject */
-                $array = iterator_to_array($subject, true);
+                $array = \iterator_to_array($subject, true);
                 $sorted = static::sortArray($array, $arguments);
             } elseif (true === $subject instanceof QueryResultInterface) {
                 /** @var QueryResultInterface $subject */
@@ -133,7 +133,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
                 // fatal error.
                 ErrorUtility::throwViewHelperException(
                     'Unsortable variable type passed to Iterator/SortViewHelper. Expected any of Array, QueryResult, ' .
-                    ' ObjectStorage or Iterator implementation but got ' . gettype($subject),
+                    ' ObjectStorage or Iterator implementation but got ' . \gettype($subject),
                     1351958941
                 );
             }
@@ -167,19 +167,19 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
             $sorted[$index] = $object;
         }
         if ('ASC' === $arguments['order']) {
-            ksort($sorted, static::getSortFlags($arguments));
+            \ksort($sorted, static::getSortFlags($arguments));
         } elseif ('RAND' === $arguments['order']) {
-            $sortedKeys = array_keys($sorted);
-            shuffle($sortedKeys);
+            $sortedKeys = \array_keys($sorted);
+            \shuffle($sortedKeys);
             $backup = $sorted;
             $sorted = [];
             foreach ($sortedKeys as $sortedKey) {
                 $sorted[$sortedKey] = $backup[$sortedKey];
             }
         } elseif ('SHUFFLE' === $arguments['order']) {
-            shuffle($sorted);
+            \shuffle($sorted);
         } else {
-            krsort($sorted, static::getSortFlags($arguments));
+            \krsort($sorted, static::getSortFlags($arguments));
         }
         return $sorted;
     }
@@ -223,8 +223,8 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
             $value = (integer) $value->format('U');
         } elseif (true === $value instanceof ObjectStorage || true === $value instanceof LazyObjectStorage) {
             $value = $value->count();
-        } elseif (is_array($value)) {
-            $value = count($value);
+        } elseif (\is_array($value)) {
+            $value = \count($value);
         }
         return $value;
     }
@@ -242,14 +242,14 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
         $constants = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['sortFlags']);
         $flags = 0;
         foreach ($constants as $constant) {
-            if (false === in_array($constant, static::$allowedSortFlags)) {
+            if (false === \in_array($constant, static::$allowedSortFlags)) {
                 ErrorUtility::throwViewHelperException(
                     'The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed ' .
-                    'constants are: ' . implode(', ', static::$allowedSortFlags) . '.',
+                    'constants are: ' . \implode(', ', static::$allowedSortFlags) . '.',
                     1404220538
                 );
             }
-            $flags = $flags | constant(trim($constant));
+            $flags = $flags | \constant(\trim($constant));
         }
         return $flags;
     }

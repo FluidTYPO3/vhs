@@ -44,7 +44,7 @@ class ListViewHelper extends AbstractMenuViewHelper
     public function render()
     {
         $pages = $this->processPagesArgument();
-        if (0 === count($pages)) {
+        if (0 === \count($pages)) {
             return null;
         }
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];

@@ -77,7 +77,7 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
         $content = !empty($arguments['as']) ? $arguments['content'] : ($arguments['content'] ?? $renderChildrenClosure());
         $glue = $arguments['glue'];
         $limit = isset($arguments['limit']) ? $arguments['limit'] : PHP_INT_MAX;
-        $output = explode($glue, $content, $limit);
+        $output = \explode($glue, $content, $limit);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $arguments['as'],

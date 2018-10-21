@@ -79,14 +79,14 @@ class NumberViewHelper extends AbstractViewHelper implements CompilableInterface
         $maximum = $arguments['maximum'];
         $minimumDecimals = $arguments['minimumDecimals'];
         $maximumDecimals = $arguments['maximumDecimals'];
-        $natural = rand($minimum, $maximum);
+        $natural = \rand($minimum, $maximum);
         if (0 === (integer) $minimumDecimals && 0 === (integer) $maximumDecimals) {
             return $natural;
         }
-        $decimals = array_fill(0, rand($minimumDecimals, $maximumDecimals), 0);
-        $decimals = array_map(function () {
-            return rand(0, 9);
+        $decimals = \array_fill(0, \rand($minimumDecimals, $maximumDecimals), 0);
+        $decimals = \array_map(function () {
+            return \rand(0, 9);
         }, $decimals);
-        return floatval($natural . '.' . implode('', $decimals));
+        return \floatval($natural . '.' . \implode('', $decimals));
     }
 }

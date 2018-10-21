@@ -57,9 +57,9 @@ class InlineViewHelper extends AbstractRenderViewHelper implements CompilableInt
     ) {
         $content = $renderChildrenClosure();
         $namespaces = static::getPreparedNamespaces($arguments);
-        $namespaceHeader = implode(LF, $namespaces);
+        $namespaceHeader = \implode(LF, $namespaces);
         foreach ($namespaces as $namespace) {
-            $content = str_replace($namespace, '', $content);
+            $content = \str_replace($namespace, '', $content);
         }
         $view = static::getPreparedClonedView($renderingContext);
         $view->setTemplateSource($namespaceHeader . $content);

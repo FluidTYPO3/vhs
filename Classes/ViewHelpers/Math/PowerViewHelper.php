@@ -26,6 +26,6 @@ class PowerViewHelper extends AbstractMultipleMathViewHelper
      */
     protected static function calculateAction($a, $b)
     {
-        return pow($a, $b);
+        return \pow($a, $b);
     }
 }

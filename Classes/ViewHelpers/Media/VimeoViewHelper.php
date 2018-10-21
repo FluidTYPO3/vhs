@@ -112,14 +112,14 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
             'title='     . (integer) $this->arguments['title'],
             'byline='    . (integer) $this->arguments['byline'],
             'portrait='  . (integer) $this->arguments['portrait'],
-            'color='     . str_replace('#', '', $this->arguments['color']),
+            'color='     . \str_replace('#', '', $this->arguments['color']),
             'autoplay='  . (integer) $this->arguments['autoplay'],
             'loop='      . (integer) $this->arguments['loop'],
             'api='       . (integer) $this->arguments['api'],
             'player_id=' . $this->arguments['playerId'],
         ];
 
-        $src .= implode('&', $queryParams);
+        $src .= \implode('&', $queryParams);
 
         $this->tag->forceClosingTag(true);
         $this->tag->addAttribute('src', $src);

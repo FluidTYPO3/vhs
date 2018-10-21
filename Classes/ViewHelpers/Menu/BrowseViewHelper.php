@@ -93,8 +93,8 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         if (empty($menuData)) {
             return !empty($this->arguments['as']) ? $this->renderChildren() : '';
         }
-        $pageUids = array_keys($menuData);
-        $uidCount = count($pageUids);
+        $pageUids = \array_keys($menuData);
+        $uidCount = \count($pageUids);
         $firstUid = $pageUids[0];
         $lastUid = $pageUids[$uidCount - 1];
         $nextUid = null;

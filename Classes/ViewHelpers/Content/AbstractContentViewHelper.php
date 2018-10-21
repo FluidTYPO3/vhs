@@ -122,7 +122,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     {
         $order = $this->arguments['order'];
         if (false === empty($order)) {
-            $sortDirection = strtoupper(trim($this->arguments['sortDirection']));
+            $sortDirection = \strtoupper(\trim($this->arguments['sortDirection']));
             if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
                 $sortDirection = 'ASC';
             }
@@ -130,11 +130,11 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         }
 
         $contentUids = $this->arguments['contentUids'];
-        if (true === is_array($contentUids) && !empty($contentUids)) {
+        if (true === \is_array($contentUids) && !empty($contentUids)) {
             return $GLOBALS['TSFE']->cObj->getRecords(
                 'tt_content',
                 [
-                    'uidInList' => implode(',', $contentUids),
+                    'uidInList' => \implode(',', $contentUids),
                     'orderBy' => $order,
                     'max' => $limit,
                     // Note: pidInList must not use $pageUid which defaults to current PID. Use argument-passed pageUid!
@@ -146,8 +146,8 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         }
 
         $conditions = '1=1';
-        if (is_numeric($this->arguments['column'])) {
-            $conditions = sprintf('colPos = %d', (integer) $this->arguments['column']);
+        if (\is_numeric($this->arguments['column'])) {
+            $conditions = \sprintf('colPos = %d', (integer) $this->arguments['column']);
         }
         if (true === (boolean) $this->arguments['sectionIndexOnly']) {
             $conditions .= ' AND sectionIndex = 1';
@@ -200,7 +200,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         }
         $elements = [];
         foreach ($rows as $row) {
-            array_push($elements, static::renderRecord($row));
+            \array_push($elements, static::renderRecord($row));
         }
         if (false === empty($this->arguments['loadRegister'])) {
             $this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
@@ -254,7 +254,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $queryBuilder = (new ConnectionPool())->getConnectionForTable('tt_content')->createQueryBuilder();
         $queryBuilder->select($fields)->from('tt_content')->where($condition);
         if ($order) {
-            $orderings = explode(' ', $order);
+            $orderings = \explode(' ', $order);
             $queryBuilder->orderBy($orderings[0], $orderings[1]);
         }
         if ($limit) {

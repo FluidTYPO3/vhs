@@ -20,7 +20,7 @@ class IssetViewHelperTest extends AbstractViewHelperTest
      */
     public function setUp()
     {
-        if (version_compare(TYPO3_version, '8.0', '<')) {
+        if (\version_compare(TYPO3_version, '8.0', '<')) {
             $this->markTestSkipped('Skipped, ViewHelper does not work on 7.6');
         }
         parent::setUp();

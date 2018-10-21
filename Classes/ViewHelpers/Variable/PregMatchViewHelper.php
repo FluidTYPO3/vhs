@@ -62,9 +62,9 @@ class PregMatchViewHelper extends AbstractViewHelper implements CompilableInterf
             $subject = $arguments['subject'];
         }
         if (true === (boolean) $arguments['global']) {
-            preg_match_all($arguments['pattern'], $subject, $matches, PREG_SET_ORDER);
+            \preg_match_all($arguments['pattern'], $subject, $matches, PREG_SET_ORDER);
         } else {
-            preg_match($arguments['pattern'], $subject, $matches);
+            \preg_match($arguments['pattern'], $subject, $matches);
         }
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $matches,

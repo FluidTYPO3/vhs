@@ -71,7 +71,7 @@ class FalViewHelper extends ResourcesFalViewHelper
             }
             /** @var PageRepository $pageRepository */
             $localisation = $pageRepository->getPageOverlay($record, $this->getCurrentLanguageUid());
-            if (is_array($localisation)) {
+            if (\is_array($localisation)) {
                 $record = $localisation;
             }
         }
@@ -100,8 +100,8 @@ class FalViewHelper extends ResourcesFalViewHelper
         // method on this class. Calling $this->getResources() would yield wrong result
         // for the purpose of this method.
         $resources = parent::getResources($pageRecord);
-        if (null !== $limit && count($resources) > $limit) {
-            $resources = array_slice($resources, 0, $limit);
+        if (null !== $limit && \count($resources) > $limit) {
+            $resources = \array_slice($resources, 0, $limit);
         }
         return $resources;
     }

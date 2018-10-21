@@ -205,7 +205,7 @@ class Asset implements AssetInterface
     {
         $asset = self::getInstance();
         $asset->setContent($content);
-        $asset->setName(md5($content));
+        $asset->setName(\md5($content));
         return $asset->finalize();
     }
 
@@ -253,7 +253,7 @@ class Asset implements AssetInterface
         if (true === empty($path)) {
             return $this->getContent();
         }
-        $content = file_get_contents($path);
+        $content = \file_get_contents($path);
         return $content;
     }
 
@@ -264,12 +264,12 @@ class Asset implements AssetInterface
     {
         $name = $this->getName();
         if (true === empty($name)) {
-            $name = md5($this->standalone . '//' . $this->type . '//' . $this->path . '//' . $this->content);
+            $name = \md5($this->standalone . '//' . $this->type . '//' . $this->path . '//' . $this->content);
             if ($this->fluid) {
-                $name .= '_' . md5(serialize($this->variables));
+                $name .= '_' . \md5(\serialize($this->variables));
             }
         }
-        if (false === isset($GLOBALS['VhsAssets']) || false === is_array($GLOBALS['VhsAssets'])) {
+        if (false === isset($GLOBALS['VhsAssets']) || false === \is_array($GLOBALS['VhsAssets'])) {
             $GLOBALS['VhsAssets'] = [];
         }
         $GLOBALS['VhsAssets'][$name] = $this;
@@ -317,7 +317,7 @@ class Asset implements AssetInterface
     public function setType($type)
     {
         $this->type = $type;
-        if ('css' == strtolower($type)) {
+        if ('css' == \strtolower($type)) {
             $this->setMovable(false);
         }
         return $this;
@@ -436,9 +436,9 @@ class Asset implements AssetInterface
      */
     public function getContent()
     {
-        $path = (0 === strpos($this->path, '/') ? $this->path : GeneralUtility::getFileAbsFileName($this->path));
-        if (true === empty($this->content) && null !== $this->path && file_exists($path)) {
-            return file_get_contents($path);
+        $path = (0 === \strpos($this->path, '/') ? $this->path : GeneralUtility::getFileAbsFileName($this->path));
+        if (true === empty($this->content) && null !== $this->path && \file_exists($path)) {
+            return \file_get_contents($path);
         }
         return $this->content;
     }
@@ -471,14 +471,14 @@ class Asset implements AssetInterface
             $this->path = null;
             return $this;
         }
-        if (false === strpos($path, '://') && 0 !== strpos($path, '/')) {
+        if (false === \strpos($path, '://') && 0 !== \strpos($path, '/')) {
             $path = GeneralUtility::getFileAbsFileName($path);
         }
         if (null === $this->type) {
-            $this->setType(pathinfo($path, PATHINFO_EXTENSION));
+            $this->setType(\pathinfo($path, PATHINFO_EXTENSION));
         }
         if (null === $this->name) {
-            $this->setName(pathinfo($path, PATHINFO_FILENAME));
+            $this->setName(\pathinfo($path, PATHINFO_FILENAME));
         }
         $this->path = $path;
         return $this;
@@ -559,8 +559,8 @@ class Asset implements AssetInterface
             }
         }
         $settings = (array) self::$settingsCache;
-        $properties = get_class_vars(get_class($this));
-        foreach (array_keys($properties) as $propertyName) {
+        $properties = \get_class_vars(\get_class($this));
+        foreach (\array_keys($properties) as $propertyName) {
             $properties[$propertyName] = $this->$propertyName;
         }
 

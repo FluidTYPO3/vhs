@@ -74,7 +74,7 @@ class ValuesViewHelper extends AbstractViewHelper implements CompilableInterface
         RenderingContextInterface $renderingContext
     ) {
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure());
-        $output = array_values($subject);
+        $output = \array_values($subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $arguments['as'],

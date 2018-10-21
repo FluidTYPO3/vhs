@@ -23,6 +23,6 @@ class DecodeViewHelperTest extends AbstractViewHelperTest
     {
         $encoded = 'Url%20Encoded';
         $result = $this->executeViewHelper(['content' => $encoded]);
-        $this->assertEquals(rawurldecode($encoded), $result);
+        $this->assertEquals(\rawurldecode($encoded), $result);
     }
 }

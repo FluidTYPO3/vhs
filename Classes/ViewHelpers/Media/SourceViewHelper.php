@@ -129,13 +129,13 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         if (false === empty($format)) {
             $setup['ext'] = $format;
         }
-        if (0 < intval($quality)) {
+        if (0 < \intval($quality)) {
             $quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
             $setup['params'] .= ' -quality ' . $quality;
         }
 
-        if (is_string($imageSource) && 'BE' === TYPO3_MODE && '../' === mb_substr($imageSource, 0, 3)) {
-            $imageSource = mb_substr($imageSource, 3);
+        if (\is_string($imageSource) && 'BE' === TYPO3_MODE && '../' === \mb_substr($imageSource, 0, 3)) {
+            $imageSource = \mb_substr($imageSource, 3);
         }
         $result = $this->contentObject->getImgResource($imageSource, $setup);
 
@@ -143,7 +143,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
         }
 
-        $src = $this->preprocessSourceUri(rawurldecode($result[3]));
+        $src = $this->preprocessSourceUri(\rawurldecode($result[3]));
 
         if (null === $this->arguments['media']) {
             $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
@@ -168,11 +168,11 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
         } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
             if (GeneralUtility::isValidUrl($src)) {
-                $src = ltrim($src, '/');
+                $src = \ltrim($src, '/');
             } elseif (TYPO3_MODE === 'FE') {
-                $src = $GLOBALS['TSFE']->absRefPrefix . ltrim($src, '/');
+                $src = $GLOBALS['TSFE']->absRefPrefix . \ltrim($src, '/');
             } else {
-                $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
+                $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . \ltrim($src, '/');
             }
         }
         return $src;

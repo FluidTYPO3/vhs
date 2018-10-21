@@ -86,14 +86,14 @@ class FilterViewHelper extends AbstractViewHelper implements CompilableInterface
         $invert = (boolean) $arguments['invert'];
         $nullFilter = (boolean) $arguments['nullFilter'];
 
-        if (null === $subject || (false === is_array($subject) && false === $subject instanceof \Traversable)) {
+        if (null === $subject || (false === \is_array($subject) && false === $subject instanceof \Traversable)) {
             return [];
         }
         if ((false === (boolean) $nullFilter && null === $filter) || '' === $filter) {
             return $subject;
         }
         if (true === $subject instanceof \Traversable) {
-            $subject = iterator_to_array($subject);
+            $subject = \iterator_to_array($subject);
         }
         $items = [];
         $invertFlag = !$invert;
@@ -102,7 +102,7 @@ class FilterViewHelper extends AbstractViewHelper implements CompilableInterface
                 $items[$key] = $item;
             }
         }
-        return true === $preserveKeys ? $items : array_values($items);
+        return true === $preserveKeys ? $items : \array_values($items);
     }
 
     /**
@@ -118,11 +118,11 @@ class FilterViewHelper extends AbstractViewHelper implements CompilableInterface
      */
     protected static function filter($item, $filter, $propertyName)
     {
-        if (false === empty($propertyName) && (true === is_object($item) || true === is_array($item))) {
+        if (false === empty($propertyName) && (true === \is_object($item) || true === \is_array($item))) {
             $value = ObjectAccess::getPropertyPath($item, $propertyName);
         } else {
             $value = $item;
         }
-        return is_array($filter) ? in_array($value, $filter) : ($value == $filter);
+        return \is_array($filter) ? \in_array($value, $filter) : ($value == $filter);
     }
 }

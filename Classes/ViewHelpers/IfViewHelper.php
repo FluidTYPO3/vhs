@@ -96,15 +96,15 @@ class IfViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateStack(array $stack)
     {
-        $stackCount = count($stack);
+        $stackCount = \count($stack);
 
         if (0 === $stackCount) {
             return false;
         } elseif (1 === $stackCount) {
-            return BooleanNode::convertToBoolean(reset($stack));
+            return BooleanNode::convertToBoolean(\reset($stack));
         } elseif (3 === $stackCount) {
-            list ($leftSide, $operator, $rightSide) = array_values($stack);
-            if (true === is_string($operator) && true === isset(self::$comparisonOperators[$operator])) {
+            list ($leftSide, $operator, $rightSide) = \array_values($stack);
+            if (true === \is_string($operator) && true === isset(self::$comparisonOperators[$operator])) {
                 $operator = self::$comparisonOperators[$operator];
                 return BooleanNode::evaluateComparator($operator, $leftSide, $rightSide);
             }
@@ -115,7 +115,7 @@ class IfViewHelper extends AbstractConditionViewHelper
         $operatorIndex = false;
 
         foreach ($stack as $index => $element) {
-            if (true === is_string($element) && true === isset(self::$logicalOperators[$element])) {
+            if (true === \is_string($element) && true === isset(self::$logicalOperators[$element])) {
                 $currentOperator = self::$logicalOperators[$element];
                 $currentOperatorPrecedence = self::$operatorPrecedence[$currentOperator];
                 if ($currentOperatorPrecedence <= $operatorPrecedence) {
@@ -133,7 +133,7 @@ class IfViewHelper extends AbstractConditionViewHelper
             );
         }
 
-        $operatorIndex = array_search($operatorIndex, array_keys($stack));
+        $operatorIndex = \array_search($operatorIndex, \array_keys($stack));
         if (0 === $operatorIndex || $operatorIndex + 1 >= $stackCount) {
             throw new \RuntimeException(
                 'The stack may not contain a logical operator at the first or last element.',
@@ -141,8 +141,8 @@ class IfViewHelper extends AbstractConditionViewHelper
             );
         }
 
-        $leftSide = array_slice($stack, 0, $operatorIndex);
-        $rightSide = array_slice($stack, $operatorIndex + 1);
+        $leftSide = \array_slice($stack, 0, $operatorIndex);
+        $rightSide = \array_slice($stack, $operatorIndex + 1);
 
         return self::evaluateLogicalOperator($leftSide, $operator, $rightSide);
     }
@@ -174,9 +174,9 @@ class IfViewHelper extends AbstractConditionViewHelper
      */
     protected static function prepareSideForEvaluation(array $side)
     {
-        if (1 === count($side)) {
-            $element = reset($side);
-            if (true === is_array($element)) {
+        if (1 === \count($side)) {
+            $element = \reset($side);
+            if (true === \is_array($element)) {
                 return $element;
             }
         }

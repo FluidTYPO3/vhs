@@ -33,7 +33,7 @@ class CookieViewHelper extends AbstractOnceViewHelper
     {
         $identifier = static::getIdentifier($arguments);
         $domain = $arguments['lockToDomain'] ? $_SERVER['HTTP_HOST'] : null;
-        setcookie($identifier, '1', time() + $arguments['ttl'], null, $domain);
+        \setcookie($identifier, '1', \time() + $arguments['ttl'], null, $domain);
     }
 
     /**
@@ -67,6 +67,6 @@ class CookieViewHelper extends AbstractOnceViewHelper
     {
         $identifier = static::getIdentifier($arguments);
         unset($_SESSION[$identifier], $_COOKIE[$identifier]);
-        setcookie($identifier, null, time() - 1);
+        \setcookie($identifier, null, \time() - 1);
     }
 }

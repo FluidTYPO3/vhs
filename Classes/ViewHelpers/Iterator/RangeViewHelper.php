@@ -69,7 +69,7 @@ class RangeViewHelper extends AbstractViewHelper implements CompilableInterface
         RenderingContextInterface $renderingContext
     ) {
         return static::renderChildrenWithVariableOrReturnInputStatic(
-            range($arguments['low'], $arguments['high'], $arguments['step']),
+            \range($arguments['low'], $arguments['high'], $arguments['step']),
             $arguments['as'],
             $renderingContext,
             $renderChildrenClosure

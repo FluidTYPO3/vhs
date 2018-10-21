@@ -63,7 +63,7 @@ class FieldNameViewHelper extends AbstractViewHelper
         if ($this->isObjectAccessorMode()) {
             $formObjectName = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName');
             if (!empty($formObjectName)) {
-                $propertySegments = explode('.', $this->arguments['property']);
+                $propertySegments = \explode('.', $this->arguments['property']);
                 $propertyPath = '';
                 foreach ($propertySegments as $segment) {
                     $propertyPath .= '[' . $segment . ']';
@@ -85,9 +85,9 @@ class FieldNameViewHelper extends AbstractViewHelper
         if ('' === $fieldNamePrefix) {
             return $name;
         }
-        $fieldNameSegments = explode('[', $name, 2);
+        $fieldNameSegments = \explode('[', $name, 2);
         $name = $fieldNamePrefix . '[' . $fieldNameSegments[0] . ']';
-        if (1 < count($fieldNameSegments)) {
+        if (1 < \count($fieldNameSegments)) {
             $name .= '[' . $fieldNameSegments[1];
         }
         if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'formFieldNames')) {

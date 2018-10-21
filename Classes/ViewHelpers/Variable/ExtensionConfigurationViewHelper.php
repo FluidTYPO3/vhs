@@ -71,11 +71,11 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper implements Com
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
         }
 
-        if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
+        if (!\array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
             return null;
-        } elseif (!array_key_exists($extensionKey, static::$configurations)) {
-            if (is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
-                $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+        } elseif (!\array_key_exists($extensionKey, static::$configurations)) {
+            if (\is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
+                $extConf = \unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
             } else {
                 $extConf = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey];
             }

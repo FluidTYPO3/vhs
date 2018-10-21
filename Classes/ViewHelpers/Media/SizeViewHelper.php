@@ -58,14 +58,14 @@ class SizeViewHelper extends AbstractViewHelper
 
         $file = GeneralUtility::getFileAbsFileName($path);
 
-        if (false === file_exists($file) || true === is_dir($file)) {
+        if (false === \file_exists($file) || true === \is_dir($file)) {
             throw new Exception(
                 'Cannot determine size of "' . $file . '". File does not exist or is a directory.',
                 1356953963
             );
         }
 
-        $size = filesize($file);
+        $size = \filesize($file);
 
         if (false === $size) {
             throw new Exception('Cannot determine size of "' . $file . '".', 1356954032);

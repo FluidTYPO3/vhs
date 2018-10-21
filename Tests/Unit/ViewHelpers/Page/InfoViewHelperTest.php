@@ -18,7 +18,7 @@ class InfoViewHelperTest extends AbstractViewHelperTest
 {
     public function testReturnsCorrectSingleFieldValue()
     {
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+        if (\class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
             $this->markTestSkipped('Test is skippped on TYPO3v8 for now, due to tested code having tight coupling to Doctrine');
         }
         $expectedFieldValue = 42;
@@ -30,7 +30,7 @@ class InfoViewHelperTest extends AbstractViewHelperTest
 
     public function testReturnsPageRowIfNoFieldGiven()
     {
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+        if (\class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
             $this->markTestSkipped('Test is skippped on TYPO3v8 for now, due to tested code having tight coupling to Doctrine');
         }
         $expectedRow = ['uid' => 42, 'tx_foo_bar' => 'baz'];
@@ -42,7 +42,7 @@ class InfoViewHelperTest extends AbstractViewHelperTest
 
     public function testThrowsExceptionWhenUsedInBackend()
     {
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+        if (\class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
             $this->markTestSkipped('Test is skippped on TYPO3v8 for now, due to tested code having tight coupling to Doctrine');
         }
         unset($GLOBALS['TSFE']);

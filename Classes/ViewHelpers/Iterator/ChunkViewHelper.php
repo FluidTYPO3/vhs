@@ -81,18 +81,18 @@ class ChunkViewHelper extends AbstractViewHelper implements CompilableInterface
             return $output;
         }
         if (true === (boolean) $fixed) {
-            $subjectSize = count($subject);
+            $subjectSize = \count($subject);
             if (0 < $subjectSize) {
-                $chunkSize = ceil($subjectSize / $count);
-                $output = array_chunk($subject, $chunkSize, $preserveKeys);
+                $chunkSize = \ceil($subjectSize / $count);
+                $output = \array_chunk($subject, $chunkSize, $preserveKeys);
             }
             // Fill the resulting array with empty items to get the desired element count
-            $elementCount = count($output);
+            $elementCount = \count($output);
             if ($elementCount < $count) {
-                $output += array_fill($elementCount, $count - $elementCount, null);
+                $output += \array_fill($elementCount, $count - $elementCount, null);
             }
         } else {
-            $output = array_chunk($subject, $count, $preserveKeys);
+            $output = \array_chunk($subject, $count, $preserveKeys);
         }
 
         return static::renderChildrenWithVariableOrReturnInputStatic(

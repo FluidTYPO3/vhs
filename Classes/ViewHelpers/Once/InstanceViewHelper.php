@@ -37,7 +37,7 @@ class InstanceViewHelper extends AbstractOnceViewHelper
             return $arguments['identifier'];
         }
         $request = static::$currentRenderingContext->getControllerContext()->getRequest();
-        $identifier = implode('_', [
+        $identifier = \implode('_', [
             $request->getControllerActionName(),
             $request->getControllerName(),
             $request->getPluginName(),
@@ -53,7 +53,7 @@ class InstanceViewHelper extends AbstractOnceViewHelper
     protected static function storeIdentifier(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
-        if (false === is_array($GLOBALS[static::class])) {
+        if (false === \is_array($GLOBALS[static::class])) {
             $GLOBALS[static::class] = [];
         }
         $GLOBALS[static::class][$identifier] = true;

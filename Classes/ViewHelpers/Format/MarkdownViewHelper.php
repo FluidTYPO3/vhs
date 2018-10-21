@@ -71,14 +71,14 @@ class MarkdownViewHelper extends AbstractViewHelper
             return null;
         }
 
-        $cacheIdentifier = sha1($text);
+        $cacheIdentifier = \sha1($text);
         $fromCache = static::getCache()->get($cacheIdentifier);
         if (!empty($fromCache)) {
             return $fromCache;
         }
 
         $markdownExecutablePath = CommandUtility::getCommand('markdown');
-        if (false === is_executable($markdownExecutablePath)) {
+        if (false === \is_executable($markdownExecutablePath)) {
             ErrorUtility::throwViewHelperException(
                 'Use of Markdown requires the "markdown" shell utility to be installed and accessible; this binary ' .
                 'could not be found in any of your configured paths available to this script',
@@ -86,10 +86,10 @@ class MarkdownViewHelper extends AbstractViewHelper
             );
         }
         if (true === (boolean) $trim) {
-            $text = trim($text);
+            $text = \trim($text);
         }
         if (true === (boolean) $htmlentities) {
-            $text = htmlentities($text);
+            $text = \htmlentities($text);
         }
         $transformed = static::transform($text, $markdownExecutablePath);
         static::getCache()->set($cacheIdentifier, $transformed);
@@ -109,24 +109,24 @@ class MarkdownViewHelper extends AbstractViewHelper
             2 => ['pipe', 'a']
         ];
 
-        $process = proc_open($markdownExecutablePath, $descriptorspec, $pipes, null, $GLOBALS['_ENV']);
+        $process = \proc_open($markdownExecutablePath, $descriptorspec, $pipes, null, $GLOBALS['_ENV']);
 
-        stream_set_blocking($pipes[0], 1);
-        stream_set_blocking($pipes[1], 1);
-        stream_set_blocking($pipes[2], 1);
+        \stream_set_blocking($pipes[0], 1);
+        \stream_set_blocking($pipes[1], 1);
+        \stream_set_blocking($pipes[2], 1);
 
-        fwrite($pipes[0], $text);
-        fclose($pipes[0]);
+        \fwrite($pipes[0], $text);
+        \fclose($pipes[0]);
 
-        $transformed = stream_get_contents($pipes[1]);
-        fclose($pipes[1]);
+        $transformed = \stream_get_contents($pipes[1]);
+        \fclose($pipes[1]);
 
-        $errors = stream_get_contents($pipes[2]);
-        fclose($pipes[2]);
+        $errors = \stream_get_contents($pipes[2]);
+        \fclose($pipes[2]);
 
-        $exitCode = proc_close($process);
+        $exitCode = \proc_close($process);
 
-        if ('' !== trim($errors)) {
+        if ('' !== \trim($errors)) {
             ErrorUtility::throwViewHelperException(
                 'There was an error while executing ' . $markdownExecutablePath . '. The return code was ' .
                 $exitCode . ' and the message reads: ' . $errors,

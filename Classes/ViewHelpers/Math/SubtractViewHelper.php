@@ -46,7 +46,7 @@ class SubtractViewHelper extends AbstractMultipleMathViewHelper
         $aIsIterable = static::assertIsArrayOrIterator($a);
         if (true === $aIsIterable && null === $b) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
-            return -array_sum($a);
+            return -\array_sum($a);
         }
         if ($b === null && (boolean) $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);

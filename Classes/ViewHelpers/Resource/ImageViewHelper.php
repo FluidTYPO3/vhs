@@ -111,7 +111,7 @@ class ImageViewHelper extends AbstractImageViewHelper
         }
         $as = $this->arguments['as'];
         if (true === empty($as)) {
-            return implode('', $tags);
+            return \implode('', $tags);
         }
         return $this->renderChildrenWithVariableOrReturnInput($info);
     }

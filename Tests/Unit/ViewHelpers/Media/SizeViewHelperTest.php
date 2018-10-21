@@ -38,7 +38,7 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     public function returnsZeroForEmptyArguments()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
+        if (\method_exists($viewHelper, 'injectReflectionService')) {
             $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
@@ -53,7 +53,7 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     public function returnsFileSizeAsInteger()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
+        if (\method_exists($viewHelper, 'injectReflectionService')) {
             $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
@@ -68,7 +68,7 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     public function throwsExceptionWhenFileNotFound()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
+        if (\method_exists($viewHelper, 'injectReflectionService')) {
             $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
@@ -84,7 +84,7 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
+        if (\method_exists($viewHelper, 'injectReflectionService')) {
             $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));

@@ -94,8 +94,8 @@ class AlternateViewHelper extends AbstractViewHelper
 
         $languages = $this->arguments['languages'];
         if (true === $languages instanceof \Traversable) {
-            $languages = iterator_to_array($languages);
-        } elseif (true === is_string($languages)) {
+            $languages = \iterator_to_array($languages);
+        } elseif (true === \is_string($languages)) {
             $languages = GeneralUtility::trimExplode(',', $languages, true);
         } else {
             $languages = (array) $languages;
@@ -141,7 +141,7 @@ class AlternateViewHelper extends AbstractViewHelper
         }
 
         if (false === $usePageRenderer) {
-            return trim($output);
+            return \trim($output);
         }
 
         return null;

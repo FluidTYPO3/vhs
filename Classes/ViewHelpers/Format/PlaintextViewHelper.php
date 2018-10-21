@@ -44,9 +44,9 @@ class PlaintextViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $content = $renderChildrenClosure();
-        $content = trim($content);
-        $lines = explode("\n", $content);
-        $lines = array_map('trim', $lines);
-        return implode(LF, $lines);
+        $content = \trim($content);
+        $lines = \explode("\n", $content);
+        $lines = \array_map('trim', $lines);
+        return \implode(LF, $lines);
     }
 }

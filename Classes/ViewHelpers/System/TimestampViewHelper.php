@@ -42,6 +42,6 @@ class TimestampViewHelper extends AbstractViewHelper implements CompilableInterf
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return time();
+        return \time();
     }
 }

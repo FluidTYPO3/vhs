@@ -101,7 +101,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     protected function getFileReferences($table, $field, $uidOrRecord)
     {
-        if (is_array($uidOrRecord)) {
+        if (\is_array($uidOrRecord)) {
             $record = $uidOrRecord;
         } else {
             $record = $this->getRecord($uidOrRecord);
@@ -205,7 +205,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $references = $ids;
 
             if (empty($references) === false) {
-                $referenceUids = array_keys($references);
+                $referenceUids = \array_keys($references);
                 $fileReferences = [];
                 if (empty($referenceUids) === false) {
                     foreach ($referenceUids as $referenceUid) {

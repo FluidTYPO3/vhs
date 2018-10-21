@@ -112,7 +112,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                 ->execute()
                 ->fetchAll();
 
-            $fileUids = array_unique(array_column($rows, 'uid_foreign'));
+            $fileUids = \array_unique(\array_column($rows, 'uid_foreign'));
 
             if (true === empty($identifier)) {
                 foreach ($fileUids as $fileUid) {
@@ -136,15 +136,15 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         foreach ($identifier as $i) {
             try {
                 if (true === $treatIdAsUid) {
-                    $file = $resourceFactory->getFileObject(intval($i));
+                    $file = $resourceFactory->getFileObject(\intval($i));
                 } elseif (true === $treatIdAsReference) {
-                    $fileReference = $resourceFactory->getFileReferenceObject(intval($i));
+                    $fileReference = $resourceFactory->getFileReferenceObject(\intval($i));
                     $file = $fileReference->getOriginalFile();
                 } else {
                     $file = $resourceFactory->getFileObjectFromCombinedIdentifier($i);
                 }
 
-                if (true === isset($fileUids) && false === in_array($file->getUid(), $fileUids)) {
+                if (true === isset($fileUids) && false === \in_array($file->getUid(), $fileUids)) {
                     continue;
                 }
 
@@ -175,8 +175,8 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         if (true === $argument instanceof \Traversable) {
-            $argument = iterator_to_array($argument);
-        } elseif (true === is_string($argument)) {
+            $argument = \iterator_to_array($argument);
+        } elseif (true === \is_string($argument)) {
             $argument = GeneralUtility::trimExplode(',', $argument, true);
         } else {
             $argument = (array) $argument;
@@ -194,7 +194,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
      */
     private function getTablenameForSystemConfiguration()
     {
-        if (ExtensionManagementUtility::isLoaded('filemetadata') || version_compare(TYPO3_version, '8.0.0', '>=')) {
+        if (ExtensionManagementUtility::isLoaded('filemetadata') || \version_compare(TYPO3_version, '8.0.0', '>=')) {
             return 'sys_file_metadata';
         }
         return 'sys_file';

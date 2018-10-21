@@ -81,7 +81,7 @@ class TemplateViewHelper extends AbstractRenderViewHelper
         $file = GeneralUtility::getFileAbsFileName($file);
         $view = static::getPreparedView();
         $view->setTemplatePathAndFilename($file);
-        if (is_array($this->arguments['variables'])) {
+        if (\is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
         }
         $format = $this->arguments['format'];
@@ -89,12 +89,12 @@ class TemplateViewHelper extends AbstractRenderViewHelper
             $view->setFormat($format);
         }
         $paths = $this->arguments['paths'];
-        if (is_array($paths)) {
-            if (isset($paths['layoutRootPaths']) && is_array($paths['layoutRootPaths'])) {
+        if (\is_array($paths)) {
+            if (isset($paths['layoutRootPaths']) && \is_array($paths['layoutRootPaths'])) {
                 $layoutRootPaths = $this->processPathsArray($paths['layoutRootPaths']);
                 $view->setLayoutRootPaths($layoutRootPaths);
             }
-            if (isset($paths['partialRootPaths']) && is_array($paths['partialRootPaths'])) {
+            if (isset($paths['partialRootPaths']) && \is_array($paths['partialRootPaths'])) {
                 $partialRootPaths = $this->processPathsArray($paths['partialRootPaths']);
                 $view->setPartialRootPaths($partialRootPaths);
             }
@@ -110,7 +110,7 @@ class TemplateViewHelper extends AbstractRenderViewHelper
     {
         $pathsArray = [];
         foreach ($paths as $key => $path) {
-            $pathsArray[$key] = (0 === strpos($path, 'EXT:')) ? GeneralUtility::getFileAbsFileName($path) : $path;
+            $pathsArray[$key] = (0 === \strpos($path, 'EXT:')) ? GeneralUtility::getFileAbsFileName($path) : $path;
         }
 
         return $pathsArray;

@@ -46,7 +46,7 @@ class PregReplaceViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $subject = isset($arguments['as']) ? $arguments['subject'] : ($arguments['subject'] ?? $renderChildrenClosure());
-        $value = preg_replace($arguments['pattern'], $arguments['replacement'], $subject);
+        $value = \preg_replace($arguments['pattern'], $arguments['replacement'], $subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $value,
             $arguments['as'],

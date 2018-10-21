@@ -86,15 +86,15 @@ class SetViewHelper extends AbstractViewHelper implements CompilableInterface
         $name = $arguments['name'];
         $value = $renderChildrenClosure();
         $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
-        if (false === strpos($name, '.')) {
+        if (false === \strpos($name, '.')) {
             if (true === $variableProvider->exists($name)) {
                 $variableProvider->remove($name);
             }
             $variableProvider->add($name, $value);
-        } elseif (1 === mb_substr_count($name, '.')) {
-            $parts = explode('.', $name);
-            $objectName = array_shift($parts);
-            $path = implode('.', $parts);
+        } elseif (1 === \mb_substr_count($name, '.')) {
+            $parts = \explode('.', $name);
+            $objectName = \array_shift($parts);
+            $path = \implode('.', $parts);
             if (false === $variableProvider->exists($objectName)) {
                 return null;
             }

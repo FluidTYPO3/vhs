@@ -33,8 +33,8 @@ class MedianViewHelper extends AbstractSingleMathViewHelper
         $aIsIterable = static::assertIsArrayOrIterator($a);
         if (true === $aIsIterable) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
-            sort($a, SORT_NUMERIC);
-            $size = count($a);
+            \sort($a, SORT_NUMERIC);
+            $size = \count($a);
             $midpoint = $size / 2;
             if (1 === $size % 2) {
                 /*
@@ -44,8 +44,8 @@ class MedianViewHelper extends AbstractSingleMathViewHelper
 				 */
                 return $a[(integer) $midpoint];
             }
-            $candidates = array_slice($a, floor($midpoint) - 1, 2);
-            return array_sum($candidates) / 2;
+            $candidates = \array_slice($a, \floor($midpoint) - 1, 2);
+            return \array_sum($candidates) / 2;
         }
         return $a;
     }

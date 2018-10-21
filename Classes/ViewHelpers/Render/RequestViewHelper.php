@@ -76,7 +76,7 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $extensionName = $arguments['extensionName'];
         $pluginName = $arguments['pluginName'];
         $vendorName = $arguments['vendorName'];
-        $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
+        $requestArguments = \is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
         $objectManager = static::getObjectManager();
         $contentObjectBackup = $configurationManager->getContentObject();
@@ -121,7 +121,7 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
                 throw $error;
             }
             if (false === empty($arguments['onError'])) {
-                return sprintf($arguments['onError'], [$error->getMessage()], $error->getCode());
+                return \sprintf($arguments['onError'], [$error->getMessage()], $error->getCode());
             }
             return $error->getMessage() . ' (' . $error->getCode() . ')';
         }

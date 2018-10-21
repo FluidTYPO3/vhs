@@ -44,6 +44,6 @@ class RoundViewHelper extends AbstractSingleMathViewHelper
             }
             return $a;
         }
-        return round($a, $arguments['decimals']);
+        return \round($a, $arguments['decimals']);
     }
 }

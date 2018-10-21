@@ -72,7 +72,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
     public function render()
     {
         $src = GeneralUtility::getFileAbsFileName($this->arguments['src']);
-        if (false === file_exists($src)) {
+        if (false === \file_exists($src)) {
             return null;
         }
         $density = $this->arguments['density'];
@@ -80,16 +80,16 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         $page = (integer) $this->arguments['page'];
         $background = $this->arguments['background'];
         $forceOverwrite = (boolean) $this->arguments['forceOverwrite'];
-        $filename = basename($src);
+        $filename = \basename($src);
         $pageArgument = $page > 0 ? $page - 1 : 0;
         if (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'])) {
             $colorspace = $GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'];
         } else {
             $colorspace = 'RGB';
         }
-        $tempPath = (version_compare(TYPO3_version, 8.0, '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
+        $tempPath = (\version_compare(TYPO3_version, 8.0, '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
         $path = GeneralUtility::getFileAbsFileName($tempPath . 'vhs-pdf-' . $filename . '-page' . $page . '.png');
-        if (false === file_exists($path) || true === $forceOverwrite) {
+        if (false === \file_exists($path) || true === $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
             if (0 < (integer) $density) {
                 $arguments .= ' -density ' . $density;

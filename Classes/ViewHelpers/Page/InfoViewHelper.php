@@ -64,7 +64,7 @@ class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
     ) {
         if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE']->sys_page instanceof PageRepository) {
             ErrorUtility::throwViewHelperException(
-                sprintf('ViewHelper %s does not work in backend context without a simulated frontend.', static::class),
+                \sprintf('ViewHelper %s does not work in backend context without a simulated frontend.', static::class),
                 1489931508
             );
         }
@@ -77,7 +77,7 @@ class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
         $content = null;
         if (true === empty($field)) {
             $content = $page;
-        } elseif (true === is_array($page) && true === isset($page[$field])) {
+        } elseif (true === \is_array($page) && true === isset($page[$field])) {
             $content = $page[$field];
         }
 

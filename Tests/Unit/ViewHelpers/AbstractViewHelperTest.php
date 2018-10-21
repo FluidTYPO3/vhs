@@ -77,9 +77,9 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
      */
     protected function getViewHelperClassName()
     {
-        $class = get_class($this);
-        $class = substr($class, 0, -4);
-        $class = str_replace('Tests\\Unit\\', '', $class);
+        $class = \get_class($this);
+        $class = \substr($class, 0, -4);
+        $class = \str_replace('Tests\\Unit\\', '', $class);
         return $class;
     }
 
@@ -92,7 +92,7 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
     {
         /** @var NodeInterface $node */
         $className = 'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\' . $type . 'Node';
-        if (class_exists($className)) {
+        if (\class_exists($className)) {
             $node = new $className($value);
         } else {
             $className = 'TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\' . $type . 'Node';
@@ -125,12 +125,12 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
     {
         $instance = $this->createInstance();
         $node = $this->createViewHelperNode($instance, $arguments);
-        if (method_exists($this->renderingContext, 'getVariableProvider')) {
+        if (\method_exists($this->renderingContext, 'getVariableProvider')) {
             $this->renderingContext->getVariableProvider()->setSource($variables);
         } else {
             /** @var TemplateVariableContainer $container */
             $container = $this->objectManager->get(TemplateVariableContainer::class);
-            if (0 < count($variables)) {
+            if (0 < \count($variables)) {
                 ObjectAccess::setProperty($container, 'variables', $variables, true);
             }
             ObjectAccess::setProperty($this->renderingContext, 'templateVariableContainer', $container, true);
@@ -163,14 +163,14 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
         $instance->setArguments($arguments);
         if ($childNode) {
             $node->expects($this->any())->method('getChildNodes')->willReturn([$childNode]);
-            if (method_exists($instance, 'setChildNodes')) {
+            if (\method_exists($instance, 'setChildNodes')) {
                 $instance->setChildNodes([$childNode]);
             }
         } else {
             $node->expects($this->any())->method('getChildNodes')->willReturn([]);
         }
 
-        if (method_exists($instance, 'injectReflectionService')) {
+        if (\method_exists($instance, 'injectReflectionService')) {
             $instance->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
         return $instance;
@@ -225,7 +225,7 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
         $context = $this->renderingContext;
         $instance = $this->buildViewHelperInstance($arguments, $variables, null, $extensionName, $pluginName);
         $instance->setRenderChildrenClosure(function() use ($instance, $nodeValue, $context) {
-            if (method_exists($instance, 'setChildNodes')
+            if (\method_exists($instance, 'setChildNodes')
                 && (
                     $nodeValue instanceof \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode
                     || $nodeValue instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode
@@ -292,6 +292,6 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
      */
     protected function usesLegacyFluidVersion()
     {
-        return version_compare(TYPO3_version, '8.0', '<');
+        return \version_compare(TYPO3_version, '8.0', '<');
     }
 }

@@ -42,9 +42,9 @@ class DecodeViewHelper extends AbstractViewHelper
         if (true === empty($json)) {
             return null;
         }
-        $value = json_decode($json, true);
+        $value = \json_decode($json, true);
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (JSON_ERROR_NONE !== \json_last_error()) {
             ErrorUtility::throwViewHelperException('The provided argument is invalid JSON.', 1358440054);
         }
 

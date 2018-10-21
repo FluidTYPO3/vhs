@@ -147,52 +147,52 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         $evaluationType = $this->arguments['evaluationType'];
         $evaluations = [];
         if (true === (boolean) $this->arguments['anyFrontendUser']) {
-            $evaluations['anyFrontendUser'] = intval($this->assertFrontendUserLoggedIn());
+            $evaluations['anyFrontendUser'] = \intval($this->assertFrontendUserLoggedIn());
         }
         if (true === (boolean) $this->arguments['anyFrontendUserGroup']) {
-            $evaluations['anyFrontendUserGroup'] = intval($this->assertFrontendUserGroupLoggedIn());
+            $evaluations['anyFrontendUserGroup'] = \intval($this->assertFrontendUserGroupLoggedIn());
         }
         if (true === isset($this->arguments['frontendUser'])) {
             $evaluations['frontendUser'] =
-                intval($this->assertFrontendUserLoggedIn($this->arguments['frontendUser']));
+                \intval($this->assertFrontendUserLoggedIn($this->arguments['frontendUser']));
         }
         if (true === isset($this->arguments['frontendUsers'])) {
             $evaluations['frontendUsers'] =
-                intval($this->assertFrontendUsersLoggedIn($this->arguments['frontendUsers']));
+                \intval($this->assertFrontendUsersLoggedIn($this->arguments['frontendUsers']));
         }
         if (true === isset($this->arguments['frontendUserGroup'])) {
             $evaluations['frontendUserGroup'] =
-                intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroup']));
+                \intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroup']));
         }
         if (true === isset($this->arguments['frontendUserGroups'])) {
             $evaluations['frontendUserGroups'] =
-                intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroups']));
+                \intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroups']));
         }
         if (true === (boolean) $this->arguments['anyBackendUser']) {
-            $evaluations['anyBackendUser'] = intval($this->assertBackendUserLoggedIn());
+            $evaluations['anyBackendUser'] = \intval($this->assertBackendUserLoggedIn());
         }
         if (true === (boolean) $this->arguments['anyBackendUserGroup']) {
-            $evaluations['anyBackendUserGroup'] = intval($this->assertBackendUserGroupLoggedIn());
+            $evaluations['anyBackendUserGroup'] = \intval($this->assertBackendUserGroupLoggedIn());
         }
         if (true === isset($this->arguments['backendUser'])) {
-            $evaluations['backendUser'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUser']));
+            $evaluations['backendUser'] = \intval($this->assertBackendUserLoggedIn($this->arguments['backendUser']));
         }
         if (true === isset($this->arguments['backendUsers'])) {
-            $evaluations['backendUsers'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUsers']));
+            $evaluations['backendUsers'] = \intval($this->assertBackendUserLoggedIn($this->arguments['backendUsers']));
         }
         if (true === isset($this->arguments['backendUserGroup'])) {
             $evaluations['backendUserGroup'] =
-                intval($this->assertBackendUserGroupLoggedIn($this->arguments['backendUserGroup']));
+                \intval($this->assertBackendUserGroupLoggedIn($this->arguments['backendUserGroup']));
         }
         if (true === isset($this->arguments['backendUserGroups'])) {
             $evaluations['backendUserGroups'] =
-                intval($this->assertBackendUserGroupLoggedIn($this->arguments['backendUserGroups']));
+                \intval($this->assertBackendUserGroupLoggedIn($this->arguments['backendUserGroups']));
         }
         if (true === (boolean) $this->arguments['admin']) {
-            $evaluations['admin'] = intval($this->assertAdminLoggedIn());
+            $evaluations['admin'] = \intval($this->assertAdminLoggedIn());
         }
-        $sum = array_sum($evaluations);
-        return (boolean) ('AND' === $evaluationType ? count($evaluations) === $sum : $sum > 0);
+        $sum = \array_sum($evaluations);
+        return (boolean) ('AND' === $evaluationType ? \count($evaluations) === $sum : $sum > 0);
     }
 
     /**
@@ -216,7 +216,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
                 return false;
             }
         }
-        return (boolean) (true === is_object($currentFrontendUser));
+        return (boolean) (true === \is_object($currentFrontendUser));
     }
 
     /**
@@ -281,7 +281,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
                 return false;
             }
         }
-        return (boolean) (true === is_array($currentBackendUser));
+        return (boolean) (true === \is_array($currentBackendUser));
     }
 
     /**
@@ -299,17 +299,17 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
             return false;
         }
         $currentBackendUser = $this->getCurrentBackendUser();
-        $currentUserGroups = trim($currentBackendUser['usergroup'], ',');
-        $userGroups = false === empty($currentUserGroups) ? explode(',', $currentUserGroups) : [];
-        if (0 === count($userGroups)) {
+        $currentUserGroups = \trim($currentBackendUser['usergroup'], ',');
+        $userGroups = false === empty($currentUserGroups) ? \explode(',', $currentUserGroups) : [];
+        if (0 === \count($userGroups)) {
             return false;
         }
-        if (true === is_string($groups)) {
-            $groups = trim($groups, ',');
-            $groups = false === empty($groups) ? explode(',', $groups) : [];
+        if (true === \is_string($groups)) {
+            $groups = \trim($groups, ',');
+            $groups = false === empty($groups) ? \explode(',', $groups) : [];
         }
-        if (0 < count($groups)) {
-            return (boolean) (0 < count(array_intersect($userGroups, $groups)));
+        if (0 < \count($groups)) {
+            return (boolean) (0 < \count(\array_intersect($userGroups, $groups)));
         }
         return false;
     }

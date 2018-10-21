@@ -77,7 +77,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
     {
         $src = $this->arguments['src'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
-        if (is_object($src) && $src instanceof FileReference) {
+        if (\is_object($src) && $src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsReference = true;
         }

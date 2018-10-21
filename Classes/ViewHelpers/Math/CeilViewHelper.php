@@ -28,8 +28,8 @@ class CeilViewHelper extends AbstractSingleMathViewHelper
     protected static function calculateAction($a)
     {
         if (static::assertIsArrayOrIterator($a)) {
-            return array_map('ceil', static::arrayFromArrayOrTraversableOrCSVStatic($a));
+            return \array_map('ceil', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
-        return ceil($a);
+        return \ceil($a);
     }
 }

@@ -68,14 +68,14 @@ class LanguageViewHelper extends AbstractViewHelper implements CompilableInterfa
 
         $languages = $arguments['languages'];
         if (true === $languages instanceof \Traversable) {
-            $languages = iterator_to_array($languages);
-        } elseif (true === is_string($languages)) {
+            $languages = \iterator_to_array($languages);
+        } elseif (true === \is_string($languages)) {
             $languages = GeneralUtility::trimExplode(',', $languages, true);
         } else {
             $languages = (array) $languages;
         }
 
-        $pageUid = intval($arguments['pageUid']);
+        $pageUid = \intval($arguments['pageUid']);
         $normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
 
         if (0 === $pageUid) {

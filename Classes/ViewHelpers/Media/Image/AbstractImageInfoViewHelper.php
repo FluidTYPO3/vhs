@@ -86,7 +86,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
             }
         }
 
-        if (is_object($src) && $src instanceof FileReference) {
+        if (\is_object($src) && $src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsUid = false;
             $treatIdAsReference = true;
@@ -102,13 +102,13 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
             }
         } else {
             $file = GeneralUtility::getFileAbsFileName($src);
-            if (false === file_exists($file) || true === is_dir($file)) {
+            if (false === \file_exists($file) || true === \is_dir($file)) {
                 throw new Exception(
                     'Cannot determine info for "' . $file . '". File does not exist or is a directory.',
                     1357066532
                 );
             }
-            $imageSize = getimagesize($file);
+            $imageSize = \getimagesize($file);
             $info = [
                 'width'  => $imageSize[0],
                 'height' => $imageSize[1],

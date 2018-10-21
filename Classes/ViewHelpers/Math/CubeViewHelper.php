@@ -26,8 +26,8 @@ class CubeViewHelper extends AbstractSingleMathViewHelper
     protected static function calculateAction($a)
     {
         if (static::assertIsArrayOrIterator($a)) {
-            return array_map([static::class, 'calculateAction'], $a);
+            return \array_map([static::class, 'calculateAction'], $a);
         }
-        return pow($a, 3);
+        return \pow($a, 3);
     }
 }

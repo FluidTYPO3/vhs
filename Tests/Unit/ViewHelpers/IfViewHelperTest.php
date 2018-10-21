@@ -18,7 +18,7 @@ class IfViewHelperTest extends AbstractViewHelperTest
      */
     public function setUp()
     {
-        if (class_exists(\TYPO3Fluid\Fluid\ViewHelpers\IfViewHelper::class)) {
+        if (\class_exists(\TYPO3Fluid\Fluid\ViewHelpers\IfViewHelper::class)) {
             $this->markTestSkipped('Test not executed on TYPO3v8 (ViewHelper is deprecated from this version and up)');
         }
         parent::setUp();

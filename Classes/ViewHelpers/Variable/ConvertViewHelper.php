@@ -74,11 +74,11 @@ class ConvertViewHelper extends AbstractViewHelper implements CompilableInterfac
     ) {
         $value = $renderChildrenClosure();
         $type = $arguments['type'];
-        if (gettype($value) === $type) {
+        if (\gettype($value) === $type) {
             return $value;
         }
         if (null !== $value) {
-            if ('ObjectStorage' === $type && 'array' === gettype($value)) {
+            if ('ObjectStorage' === $type && 'array' === \gettype($value)) {
                 /** @var ObjectManager $objectManager */
                 $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
                 /** @var ObjectStorage $storage */
@@ -88,16 +88,16 @@ class ConvertViewHelper extends AbstractViewHelper implements CompilableInterfac
                 }
                 $value = $storage;
             } elseif ('array' === $type && true === $value instanceof \Traversable) {
-                $value = iterator_to_array($value, false);
+                $value = \iterator_to_array($value, false);
             } elseif ('array' === $type) {
                 $value = [$value];
             } else {
-                settype($value, $type);
+                \settype($value, $type);
             }
         } else {
             if (true === isset($arguments['default'])) {
                 $default = $arguments['default'];
-                if (gettype($default) !== $type) {
+                if (\gettype($default) !== $type) {
                     throw new \RuntimeException(
                         'Supplied argument "default" is not of the type "' . $type .'"',
                         1364542576

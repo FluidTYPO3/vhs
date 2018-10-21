@@ -49,7 +49,7 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
         if (true === $aIsIterable) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             if ($b === null) {
-                return array_sum($a) / count($a);
+                return \array_sum($a) / \count($a);
             }
             if ($bIsIterable) {
                 $b = static::arrayFromArrayOrTraversableOrCSVStatic($b);

@@ -65,7 +65,7 @@ class CaseViewHelper extends AbstractViewHelper
                 $string = $GLOBALS['TSFE']->csConvObj->conv_case($charset, $string, 'toUpper');
                 break;
             case self::CASE_UCWORDS:
-                $string = ucwords($string);
+                $string = \ucwords($string);
                 break;
             case self::CASE_UCFIRST:
                 $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($charset, $string, 'toUpper');

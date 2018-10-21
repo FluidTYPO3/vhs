@@ -66,18 +66,18 @@ class CallViewHelper extends AbstractViewHelper implements CompilableInterface
         $object = $renderChildrenClosure();
         $method = $arguments['method'];
         $methodArguments = $arguments['arguments'];
-        if (false === is_object($object)) {
+        if (false === \is_object($object)) {
             throw new \RuntimeException(
                 'Using v:call requires an object either as "object" attribute, tag content or inline argument',
                 1356849652
             );
         }
-        if (false === method_exists($object, $method)) {
+        if (false === \method_exists($object, $method)) {
             throw new \RuntimeException(
-                'Method "' . $method . '" does not exist on object of type ' . get_class($object),
+                'Method "' . $method . '" does not exist on object of type ' . \get_class($object),
                 1356834755
             );
         }
-        return call_user_func_array([$object, $method], $methodArguments);
+        return \call_user_func_array([$object, $method], $methodArguments);
     }
 }

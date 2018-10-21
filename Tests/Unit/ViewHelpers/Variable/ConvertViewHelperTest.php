@@ -28,7 +28,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest
      */
     public function executeConversion($value, $type, $expected)
     {
-        if (is_object($expected)) {
+        if (\is_object($expected)) {
             $assertionMethod = 'assertEquals';
         } else {
             $assertionMethod = 'assertSame';

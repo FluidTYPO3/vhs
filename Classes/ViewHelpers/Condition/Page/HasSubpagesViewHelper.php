@@ -77,6 +77,6 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
 
         $menu = self::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);
 
-        return (0 < count($menu));
+        return (0 < \count($menu));
     }
 }

@@ -145,7 +145,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         // Check if link wizard link
         $pageUid = $this->arguments['pageUid'];
         $additionalParameters = (array) $this->arguments['additionalParams'];
-        if (false === is_numeric($pageUid)) {
+        if (false === \is_numeric($pageUid)) {
             $linkConfig = GeneralUtility::unQuoteFilenames($pageUid, true);
             if (true === isset($linkConfig[0])) {
                 $pageUid = $linkConfig[0];
@@ -160,7 +160,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
                 $this->tag->addAttribute('title', $linkConfig[3]);
             }
             if (true === isset($linkConfig[4]) && '-' !== $linkConfig[4]) {
-                $additionalParametersString = trim($linkConfig[4], '&');
+                $additionalParametersString = \trim($linkConfig[4], '&');
                 $additionalParametersArray = GeneralUtility::trimExplode('&', $additionalParametersString);
                 foreach ($additionalParametersArray as $parameter) {
                     list($key, $value) = GeneralUtility::trimExplode('=', $parameter);
@@ -228,7 +228,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         if ($showAccessProtected && $this->pageService->isAccessGranted($page)) {
             $class[] = $this->arguments['classAccessGranted'];
         }
-        $additionalCssClasses = implode(' ', $class);
+        $additionalCssClasses = \implode(' ', $class);
 
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uri = $uriBuilder->reset()
@@ -243,7 +243,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             ->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
             ->build();
         $this->tag->addAttribute('href', $uri);
-        $classes = trim($this->arguments['class'] . ' ' . $additionalCssClasses);
+        $classes = \trim($this->arguments['class'] . ' ' . $additionalCssClasses);
         if (!empty($classes)) {
             $this->tag->addAttribute('class', $classes);
         } else {

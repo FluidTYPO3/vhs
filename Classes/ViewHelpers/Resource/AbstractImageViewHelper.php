@@ -149,9 +149,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         foreach ($files as $file) {
             $imageInfo = $this->contentObject->getImgResource($file->getUid(), $setup);
 
-            if (false === is_array($imageInfo)) {
+            if (false === \is_array($imageInfo)) {
                 throw new Exception(
-                    'Could not get image resource for "' . htmlspecialchars($file->getCombinedIdentifier()) . '".',
+                    'Could not get image resource for "' . \htmlspecialchars($file->getCombinedIdentifier()) . '".',
                     1253191060
                 );
             }
@@ -162,7 +162,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             if (true === GeneralUtility::isValidUrl($imageInfo[3])) {
                 $imageSource = $imageInfo[3];
             } else {
-                $imageSource = $GLOBALS['TSFE']->absRefPrefix . str_replace('%2F', '/', rawurlencode($imageInfo[3]));
+                $imageSource = $GLOBALS['TSFE']->absRefPrefix . \str_replace('%2F', '/', \rawurlencode($imageInfo[3]));
             }
 
             if (true === $onlyProperties) {
@@ -193,8 +193,8 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     protected function simulateFrontendEnvironment()
     {
         $this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
-        $this->workingDirectoryBackup = getcwd();
-        chdir(constant('PATH_site'));
+        $this->workingDirectoryBackup = \getcwd();
+        \chdir(\constant('PATH_site'));
         $typoScriptSetup = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
@@ -202,7 +202,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = 0;
         $template->init();
-        $template->getFileName_backPath = constant('PATH_site');
+        $template->getFileName_backPath = \constant('PATH_site');
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
         $GLOBALS['TSFE']->config = $typoScriptSetup;
@@ -217,7 +217,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     protected function resetFrontendEnvironment()
     {
         $GLOBALS['TSFE'] = $this->tsfeBackup;
-        chdir($this->workingDirectoryBackup);
+        \chdir($this->workingDirectoryBackup);
     }
 
     /**

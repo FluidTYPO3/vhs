@@ -64,13 +64,13 @@ class PageService implements SingletonInterface
     ) {
         $pageRepository = $this->getPageRepository();
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
-        $cacheKey = md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
+        $cacheKey = \md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
         if (false === isset(static::$cachedMenus[$cacheKey])) {
             if (true === (boolean) $disableGroupAccessCheck) {
                 $pageRepository->where_groupAccess = '';
             }
 
-            static::$cachedMenus[$cacheKey] = array_filter(
+            static::$cachedMenus[$cacheKey] = \array_filter(
                 $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints),
                 function($page) {
                     return $this->hidePageForLanguageUid($page) === false;
@@ -88,7 +88,7 @@ class PageService implements SingletonInterface
      */
     public function getPage($pageUid, $disableGroupAccessCheck = false)
     {
-        $cacheKey = md5($pageUid . (integer) $disableGroupAccessCheck);
+        $cacheKey = \md5($pageUid . (integer) $disableGroupAccessCheck);
         if (false === isset(static::$cachedPages[$cacheKey])) {
             static::$cachedPages[$cacheKey] = $this->getPageRepository()->getPage($pageUid, $disableGroupAccessCheck);
         }
@@ -107,7 +107,7 @@ class PageService implements SingletonInterface
         if (null === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $cacheKey = md5($pageUid . (integer) $reverse . (integer) $disableGroupAccessCheck);
+        $cacheKey = \md5($pageUid . (integer) $reverse . (integer) $disableGroupAccessCheck);
         if (false === isset(static::$cachedRootlines[$cacheKey])) {
             $pageRepository = $this->getPageRepository();
             if (true === (boolean) $disableGroupAccessCheck) {
@@ -115,7 +115,7 @@ class PageService implements SingletonInterface
             }
             $rootline = $pageRepository->getRootLine($pageUid);
             if (true === $reverse) {
-                $rootline = array_reverse($rootline);
+                $rootline = \array_reverse($rootline);
             }
             static::$cachedRootlines[$cacheKey] = $rootline;
         }
@@ -148,11 +148,11 @@ class PageService implements SingletonInterface
             $constraints[] = 'doktype != ' . PageRepository::DOKTYPE_SPACER;
         }
 
-        if (0 < count($excludePages)) {
-            $constraints[] = 'uid NOT IN (' . implode(',', $excludePages) . ')';
+        if (0 < \count($excludePages)) {
+            $constraints[] = 'uid NOT IN (' . \implode(',', $excludePages) . ')';
         }
 
-        return 'AND ' . implode(' AND ', $constraints);
+        return 'AND ' . \implode(' AND ', $constraints);
     }
 
     /**
@@ -163,7 +163,7 @@ class PageService implements SingletonInterface
      */
     public function hidePageForLanguageUid($page = null, $languageUid = -1, $normalWhenNoLanguage = true)
     {
-        if (is_array($page)) {
+        if (\is_array($page)) {
             $pageUid = $page['uid'];
             $pageRecord = $page;
         } else {
@@ -180,7 +180,7 @@ class PageService implements SingletonInterface
         if (0 !== $languageUid) {
             $pageOverlay = $this->getPageRepository()->getPageOverlay($pageUid, $languageUid);
         }
-        $translationAvailable = (0 !== count($pageOverlay));
+        $translationAvailable = (0 !== \count($pageOverlay));
 
         return
             (true === $hideIfNotTranslated && (0 !== $languageUid) && false === $translationAvailable) ||
@@ -253,13 +253,13 @@ class PageService implements SingletonInterface
             return true;
         }
 
-        $groups = explode(',', $page['fe_group']);
+        $groups = \explode(',', $page['fe_group']);
 
-        $showPageAtAnyLogin = (in_array(-2, $groups));
-        $hidePageAtAnyLogin = (in_array(-1, $groups));
-        $userIsLoggedIn = (is_array($GLOBALS['TSFE']->fe_user->user));
+        $showPageAtAnyLogin = (\in_array(-2, $groups));
+        $hidePageAtAnyLogin = (\in_array(-1, $groups));
+        $userIsLoggedIn = (\is_array($GLOBALS['TSFE']->fe_user->user));
         $userGroups = $GLOBALS['TSFE']->fe_user->groupData['uid'];
-        $userIsInGrantedGroups = (0 < count(array_intersect($userGroups, $groups)));
+        $userIsInGrantedGroups = (0 < \count(\array_intersect($userGroups, $groups)));
 
         if ((false === $userIsLoggedIn && true === $hidePageAtAnyLogin) ||
             (true === $userIsLoggedIn && true === $showPageAtAnyLogin) ||
@@ -347,12 +347,12 @@ class PageService implements SingletonInterface
             case 2:
                 // mode: random subpage of selected or current page
                 $menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
-                $targetPage = (0 < count($menu)) ? $menu[array_rand($menu)] : $page;
+                $targetPage = (0 < \count($menu)) ? $menu[\array_rand($menu)] : $page;
                 break;
             case 1:
                 // mode: first subpage of selected or current page
                 $menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
-                $targetPage = (0 < count($menu)) ? reset($menu) : $page;
+                $targetPage = (0 < \count($menu)) ? \reset($menu) : $page;
                 break;
             case 0:
             default:

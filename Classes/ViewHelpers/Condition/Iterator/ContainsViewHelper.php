@@ -63,7 +63,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         }
         $haystack = $arguments['haystack'];
         $asArray = [];
-        if (true === is_array($haystack)) {
+        if (true === \is_array($haystack)) {
             $asArray = $haystack;
         } elseif (true === $haystack instanceof LazyObjectStorage) {
             /** @var $haystack LazyObjectStorage */
@@ -74,8 +74,8 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         } elseif (true === $haystack instanceof QueryResult) {
             /** @var $haystack QueryResult */
             $asArray = $haystack->toArray();
-        } elseif (true === is_string($haystack)) {
-            $asArray = str_split($haystack);
+        } elseif (true === \is_string($haystack)) {
+            $asArray = \str_split($haystack);
         }
         return (true === isset($asArray[$index]) ? $asArray[$index] : false);
     }
@@ -88,7 +88,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
      */
     protected static function assertHaystackHasNeedle($haystack, $needle, $arguments)
     {
-        if (true === is_array($haystack)) {
+        if (true === \is_array($haystack)) {
             return self::assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments);
         } elseif ($haystack instanceof LazyObjectStorage) {
             return self::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
@@ -96,8 +96,8 @@ class ContainsViewHelper extends AbstractConditionViewHelper
             return self::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
         } elseif ($haystack instanceof QueryResult) {
             return self::assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
-        } elseif (true === is_string($haystack)) {
-            return strpos($haystack, $needle);
+        } elseif (true === \is_string($haystack)) {
+            return \strpos($haystack, $needle);
         }
         return false;
     }
@@ -153,9 +153,9 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     {
         if (false === $needle instanceof DomainObjectInterface) {
             if (true === (boolean) $arguments['considerKeys']) {
-                $result = (boolean) (false !== array_search($needle, $haystack) || true === isset($haystack[$needle]));
+                $result = (boolean) (false !== \array_search($needle, $haystack) || true === isset($haystack[$needle]));
             } else {
-                $result = array_search($needle, $haystack);
+                $result = \array_search($needle, $haystack);
             }
             return $result;
         } else {
@@ -177,6 +177,6 @@ class ContainsViewHelper extends AbstractConditionViewHelper
      */
     protected static function assertHaystackIsStringAndHasNeedle($haystack, $needle)
     {
-        return strpos($haystack, $needle);
+        return \strpos($haystack, $needle);
     }
 }

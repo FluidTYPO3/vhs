@@ -107,7 +107,7 @@ class AssetTest extends AbstractTestCase
         $asset = Asset::getInstance();
         $settableProperties = ObjectAccess::getSettablePropertyNames($asset);
         foreach ($settableProperties as $propertyName) {
-            $setter = 'set' . ucfirst($propertyName);
+            $setter = 'set' . \ucfirst($propertyName);
             $asset = $asset->$setter(null);
             $this->assertInstanceOf(Asset::class, $asset, 'The ' . $setter . ' method does not support chaining');
         }
@@ -144,7 +144,7 @@ class AssetTest extends AbstractTestCase
     public function assetsAddedByFilenameUsesFileBasenameAsAssetName()
     {
         $file = $this->getAbsoluteAssetFixturePath();
-        $expectedName = pathinfo($file, PATHINFO_FILENAME);
+        $expectedName = \pathinfo($file, PATHINFO_FILENAME);
         $asset = Asset::createFromFile($file);
         $this->assertSame($asset, $GLOBALS['VhsAssets'][$expectedName]);
         $this->assertEquals(
@@ -161,11 +161,11 @@ class AssetTest extends AbstractTestCase
     {
         $file = $this->getAbsoluteAssetFixturePath();
         $asset = Asset::createFromFile($file);
-        $expectedTrimmedContent = trim(file_get_contents($file));
-        $this->assertEquals($expectedTrimmedContent, trim($asset->build()));
-        $asset->setContent(file_get_contents($file));
+        $expectedTrimmedContent = \trim(\file_get_contents($file));
+        $this->assertEquals($expectedTrimmedContent, \trim($asset->build()));
+        $asset->setContent(\file_get_contents($file));
         $asset->setPath(null);
-        $this->assertEquals($expectedTrimmedContent, trim($asset->build()));
+        $this->assertEquals($expectedTrimmedContent, \trim($asset->build()));
     }
 
     /**
@@ -175,8 +175,8 @@ class AssetTest extends AbstractTestCase
     {
         $file = $this->getAbsoluteAssetFixturePath();
         $asset = Asset::createFromFile($file);
-        $expectedTrimmedContent = trim(file_get_contents($file));
-        $this->assertEquals($expectedTrimmedContent, trim($asset->getContent()));
+        $expectedTrimmedContent = \trim(\file_get_contents($file));
+        $this->assertEquals($expectedTrimmedContent, \trim($asset->getContent()));
     }
 
     /**
@@ -205,7 +205,7 @@ class AssetTest extends AbstractTestCase
         $gettableProperties = ObjectAccess::getGettablePropertyNames($asset);
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         foreach ($gettableProperties as $propertyName) {
-            if (false === property_exists(Asset::class, $propertyName)) {
+            if (false === \property_exists(Asset::class, $propertyName)) {
                 continue;
             }
             $propertyValue = ObjectAccess::getProperty($asset, $propertyName);
@@ -213,7 +213,7 @@ class AssetTest extends AbstractTestCase
             $propertyReflection = $objectManager->get(\ReflectionProperty::class, Asset::class, $propertyName);
             $docComment = $propertyReflection->getDocComment();
             $matches = [];
-            preg_match('/@var ([a-z\\\\0-9_]+)/i', $docComment, $matches);
+            \preg_match('/@var ([a-z\\\\0-9_]+)/i', $docComment, $matches);
             $expectedDataType = $matches[1];
             $constraint = new \PHPUnit_Framework_Constraint_IsType($expectedDataType);
             $this->assertThat($propertyValue, $constraint);
@@ -221,9 +221,9 @@ class AssetTest extends AbstractTestCase
         $constraint = new \PHPUnit_Framework_Constraint_IsType('array');
         $this->assertThat($asset->getDebugInformation(), $constraint);
         $this->assertThat($asset->getAssetSettings(), $constraint);
-        $this->assertGreaterThan(0, count($asset->getAssetSettings()));
+        $this->assertGreaterThan(0, \count($asset->getAssetSettings()));
         $this->assertThat($asset->getSettings(), $constraint);
-        $this->assertGreaterThan(0, count($asset->getSettings()));
+        $this->assertGreaterThan(0, \count($asset->getSettings()));
         $this->assertNotNull($asset->getContent());
     }
 
@@ -248,7 +248,7 @@ class AssetTest extends AbstractTestCase
     public function assertSupportsRawContent()
     {
         $file = $this->getAbsoluteAssetFixturePath();
-        $content = file_get_contents($file);
+        $content = \file_get_contents($file);
         $asset = Asset::createFromContent($content);
         $this->assertSame($content, $asset->getContent());
     }

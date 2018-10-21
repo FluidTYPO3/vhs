@@ -63,6 +63,6 @@ class LinesViewHelper extends AbstractViewHelper
         if ((string) $value === '') {
             return 0;
         }
-        return mb_substr_count($value, PHP_EOL) + 1;
+        return \mb_substr_count($value, PHP_EOL) + 1;
     }
 }

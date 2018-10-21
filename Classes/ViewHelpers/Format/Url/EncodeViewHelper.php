@@ -35,6 +35,6 @@ class EncodeViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return rawurlencode($renderChildrenClosure());
+        return \rawurlencode($renderChildrenClosure());
     }
 }

@@ -26,8 +26,8 @@ class SquareRootViewHelper extends AbstractSingleMathViewHelper
     protected static function calculateAction($a)
     {
         if (static::assertIsArrayOrIterator($a)) {
-            return array_map('sqrt', static::arrayFromArrayOrTraversableOrCSVStatic($a));
+            return \array_map('sqrt', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
-        return sqrt($a);
+        return \sqrt($a);
     }
 }

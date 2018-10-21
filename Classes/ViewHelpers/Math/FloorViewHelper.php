@@ -28,8 +28,8 @@ class FloorViewHelper extends AbstractSingleMathViewHelper
     protected static function calculateAction($a)
     {
         if (static::assertIsArrayOrIterator($a)) {
-            return array_map('floor', static::arrayFromArrayOrTraversableOrCSVStatic($a));
+            return \array_map('floor', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
-        return floor($a);
+        return \floor($a);
     }
 }

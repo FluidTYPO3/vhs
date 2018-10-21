@@ -130,10 +130,10 @@ trait SlideViewHelperTrait
             }
             $rootLine = $this->getPageService()->getRootLine($pageUid, null);
             if (-1 !== $slide) {
-                $rootLine = array_slice($rootLine, 0, $slide);
+                $rootLine = \array_slice($rootLine, 0, $slide);
             }
             if ($reverse) {
-                $rootLine = array_reverse($rootLine);
+                $rootLine = \array_reverse($rootLine);
             }
             foreach ($rootLine as $page) {
                 $storagePageUids[] = (integer) $page['uid'];
@@ -142,17 +142,17 @@ trait SlideViewHelperTrait
         // select records, respecting slide and slideCollect.
         $records = [];
         do {
-            $storagePageUid = array_shift($storagePageUids);
+            $storagePageUid = \array_shift($storagePageUids);
             $limitRemaining = null;
             if (null !== $limit) {
-                $limitRemaining = $limit - count($records);
+                $limitRemaining = $limit - \count($records);
                 if (0 >= $limitRemaining) {
                     break;
                 }
             }
             $recordsFromPageUid = $this->getSlideRecordsFromPage($storagePageUid, $limitRemaining);
-            if (0 < count($recordsFromPageUid)) {
-                $records = array_merge($records, $recordsFromPageUid);
+            if (0 < \count($recordsFromPageUid)) {
+                $records = \array_merge($records, $recordsFromPageUid);
                 if (0 === $slideCollect) {
                     // stop collecting because argument said so and we've gotten at least one record now.
                     break;

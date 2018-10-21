@@ -59,6 +59,6 @@ class SplitViewHelper extends AbstractViewHelper implements CompilableInterface
             // argument is zero for some reason. PHP would throw a warning; Fluid would logically just return empty.
             return [];
         }
-        return str_split(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure(), $arguments['length']);
+        return \str_split(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure(), $arguments['length']);
     }
 }

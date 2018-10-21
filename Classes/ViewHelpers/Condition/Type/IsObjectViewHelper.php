@@ -33,6 +33,6 @@ class IsObjectViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === is_object($arguments['value']);
+        return true === \is_object($arguments['value']);
     }
 }

@@ -272,7 +272,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         } else {
             $path = GeneralUtility::getFileAbsFileName($this->arguments['path']);
         }
-        $content = file_get_contents($path);
+        $content = \file_get_contents($path);
         return $content;
     }
 
@@ -318,7 +318,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
                 DebuggerUtility::var_dump($debugInformation);
                 return '';
             } else {
-                return var_export($debugInformation, true);
+                return \var_export($debugInformation, true);
             }
         }
     }
@@ -361,7 +361,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         if (isset($assetSettings['name']) && !empty($assetSettings['name'])) {
             $name = $assetSettings['name'];
         } else {
-            $name = md5(serialize($assetSettings));
+            $name = \md5(\serialize($assetSettings));
         }
         return $name;
     }
@@ -403,7 +403,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function getVariables()
     {
         $assetSettings = $this->getAssetSettings();
-        if (isset($assetSettings['variables']) && is_array($assetSettings['variables'])) {
+        if (isset($assetSettings['variables']) && \is_array($assetSettings['variables'])) {
             return $assetSettings['variables'];
         }
         return [];
@@ -433,7 +433,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
             }
         }
         $settings = self::$settingsCache;
-        if (is_array($this->localSettings)) {
+        if (\is_array($this->localSettings)) {
             ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
         }
         return $settings;
@@ -444,7 +444,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function setSettings($settings)
     {
-        if (is_array($settings) || $settings instanceof \ArrayAccess) {
+        if (\is_array($settings) || $settings instanceof \ArrayAccess) {
             $this->localSettings = $settings;
         }
     }
@@ -454,7 +454,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function getAssetSettings()
     {
-        if (is_array($this->assetSettingsCache)) {
+        if (\is_array($this->assetSettingsCache)) {
             return $this->assetSettingsCache;
         }
         // Note: name and group are taken directly from arguments; if they are changed through
@@ -464,13 +464,13 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         $settings = $this->getSettings();
         $assetSettings = $this->arguments;
         $assetSettings['type'] = $this->getType();
-        if (isset($settings['asset']) && true === is_array($settings['asset'])) {
+        if (isset($settings['asset']) && true === \is_array($settings['asset'])) {
             $assetSettings = $this->mergeArrays($assetSettings, $settings['asset']);
         }
-        if (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName])) {
+        if (isset($settings['assetGroup'][$groupName]) && \is_array($settings['assetGroup'][$groupName])) {
             $assetSettings = $this->mergeArrays($assetSettings, $settings['assetGroup'][$groupName]);
         }
-        if (isset($settings['asset'][$name]) && is_array($settings['asset'][$name])) {
+        if (isset($settings['asset'][$name]) && \is_array($settings['asset'][$name])) {
             $assetSettings = $this->mergeArrays($assetSettings, $settings['asset'][$name]);
         }
         if (!empty($assetSettings['path']) && !$assetSettings['external']) {
@@ -490,7 +490,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function getDebugInformation()
     {
         return [
-            'class' => get_class($this),
+            'class' => \get_class($this),
             'settings' => $this->getAssetSettings()
         ];
     }
@@ -560,7 +560,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         $groupName = $this->arguments['group'];
         $settings = $this->getSettings();
         $dependencies = $this->getDependencies();
-        array_push($dependencies, $this->getName());
+        \array_push($dependencies, $this->getName());
         foreach ($dependencies as $name) {
             if (isset($settings['asset'][$name]['remove']) && $settings['asset'][$name]['remove'] > 0) {
                 return true;

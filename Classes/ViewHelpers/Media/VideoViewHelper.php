@@ -122,19 +122,19 @@ class VideoViewHelper extends AbstractMediaViewHelper
     public function render()
     {
         $sources = static::getSourcesFromArgument($this->arguments);
-        if (0 === count($sources)) {
+        if (0 === \count($sources)) {
             throw new Exception('No video sources provided.', 1359382189);
         }
         foreach ($sources as $source) {
-            if (true === is_string($source)) {
-                if (false !== strpos($source, '//')) {
+            if (true === \is_string($source)) {
+                if (false !== \strpos($source, '//')) {
                     $src = $source;
-                    $type = mb_substr($source, mb_strrpos($source, '.') + 1);
+                    $type = \mb_substr($source, \mb_strrpos($source, '.') + 1);
                 } else {
-                    $src = mb_substr(GeneralUtility::getFileAbsFileName($source), mb_strlen(PATH_site));
-                    $type = pathinfo($src, PATHINFO_EXTENSION);
+                    $src = \mb_substr(GeneralUtility::getFileAbsFileName($source), \mb_strlen(PATH_site));
+                    $type = \pathinfo($src, PATHINFO_EXTENSION);
                 }
-            } elseif (true === is_array($source)) {
+            } elseif (true === \is_array($source)) {
                 if (false === isset($source['src'])) {
                     throw new Exception('Missing value for "src" in sources array.', 1359381250);
                 }
@@ -147,7 +147,7 @@ class VideoViewHelper extends AbstractMediaViewHelper
                 // skip invalid source
                 continue;
             }
-            if (false === in_array(strtolower($type), $this->validTypes)) {
+            if (false === \in_array(\strtolower($type), $this->validTypes)) {
                     throw new Exception('Invalid video type "' . $type . '".', 1359381260);
             }
             $type = $this->mimeTypesMap[$type];
@@ -171,7 +171,7 @@ class VideoViewHelper extends AbstractMediaViewHelper
         if (true === (boolean) $this->arguments['muted']) {
             $tagAttributes['muted'] = 'muted';
         }
-        if (true === in_array($this->arguments['preload'], $this->validPreloadModes)) {
+        if (true === \in_array($this->arguments['preload'], $this->validPreloadModes)) {
             $tagAttributes['preload'] = $this->arguments['preload'];
         }
         if (null !== $this->arguments['poster']) {

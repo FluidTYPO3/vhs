@@ -60,6 +60,6 @@ class DiffViewHelper extends AbstractViewHelper implements CompilableInterface
         $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
         $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b']);
 
-        return array_diff($a, $b);
+        return \array_diff($a, $b);
     }
 }

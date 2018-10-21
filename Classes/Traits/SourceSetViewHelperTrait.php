@@ -48,7 +48,7 @@ trait SourceSetViewHelperTrait
         foreach ($srcsets as $key => $width) {
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference, null, $crop);
 
-            $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
+            $srcsetVariantSrc = \rawurldecode($srcsetVariant[3]);
             $srcsetVariantSrc = static::preprocessSourceUri(GeneralUtility::rawUrlEncodeFP($srcsetVariantSrc), $this->arguments);
 
             $imageSources[$srcsetVariant[0]] = [
@@ -59,7 +59,7 @@ trait SourceSetViewHelperTrait
             $srcsetVariants[$srcsetVariant[0]] = $srcsetVariantSrc . ' ' . $srcsetVariant[0] . 'w';
         }
 
-        $tag->addAttribute('srcset', implode(',', $srcsetVariants));
+        $tag->addAttribute('srcset', \implode(',', $srcsetVariants));
 
         if ('BE' === TYPO3_MODE) {
             FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
@@ -91,13 +91,13 @@ trait SourceSetViewHelperTrait
         if (false === empty($format)) {
             $setup['ext'] = $format;
         }
-        if (0 < intval($quality)) {
+        if (0 < \intval($quality)) {
             $quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
             $setup['params'] .= ' -quality ' . $quality;
         }
 
-        if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
-            $src = substr($src, 3);
+        if ('BE' === TYPO3_MODE && '../' === \substr($src, 0, 3)) {
+            $src = \substr($src, 3);
         }
         return $this->contentObject->getImgResource($src, $setup);
     }
@@ -112,8 +112,8 @@ trait SourceSetViewHelperTrait
     {
         $srcsets = $this->arguments['srcset'];
         if (true === $srcsets instanceof \Traversable) {
-            $srcsets = iterator_to_array($srcsets);
-        } elseif (true === is_string($srcsets)) {
+            $srcsets = \iterator_to_array($srcsets);
+        } elseif (true === \is_string($srcsets)) {
             $srcsets = GeneralUtility::trimExplode(',', $srcsets, true);
         } else {
             $srcsets = (array) $srcsets;

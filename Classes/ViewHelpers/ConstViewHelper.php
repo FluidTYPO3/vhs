@@ -51,6 +51,6 @@ class ConstViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return constant($renderChildrenClosure());
+        return \constant($renderChildrenClosure());
     }
 }

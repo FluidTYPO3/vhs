@@ -19,7 +19,7 @@ class IsChildPageViewHelperTest extends AbstractViewHelperTest
 
     public function testRender()
     {
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+        if (\class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
             $this->markTestSkipped('Test is skippped on TYPO3v8 for now, due to tested code having tight coupling to Doctrine');
         }
         $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)->setMethods(['exec_SELECTquery'])->disableOriginalConstructor()->getMock();

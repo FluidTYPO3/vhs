@@ -40,6 +40,6 @@ class IsCliViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return defined('TYPO3_climode');
+        return \defined('TYPO3_climode');
     }
 }

@@ -57,7 +57,7 @@ class ShiftViewHelper extends AbstractViewHelper implements CompilableInterface
         RenderingContextInterface $renderingContext
     ) {
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure());
-        $output = array_shift($subject);
+        $output = \array_shift($subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $arguments['as'],

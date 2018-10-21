@@ -249,7 +249,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     public function renderContent(array $menu)
     {
         $deferredRendering = (boolean) $this->arguments['deferred'];
-        if (0 === count($menu) && false === $deferredRendering) {
+        if (0 === \count($menu) && false === $deferredRendering) {
             return null;
         }
         if (true === $deferredRendering) {
@@ -270,7 +270,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $this->unsetDeferredVariableStorage();
         } else {
             $content = $this->renderChildren();
-            if (0 < mb_strlen(trim($content))) {
+            if (0 < \mb_strlen(\trim($content))) {
                 $output = $content;
             } elseif ((boolean) $this->arguments['hideIfEmpty'] === true) {
                 $output = '';
@@ -296,12 +296,12 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $showCurrent = (boolean) $this->arguments['showCurrent'];
         $expandAll = (boolean) $this->arguments['expandAll'];
         $itemsRendered = 0;
-        $numberOfItems = count($menu);
+        $numberOfItems = \count($menu);
         foreach ($menu as $page) {
             if ($page['current'] && !$showCurrent) {
                 continue;
             }
-            $class = (trim($page['class']) !== '') ? ' class="' . trim($page['class']) . '"' : '';
+            $class = (\trim($page['class']) !== '') ? ' class="' . \trim($page['class']) . '"' : '';
             $elementId = ($this->arguments['substElementUid']) ? ' id="elem_' . $page['uid'] . '"' : '';
             if (!$this->isNonWrappingMode()) {
                 $html[] = '<' . $tagName . $elementId . $class . '>';
@@ -310,7 +310,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $levels) {
                 $subPages = $this->getMenu($page['uid']);
                 $subMenu = $this->parseMenu($subPages);
-                if (0 < count($subMenu)) {
+                if (0 < \count($subMenu)) {
                     $renderedSubMenu = $this->autoRender($subMenu, $level + 1);
                     $parentTagId = $this->tag->getAttribute('id');
                     if (!empty($parentTagId)) {
@@ -343,7 +343,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        return implode(LF, $html);
+        return \implode(LF, $html);
     }
 
     /**
@@ -359,25 +359,25 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $linkActive = (boolean) $this->arguments['linkActive'];
         $includeAnchorTitle = (boolean) $this->arguments['includeAnchorTitle'];
         $target = (!empty($page['target'])) ? ' target="' . $page['target'] . '"' : '';
-        $class = (trim($page['class']) !== '') ? ' class="' . trim($page['class']) . '"' : '';
+        $class = (\trim($page['class']) !== '') ? ' class="' . \trim($page['class']) . '"' : '';
         if ($isSpacer || ($isCurrent && !$linkCurrent) || ($isActive && !$linkActive)) {
-            $html = htmlspecialchars($page['linktext']);
+            $html = \htmlspecialchars($page['linktext']);
         } elseif ($includeAnchorTitle) {
-            $html = sprintf(
+            $html = \sprintf(
                 '<a href="%s" title="%s"%s%s>%s</a>',
                 $page['link'],
-                htmlspecialchars($page['title']),
+                \htmlspecialchars($page['title']),
                 $class,
                 $target,
-                htmlspecialchars($page['linktext'])
+                \htmlspecialchars($page['linktext'])
             );
         } else {
-            $html = sprintf(
+            $html = \sprintf(
                 '<a href="%s"%s%s>%s</a>',
                 $page['link'],
                 $class,
                 $target,
-                htmlspecialchars($page['linktext'])
+                \htmlspecialchars($page['linktext'])
             );
         }
 
@@ -395,7 +395,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         if (null === $pageUid) {
             if (null !== $entryLevel) {
                 if ($entryLevel < 0) {
-                    $entryLevel = count($rootLineData) - 1 + $entryLevel;
+                    $entryLevel = \count($rootLineData) - 1 + $entryLevel;
                 }
                 $pageUid = $rootLineData[$entryLevel]['uid'];
             } else {
@@ -438,7 +438,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     public function parseMenu(array $pages)
     {
         $count = 0;
-        $total = count($pages);
+        $total = \count($pages);
         $processedPages = [];
         foreach ($pages as $index => $page) {
             $count++;
@@ -472,7 +472,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                 $pages[$index]['current'] = true;
                 $class[] = $this->arguments['classCurrent'];
             }
-            if (0 < count($this->getMenu($originalPageUid))) {
+            if (0 < \count($this->getMenu($originalPageUid))) {
                 $pages[$index]['hasSubPages'] = true;
                 //TODO: Remove deprecated argument in next major version
                 $class[] = $this->arguments[
@@ -485,7 +485,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             if ($count === $total) {
                 $class[] = $this->arguments['classLast'];
             }
-            $pages[$index]['class'] = implode(' ', $class);
+            $pages[$index]['class'] = \implode(' ', $class);
             $pages[$index]['linktext'] = $this->getItemTitle($pages[$index]);
             $forceAbsoluteUrl = $this->arguments['forceAbsoluteUrl'];
             $pages[$index]['link'] = $this->pageService->getItemLink($page, $forceAbsoluteUrl);
@@ -577,7 +577,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function restoreVariables()
     {
-        if (0 < count($this->backupValues)) {
+        if (0 < \count($this->backupValues)) {
             foreach ($this->backupValues as $var => $value) {
                 if (false === $this->templateVariableContainer->exists($var)) {
                     $this->templateVariableContainer->add($var, $value);
@@ -629,7 +629,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function getArguments()
     {
-        if (false === is_array($this->arguments)) {
+        if (false === \is_array($this->arguments)) {
             return $this->arguments->toArray();
         }
         return $this->arguments;
@@ -661,7 +661,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function isNonWrappingMode()
     {
-        return (boolean) ('a' === strtolower($this->arguments['tagNameChildren']));
+        return (boolean) ('a' === \strtolower($this->arguments['tagNameChildren']));
     }
 
     /**
@@ -676,13 +676,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $pages = $this->arguments['pages'];
         }
         if (true === $pages instanceof \Traversable) {
-            $pages = iterator_to_array($pages);
-        } elseif (true === is_string($pages)) {
+            $pages = \iterator_to_array($pages);
+        } elseif (true === \is_string($pages)) {
             $pages = GeneralUtility::trimExplode(',', $pages, true);
-        } elseif (true === is_int($pages)) {
+        } elseif (true === \is_int($pages)) {
             $pages = (array) $pages;
         }
-        if (false === is_array($pages)) {
+        if (false === \is_array($pages)) {
             return [];
         }
 

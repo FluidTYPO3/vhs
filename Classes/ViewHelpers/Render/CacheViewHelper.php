@@ -82,10 +82,10 @@ class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInte
         RenderingContextInterface $renderingContext
     ) {
         $identity = $arguments['identity'];
-        if (false === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
+        if (false === \ctype_alnum(\preg_replace('/[\-_]/i', '', $identity))) {
             if (true === $identity instanceof DomainObjectInterface) {
-                $identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
-            } elseif (true === method_exists($identity, '__toString')) {
+                $identity = \get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
+            } elseif (true === \method_exists($identity, '__toString')) {
                 $identity = (string) $identity;
             } else {
                 throw new \RuntimeException(
@@ -96,7 +96,7 @@ class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInte
         }
 
         // Hash the cache-key to circumvent disallowed chars
-        $identity = sha1($identity);
+        $identity = \sha1($identity);
 
         if (true === static::has($identity)) {
             return static::retrieve($identity);

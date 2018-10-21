@@ -33,6 +33,6 @@ class IsNumericViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === is_numeric($arguments['value']);
+        return true === \is_numeric($arguments['value']);
     }
 }

@@ -56,7 +56,7 @@ class UncacheViewHelper extends AbstractViewHelper implements CompilableInterfac
     ) {
         $templateVariableContainer = $renderingContext->getTemplateVariableContainer();
         $partialArguments = $arguments['arguments'];
-        if (false === is_array($partialArguments)) {
+        if (false === \is_array($partialArguments)) {
             $partialArguments = [];
         }
         if (false === isset($partialArguments['settings']) && true === $templateVariableContainer->exists('settings')) {
@@ -73,7 +73,7 @@ class UncacheViewHelper extends AbstractViewHelper implements CompilableInterfac
 
         $GLOBALS['TSFE']->config['INTincScript'][$substKey] = [
             'type' => 'POSTUSERFUNC',
-            'cObj' => serialize($templateView),
+            'cObj' => \serialize($templateView),
             'postUserFunc' => 'render',
             'conf' => [
                 'partial' => $arguments['partial'],

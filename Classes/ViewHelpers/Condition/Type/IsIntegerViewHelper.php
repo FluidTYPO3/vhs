@@ -33,6 +33,6 @@ class IsIntegerViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === is_integer($arguments['value']);
+        return true === \is_integer($arguments['value']);
     }
 }

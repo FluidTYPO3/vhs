@@ -111,7 +111,7 @@ class InfoViewHelper extends AbstractViewHelper
 
         if (false === $record && false === isset($record)) {
             throw new \Exception(
-                sprintf('Either record with uid %d or field %s do not exist.', $contentUid, $selectFields),
+                \sprintf('Either record with uid %d or field %s do not exist.', $contentUid, $selectFields),
                 1358679983
             );
         }

@@ -35,8 +35,8 @@ class DivisionViewHelper extends AbstractMultipleMathViewHelper
         $bIsIterable = static::assertIsArrayOrIterator($b);
         if (true === $aIsIterable && null === $b) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
-            $sum = array_sum($a);
-            $distribution = count($a);
+            $sum = \array_sum($a);
+            $distribution = \count($a);
             return $sum / $distribution;
         } elseif (true === $aIsIterable && $b !== null) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);

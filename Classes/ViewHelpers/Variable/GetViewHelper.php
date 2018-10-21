@@ -81,24 +81,24 @@ class GetViewHelper extends AbstractViewHelper implements CompilableInterface
         $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
         $name = $arguments['name'];
         $useRawKeys = $arguments['useRawKeys'];
-        if (false === strpos($name, '.')) {
+        if (false === \strpos($name, '.')) {
             if (true === $variableProvider->exists($name)) {
                 return $variableProvider->get($name);
             }
         } else {
-            $segments = explode('.', $name);
-            $lastSegment = array_shift($segments);
+            $segments = \explode('.', $name);
+            $lastSegment = \array_shift($segments);
             $templateVariableRootName = $lastSegment;
             if (true === $variableProvider->exists($templateVariableRootName)) {
                 $templateVariableRoot = $variableProvider->get($templateVariableRootName);
                 if (true === $useRawKeys) {
-                    return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
+                    return ObjectAccess::getPropertyPath($templateVariableRoot, \implode('.', $segments));
                 }
                 try {
                     $value = $templateVariableRoot;
                     foreach ($segments as $segment) {
-                        if (true === ctype_digit($segment)) {
-                            $segment = intval($segment);
+                        if (true === \ctype_digit($segment)) {
+                            $segment = \intval($segment);
                             $index = 0;
                             $found = false;
                                 // Note: this loop approach is not a stupid solution. If you doubt this,

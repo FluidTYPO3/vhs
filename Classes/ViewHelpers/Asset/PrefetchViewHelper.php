@@ -107,7 +107,7 @@ class PrefetchViewHelper extends AbstractAssetViewHelper
     public function build()
     {
         $domains = $this->arguments['domains'];
-        if (false === is_array($domains)) {
+        if (false === \is_array($domains)) {
             $domains = GeneralUtility::trimExplode(',', $domains, true);
         }
         $headerCode = '';

@@ -34,16 +34,16 @@ class FrontendSimulationUtility
         $tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
         $GLOBALS['TSFE'] = new \stdClass();
         // preparing csConvObj
-        if (false === is_object($GLOBALS['TSFE']->csConvObj)) {
-            if (true === is_object($GLOBALS['LANG'])) {
+        if (false === \is_object($GLOBALS['TSFE']->csConvObj)) {
+            if (true === \is_object($GLOBALS['LANG'])) {
                 $GLOBALS['TSFE']->csConvObj = $GLOBALS['LANG']->csConvObj;
             } else {
                 $GLOBALS['TSFE']->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
             }
         }
         // preparing renderCharset
-        if (false === is_object($GLOBALS['TSFE']->renderCharset)) {
-            if (true === is_object($GLOBALS['LANG'])) {
+        if (false === \is_object($GLOBALS['TSFE']->renderCharset)) {
+            if (true === \is_object($GLOBALS['LANG'])) {
                 $GLOBALS['TSFE']->renderCharset = $GLOBALS['LANG']->charSet;
             } else {
                 $GLOBALS['TSFE']->renderCharset = 'utf-8';

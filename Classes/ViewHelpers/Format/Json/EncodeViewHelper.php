@@ -115,7 +115,7 @@ class EncodeViewHelper extends AbstractViewHelper
     {
         if (true === $value instanceof \Traversable) {
             // Note: also converts ObjectStorage to \Vendor\Extname\Domain\Model\ObjectType[] which are each converted
-            $value = iterator_to_array($value, $useTraversableKeys);
+            $value = \iterator_to_array($value, $useTraversableKeys);
         } elseif (true === $value instanceof DomainObjectInterface) {
             // Convert to associative array,
             $value = static::recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
@@ -124,12 +124,12 @@ class EncodeViewHelper extends AbstractViewHelper
         }
 
         // process output of conversion, catching specially supported object types such as DomainObject and DateTime
-        if (true === is_array($value)) {
+        if (true === \is_array($value)) {
             $value = static::recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
             $value = static::recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
         }
-        $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG);
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        $json = \json_encode($value, JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG);
+        if (JSON_ERROR_NONE !== \json_last_error()) {
             ErrorUtility::throwViewHelperException('The provided argument cannot be converted into JSON.', 1358440181);
         }
         return $json;
@@ -152,7 +152,7 @@ class EncodeViewHelper extends AbstractViewHelper
         foreach ($array as $key => $possibleDateTime) {
             if (true === $possibleDateTime instanceof \DateTime) {
                 $array[$key] = static::dateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
-            } elseif (true === is_array($possibleDateTime)) {
+            } elseif (true === \is_array($possibleDateTime)) {
                 $array[$key] = static::recursiveDateTimeToUnixtimeMiliseconds($array[$key], $dateTimeFormat);
             }
         }
@@ -171,7 +171,7 @@ class EncodeViewHelper extends AbstractViewHelper
     protected static function dateTimeToUnixtimeMiliseconds(\DateTime $dateTime, $dateTimeFormat)
     {
         if (null === $dateTimeFormat) {
-            return intval($dateTime->format('U')) * 1000;
+            return \intval($dateTime->format('U')) * 1000;
         }
         return $dateTime->format($dateTimeFormat);
     }
@@ -199,7 +199,7 @@ class EncodeViewHelper extends AbstractViewHelper
                     $recursionMarker
                 );
             } elseif (true === $possibleDomainObject instanceof \Traversable) {
-                $traversableAsArray = iterator_to_array($possibleDomainObject);
+                $traversableAsArray = \iterator_to_array($possibleDomainObject);
                 $domainObjects[$key] = static::recursiveArrayOfDomainObjectsToArray(
                     $traversableAsArray,
                     $preventRecursion,
@@ -225,8 +225,8 @@ class EncodeViewHelper extends AbstractViewHelper
         $preventRecursion,
         $recursionMarker
     ) {
-        $hash = spl_object_hash($domainObject);
-        if (true === $preventRecursion && true === in_array($hash, static::$encounteredClasses)) {
+        $hash = \spl_object_hash($domainObject);
+        if (true === $preventRecursion && true === \in_array($hash, static::$encounteredClasses)) {
             return $recursionMarker;
         }
         $converted = ObjectAccess::getGettableProperties($domainObject);

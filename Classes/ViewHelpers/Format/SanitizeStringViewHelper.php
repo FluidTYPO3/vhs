@@ -146,15 +146,15 @@ class SanitizeStringViewHelper extends AbstractViewHelper
 
         $characterMap = static::$characterMap;
         $customMap = $arguments['customMap'];
-        if (true === is_array($customMap) && 0 < count($customMap)) {
-            $characterMap = array_merge($characterMap, $customMap);
+        if (true === \is_array($customMap) && 0 < \count($customMap)) {
+            $characterMap = \array_merge($characterMap, $customMap);
         }
-        $specialCharsSearch = array_keys($characterMap);
-        $specialCharsReplace = array_values($characterMap);
-        $string = str_replace($specialCharsSearch, $specialCharsReplace, $string);
-        $string = strtolower($string);
+        $specialCharsSearch = \array_keys($characterMap);
+        $specialCharsReplace = \array_values($characterMap);
+        $string = \str_replace($specialCharsSearch, $specialCharsReplace, $string);
+        $string = \strtolower($string);
         $pattern = '/([^a-z0-9\-]){1,}/';
-        $string = preg_replace($pattern, '-', $string);
-        return trim($string, '-');
+        $string = \preg_replace($pattern, '-', $string);
+        return \trim($string, '-');
     }
 }

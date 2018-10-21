@@ -86,7 +86,7 @@ class TitleViewHelper extends AbstractViewHelper
         } else {
             $title = $renderChildrenClosure();
         }
-        $title = trim(preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
+        $title = \trim(\preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
         static::getPageRenderer()->setTitle($title);
         if (true === $arguments['setIndexedDocTitle']) {
             $GLOBALS['TSFE']->indexedDocTitle = $title;

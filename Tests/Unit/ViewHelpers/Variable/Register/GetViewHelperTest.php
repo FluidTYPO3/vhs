@@ -32,7 +32,7 @@ class GetViewHelperTest extends AbstractViewHelperTest
     public function returnsNullIfRegisterDoesNotExist()
     {
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $name = uniqid();
+        $name = \uniqid();
         $this->assertEquals(null, $this->executeViewHelper(['name' => $name]));
     }
 
@@ -42,8 +42,8 @@ class GetViewHelperTest extends AbstractViewHelperTest
     public function returnsValueIfRegisterExists()
     {
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $name = uniqid();
-        $value = uniqid();
+        $name = \uniqid();
+        $value = \uniqid();
         $GLOBALS['TSFE']->register[$name] = $value;
         $this->assertEquals($value, $this->executeViewHelper(['name' => $name]));
     }

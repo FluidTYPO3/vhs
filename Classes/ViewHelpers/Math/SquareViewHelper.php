@@ -26,11 +26,11 @@ class SquareViewHelper extends AbstractSingleMathViewHelper
     protected static function calculateAction($a)
     {
         if (static::assertIsArrayOrIterator($a)) {
-            return array_map(
+            return \array_map(
                 [static::class, 'calculateAction'],
                 static::arrayFromArrayOrTraversableOrCSVStatic($a)
             );
         }
-        return pow($a, 2);
+        return \pow($a, 2);
     }
 }

@@ -89,11 +89,11 @@ class LViewHelper extends AbstractViewHelper implements CompilableInterface
         $value = LocalizationUtility::translate($id, $extensionName, $translationArguments);
         if (true === empty($value)) {
             $value = $default;
-            if (true === is_array($translationArguments)) {
-                $value = vsprintf($value, $translationArguments);
+            if (true === \is_array($translationArguments)) {
+                $value = \vsprintf($value, $translationArguments);
             }
         } elseif (true === $htmlEscape) {
-            $value = htmlspecialchars($value);
+            $value = \htmlspecialchars($value);
         }
         return $value;
     }

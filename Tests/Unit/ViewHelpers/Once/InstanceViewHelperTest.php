@@ -63,8 +63,8 @@ class InstanceViewHelperTest extends AbstractViewHelperTest
         $instance = $this->createInstance();
         $instance->setArguments(['identifier' => 'test']);
         $this->callInaccessibleMethod($instance, 'storeIdentifier', ['identifier' => 'test']);
-        $this->assertTrue($GLOBALS[get_class($instance)]['test']);
-        unset($GLOBALS[get_class($instance)]['test']);
+        $this->assertTrue($GLOBALS[\get_class($instance)]['test']);
+        unset($GLOBALS[\get_class($instance)]['test']);
     }
 
     /**
@@ -75,8 +75,8 @@ class InstanceViewHelperTest extends AbstractViewHelperTest
         $instance = $this->createInstance();
         $instance->setArguments(['identifier' => 'test']);
         $this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip', ['identifier' => 'test']));
-        $GLOBALS[get_class($instance)]['test'] = true;
+        $GLOBALS[\get_class($instance)]['test'] = true;
         $this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip', ['identifier' => 'test']));
-        unset($GLOBALS[get_class($instance)]['test']);
+        unset($GLOBALS[\get_class($instance)]['test']);
     }
 }

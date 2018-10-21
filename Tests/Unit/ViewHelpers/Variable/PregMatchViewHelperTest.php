@@ -26,7 +26,7 @@ class PregMatchViewHelperTest extends AbstractViewHelperTest
             'pattern' => '/[0-9]{3}/',
         ];
         $test = $this->executeViewHelper($arguments);
-        $this->assertSame(1, count($test));
+        $this->assertSame(1, \count($test));
     }
 
     /**
@@ -38,6 +38,6 @@ class PregMatchViewHelperTest extends AbstractViewHelperTest
             'pattern' => '/[0-9]{3}/',
         ];
         $test = $this->executeViewHelperUsingTagContent('foo123bar', $arguments);
-        $this->assertSame(1, count($test));
+        $this->assertSame(1, \count($test));
     }
 }

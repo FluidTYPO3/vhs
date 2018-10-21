@@ -73,7 +73,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         GeneralUtility::deprecationLog(
-            sprintf(
+            \sprintf(
                 'Deprecated TypoLinkViewHelper from VHS was used. Please use %s instead.',
                 FluidTypolinkViewHelper::class
             )

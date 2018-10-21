@@ -36,9 +36,9 @@ class IsLowercaseViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         if (true === $arguments['fullString']) {
-            $result = ctype_lower($arguments['string']);
+            $result = \ctype_lower($arguments['string']);
         } else {
-            $result = ctype_lower(substr($arguments['string'], 0, 1));
+            $result = \ctype_lower(\substr($arguments['string'], 0, 1));
         }
         return true === $result;
     }

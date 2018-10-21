@@ -93,7 +93,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         $namespaces = [];
         foreach ((array) $arguments['namespaces'] as $namespaceIdentifier => $namespace) {
             $addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . '}';
-            array_push($namespaces, $addedOverriddenNamespace);
+            \array_push($namespaces, $addedOverriddenNamespace);
         }
         return $namespaces;
     }
@@ -105,7 +105,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     protected static function getPreparedClonedView(RenderingContextInterface $renderingContext)
     {
         $view = static::getPreparedView();
-        if (method_exists($renderingContext, 'getControllerContext')) {
+        if (\method_exists($renderingContext, 'getControllerContext')) {
             $controllerContext = clone $renderingContext->getControllerContext();
             $view->setControllerContext($controllerContext);
             $view->setFormat($controllerContext->getRequest()->getFormat());

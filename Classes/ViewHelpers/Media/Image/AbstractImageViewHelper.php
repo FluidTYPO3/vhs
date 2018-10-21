@@ -141,13 +141,13 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
         $crop = $this->arguments['crop'];
 
-        if (is_object($src) && $src instanceof FileReference) {
+        if (\is_object($src) && $src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsReference = true;
         }
 
         if ($crop === null) {
-            $crop = (is_object($src) && $src instanceof FileReference) ? $src->_getProperty('crop') : null;
+            $crop = (\is_object($src) && $src instanceof FileReference) ? $src->_getProperty('crop') : null;
         }
 
         if ('BE' === TYPO3_MODE) {
@@ -171,32 +171,32 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $setup['params'] = '-quality ' . $quality;
         }
 
-        if (TYPO3_MODE === 'BE' && strpos($src, '../') === 0) {
-            $src = mb_substr($src, 3);
+        if (TYPO3_MODE === 'BE' && \strpos($src, '../') === 0) {
+            $src = \mb_substr($src, 3);
         }
         $this->imageInfo = $this->contentObject->getImgResource($src, $setup);
         $GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
 
-        if (false === is_array($this->imageInfo)) {
-            throw new Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
+        if (false === \is_array($this->imageInfo)) {
+            throw new Exception('Could not get image resource for "' . \htmlspecialchars($src) . '".', 1253191060);
         }
         if ($this->hasArgument('canvasWidth') && $this->hasArgument('canvasHeight')) {
             $canvasWidth = (integer) $this->arguments['canvasWidth'];
             $canvasHeight = (integer) $this->arguments['canvasHeight'];
-            $canvasColor = str_replace('#', '', $this->arguments['canvasColor']);
+            $canvasColor = \str_replace('#', '', $this->arguments['canvasColor']);
             $originalFilename = $this->imageInfo[3];
-            $originalExtension = mb_substr($originalFilename, -3);
-            $tempPath = (version_compare(TYPO3_version, 8.0, '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
+            $originalExtension = \mb_substr($originalFilename, -3);
+            $tempPath = (\version_compare(TYPO3_version, 8.0, '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
             $destinationFilename = $tempPath . 'vhs-canvas-' .
-                md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
+                \md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
             $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);
             $transparency = '';
             if ($this->hasArgument('transparencyColor')) {
-                $transparencyColor = str_replace('#', '', $this->arguments['transparencyColor']);
+                $transparencyColor = \str_replace('#', '', $this->arguments['transparencyColor']);
                 $transparency = ' -transparent \'#' . $transparencyColor . '\'';
             }
-            if (!file_exists($destinationFilepath)) {
-                $arguments = sprintf(
+            if (!\file_exists($destinationFilepath)) {
+                $arguments = \sprintf(
                     '%s -background \'#%s\'%s -gravity center -extent %dx%d %s',
                     $originalFilename,
                     $canvasColor,
@@ -212,7 +212,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         }
 
         $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
-        $this->mediaSource = rawurldecode($this->imageInfo[3]);
+        $this->mediaSource = \rawurldecode($this->imageInfo[3]);
         if (TYPO3_MODE === 'BE') {
             $this->resetFrontendEnvironment();
         }
@@ -229,8 +229,8 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     protected function simulateFrontendEnvironment()
     {
         $this->tsfeBackup = true === isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
-        $this->workingDirectoryBackup = getcwd();
-        chdir(constant('PATH_site'));
+        $this->workingDirectoryBackup = \getcwd();
+        \chdir(\constant('PATH_site'));
         $typoScriptSetup = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
@@ -238,7 +238,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = 0;
         $template->init();
-        $template->getFileName_backPath = constant('PATH_site');
+        $template->getFileName_backPath = \constant('PATH_site');
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
         $GLOBALS['TSFE']->config = $typoScriptSetup;
@@ -254,6 +254,6 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     protected function resetFrontendEnvironment()
     {
         $GLOBALS['TSFE'] = $this->tsfeBackup;
-        chdir($this->workingDirectoryBackup);
+        \chdir($this->workingDirectoryBackup);
     }
 }

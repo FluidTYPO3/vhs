@@ -101,11 +101,11 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
             $givenArguments = $viewHelperNode->getArguments();
             $viewHelperReflection = new \ReflectionClass($viewHelper);
             $viewHelperDescription = $viewHelperReflection->getDocComment();
-            $viewHelperDescription = htmlentities($viewHelperDescription);
+            $viewHelperDescription = \htmlentities($viewHelperDescription);
             $viewHelperDescription = '[CLASS DOC]' . LF . $viewHelperDescription . LF;
             $renderMethodDescription = $viewHelperReflection->getMethod('render')->getDocComment();
-            $renderMethodDescription = htmlentities($renderMethodDescription);
-            $renderMethodDescription = implode(LF, array_map('trim', explode(LF, $renderMethodDescription)));
+            $renderMethodDescription = \htmlentities($renderMethodDescription);
+            $renderMethodDescription = \implode(LF, \array_map('trim', \explode(LF, $renderMethodDescription)));
             $renderMethodDescription = '[RENDER METHOD DOC]' . LF . $renderMethodDescription . LF;
             $argumentDefinitions = [];
             foreach ($arguments as $argument) {
@@ -118,20 +118,20 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
                 DebuggerUtility::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, true, false, true),
                 $renderMethodDescription
             ];
-            array_push($nodes, implode(LF, $sections));
+            \array_push($nodes, \implode(LF, $sections));
         }
-        if (0 < count($this->childObjectAccessorNodes)) {
-            array_push($nodes, '[VARIABLE ACCESSORS]');
+        if (0 < \count($this->childObjectAccessorNodes)) {
+            \array_push($nodes, '[VARIABLE ACCESSORS]');
             $templateVariables = $this->templateVariableContainer->getAll();
             foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
                 $path = $objectAccessorNode->getObjectPath();
-                $segments = explode('.', $path);
+                $segments = \explode('.', $path);
                 try {
-                    $value = ObjectAccess::getProperty($templateVariables, array_shift($segments));
+                    $value = ObjectAccess::getProperty($templateVariables, \array_shift($segments));
                     foreach ($segments as $segment) {
                         $value = ObjectAccess::getProperty($value, $segment);
                     }
-                    $type = gettype($value);
+                    $type = \gettype($value);
                 } catch (PropertyNotAccessibleException $error) {
                     $value = null;
                     $type = 'UNDEFINED/INACCESSIBLE';
@@ -140,13 +140,13 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
                     'Path: {' . $path . '}',
                     'Value type: ' . $type,
                 ];
-                if (true === is_object($value)) {
+                if (true === \is_object($value)) {
                     $sections[] = 'Accessible properties on {' . $path . '}:';
                     $gettable = ObjectAccess::getGettablePropertyNames($value);
                     unset($gettable[0]);
                     foreach ($gettable as $gettableProperty) {
                         $sections[] = '   {' . $path . '.' . $gettableProperty . '} (' .
-                            gettype(ObjectAccess::getProperty($value, $gettableProperty)) . ')';
+                            \gettype(ObjectAccess::getProperty($value, $gettableProperty)) . ')';
                     }
                 } elseif (null !== $value) {
                     $sections[] = DebuggerUtility::var_dump(
@@ -158,10 +158,10 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
                         true
                     );
                 }
-                array_push($nodes, implode(LF, $sections));
+                \array_push($nodes, \implode(LF, $sections));
             }
         }
-        return '<pre>' . implode(LF . LF, $nodes) . '</pre>';
+        return '<pre>' . \implode(LF . LF, $nodes) . '</pre>';
     }
 
     /**
@@ -174,10 +174,10 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
     {
         foreach ($childNodes as $childNode) {
             if (true === $childNode instanceof LegacyFluidViewHelperNode || $childNode instanceof StandaloneFluidViewHelperNode) {
-                array_push($this->childViewHelperNodes, $childNode);
+                \array_push($this->childViewHelperNodes, $childNode);
             }
             if (true === $childNode instanceof LegacyFluidObjectAccessorNode || $childNode instanceof StandaloneFluidObjectAccessorNode) {
-                array_push($this->childObjectAccessorNodes, $childNode);
+                \array_push($this->childObjectAccessorNodes, $childNode);
             }
         }
     }

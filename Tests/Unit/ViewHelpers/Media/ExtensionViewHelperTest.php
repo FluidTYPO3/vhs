@@ -38,7 +38,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     public function returnsEmptyStringForEmptyArguments()
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
+        if (\method_exists($viewHelper, 'injectReflectionService')) {
             $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
@@ -54,7 +54,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/foo.txt'));
-        if (method_exists($viewHelper, 'injectReflectionService')) {
+        if (\method_exists($viewHelper, 'injectReflectionService')) {
             $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
@@ -69,7 +69,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     {
         $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
         $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/noext'));
-        if (method_exists($viewHelper, 'injectReflectionService')) {
+        if (\method_exists($viewHelper, 'injectReflectionService')) {
             $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
         }
         $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));

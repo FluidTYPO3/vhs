@@ -61,6 +61,6 @@ class IntersectViewHelper extends AbstractViewHelper implements CompilableInterf
         $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
         $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b']);
 
-        return array_intersect($a, $b);
+        return \array_intersect($a, $b);
     }
 }

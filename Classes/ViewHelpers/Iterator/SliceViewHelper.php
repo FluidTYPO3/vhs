@@ -60,7 +60,7 @@ class SliceViewHelper extends AbstractViewHelper implements CompilableInterface
         RenderingContextInterface $renderingContext
     ) {
         $haystack = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['haystack'] : $renderChildrenClosure());
-        $output = array_slice($haystack, $arguments['start'], $arguments['length'], (boolean) $arguments['preserveKeys']);
+        $output = \array_slice($haystack, $arguments['start'], $arguments['length'], (boolean) $arguments['preserveKeys']);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $arguments['as'],

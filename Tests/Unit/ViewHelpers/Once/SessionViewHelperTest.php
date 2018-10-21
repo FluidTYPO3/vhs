@@ -23,8 +23,8 @@ class SessionViewHelperTest extends AbstractViewHelperTest
     {
         $instance = $this->createInstance();
         $this->callInaccessibleMethod($instance, 'storeIdentifier', ['identifier' => 'test']);
-        $this->assertEquals(time(), $_SESSION[get_class($instance)]['test']);
-        unset($_SESSION[get_class($instance)]['test']);
+        $this->assertEquals(\time(), $_SESSION[\get_class($instance)]['test']);
+        unset($_SESSION[\get_class($instance)]['test']);
     }
 
     /**
@@ -34,9 +34,9 @@ class SessionViewHelperTest extends AbstractViewHelperTest
     {
         $instance = $this->createInstance();
         $this->assertFalse($this->callInaccessibleMethod($instance, 'assertShouldSkip', ['identifier' => 'test']));
-        $_SESSION[get_class($instance)]['test'] = time();
+        $_SESSION[\get_class($instance)]['test'] = \time();
         $this->assertTrue($this->callInaccessibleMethod($instance, 'assertShouldSkip', ['identifier' => 'test']));
-        unset($_SESSION[get_class($instance)]['test']);
+        unset($_SESSION[\get_class($instance)]['test']);
     }
 
     /**
@@ -46,7 +46,7 @@ class SessionViewHelperTest extends AbstractViewHelperTest
     {
         $instance = $this->createInstance();
         $class = $this->getViewHelperClassName();
-        $time = time() - 10;
+        $time = \time() - 10;
         $_SESSION[$class]['test'] = $time;
 
         $this->callInaccessibleMethod($instance, 'removeIfExpired', ['identifier' => 'test', 'ttl' => 15]);

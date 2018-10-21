@@ -170,7 +170,7 @@ class DateRangeViewHelper extends AbstractViewHelper
         $return = $arguments['return'];
         if (null === $return) {
             $spaceGlue = (boolean) $arguments['spaceGlue'];
-            $glue = strval($arguments['glue']);
+            $glue = \strval($arguments['glue']);
             $startFormat = $arguments['format'];
             $endFormat = $arguments['format'];
             if (null !== $arguments['startFormat'] && false === empty($arguments['startFormat'])) {
@@ -186,18 +186,18 @@ class DateRangeViewHelper extends AbstractViewHelper
             $output .= static::formatDate($endDateTime, $endFormat);
         } elseif ('DateTime' === $return) {
             $output = $endDateTime;
-        } elseif (true === is_string($return)) {
-            if (false === strpos($return, '%')) {
+        } elseif (true === \is_string($return)) {
+            if (false === \strpos($return, '%')) {
                 $return = '%' . $return;
             }
             $output = $interval->format($return);
-        } elseif (true === is_array($return)) {
+        } elseif (true === \is_array($return)) {
             $output = [];
             foreach ($return as $format) {
-                if (false === strpos($format, '%')) {
+                if (false === \strpos($format, '%')) {
                     $format = '%' . $format;
                 }
-                array_push($output, $interval->format($format));
+                \array_push($output, $interval->format($format));
             }
         }
         return $output;
@@ -211,12 +211,12 @@ class DateRangeViewHelper extends AbstractViewHelper
     {
         if (false === $date instanceof \DateTime) {
             try {
-                if (true === is_integer($date)) {
+                if (true === \is_integer($date)) {
                     $date = new \DateTime('@' . $date);
                 } else {
                     $date = new \DateTime($date);
                 }
-                $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+                $date->setTimezone(new \DateTimeZone(\date_default_timezone_get()));
             } catch (\Exception $exception) {
                 ErrorUtility::throwViewHelperException('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
             }
@@ -231,8 +231,8 @@ class DateRangeViewHelper extends AbstractViewHelper
      */
     protected static function formatDate($date, $format = 'Y-m-d')
     {
-        if (false !== strpos($format, '%')) {
-            return strftime($format, $date->format('U'));
+        if (false !== \strpos($format, '%')) {
+            return \strftime($format, $date->format('U'));
         } else {
             return $date->format($format);
         }

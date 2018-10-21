@@ -69,7 +69,7 @@ class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     ) {
         $content = !empty($arguments['as']) ? $arguments['content'] : ($arguments['content'] ?? $renderChildrenClosure());
         $glue = $arguments['glue'];
-        $output = implode($glue, $content);
+        $output = \implode($glue, $content);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $arguments['as'],

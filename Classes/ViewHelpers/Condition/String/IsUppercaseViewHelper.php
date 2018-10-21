@@ -36,9 +36,9 @@ class IsUppercaseViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         if (true === $arguments['fullString']) {
-            $result = ctype_upper($arguments['string']);
+            $result = \ctype_upper($arguments['string']);
         } else {
-            $result = ctype_upper(substr($arguments['string'], 0, 1));
+            $result = \ctype_upper(\substr($arguments['string'], 0, 1));
         }
         return true === $result;
     }

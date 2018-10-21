@@ -50,19 +50,19 @@ class WordWrapViewHelper extends AbstractViewHelper
         $limit = (integer) $arguments['limit'];
         $break = $arguments['break'];
         $glue = $arguments['glue'];
-        $subject = preg_replace('/ +/', ' ', $subject);
-        $subject = str_replace(["\r\n", "\r"], PHP_EOL, $subject);
-        $subject = wordwrap($subject, $limit, $break, false);
+        $subject = \preg_replace('/ +/', ' ', $subject);
+        $subject = \str_replace(["\r\n", "\r"], PHP_EOL, $subject);
+        $subject = \wordwrap($subject, $limit, $break, false);
         $output = '';
-        foreach (explode($break, $subject) as $line) {
-            if (mb_strlen($line) <= $limit) {
+        foreach (\explode($break, $subject) as $line) {
+            if (\mb_strlen($line) <= $limit) {
                 $output .= $line . $glue;
                 continue;
             }
             $temp = '';
-            while (mb_strlen($line) > $limit) {
-                $temp .= mb_substr($line, 0, $limit - 1);
-                $line = mb_substr($line, $limit - 1);
+            while (\mb_strlen($line) > $limit) {
+                $temp .= \mb_substr($line, 0, $limit - 1);
+                $line = \mb_substr($line, $limit - 1);
             }
             if (false === empty($temp)) {
                 $output .= $temp . $glue . $line . $glue;

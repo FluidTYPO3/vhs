@@ -22,7 +22,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
 
     protected function getInstanceOfFoo()
     {
-        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+        if (\version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
             return new Foo();
         }
         return new LegacyFoo();
@@ -166,7 +166,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
         $jsTimestamp = $date->getTimestamp() * 1000;
 
         $fixture = ['foo' => $date, 'bar' => ['baz' => $date]];
-        $expected = sprintf('{"foo":%s,"bar":{"baz":%s}}', $jsTimestamp, $jsTimestamp);
+        $expected = \sprintf('{"foo":%s,"bar":{"baz":%s}}', $jsTimestamp, $jsTimestamp);
 
         $this->assertEquals($expected, $this->executeViewHelper(['value' => $fixture]));
     }

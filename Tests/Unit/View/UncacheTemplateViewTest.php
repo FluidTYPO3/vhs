@@ -76,8 +76,8 @@ class UncacheTemplateViewTest extends AbstractTestCase
      */
     protected function getClassName()
     {
-        $class = substr(get_class($this), 0, -4);
-        $class = str_replace('Tests\\Unit\\', '', $class);
+        $class = \substr(\get_class($this), 0, -4);
+        $class = \str_replace('Tests\\Unit\\', '', $class);
         return $class;
     }
 }

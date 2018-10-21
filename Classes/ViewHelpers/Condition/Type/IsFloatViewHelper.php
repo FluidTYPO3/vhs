@@ -33,6 +33,6 @@ class IsFloatViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === is_float($arguments['value']);
+        return true === \is_float($arguments['value']);
     }
 }

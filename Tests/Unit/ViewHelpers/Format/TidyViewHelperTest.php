@@ -23,7 +23,7 @@ class TidyViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsErrorWhenNoTidyIsInstalled()
     {
-        if (!class_exists('tidy')) {
+        if (!\class_exists('tidy')) {
             // Note: CI setup has tidy on some but not all variants. We can only test for exceptions on those that don't.
             $this->setExpectedException('RuntimeException', null, 1352059753);
         }
@@ -36,7 +36,7 @@ class TidyViewHelperTest extends AbstractViewHelperTest
     public function canTidySource()
     {
         $instance = $this->createInstance();
-        if (false === class_exists('tidy')) {
+        if (false === \class_exists('tidy')) {
             $this->markTestSkipped('No tidy support');
             return;
         }

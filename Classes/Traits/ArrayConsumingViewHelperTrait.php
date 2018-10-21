@@ -90,14 +90,14 @@ trait ArrayConsumingViewHelperTrait
     protected static function arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys = true)
     {
         if (true === $candidate instanceof \Traversable) {
-            return iterator_to_array($candidate, $useKeys);
+            return \iterator_to_array($candidate, $useKeys);
         } elseif (true === $candidate instanceof QueryResultInterface) {
             /** @var QueryResultInterface $candidate */
             return $candidate->toArray();
         }
-        if (true === is_string($candidate)) {
+        if (true === \is_string($candidate)) {
             return GeneralUtility::trimExplode(',', $candidate, true);
-        } elseif (true === is_array($candidate)) {
+        } elseif (true === \is_array($candidate)) {
             return $candidate;
         }
         ErrorUtility::throwViewHelperException('Unsupported input type; cannot convert to array!');
@@ -130,6 +130,6 @@ trait ArrayConsumingViewHelperTrait
      */
     protected static function assertIsArrayOrIterator($subject)
     {
-        return (boolean) (true === is_array($subject) || true === $subject instanceof \Traversable);
+        return (boolean) (true === \is_array($subject) || true === $subject instanceof \Traversable);
     }
 }

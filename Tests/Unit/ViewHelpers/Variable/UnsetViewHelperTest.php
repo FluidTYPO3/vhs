@@ -25,7 +25,7 @@ class UnsetViewHelperTest extends AbstractViewHelperTest
         $variables = new \ArrayObject(['test' => 'test']);
         $instance = $this->buildViewHelperInstance(['name' => 'test']);
         $context = ObjectAccess::getProperty($instance, 'renderingContext', true);
-        if (method_exists($context, 'getVariableProvider')) {
+        if (\method_exists($context, 'getVariableProvider')) {
             $provider = $context->getVariableProvider();
         } else {
             $provider = $context->getTemplateVariableContainer();

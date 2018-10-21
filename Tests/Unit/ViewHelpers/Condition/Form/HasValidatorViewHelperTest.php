@@ -22,7 +22,7 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTest
 
     protected function getInstanceOfFoo()
     {
-        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+        if (\version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
             return new Foo();
         }
         return new LegacyFoo();
@@ -30,7 +30,7 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTest
 
     protected function getNestedPathToFoo()
     {
-        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+        if (\version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
             return 'foo';
         }
         return 'legacyFoo';

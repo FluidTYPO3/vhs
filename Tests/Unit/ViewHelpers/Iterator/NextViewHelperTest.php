@@ -22,7 +22,7 @@ class NextViewHelperTest extends AbstractViewHelperTest
     public function returnsNextElement()
     {
         $array = ['a', 'b', 'c'];
-        next($array);
+        \next($array);
         $arguments = [
             'haystack' => $array,
             'needle' => 'b',

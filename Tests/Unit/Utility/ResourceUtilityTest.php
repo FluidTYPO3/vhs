@@ -26,7 +26,7 @@ class ResourceUtilityTest extends AbstractTestCase
     {
         $propertiesFromFile = ['foo' => 123, 'bar' => 321];
         $propertiesFromStorage = ['foo' => 'abc', 'baz' => 123];
-        $expectation = array_merge($propertiesFromFile, $propertiesFromStorage);
+        $expectation = \array_merge($propertiesFromFile, $propertiesFromStorage);
         $mockStorage = $this->getMockBuilder(ResourceStorage::class)->setMethods(['getFileInfo'])->disableOriginalConstructor()->getMock();
         $mockFile = $this->getMockBuilder(File::class)->setMethods(['getProperties', 'getStorage', 'toArray'])->disableOriginalConstructor()->getMock();
         $mockFile->expects($this->once())->method('getProperties')->will($this->returnValue($propertiesFromFile));

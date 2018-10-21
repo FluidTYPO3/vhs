@@ -59,11 +59,11 @@ class WordsViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return count(
-            preg_split(
+        return \count(
+            \preg_split(
                 '~[^\p{L}\p{N}\']+~u',
-                strip_tags(
-                    str_replace(
+                \strip_tags(
+                    \str_replace(
                         '><',
                         '> <',
                         $renderChildrenClosure()

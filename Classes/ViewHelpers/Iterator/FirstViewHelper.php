@@ -55,10 +55,10 @@ class FirstViewHelper extends AbstractViewHelper implements CompilableInterface
         RenderingContextInterface $renderingContext
     ) {
         $haystack = $renderChildrenClosure();
-        if (false === is_array($haystack) && false === $haystack instanceof \Iterator && null !== $haystack) {
+        if (false === \is_array($haystack) && false === $haystack instanceof \Iterator && null !== $haystack) {
             ErrorUtility::throwViewHelperException(
                 'Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .
-                gettype($haystack),
+                \gettype($haystack),
                 1351958398
             );
         }

@@ -46,7 +46,7 @@ class YoutubeViewHelperTest extends AbstractViewHelperTest
         $this->arguments['hideInfo'] = true;
         $this->arguments['start']    = 30;
 
-        preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
+        \preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
         $expectedSource = '//www.youtube-nocookie.com/embed/M7lc1UVf-VE?rel=0&amp;showinfo=0&amp;start=30';
 
         $this->assertSame($expectedSource, $actualSource[1]);

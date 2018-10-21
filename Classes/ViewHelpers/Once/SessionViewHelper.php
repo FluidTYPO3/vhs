@@ -35,8 +35,8 @@ class SessionViewHelper extends AbstractOnceViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if ('' === session_id()) {
-            session_start();
+        if ('' === \session_id()) {
+            \session_start();
         }
         return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
@@ -49,10 +49,10 @@ class SessionViewHelper extends AbstractOnceViewHelper
     {
         $identifier = static::getIdentifier($arguments);
         $index = static::class;
-        if (false === is_array($_SESSION[$index])) {
+        if (false === \is_array($_SESSION[$index])) {
             $_SESSION[$index] = [];
         }
-        $_SESSION[$index][$identifier] = time();
+        $_SESSION[$index][$identifier] = \time();
     }
 
     /**
@@ -75,7 +75,7 @@ class SessionViewHelper extends AbstractOnceViewHelper
         $id = static::getIdentifier($arguments);
         $index = static::class;
         $existsInSession = (boolean) (true === isset($_SESSION[$index]) && true === isset($_SESSION[$index][$id]));
-        if (true === $existsInSession && time() - $arguments['ttl'] >= $_SESSION[$index][$id]) {
+        if (true === $existsInSession && \time() - $arguments['ttl'] >= $_SESSION[$index][$id]) {
             unset($_SESSION[$index][$id]);
         }
     }

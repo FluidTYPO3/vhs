@@ -114,7 +114,7 @@ trait TagViewHelperTrait
         array $attributes = [],
         array $nonEmptyAttributes = ['id', 'class']
     ) {
-        $trimmedContent = trim((string) $content);
+        $trimmedContent = \trim((string) $content);
         $forceClosingTag = (boolean) $this->arguments['forceClosingTag'];
         if (true === empty($trimmedContent) && true === (boolean) $this->arguments['hideIfEmpty']) {
             return '';

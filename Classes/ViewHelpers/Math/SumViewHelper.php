@@ -51,7 +51,7 @@ class SumViewHelper extends AbstractMultipleMathViewHelper
         if (true === $aIsIterable) {
             if (null === $b) {
                 $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
-                return array_sum($a);
+                return \array_sum($a);
             }
             foreach ($a as $index => $value) {
                 $a[$index] = static::calculateAction($value, $b, $arguments);

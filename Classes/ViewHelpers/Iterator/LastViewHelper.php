@@ -53,6 +53,6 @@ class LastViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return array_pop(static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure()));
+        return \array_pop(static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure()));
     }
 }

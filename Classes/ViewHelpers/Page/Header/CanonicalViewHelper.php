@@ -62,7 +62,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
         }
 
         $queryStringMethod = $this->arguments['queryStringMethod'];
-        if (!in_array($queryStringMethod, ['GET', 'POST', 'GET,POST'], true)) {
+        if (!\in_array($queryStringMethod, ['GET', 'POST', 'GET,POST'], true)) {
             throw new \InvalidArgumentException(
                 'The parameter "queryStringMethods" must be one of "GET", "POST" or "GET,POST".',
                 1475337546

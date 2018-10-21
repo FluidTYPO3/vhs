@@ -53,8 +53,8 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
         $entryLevel = $this->arguments['entryLevel'];
         $endLevel = $this->arguments['endLevel'];
         $rawRootLineData = $this->pageService->getRootLine($pageUid);
-        $rawRootLineData = array_reverse($rawRootLineData);
-        $rawRootLineData = array_slice($rawRootLineData, $entryLevel, $endLevel);
+        $rawRootLineData = \array_reverse($rawRootLineData);
+        $rawRootLineData = \array_slice($rawRootLineData, $entryLevel, $endLevel);
         $rootLineData = [];
         $showHidden = (boolean) $this->arguments['showHiddenInMenu'];
         foreach ($rawRootLineData as $record) {
@@ -67,11 +67,11 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
             }
 
             if ((true === $showHidden && true === $isHidden || false === $isHidden) && true === $isAllowedDoktype) {
-                array_push($rootLineData, $record);
+                \array_push($rootLineData, $record);
             }
         }
         $rootLine = $this->parseMenu($rootLineData);
-        if (0 === count($rootLine)) {
+        if (0 === \count($rootLine)) {
             return null;
         }
         $this->backupVariables();

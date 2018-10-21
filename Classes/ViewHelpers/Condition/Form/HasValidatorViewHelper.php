@@ -76,18 +76,18 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
         $validatorName = isset($arguments['validatorName']) ? $arguments['validatorName'] : null;
         $object = isset($arguments['object']) ? $arguments['object'] : null;
 
-        $className = get_class($object);
-        if (false !== strpos($property, '.')) {
-            $pathSegments = explode('.', $property);
+        $className = \get_class($object);
+        if (false !== \strpos($property, '.')) {
+            $pathSegments = \explode('.', $property);
             foreach ($pathSegments as $property) {
-                if (true === ctype_digit($property)) {
+                if (true === \ctype_digit($property)) {
                     continue;
                 }
                 $annotations = self::$staticReflectionService->getPropertyTagValues($className, $property, 'var');
-                $possibleClassName = array_pop($annotations);
-                if (false !== strpos($possibleClassName, '<')) {
-                    $className = array_pop(explode('<', trim($possibleClassName, '>')));
-                } elseif (true === class_exists($possibleClassName)) {
+                $possibleClassName = \array_pop($annotations);
+                if (false !== \strpos($possibleClassName, '<')) {
+                    $className = \array_pop(\explode('<', \trim($possibleClassName, '>')));
+                } elseif (true === \class_exists($possibleClassName)) {
                     $className = $possibleClassName;
                 }
             }
@@ -95,13 +95,13 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
 
         // If we are on TYPO3 9.3 or above, the old validator ID is no longer possible to use and we must use the new one.
         $fluidCoreVersion = ExtensionManagementUtility::getExtensionVersion('fluid');
-        if (version_compare($fluidCoreVersion, 9.3, '>=')) {
+        if (\version_compare($fluidCoreVersion, 9.3, '>=')) {
             $annotationName = 'Extbase\\Validate';
         } else {
             $annotationName = 'validate';
         }
         $annotations = self::$staticReflectionService->getPropertyTagValues($className, $property, $annotationName);
-        if (empty($annotations) && $annotationName === 'validate' && version_compare($fluidCoreVersion, 9.1, '>=')) {
+        if (empty($annotations) && $annotationName === 'validate' && \version_compare($fluidCoreVersion, 9.1, '>=')) {
             // We tried looking for the legacy validator name but found none. Retry with the new way. We have to do this
             // as a retry, because we cannot assume that any site using TYPO3 9.1+ will also be using the modern
             // annotations. Hence we cannot change the validator name until we've also looked for the legacy ones (which
@@ -109,6 +109,6 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
             $annotationName = 'Extbase\\Validate';
             $annotations = self::$staticReflectionService->getPropertyTagValues($className, $property, $annotationName);
         }
-        return (count($annotations) && (!$validatorName || in_array($validatorName, $annotations)));
+        return (\count($annotations) && (!$validatorName || \in_array($validatorName, $annotations)));
     }
 }

@@ -59,13 +59,13 @@ class StringViewHelper extends AbstractViewHelper implements CompilableInterface
         $maximumLength = (integer) $arguments['maximumLength'];
         $characters = $arguments['characters'];
         if ($minimumLength != $maximumLength) {
-            $length = rand($minimumLength, $maximumLength);
+            $length = \rand($minimumLength, $maximumLength);
         } else {
             $length = $length !== null ? $length : $minimumLength;
         }
         $string = '';
         for ($i = 0; $i < $length; $i++) {
-            $randomIndex = mt_rand(0, mb_strlen($characters) - 1);
+            $randomIndex = \mt_rand(0, \mb_strlen($characters) - 1);
             $string .= $characters{$randomIndex};
         }
         return $string;

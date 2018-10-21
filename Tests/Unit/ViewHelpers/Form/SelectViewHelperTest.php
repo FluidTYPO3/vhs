@@ -38,8 +38,8 @@ class SelectViewHelperTest extends AbstractViewHelperTest
         $model1->setName('Model1');
         $model2 = new Bar();
         $model2->setName('Model2');
-        $model1id = spl_object_hash($model1);
-        $model2id = spl_object_hash($model2);
+        $model1id = \spl_object_hash($model1);
+        $model2id = \spl_object_hash($model2);
         $model1name = Foo::class . ':';
         $model2name = Bar::class . ':';
         return [

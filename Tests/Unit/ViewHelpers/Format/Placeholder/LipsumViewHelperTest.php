@@ -39,7 +39,7 @@ class LipsumViewHelperTest extends AbstractViewHelperTest
         $firstRender = $this->executeViewHelper($arguments);
         $arguments['paragraphs'] = 6;
         $secondRender = $this->executeViewHelper($arguments);
-        $this->assertLessThan(strlen($secondRender), strlen($firstRender));
+        $this->assertLessThan(\strlen($secondRender), \strlen($firstRender));
     }
 
     /**

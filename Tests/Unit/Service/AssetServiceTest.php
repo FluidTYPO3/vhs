@@ -74,13 +74,13 @@ class AssetServiceTest extends AbstractTestCase
         // Note: Maybe test this dynamic. This command could be useful:
         //    ~> openssl dgst -sha256 -binary Tests/Fixtures/Files/dummy.js | openssl base64 -A
 
-        if ((!extension_loaded('hash') || !function_exists('hash_algos'))
-            && (!extension_loaded('openssl') || !function_exists('openssl_get_md_methods'))
+        if ((!\extension_loaded('hash') || !\function_exists('hash_algos'))
+            && (!\extension_loaded('openssl') || !\function_exists('openssl_get_md_methods'))
         ) {
             $this->markTestSkipped('No hash or openssl support');
         }
 
-        $GLOBALS['TSFE'] = unserialize('O:8:"stdClass":1:{s:4:"tmpl";O:8:"stdClass":1:{s:5:"setup";a:1:{s:7:"plugin.";a:1:{s:7:"tx_vhs.";a:1:{s:7:"assets.";a:0:{}}}}}}');
+        $GLOBALS['TSFE'] = \unserialize('O:8:"stdClass":1:{s:4:"tmpl";O:8:"stdClass":1:{s:5:"setup";a:1:{s:7:"plugin.";a:1:{s:7:"tx_vhs.";a:1:{s:7:"assets.";a:0:{}}}}}}');
 
         // This represents the setting levels, from 0=off over 1 as the weakest to 3 as the strongest
         $expectedIntegrities = [

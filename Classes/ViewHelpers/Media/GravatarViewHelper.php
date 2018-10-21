@@ -77,8 +77,8 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
         $secure = (boolean) $this->arguments['secure'];
 
         $url = (true === $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL);
-        $url .= md5(strtolower(trim($email)));
-        $query = http_build_query(['s' => $size, 'd' => $imageSet, 'r' => $maximumRating]);
+        $url .= \md5(\strtolower(\trim($email)));
+        $query = \http_build_query(['s' => $size, 'd' => $imageSet, 'r' => $maximumRating]);
         $url .= (false === empty($query) ? '?' . $query : '');
         $this->tag->addAttribute('src', $url);
         $this->tag->forceClosingTag(true);

@@ -55,10 +55,10 @@ class OptionViewHelper extends AbstractFormFieldViewHelper
             $selected = 'selected';
         } elseif (true === $this->viewHelperVariableContainer->exists(SelectViewHelper::class, 'value')) {
             $value = $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'value');
-            if (false === is_object($this->arguments['value']) && false === is_array($this->arguments['value'])) {
-                if (true === is_array($value)) {
-                    $selected = true === in_array($this->arguments['value'], $value) ? 'selected' : '';
-                } else if (true === ($value instanceof ObjectStorage) && true === is_numeric($this->arguments['value'])) {
+            if (false === \is_object($this->arguments['value']) && false === \is_array($this->arguments['value'])) {
+                if (true === \is_array($value)) {
+                    $selected = true === \in_array($this->arguments['value'], $value) ? 'selected' : '';
+                } else if (true === ($value instanceof ObjectStorage) && true === \is_numeric($this->arguments['value'])) {
                     // Requires that the option values are UIDs of objects in ObjectStorage
                     foreach ($value as $object) {
                         if($object->getUid() === (integer) $this->arguments['value']) {

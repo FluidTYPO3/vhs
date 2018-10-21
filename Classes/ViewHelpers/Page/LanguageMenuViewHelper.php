@@ -116,7 +116,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        if (false === is_object($GLOBALS['TSFE']->sys_page)) {
+        if (false === \is_object($GLOBALS['TSFE']->sys_page)) {
             return null;
         }
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
@@ -127,7 +127,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
         $content = $this->renderChildren();
         $this->templateVariableContainer->remove($this->arguments['as']);
-        if (0 === mb_strlen(trim($content))) {
+        if (0 === \mb_strlen(\trim($content))) {
             $content = $this->autoRender();
         }
         return $content;
@@ -141,7 +141,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     protected function autoRender()
     {
         $content = $this->getLanguageMenu();
-        $content = trim($content);
+        $content = \trim($content);
         if (false === empty($content)) {
             $this->tag->setContent($content);
             $content = $this->tag->render();
@@ -158,7 +158,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     {
         $tagName = $this->arguments['tagNameChildren'];
         $html = [];
-        $itemCount = count($this->languageMenu);
+        $itemCount = \count($this->languageMenu);
         foreach ($this->languageMenu as $index => $var) {
             $class = '';
             $classes = [];
@@ -173,17 +173,17 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             } elseif (($itemCount - 1) === $index) {
                 $classes[] = 'last';
             }
-            if (0 < count($classes)) {
-                $class = ' class="' . implode(' ', $classes) . '" ';
+            if (0 < \count($classes)) {
+                $class = ' class="' . \implode(' ', $classes) . '" ';
             }
             if (true === (boolean) $var['current'] && false === (boolean) $this->arguments['linkCurrent']) {
                 $html[] = '<' . $tagName . $class . '>' . $this->getLayout($var) . '</' . $tagName . '>';
             } else {
-                $html[] = '<' . $tagName . $class . '><a href="' . htmlspecialchars($var['url']) . '">' .
+                $html[] = '<' . $tagName . $class . '><a href="' . \htmlspecialchars($var['url']) . '">' .
                     $this->getLayout($var) . '</a></' . $tagName . '>';
             }
         }
-        return implode(LF, $html);
+        return \implode(LF, $html);
     }
 
     /**
@@ -195,13 +195,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     protected function getLanguageFlagSrc($iso)
     {
         if ('' !== $this->arguments['flagPath']) {
-            $path = trim($this->arguments['flagPath']);
+            $path = \trim($this->arguments['flagPath']);
         } else {
             $path = CoreUtility::getLanguageFlagIconPath();
         }
 
-        $imgType = trim($this->arguments['flagImageType']);
-        return $path . strtoupper($iso) . '.' . $imgType;
+        $imgType = \trim($this->arguments['flagImageType']);
+        return $path . \strtoupper($iso) . '.' . $imgType;
     }
 
     /**
@@ -212,7 +212,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getLayout(array $language)
     {
-        $flagImage = false !== stripos($this->arguments['layout'], 'flag') ? $this->getFlagImage($language) : '';
+        $flagImage = false !== \stripos($this->arguments['layout'], 'flag') ? $this->getFlagImage($language) : '';
         $label = $language['label'];
         switch ($this->arguments['layout']) {
             case 'flag':
@@ -278,10 +278,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $select = 'uid,title,flag';
         $from = 'sys_language';
         $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
-        $limitLanguages = array_filter($limitLanguages);
+        $limitLanguages = \array_filter($limitLanguages);
 
         if (!empty($limitLanguages)) {
-            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => -1, 'uidInList' => implode(',', $limitLanguages)]);
+            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => -1, 'uidInList' => \implode(',', $limitLanguages)]);
         } else {
             $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => 'root']);
         }
@@ -314,13 +314,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         // Select all language overlay records on the current page. Each represents a possibility for a language.
-        $table = version_compare(TYPO3_branch, '9.5', '<') ? 'pages_language_overlay' : 'pages';
+        $table = \version_compare(TYPO3_branch, '9.5', '<') ? 'pages_language_overlay' : 'pages';
         $sysLang = $GLOBALS['TSFE']->cObj->getRecords($table, ['selectFields' => 'sys_language_uid', 'pidInList' => $this->getPageUid(), 'languageField' => 0]);
-        $languageUids = array_column($sysLang, 'sys_language_uid');
+        $languageUids = \array_column($sysLang, 'sys_language_uid');
 
         foreach ($languageMenu as $key => $value) {
             $current = $GLOBALS['TSFE']->sys_language_uid === (integer) $key ? 1 : 0;
-            $inactive = in_array($key, $languageUids) || (integer) $key === $this->defaultLangUid ? 0 : 1;
+            $inactive = \in_array($key, $languageUids) || (integer) $key === $this->defaultLangUid ? 0 : 1;
             $url = $this->getLanguageUrl($key);
             if (true === empty($url)) {
                 $url = GeneralUtility::getIndpEnv('REQUEST_URI');
@@ -345,7 +345,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getLanguageUrl($uid)
     {
-        $excludedVars = trim((string) $this->arguments['excludeQueryVars']);
+        $excludedVars = \trim((string) $this->arguments['excludeQueryVars']);
         $config = [
             'parameter' => $this->getPageUid(),
             'returnLast' => 'url',
@@ -357,7 +357,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                 'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
             ]
         ];
-        if (true === is_array($this->arguments['configuration'])) {
+        if (true === \is_array($this->arguments['configuration'])) {
             $config = $this->mergeArrays($config, $this->arguments['configuration']);
         }
         return $this->cObj->typoLink('', $config);

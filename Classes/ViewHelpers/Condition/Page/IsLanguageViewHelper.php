@@ -44,8 +44,8 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         $defaultTitle = $arguments['defaultTitle'];
 
         $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-        if (true === is_numeric($language)) {
-            $languageUid = intval($language);
+        if (true === \is_numeric($language)) {
+            $languageUid = \intval($language);
         } else {
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
@@ -62,7 +62,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
                 ->fetch();
 
             if (false !== $row) {
-                $languageUid = intval($row['uid']);
+                $languageUid = \intval($row['uid']);
             } else {
                 if ((string) $language === $defaultTitle) {
                     $languageUid = $currentLanguageUid;

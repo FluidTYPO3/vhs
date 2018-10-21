@@ -41,8 +41,8 @@ class TagViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $this->arguments['class'] = trim((string) $this->arguments['class']);
-        $this->arguments['class'] = str_replace(',', ' ', $this->arguments['class']);
+        $this->arguments['class'] = \trim((string) $this->arguments['class']);
+        $this->arguments['class'] = \str_replace(',', ' ', $this->arguments['class']);
         $content = $this->renderChildren();
         return $this->renderTag($this->arguments['name'], $content);
     }

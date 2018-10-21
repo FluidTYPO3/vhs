@@ -111,7 +111,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     {
         $identifier = static::getIdentifier($arguments);
         if (false === isset(self::$identifiers[$identifier])) {
-            self::$identifiers[$identifier] = time();
+            self::$identifiers[$identifier] = \time();
         }
     }
 
@@ -122,7 +122,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     protected static function removeIfExpired(array $arguments)
     {
         $id = static::getIdentifier($arguments);
-        if (isset(self::$identifiers[$id]) && self::$identifiers[$id] <= time() - $arguments['ttl']) {
+        if (isset(self::$identifiers[$id]) && self::$identifiers[$id] <= \time() - $arguments['ttl']) {
             unset(self::$identifiers[$id]);
         }
     }

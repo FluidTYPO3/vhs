@@ -134,7 +134,7 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
         }
 
         if (true === (boolean) $single) {
-            return reset($result);
+            return \reset($result);
         }
 
         return $result;
@@ -150,8 +150,8 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
      */
     protected static function extractByKey($iterator, $key)
     {
-        if (false === is_array($iterator) && false === $iterator instanceof \Traversable) {
-            throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
+        if (false === \is_array($iterator) && false === $iterator instanceof \Traversable) {
+            throw new \Exception('Traversable object or array expected but received ' . \gettype($iterator), 1361532490);
         }
 
         $result = ObjectAccess::getPropertyPath($iterator, $key);
@@ -169,8 +169,8 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
      */
     protected static function recursivelyExtractKey($iterator, $key)
     {
-        if (false === is_array($iterator) && false === $iterator instanceof \Traversable) {
-            throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1515498714);
+        if (false === \is_array($iterator) && false === $iterator instanceof \Traversable) {
+            throw new \Exception('Traversable object or array expected but received ' . \gettype($iterator), 1515498714);
         }
 
         $content = [];
@@ -180,7 +180,7 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
             $result = ObjectAccess::getPropertyPath($v, $key);
             if (null !== $result) {
                 $content[] = $result;
-            } elseif (true === is_array($v) || true === $v instanceof \Traversable) {
+            } elseif (true === \is_array($v) || true === $v instanceof \Traversable) {
                 $content[] = static::recursivelyExtractKey($v, $key);
             }
         }
@@ -204,7 +204,7 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
         }
 
         foreach ($content as $sub) {
-            if (true === is_array($sub)) {
+            if (true === \is_array($sub)) {
                 $flattened = static::flattenArray($sub, $flattened);
             } else {
                 $flattened[] = $sub;

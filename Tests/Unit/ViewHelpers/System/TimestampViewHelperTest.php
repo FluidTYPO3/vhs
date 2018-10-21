@@ -21,7 +21,7 @@ class TimestampViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsIntegerAtOrAboveNowAsMeasuredInTest()
     {
-        $now = time();
+        $now = \time();
         $result = $this->executeViewHelper();
         $this->assertGreaterThanOrEqual($now, $result);
     }

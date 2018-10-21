@@ -32,7 +32,7 @@ class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterfa
      */
     protected static function getTimestamp()
     {
-        return time();
+        return \time();
     }
 
     /**

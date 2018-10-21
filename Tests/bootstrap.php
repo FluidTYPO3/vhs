@@ -1,6 +1,6 @@
 <?php
 // Register composer autoloader
-if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
+if (!\file_exists(__DIR__ . '/../vendor/autoload.php')) {
     throw new \RuntimeException(
         'Could not find vendor/autoload.php, make sure you ran composer.'
     );
@@ -30,4 +30,4 @@ $autoloader = require __DIR__ . '/../vendor/autoload.php';
     ]
 );
 
-ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED);
+\ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED);

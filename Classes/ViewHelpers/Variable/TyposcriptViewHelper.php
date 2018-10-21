@@ -91,12 +91,12 @@ class TyposcriptViewHelper extends AbstractViewHelper implements CompilableInter
         $all = static::getConfigurationManager()->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
-        $segments = explode('.', $path);
+        $segments = \explode('.', $path);
         $value = $all;
         foreach ($segments as $path) {
             $value = (true === isset($value[$path . '.']) ? $value[$path . '.'] : $value[$path]);
         }
-        if (true === is_array($value)) {
+        if (true === \is_array($value)) {
             $value = GeneralUtility::removeDotsFromTS($value);
         }
         return $value;

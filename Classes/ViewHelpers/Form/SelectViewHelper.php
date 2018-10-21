@@ -126,7 +126,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
         // as often as there are elements in the box
         if (true === (boolean) $this->arguments['multiple']) {
             $content .= $this->renderHiddenFieldForEmptyValue();
-            $length = count($options);
+            $length = \count($options);
             for ($i = 0; $i < $length; $i++) {
                 $this->registerFieldNameForFormTokenGeneration($name);
             }
@@ -180,7 +180,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
 
         foreach ($options as $value => $label) {
             $isSelected = $this->isSelected($value);
-            $output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+            $output .= $this->renderOptionTag($value, $label, $isSelected) . \chr(10);
         }
         return $output;
     }
@@ -193,50 +193,50 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
      */
     protected function getOptions()
     {
-        if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
+        if (!\is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
             return [];
         }
         $options = [];
         $optionsArgument = $this->arguments['options'];
         foreach ($optionsArgument as $key => $value) {
-            if (is_object($value)) {
+            if (\is_object($value)) {
                 if (isset($this->arguments['optionValueField']) && !empty($this->arguments['optionValueField'])) {
                     $key = ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
-                    if (true === is_object($key)) {
-                        if (true === method_exists($key, '__toString')) {
+                    if (true === \is_object($key)) {
+                        if (true === \method_exists($key, '__toString')) {
                             $key = (string) $key;
                         } else {
                             ErrorUtility::throwViewHelperException(
-                                'Identifying value for object of class "' . get_class($value) . '" was an object.',
+                                'Identifying value for object of class "' . \get_class($value) . '" was an object.',
                                 1247827428
                             );
                         }
                     }
                 } elseif (null !== $this->persistenceManager->getBackend()->getIdentifierByObject($value)) {
                     $key = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
-                } elseif (true === method_exists($value, '__toString')) {
+                } elseif (true === \method_exists($value, '__toString')) {
                     $key = (string) $value;
                 } else {
                     ErrorUtility::throwViewHelperException(
-                        'No identifying value for object of class "' . get_class($value) . '" found.',
+                        'No identifying value for object of class "' . \get_class($value) . '" found.',
                         1247826696
                     );
                 }
 
                 if (isset($this->arguments['optionLabelField']) && !empty($this->arguments['optionLabelField'])) {
                     $value = ObjectAccess::getProperty($value, $this->arguments['optionLabelField']);
-                    if (true === is_object($value)) {
-                        if (true === method_exists($value, '__toString')) {
+                    if (true === \is_object($value)) {
+                        if (true === \method_exists($value, '__toString')) {
                             $value = (string) $value;
                         } else {
                             ErrorUtility::throwViewHelperException(
-                                'Label value for object of class "' . get_class($value) . '" was an object without ' .
+                                'Label value for object of class "' . \get_class($value) . '" was an object without ' .
                                 'a __toString() method.',
                                 1247827553
                             );
                         }
                     }
-                } elseif (true === method_exists($value, '__toString')) {
+                } elseif (true === \method_exists($value, '__toString')) {
                     $value = (string) $value;
                 } elseif (null !== $this->persistenceManager->getBackend()->getIdentifierByObject($value)) {
                     $value = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
@@ -245,7 +245,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
             $options[$key] = $value;
         }
         if (isset($this->arguments['sortByOptionLabel']) && !empty($this->arguments['sortByOptionLabel'])) {
-            asort($options);
+            \asort($options);
         }
         return $options;
     }
@@ -265,7 +265,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
         if (true === isset($this->arguments['multiple']) && false === empty($this->arguments['multiple'])) {
             if (null === $selectedValue && true === (boolean) $this->arguments['selectAllByDefault']) {
                 return true;
-            } elseif (true === is_array($selectedValue) && true === in_array($value, $selectedValue)) {
+            } elseif (true === \is_array($selectedValue) && true === \in_array($value, $selectedValue)) {
                 return true;
             }
         }
@@ -283,8 +283,8 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
         if (!isset($this->arguments['optionValueField']) || empty($this->arguments['optionValueField'])) {
             return $value;
         }
-        if (!is_array($value) && !$value instanceof \Iterator) {
-            if (is_object($value)) {
+        if (!\is_array($value) && !$value instanceof \Iterator) {
+            if (\is_object($value)) {
                 return ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
             } else {
                 return $value;
@@ -292,7 +292,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
         }
         $selectedValues = [];
         foreach ($value as $selectedValueElement) {
-            if (is_object($selectedValueElement)) {
+            if (\is_object($selectedValueElement)) {
                 $selectedValues[] = ObjectAccess::getProperty(
                     $selectedValueElement,
                     $this->arguments['optionValueField']
@@ -314,11 +314,11 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
      */
     protected function renderOptionTag($value, $label, $isSelected)
     {
-        $output = '<option value="' . htmlspecialchars($value) . '"';
+        $output = '<option value="' . \htmlspecialchars($value) . '"';
         if (true === (boolean) $isSelected) {
             $output .= ' selected="selected"';
         }
-        $output .= '>' . htmlspecialchars($label) . '</option>';
+        $output .= '>' . \htmlspecialchars($label) . '</option>';
 
         return $output;
     }

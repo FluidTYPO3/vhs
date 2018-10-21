@@ -43,11 +43,11 @@ class MaximumViewHelper extends AbstractMultipleMathViewHelper
         $aIsIterable = static::assertIsArrayOrIterator($a);
         if (true === $aIsIterable && null === $b) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
-            return max($a);
+            return \max($a);
         }
         if ($b === null && (boolean) $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
-        return max($a, $b);
+        return \max($a, $b);
     }
 }

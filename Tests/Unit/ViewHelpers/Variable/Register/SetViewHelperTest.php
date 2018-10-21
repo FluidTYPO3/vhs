@@ -32,8 +32,8 @@ class SetViewHelperTest extends AbstractViewHelperTest
     public function canSetRegister()
     {
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $name = uniqid();
-        $value = uniqid();
+        $name = \uniqid();
+        $value = \uniqid();
         $this->executeViewHelper(['name' => $name, 'value' => $value]);
         $this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
     }
@@ -44,8 +44,8 @@ class SetViewHelperTest extends AbstractViewHelperTest
     public function canSetVariableWithValueFromTagContent()
     {
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $name = uniqid();
-        $value = uniqid();
+        $name = \uniqid();
+        $value = \uniqid();
         $this->executeViewHelperUsingTagContent($value, ['name' => $name]);
         $this->assertEquals($value, $GLOBALS['TSFE']->register[$name]);
     }

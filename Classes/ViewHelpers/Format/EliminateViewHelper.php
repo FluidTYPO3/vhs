@@ -127,16 +127,16 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateCharacters($content, $characters, $caseSensitive)
     {
-        if (true === is_array($characters)) {
+        if (true === \is_array($characters)) {
             $subjects = $characters;
         } else {
-            $subjects = preg_split('//u', $characters, null, PREG_SPLIT_NO_EMPTY);
+            $subjects = \preg_split('//u', $characters, null, PREG_SPLIT_NO_EMPTY);
         }
         foreach ($subjects as $subject) {
             if (true === $caseSensitive) {
-                $content = str_replace($subject, '', $content);
+                $content = \str_replace($subject, '', $content);
             } else {
-                $content = str_ireplace($subject, '', $content);
+                $content = \str_ireplace($subject, '', $content);
             }
         }
         return $content;
@@ -150,16 +150,16 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateStrings($content, $strings, $caseSensitive)
     {
-        if (true === is_array($strings)) {
+        if (true === \is_array($strings)) {
             $subjects = $strings;
         } else {
-            $subjects = explode(',', $strings);
+            $subjects = \explode(',', $strings);
         }
         foreach ($subjects as $subject) {
             if (true === $caseSensitive) {
-                $content = str_replace($subject, '', $content);
+                $content = \str_replace($subject, '', $content);
             } else {
-                $content = str_ireplace($subject, '', $content);
+                $content = \str_ireplace($subject, '', $content);
             }
         }
         return $content;
@@ -171,7 +171,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateWhitespace($content)
     {
-        $content = preg_replace('/\s+/', '', $content);
+        $content = \preg_replace('/\s+/', '', $content);
         return $content;
     }
 
@@ -181,7 +181,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateWhitespaceBetweenHtmlTags($content)
     {
-        $content = trim(preg_replace('/>\s+</', '><', $content));
+        $content = \trim(\preg_replace('/>\s+</', '><', $content));
         return $content;
     }
 
@@ -191,7 +191,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateTabs($content)
     {
-        $content = str_replace("\t", '', $content);
+        $content = \str_replace("\t", '', $content);
         return $content;
     }
 
@@ -201,7 +201,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateUnixBreaks($content)
     {
-        $content = str_replace("\n", '', $content);
+        $content = \str_replace("\n", '', $content);
         return $content;
     }
 
@@ -211,7 +211,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateWindowsCarriageReturns($content)
     {
-        $content = str_replace("\r", '', $content);
+        $content = \str_replace("\r", '', $content);
         return $content;
     }
 
@@ -221,7 +221,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateDigits($content)
     {
-        $content = preg_replace('#[0-9]#', '', $content);
+        $content = \preg_replace('#[0-9]#', '', $content);
         return $content;
     }
 
@@ -233,9 +233,9 @@ class EliminateViewHelper extends AbstractViewHelper
     protected static function eliminateLetters($content, $caseSensitive)
     {
         if (true === $caseSensitive) {
-            $content = preg_replace('#[a-z]#', '', $content);
+            $content = \preg_replace('#[a-z]#', '', $content);
         } else {
-            $content = preg_replace('/[a-z]/i', '', $content);
+            $content = \preg_replace('/[a-z]/i', '', $content);
         }
         return $content;
     }
@@ -248,7 +248,7 @@ class EliminateViewHelper extends AbstractViewHelper
     protected static function eliminateNonAscii($content, $caseSensitive)
     {
         $caseSensitiveIndicator = true === $caseSensitive ? 'i' : '';
-        $content = preg_replace('/[^(\x20-\x7F)]*/' . $caseSensitiveIndicator, '', $content);
+        $content = \preg_replace('/[^(\x20-\x7F)]*/' . $caseSensitiveIndicator, '', $content);
         return $content;
     }
 }

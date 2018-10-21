@@ -30,6 +30,6 @@ class RangeViewHelper extends AbstractSingleMathViewHelper
      */
     protected static function calculateAction($a)
     {
-        return [min($a), max($a)];
+        return [\min($a), \max($a)];
     }
 }

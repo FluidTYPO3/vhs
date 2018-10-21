@@ -26,7 +26,7 @@ class ViewHelperUtility
      */
     public static function getVariableProviderFromRenderingContext(RenderingContextInterface $renderingContext)
     {
-        if (method_exists($renderingContext, 'getVariableProvider')) {
+        if (\method_exists($renderingContext, 'getVariableProvider')) {
             return $renderingContext->getVariableProvider();
         }
         return $renderingContext->getTemplateVariableContainer();

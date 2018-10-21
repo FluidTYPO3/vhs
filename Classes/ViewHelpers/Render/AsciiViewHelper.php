@@ -70,13 +70,13 @@ class AsciiViewHelper extends AbstractViewHelper implements CompilableInterface
         RenderingContextInterface $renderingContext
     ) {
         $ascii = $renderChildrenClosure();
-        if (true === is_numeric($ascii)) {
-            return chr((integer) $ascii);
+        if (true === \is_numeric($ascii)) {
+            return \chr((integer) $ascii);
         }
-        if (true === is_array($ascii) || true === $ascii instanceof \Traversable) {
+        if (true === \is_array($ascii) || true === $ascii instanceof \Traversable) {
             $string = '';
             foreach ($ascii as $characterNumber) {
-                $string .= chr($characterNumber);
+                $string .= \chr($characterNumber);
             }
             return $string;
         }

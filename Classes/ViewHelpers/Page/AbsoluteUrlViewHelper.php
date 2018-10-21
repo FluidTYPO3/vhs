@@ -34,7 +34,7 @@ class AbsoluteUrlViewHelper extends AbstractViewHelper implements CompilableInte
         RenderingContextInterface $renderingContext
     ) {
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        if (0 !== strpos($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
+        if (0 !== \strpos($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
             $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
         }
         return $url;

@@ -45,12 +45,12 @@ class DirectoryViewHelper extends AbstractMenuViewHelper
     public function render()
     {
         $pages = $this->processPagesArgument();
-        if (0 === count($pages)) {
+        if (0 === \count($pages)) {
             return null;
         }
         $menuData = [];
         foreach ($pages as $pageUid) {
-            $menuData = array_merge($menuData, $this->getMenu($pageUid));
+            $menuData = \array_merge($menuData, $this->getMenu($pageUid));
         }
         $menu = $this->parseMenu($menuData);
         $this->backupVariables();

@@ -65,7 +65,7 @@ class RandomViewHelper extends AbstractViewHelper implements CompilableInterface
             return null;
         }
         return static::renderChildrenWithVariableOrReturnInputStatic(
-            $subject[array_rand($subject)],
+            $subject[\array_rand($subject)],
             $arguments['as'],
             $renderingContext,
             $renderChildrenClosure

@@ -1,16 +1,16 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+if (!\defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
 /**
  * Polyfill ext-mbstring if not present. Can be removed with TYPO3 8.7 minimum-compatibility.
  */
-if (false === function_exists('mb_strlen') || false === function_exists('mb_chr')) {
-    if (!function_exists('mb_strlen')) {
-        define('MB_CASE_UPPER', 0);
-        define('MB_CASE_LOWER', 1);
-        define('MB_CASE_TITLE', 2);
+if (false === \function_exists('mb_strlen') || false === \function_exists('mb_chr')) {
+    if (!\function_exists('mb_strlen')) {
+        \define('MB_CASE_UPPER', 0);
+        \define('MB_CASE_LOWER', 1);
+        \define('MB_CASE_TITLE', 2);
 
         function mb_convert_encoding($s, $to, $from = null) { return FluidTYPO3\Vhs\Mbstring::mb_convert_encoding($s, $to, $from); }
         function mb_decode_mimeheader($s) { return FluidTYPO3\Vhs\Mbstring::mb_decode_mimeheader($s); }
@@ -23,7 +23,7 @@ if (false === function_exists('mb_strlen') || false === function_exists('mb_chr'
         function mb_check_encoding($var = null, $encoding = null) { return FluidTYPO3\Vhs\Mbstring::mb_check_encoding($var, $encoding); }
         function mb_detect_encoding($str, $encodingList = null, $strict = false) { return FluidTYPO3\Vhs\Mbstring::mb_detect_encoding($str, $encodingList, $strict); }
         function mb_detect_order($encodingList = null) { return FluidTYPO3\Vhs\Mbstring::mb_detect_order($encodingList); }
-        function mb_parse_str($s, &$result = array()) { parse_str($s, $result); }
+        function mb_parse_str($s, &$result = array()) { \parse_str($s, $result); }
         function mb_strlen($s, $enc = null) { return FluidTYPO3\Vhs\Mbstring::mb_strlen($s, $enc); }
         function mb_strpos($s, $needle, $offset = 0, $enc = null) { return FluidTYPO3\Vhs\Mbstring::mb_strpos($s, $needle, $offset, $enc); }
         function mb_strtolower($s, $enc = null) { return FluidTYPO3\Vhs\Mbstring::mb_strtolower($s, $enc); }
@@ -46,21 +46,21 @@ if (false === function_exists('mb_strlen') || false === function_exists('mb_chr'
         function mb_convert_variables($toEncoding, $fromEncoding, &$a = null, &$b = null, &$c = null, &$d = null, &$e = null, &$f = null) { return FluidTYPO3\Vhs\Mbstring::mb_convert_variables($toEncoding, $fromEncoding, $a, $b, $c, $d, $e, $f); }
     }
 
-    if (!function_exists('mb_chr')) {
+    if (!\function_exists('mb_chr')) {
         function mb_ord($s, $enc = null) { return FluidTYPO3\Vhs\Mbstring::mb_ord($s, $enc); }
         function mb_chr($code, $enc = null) { return FluidTYPO3\Vhs\Mbstring::mb_chr($code, $enc); }
-        function mb_scrub($s, $enc = null) { $enc = null === $enc ? mb_internal_encoding() : $enc; return mb_convert_encoding($s, $enc, $enc); }
+        function mb_scrub($s, $enc = null) { $enc = null === $enc ? \mb_internal_encoding() : $enc; return \mb_convert_encoding($s, $enc, $enc); }
     }
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup'] = unserialize($_EXTCONF);
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup'] = \unserialize($_EXTCONF);
 if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling']) || !$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling']) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'][] = 'FluidTYPO3\\Vhs\\Service\\AssetService';
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][] = 'FluidTYPO3\\Vhs\\Service\\AssetService->buildAllUncached';
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'FluidTYPO3\\Vhs\\Service\\AssetService->clearCacheCommand';
 }
 
-if (FALSE === is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vhs_main'])) {
+if (FALSE === \is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vhs_main'])) {
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vhs_main'] = [
 		'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend',
 		'options' => [
@@ -70,7 +70,7 @@ if (FALSE === is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfi
 	];
 }
 
-if (FALSE === is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vhs_markdown'])) {
+if (FALSE === \is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vhs_markdown'])) {
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vhs_markdown'] = [
 		'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend',
 		'options' => [

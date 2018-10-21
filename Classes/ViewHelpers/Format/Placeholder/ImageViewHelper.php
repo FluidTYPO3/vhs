@@ -56,9 +56,9 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
             $this->arguments['textColor'],
         ];
         if (false === empty($text)) {
-            array_push($url, '&text=' . urlencode($text));
+            \array_push($url, '&text=' . \urlencode($text));
         }
-        $imageUrl = implode('/', $url);
+        $imageUrl = \implode('/', $url);
         $this->tag->forceClosingTag(false);
         $this->tag->addAttribute('src', $imageUrl);
         $this->tag->addAttribute('alt', $imageUrl);

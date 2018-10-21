@@ -57,14 +57,14 @@ class ExtensionViewHelper extends AbstractViewHelper
 
         $file = GeneralUtility::getFileAbsFileName($filePath);
 
-        $parts = explode('.', basename($file));
+        $parts = \explode('.', \basename($file));
 
         // file has no extension
-        if (1 === count($parts)) {
+        if (1 === \count($parts)) {
             return '';
         }
 
-        $extension = strtolower(array_pop($parts));
+        $extension = \strtolower(\array_pop($parts));
 
         return $extension;
     }

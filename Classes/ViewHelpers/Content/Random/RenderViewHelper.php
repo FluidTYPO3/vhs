@@ -44,10 +44,10 @@ class RenderViewHelper extends AbstractContentViewHelper
         // so all the content records that end up unused do not get rendered.
         $contentRecords = $this->getContentRecords();
         if (false === empty($contentRecords)) {
-            shuffle($contentRecords);
-            $contentRecords = array_slice($contentRecords, 0, $limit);
+            \shuffle($contentRecords);
+            $contentRecords = \array_slice($contentRecords, 0, $limit);
             if (true === (boolean) $this->arguments['render']) {
-                $contentRecords = implode(LF, $contentRecords);
+                $contentRecords = \implode(LF, $contentRecords);
             }
         }
         return $contentRecords;

@@ -59,30 +59,30 @@ class LipsumViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $lipsum = $arguments['lipsum'];
-        if (mb_strlen($lipsum) === 0) {
+        if (\mb_strlen($lipsum) === 0) {
             $lipsum = static::getDefaultLoremIpsum();
         }
-        if ((mb_strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === mb_strpos($lipsum, 'EXT:')) {
+        if ((\mb_strlen($lipsum) < 255 && !\preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === \mb_strpos($lipsum, 'EXT:')) {
             // argument is most likely a file reference.
             $sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
-            if (file_exists($sourceFile)) {
-                $lipsum = file_get_contents($sourceFile);
+            if (\file_exists($sourceFile)) {
+                $lipsum = \file_get_contents($sourceFile);
             } else {
                 return 'Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
                     'The file was: ' . $sourceFile;
             }
         }
-        $lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
-        $paragraphs = explode("\n", $lipsum);
-        $paragraphs = array_slice($paragraphs, 0, intval($arguments['paragraphs']));
+        $lipsum = \preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
+        $paragraphs = \explode("\n", $lipsum);
+        $paragraphs = \array_slice($paragraphs, 0, \intval($arguments['paragraphs']));
         foreach ($paragraphs as $index => $paragraph) {
             $length = $arguments['wordsPerParagraph']
-                + rand(0 - intval($arguments['skew']), intval($arguments['skew']));
-            $words = explode(' ', $paragraph);
-            $paragraphs[$index] = implode(' ', array_slice($words, 0, $length));
+                + \rand(0 - \intval($arguments['skew']), \intval($arguments['skew']));
+            $words = \explode(' ', $paragraph);
+            $paragraphs[$index] = \implode(' ', \array_slice($words, 0, $length));
         }
 
-        $lipsum = implode("\n", $paragraphs);
+        $lipsum = \implode("\n", $paragraphs);
         if ($arguments['html']) {
             $tsParserPath = $arguments['parseFuncTSPath'] ? '< ' . $arguments['parseFuncTSPath'] : null;
             $lipsum = static::getContentObject()->parseFunc($lipsum, [], $tsParserPath);
@@ -155,8 +155,8 @@ EqsH8BqIBVNokKRmb2lT1YdZNpwNiMFNvzg3al2OAoUHoN6MsueG0z5Ui2vbeIuLjKpFPT9TenUd9OVD
 x6M5TL9+9eRSN6k7qIfMQASX3oQXVGMtmPSfLjuBzGGeNjszJMznOLW8FUMbkptifPaZV13sSQyF0qOdN9Rk+hobN164Wdc6m4V8RrHTGxXQpN3EXiZfUJ
 DMIQpga2uYYtOVQwtd838NhauhXzLF9AYQu16hr9u1C42SO8/kznuFkuu8wtkKoFbuoDxm3Cvn8OMziHcxkfZKgc+egBghffP+bZb9GrsmjORQPza31VR4
 fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
-        $uncompressed = gzuncompress(base64_decode($lipsum));
-        $safeLipsum = htmlentities(strip_tags($uncompressed));
+        $uncompressed = \gzuncompress(\base64_decode($lipsum));
+        $safeLipsum = \htmlentities(\strip_tags($uncompressed));
         return $safeLipsum;
     }
 
