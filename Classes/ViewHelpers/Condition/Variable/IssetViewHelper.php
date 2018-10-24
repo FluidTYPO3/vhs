@@ -73,7 +73,7 @@ class IssetViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         $renderingContext = static::$staticRenderingContext;
-        $variableProvider = method_exists($renderingContext, 'getVariableProvider') ? $renderingContext->getVariableProvider() : $renderingContext->getTemplateVariableContainer();
+        $variableProvider = $renderingContext->getVariableProvider();
         return $variableProvider->exists($arguments['name']);
     }
 
