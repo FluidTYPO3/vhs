@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
 
 use FluidTYPO3\Vhs\Service\AssetService;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -17,6 +18,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3\CMS\Frontend\Exception;
 
 /**
  * Base class for ViewHelpers capable of registering assets
@@ -270,7 +272,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         if (true === isset($this->arguments['external']) && true === (boolean) $this->arguments['external']) {
             $path = $this->arguments['path'];
         } else {
-            $path = GeneralUtility::getFileAbsFileName($this->arguments['path']);
+            $path = $this->buildAbsolutePath($this->arguments['path']);
         }
         $content = file_get_contents($path);
         return $content;
@@ -474,7 +476,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
             $assetSettings = $this->mergeArrays($assetSettings, $settings['asset'][$name]);
         }
         if (!empty($assetSettings['path']) && !$assetSettings['external']) {
-            $assetSettings['path'] = GeneralUtility::getFileAbsFileName($assetSettings['path']);
+            $assetSettings['path'] = $this->buildAbsolutePath($assetSettings['path']);
         }
         $assetSettings['name'] = $name;
         $this->assetSettingsCache = $assetSettings;
@@ -570,5 +572,34 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param $path
+     * @return string
+     * @throws Exception
+     *
+     * A path like /typo3conf/ext/myext/Resources/Public/myscript.js
+     * ( which is what you get from {f:uri.resource(path:'myscript.js')} )
+     * is not correct processed by GeneralUtility::getFileAbsFileName
+     * it returns ''  - we need to remove the '/' at the beginning to work
+     */
+    private function buildAbsolutePath($path)
+    {
+        $incomingPath = $path;
+        if( preg_match('|^/|',$path)
+            && !file_exists($path)
+            && file_exists(Environment::getPublicPath() . $path)
+        ) {
+            $path = preg_replace('|^/|','',$path);
+        }
+        $path = GeneralUtility::getFileAbsFileName($path);
+        if (empty($path)) {
+            throw new Exception (
+                sprintf('Could not create absolute path for path "%s" (asset-name: "%s")',
+                    $incomingPath, $this->arguments["name"])
+            );
+        }
+        return $path;
     }
 }
