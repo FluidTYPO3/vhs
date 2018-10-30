@@ -41,12 +41,12 @@ class MinimumViewHelper extends AbstractMultipleMathViewHelper
     protected static function calculateAction($a, $b, array $arguments)
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
+        if (false === $aIsIterable && $b === null && (boolean) $arguments['fail']) {
+            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
+        }
         if (true === $aIsIterable && null === $b) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             return min($a);
-        }
-        if ($b === null && (boolean) $arguments['fail']) {
-            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
         return min($a, $b);
     }
