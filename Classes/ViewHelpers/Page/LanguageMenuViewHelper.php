@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * ViewHelper for rendering TYPO3 menus in Fluid
@@ -50,6 +51,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $this->registerUniversalTagAttributes();
         $this->registerArgument(
             'tagName',
@@ -313,14 +315,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        // Select all language overlay records on the current page. Each represents a possibility for a language.
-        $table = version_compare(TYPO3_branch, '9.5', '<') ? 'pages_language_overlay' : 'pages';
-        $sysLang = $GLOBALS['TSFE']->cObj->getRecords($table, ['selectFields' => 'sys_language_uid', 'pidInList' => $this->getPageUid(), 'languageField' => 0]);
-        $languageUids = array_column($sysLang, 'sys_language_uid');
-
         foreach ($languageMenu as $key => $value) {
             $current = $GLOBALS['TSFE']->sys_language_uid === (integer) $key ? 1 : 0;
-            $inactive = in_array($key, $languageUids) || (integer) $key === $this->defaultLangUid ? 0 : 1;
+            $inactive = !empty($this->pageRepository->getPagesOverlay(array($this->getPageUid()), $key)) || (integer) $key === $this->defaultLangUid ? 0 : 1;
             $url = $this->getLanguageUrl($key);
             if (true === empty($url)) {
                 $url = GeneralUtility::getIndpEnv('REQUEST_URI');
