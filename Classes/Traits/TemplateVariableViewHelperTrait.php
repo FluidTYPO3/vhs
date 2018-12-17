@@ -87,7 +87,7 @@ trait TemplateVariableViewHelperTrait
             $variables = [$as => $variable];
             $content = static::renderChildrenWithVariablesStatic(
                 $variables,
-                $renderingContext->getTemplateVariableContainer(),
+                $renderingContext->getVariableProvider(),
                 $renderChildrenClosure
             );
         }

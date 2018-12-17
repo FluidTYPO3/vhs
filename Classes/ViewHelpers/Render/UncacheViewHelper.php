@@ -54,7 +54,7 @@ class UncacheViewHelper extends AbstractViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+        $templateVariableContainer = $renderingContext->getVariableProvider();
         $partialArguments = $arguments['arguments'];
         if (false === is_array($partialArguments)) {
             $partialArguments = [];
