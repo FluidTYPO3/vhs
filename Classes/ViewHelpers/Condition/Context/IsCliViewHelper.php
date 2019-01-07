@@ -40,6 +40,6 @@ class IsCliViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
+        return (bool) (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
     }
 }
