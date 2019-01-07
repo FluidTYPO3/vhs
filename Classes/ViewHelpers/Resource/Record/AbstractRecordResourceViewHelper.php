@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -165,6 +166,11 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+
+        if ($GLOBALS["TSFE"]->fePreview === 1){
+            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        }
+
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
         return reset($queryBuilder
