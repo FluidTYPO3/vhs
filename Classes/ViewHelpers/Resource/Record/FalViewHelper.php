@@ -9,7 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
@@ -126,7 +128,6 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function getResources($record)
     {
-        $databaseConnection = $this->getDatabaseConnection();
         $fileReferences = [];
         if (empty($GLOBALS['TSFE']->sys_page) === false) {
             $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $record);
@@ -138,26 +139,71 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             } else {
                 $sqlRecordUid = $record[$this->idField];
             }
+
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+
+            $queryBuilder->createNamedParameter($this->getTable(), \PDO::PARAM_STR, ':tablenames');
+            $queryBuilder->createNamedParameter($sqlRecordUid, \PDO::PARAM_INT, ':uid_foreign');
+            $queryBuilder->createNamedParameter($this->getField(), \PDO::PARAM_STR, ':fieldname');
+
+            $references = $queryBuilder
+                ->select('uid')
+                ->from('sys_file_reference')
+                ->where(
+                    $queryBuilder->expr()->eq('tablenames', ':tablenames')
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->eq('uid_foreign', ':uid_foreign' )
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->eq('fieldname', ':fieldname')
+                );
+
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
-                $versionWhere = 'AND sys_file_reference.deleted=0 AND (sys_file_reference.t3ver_wsid=0 OR ' .
-                    'sys_file_reference.t3ver_wsid=' . $GLOBALS['BE_USER']->workspaceRec['uid'] .
-                    ') AND sys_file_reference.pid<>-1';
+                $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->workspaceRec['uid'], \PDO::PARAM_INT, ':t3ver_wsid');
+                $references = $queryBuilder
+                    ->andWhere(
+                        $queryBuilder->expr()->eq('deleted', 0)
+                    )
+                    ->andWhere(
+                        $queryBuilder->expr()->eq('t3ver_wsid', 0)
+                        . ' OR ' .
+                        $queryBuilder->expr()->eq('t3ver_wsid', ':t3ver_wsid')
+                    )
+                    ->andWhere(
+                        $queryBuilder->expr()->neq('pid', -1)
+                    );
             } else {
-                $versionWhere = 'AND sys_file_reference.deleted=0 AND sys_file_reference.t3ver_state<=0 AND ' .
-                    'sys_file_reference.pid<>-1 AND sys_file_reference.hidden=0';
+                $references = $queryBuilder
+                    ->andWhere(
+                        $queryBuilder->expr()->eq('deleted', 0)
+                    )
+                    ->andWhere(
+                        $queryBuilder->expr()->lte('t3ver_state', 0)
+                    )
+                    ->andWhere(
+                        $queryBuilder->expr()->neq('pid', -1)
+                    )
+                    ->andWhere(
+                        $queryBuilder->expr()->eq('hidden', 0)
+                    );
             }
-            $references = $databaseConnection->exec_SELECTgetRows(
-                'uid',
-                'sys_file_reference',
-                'tablenames=' . $databaseConnection->fullQuoteStr($this->getTable(), 'sys_file_reference') .
-                    ' AND uid_foreign=' . (int) $sqlRecordUid .
-                    ' AND fieldname=' . $databaseConnection->fullQuoteStr($this->getField(), 'sys_file_reference')
-                    . $versionWhere,
-                '',
-                'sorting_foreign',
-                '',
-                'uid'
-            );
+
+            // Execute
+            $references = $queryBuilder
+                ->orderBy('sorting_foreign')
+                ->execute()
+                ->fetchAll();
+
+            // uid's as array key
+            $ids = [];
+            foreach ($references as $item) {
+                $ids[$item['uid']]['uid'] = $item['uid'];
+            }
+
+            $references = $ids;
+
             if (empty($references) === false) {
                 $referenceUids = array_keys($references);
                 $fileReferences = [];
@@ -187,13 +233,5 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             }
         }
         return $resources;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
