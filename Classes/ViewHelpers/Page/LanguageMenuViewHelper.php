@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -313,10 +314,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        // Select all language overlay records on the current page. Each represents a possibility for a language.
-        $table = version_compare(TYPO3_branch, '9.5', '<') ? 'pages_language_overlay' : 'pages';
-        $sysLang = $GLOBALS['TSFE']->cObj->getRecords($table, ['selectFields' => 'sys_language_uid', 'pidInList' => $this->getPageUid(), 'languageField' => 0]);
-        $languageUids = array_column($sysLang, 'sys_language_uid');
+        $languageUids = $this->getSystemLanguageUids();
 
         foreach ($languageMenu as $key => $value) {
             $current = $GLOBALS['TSFE']->sys_language_uid === (integer) $key ? 1 : 0;
@@ -376,5 +374,35 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         return (integer) $pageUid;
+    }
+
+    /**
+     * Fetches system languages depending on the TYPO3 version.
+     *
+     * @return int[]
+     * @see https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.0/Important-82445-MigratePagesLanguageOverlayIntoPages.html
+     */
+    protected function getSystemLanguageUids()
+    {
+        if (version_compare(TYPO3_branch, '9.0', '<')) {
+            $table = 'pages_language_overlay';
+            $parentField = 'pid';
+        } else {
+            $table = 'pages';
+            $parentField = 'l10n_parent';
+        }
+
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable($table);
+        $queryBuilder = $connection->createQueryBuilder();
+        $result = $queryBuilder->select('sys_language_uid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq($parentField, $this->getPageUid())
+            )
+            ->execute()
+        ;
+
+        return array_column($result->fetchAll(), 'sys_language_uid');
     }
 }
