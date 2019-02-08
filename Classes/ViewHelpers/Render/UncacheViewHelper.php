@@ -79,6 +79,7 @@ class UncacheViewHelper extends AbstractViewHelper implements CompilableInterfac
                 'partial' => $arguments['partial'],
                 'section' => $arguments['section'],
                 'arguments' => $partialArguments,
+                'partialRootPaths' => $renderingContext->getTemplatePaths()->getPartialRootPaths(),
                 'controllerContext' => $renderingContext->getControllerContext()
             ],
             'content' => $content
