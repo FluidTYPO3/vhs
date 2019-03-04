@@ -1,7 +1,9 @@
-Latest release: 5.0.1 (2018/06/21)
+Latest release: 5.1.1 (2019/01/09)
 
 All previous release change logs:
 
+* [5.1.1 (2019/01/09)](Documentation/Changelog/5.1.1.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/5.1.0...5.1.1)
+* [5.1.0 (2018/10/02)](Documentation/Changelog/5.1.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/5.0.1...5.1.0)
 * [5.0.1 (2018/06/21)](Documentation/Changelog/5.0.1.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/5.0.0...5.0.1)
 * [5.0.0 (2018/06/19)](Documentation/Changelog/5.0.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/4.4.0...5.0.0)
 * [4.4.0 (2018/03/11)](Documentation/Changelog/4.4.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/4.3.3...4.4.0)

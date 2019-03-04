@@ -180,7 +180,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
             $tagAttributes['muted'] = 'muted';
         }
         if (true === in_array($this->arguments['preload'], $this->validPreloadModes)) {
-            $tagAttributes['preload'] = 'preload';
+            $tagAttributes['preload'] = $this->arguments['preload'];
         }
         if (null !== $this->arguments['poster']) {
             $tagAttributes['poster'] = $this->arguments['poster'];
