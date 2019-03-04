@@ -64,7 +64,7 @@ class StringViewHelper extends AbstractViewHelper implements CompilableInterface
             $length = $length !== null ? $length : $minimumLength;
         }
         $string = '';
-        if($characters === '0123456789abcdef'){
+        if ($characters === '0123456789abcdef') {
             $string = bin2hex(random_bytes($length));
         } else {
             for ($i = 0; $i < $length; $i++) {
