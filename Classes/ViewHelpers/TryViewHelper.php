@@ -84,7 +84,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class TryViewHelper extends AbstractConditionViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
     /**

@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource\Record;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
 /**
  * Class FalViewHelperTest

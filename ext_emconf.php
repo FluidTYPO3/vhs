@@ -18,35 +18,35 @@ $EM_CONF[$_EXTKEY] = array (
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '4.4.0',
-  'constraints' =>
+  'version' => '5.1.1',
+  'constraints' => 
   array (
-    'depends' =>
+    'depends' => 
     array (
-      'php' => '7.0.0-7.1.99',
-      'typo3' => '8.7.0-9.1.99',
+      'php' => '7.0.0-7.2.99',
+      'typo3' => '8.7.0-9.5.99',
     ),
-    'conflicts' =>
+    'conflicts' => 
     array (
     ),
-    'suggests' =>
+    'suggests' => 
     array (
     ),
   ),
-  'suggests' =>
+  'suggests' => 
   array (
   ),
   '_md5_values_when_last_written' => '',
-  'autoload' =>
+  'autoload' => 
   array (
-    'psr-4' =>
+    'psr-4' => 
     array (
       'FluidTYPO3\\Vhs\\' => 'Classes/',
     ),
   ),
-  'autoload-dev' =>
+  'autoload-dev' => 
   array (
-    'psr-4' =>
+    'psr-4' => 
     array (
       'FluidTYPO3\\Vhs\\Tests\\' => 'Tests/',
     ),

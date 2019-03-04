@@ -10,10 +10,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Iterator Reversal ViewHelper
@@ -65,7 +65,7 @@ class ReverseViewHelper extends AbstractViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $array = static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure());
+        $array = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure());
         $array = array_reverse($array, true);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $array,

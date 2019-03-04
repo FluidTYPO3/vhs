@@ -9,10 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use FluidTYPO3\Vhs\ViewHelpers\Iterator\ExplodeViewHelper;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
 
 /**
  * Class ExplodeViewHelperTest
@@ -43,20 +39,10 @@ class ExplodeViewHelperTest extends AbstractViewHelperTest
     /**
      * @test
      */
-    public function supportsConstantsGlue()
+    public function supportsLimitArgument()
     {
-        $arguments = ['content' => "1\n2\n3", 'glue' => 'constant:LF'];
+        $arguments = ['content' => '1;2;3', 'glue' => ';', 'limit' => '2'];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(['1', '2', '3'], $result);
-    }
-
-    /**
-     * @test
-     */
-    public function passesThroughUnknownSpecialGlue()
-    {
-        $arguments = ['content' => '1-2-3', 'glue' => 'unknown:-'];
-        $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(['1', '2', '3'], $result);
+        $this->assertEquals(['1', '2;3'], $result);
     }
 }

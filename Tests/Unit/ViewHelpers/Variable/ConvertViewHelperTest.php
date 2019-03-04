@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Class ConvertViewHelperTest

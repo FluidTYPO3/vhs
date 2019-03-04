@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
@@ -19,7 +17,9 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### Render: Request
@@ -76,7 +76,7 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $extensionName = $arguments['extensionName'];
         $pluginName = $arguments['pluginName'];
         $vendorName = $arguments['vendorName'];
-        $arguments = is_array($arguments['arguments']) ? $arguments['arguments'] : null;
+        $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
         $objectManager = static::getObjectManager();
         $contentObjectBackup = $configurationManager->getContentObject();
@@ -94,8 +94,8 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
         $request->setControllerName($controller);
         $request->setPluginName($pluginName);
         $request->setControllerExtensionName($extensionName);
-        if ($arguments !== null) {
-            $request->setArguments($arguments);
+        if (!empty($requestArguments)) {
+            $request->setArguments($requestArguments);
         }
         $request->setControllerVendorName($vendorName);
 

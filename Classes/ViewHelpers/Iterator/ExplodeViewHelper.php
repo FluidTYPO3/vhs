@@ -10,9 +10,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -37,11 +37,6 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     protected $escapeOutput = false;
 
     /**
-     * @var string
-     */
-    protected static $method = 'explode';
-
-    /**
      * Initialize
      *
      * @return void
@@ -52,10 +47,18 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
         $this->registerArgument(
             'glue',
             'string',
-            'String used as glue in the string to be exploded. Use glue value of "constant:NAMEOFCONSTANT" ' .
-            '(fx "constant:LF" for linefeed as glue)',
+            'String "glue" that separates values. If you need a constant (like PHP_EOL), use v:const to read it.',
             false,
             ','
+        );
+        $this->registerArgument(
+            'limit',
+            'int',
+            'If limit is set and positive, the returned array will contain a maximum of limit elements with the last ' .
+            'element containing the rest of string. If the limit parameter is negative, all components except the ' .
+            'last-limit are returned. If the limit parameter is zero, then this is treated as 1.',
+            false,
+            PHP_INT_MAX
         );
         $this->registerAsArgument();
     }
@@ -71,37 +74,15 @@ class ExplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = isset($arguments['content']) ? $arguments['content'] : $renderChildrenClosure();
-        $glue = static::resolveGlue($arguments);
-        $output = call_user_func_array(static::$method, [$glue, $content]);
+        $content = !empty($arguments['as']) ? $arguments['content'] : ($arguments['content'] ?? $renderChildrenClosure());
+        $glue = $arguments['glue'];
+        $limit = isset($arguments['limit']) ? $arguments['limit'] : PHP_INT_MAX;
+        $output = explode($glue, $content, $limit);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $arguments['as'],
             $renderingContext,
             $renderChildrenClosure
         );
-    }
-
-    /**
-     * Detects the proper glue string to use for implode/explode operation
-     *
-     * @param array $arguments
-     * @return string
-     */
-    protected static function resolveGlue(array $arguments)
-    {
-        $glue = $arguments['glue'];
-        if (false !== mb_strpos($glue, ':') && 1 < mb_strlen($glue)) {
-            // glue contains a special type identifier, resolve the actual glue
-            list ($type, $value) = explode(':', $glue);
-            switch ($type) {
-                case 'constant':
-                    $glue = constant($value);
-                    break;
-                default:
-                    $glue = $value;
-            }
-        }
-        return $glue;
     }
 }

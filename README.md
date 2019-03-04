@@ -10,6 +10,12 @@ VHS: Fluid ViewHelpers
 
 ## Installation
 
+### Installation using Composer
+
+The recommended way to install the extension is by using [Composer](https://getcomposer.org/). In your Composer based TYPO3 project root, just do `composer require fluidtypo3/vhs`.
+
+### Installation as extension from TYPO3 Extension Repository (TER)
+
 Download and install as TYPO3 extension. That's it.
 
 ## Settings

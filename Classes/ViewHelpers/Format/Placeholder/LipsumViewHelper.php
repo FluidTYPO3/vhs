@@ -11,9 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -70,7 +70,6 @@ class LipsumViewHelper extends AbstractViewHelper
             } else {
                 return 'Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
                     'The file was: ' . $sourceFile;
-                $lipsum = static::getDefaultLoremIpsum();
             }
         }
         $lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
