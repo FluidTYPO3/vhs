@@ -85,6 +85,10 @@ class UncacheTemplateView extends TemplateView
         $renderingContext = $this->objectManager->get(RenderingContext::class);
         $this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
         $this->setControllerContext($controllerContext);
+        if (!empty($conf['partialRootPaths'])) {
+            $templatePaths = $renderingContext->getTemplatePaths();
+            $templatePaths->setPartialRootPaths($conf['partialRootPaths']);
+        }
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
 

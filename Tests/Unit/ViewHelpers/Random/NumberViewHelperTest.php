@@ -50,8 +50,8 @@ class NumberViewHelperTest extends AbstractViewHelperTest
         $arguments = ['minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 2, 'maximumDecimals' => 8];
         $result1 = $this->executeViewHelper($arguments);
         $result2 = $this->executeViewHelper($arguments);
-        $this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_FLOAT));
-        $this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_FLOAT));
+        $this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_NUMERIC));
+        $this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_NUMERIC));
         $this->assertNotEquals($result1, $result2);
     }
 }
