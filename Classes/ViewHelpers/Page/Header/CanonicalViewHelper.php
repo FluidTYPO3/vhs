@@ -69,7 +69,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
             );
         }
 
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uri = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setUseCacheHash(true)
