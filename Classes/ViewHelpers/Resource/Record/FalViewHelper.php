@@ -108,7 +108,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         }
 
         if ($table === 'pages') {
-            $fileObjects = $this->pageRepository->getFileReferences($table, $field, $record);
+            $fileObjects = $this->pageRepository->getFileReferences($table, $field, (array)$record);
         } else {
             if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
                 $sqlRecordUid = $record['t3ver_oid'];
