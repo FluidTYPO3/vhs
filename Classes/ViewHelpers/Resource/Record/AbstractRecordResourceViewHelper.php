@@ -157,7 +157,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     /**
      * @param mixed $id
-     * @return array
+     * @return array|null
      */
     public function getRecord($id)
     {
@@ -167,20 +167,20 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
-        if ($GLOBALS["TSFE"]->fePreview){
+        if ($GLOBALS["TSFE"]->fePreview) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        return reset($queryBuilder
-                ->select('*')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq($idField, ':id')
-                )
-                ->execute()
-                ->fetchAll());
+        return $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq($idField, ':id')
+            )
+            ->execute()
+            ->fetch() ?: null;
     }
 
     /**
