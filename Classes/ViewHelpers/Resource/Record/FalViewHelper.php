@@ -78,6 +78,18 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
     }
 
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'asObjects',
+            'bool',
+            'Can be set to TRUE to return objects instead of file information arrays.',
+            false,
+            false
+        );
+    }
+
     /**
      * @param FileReference $fileReference
      * @return array
@@ -219,7 +231,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             // Exclude workspace deleted files references
             if ($file->getProperty('t3ver_state') !== VersionState::DELETE_PLACEHOLDER) {
                 try {
-                    $resources[] = $this->getResource($file);
+                    $resources[] = $this->arguments['asObjects'] ? $file : $this->getResource($file);
                 } catch (\InvalidArgumentException $error) {
                     // Pokemon-style, catch-all and suppress. This exception type is thrown if a file gets removed.
                 }
