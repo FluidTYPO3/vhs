@@ -55,7 +55,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     /**
      * @var array
      */
-    private static $settingsCache = null;
+    protected static $settingsCache = null;
 
     /**
      * @var array
