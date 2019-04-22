@@ -56,7 +56,7 @@ class LanguageViewHelper extends AbstractViewHelper
             'string',
             'Absolute or relative path to the locallang file',
             false,
-            self::LOCALLANG_DEFAULT
+            static::LOCALLANG_DEFAULT
         );
         $this->registerArgument(
             'languageKey',

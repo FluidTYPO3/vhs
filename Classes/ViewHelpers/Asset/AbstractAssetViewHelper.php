@@ -418,21 +418,21 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function getSettings()
     {
-        if (null === self::$settingsCache) {
+        if (null === static::$settingsCache) {
             $allTypoScript = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
             $settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
             if (!$settingsExist) {
                 // no settings exist, but don't allow a NULL value. This prevents cache clobbering.
-                self::$settingsCache = [];
+                static::$settingsCache = [];
             } else {
-                self::$settingsCache = GeneralUtility::removeDotsFromTS(
+                static::$settingsCache = GeneralUtility::removeDotsFromTS(
                     $allTypoScript['plugin.']['tx_vhs.']['settings.']
                 );
             }
         }
-        $settings = self::$settingsCache;
+        $settings = static::$settingsCache;
         if (is_array($this->localSettings)) {
             ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
         }

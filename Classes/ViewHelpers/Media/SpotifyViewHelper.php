@@ -95,7 +95,7 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
             $height = 80;
         }
 
-        $src = self::SPOTIFY_BASEURL . '?uri=' . $spotifyUri . '&theme=' . $theme . '&view=' . $view;
+        $src = static::SPOTIFY_BASEURL . '?uri=' . $spotifyUri . '&theme=' . $theme . '&view=' . $view;
 
         $this->tag->forceClosingTag(true);
         $this->tag->addAttribute('src', $src);

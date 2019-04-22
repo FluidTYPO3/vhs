@@ -82,16 +82,16 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
             $treatIdAsReference = true;
         }
 
-        $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_SRC, $src);
-        $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_ID, $treatIdAsReference);
+        $this->viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
+        $this->viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
         $content = $this->renderChildren();
-        $this->viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_SRC);
-        $this->viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_ID);
+        $this->viewHelperVariableContainer->remove(static::SCOPE, static::SCOPE_VARIABLE_SRC);
+        $this->viewHelperVariableContainer->remove(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
-        if (false === $this->viewHelperVariableContainer->exists(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
+        if (false === $this->viewHelperVariableContainer->exists(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
             throw new Exception('Please add a source without a media query as a default.', 1438116616);
         }
-        $defaultSource = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE);
+        $defaultSource = $this->viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
 
         $defaultImage = new TagBuilder('img');
         $defaultImage->addAttribute('src', $defaultSource);

@@ -33,7 +33,7 @@ class IndexOfViewHelper extends ContainsViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $evaluation = self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+        $evaluation = static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
 
         if (false !== $evaluation) {
             return (integer) $evaluation;

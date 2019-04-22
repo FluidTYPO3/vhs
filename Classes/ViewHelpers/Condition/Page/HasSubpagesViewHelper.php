@@ -35,7 +35,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
      */
     public static function setPageService(PageService $pageService)
     {
-        self::$pageService = $pageService;
+        static::$pageService = $pageService;
     }
 
     /**
@@ -70,12 +70,12 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
-        if (self::$pageService === null) {
+        if (static::$pageService === null) {
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            self::$pageService = $objectManager->get(PageService::class);
+            static::$pageService = $objectManager->get(PageService::class);
         }
 
-        $menu = self::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);
+        $menu = static::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);
 
         return (0 < count($menu));
     }

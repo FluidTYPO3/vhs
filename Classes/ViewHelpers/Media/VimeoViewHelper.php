@@ -106,7 +106,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
         $width   = $this->arguments['width'];
         $height  = $this->arguments['height'];
 
-        $src = self::VIMEO_BASEURL . $videoId . '?';
+        $src = static::VIMEO_BASEURL . $videoId . '?';
 
         $queryParams = [
             'title='     . (integer) $this->arguments['title'],

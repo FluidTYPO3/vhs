@@ -48,7 +48,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return false !== self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+        return false !== static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
     }
 
     /**
@@ -89,13 +89,13 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     protected static function assertHaystackHasNeedle($haystack, $needle, $arguments)
     {
         if (true === is_array($haystack)) {
-            return self::assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments);
+            return static::assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments);
         } elseif ($haystack instanceof LazyObjectStorage) {
-            return self::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+            return static::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
         } elseif ($haystack instanceof ObjectStorage) {
-            return self::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
+            return static::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
         } elseif ($haystack instanceof QueryResult) {
-            return self::assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
+            return static::assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
         } elseif (true === is_string($haystack)) {
             return strpos($haystack, $needle);
         }
