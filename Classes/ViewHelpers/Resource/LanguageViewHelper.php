@@ -56,7 +56,7 @@ class LanguageViewHelper extends AbstractViewHelper
             'string',
             'Absolute or relative path to the locallang file',
             false,
-            self::LOCALLANG_DEFAULT
+            static::LOCALLANG_DEFAULT
         );
         $this->registerArgument(
             'languageKey',
@@ -95,7 +95,7 @@ class LanguageViewHelper extends AbstractViewHelper
         $extensionName = $this->arguments['extensionName'];
 
         if ((null === $extensionName) && (true === $this->controllerContext instanceof ControllerContext)) {
-            $request = $this->controllerContext->getRequest();
+            $request = $this->renderingContext->getControllerContext()->getRequest();
             $extensionName = $request->getControllerExtensionName();
         }
 

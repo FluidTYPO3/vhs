@@ -58,7 +58,10 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
      */
     public static function preprocessSourceUri($src, array $arguments)
     {
-        $src = $GLOBALS['TSFE']->absRefPrefix . str_replace('%2F', '/', rawurlencode($src));
+        $src = str_replace('%2F', '/', rawurlencode($src));
+        if (substr($src, 0, 1) !== '/' && substr($src, 0, 4) !== 'http') {
+            $src = $GLOBALS['TSFE']->absRefPrefix . $src;
+        }
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
         } elseif ('BE' === TYPO3_MODE || false === (boolean) $arguments['relative']) {

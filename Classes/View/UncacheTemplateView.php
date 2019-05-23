@@ -85,6 +85,10 @@ class UncacheTemplateView extends TemplateView
         $renderingContext = $this->objectManager->get(RenderingContext::class);
         $this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
         $this->setControllerContext($controllerContext);
+        if (!empty($conf['partialRootPaths'])) {
+            $templatePaths = $renderingContext->getTemplatePaths();
+            $templatePaths->setPartialRootPaths($conf['partialRootPaths']);
+        }
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
 
@@ -129,7 +133,7 @@ class UncacheTemplateView extends TemplateView
     ) {
         array_push(
             $this->renderingStack,
-            ['type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
+            ['type' => static::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
         );
         $rendered = $this->renderPartial($partial, $section, $arguments);
         array_pop($this->renderingStack);

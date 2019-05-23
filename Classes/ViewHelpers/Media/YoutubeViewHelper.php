@@ -157,7 +157,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     private function getSourceUrl($videoId)
     {
-        $src = $this->arguments['extendedPrivacy'] ? self::YOUTUBE_PRIVACY_BASEURL : self::YOUTUBE_BASEURL;
+        $src = $this->arguments['extendedPrivacy'] ? static::YOUTUBE_PRIVACY_BASEURL : static::YOUTUBE_BASEURL;
 
         $params = [];
 

@@ -33,7 +33,7 @@ class PreviousViewHelper extends ContainsViewHelper implements CompilableInterfa
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $evaluation = self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
-        return self::getNeedleAtIndex($evaluation !== false ? $evaluation - 1 : -1, $arguments);
+        $evaluation = static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+        return static::getNeedleAtIndex($evaluation !== false ? $evaluation - 1 : -1, $arguments);
     }
 }

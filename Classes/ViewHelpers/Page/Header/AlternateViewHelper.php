@@ -110,7 +110,7 @@ class AlternateViewHelper extends AbstractViewHelper
         $addQueryString = $this->arguments['addQueryString'];
 
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setCreateAbsoluteUri(true)

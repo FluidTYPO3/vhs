@@ -9,6 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -92,15 +95,22 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         if (false === empty($categories)) {
-            $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-                'uid_foreign',
-                'sys_category_record_mm',
-                sprintf(
-                    'tablenames = \'%s\' AND uid_local IN (%s)',
-                    $this->getCategoryRelationTableName(),
-                    implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($categories, 'sys_category_record_mm'))
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
+            $queryBuilder->createNamedParameter($this->getTablenameForSystemConfiguration(), \PDO::PARAM_STR, ':tablenames');
+            $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
+
+            $rows = $queryBuilder
+                ->select('uid_foreign')
+                ->from('sys_category_record_mm')
+                ->where(
+                    $queryBuilder->expr()->eq('tablenames', ':tablenames')
                 )
-            );
+                ->andWhere(
+                    $queryBuilder->expr()->in('uid_local', ':categories')
+                )
+                ->execute()
+                ->fetchAll();
 
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));
 

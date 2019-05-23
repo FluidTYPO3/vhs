@@ -67,9 +67,9 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        if (self::$staticReflectionService === null) {
+        if (static::$staticReflectionService === null) {
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            self::$staticReflectionService = $objectManager->get(ReflectionService::class);
+            static::$staticReflectionService = $objectManager->get(ReflectionService::class);
         }
 
         $property = $arguments['property'];
@@ -83,7 +83,7 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
                 if (true === ctype_digit($property)) {
                     continue;
                 }
-                $annotations = self::$staticReflectionService->getPropertyTagValues($className, $property, 'var');
+                $annotations = static::$staticReflectionService->getPropertyTagValues($className, $property, 'var');
                 $possibleClassName = array_pop($annotations);
                 if (false !== strpos($possibleClassName, '<')) {
                     $className = array_pop(explode('<', trim($possibleClassName, '>')));
@@ -100,14 +100,14 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
         } else {
             $annotationName = 'validate';
         }
-        $annotations = self::$staticReflectionService->getPropertyTagValues($className, $property, $annotationName);
+        $annotations = static::$staticReflectionService->getPropertyTagValues($className, $property, $annotationName);
         if (empty($annotations) && $annotationName === 'validate' && version_compare($fluidCoreVersion, 9.1, '>=')) {
             // We tried looking for the legacy validator name but found none. Retry with the new way. We have to do this
             // as a retry, because we cannot assume that any site using TYPO3 9.1+ will also be using the modern
             // annotations. Hence we cannot change the validator name until we've also looked for the legacy ones (which
             // will take priority if found).
             $annotationName = 'Extbase\\Validate';
-            $annotations = self::$staticReflectionService->getPropertyTagValues($className, $property, $annotationName);
+            $annotations = static::$staticReflectionService->getPropertyTagValues($className, $property, $annotationName);
         }
         return (count($annotations) && (!$validatorName || in_array($validatorName, $annotations)));
     }

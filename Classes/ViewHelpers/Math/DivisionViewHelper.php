@@ -33,6 +33,9 @@ class DivisionViewHelper extends AbstractMultipleMathViewHelper
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         $bIsIterable = static::assertIsArrayOrIterator($b);
+        if (false === $aIsIterable && $b === null && (boolean) $arguments['fail']) {
+            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
+        }
         if (true === $aIsIterable && null === $b) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             $sum = array_sum($a);
@@ -48,9 +51,6 @@ class DivisionViewHelper extends AbstractMultipleMathViewHelper
                 $a[$index] = static::calculateAction($value, $bSide, $arguments);
             }
             return $a;
-        }
-        if ($b === null && (boolean) $arguments['fail']) {
-            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
         return (0 <> $b ? $a / $b : $a);
     }

@@ -84,7 +84,7 @@ class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInte
         $identity = $arguments['identity'];
         if (false === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
             if (true === $identity instanceof DomainObjectInterface) {
-                $identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
+                $identity = get_class($identity) . static::ID_SEPARATOR . $identity->getUid();
             } elseif (true === method_exists($identity, '__toString')) {
                 $identity = (string) $identity;
             } else {
