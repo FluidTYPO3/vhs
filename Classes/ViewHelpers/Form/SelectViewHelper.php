@@ -106,14 +106,14 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
             }
             $this->tag->setContent($this->renderOptionTags($options));
         } else {
-            $this->viewHelperVariableContainer->add(SelectViewHelper::class, 'options', []);
-            $this->viewHelperVariableContainer->add(SelectViewHelper::class, 'value', $this->getValue());
+            $this->renderingContext->getViewHelperVariableContainer()->add(SelectViewHelper::class, 'options', []);
+            $this->renderingContext->getViewHelperVariableContainer()->add(SelectViewHelper::class, 'value', $this->getValue());
             $tagContent = $this->renderChildren();
-            $options = $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'options');
+            $options = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'options');
             $this->tag->setContent($tagContent);
-            $this->viewHelperVariableContainer->remove(SelectViewHelper::class, 'options');
-            if (true === $this->viewHelperVariableContainer->exists(SelectViewHelper::class, 'value')) {
-                $this->viewHelperVariableContainer->remove(SelectViewHelper::class, 'value');
+            $this->renderingContext->getViewHelperVariableContainer()->remove(SelectViewHelper::class, 'options');
+            if (true === $this->renderingContext->getViewHelperVariableContainer()->exists(SelectViewHelper::class, 'value')) {
+                $this->renderingContext->getViewHelperVariableContainer()->remove(SelectViewHelper::class, 'value');
             }
         }
 

@@ -125,9 +125,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->tag->setTagName($this->tagName);
 
         $this->languageMenu = $this->parseLanguageMenu();
-        $this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
+        $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $this->languageMenu);
         $content = $this->renderChildren();
-        $this->templateVariableContainer->remove($this->arguments['as']);
+        $this->renderingContext->getVariableProvider()->remove($this->arguments['as']);
         if (0 === mb_strlen(trim($content))) {
             $content = $this->autoRender();
         }

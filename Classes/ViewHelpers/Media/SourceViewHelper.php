@@ -107,8 +107,8 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $imageSource = $this->viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_SRC);
-        $treatIdAsRerefence = $this->viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_ID);
+        $imageSource = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_SRC);
+        $treatIdAsRerefence = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
         if ('BE' === TYPO3_MODE) {
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
@@ -146,7 +146,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $src = $this->preprocessSourceUri(rawurldecode($result[3]));
 
         if (null === $this->arguments['media']) {
-            $this->viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
+            $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
         } else {
             $this->tag->addAttribute('media', $this->arguments['media']);
         }

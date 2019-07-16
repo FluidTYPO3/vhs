@@ -122,7 +122,7 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
         }
         if (0 < count($this->childObjectAccessorNodes)) {
             array_push($nodes, '[VARIABLE ACCESSORS]');
-            $templateVariables = $this->templateVariableContainer->getAll();
+            $templateVariables = $this->renderingContext->getVariableProvider()->getAll();
             foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
                 $path = $objectAccessorNode->getObjectPath();
                 $segments = explode('.', $path);

@@ -45,7 +45,7 @@ class OptionViewHelper extends AbstractFormFieldViewHelper
      */
     public function render()
     {
-        if (!$this->viewHelperVariableContainer->exists(SelectViewHelper::class, 'options')) {
+        if (!$this->renderingContext->getViewHelperVariableContainer()->exists(SelectViewHelper::class, 'options')) {
             throw new \RuntimeException(
                 'Options can only be added inside select tags, optionally inside optgroup tag(s) inside the select tag',
                 1313937196
@@ -53,8 +53,8 @@ class OptionViewHelper extends AbstractFormFieldViewHelper
         }
         if (true === (boolean) $this->arguments['selected']) {
             $selected = 'selected';
-        } elseif (true === $this->viewHelperVariableContainer->exists(SelectViewHelper::class, 'value')) {
-            $value = $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'value');
+        } elseif (true === $this->renderingContext->getViewHelperVariableContainer()->exists(SelectViewHelper::class, 'value')) {
+            $value = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'value');
             if (false === is_object($this->arguments['value']) && false === is_array($this->arguments['value'])) {
                 if (true === is_array($value)) {
                     $selected = true === in_array($this->arguments['value'], $value) ? 'selected' : '';
@@ -72,9 +72,9 @@ class OptionViewHelper extends AbstractFormFieldViewHelper
             }
         }
         $tagContent = $this->renderChildren();
-        $options = $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'options');
+        $options = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'options');
         $options[$tagContent] = $this->arguments['value'];
-        $this->viewHelperVariableContainer->addOrUpdate(SelectViewHelper::class, 'options', $options);
+        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(SelectViewHelper::class, 'options', $options);
         if (false === empty($selected)) {
             $this->tag->addAttribute('selected', 'selected');
         } else {
