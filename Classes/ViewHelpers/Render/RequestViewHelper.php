@@ -87,7 +87,7 @@ class RequestViewHelper extends AbstractRenderViewHelper implements CompilableIn
             $request->getPluginName()
         );
 
-        $temporaryContentObject = new ContentObjectRenderer();
+        $temporaryContentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         /** @var Request $request */
         $request = $objectManager->get(static::$requestType);
         $request->setControllerActionName($action);
