@@ -35,7 +35,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class IsCliViewHelper extends AbstractConditionViewHelper
 {
-    protected static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
         return (bool) (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
     }

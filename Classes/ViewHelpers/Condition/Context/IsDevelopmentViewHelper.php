@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class IsDevelopmentViewHelper extends AbstractConditionViewHelper
 {
-    protected static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
         return GeneralUtility::getApplicationContext()->isDevelopment();
     }
