@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: Content ViewHelpers

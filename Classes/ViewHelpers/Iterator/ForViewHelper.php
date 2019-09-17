@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -16,7 +16,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Repeats rendering of children with a typical for loop: starting at
  * index $from it will loop until the index has reached $to.
  */
-class ForViewHelper extends AbstractLoopViewHelper implements CompilableInterface
+class ForViewHelper extends AbstractLoopViewHelper
 {
     use CompileWithRenderStatic;
 

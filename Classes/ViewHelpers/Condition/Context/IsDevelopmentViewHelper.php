@@ -9,7 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Context: IsDevelopment
@@ -26,11 +27,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsDevelopmentViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    protected static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         return GeneralUtility::getApplicationContext()->isDevelopment();
     }

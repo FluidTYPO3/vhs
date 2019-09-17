@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Form;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Is Field Required ViewHelper (condition)
