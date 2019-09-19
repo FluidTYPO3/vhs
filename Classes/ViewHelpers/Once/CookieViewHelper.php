@@ -45,28 +45,4 @@ class CookieViewHelper extends AbstractOnceViewHelper
         $identifier = static::getIdentifier($arguments);
         return (true === isset($_COOKIE[$identifier]));
     }
-
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function removeIfExpired(array $arguments)
-    {
-        $identifier = static::getIdentifier($arguments);
-        $existsInCookie = (boolean) (true === isset($_COOKIE[$identifier]));
-        if (true === $existsInCookie) {
-            static::removeCookie($arguments);
-        }
-    }
-
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function removeCookie(array $arguments)
-    {
-        $identifier = static::getIdentifier($arguments);
-        unset($_SESSION[$identifier], $_COOKIE[$identifier]);
-        setcookie($identifier, null, time() - 1);
-    }
 }
