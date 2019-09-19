@@ -88,7 +88,9 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     protected static function evaluateCondition($arguments = null)
     {
         static::removeIfExpired($arguments);
-        return static::assertShouldSkip($arguments) === false;
+        $shouldSkip = static::assertShouldSkip($arguments) === false;
+        static::storeIdentifier($arguments);
+        return $shouldSkip;
     }
 
     /**
