@@ -7,7 +7,7 @@ namespace FluidTYPO3\Vhs\Traits;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Class TemplateVariableViewHelperTrait
@@ -71,7 +71,7 @@ trait TemplateVariableViewHelperTrait
     /**
      * @param mixed $variable
      * @param string $as
-     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @param \Closure $renderChildrenClosure
      * @return mixed
      */

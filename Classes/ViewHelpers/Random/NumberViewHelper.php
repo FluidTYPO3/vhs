@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -20,7 +20,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * set to 100000 in order to generate a longer integer string
  * representation. Decimal values can be generated as well.
  */
-class NumberViewHelper extends AbstractViewHelper implements CompilableInterface
+class NumberViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -79,14 +79,14 @@ class NumberViewHelper extends AbstractViewHelper implements CompilableInterface
         $maximum = $arguments['maximum'];
         $minimumDecimals = $arguments['minimumDecimals'];
         $maximumDecimals = $arguments['maximumDecimals'];
-        $natural = rand($minimum, $maximum);
+        $natural = random_int($minimum, $maximum);
         if (0 === (integer) $minimumDecimals && 0 === (integer) $maximumDecimals) {
             return $natural;
         }
-        $decimals = array_fill(0, rand($minimumDecimals, $maximumDecimals), 0);
+        $decimals = array_fill(0, random_int($minimumDecimals, $maximumDecimals), 0);
         $decimals = array_map(function () {
-            return rand(0, 9);
+            return random_int(0, 9);
         }, $decimals);
-        return floatval($natural . '.' . implode('', $decimals));
+        return $natural . '.' . implode('', $decimals);
     }
 }

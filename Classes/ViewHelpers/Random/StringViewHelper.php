@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Has built-in insurance that first character of random string is
  * an alphabetic character (allowing safe use as DOM id for example).
  */
-class StringViewHelper extends AbstractViewHelper implements CompilableInterface
+class StringViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -59,14 +59,18 @@ class StringViewHelper extends AbstractViewHelper implements CompilableInterface
         $maximumLength = (integer) $arguments['maximumLength'];
         $characters = $arguments['characters'];
         if ($minimumLength != $maximumLength) {
-            $length = rand($minimumLength, $maximumLength);
+            $length = random_int($minimumLength, $maximumLength);
         } else {
             $length = $length !== null ? $length : $minimumLength;
         }
         $string = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomIndex = mt_rand(0, mb_strlen($characters) - 1);
-            $string .= $characters{$randomIndex};
+        if ($characters === '0123456789abcdef') {
+            $string = bin2hex(random_bytes($length));
+        } else {
+            for ($i = 0; $i < $length; $i++) {
+                $randomIndex = random_int(0, mb_strlen($characters) - 1);
+                $string .= $characters{$randomIndex};
+            }
         }
         return $string;
     }

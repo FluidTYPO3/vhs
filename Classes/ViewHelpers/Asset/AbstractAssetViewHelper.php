@@ -15,7 +15,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
@@ -55,7 +55,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     /**
      * @var array
      */
-    private static $settingsCache = null;
+    protected static $settingsCache = null;
 
     /**
      * @var array
@@ -265,7 +265,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function build()
     {
         if (false === isset($this->arguments['path']) || true === empty($this->arguments['path'])) {
-            return $this->getContent();
+            return $this->content;
         }
         if (true === isset($this->arguments['external']) && true === (boolean) $this->arguments['external']) {
             $path = $this->arguments['path'];
@@ -418,21 +418,21 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function getSettings()
     {
-        if (null === self::$settingsCache) {
+        if (null === static::$settingsCache) {
             $allTypoScript = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
             $settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
             if (!$settingsExist) {
                 // no settings exist, but don't allow a NULL value. This prevents cache clobbering.
-                self::$settingsCache = [];
+                static::$settingsCache = [];
             } else {
-                self::$settingsCache = GeneralUtility::removeDotsFromTS(
+                static::$settingsCache = GeneralUtility::removeDotsFromTS(
                     $allTypoScript['plugin.']['tx_vhs.']['settings.']
                 );
             }
         }
-        $settings = self::$settingsCache;
+        $settings = static::$settingsCache;
         if (is_array($this->localSettings)) {
             ArrayUtility::mergeRecursiveWithOverrule($settings, $this->localSettings);
         }

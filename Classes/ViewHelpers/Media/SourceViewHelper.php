@@ -12,7 +12,7 @@ use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -107,8 +107,8 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $imageSource = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_SRC);
-        $treatIdAsRerefence = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_ID);
+        $imageSource = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_SRC);
+        $treatIdAsRerefence = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
         if ('BE' === TYPO3_MODE) {
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
@@ -146,7 +146,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $src = $this->preprocessSourceUri(rawurldecode($result[3]));
 
         if (null === $this->arguments['media']) {
-            $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
+            $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
         } else {
             $this->tag->addAttribute('media', $this->arguments['media']);
         }

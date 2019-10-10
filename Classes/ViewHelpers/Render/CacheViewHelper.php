@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
@@ -47,7 +47,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * interact with the PageRenderer or other "live" objects; this
  * includes many of the VHS ViewHelpers!
  */
-class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInterface
+class CacheViewHelper extends AbstractRenderViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
@@ -84,7 +84,7 @@ class CacheViewHelper extends AbstractRenderViewHelper implements CompilableInte
         $identity = $arguments['identity'];
         if (false === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
             if (true === $identity instanceof DomainObjectInterface) {
-                $identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
+                $identity = get_class($identity) . static::ID_SEPARATOR . $identity->getUid();
             } elseif (true === method_exists($identity, '__toString')) {
                 $identity = (string) $identity;
             } else {

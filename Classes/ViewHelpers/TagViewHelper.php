@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  */
 
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ### Tag building ViewHelper
