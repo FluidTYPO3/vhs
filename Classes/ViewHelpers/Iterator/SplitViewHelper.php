@@ -9,8 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
@@ -18,7 +18,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Converts a string to an array with $length number of bytes
  * per new array element. Wrapper for PHP's `str_split`.
  */
-class SplitViewHelper extends AbstractViewHelper implements CompilableInterface
+class SplitViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;

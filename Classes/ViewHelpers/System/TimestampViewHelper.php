@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\System;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *     <!-- adds exactly one hour to a DateTime and formats it -->
  *     <f:format.date format="H:i">{dateTime.timestamp -> v:math.sum(b: 3600)}</f:format.date>
  */
-class TimestampViewHelper extends AbstractViewHelper implements CompilableInterface
+class TimestampViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

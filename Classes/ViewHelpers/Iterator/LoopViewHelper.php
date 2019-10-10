@@ -8,14 +8,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Repeats rendering of children $count times while updating $iteration.
  */
-class LoopViewHelper extends AbstractLoopViewHelper implements CompilableInterface
+class LoopViewHelper extends AbstractLoopViewHelper
 {
     use CompileWithRenderStatic;
 

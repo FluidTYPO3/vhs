@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Type;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Condition: Value is a domain object

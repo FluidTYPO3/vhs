@@ -10,8 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Does not work in the TYPO3 backend.
  */
-class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
+class InfoViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;

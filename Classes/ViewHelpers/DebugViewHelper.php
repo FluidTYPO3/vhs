@@ -13,7 +13,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as LegacyFluidObjectAccessorNode;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as LegacyFluidViewHelperNode;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as StandaloneFluidObjectAccessorNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as StandaloneFluidViewHelperNode;

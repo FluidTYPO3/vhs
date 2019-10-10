@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Try ViewHelper

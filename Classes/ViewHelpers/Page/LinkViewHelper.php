@@ -12,7 +12,7 @@ use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ### Page: Link ViewHelper
