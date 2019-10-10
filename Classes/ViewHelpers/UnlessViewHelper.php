@@ -46,6 +46,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class UnlessViewHelper extends AbstractConditionViewHelper
 {
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        if (!isset($this->argumentDefinitions['condition'])) {
+            $this->registerArgument('condition', 'boolean', 'Condition which must be true, or then is rendered', true);
+        }
+    }
+
     /**
      * Rendering with inversion and ignoring any f:then / f:else children.
      *
