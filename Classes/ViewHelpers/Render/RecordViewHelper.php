@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -19,7 +19,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * If you simply want to render a content element, try `<v:content.render>`.
  */
-class RecordViewHelper extends AbstractContentViewHelper implements CompilableInterface
+class RecordViewHelper extends AbstractContentViewHelper
 {
     use CompileWithRenderStatic;
 

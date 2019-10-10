@@ -9,14 +9,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Returns previous element in array $haystack from position of $needle.
  */
-class PreviousViewHelper extends ContainsViewHelper implements CompilableInterface
+class PreviousViewHelper extends ContainsViewHelper
 {
     use CompileWithRenderStatic;
 
