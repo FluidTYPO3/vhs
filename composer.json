@@ -58,7 +58,7 @@
     "extra": {
         "typo3/cms": {
           "cms-package-dir": "{$vendor-dir}/typo3/cms",
-          "extension-key": "flux",
+          "extension-key": "vhs",
           "web-dir": "build/web"
         }
     }
