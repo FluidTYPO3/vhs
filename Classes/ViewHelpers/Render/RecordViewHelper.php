@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
