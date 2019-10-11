@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Searches $haystack for index of $needle, returns -1 if $needle
@@ -18,7 +17,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class IndexOfViewHelper extends ContainsViewHelper
 {
-    use CompileWithRenderStatic;
+    public function render()
+    {
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+    }
 
     /**
      * Default implementation for use in compiled templates

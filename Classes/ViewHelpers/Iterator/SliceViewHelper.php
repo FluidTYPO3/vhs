@@ -12,15 +12,12 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Slice an Iterator by $start and $length.
  */
 class SliceViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -59,7 +56,7 @@ class SliceViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $haystack = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['haystack'] : $renderChildrenClosure());
+        $haystack = static::arrayFromArrayOrTraversableOrCSVStatic(empty($arguments['as']) ? ($arguments['haystack'] ?? $renderChildrenClosure()) : $arguments['haystack']);
         $output = array_slice($haystack, $arguments['start'], $arguments['length'], (boolean) $arguments['preserveKeys']);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,

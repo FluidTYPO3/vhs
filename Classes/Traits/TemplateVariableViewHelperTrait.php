@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Variables\VariableProviderInterface;
 
 /**
  * Class TemplateVariableViewHelperTrait
@@ -119,7 +120,7 @@ trait TemplateVariableViewHelperTrait
      * Returns the output of the renderChildren() method on $viewHelper.
      *
      * @param array $variables
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer
+     * @param VariableProviderInterface $templateVariableContainer
      * @param \Closure $renderChildrenClosure
      * @return mixed
      */
@@ -136,7 +137,7 @@ trait TemplateVariableViewHelperTrait
 
     /**
      * @param array $variables
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer
+     * @param VariableProviderInterface $templateVariableContainer
      * @return array
      */
     private static function backupVariables(array $variables, $templateVariableContainer)
@@ -155,7 +156,7 @@ trait TemplateVariableViewHelperTrait
     /**
      * @param array $variables
      * @param array $backups
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer
+     * @param VariableProviderInterface $templateVariableContainer
      * @return void
      */
     private static function restoreVariables(array $variables, array $backups, $templateVariableContainer)

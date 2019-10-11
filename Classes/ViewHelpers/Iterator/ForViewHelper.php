@@ -9,8 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Repeats rendering of children with a typical for loop: starting at
@@ -18,8 +16,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class ForViewHelper extends AbstractLoopViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @return void
      */

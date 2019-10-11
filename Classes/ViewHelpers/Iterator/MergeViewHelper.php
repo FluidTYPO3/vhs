@@ -11,15 +11,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Merges arrays/Traversables $a and $b into an array.
  */
 class MergeViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -63,7 +60,7 @@ class MergeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $a = static::arrayFromArrayOrTraversableOrCSVStatic($renderChildrenClosure());
+        $a = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['a'] ?? $renderChildrenClosure());
         $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b'], $arguments['useKeys']);
         return static::mergeArraysStatic($a, $b);
     }

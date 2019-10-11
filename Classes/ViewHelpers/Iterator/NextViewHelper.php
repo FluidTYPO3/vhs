@@ -10,15 +10,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Returns next element in array $haystack from position of $needle.
  */
 class NextViewHelper extends ContainsViewHelper
 {
-    use CompileWithRenderStatic;
+    public function render()
+    {
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+    }
 
     /**
      * Default implementation for use in compiled templates
@@ -33,7 +34,7 @@ class NextViewHelper extends ContainsViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $evaluation = static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+        $evaluation = static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'] ?? $renderChildrenClosure(), $arguments);
         return static::getNeedleAtIndex($evaluation !== false ? $evaluation + 1 : -1, $arguments);
     }
 }

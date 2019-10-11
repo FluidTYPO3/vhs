@@ -12,15 +12,12 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Returns random element from array.
  */
 class RandomViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -59,7 +56,7 @@ class RandomViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            !empty($arguments['as']) ? $arguments['subject'] : ($arguments['subject'] ?? $renderChildrenClosure())
+            static::arrayFromArrayOrTraversableOrCSVStatic(empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'])
         );
         if (empty($subject)) {
             return null;
