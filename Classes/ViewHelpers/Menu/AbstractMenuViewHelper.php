@@ -488,7 +488,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $pages[$index]['class'] = implode(' ', $class);
             $pages[$index]['linktext'] = $this->getItemTitle($pages[$index]);
             $forceAbsoluteUrl = $this->arguments['forceAbsoluteUrl'];
-            $pages[$index]['link'] = $this->pageService->getItemLink($page, $forceAbsoluteUrl);
+            $pages[$index]['link'] = $this->pageService->getItemLink($pages[$index], $forceAbsoluteUrl);
             $processedPages[$index] = $pages[$index];
         }
 
@@ -602,7 +602,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             return null;
         }
         $parentInstance = $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'parentInstance');
-        $arguments = $parentInstance->getArguments();
+        $arguments = $parentInstance->getMenuArguments();
         $arguments['pageUid'] = $pageUid;
         $parentInstance->setArguments($arguments);
 
@@ -627,7 +627,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     /**
      * @return array
      */
-    public function getArguments()
+    public function getMenuArguments()
     {
         if (false === is_array($this->arguments)) {
             return $this->arguments->toArray();

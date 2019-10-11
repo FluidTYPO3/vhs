@@ -43,7 +43,7 @@ class SubViewHelper extends AbstractMenuViewHelper
         if (null === $parentInstance) {
             return null;
         }
-        $parentArguments = $parentInstance->getArguments();
+        $parentArguments = $parentInstance->getMenuArguments();
         $isActive = $this->pageService->isActive($pageUid);
         // Note about next case: although $isCurrent in most cases implies $isActive, cases where the menu item
         // that is being rendered is in fact the current page but is NOT part of the rootline of the menu being
