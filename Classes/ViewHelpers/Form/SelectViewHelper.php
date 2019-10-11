@@ -8,10 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Form;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
  * Select ViewHelper (with support for Optgroup and Option subnodes).
