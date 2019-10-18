@@ -46,6 +46,8 @@ class SubstringViewHelper extends AbstractViewHelper
         $length = $arguments['length'];
         if (null !== $length) {
             if ($length < 0) {
+                // mb_substr does not support negative length, therefore we must calculate the length based on
+                // original string length and offset, so we can pass a positive integer to mb_substr.
                 $length = $length + mb_strlen($content) - $start;
             }
             return mb_substr($content, $start, $length);
