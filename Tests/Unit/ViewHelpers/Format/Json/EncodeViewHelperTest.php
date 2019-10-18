@@ -35,7 +35,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     {
         $dateTime = \DateTime::createFromFormat('U', 86400);
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $dateTime, false, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $dateTime, false, true, null, null, false);
         $this->assertEquals(86400000, $test);
     }
 
@@ -48,7 +48,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
         $object = $this->getInstanceOfFoo();
         $object->setFoo($object);
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null, false);
         $this->assertEquals('{"bar":"baz","children":[],"foo":null,"name":null,"pid":null,"uid":null}', $test);
     }
 
@@ -75,7 +75,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     {
         $traversable = $this->objectManager->get(ObjectStorage::class);
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null, false);
         $this->assertEquals('[]', $test);
     }
 
