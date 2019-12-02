@@ -215,7 +215,7 @@ class SortViewHelper extends AbstractViewHelper
     {
         $field = $arguments['sortBy'];
         $value = ObjectAccess::getPropertyPath($object, $field);
-        if (true === $value instanceof \DateTime) {
+        if (true === $value instanceof \DateTimeInterface) {
             $value = (integer) $value->format('U');
         } elseif (true === $value instanceof ObjectStorage || true === $value instanceof LazyObjectStorage) {
             $value = $value->count();
