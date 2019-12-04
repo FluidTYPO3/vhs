@@ -16,7 +16,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * ### Iterator: Filter ViewHelper
  *
  * Filters an array by filtering the array, analysing each member
- * and assering if it is equal to (weak type) the `filter` parameter.
+ * and asserting if it is equal to (weak type) the `filter` parameter.
  * If `propertyName` is set, the ViewHelper will try to extract this
  * property from each member of the array.
  *
