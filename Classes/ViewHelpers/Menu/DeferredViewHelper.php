@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ### Page: Deferred menu rendering ViewHelper
@@ -34,7 +34,7 @@ class DeferredViewHelper extends AbstractMenuViewHelper
 
     /**
      * @return NULL|string
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function render()
     {
