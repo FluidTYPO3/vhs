@@ -38,9 +38,9 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerTagAttribute('name', 'string', 'Name property of meta tag');
+        $this->registerTagAttribute('http-equiv', 'string', 'Property: http-equiv');
         $this->registerTagAttribute('property', 'string', 'Property of meta tag');
         $this->registerTagAttribute('content', 'string', 'Content of meta tag');
-        $this->registerTagAttribute('http-equiv', 'string', 'Property: http-equiv');
         $this->registerTagAttribute('scheme', 'string', 'Property: scheme');
         $this->registerTagAttribute('lang', 'string', 'Property: lang');
         $this->registerTagAttribute('dir', 'string', 'Property: dir');
@@ -56,9 +56,20 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
         if ('BE' === TYPO3_MODE) {
             return;
         }
-        if (true === isset($this->arguments['content']) && false === empty($this->arguments['content'])) {
-            $this->getPageRenderer()
-                ->addMetaTag($this->renderTag($this->tagName, null, ['content' => $this->arguments['content']]));
+        $content = $this->arguments['content'];
+        if (!empty($content)) {
+            $pageRenderer = $this->getPageRenderer();
+            if (method_exists($pageRenderer, 'addMetaTag')) {
+                $pageRenderer->addMetaTag($this->renderTag($this->tagName, null, ['content' => $content]));
+            } else {
+                $properties = [];
+                foreach (['http-equiv', 'scheme', 'lang', 'dir'] as $propertyName) {
+                    if (!empty($this->tag->getAttribute($propertyName))) {
+                        $properties[$propertyName] = $this->tag->getAttribute($propertyName);
+                    }
+                }
+                $pageRenderer->setMetaTag('name', $this->arguments['name'], $content, $properties);
+            }
         }
     }
 }
