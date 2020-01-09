@@ -100,6 +100,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             'integer',
             'Quality of the processed image. If blank/not present falls back to the default quality defined in ' .
             'install tool.',
+            false,
             $GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality']
         );
         $this->registerArgument(
