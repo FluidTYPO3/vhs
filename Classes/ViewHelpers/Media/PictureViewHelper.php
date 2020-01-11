@@ -9,9 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders a picture element with different images/sources for specific
@@ -82,16 +82,16 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
             $treatIdAsReference = true;
         }
 
-        $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_SRC, $src);
-        $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_ID, $treatIdAsReference);
+        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
+        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
         $content = $this->renderChildren();
-        $this->viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_SRC);
-        $this->viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_ID);
+        $this->renderingContext->getViewHelperVariableContainer()->remove(static::SCOPE, static::SCOPE_VARIABLE_SRC);
+        $this->renderingContext->getViewHelperVariableContainer()->remove(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
-        if (false === $this->viewHelperVariableContainer->exists(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
+        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
             throw new Exception('Please add a source without a media query as a default.', 1438116616);
         }
-        $defaultSource = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE);
+        $defaultSource = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
 
         $defaultImage = new TagBuilder('img');
         $defaultImage->addAttribute('src', $defaultSource);

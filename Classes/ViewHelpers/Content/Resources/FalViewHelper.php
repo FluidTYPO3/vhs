@@ -37,13 +37,13 @@ class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewH
     {
         parent::initializeArguments();
 
-        $this->overrideArgument('table', 'string', 'The table to lookup records.', false, self::DEFAULT_TABLE);
+        $this->overrideArgument('table', 'string', 'The table to lookup records.', false, static::DEFAULT_TABLE);
         $this->overrideArgument(
             'field',
             'string',
             'The field of the table associated to resources.',
             false,
-            self::DEFAULT_FIELD
+            static::DEFAULT_FIELD
         );
     }
 }

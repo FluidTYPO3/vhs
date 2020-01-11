@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * Base class for "Render Once"-style ViewHelpers: session, cookie,
@@ -110,8 +110,8 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     protected static function storeIdentifier(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
-        if (false === isset(self::$identifiers[$identifier])) {
-            self::$identifiers[$identifier] = time();
+        if (false === isset(static::$identifiers[$identifier])) {
+            static::$identifiers[$identifier] = time();
         }
     }
 
@@ -122,8 +122,8 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     protected static function removeIfExpired(array $arguments)
     {
         $id = static::getIdentifier($arguments);
-        if (isset(self::$identifiers[$id]) && self::$identifiers[$id] <= time() - $arguments['ttl']) {
-            unset(self::$identifiers[$id]);
+        if (isset(static::$identifiers[$id]) && static::$identifiers[$id] <= time() - $arguments['ttl']) {
+            unset(static::$identifiers[$id]);
         }
     }
 
@@ -134,7 +134,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     protected static function assertShouldSkip(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
-        return (true === isset(self::$identifiers[$identifier]));
+        return (true === isset(static::$identifiers[$identifier]));
     }
 
     /**

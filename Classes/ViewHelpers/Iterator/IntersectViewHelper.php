@@ -9,17 +9,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Intersects arrays/Traversables $a and $b into an array.
  */
-class IntersectViewHelper extends AbstractViewHelper implements CompilableInterface
+class IntersectViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -56,7 +53,7 @@ class IntersectViewHelper extends AbstractViewHelper implements CompilableInterf
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $a = $renderChildrenClosure();
+        $a = $arguments['a'] ?? $renderChildrenClosure();
 
         $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
         $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b']);

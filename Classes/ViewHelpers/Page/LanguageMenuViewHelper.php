@@ -12,8 +12,8 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper for rendering TYPO3 menus in Fluid
@@ -125,9 +125,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->tag->setTagName($this->tagName);
 
         $this->languageMenu = $this->parseLanguageMenu();
-        $this->templateVariableContainer->add($this->arguments['as'], $this->languageMenu);
+        $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $this->languageMenu);
         $content = $this->renderChildren();
-        $this->templateVariableContainer->remove($this->arguments['as']);
+        $this->renderingContext->getVariableProvider()->remove($this->arguments['as']);
         if (0 === mb_strlen(trim($content))) {
             $content = $this->autoRender();
         }

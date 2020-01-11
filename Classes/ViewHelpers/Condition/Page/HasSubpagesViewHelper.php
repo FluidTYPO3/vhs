@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Condition: Page has subpages
@@ -35,7 +35,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
      */
     public static function setPageService(PageService $pageService)
     {
-        self::$pageService = $pageService;
+        static::$pageService = $pageService;
     }
 
     /**
@@ -70,12 +70,12 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
-        if (self::$pageService === null) {
+        if (static::$pageService === null) {
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            self::$pageService = $objectManager->get(PageService::class);
+            static::$pageService = $objectManager->get(PageService::class);
         }
 
-        $menu = self::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);
+        $menu = static::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);
 
         return (0 < count($menu));
     }
