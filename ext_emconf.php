@@ -11,20 +11,20 @@ $EM_CONF[$_EXTKEY] = array (
   'conflicts' => '',
   'priority' => '',
   'module' => '',
-  'state' => 'beta',
+  'state' => 'stable',
   'internal' => '',
   'uploadfolder' => 0,
   'createDirs' => '',
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '5.2.0',
+  'version' => '6.0.0',
   'constraints' => 
   array (
     'depends' => 
     array (
-      'php' => '7.0.0-7.2.99',
-      'typo3' => '8.7.0-9.5.99',
+      'php' => '7.0.0-7.4.99',
+      'typo3' => '8.7.0-10.2.99',
     ),
     'conflicts' => 
     array (

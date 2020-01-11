@@ -25,7 +25,7 @@ class CoreUtility
      */
     public static function getLanguageFlagIconPath()
     {
-        if (version_compare(self::getCurrentCoreVersion(), 9.0, '<')) {
+        if (version_compare(static::getCurrentCoreVersion(), 9.0, '<')) {
             return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/PNG/';
         }
         return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/';

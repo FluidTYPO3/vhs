@@ -7,8 +7,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * rendering this inline code will be destroyed after
  * sub-rendering is finished.
  */
-class InlineViewHelper extends AbstractRenderViewHelper implements CompilableInterface
+class InlineViewHelper extends AbstractRenderViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

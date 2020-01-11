@@ -9,15 +9,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  */
 
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Renders Gravatar URI.
  */
-class GravatarViewHelper extends AbstractViewHelper implements CompilableInterface
+class GravatarViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -84,7 +83,7 @@ class GravatarViewHelper extends AbstractViewHelper implements CompilableInterfa
         $maximumRating = $arguments['maximumRating'];
         $secure = (boolean) $arguments['secure'];
 
-        $url = (true === $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL);
+        $url = (true === $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL);
         $url .= md5(strtolower(trim($email)));
         $query = http_build_query(['s' => $size, 'd' => $imageSet, 'r' => $maximumRating]);
         $url .= (false === empty($query) ? '?' . $query : '');

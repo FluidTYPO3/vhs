@@ -17,6 +17,8 @@ matrix:
       env: COVERAGE="YES" TYPO3_VERSION="^8.7"
     - php: "7.2"
       env: COVERAGE="NO" TYPO3_VERSION="^9"
+    - php: "7.3"
+      env: COVERAGE="NO" TYPO3_VERSION="^9"
   allow_failures:
     - env: COVERAGE="NO" TYPO3_VERSION="dev-master"
 

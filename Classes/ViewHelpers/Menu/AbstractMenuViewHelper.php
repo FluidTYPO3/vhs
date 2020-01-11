@@ -12,8 +12,8 @@ use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Base class for menu rendering ViewHelpers.
@@ -227,13 +227,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $this->cleanupSubmenuVariables();
         $this->cleanTemplateVariableContainer();
         $this->backupVariables();
-        $this->templateVariableContainer->add($this->arguments['as'], $menu);
-        $this->templateVariableContainer->add($this->arguments['rootLineAs'], $rootLine);
+        $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $menu);
+        $this->renderingContext->getVariableProvider()->add($this->arguments['rootLineAs'], $rootLine);
         $this->initalizeSubmenuVariables();
         $output = $this->renderContent($menu);
         $this->cleanupSubmenuVariables();
-        $this->templateVariableContainer->remove($this->arguments['as']);
-        $this->templateVariableContainer->remove($this->arguments['rootLineAs']);
+        $this->renderingContext->getVariableProvider()->remove($this->arguments['as']);
+        $this->renderingContext->getVariableProvider()->remove($this->arguments['rootLineAs']);
         $this->restoreVariables();
 
         return $output;
@@ -256,12 +256,12 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $tagContent = $this->autoRender($menu);
             $this->tag->setContent($tagContent);
             $deferredContent = $this->tag->render();
-            $this->viewHelperVariableContainer->addOrUpdate(
+            $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(
                 'FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper',
                 'deferredString',
                 $deferredContent
             );
-            $this->viewHelperVariableContainer->addOrUpdate(
+            $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(
                 'FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper',
                 'deferredArray',
                 $menu
@@ -488,7 +488,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $pages[$index]['class'] = implode(' ', $class);
             $pages[$index]['linktext'] = $this->getItemTitle($pages[$index]);
             $forceAbsoluteUrl = $this->arguments['forceAbsoluteUrl'];
-            $pages[$index]['link'] = $this->pageService->getItemLink($page, $forceAbsoluteUrl);
+            $pages[$index]['link'] = $this->pageService->getItemLink($pages[$index], $forceAbsoluteUrl);
             $processedPages[$index] = $pages[$index];
         }
 
@@ -524,13 +524,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         if (false === $this->original) {
             return null;
         }
-        $variables = $this->templateVariableContainer->getAll();
-        $this->viewHelperVariableContainer->addOrUpdate(
+        $variables = $this->renderingContext->getVariableProvider()->getAll();
+        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(
             'FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper',
             'parentInstance',
             $this
         );
-        $this->viewHelperVariableContainer->addOrUpdate(
+        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(
             'FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper',
             'variables',
             $variables
@@ -550,11 +550,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         if (false === $this->original) {
             return null;
         }
-        if (false === $this->viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'parentInstance')) {
+        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'parentInstance')) {
             return null;
         }
-        $this->viewHelperVariableContainer->remove(AbstractMenuViewHelper::class, 'parentInstance');
-        $this->viewHelperVariableContainer->remove(AbstractMenuViewHelper::class, 'variables');
+        $this->renderingContext->getViewHelperVariableContainer()->remove(AbstractMenuViewHelper::class, 'parentInstance');
+        $this->renderingContext->getViewHelperVariableContainer()->remove(AbstractMenuViewHelper::class, 'variables');
     }
 
     /**
@@ -565,9 +565,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     {
         $backups = [$this->arguments['as'], $this->arguments['rootLineAs']];
         foreach ($backups as $var) {
-            if (true === $this->templateVariableContainer->exists($var)) {
-                $this->backupValues[$var] = $this->templateVariableContainer->get($var);
-                $this->templateVariableContainer->remove($var);
+            if (true === $this->renderingContext->getVariableProvider()->exists($var)) {
+                $this->backupValues[$var] = $this->renderingContext->getVariableProvider()->get($var);
+                $this->renderingContext->getVariableProvider()->remove($var);
             }
         }
     }
@@ -579,8 +579,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     {
         if (0 < count($this->backupValues)) {
             foreach ($this->backupValues as $var => $value) {
-                if (false === $this->templateVariableContainer->exists($var)) {
-                    $this->templateVariableContainer->add($var, $value);
+                if (false === $this->renderingContext->getVariableProvider()->exists($var)) {
+                    $this->renderingContext->getVariableProvider()->add($var, $value);
                 }
             }
         }
@@ -598,11 +598,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function retrieveReconfiguredParentMenuInstance($pageUid)
     {
-        if (false === $this->viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'parentInstance')) {
+        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'parentInstance')) {
             return null;
         }
-        $parentInstance = $this->viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'parentInstance');
-        $arguments = $parentInstance->getArguments();
+        $parentInstance = $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'parentInstance');
+        $arguments = $parentInstance->getMenuArguments();
         $arguments['pageUid'] = $pageUid;
         $parentInstance->setArguments($arguments);
 
@@ -611,23 +611,23 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 
     protected function cleanTemplateVariableContainer()
     {
-        if (false === $this->viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'variables')) {
+        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'variables')) {
             return;
         }
-        $storedVariables = $this->viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'variables');
-        foreach ($this->templateVariableContainer->getAll() as $variableName => $value) {
+        $storedVariables = $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'variables');
+        foreach ($this->renderingContext->getVariableProvider()->getAll() as $variableName => $value) {
             $this->backupValues[$variableName] = $value;
-            $this->templateVariableContainer->remove($variableName);
+            $this->renderingContext->getVariableProvider()->remove($variableName);
         }
         foreach ($storedVariables as $variableName => $value) {
-            $this->templateVariableContainer->add($variableName, $value);
+            $this->renderingContext->getVariableProvider()->add($variableName, $value);
         }
     }
 
     /**
      * @return array
      */
-    public function getArguments()
+    public function getMenuArguments()
     {
         if (false === is_array($this->arguments)) {
             return $this->arguments->toArray();
@@ -637,9 +637,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 
     protected function unsetDeferredVariableStorage()
     {
-        if (true === $this->viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredString')) {
-            $this->viewHelperVariableContainer->remove(AbstractMenuViewHelper::class, 'deferredString');
-            $this->viewHelperVariableContainer->remove(AbstractMenuViewHelper::class, 'deferredArray');
+        if (true === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'deferredString')) {
+            $this->renderingContext->getViewHelperVariableContainer()->remove(AbstractMenuViewHelper::class, 'deferredString');
+            $this->renderingContext->getViewHelperVariableContainer()->remove(AbstractMenuViewHelper::class, 'deferredArray');
         }
     }
 

@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders HTML code to embed a video from Vimeo.
@@ -106,7 +106,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
         $width   = $this->arguments['width'];
         $height  = $this->arguments['height'];
 
-        $src = self::VIMEO_BASEURL . $videoId . '?';
+        $src = static::VIMEO_BASEURL . $videoId . '?';
 
         $queryParams = [
             'title='     . (integer) $this->arguments['title'],

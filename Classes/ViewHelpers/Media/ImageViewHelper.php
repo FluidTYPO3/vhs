@@ -90,7 +90,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      * Render method
      *
      * @return string
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function render()
     {

@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders HTML code to embed a video from YouTube.
@@ -157,7 +157,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     private function getSourceUrl($videoId)
     {
-        $src = $this->arguments['extendedPrivacy'] ? self::YOUTUBE_PRIVACY_BASEURL : self::YOUTUBE_BASEURL;
+        $src = $this->arguments['extendedPrivacy'] ? static::YOUTUBE_PRIVACY_BASEURL : static::YOUTUBE_BASEURL;
 
         $params = [];
 
