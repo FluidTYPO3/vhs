@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
-
 /**
  * ### Security: Allow
  *
@@ -27,6 +25,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
  *
  * Is the mirror opposite of `v:security.deny`.
  */
-class AllowViewHelper extends AbstractSecurityViewHelper implements ChildNodeAccessInterface
+class AllowViewHelper extends AbstractSecurityViewHelper
 {
 }

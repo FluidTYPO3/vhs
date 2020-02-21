@@ -14,9 +14,9 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Base class for all rendering ViewHelpers.
@@ -109,6 +109,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
             $controllerContext = clone $renderingContext->getControllerContext();
             $view->setControllerContext($controllerContext);
             $view->setFormat($controllerContext->getRequest()->getFormat());
+            $view->getRenderingContext()->setViewHelperVariableContainer($renderingContext->getViewHelperVariableContainer());
         }
         $view->assignMultiple(ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext)->getAll());
         return $view;

@@ -28,11 +28,11 @@ class TryViewHelperTest extends AbstractViewHelperTest
         if (method_exists($renderingContext, 'injectTemplateVariableContainer')) {
             $renderingContext->injectTemplateVariableContainer(new TemplateVariableContainer());
         }
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderThenChild', 'renderChildren'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderElseChild', 'renderChildren'])->getMock();
         $instance->setRenderingContext($renderingContext);
         $instance->setArguments([]);
-        $instance->expects($this->once())->method('renderThenChild')->willThrowException(new \RuntimeException('testerror'));
-        $instance->expects($this->once())->method('renderChildren')->willReturn('testerror');
+        $instance->expects($this->once())->method('renderChildren')->willThrowException(new \RuntimeException('testerror'));
+        $instance->expects($this->once())->method('renderElseChild')->willReturn('testerror');
         $result = $instance->render();
         $this->assertEquals('testerror', $result);
     }

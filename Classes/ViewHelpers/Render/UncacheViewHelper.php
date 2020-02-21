@@ -11,9 +11,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 use FluidTYPO3\Vhs\View\UncacheTemplateView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -22,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Please be aware that this will impact render time.
  * Arguments must be serializable and will be cached.
  */
-class UncacheViewHelper extends AbstractViewHelper implements CompilableInterface
+class UncacheViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -54,7 +53,7 @@ class UncacheViewHelper extends AbstractViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+        $templateVariableContainer = $renderingContext->getVariableProvider();
         $partialArguments = $arguments['arguments'];
         if (false === is_array($partialArguments)) {
             $partialArguments = [];
@@ -79,6 +78,7 @@ class UncacheViewHelper extends AbstractViewHelper implements CompilableInterfac
                 'partial' => $arguments['partial'],
                 'section' => $arguments['section'],
                 'arguments' => $partialArguments,
+                'partialRootPaths' => $renderingContext->getTemplatePaths()->getPartialRootPaths(),
                 'controllerContext' => $renderingContext->getControllerContext()
             ],
             'content' => $content

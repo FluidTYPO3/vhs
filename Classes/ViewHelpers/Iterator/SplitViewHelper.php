@@ -9,18 +9,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Converts a string to an array with $length number of bytes
  * per new array element. Wrapper for PHP's `str_split`.
  */
-class SplitViewHelper extends AbstractViewHelper implements CompilableInterface
+class SplitViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -59,6 +56,11 @@ class SplitViewHelper extends AbstractViewHelper implements CompilableInterface
             // argument is zero for some reason. PHP would throw a warning; Fluid would logically just return empty.
             return [];
         }
-        return str_split(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure(), $arguments['length']);
+        return static::renderChildrenWithVariableOrReturnInputStatic(
+            str_split(empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'], $arguments['length']),
+            $arguments['as'],
+            $renderingContext,
+            $renderChildrenClosure
+        );
     }
 }

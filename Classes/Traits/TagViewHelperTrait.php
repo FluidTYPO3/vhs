@@ -127,7 +127,7 @@ trait TagViewHelperTrait
         $this->tag->addAttributes($attributes);
         $this->tag->forceClosingTag($forceClosingTag);
         if (null !== $content) {
-            $this->tag->setContent($content);
+            $this->tag->setContent($trimmedContent);
         }
         // process some attributes differently - if empty, remove the property:
         foreach ($nonEmptyAttributes as $propertyName) {

@@ -7,6 +7,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
@@ -44,12 +45,12 @@ class SubtractViewHelper extends AbstractMultipleMathViewHelper
     protected static function calculateAction($a, $b, array $arguments)
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
+        if (false === $aIsIterable && $b === null && (boolean) $arguments['fail']) {
+            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
+        }
         if (true === $aIsIterable && null === $b) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             return -array_sum($a);
-        }
-        if ($b === null && (boolean) $arguments['fail']) {
-            ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
         return $a - $b;
     }

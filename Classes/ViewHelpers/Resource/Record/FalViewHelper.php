@@ -78,6 +78,18 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
     }
 
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'asObjects',
+            'bool',
+            'Can be set to TRUE to return objects instead of file information arrays.',
+            false,
+            false
+        );
+    }
+
     /**
      * @param FileReference $fileReference
      * @return array
@@ -105,6 +117,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $record = $uidOrRecord;
         } else {
             $record = $this->getRecord($uidOrRecord);
+            if (!is_array($record)) {
+                return [];
+            }
         }
 
         if ($table === 'pages') {
@@ -128,9 +143,10 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function getResources($record)
     {
-        $databaseConnection = $this->getDatabaseConnection();
-        $fileReferences = [];
-        if (empty($GLOBALS['TSFE']->sys_page) === false) {
+        if (!is_array($record)) {
+            return [];
+        }
+        if (!empty($GLOBALS['TSFE']->sys_page)) {
             $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $record);
         } else {
             if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
@@ -148,7 +164,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $queryBuilder->createNamedParameter($sqlRecordUid, \PDO::PARAM_INT, ':uid_foreign');
             $queryBuilder->createNamedParameter($this->getField(), \PDO::PARAM_STR, ':fieldname');
 
-            $references = $queryBuilder
+            $queryBuilder
                 ->select('uid')
                 ->from('sys_file_reference')
                 ->where(
@@ -163,7 +179,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
 
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->workspaceRec['uid'], \PDO::PARAM_INT, ':t3ver_wsid');
-                $references = $queryBuilder
+                $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->eq('deleted', 0)
                     )
@@ -176,7 +192,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                         $queryBuilder->expr()->neq('pid', -1)
                     );
             } else {
-                $references = $queryBuilder
+                $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->eq('deleted', 0)
                     )
@@ -197,28 +213,16 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 ->execute()
                 ->fetchAll();
 
-            // uid's as array key
-            $ids = [];
-            foreach ($references as $item) {
-                $ids[$item['uid']]['uid'] = $item['uid'];
-            }
+            $fileReferences = [];
 
-            $references = $ids;
-
-            if (empty($references) === false) {
-                $referenceUids = array_keys($references);
-                $fileReferences = [];
-                if (empty($referenceUids) === false) {
-                    foreach ($referenceUids as $referenceUid) {
-                        try {
-                            // Just passing the reference uid, the factory is doing workspace
-                            // overlays automatically depending on the current environment
-                            $fileReferences[] = $this->resourceFactory->getFileReferenceObject($referenceUid);
-                        } catch (ResourceDoesNotExistException $exception) {
-                            // No handling, just omit the invalid reference uid
-                            continue;
-                        }
-                    }
+            foreach ($references as $reference) {
+                try {
+                    // Just passing the reference uid, the factory is doing workspace
+                    // overlays automatically depending on the current environment
+                    $fileReferences[] = $this->resourceFactory->getFileReferenceObject($reference['uid']);
+                } catch (ResourceDoesNotExistException $exception) {
+                    // No handling, just omit the invalid reference uid
+                    continue;
                 }
             }
         }
@@ -227,20 +231,12 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             // Exclude workspace deleted files references
             if ($file->getProperty('t3ver_state') !== VersionState::DELETE_PLACEHOLDER) {
                 try {
-                    $resources[] = $this->getResource($file);
+                    $resources[] = $this->arguments['asObjects'] ? $file : $this->getResource($file);
                 } catch (\InvalidArgumentException $error) {
                     // Pokemon-style, catch-all and suppress. This exception type is thrown if a file gets removed.
                 }
             }
         }
         return $resources;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

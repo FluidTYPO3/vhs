@@ -7,7 +7,9 @@ namespace FluidTYPO3\Vhs\Traits;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Variables\VariableProviderInterface;
 
 /**
  * Class TemplateVariableViewHelperTrait
@@ -71,7 +73,7 @@ trait TemplateVariableViewHelperTrait
     /**
      * @param mixed $variable
      * @param string $as
-     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @param \Closure $renderChildrenClosure
      * @return mixed
      */
@@ -87,7 +89,7 @@ trait TemplateVariableViewHelperTrait
             $variables = [$as => $variable];
             $content = static::renderChildrenWithVariablesStatic(
                 $variables,
-                $renderingContext->getTemplateVariableContainer(),
+                $renderingContext->getVariableProvider(),
                 $renderChildrenClosure
             );
         }
@@ -119,7 +121,7 @@ trait TemplateVariableViewHelperTrait
      * Returns the output of the renderChildren() method on $viewHelper.
      *
      * @param array $variables
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer
+     * @param VariableProviderInterface $templateVariableContainer
      * @param \Closure $renderChildrenClosure
      * @return mixed
      */
@@ -136,7 +138,7 @@ trait TemplateVariableViewHelperTrait
 
     /**
      * @param array $variables
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer
+     * @param VariableProviderInterface $templateVariableContainer
      * @return array
      */
     private static function backupVariables(array $variables, $templateVariableContainer)
@@ -155,7 +157,7 @@ trait TemplateVariableViewHelperTrait
     /**
      * @param array $variables
      * @param array $backups
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer
+     * @param VariableProviderInterface $templateVariableContainer
      * @return void
      */
     private static function restoreVariables(array $variables, array $backups, $templateVariableContainer)

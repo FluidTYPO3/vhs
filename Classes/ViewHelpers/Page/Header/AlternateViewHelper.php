@@ -14,8 +14,8 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns the all alternate urls.
@@ -36,7 +36,7 @@ class AlternateViewHelper extends AbstractViewHelper
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
+     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
      */
     protected $tagBuilder;
 
@@ -110,7 +110,7 @@ class AlternateViewHelper extends AbstractViewHelper
         $addQueryString = $this->arguments['addQueryString'];
 
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setCreateAbsoluteUri(true)

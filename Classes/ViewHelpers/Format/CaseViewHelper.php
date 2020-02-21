@@ -10,8 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -56,30 +56,36 @@ class CaseViewHelper extends AbstractViewHelper
         if ('BE' === TYPO3_MODE) {
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
         }
-        $charset = $GLOBALS['TSFE']->renderCharset;
+
         switch ($case) {
-            case self::CASE_LOWER:
-                $string = $GLOBALS['TSFE']->csConvObj->conv_case($charset, $string, 'toLower');
+            case static::CASE_LOWER:
+                $string = mb_strtolower($string);
                 break;
-            case self::CASE_UPPER:
-                $string = $GLOBALS['TSFE']->csConvObj->conv_case($charset, $string, 'toUpper');
+            case static::CASE_UPPER:
+                $string = mb_strtoupper($string);
                 break;
-            case self::CASE_UCWORDS:
+            case static::CASE_UCWORDS:
                 $string = ucwords($string);
                 break;
-            case self::CASE_UCFIRST:
-                $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($charset, $string, 'toUpper');
+            case static::CASE_UCFIRST:
+                $firstChar = mb_substr($string, 0, 1);
+                $firstChar = mb_strtoupper($firstChar);
+                $remainder = mb_substr($string, 1, null);
+                $string = $firstChar . $remainder;
                 break;
-            case self::CASE_LCFIRST:
-                $string = $GLOBALS['TSFE']->csConvObj->convCaseFirst($charset, $string, 'toLower');
+            case static::CASE_LCFIRST:
+                $firstChar = mb_substr($string, 0, 1);
+                $firstChar = mb_strtolower($firstChar);
+                $remainder = mb_substr($string, 1, null);
+                $string = $firstChar . $remainder;
                 break;
-            case self::CASE_CAMELCASE:
+            case static::CASE_CAMELCASE:
                 $string = GeneralUtility::underscoredToUpperCamelCase($string);
                 break;
-            case self::CASE_LOWERCAMELCASE:
+            case static::CASE_LOWERCAMELCASE:
                 $string = GeneralUtility::underscoredToLowerCamelCase($string);
                 break;
-            case self::CASE_UNDERSCORED:
+            case static::CASE_UNDERSCORED:
                 $string = GeneralUtility::camelCaseToLowerCaseUnderscored($string);
                 break;
             default:

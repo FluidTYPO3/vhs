@@ -9,8 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Form;
  */
 
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Form Field Name View Helper
@@ -61,7 +61,7 @@ class FieldNameViewHelper extends AbstractViewHelper
     public function render()
     {
         if ($this->isObjectAccessorMode()) {
-            $formObjectName = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName');
+            $formObjectName = $this->renderingContext->getViewHelperVariableContainer()->get(FormViewHelper::class, 'formObjectName');
             if (!empty($formObjectName)) {
                 $propertySegments = explode('.', $this->arguments['property']);
                 $propertyPath = '';
@@ -78,10 +78,10 @@ class FieldNameViewHelper extends AbstractViewHelper
         if (null === $name || '' === $name) {
             return '';
         }
-        if (!$this->viewHelperVariableContainer->exists(FormViewHelper::class, 'fieldNamePrefix')) {
+        if (!$this->renderingContext->getViewHelperVariableContainer()->exists(FormViewHelper::class, 'fieldNamePrefix')) {
             return $name;
         }
-        $fieldNamePrefix = (string) $this->viewHelperVariableContainer->get(FormViewHelper::class, 'fieldNamePrefix');
+        $fieldNamePrefix = (string) $this->renderingContext->getViewHelperVariableContainer()->get(FormViewHelper::class, 'fieldNamePrefix');
         if ('' === $fieldNamePrefix) {
             return $name;
         }
@@ -90,13 +90,13 @@ class FieldNameViewHelper extends AbstractViewHelper
         if (1 < count($fieldNameSegments)) {
             $name .= '[' . $fieldNameSegments[1];
         }
-        if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'formFieldNames')) {
-            $formFieldNames = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formFieldNames');
+        if ($this->renderingContext->getViewHelperVariableContainer()->exists(FormViewHelper::class, 'formFieldNames')) {
+            $formFieldNames = $this->renderingContext->getViewHelperVariableContainer()->get(FormViewHelper::class, 'formFieldNames');
         } else {
             $formFieldNames = [];
         }
         $formFieldNames[] = $name;
-        $this->viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'formFieldNames', $formFieldNames);
+        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(FormViewHelper::class, 'formFieldNames', $formFieldNames);
         return $name;
     }
 
@@ -107,7 +107,7 @@ class FieldNameViewHelper extends AbstractViewHelper
     {
         return (
             $this->hasArgument('property')
-            && $this->viewHelperVariableContainer->exists(FormViewHelper::class, 'formObjectName')
+            && $this->renderingContext->getViewHelperVariableContainer()->exists(FormViewHelper::class, 'formObjectName')
         );
     }
 }

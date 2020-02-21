@@ -10,19 +10,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Implode ViewHelper
  *
  * Implodes an array or array-convertible object by $glue.
  */
-class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterface
+class ImplodeViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
