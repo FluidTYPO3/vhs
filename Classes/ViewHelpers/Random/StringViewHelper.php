@@ -68,7 +68,7 @@ class StringViewHelper extends AbstractViewHelper
         } else {
             for ($i = 0; $i < $length; $i++) {
                 $randomIndex = random_int(0, mb_strlen($characters) - 1);
-                $string .= $characters{$randomIndex};
+                $string .= $characters[$randomIndex];
             }
         }
         return $string;
