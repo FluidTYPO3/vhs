@@ -97,6 +97,7 @@ plugin.tx_vhs.settings.asset.ASSETNAME {
 	content = Text # Text which overrides content
 	path = FileReference # If set, turns Asset into a file inclusion
 	name = Text a-zA-Z0-9_ # Can be used to change the name of an Asset on-the-fly, but watch out for dependencies
+  external = Integer 0/1 #If set to `1` and `standalone`, includes the file as raw URL. If set to `1` and not `standalone` then downloads the file and merges it when building Assets
 	overwrite = Integer 0/1 # If set to `1` this Asset is permitted to overwrite existing, identically named Assets
 	dependencies = CSV # list of comma-separated Asset names upon which the current Asset depends; affects loading order
 	group = Text a-zA-Z0-9_ # Group name, default "fluid". By grouping Assets the settings used on the group will apply to Assets
