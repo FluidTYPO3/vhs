@@ -14,11 +14,11 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
-use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
-use TYPO3\CMS\Fluid\Core\Parser\TemplateParser;
+use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Uncache Template View
@@ -85,6 +85,10 @@ class UncacheTemplateView extends TemplateView
         $renderingContext = $this->objectManager->get(RenderingContext::class);
         $this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
         $this->setControllerContext($controllerContext);
+        if (!empty($conf['partialRootPaths'])) {
+            $templatePaths = $renderingContext->getTemplatePaths();
+            $templatePaths->setPartialRootPaths($conf['partialRootPaths']);
+        }
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
 
@@ -129,7 +133,7 @@ class UncacheTemplateView extends TemplateView
     ) {
         array_push(
             $this->renderingStack,
-            ['type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
+            ['type' => static::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
         );
         $rendered = $this->renderPartial($partial, $section, $arguments);
         array_pop($this->renderingStack);

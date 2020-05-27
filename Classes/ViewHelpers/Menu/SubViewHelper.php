@@ -43,7 +43,7 @@ class SubViewHelper extends AbstractMenuViewHelper
         if (null === $parentInstance) {
             return null;
         }
-        $parentArguments = $parentInstance->getArguments();
+        $parentArguments = $parentInstance->getMenuArguments();
         $isActive = $this->pageService->isActive($pageUid);
         // Note about next case: although $isCurrent in most cases implies $isActive, cases where the menu item
         // that is being rendered is in fact the current page but is NOT part of the rootline of the menu being
@@ -56,14 +56,14 @@ class SubViewHelper extends AbstractMenuViewHelper
             return null;
         }
         // retrieve the set of template variables which were in play when the parent menu VH started rendering.
-        $variables = $this->viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'variables');
+        $variables = $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'variables');
         $parentInstance->setOriginal(false);
         $content = $parentInstance->render();
         // restore the previous set of variables after they most likely have changed during the render() above.
         foreach ($variables as $name => $value) {
-            if (true === $this->templateVariableContainer->exists($name)) {
-                $this->templateVariableContainer->remove($name);
-                $this->templateVariableContainer->add($name, $value);
+            if (true === $this->renderingContext->getVariableProvider()->exists($name)) {
+                $this->renderingContext->getVariableProvider()->remove($name);
+                $this->renderingContext->getVariableProvider()->add($name, $value);
             }
         }
 

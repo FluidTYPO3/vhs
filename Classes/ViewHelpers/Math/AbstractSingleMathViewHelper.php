@@ -10,17 +10,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Base class: Math ViewHelpers operating on one number or an
  * array of numbers.
  */
-abstract class AbstractSingleMathViewHelper extends AbstractViewHelper implements CompilableInterface
+abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;

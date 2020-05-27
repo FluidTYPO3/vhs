@@ -75,9 +75,9 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
             return null;
         }
         $this->backupVariables();
-        $this->templateVariableContainer->add($this->arguments['as'], $rootLine);
+        $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $rootLine);
         $output = $this->renderContent($rootLine);
-        $this->templateVariableContainer->remove($this->arguments['as']);
+        $this->renderingContext->getVariableProvider()->remove($this->arguments['as']);
         $this->restoreVariables();
 
         return $output;

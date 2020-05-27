@@ -9,19 +9,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Returns the first element of $haystack.
  */
-class FirstViewHelper extends AbstractViewHelper implements CompilableInterface
+class FirstViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -54,7 +50,7 @@ class FirstViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $haystack = $renderChildrenClosure();
+        $haystack = $arguments['haystack'] ?? $renderChildrenClosure();
         if (false === is_array($haystack) && false === $haystack instanceof \Iterator && null !== $haystack) {
             ErrorUtility::throwViewHelperException(
                 'Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got ' .

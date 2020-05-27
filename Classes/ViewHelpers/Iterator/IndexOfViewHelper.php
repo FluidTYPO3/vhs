@@ -9,8 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Condition\Iterator\ContainsViewHelper;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Searches $haystack for index of $needle, returns -1 if $needle
@@ -18,7 +17,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class IndexOfViewHelper extends ContainsViewHelper
 {
-    use CompileWithRenderStatic;
+    public function render()
+    {
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+    }
 
     /**
      * Default implementation for use in compiled templates
@@ -33,7 +35,7 @@ class IndexOfViewHelper extends ContainsViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $evaluation = self::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+        $evaluation = static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
 
         if (false !== $evaluation) {
             return (integer) $evaluation;
