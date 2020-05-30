@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -177,7 +179,11 @@ class PageService implements SingletonInterface
             $pageRecord = $this->getPage($pageUid);
         }
         if (-1 === (integer) $languageUid) {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+            if (class_exists(LanguageAspect::class)) {
+                $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            } else {
+                $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+            }
         }
         $l18nCfg = true === isset($pageRecord['l18n_cfg']) ? $pageRecord['l18n_cfg'] : 0;
         $hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
