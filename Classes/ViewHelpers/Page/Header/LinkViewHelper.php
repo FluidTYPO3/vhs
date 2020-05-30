@@ -53,6 +53,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         if ('BE' === TYPO3_MODE) {
             return;
         }
-        static::getPageRenderer()->addMetaTag($this->renderTag($this->tagName));
+        static::getPageRenderer()->addHeaderData($this->renderTag($this->tagName));
     }
 }
