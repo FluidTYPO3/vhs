@@ -18,9 +18,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Use either `minimumLength` / `maximumLength` or just `length`.
  *
  * Specify the characters which can be randomized using `characters`.
- *
- * Has built-in insurance that first character of random string is
- * an alphabetic character (allowing safe use as DOM id for example).
  */
 class StringViewHelper extends AbstractViewHelper
 {
@@ -68,7 +65,7 @@ class StringViewHelper extends AbstractViewHelper
         } else {
             for ($i = 0; $i < $length; $i++) {
                 $randomIndex = random_int(0, mb_strlen($characters) - 1);
-                $string .= $characters{$randomIndex};
+                $string .= $characters[$randomIndex];
             }
         }
         return $string;

@@ -6,7 +6,7 @@ VHS: Fluid ViewHelpers
 > Collection of general purpose ViewHelpers usable in the Fluid templating engine
 > that's bundled with the TYPO3 CMS.
 
-[![Build Status](https://img.shields.io/travis/FluidTYPO3/vhs.svg?style=flat-square&label=package)](https://travis-ci.org/FluidTYPO3/vhs) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/vhs/development.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/vhs) [![Documentation](http://img.shields.io/badge/documentation-online-blue.svg?style=flat-square)](https://fluidtypo3.org/viewhelpers/vhs/master.html) [![Build Status](https://img.shields.io/travis/FluidTYPO3/fluidtypo3-testing.svg?style=flat-square&label=framework)](https://travis-ci.org/FluidTYPO3/fluidtypo3-testing/) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/fluidtypo3-testing/master.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/fluidtypo3-testing)
+[![Build Status](https://img.shields.io/travis/FluidTYPO3/vhs.svg?style=flat-square&label=package)](https://travis-ci.org/FluidTYPO3/vhs) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/vhs/development.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/vhs) [![Documentation](http://img.shields.io/badge/documentation-online-blue.svg?style=flat-square)](https://viewhelpers.fluidtypo3.org/fluidtypo3/vhs/)
 
 ## Installation
 
@@ -97,6 +97,7 @@ plugin.tx_vhs.settings.asset.ASSETNAME {
 	content = Text # Text which overrides content
 	path = FileReference # If set, turns Asset into a file inclusion
 	name = Text a-zA-Z0-9_ # Can be used to change the name of an Asset on-the-fly, but watch out for dependencies
+  external = Integer 0/1 # If set to `1` and `standalone`, includes the file as raw URL. If set to `1` and not `standalone` then downloads the file and merges it when building Assets
 	overwrite = Integer 0/1 # If set to `1` this Asset is permitted to overwrite existing, identically named Assets
 	dependencies = CSV # list of comma-separated Asset names upon which the current Asset depends; affects loading order
 	group = Text a-zA-Z0-9_ # Group name, default "fluid". By grouping Assets the settings used on the group will apply to Assets

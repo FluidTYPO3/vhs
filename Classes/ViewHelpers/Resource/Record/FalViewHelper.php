@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -19,7 +18,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Resolve FAL relations and return file records.
@@ -59,11 +57,6 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     protected $fileRepository;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
-     */
-    protected $pageRepository;
-
-    /**
      * @var boolean
      */
     protected $escapeOutput = false;
@@ -75,7 +68,6 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     {
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
     }
 
     public function initializeArguments()
@@ -122,18 +114,14 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             }
         }
 
-        if ($table === 'pages') {
-            $fileObjects = $this->pageRepository->getFileReferences($table, $field, $record);
+        if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
+            $sqlRecordUid = $record['t3ver_oid'];
+        } elseif (isset($record['_LOCALIZED_UID'])) {
+            $sqlRecordUid = $record['_LOCALIZED_UID'];
         } else {
-            if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
-                $sqlRecordUid = $record['t3ver_oid'];
-            } elseif (isset($record['_LOCALIZED_UID'])) {
-                $sqlRecordUid = $record['_LOCALIZED_UID'];
-            } else {
-                $sqlRecordUid = $record[$this->idField];
-            }
-            $fileObjects = $this->fileRepository->findByRelation($table, $field, $sqlRecordUid);
+            $sqlRecordUid = $record[$this->idField];
         }
+        $fileObjects = $this->fileRepository->findByRelation($table, $field, $sqlRecordUid);
         return $fileObjects;
     }
 

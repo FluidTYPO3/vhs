@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -43,9 +44,9 @@ class ExistsViewHelper extends AbstractConditionViewHelper
         $directory = $arguments['directory'];
         $evaluation = false;
         if (true === isset($arguments['file'])) {
-            $evaluation = ((file_exists($file) || file_exists(constant('PATH_site') . $file)) && is_file($file));
+            $evaluation = ((file_exists($file) || file_exists(CoreUtility::getSitePath() . $file)) && is_file($file));
         } elseif (true === isset($arguments['directory'])) {
-            $evaluation = (is_dir($directory) || is_dir(constant('PATH_site') . $directory));
+            $evaluation = (is_dir($directory) || is_dir(CoreUtility::getSitePath() . $directory));
         }
         return $evaluation;
     }

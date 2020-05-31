@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
@@ -138,7 +139,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
                     $src = $source;
                     $type = mb_substr($source, mb_strrpos($source, '.') + 1);
                 } else {
-                    $src = mb_substr(GeneralUtility::getFileAbsFileName($source), mb_strlen(PATH_site));
+                    $src = mb_substr(GeneralUtility::getFileAbsFileName($source), mb_strlen(CoreUtility::getSitePath()));
                     $type = pathinfo($src, PATHINFO_EXTENSION);
                 }
             } elseif (is_array($source)) {
