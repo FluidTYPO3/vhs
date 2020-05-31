@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -240,7 +241,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = 0;
         $template->init();
-        $template->getFileName_backPath = constant('PATH_site');
+        $template->getFileName_backPath = CoreUtility::getSitePath();
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
         $GLOBALS['TSFE']->config = $typoScriptSetup;

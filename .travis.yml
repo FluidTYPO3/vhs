@@ -7,20 +7,29 @@ php:
 
 matrix:
   include:
-    - php: "7.2"
-      env: COVERAGE="NO" TYPO3_VERSION="dev-master"
     - php: "7.0"
       env: COVERAGE="NO" TYPO3_VERSION="^8.7"
     - php: "7.1"
       env: COVERAGE="NO" TYPO3_VERSION="^8.7"
     - php: "7.2"
       env: COVERAGE="YES" TYPO3_VERSION="^8.7"
-    - php: "7.2"
-      env: COVERAGE="NO" TYPO3_VERSION="^9"
     - php: "7.3"
       env: COVERAGE="NO" TYPO3_VERSION="^9"
+    - php: "7.4"
+      env: COVERAGE="NO" TYPO3_VERSION="^9"
+    - php: "7.4"
+      name: TYPO3 master
+      env: COVERAGE="NO" TYPO3_VERSION="dev-master"
+    - php: "7.4"
+      name: PHP notices
+      env: COVERAGE="NO" TYPO3_VERSION="^9" FORCE_ERROR_MODE="1039"
+    - php: "7.4"
+      name: PHP deprecations
+      env: COVERAGE="NO" TYPO3_VERSION="^9" FORCE_ERROR_MODE="24583"
   allow_failures:
     - env: COVERAGE="NO" TYPO3_VERSION="dev-master"
+    - env: COVERAGE="NO" TYPO3_VERSION="^9" FORCE_ERROR_MODE="1039"
+    - env: COVERAGE="NO" TYPO3_VERSION="^9" FORCE_ERROR_MODE="24583"
 
 cache:
   directories:

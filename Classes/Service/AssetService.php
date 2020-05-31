@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Service;
  */
 
 use FluidTYPO3\Vhs\Asset;
+use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -298,7 +299,7 @@ class AssetService implements SingletonInterface
                                 );
                             } else {
                                 $integrity = $this->getFileIntegrity($path);
-                                $path = mb_substr($path, mb_strlen(PATH_site));
+                                $path = mb_substr($path, mb_strlen(CoreUtility::getSitePath()));
                                 $path = $this->prefixPath($path);
                                 array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity, $assetSettings));
                             }
