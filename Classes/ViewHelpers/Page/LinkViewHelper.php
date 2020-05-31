@@ -248,6 +248,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             ->setCreateAbsoluteUri($this->arguments['absolute'])
             ->setAddQueryString($this->arguments['addQueryString'])
             ->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
+            ->setLinkAccessRestrictedPages($showAccessProtected)
             ->build();
         $this->tag->addAttribute('href', $uri);
         $classes = trim($this->arguments['class'] . ' ' . $additionalCssClasses);
