@@ -35,7 +35,7 @@ class CoreUtility
     public static function getSitePath(): string
     {
         if (defined('PATH_site')) {
-            return constant(PATH_site);
+            return constant('PATH_site');
         }
         return Environment::getPublicPath();
     }
