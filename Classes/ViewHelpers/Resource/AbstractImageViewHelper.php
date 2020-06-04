@@ -203,7 +203,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = 0;
         $template->init();
-        $template->getFileName_backPath = constant('PATH_site');
+        $template->getFileName_backPath = constant(CoreUtility::getSitePath());
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
         $GLOBALS['TSFE']->config = $typoScriptSetup;
