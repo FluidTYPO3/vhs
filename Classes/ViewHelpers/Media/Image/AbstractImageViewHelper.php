@@ -233,7 +233,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     {
         $this->tsfeBackup = true === isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
         $this->workingDirectoryBackup = getcwd();
-        chdir(constant(CoreUtility::getSitePath()));
+        chdir(CoreUtility::getSitePath());
         $typoScriptSetup = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
