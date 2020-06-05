@@ -37,7 +37,8 @@ class CoreUtility
         if (defined('PATH_site')) {
             return constant('PATH_site');
         }
-        return Environment::getPublicPath();
+        /** @see https://docs.typo3.org/m/typo3/reference-coreapi/9.5/en-us/ApiOverview/GlobalValues/Constants/Index.html#path-site */
+        return Environment::getPublicPath() . '/';
     }
 
     /**
