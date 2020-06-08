@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
@@ -338,10 +339,13 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function getCurrentFrontendUser()
     {
-        if (true === empty($GLOBALS['TSFE']->loginUser)) {
-            return null;
+        $context = GeneralUtility::makeInstance(Context::class);
+        $userIsLoggedIn = $context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
+        
+        if (true === $userIsLoggedIn) {
+            return $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
         }
-        return $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+        return null;
     }
 
     /**
