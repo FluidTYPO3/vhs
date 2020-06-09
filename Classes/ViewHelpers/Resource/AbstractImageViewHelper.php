@@ -202,7 +202,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         $GLOBALS['TSFE'] = new \stdClass();
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = 0;
-        $template->init();
+        if (version_compare(TYPO3_version, 9.4, '<')) {
+            $template->init();
+        }
         $template->getFileName_backPath = CoreUtility::getSitePath();
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
