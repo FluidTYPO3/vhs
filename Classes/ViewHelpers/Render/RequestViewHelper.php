@@ -12,8 +12,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -74,7 +74,6 @@ class RequestViewHelper extends AbstractRenderViewHelper
         $controller = $arguments['controller'];
         $extensionName = $arguments['extensionName'];
         $pluginName = $arguments['pluginName'];
-        $vendorName = $arguments['vendorName'];
         $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
         $objectManager = static::getObjectManager();
@@ -96,7 +95,6 @@ class RequestViewHelper extends AbstractRenderViewHelper
         if (!empty($requestArguments)) {
             $request->setArguments($requestArguments);
         }
-        $request->setControllerVendorName($vendorName);
 
         try {
             /** @var ResponseInterface $response */
