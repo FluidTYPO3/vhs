@@ -68,7 +68,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         );
         $this->registerArgument(
             'frontendUsers',
-            '<TYPO3\CMS\Extbase\Persistence\ObjectStorage>\TYPO3\CMS\Extbase\Domain\Model\FrontendUser',
+            ObjectStorage::class,
             'The FrontendUsers ObjectStorage to allow/deny'
         );
         $this->registerArgument(
@@ -78,7 +78,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         );
         $this->registerArgument(
             'frontendUserGroups',
-            '<TYPO3\CMS\Extbase\Persistence\ObjectStorage>\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup',
+            ObjectStorage::class,
             'The FrontendUserGroups ObjectStorage to allow/deny'
         );
         $this->registerArgument(
