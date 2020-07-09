@@ -62,6 +62,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     protected $escapeOutput = false;
 
     /**
+     * @var string
+     */
+    protected $localizedIdField = "_LOCALIZED_UID";
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -116,10 +121,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
 
         if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
             $sqlRecordUid = $record['t3ver_oid'];
-        } elseif (isset($record['_LOCALIZED_UID'])) {
-            $sqlRecordUid = $record['_LOCALIZED_UID'];
-        } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
-            $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
+        } elseif (isset($record[$this->localizedIdField])) {
+            $sqlRecordUid = $record[$this->localizedIdField];
         } else {
             $sqlRecordUid = $record[$this->idField];
         }
@@ -141,8 +144,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         } else {
             if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
                 $sqlRecordUid = $record['t3ver_oid'];
-            } elseif (isset($record['_LOCALIZED_UID'])) {
-                $sqlRecordUid = $record['_LOCALIZED_UID'];
+            } elseif (isset($record[$this->localizedIdField])) {
+                $sqlRecordUid = $record[$this->localizedIdField];
             } else {
                 $sqlRecordUid = $record[$this->idField];
             }

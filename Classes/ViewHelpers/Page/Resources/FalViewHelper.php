@@ -37,6 +37,11 @@ class FalViewHelper extends ResourcesFalViewHelper
     protected $field = self::DEFAULT_FIELD;
 
     /**
+     * @var string
+     */
+    protected $localizedIdField = "_PAGES_OVERLAY_UID";
+
+    /**
      * Initialize arguments.
      *
      * @return void
