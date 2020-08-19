@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -112,13 +113,13 @@ class PageService implements SingletonInterface
         $cacheKey = md5($pageUid . (integer) $reverse . (integer) $disableGroupAccessCheck);
         if (false === isset(static::$cachedRootlines[$cacheKey])) {
             $pageRepository = $this->getPageRepository();
-            if (method_exists($pageRepository, 'getRootLine')) {
+            if (class_exists(RootlineUtility::class)) {
+                $rootline = (new RootlineUtility($pageUid))->get();
+            } elseif (method_exists($pageRepository, 'getRootLine')) {
                 if (true === (boolean) $disableGroupAccessCheck) {
                     $pageRepository->where_groupAccess = '';
                 }
                 $rootline = $pageRepository->getRootLine($pageUid);
-            } elseif (isset($GLOBALS['TSFE'])) {
-                $rootline = (array) $GLOBALS['TSFE']->rootLine;
             } else {
                 $rootline = [];
             }
