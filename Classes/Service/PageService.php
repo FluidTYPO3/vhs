@@ -113,7 +113,7 @@ class PageService implements SingletonInterface
         $cacheKey = md5($pageUid . (integer) $reverse . (integer) $disableGroupAccessCheck);
         if (false === isset(static::$cachedRootlines[$cacheKey])) {
             $pageRepository = $this->getPageRepository();
-            if(class_exists(RootlineUtility::class)) {
+            if (class_exists(RootlineUtility::class)) {
                 $rootline = (new RootlineUtility($pageUid))->get();
             } elseif (method_exists($pageRepository, 'getRootLine')) {
                 if (true === (boolean) $disableGroupAccessCheck) {
