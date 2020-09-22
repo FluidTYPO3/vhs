@@ -11,14 +11,14 @@ $EM_CONF[$_EXTKEY] = array (
   'conflicts' => '',
   'priority' => '',
   'module' => '',
-  'state' => 'beta',
+  'state' => 'stable',
   'internal' => '',
   'uploadfolder' => 0,
   'createDirs' => '',
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '6.0.3',
+  'version' => '6.0.4',
   'constraints' => 
   array (
     'depends' => 
