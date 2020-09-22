@@ -233,14 +233,16 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     {
         $this->tsfeBackup = true === isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
         $this->workingDirectoryBackup = getcwd();
-        chdir(constant('PATH_site'));
+        chdir(CoreUtility::getSitePath());
         $typoScriptSetup = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
         $GLOBALS['TSFE'] = new \stdClass();
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = 0;
-        $template->init();
+        if (version_compare(TYPO3_version, 9.4, '<')) {
+            $template->init();
+        }
         $template->getFileName_backPath = CoreUtility::getSitePath();
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;

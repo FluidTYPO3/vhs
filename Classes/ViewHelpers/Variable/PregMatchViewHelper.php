@@ -40,7 +40,7 @@ class PregMatchViewHelper extends AbstractViewHelper
     {
         $this->registerAsArgument();
         $this->registerArgument('pattern', 'mixed', 'Regex pattern to match against', true);
-        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern', true);
+        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern', false);
         $this->registerArgument('global', 'boolean', 'Match global', false, false);
     }
 
