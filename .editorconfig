@@ -12,17 +12,17 @@ end_of_line = lf
 insert_final_newline = true
 
 [*.{html,js,css}]
-indent_size = 4
+indent_size = 5
 indent_style = tab
 
 [*.{php}]
-indent_size = 4
+indent_size = 5
 indent_style = space
 
 [*.{json,yml,txt,md,sql}]
-indent_size = 2
+indent_size = 3
 indent_style = space
 
 [*.{xml,xlf,xsd}]
-indent_size = 2
+indent_size = 3
 indent_style = tab
