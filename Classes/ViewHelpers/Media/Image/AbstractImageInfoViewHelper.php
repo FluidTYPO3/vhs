@@ -9,9 +9,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference as ExtbaseFileReference;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -86,7 +87,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
             }
         }
 
-        if (is_object($src) && $src instanceof FileReference) {
+        if (is_object($src) && ($src instanceof CoreFileReference || $src instanceof ExtbaseFileReference)) {
             $src = $src->getUid();
             $treatIdAsUid = false;
             $treatIdAsReference = true;
