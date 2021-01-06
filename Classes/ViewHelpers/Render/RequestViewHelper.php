@@ -96,8 +96,9 @@ class RequestViewHelper extends AbstractRenderViewHelper
         if (!empty($requestArguments)) {
             $request->setArguments($requestArguments);
         }
-        $request->setControllerVendorName($vendorName);
-
+        if (version_compare(TYPO3_version, 10.0, '<')) {
+            $request->setControllerVendorName($vendorName);
+        }
         try {
             /** @var ResponseInterface $response */
             $response = $objectManager->get(static::$responseType);
