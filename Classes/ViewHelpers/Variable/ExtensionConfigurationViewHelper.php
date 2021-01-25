@@ -1,5 +1,4 @@
 <?php
-
 namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 /*
@@ -64,8 +63,7 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    )
-    {
+    ) {
         $extensionKey = $arguments['extensionKey'];
         $path = $arguments['path'];
 
