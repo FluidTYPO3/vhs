@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 /*
@@ -8,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -61,7 +64,8 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    )
+    {
         $extensionKey = $arguments['extensionKey'];
         $path = $arguments['path'];
 
@@ -70,7 +74,17 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
         }
 
-        if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
+        // From V9 onwards, we should no longer get the extension config from globals
+        $fluidCoreVersion = ExtensionManagementUtility::getExtensionVersion('fluid');
+        if (version_compare($fluidCoreVersion, 9, '>=')) {
+            /** @var ExtensionConfiguration $extensionConfigurationUtility */
+            $extensionConfigurationUtility = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+            try {
+                static::$configurations[$extensionKey] = $extensionConfigurationUtility->get($extensionKey);
+            } catch (\Throwable $e) {
+                return null;
+            }
+        } else if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
             return null;
         } elseif (!array_key_exists($extensionKey, static::$configurations)) {
             if (is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
