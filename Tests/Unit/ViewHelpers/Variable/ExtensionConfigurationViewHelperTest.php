@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
 /*
@@ -9,6 +10,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ExtensionConfigurationViewHelperTest
@@ -22,7 +25,15 @@ class ExtensionConfigurationViewHelperTest extends AbstractViewHelperTest
     public function setUp()
     {
         parent::setUp();
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
+
+        $extConfUnderTest = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
+        if (version_compare(TYPO3_version, '8.0', '<')) {
+            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = $extConfUnderTest;
+        } else {
+            /** @var ExtensionConfiguration $extConf */
+            $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+            $extConf->set('vhs', '', $extConfUnderTest);
+        }
     }
 
     /**
