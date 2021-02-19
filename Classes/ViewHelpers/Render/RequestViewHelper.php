@@ -87,17 +87,6 @@ class RequestViewHelper extends AbstractRenderViewHelper
         );
 
         $temporaryContentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        /** @var Request $request */
-        $request = $objectManager->get(static::$requestType);
-        $request->setControllerActionName($action);
-        $request->setControllerName($controller);
-        $request->setPluginName($pluginName);
-        $request->setControllerExtensionName($extensionName);
-        if (!empty($requestArguments)) {
-            $request->setArguments($requestArguments);
-        }
-        $request->setControllerVendorName($vendorName);
-
         try {
             /** @var ResponseInterface $response */
             $response = $objectManager->get(static::$responseType);
@@ -109,6 +98,21 @@ class RequestViewHelper extends AbstractRenderViewHelper
                     $pluginName
                 )
             );
+
+            if (version_compare(TYPO3_version, 10.0, '<')) {
+                /** @var Request $request */
+                $request = $objectManager->get(static::$requestType);
+                $request->setControllerActionName($action);
+                $request->setControllerName($controller);
+                $request->setPluginName($pluginName);
+                $request->setControllerExtensionName($extensionName);
+                if (!empty($requestArguments)) {
+                    $request->setArguments($requestArguments);
+                }
+                $request->setControllerVendorName($vendorName);
+            } else {
+                $request = self::loadDefaultValues($extensionName, $pluginName, $action, $requestArguments);
+            }
             static::getDispatcher()->dispatch($request, $response);
             $configurationManager->setContentObject($contentObjectBackup);
             if (true === isset($configurationBackup)) {
@@ -148,5 +152,47 @@ class RequestViewHelper extends AbstractRenderViewHelper
     protected static function getConfigurationManager()
     {
         return static::getObjectManager()->get(ConfigurationManagerInterface::class);
+    }
+
+    /**
+     * @param $extensionName
+     * @param $pluginName
+     * @param $actionName
+     * @param $parameters
+     * @throws MvcException\InvalidActionNameException
+     * @throws MvcException\InvalidArgumentNameException
+     * @throws MvcException\InvalidControllerNameException
+     * @throws MvcException\InvalidExtensionNameException
+     * @see \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration
+     */
+    protected static function loadDefaultValues($extensionName, $pluginName, $actionName, $parameters)
+    {
+        $configurationManager = static::getConfigurationManager();
+        $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
+        $configuration['extensionName'] = $extensionName;
+        $configuration['pluginName'] = $pluginName;
+
+        $controllerAliasToClassMapping = [];
+        foreach ($configuration['controllerConfiguration'] as $controllerClassName => $controllerConfiguration) {
+            $controllerAliasToClassMapping[$controllerConfiguration['alias']] = $controllerConfiguration['className'];
+            $controllerClassToAliasMapping[$controllerConfiguration['className']] = $controllerConfiguration['alias'];
+        }
+
+        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
+        $request = static::getObjectManager()->get(Request::class);
+        $request->setPluginName($pluginName);
+        $request->setControllerExtensionName($extensionName);
+        $request->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
+        $request->setControllerName($controllerClassToAliasMapping[$controllerClassName]);
+        $request->setControllerActionName($actionName);
+        if (!empty($configuration['format'])) {
+            $request->setFormat($configuration['format']);
+        }
+
+        foreach ($parameters as $argumentName => $argumentValue) {
+            $request->setArgument($argumentName, $argumentValue);
+        }
+
+        return $request;
     }
 }
