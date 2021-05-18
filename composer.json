@@ -60,9 +60,6 @@
           "cms-package-dir": "{$vendor-dir}/typo3/cms",
           "extension-key": "vhs",
           "web-dir": "build/web"
-        },
-        "branch-alias": {
-          "dev-development": "7.x-dev"
         }
     }
 }
