@@ -13,6 +13,8 @@ use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -75,8 +77,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             false,
             'li'
         );
-        $this->registerArgument('defaultIsoFlag', 'string', 'ISO code of the default flag', false, 'gb');
-        $this->registerArgument('defaultLanguageLabel', 'string', 'Label for the default language', false, 'English');
+        $this->registerArgument('defaultIsoFlag', 'string', 'ISO code of the default flag', false);
+        $this->registerArgument('defaultLanguageLabel', 'string', 'Label for the default language', false);
         $this->registerArgument('order', 'mixed', 'Orders the languageIds after this list', false, '');
         $this->registerArgument('labelOverwrite', 'mixed', 'Overrides language labels');
         $this->registerArgument(
@@ -201,12 +203,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Returns the flag source
+     * Returns the flag source given the language ISO code
      *
      * @param string $iso
+     * @param string $label
      * @return string
      */
-    protected function getLanguageFlagSrc($iso)
+    protected function getLanguageFlag($iso, $label)
     {
         if ('' !== $this->arguments['flagPath']) {
             $path = trim($this->arguments['flagPath']);
@@ -215,7 +218,25 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         $imgType = trim($this->arguments['flagImageType']);
-        return $path . strtoupper($iso) . '.' . $imgType;
+        $conf = [
+            'file' => $path . strtoupper($iso) . '.' . $imgType,
+            'altText' => $label,
+            'titleText' => $label
+        ];
+        return $this->cObj->render($this->cObj->getContentObject('IMAGE'), $conf);
+    }
+
+    /**
+     * Returns the flag source given a TYPO3 icon identifier
+     *
+     * @param string $iso
+     * @return string
+     */
+    protected function getLanguageFlagByIdentifier($identifier)
+    {
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $icon = $iconFactory->getIcon($identifier, Icon::SIZE_SMALL);
+        return $icon->render();
     }
 
     /**
@@ -226,7 +247,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getLayout(array $language)
     {
-        $flagImage = false !== stripos($this->arguments['layout'], 'flag') ? $this->getFlagImage($language) : '';
+        $flagImage = false !== stripos($this->arguments['layout'], 'flag') ? $language['flagCode'] : '';
         $label = $language['label'];
         switch ($this->arguments['layout']) {
             case 'flag':
@@ -250,22 +271,6 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                 }
         }
         return $html;
-    }
-
-    /**
-     * Render the flag image for autorenderer
-     *
-     * @param array $language
-     * @return string
-     */
-    protected function getFlagImage(array $language)
-    {
-        $conf = [
-            'file' => $language['flagSrc'],
-            'altText' => $language['label'],
-            'titleText' => $language['label']
-        ];
-        return $this->cObj->render($this->cObj->getContentObject('IMAGE'), $conf);
     }
 
     /**
@@ -336,6 +341,15 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $languageMenu[$key]['inactive'] = $inactive;
             $languageMenu[$key]['url'] = $url;
             $languageMenu[$key]['flagSrc'] = $this->getLanguageFlagSrc($value['flag'] ?? $value['iso']);
+            // if the user has set a flag path, always use that over the TYPO3 icon factory so the user
+            // has the option to use custom flag images based on the ISO code of the language.
+            // if the user has not set a flag path, prefer the TYPO3 icon factory when an icon
+            // identifier is available (i.e., when using the site-based language lookup) .
+            if (isset($value['flagIdentifier']) && empty($this->arguments['flagPath'])) {
+                $languageMenu[$key]['flagCode'] = $this->getLanguageFlagByIdentifier($value['flagIdentifier']);
+            } else {
+                $languageMenu[$key]['flagCode'] = $this->getLanguageFlag($value['flag'] ?? $value['iso'], $value['label']);
+            }
             if (true === (boolean) $this->arguments['hideNotTranslated'] && true === (boolean) $inactive) {
                 unset($languageMenu[$key]);
             }
