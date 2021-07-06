@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,7 +45,12 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         $language = $arguments['language'];
         $defaultTitle = $arguments['defaultTitle'];
 
-        $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+        if (class_exists(LanguageAspect::class)) {
+            $currentLanguageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+        } else {
+            $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+        }
+
         if (true === is_numeric($language)) {
             $languageUid = intval($language);
         } else {

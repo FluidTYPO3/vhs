@@ -9,7 +9,10 @@ namespace FluidTYPO3\Vhs\Service;
  */
 
 use FluidTYPO3\Vhs\Asset;
+use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,7 +32,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  */
 class AssetService implements SingletonInterface
 {
-
     /**
      * @var string
      */
@@ -298,7 +300,7 @@ class AssetService implements SingletonInterface
                                 );
                             } else {
                                 $integrity = $this->getFileIntegrity($path);
-                                $path = mb_substr($path, mb_strlen(PATH_site));
+                                $path = mb_substr($path, mb_strlen(CoreUtility::getSitePath()));
                                 $path = $this->prefixPath($path);
                                 array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity, $assetSettings));
                             }
@@ -626,6 +628,10 @@ class AssetService implements SingletonInterface
         $replacements = [];
         $wrap = explode('|', $wrap);
         preg_match_all($regex, $contents, $matches);
+        $logger = null;
+        if (class_exists(LogManager::class)) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        }
         foreach ($matches[2] as $matchCount => $match) {
             $match = trim($match, '\'" ');
             if (false === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
@@ -639,17 +645,18 @@ class AssetService implements SingletonInterface
                 $newPath = basename($path);
                 $extension = pathinfo($newPath, PATHINFO_EXTENSION);
                 $temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
-                $temporaryFile = constant('PATH_site') . $this->getTempPath() . $temporaryFileName;
+                $temporaryFile = CoreUtility::getSitePath() . $this->getTempPath() . $temporaryFileName;
                 $rawPath = GeneralUtility::getFileAbsFileName(
                     $originalDirectory . (empty($originalDirectory) ? '' : '/')
                 ) . $path;
                 $realPath = realpath($rawPath);
                 if (false === $realPath) {
-                    GeneralUtility::sysLog(
-                        'Asset at path "' . $rawPath . '" not found. Processing skipped.',
-                        'vhs',
-                        GeneralUtility::SYSLOG_SEVERITY_WARNING
-                    );
+                    $message = 'Asset at path "' . $rawPath . '" not found. Processing skipped.';
+                    if ($logger instanceof LoggerInterface) {
+                        $logger->warning($message, ['rawPath' => $rawPath]);
+                    } else {
+                        GeneralUtility::sysLog($message, GeneralUtility::SYSLOG_SEVERITY_WARNING);
+                    }
                 } else {
                     if (false === file_exists($temporaryFile)) {
                         copy($realPath, $temporaryFile);

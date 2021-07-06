@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Page;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class IsLanguageViewHelperTest
@@ -22,13 +23,16 @@ class IsLanguageViewHelperTest extends AbstractViewHelperTest
         $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)->setMethods(['exec_SELECTgetSingleRow'])->disableOriginalConstructor()->getMock();
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue(false));
 
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['TSFE']->expects($this->any())->method('__get')->with('sys_language_uid')->willReturn(0);
+
         $arguments = [
             'then' => 'then',
             'else' => 'else',
             'language' => 0
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('else', $result);
+        $this->assertEquals('then', $result);
 
         $staticResult = $this->executeViewHelperStatic($arguments);
         $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');

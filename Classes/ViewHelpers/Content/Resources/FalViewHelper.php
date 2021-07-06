@@ -10,6 +10,28 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
 
 /**
  * Content FAL relations ViewHelper
+ *
+ * ### Render a single image in a content element
+ *
+ * We assume that the flux content element has an IRRE file field
+ * `<flux:field.inline.fal name="settings.image">`.
+ *
+ * The file data can be loaded and displayed with:
+ *
+ *     {v:content.resources.fal(field: 'settings.image')
+ *       -> v:iterator.first()
+ *       -> v:variable.set(name: 'image')}
+ *     <f:if condition="{image}">
+ *       <f:image src="{image.id}"/>
+ *     </f:if>
+ *
+ *
+ * ### Image preview in backend
+ *
+ * To load image data for the "Preview" section in the backend's page view,
+ * you have to pass the `record` attribute:
+ *
+ *     {v:content.resources.fal(field: 'settings.image', record: record)}
  */
 class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper
 {
