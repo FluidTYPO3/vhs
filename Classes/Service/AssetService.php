@@ -758,7 +758,13 @@ class AssetService implements SingletonInterface
             return;
         }
         foreach ($assetCacheFiles as $assetCacheFile) {
-            touch($assetCacheFile, 0);
+            if (!@touch($assetCacheFile, 0)) {
+                $content = file_get_contents($assetCacheFile);
+                $temporaryAssetCacheFile = tempnam(dirname($assetCacheFile), basename($assetCacheFile) . '.');
+                $this->writeFile($temporaryAssetCacheFile, $content);
+                rename($temporaryAssetCacheFile, $assetCacheFile);
+                touch($assetCacheFile, 0);
+            }
         }
         static::$cacheCleared = true;
     }
