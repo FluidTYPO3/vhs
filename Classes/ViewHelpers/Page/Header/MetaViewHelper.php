@@ -59,16 +59,25 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
         $content = $this->arguments['content'];
         if (!empty($content)) {
             $pageRenderer = static::getPageRenderer();
-            if (method_exists($pageRenderer, 'addMetaTag')) {
+            if (!method_exists($pageRenderer, 'setMetaTag')) {
                 $pageRenderer->addMetaTag($this->renderTag($this->tagName, null, ['content' => $content]));
             } else {
                 $properties = [];
-                foreach (['http-equiv', 'scheme', 'lang', 'dir'] as $propertyName) {
+                $type = 'name';
+                $name = $this->tag->getAttribute('name');
+                if (!empty($this->tag->getAttribute('property'))) {
+                    $type = 'property';
+                    $name = $this->tag->getAttribute('property');
+                } elseif (!empty($this->tag->getAttribute('http-equiv'))) {
+                    $type = 'http-equiv';
+                    $name = $this->tag->getAttribute('http-equiv');
+                }
+                foreach (['http-equiv', 'property', 'scheme', 'lang', 'dir'] as $propertyName) {
                     if (!empty($this->tag->getAttribute($propertyName))) {
                         $properties[$propertyName] = $this->tag->getAttribute($propertyName);
                     }
                 }
-                $pageRenderer->setMetaTag('name', $this->arguments['name'], $content, $properties);
+                $pageRenderer->setMetaTag($type, $name, $content, $properties);
             }
         }
     }
