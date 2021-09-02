@@ -33,7 +33,7 @@ class ImageViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $test = $this->executeViewHelper($arguments);
-        $this->assertSame('<img src="https://placehold.it/100/333333/FFFFFF" alt="https://placehold.it/100/333333/FFFFFF" width="100" height="100" />', $test);
+        $this->assertSame('<img src="https://via.placeholder.com/100/333333/FFFFFF" alt="https://via.placeholder.com/100/333333/FFFFFF" width="100" height="100" />', $test);
     }
 
     /**
@@ -44,6 +44,6 @@ class ImageViewHelperTest extends AbstractViewHelperTest
         $arguments = $this->arguments;
         $arguments['text'] = 'test';
         $test = $this->executeViewHelper($arguments);
-        $this->assertSame('<img src="https://placehold.it/100/333333/FFFFFF/&amp;text=test" alt="https://placehold.it/100/333333/FFFFFF/&amp;text=test" width="100" height="100" />', $test);
+        $this->assertSame('<img src="https://via.placeholder.com/100/333333/FFFFFF/?text=test" alt="https://via.placeholder.com/100/333333/FFFFFF/?text=test" width="100" height="100" />', $test);
     }
 }
