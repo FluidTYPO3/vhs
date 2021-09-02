@@ -17,6 +17,12 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Page FAL resource ViewHelper.
+ *
+ * Do not use the "uid" argument in the "Preview" section.
+ * Instead, use the "record" argument and pass the entire record.
+ * This bypasses visibility restrictions that normally apply when you attempt
+ * to load a record by UID through TYPO3's PageRepository, which is what the
+ * resource ViewHelpers do if you only pass uid.
  */
 class FalViewHelper extends ResourcesFalViewHelper
 {

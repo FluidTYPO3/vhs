@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -148,27 +149,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $pageUid = $this->arguments['pageUid'];
         $additionalParameters = (array) $this->arguments['additionalParams'];
         if (false === is_numeric($pageUid)) {
-            $linkConfig = GeneralUtility::unQuoteFilenames($pageUid, true);
-            if (true === isset($linkConfig[0])) {
-                $pageUid = $linkConfig[0];
-            }
-            if (true === isset($linkConfig[1]) && '-' !== $linkConfig[1]) {
-                $this->tag->addAttribute('target', $linkConfig[1]);
-            }
-            if (true === isset($linkConfig[2]) && '-' !== $linkConfig[2]) {
-                $this->tag->addAttribute('class', $linkConfig[2]);
-            }
-            if (true === isset($linkConfig[3]) && '-' !== $linkConfig[3]) {
-                $this->tag->addAttribute('title', $linkConfig[3]);
-            }
-            if (true === isset($linkConfig[4]) && '-' !== $linkConfig[4]) {
-                $additionalParametersString = trim($linkConfig[4], '&');
-                $additionalParametersArray = GeneralUtility::trimExplode('&', $additionalParametersString);
-                foreach ($additionalParametersArray as $parameter) {
-                    list($key, $value) = GeneralUtility::trimExplode('=', $parameter);
-                    $additionalParameters[$key] = $value;
-                }
-            }
+            GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)
+                ->warning("pageUid must be numeric, got " . $pageUid);
+            return null;
         }
 
         // Get page via pageUid argument or current id

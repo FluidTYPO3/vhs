@@ -19,7 +19,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * ### Example
  *
- *     <v:media.picture src="fileadmin/some-image.png" alt="Some Image">
+ *     <v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
  *         <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
  *         <v:media.source media="(min-width: 992px)" width="300c" height="300c" />
  *         <v:media.source media="(min-width: 768px)" width="200c" height="200c" />
@@ -66,6 +66,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('alt', 'string', 'Text for the alt attribute.', true);
         $this->registerArgument('title', 'string', 'Text for the title attribute.');
         $this->registerArgument('class', 'string', 'CSS class(es) to set.');
+        $this->registerArgument('loading', 'string', 'Native lazy-loading for images. Can be "lazy", "eager" or "auto"', false);
     }
 
     /**
@@ -96,7 +97,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $defaultImage = new TagBuilder('img');
         $defaultImage->addAttribute('src', $defaultSource);
         $defaultImage->addAttribute('alt', $this->arguments['alt']);
-        
+
         if (false === empty($this->arguments['class'])) {
             $defaultImage->addAttribute('class', $this->arguments['class']);
         }
@@ -104,6 +105,11 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         if (false === empty($this->arguments['title'])) {
             $defaultImage->addAttribute('title', $this->arguments['title']);
         }
+
+        if (in_array($this->arguments['loading'] ?? '', ['lazy', 'eager', 'auto'], true)) {
+            $defaultImage->addAttribute('loading', $this->arguments['loading']);
+        }
+
         $content .= $defaultImage->render();
 
         $this->tag->setContent($content);
