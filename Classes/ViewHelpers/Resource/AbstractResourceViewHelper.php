@@ -90,6 +90,21 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
              return null;
         }
 
+        foreach ($identifier as $key => $maybeUrl) {
+            if (substr($maybeUrl, 0, 5) !== 't3://') {
+                continue;
+            }
+            $parts = parse_url($maybeUrl);
+            if (false === isset($parts['host']) || $parts['host'] !== 'file' || false === isset($parts['query'])) {
+                continue;
+            }
+            parse_str($parts['query'], $queryParts);
+            if (true === isset($queryParts['uid'])) {
+                $identifier[$key] = $queryParts['uid'];
+                $treatIdAsUid = true;
+            }
+        }
+
         $files = [];
         /** @var ResourceFactory $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
