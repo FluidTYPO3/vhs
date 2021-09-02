@@ -53,7 +53,7 @@ class EliminateViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'whitespaceBetweenHtmlTags',
             'boolean',
-            'Eliminate ALL whitespace characters between HTML tags',
+            'Eliminate ALL whitespace characters between HTML tags. Use this together with <f:format.raw>',
             false,
             false
         );
