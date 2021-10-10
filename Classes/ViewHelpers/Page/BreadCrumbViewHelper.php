@@ -9,7 +9,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+if (class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)) {
+    class_alias('TYPO3\CMS\Core\Domain\Repository\PageRepository', __NAMESPACE__ . '\PageRepository');
+} else {
+    class_alias('TYPO3\CMS\Frontend\Page\PageRepository', __NAMESPACE__ . '\PageRepository');
+}
 
 /**
  * ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual.

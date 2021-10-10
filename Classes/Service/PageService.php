@@ -14,7 +14,11 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+if (class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)) {
+    class_alias('TYPO3\CMS\Core\Domain\Repository\PageRepository', __NAMESPACE__ . '\PageRepository');
+} else {
+    class_alias('TYPO3\CMS\Frontend\Page\PageRepository', __NAMESPACE__ . '\PageRepository');
+}
 
 /**
  * Page Service
@@ -145,10 +149,8 @@ class PageService implements SingletonInterface
         $includeMenuSeparator = false
     ) {
         $constraints = [];
-
         $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' .
             PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
-
         if ($includeNotInMenu === false) {
             $constraints[] = 'nav_hide = 0';
         }

@@ -13,7 +13,11 @@ use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalView
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+if (class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)) {
+    class_alias('TYPO3\CMS\Core\Domain\Repository\PageRepository', __NAMESPACE__ . '\PageRepository');
+} else {
+    class_alias('TYPO3\CMS\Frontend\Page\PageRepository', __NAMESPACE__ . '\PageRepository');
+}
 
 /**
  * Page FAL resource ViewHelper.
