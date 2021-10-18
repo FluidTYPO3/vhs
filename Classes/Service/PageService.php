@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TTYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
 /**
  * Page Service
