@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 /**
  * Page Service
  *
- * Wrapper service for \TTYPO3\CMS\Core\Domain\Repository\PageRepository including static caches for
+ * Wrapper service for \TYPO3\CMS\Core\Domain\Repository\PageRepository including static caches for
  * menus, rootlines, pages and page overlays to be implemented in
  * viewhelpers by replacing calls to \TYPO3\CMS\Core\Domain\Repository\PageRepository::getMenu()
  * and the like.
