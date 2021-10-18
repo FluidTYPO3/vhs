@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Core\Domain\Repository\PageRepositoryory;
 
 /**
  * ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual.
