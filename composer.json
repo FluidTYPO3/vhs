@@ -60,6 +60,11 @@
           "cms-package-dir": "{$vendor-dir}/typo3/cms",
           "extension-key": "vhs",
           "web-dir": "build/web"
+        },
+        "typo3/class-alias-loader": {
+          "class-alias-maps": [
+            "Migrations/Code/ClassAliasMap.php"
+          ]
         }
     }
 }
