@@ -12,11 +12,7 @@ use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-if (class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)) {
-    class_alias('TYPO3\CMS\Core\Domain\Repository\PageRepository', __NAMESPACE__ . '\PageRepository');
-} else {
-    class_alias('TYPO3\CMS\Frontend\Page\PageRepository', __NAMESPACE__ . '\PageRepository');
-}
+use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
