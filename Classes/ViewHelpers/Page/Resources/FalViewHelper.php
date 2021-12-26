@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Factory\InstanceFactory;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use TYPO3\CMS\Core\Context\Context;
@@ -74,8 +75,10 @@ class FalViewHelper extends ResourcesFalViewHelper
             if (TYPO3_MODE === 'FE') {
                 $pageRepository = $GLOBALS['TSFE']->sys_page;
             } else {
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-                $pageRepository->init(false);
+                $pageRepository = InstanceFactory::getPageRepository();
+                if (class_exists(\TYPO3\CMS\Frontend\Page\PageRepository::class)) {
+                    $pageRepository->init(false);
+                }
             }
             /** @var PageRepository $pageRepository */
             $localisation = $pageRepository->getPageOverlay($record, $this->getCurrentLanguageUid());

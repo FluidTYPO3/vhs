@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Factory\InstanceFactory;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -218,7 +219,7 @@ class PageService implements SingletonInterface
     protected function getPageRepositoryForBackendContext()
     {
         if (static::$backendPageRepository === null) {
-            static::$backendPageRepository = GeneralUtility::makeInstance(PageRepository::class);
+            static::$backendPageRepository = InstanceFactory::getPageRepository();
         }
         return static::$backendPageRepository;
     }
