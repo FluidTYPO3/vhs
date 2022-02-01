@@ -49,6 +49,16 @@ class PageService implements SingletonInterface
      */
     protected static $backendPageRepository;
 
+   /**
+    * Constructor
+    */
+    public function __construct()
+    {
+        if (!class_exists(\TYPO3\CMS\Frontend\Page\PageRepository::class)) {
+            class_alias('\TYPO3\CMS\Core\Domain\Repository\PageRepository', '\TYPO3\CMS\Frontend\Page\PageRepository');
+        }
+    }
+    
     /**
      * @param integer $pageUid
      * @param array $excludePages
