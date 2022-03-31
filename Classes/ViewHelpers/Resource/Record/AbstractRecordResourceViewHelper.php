@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -16,7 +17,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -192,13 +192,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             ->fetch() ?: null;
 
         if (!$this->isDefaultLanguage()) {
-            if (TYPO3_MODE === 'FE') {
-                $pageRepository = $GLOBALS['TSFE']->sys_page;
-            } else {
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-                $pageRepository->init(false);
-            }
-            /** @var PageRepository $pageRepository */
+            $pageRepository = GeneralUtility::makeInstance(PageService::class)->getPageRepository();
             $localisation = $pageRepository->getRecordOverlay($table, $record, $this->getCurrentLanguageUid());
 
             if (is_array($localisation)) {
