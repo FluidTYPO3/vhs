@@ -3,9 +3,12 @@
     "description": "This is a collection of view helpers for performing rendering tasks that are not natively provided by TYPO3's Fluid templating engine.",
     "type": "typo3-cms-extension",
     "non-feature-branches": ["development"],
+    "homepage": "https://fluidtypo3.org",
     "support": {
-        "irc": "irc://irc.freenode.org/fedext",
-        "issues": "https://github.com/FluidTYPO3/vhs/issues"
+        "chat": "https://typo3.slack.com/archives/C79562JES",
+        "docs": "https://viewhelpers.fluidtypo3.org/fluidtypo3/vhs/",
+        "issues": "https://github.com/FluidTYPO3/vhs/issues",
+        "source": "https://github.com/FluidTYPO3/vhs"
     },
     "keywords": [
         "TYPO3 CMS",
@@ -20,7 +23,6 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "homepage": "https://fluidtypo3.org",
     "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
