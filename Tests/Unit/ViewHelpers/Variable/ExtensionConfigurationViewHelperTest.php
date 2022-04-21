@@ -17,19 +17,20 @@ class ExtensionConfigurationViewHelperTest extends AbstractViewHelperTest
 {
 
     /**
-     * @return void
+     * @test
      */
-    public function setUp()
+    public function returnsNullIfVariableDoesNotExist()
     {
-        parent::setUp();
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs'] = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
+        $this->assertNull($this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'void']));
     }
 
     /**
      * @test
      */
-    public function returnsNullIfVariableDoesNotExist()
+    public function returnsNullIfVariableDoesNotExistLegacyExtConf()
     {
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
         $this->assertNull($this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'void']));
     }
 
@@ -38,6 +39,16 @@ class ExtensionConfigurationViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsDirectValueIfExists()
     {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs'] = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
+        $this->assertEquals('test', $this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'test']));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsDirectValueIfExistsLegacyExtConf()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
         $this->assertEquals('test', $this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'test']));
     }
 
@@ -46,6 +57,16 @@ class ExtensionConfigurationViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNestedValueIfRootExists()
     {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs'] = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
+        $this->assertEquals('value', $this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'array.value']));
+    }
+
+    /**
+     * @test
+     */
+    public function returnsNestedValueIfRootExistsLegacyExtConf()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = ['foo' => 'bar', 'test' => 'test', 'array' => ['value' => 'value']];
         $this->assertEquals('value', $this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'array.value']));
     }
 }
