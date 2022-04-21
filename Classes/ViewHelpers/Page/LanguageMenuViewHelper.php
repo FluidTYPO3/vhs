@@ -51,7 +51,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     protected $cObj;
 
     /**
-     * @var \TYPO3\CMS\Core\Site\Site
+     * @var \TYPO3\CMS\Core\Site\Site|\TYPO3\CMS\Core\Site\Entity\Site
      */
     protected $site;
 
@@ -340,7 +340,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $languageMenu[$key]['current'] = $current;
             $languageMenu[$key]['inactive'] = $inactive;
             $languageMenu[$key]['url'] = $url;
-            $languageMenu[$key]['flagSrc'] = $this->getLanguageFlagSrc($value['flag'] ?? $value['iso']);
+            $languageMenu[$key]['flagSrc'] = $this->getLanguageFlag($value['flag'] ?? $value['iso'], $value['label']);
             // if the user has set a flag path, always use that over the TYPO3 icon factory so the user
             // has the option to use custom flag images based on the ISO code of the language.
             // if the user has not set a flag path, prefer the TYPO3 icon factory when an icon
@@ -471,7 +471,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     /**
      * Find the site corresponding to the page that the menu is being rendered for
      * 
-     * @return Site
+     * @return Site|\TYPO3\CMS\Core\Site\Entity\Site
      */
     protected function getSite()
     {
