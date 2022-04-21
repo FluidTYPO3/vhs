@@ -1,6 +1,6 @@
 {
     "name": "fluidtypo3/vhs",
-    "description": "This is a collection of view helpers for performing rendering tasks that are not natively provided by TYPO3's Fluid templating engine.",
+    "description": "This is a collection of ViewHelpers for performing rendering tasks that are not natively provided by TYPO3's Fluid templating engine.",
     "type": "typo3-cms-extension",
     "non-feature-branches": ["development"],
     "homepage": "https://fluidtypo3.org",

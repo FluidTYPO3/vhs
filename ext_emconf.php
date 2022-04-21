@@ -1,7 +1,7 @@
 <?php
 $EM_CONF['vhs'] = array (
   'title' => 'VHS: Fluid ViewHelpers',
-  'description' => 'A collection of view helpers for performing rendering tasks that are not natively provided by the Fluid templating engine.',
+  'description' => 'A collection of ViewHelpers for performing rendering tasks that are not natively provided by the Fluid templating engine.',
   'category' => 'misc',
   'author' => 'FluidTYPO3 Team',
   'author_email' => 'claus@namelesscoder.net',

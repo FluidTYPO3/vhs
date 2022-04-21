@@ -11,7 +11,7 @@
 
 # TYPO3 extension `vhs`
 
-This is a collection of view helpers for performing rendering tasks that are not
+This is a collection of ViewHelpers for performing rendering tasks that are not
 natively provided by TYPO3's [Fluid templating engine](https://docs.typo3.org/other/typo3/view-helper-reference/10.4/en-us/).
 These include advanced formatters, mathematical calculators, special conditions,
 and iterators and array calculators and processors.
@@ -64,7 +64,7 @@ these problems.
 
 ### Asset examples
 
-The following VHS view helper usage:
+The following VHS ViewHelper usage:
 
 ```
 <v:asset.script path="fileadmin/demo.js" />
