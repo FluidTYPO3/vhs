@@ -757,7 +757,7 @@ class AssetService implements SingletonInterface
         if (true === static::$cacheCleared) {
             return;
         }
-        if ('all' !== $parameters['cacheCmd']) {
+        if ('all' !== ($parameters['cacheCmd'] ?? '')) {
             return;
         }
         $assetCacheFiles = glob(GeneralUtility::getFileAbsFileName($this->getTempPath() . 'vhs-assets-*'));
