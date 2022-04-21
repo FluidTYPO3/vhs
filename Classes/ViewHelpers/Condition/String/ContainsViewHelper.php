@@ -34,6 +34,6 @@ class ContainsViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return false !== strpos($arguments['haystack'], $arguments['needle']);
+        return false !== strpos($arguments['haystack'], (string) $arguments['needle']);
     }
 }

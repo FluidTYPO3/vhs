@@ -50,13 +50,13 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         $height = $this->arguments['height'] != $this->arguments['width'] ? $this->arguments['height'] : null;
         $addHeight = false === empty($height) ? 'x' . $height : null;
         $url = [
-            'https://placehold.it',
+            'https://via.placeholder.com',
             $this->arguments['width'] . $addHeight,
             $this->arguments['backgroundColor'],
             $this->arguments['textColor'],
         ];
         if (false === empty($text)) {
-            array_push($url, '&text=' . urlencode($text));
+            array_push($url, '?text=' . urlencode($text));
         }
         $imageUrl = implode('/', $url);
         $this->tag->forceClosingTag(false);

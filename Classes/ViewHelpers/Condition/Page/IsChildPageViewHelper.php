@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use FluidTYPO3\Vhs\Service\PageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -43,8 +44,7 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
         if (null === $pageUid || true === empty($pageUid) || 0 === intval($pageUid)) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $pageSelect = new PageRepository();
-        $page = $pageSelect->getPage($pageUid);
+        $page = GeneralUtility::makeInstance(PageService::class)->getPageRepository()->getPage($pageUid);
 
         if ($respectSiteRoot && isset($page['is_siteroot']) && $page['is_siteroot']) {
             return false;
