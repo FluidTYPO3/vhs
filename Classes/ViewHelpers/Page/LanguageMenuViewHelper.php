@@ -285,7 +285,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         if (!empty($labelOverwrite)) {
             $labelOverwrite = GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']);
         }
-        
+
         // first gather languages into this array so we can reorder it later
         $tempArray = [];
         $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
