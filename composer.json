@@ -33,12 +33,12 @@
         }
     },
     "require": {
-        "php": "^7.0.0",
-        "typo3/cms-core": "^8.7 || ^9 || ^10 || dev-master",
-        "typo3/cms-extbase": "^8.7 || ^9 || ^10 || dev-master",
-        "typo3/cms-fluid": "^8.7 || ^9 || ^10 || dev-master",
-        "typo3/cms-frontend": "^8.7 || ^9 || ^10 || dev-master",
-        "typo3/cms-backend": "^8.7 || ^9 || ^10 || dev-master"
+        "php": "^7.4.0 || ^8",
+        "typo3/cms-core": "^8.7 || ^9 || ^10 || ^11 || dev-master",
+        "typo3/cms-extbase": "^8.7 || ^9 || ^10 || ^11 || dev-master",
+        "typo3/cms-fluid": "^8.7 || ^9 || ^10 || ^11 || dev-master",
+        "typo3/cms-frontend": "^8.7 || ^9 || ^10 || ^11 || dev-master",
+        "typo3/cms-backend": "^8.7 || ^9 || ^10 || ^11 || dev-master"
     },
     "replace": {
         "typo3-ter/vhs": "self.version"
