@@ -24,14 +24,13 @@ and iterators and array calculators and processors.
 
 ## Installation
 
-The latest version can be installed via [TER](https://extensions.typo3.org/extension/vhs)
-or via composer by running
+The latest version can be installed via composer by running
 
 ```
 composer require fluidtypo3/vhs
 ```
 
-in a TYPO3 installation.
+in a TYPO3 installation, or via [TER](https://extensions.typo3.org/extension/vhs).
 
 ## Settings
 
