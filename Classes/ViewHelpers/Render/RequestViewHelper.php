@@ -53,7 +53,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
         $this->registerArgument('action', 'string', 'Controller action to call in request');
         $this->registerArgument('controller', 'string', 'Controller name to call in request');
         $this->registerArgument('extensionName', 'string', 'Extension name scope to use in request');
-        $this->registerArgument('vendorName', 'string', 'Vendor name scope to use in request');
+        $this->registerArgument('vendorName', 'string', 'Vendor name scope to use in request. WARNING: only applies to TYPO3 versions below 10.4');
         $this->registerArgument('pluginName', 'string', 'Plugin name scope to use in request');
         $this->registerArgument('arguments', 'array', 'Arguments to use in request');
     }
@@ -88,22 +88,22 @@ class RequestViewHelper extends AbstractRenderViewHelper
 
         $temporaryContentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         try {
-            /** @var ResponseInterface $response */
-            $response = $objectManager->get(static::$responseType);
-            $configurationManager->setContentObject($temporaryContentObject);
-            $configurationManager->setConfiguration(
-                $configurationManager->getConfiguration(
-                    ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
-                    $extensionName,
-                    $pluginName
-                )
+            $targetConfiguration = $configurationManager->getConfiguration(
+                ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+                $extensionName,
+                $pluginName
             );
+
+            /** @var ResponseInterface|\TYPO3\CMS\Core\Http\Response $response */
+            $response = $objectManager->get(class_exists(static::$responseType) ? static::$responseType : \TYPO3\CMS\Core\Http\Response::class);
+            $configurationManager->setContentObject($temporaryContentObject);
+            $configurationManager->setConfiguration($targetConfiguration);
 
             if (version_compare(TYPO3_version, 10.0, '<')) {
                 /** @var Request $request */
                 $request = $objectManager->get(static::$requestType);
-                $request->setControllerActionName($action);
-                $request->setControllerName($controller);
+                $request->setControllerActionName($action ?? reset(reset($targetConfiguration['controllerConfiguration'])['actions']));
+                $request->setControllerName($controller ?? key($targetConfiguration['controllerConfiguration']));
                 $request->setPluginName($pluginName);
                 $request->setControllerExtensionName($extensionName);
                 if (!empty($requestArguments)) {
@@ -111,14 +111,17 @@ class RequestViewHelper extends AbstractRenderViewHelper
                 }
                 $request->setControllerVendorName($vendorName);
             } else {
-                $request = self::loadDefaultValues($extensionName, $pluginName, $action, $requestArguments);
+                $request = self::loadDefaultValues($extensionName, $pluginName, $controller, $action, $requestArguments);
             }
-            static::getDispatcher()->dispatch($request, $response);
+            $possibleResponse = static::getDispatcher()->dispatch($request, $response);
+            if ($possibleResponse) {
+                $response = $possibleResponse;
+            }
             $configurationManager->setContentObject($contentObjectBackup);
             if (true === isset($configurationBackup)) {
                 $configurationManager->setConfiguration($configurationBackup);
             }
-            return $response;
+            return $response instanceof ResponseInterface ? (string) $response : $response->getBody()->getContents();
         } catch (\Exception $error) {
             if (false === (boolean) $arguments['graceful']) {
                 throw $error;
@@ -155,22 +158,22 @@ class RequestViewHelper extends AbstractRenderViewHelper
     }
 
     /**
-     * @param $extensionName
-     * @param $pluginName
-     * @param $actionName
-     * @param $parameters
+     * @param string $extensionName
+     * @param string $pluginName
+     * @param string|null $controllerName
+     * @param string|null $actionName
+     * @param array $parameters
      * @throws MvcException\InvalidActionNameException
      * @throws MvcException\InvalidArgumentNameException
      * @throws MvcException\InvalidControllerNameException
      * @throws MvcException\InvalidExtensionNameException
      * @see \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration
      */
-    protected static function loadDefaultValues($extensionName, $pluginName, $actionName, $parameters)
+    protected static function loadDefaultValues($extensionName, $pluginName, $controllerName, $actionName, $parameters)
     {
         $configurationManager = static::getConfigurationManager();
         $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
-        $configuration['extensionName'] = $extensionName;
-        $configuration['pluginName'] = $pluginName;
+        $defaultActionName = reset(reset($configuration['controllerConfiguration'])['actions']);
 
         $controllerAliasToClassMapping = [];
         foreach ($configuration['controllerConfiguration'] as $controllerClassName => $controllerConfiguration) {
@@ -178,13 +181,13 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $controllerClassToAliasMapping[$controllerConfiguration['className']] = $controllerConfiguration['alias'];
         }
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
-        $request = static::getObjectManager()->get(Request::class);
+        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request|\TYPO3\CMS\Extbase\Mvc\Request $request */
+        $request = static::getObjectManager()->get(class_exists(Request::class) ? Request::class : \TYPO3\CMS\Extbase\Mvc\Request::class);
         $request->setPluginName($pluginName);
         $request->setControllerExtensionName($extensionName);
         $request->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
-        $request->setControllerName($controllerClassToAliasMapping[$controllerClassName]);
-        $request->setControllerActionName($actionName);
+        $request->setControllerName($controllerName ?? $controllerClassToAliasMapping[$controllerClassName]);
+        $request->setControllerActionName($actionName ?? $defaultActionName);
         if (!empty($configuration['format'])) {
             $request->setFormat($configuration['format']);
         }
