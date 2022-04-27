@@ -64,7 +64,18 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
     ) {
         $extensionKey = $arguments['extensionKey'];
         $path = $arguments['path'];
-
+        
+        // TYPO3 V10 support
+        if($path == null) {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey])) {
+                return $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey];
+            }
+        } else {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey][$path])) {
+                return $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey][$path];
+            }
+        }
+        
         if (null === $extensionKey) {
             $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
