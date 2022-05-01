@@ -96,7 +96,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument(
             'noCacheHash',
             'boolean',
-            'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this.',
+            'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this. Has no effect on TYPO3v11 and above.',
             false,
             false
         );
@@ -221,18 +221,22 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $additionalCssClasses = implode(' ', $class);
 
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
-        $uri = $uriBuilder->reset()
+        $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($this->arguments['pageType'])
             ->setNoCache($this->arguments['noCache'])
-            ->setUseCacheHash(!$this->arguments['noCacheHash'])
             ->setSection($this->arguments['section'])
             ->setArguments($additionalParameters)
             ->setCreateAbsoluteUri($this->arguments['absolute'])
             ->setAddQueryString($this->arguments['addQueryString'])
             ->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
-            ->setLinkAccessRestrictedPages($showAccessProtected)
-            ->build();
+            ->setLinkAccessRestrictedPages($showAccessProtected);
+
+        if (method_exists($uriBuilder, 'setUseCacheHash')) {
+            $uriBuilder->setUseCacheHash($this->arguments['noCacheHash']);
+        }
+
+        $uri = $uriBuilder->build();
         $this->tag->addAttribute('href', $uri);
         $classes = trim($this->arguments['class'] . ' ' . $additionalCssClasses);
         if (!empty($classes)) {
