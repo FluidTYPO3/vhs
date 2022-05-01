@@ -102,8 +102,11 @@ class AssetService implements SingletonInterface
      * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
      * @return void
      */
-    public function buildAll(array $parameters, $caller, $cached = true)
+    public function buildAll(array $parameters, $caller, $cached = true, &$content = null)
     {
+        if ($content === null) {
+            $content = &$GLOBALS['TSFE']->content;
+        }
         if (false === $this->objectManager instanceof ObjectManager) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             $this->configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
@@ -139,7 +142,7 @@ class AssetService implements SingletonInterface
                 echo var_export($assets, true);
             }
         }
-        $this->placeAssetsInHeaderAndFooter($assets, $cached);
+        $this->placeAssetsInHeaderAndFooter($assets, $cached, $content);
     }
 
     /**
@@ -191,9 +194,10 @@ class AssetService implements SingletonInterface
     /**
      * @param AssetInterface[] $assets
      * @param boolean $cached
+     * @param string $content
      * @return void
      */
-    protected function placeAssetsInHeaderAndFooter($assets, $cached)
+    protected function placeAssetsInHeaderAndFooter($assets, $cached, &$content)
     {
         $settings = $this->getSettings();
         $header = [];
@@ -216,29 +220,29 @@ class AssetService implements SingletonInterface
         } else {
             $uncachedSuffix = '';
             $dependenciesString = '<!-- VhsAssetsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' -->';
-            $this->insertAssetsAtMarker('DependenciesLoaded', $dependenciesString);
+            $this->insertAssetsAtMarker('DependenciesLoaded', $dependenciesString, $content);
         }
-        $this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
-        $this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer);
+        $this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header, $content);
+        $this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer, $content);
         $GLOBALS['VhsAssets'] = [];
     }
 
     /**
      * @param string $markerName
      * @param mixed $assets
+     * @param string $content
      * @return void
      */
-    protected function insertAssetsAtMarker($markerName, $assets)
+    protected function insertAssetsAtMarker($markerName, $assets, &$content)
     {
         $assetMarker = '<!-- VhsAssets' . $markerName . ' -->';
-        if (false === strpos($GLOBALS['TSFE']->content, $assetMarker)) {
+        if (false === strpos($content, $assetMarker)) {
             $inFooter = (boolean) (false !== strpos($markerName, 'Footer'));
             $tag = true === $inFooter ? '</body>' : '</head>';
-            $content = $GLOBALS['TSFE']->content;
             $position = strrpos($content, $tag);
 
             if ($position) {
-                $GLOBALS['TSFE']->content = substr_replace($content, $assetMarker . LF, $position, 0);
+                $content = substr_replace($content, $assetMarker . LF, $position, 0);
             }
         }
         if (true === is_array($assets)) {
@@ -246,7 +250,7 @@ class AssetService implements SingletonInterface
         } else {
             $chunk = $assets;
         }
-        $GLOBALS['TSFE']->content = str_replace($assetMarker, $chunk, $GLOBALS['TSFE']->content);
+        $content = str_replace($assetMarker, $chunk, $content);
     }
 
     /**
