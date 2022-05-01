@@ -82,7 +82,9 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         $forceOverwrite = (boolean) $this->arguments['forceOverwrite'];
         $filename = basename($src);
         $pageArgument = $page > 0 ? $page - 1 : 0;
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'])) {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_colorspace'])) {
+            $colorspace = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_colorspace'];
+        } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'])) {
             $colorspace = $GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'];
         } else {
             $colorspace = 'RGB';
