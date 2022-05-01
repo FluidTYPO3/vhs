@@ -133,7 +133,12 @@ class AlternateViewHelper extends AbstractViewHelper
 
                 $renderedTag = $this->tagBuilder->render();
                 if (true === $usePageRenderer) {
-                    $pageRenderer->addMetaTag($renderedTag);
+                    if (method_exists($pageRenderer, 'addMetaTag')) {
+                        $pageRenderer->addMetaTag($renderedTag);
+                    } else {
+                        $pageRenderer->addHeaderData($renderedTag);
+                    }
+
                 } else {
                     $output .= $renderedTag . LF;
                 }

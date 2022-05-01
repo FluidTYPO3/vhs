@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException;
+use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
 /**
  * Class TemplateViewHelperTest

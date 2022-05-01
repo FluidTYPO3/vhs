@@ -96,8 +96,8 @@ class ContainsViewHelper extends AbstractConditionViewHelper
             return static::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
         } elseif ($haystack instanceof QueryResult) {
             return static::assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
-        } elseif (true === is_string($haystack)) {
-            return strpos($haystack, $needle);
+        } elseif (true === is_scalar($haystack)) {
+            return strpos((string)$haystack, (string)$needle);
         }
         return false;
     }

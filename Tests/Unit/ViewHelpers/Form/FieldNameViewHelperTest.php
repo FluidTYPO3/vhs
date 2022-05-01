@@ -10,9 +10,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Class FieldNameViewHelperTest

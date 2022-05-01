@@ -93,9 +93,6 @@ class TryViewHelper extends AbstractConditionViewHelper
     {
         try {
             $content = $this->renderChildren();
-            if (true === empty($content)) {
-                $content = $this->renderChildren();
-            }
         } catch (\Exception $error) {
             $this->renderingContext->getVariableProvider()->add('exception', $error);
             $content = $this->renderElseChild();

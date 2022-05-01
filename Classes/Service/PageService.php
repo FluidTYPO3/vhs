@@ -44,10 +44,16 @@ class PageService implements SingletonInterface
      */
     protected static $cachedRootlines = [];
 
-    /**
-     * @var PageRepository
-     */
-    protected static $backendPageRepository;
+    public function readPageRepositoryConstant(string $constantName)
+    {
+        if (class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)) {
+            $class = \TYPO3\CMS\Core\Domain\Repository\PageRepository::class;
+        } else {
+            $class = \TYPO3\CMS\Frontend\Page\PageRepository::class;
+        }
+
+        return constant($class . '::' . $constantName);
+    }
 
     /**
      * @param integer $pageUid
@@ -146,15 +152,15 @@ class PageService implements SingletonInterface
     ) {
         $constraints = [];
 
-        $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' .
-            PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
+        $constraints[] = 'doktype NOT IN (' . $this->readPageRepositoryConstant('DOKTYPE_BE_USER_SECTION') . ',' .
+            $this->readPageRepositoryConstant('DOKTYPE_RECYCLER') . ',' . $this->readPageRepositoryConstant('DOKTYPE_SYSFOLDER') . ')';
 
         if ($includeNotInMenu === false) {
             $constraints[] = 'nav_hide = 0';
         }
 
         if ($includeMenuSeparator === false) {
-            $constraints[] = 'doktype != ' . PageRepository::DOKTYPE_SPACER;
+            $constraints[] = 'doktype != ' . $this->readPageRepositoryConstant('DOKTYPE_SPACER');
         }
 
         if (0 < count($excludePages)) {
@@ -202,9 +208,9 @@ class PageService implements SingletonInterface
     }
 
     /**
-     * @return PageRepository
+     * @return \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
-    protected function getPageRepository()
+    public function getPageRepository()
     {
         if (TYPO3_MODE === 'BE') {
             return $this->getPageRepositoryForBackendContext();
@@ -213,14 +219,22 @@ class PageService implements SingletonInterface
     }
 
     /**
-     * @return PageRepository
+     * @return \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
     protected function getPageRepositoryForBackendContext()
     {
-        if (static::$backendPageRepository === null) {
-            static::$backendPageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        static $instance = null;
+        if ($instance === null) {
+            $instance = GeneralUtility::makeInstance(
+                class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)
+                    ? \TYPO3\CMS\Core\Domain\Repository\PageRepository::class
+                    : \TYPO3\CMS\Frontend\Page\PageRepository::class
+            );
+            if ($instance instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
+                $instance->init(TYPO3_MODE === 'BE');
+            }
         }
-        return static::$backendPageRepository;
+        return $instance;
     }
 
     /**
@@ -231,7 +245,7 @@ class PageService implements SingletonInterface
      */
     public function getItemLink(array $page, $forceAbsoluteUrl = false)
     {
-        if ((integer) $page['doktype'] === PageRepository::DOKTYPE_LINK) {
+        if ((integer) $page['doktype'] === $this->readPageRepositoryConstant('DOKTYPE_LINK')) {
             $parameter = $this->getPageRepository()->getExtURL($page);
         } else {
             $parameter = $page['uid'];
@@ -348,7 +362,7 @@ class PageService implements SingletonInterface
      */
     public function getShortcutTargetPage(array $page)
     {
-        if ((integer) $page['doktype'] !== PageRepository::DOKTYPE_SHORTCUT) {
+        if ((integer) $page['doktype'] !== $this->readPageRepositoryConstant('DOKTYPE_SHORTCUT')) {
             return null;
         }
         $originalPageUid = $page['uid'];

@@ -1,7 +1,7 @@
 <?php
-$EM_CONF[$_EXTKEY] = array (
+$EM_CONF['vhs'] = array (
   'title' => 'VHS: Fluid ViewHelpers',
-  'description' => 'A collection of ViewHelpers to perform rendering tasks which are not natively supported by Fluid - for example: advanced formatters, math calculators, specialized conditions and Iterator/Array calculators and processors',
+  'description' => 'A collection of ViewHelpers for performing rendering tasks that are not natively provided by the Fluid templating engine.',
   'category' => 'misc',
   'author' => 'FluidTYPO3 Team',
   'author_email' => 'claus@namelesscoder.net',
@@ -19,34 +19,34 @@ $EM_CONF[$_EXTKEY] = array (
   'clearCacheOnLoad' => 0,
   'lockType' => '',
   'version' => '6.0.5',
-  'constraints' => 
+  'constraints' =>
   array (
-    'depends' => 
+    'depends' =>
     array (
-      'php' => '7.0.0-7.4.99',
-      'typo3' => '8.7.0-10.4.99',
+      'php' => '7.4.0-8.1.99',
+      'typo3' => '8.7.0-11.5.99',
     ),
-    'conflicts' => 
+    'conflicts' =>
     array (
     ),
-    'suggests' => 
+    'suggests' =>
     array (
     ),
   ),
-  'suggests' => 
+  'suggests' =>
   array (
   ),
   '_md5_values_when_last_written' => '',
-  'autoload' => 
+  'autoload' =>
   array (
-    'psr-4' => 
+    'psr-4' =>
     array (
       'FluidTYPO3\\Vhs\\' => 'Classes/',
     ),
   ),
-  'autoload-dev' => 
+  'autoload-dev' =>
   array (
-    'psr-4' => 
+    'psr-4' =>
     array (
       'FluidTYPO3\\Vhs\\Tests\\' => 'Tests/',
     ),

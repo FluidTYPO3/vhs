@@ -8,15 +8,21 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Page FAL resource ViewHelper.
+ *
+ * Do not use the "uid" argument in the "Preview" section.
+ * Instead, use the "record" argument and pass the entire record.
+ * This bypasses visibility restrictions that normally apply when you attempt
+ * to load a record by UID through TYPO3's PageRepository, which is what the
+ * resource ViewHelpers do if you only pass uid.
  */
 class FalViewHelper extends ResourcesFalViewHelper
 {
@@ -65,13 +71,7 @@ class FalViewHelper extends ResourcesFalViewHelper
     {
         $record = parent::getRecord($id);
         if (!$this->isDefaultLanguage()) {
-            if (TYPO3_MODE === 'FE') {
-                $pageRepository = $GLOBALS['TSFE']->sys_page;
-            } else {
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-                $pageRepository->init(false);
-            }
-            /** @var PageRepository $pageRepository */
+            $pageRepository = GeneralUtility::makeInstance(PageService::class)->getPageRepository();
             $localisation = $pageRepository->getPageOverlay($record, $this->getCurrentLanguageUid());
             if (is_array($localisation)) {
                 $record = $localisation;

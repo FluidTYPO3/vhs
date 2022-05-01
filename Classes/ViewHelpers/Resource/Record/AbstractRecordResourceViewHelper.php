@@ -167,7 +167,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
-        if ($GLOBALS["TSFE"]->fePreview) {
+        if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fePreview) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
