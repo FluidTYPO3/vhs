@@ -127,6 +127,10 @@ class ImageViewHelper extends AbstractImageViewHelper
         $this->tag->addAttribute('height', $height);
         $this->tag->addAttribute('src', $src);
 
+        // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
+        if (empty($this->arguments['alt'])) {
+            $this->tag->addAttribute('alt', '');
+        }
         if (true === empty($this->arguments['title'])) {
             $this->tag->addAttribute('title', $this->arguments['alt']);
         }
