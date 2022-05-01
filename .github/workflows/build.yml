@@ -34,6 +34,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, json
           ini-values: date.timezone="Europe/Copenhagen", opcache.fast_shutdown=0
+          tools: composer:v2.2
 
       - name: Select TYPO3 version
         run: "composer require typo3/cms-core:${{ matrix.typo3-version }}"
