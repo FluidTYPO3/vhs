@@ -84,7 +84,7 @@ class UncacheTemplateView extends TemplateView
 
         if ($conf['controllerContext']) {
             $request->setControllerActionName($conf['controllerContext']['actionName']);
-            $request->setControllerExtensionName($conf['controllerContext']['controllerExtensionName']);
+            $request->setControllerExtensionName($conf['controllerContext']['extensionName']);
             $request->setControllerName($conf['controllerContext']['controllerName']);
             $request->setControllerObjectName($conf['controllerContext']['controllerObjectName']);
             $request->setPluginName($conf['controllerContext']['pluginName']);
