@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Utility;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Core Utility
@@ -49,6 +50,6 @@ class CoreUtility
      */
     public static function getCurrentCoreVersion()
     {
-        return substr(ExtensionManagementUtility::getExtensionVersion('core'), 0, 3);
+        return VersionNumberUtility::getCurrentTypo3Version();
     }
 }
