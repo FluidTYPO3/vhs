@@ -107,10 +107,6 @@ class AssetService implements SingletonInterface
         if ($content === null) {
             $content = &$caller->content;
         }
-        if (false === $this->objectManager instanceof ObjectManager) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $this->configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
-        }
         $settings = $this->getSettings();
         $cached = (boolean) $cached;
         $buildTypoScriptAssets = (!static::$typoScriptAssetsBuilt && ($cached || $GLOBALS['TSFE']->no_cache));
@@ -125,8 +121,12 @@ class AssetService implements SingletonInterface
             }
             static::$typoScriptAssetsBuilt = true;
         }
-        if (!isset($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets'])) {
+        if (!isset($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets']) || empty($GLOBALS['VhsAssets'])) {
             return;
+        }
+        if (false === $this->objectManager instanceof ObjectManager) {
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $this->configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
         }
         $assets = $GLOBALS['VhsAssets'];
         $assets = $this->sortAssetsByDependency($assets);
@@ -161,7 +161,6 @@ class AssetService implements SingletonInterface
         foreach ($matches[1] as $key => $match) {
             $extractedDependencies = explode(',', $matches[1][$key]);
             static::$cachedDependencies = array_merge(static::$cachedDependencies, $extractedDependencies);
-            $content = str_replace($matches[0][$key], '', $content);
         }
 
         $this->buildAll($parameters, $caller, false, $content);
@@ -239,21 +238,24 @@ class AssetService implements SingletonInterface
     protected function insertAssetsAtMarker($markerName, $assets, &$content)
     {
         $assetMarker = '<!-- VhsAssets' . $markerName . ' -->';
+
+        if (true === is_array($assets)) {
+            $chunk = $this->buildAssetsChunk($assets);
+        } else {
+            $chunk = $assets;
+        }
+
         if (false === strpos($content, $assetMarker)) {
             $inFooter = (boolean) (false !== strpos($markerName, 'Footer'));
             $tag = true === $inFooter ? '</body>' : '</head>';
             $position = strrpos($content, $tag);
 
             if ($position) {
-                $content = substr_replace($content, $assetMarker . LF, $position, 0);
+                $content = substr_replace($content, LF . $chunk, $position, 0);
             }
-        }
-        if (true === is_array($assets)) {
-            $chunk = $this->buildAssetsChunk($assets);
         } else {
-            $chunk = $assets;
+            $content = str_replace($assetMarker, $assetMarker . LF . $chunk, $content);
         }
-        $content = str_replace($assetMarker, $chunk, $content);
     }
 
     /**
