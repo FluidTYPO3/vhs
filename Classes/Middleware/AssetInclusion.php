@@ -22,8 +22,15 @@ class AssetInclusion implements MiddlewareInterface
         $body = $response->getBody();
         $body->rewind();
         $contents = $body->getContents();
+        $contentsBefore = $contents;
 
         GeneralUtility::makeInstance(ObjectManager::class)->get(AssetService::class)->buildAllUncached([], $GLOBALS['TSFE'], $contents);
+
+        if ($contentsBefore === $contents) {
+            // Content is unchanged, return the original response since there is no need to modify it, or the content-length header.
+            // Case triggers when rendered page contains no VHS assets.
+            return $response;
+        }
 
         $stream = fopen('php://temp', 'rw+');
         fputs($stream, $contents);
