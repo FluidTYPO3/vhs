@@ -105,7 +105,7 @@ class AssetService implements SingletonInterface
     public function buildAll(array $parameters, $caller, $cached = true, &$content = null)
     {
         if ($content === null) {
-            $content = &$GLOBALS['TSFE']->content;
+            $content = &$caller->content;
         }
         if (false === $this->objectManager instanceof ObjectManager) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -148,11 +148,14 @@ class AssetService implements SingletonInterface
     /**
      * @param array $parameters
      * @param object $caller
+     * @param string|null $content
      * @return void
      */
-    public function buildAllUncached(array $parameters, $caller)
+    public function buildAllUncached(array $parameters, $caller, ?string &$content = null)
     {
-        $content = $caller->content;
+        if ($content === null) {
+            $content = &$caller->content;
+        }
         $matches = [];
         preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
         foreach ($matches[1] as $key => $match) {
@@ -160,8 +163,8 @@ class AssetService implements SingletonInterface
             static::$cachedDependencies = array_merge(static::$cachedDependencies, $extractedDependencies);
             $content = str_replace($matches[0][$key], '', $content);
         }
-        $caller->content = $content;
-        $this->buildAll($parameters, $caller, false);
+
+        $this->buildAll($parameters, $caller, false, $content);
     }
 
     /**
