@@ -45,13 +45,18 @@ and iterators and array calculators and processors.
    Installation/Index
    Configuration/Index
    Usage/Index
-   ViewHelpers/Index
-   Changelog
+
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
+
+   fluidtypo3/vhs/latest/Index
 
 .. Meta Menu
 
 .. toctree::
    :hidden:
 
+   Changelog
    Sitemap
    genindex

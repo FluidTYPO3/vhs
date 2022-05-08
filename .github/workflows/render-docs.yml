@@ -1,0 +1,67 @@
+name: VHS ViewHelper Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Checkout VHS project
+        uses: actions/checkout@v2
+        with:
+          path: viewhelpers
+
+      - name: Checkout Fluid Documentation Generator
+        uses: actions/checkout@v2
+        with:
+          repository: 'TYPO3-Documentation/fluid-documentation-generator'
+          fetch-depth: 0
+          path: generator
+
+      - name: Install Schema Generator
+        working-directory: ./viewhelpers
+        run: |
+          composer require -n -o --no-progress typo3/fluid-schema-generator "^2.1"
+
+      - name: Generate Schemata
+        working-directory: ./viewhelpers
+        run: |
+          mkdir -p ../schemas/fluidtypo3/vhs/latest
+          ./vendor/bin/generateschema FluidTYPO3\\\Vhs > ../schemas/fluidtypo3/vhs/latest/schema.xsd
+
+      - name: Convert to Rst
+        working-directory: ./generator
+        run: |
+          composer install --no-dev -n -o --no-progress
+          cp -r ../schemas/* schemas/
+          ./bin/generate-fluid-documentation
+          mkdir -p ../documentation
+          cp -r public/* ../documentation/
+          find ../documentation -type f -name '*.xsd' -delete
+          find ../documentation -type f -name '*.json' -delete
+          find ../documentation -type f -name '*.html' -delete
+
+      - name: Update repository
+        working-directory: ./viewhelpers
+        # fails if there are no changes
+        continue-on-error: true
+        run: |
+          rm -rf Documentation/fluidtypo3/vhs
+          cp -r ../documentation/fluidtypo3/ Documentation/fluidtypo3/
+          git config user.name "TYPO3 VHS Team"
+          git config user.email "vhs-documentation-automation@typo3.org"
+          git add Documentation/fluidtypo3/vhs
+          git commit -m '[BOT][TASK] Automatic Update of ViewHelper reference'
+          git push
