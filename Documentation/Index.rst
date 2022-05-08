@@ -45,6 +45,7 @@ and iterators and array calculators and processors.
    Installation/Index
    Configuration/Index
    Usage/Index
+   ViewHelpers/Index
    Changelog/Index
 
 .. Meta Menu

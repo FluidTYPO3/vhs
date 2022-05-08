@@ -6,7 +6,7 @@ Usage
 =====
 
 These are uses that deserve a special mention. The complete compendium of
-ViewHelpers can be found on the <to-be-rendered-view-helpers> pages.
+ViewHelpers can be found on the :ref:`view-helpers` pages.
 
 **Table of Contents:**
 
