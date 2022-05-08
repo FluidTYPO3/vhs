@@ -107,6 +107,10 @@ class AssetService implements SingletonInterface
         if ($content === null) {
             $content = &$caller->content;
         }
+        if (false === $this->objectManager instanceof ObjectManager) {
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $this->configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
+        }
         $settings = $this->getSettings();
         $cached = (boolean) $cached;
         $buildTypoScriptAssets = (!static::$typoScriptAssetsBuilt && ($cached || $GLOBALS['TSFE']->no_cache));
@@ -123,10 +127,6 @@ class AssetService implements SingletonInterface
         }
         if (!isset($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets']) || empty($GLOBALS['VhsAssets'])) {
             return;
-        }
-        if (false === $this->objectManager instanceof ObjectManager) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $this->configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
         }
         $assets = $GLOBALS['VhsAssets'];
         $assets = $this->sortAssetsByDependency($assets);
