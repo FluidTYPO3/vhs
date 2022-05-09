@@ -19,7 +19,9 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  * of a content element.
  * It can be rendered as follows:
  *
- *     <v:content.render contentUids="{0: settings.element.uid}"/>
+ * ```
+ * <v:content.render contentUids="{0: settings.element.uid}"/>
+ * ```
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {

@@ -17,13 +17,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * #### Usage examples
  *
- *     <v:count.words>{myString}</v:count.words> (output for example `42`
+ * ```
+ * <v:count.words>{myString}</v:count.words> (output for example `42`
+ * ```
  *
- *     {myString -> v:count.words()} when used inline
+ * ```
+ * {myString -> v:count.words()} when used inline
+ * ```
  *
- *     <v:count.words string="{myString}" />
+ * ```
+ * <v:count.words string="{myString}" />
+ * ```
  *
- *     {v:count.words(string: myString)}
+ * ```
+ * {v:count.words(string: myString)}
+ * ```
  */
 class WordsViewHelper extends AbstractViewHelper
 {

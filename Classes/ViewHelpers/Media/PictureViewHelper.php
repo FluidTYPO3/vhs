@@ -19,12 +19,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * ### Example
  *
- *     <v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
- *         <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
- *         <v:media.source media="(min-width: 992px)" width="300c" height="300c" />
- *         <v:media.source media="(min-width: 768px)" width="200c" height="200c" />
- *         <v:media.source width="80c" height="80c" />
- *     </v:media.picture>
+ * ```
+ * <v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
+ *     <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
+ *     <v:media.source media="(min-width: 992px)" width="300c" height="300c" />
+ *     <v:media.source media="(min-width: 768px)" width="200c" height="200c" />
+ *     <v:media.source width="80c" height="80c" />
+ * </v:media.picture>
+ * ```
  *
  * ### Browser Support
  *

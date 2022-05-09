@@ -34,12 +34,14 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * At first, fetch the record and store it in a variable.
  * Then use `<f:image>` to render it:
  *
- *     {v:resource.record.fal(table: 'tx_users', field: 'photo', record: user)
- *      -> v:iterator.first()
- *      -> v:variable.set(name: 'image')}
- *     <f:if condition="{image}">
- *       <f:image treatIdAsReference="1" src="{image.id}" title="{image.title}" alt="{image.alternative}"/>
- *     </f:if>
+ * ```
+ * {v:resource.record.fal(table: 'tx_users', field: 'photo', record: user)
+ *  -> v:iterator.first()
+ *  -> v:variable.set(name: 'image')}
+ * <f:if condition="{image}">
+ *   <f:image treatIdAsReference="1" src="{image.id}" title="{image.title}" alt="{image.alternative}"/>
+ * </f:if>
+ * ```
  *
  * Use the `uid` attribute if you don't have a `record`.
  */

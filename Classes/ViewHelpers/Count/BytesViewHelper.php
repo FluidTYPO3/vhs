@@ -17,13 +17,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * #### Usage examples
  *
- *     <v:count.bytes>{myString}</v:count.bytes> (output for example `42`
+ * ```
+ * <v:count.bytes>{myString}</v:count.bytes> (output for example `42`
+ * ```
  *
- *     {myString -> v:count.bytes()} when used inline
+ * ```
+ * {myString -> v:count.bytes()} when used inline
+ * ```
  *
- *     <v:count.bytes string="{myString}" />
+ * ```
+ * <v:count.bytes string="{myString}" />
+ * ```
  *
- *     {v:count.bytes(string: myString)}
+ * ```
+ * {v:count.bytes(string: myString)}
+ * ```
  */
 class BytesViewHelper extends AbstractViewHelper
 {

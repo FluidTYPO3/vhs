@@ -17,13 +17,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * #### Usage examples
  *
- *     <v:count.substring string="{myString}">{haystack}</v:count.substring> (output for example `2`
+ * ```
+ * <v:count.substring string="{myString}">{haystack}</v:count.substring> (output for example `2`
+ * ```
  *
- *     {haystack -> v:count.substring(string: myString)} when used inline
+ * ```
+ * {haystack -> v:count.substring(string: myString)} when used inline
+ * ```
  *
- *     <v:count.substring string="{myString}" haystack="{haystack}" />
+ * ```
+ * <v:count.substring string="{myString}" haystack="{haystack}" />
+ * ```
  *
- *     {v:count.substring(string: myString, haystack: haystack)}
+ * ```
+ * {v:count.substring(string: myString, haystack: haystack)}
+ * ```
  */
 class SubstringViewHelper extends AbstractViewHelper
 {

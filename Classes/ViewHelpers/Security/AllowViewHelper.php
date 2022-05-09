@@ -18,10 +18,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * if a frontend user is logged in, if you want to hide content
  * from authenticated users):
  *
- *     <v:security.allow anyFrontendUser="TRUE">
- *         <f:then><!-- protected information displayed --></f:then>
- *         <f:else><!-- link to login form displayed --></f:else>
- *     </v:security.allow>
+ * ```
+ * <v:security.allow anyFrontendUser="TRUE">
+ *     <f:then><!-- protected information displayed --></f:then>
+ *     <f:else><!-- link to login form displayed --></f:else>
+ * </v:security.allow>
+ * ```
  *
  * Is the mirror opposite of `v:security.deny`.
  */

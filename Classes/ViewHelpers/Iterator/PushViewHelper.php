@@ -18,9 +18,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * Example:
  *
- *     <f:for each="{array -> v:iterator.push(add: additionalObject, key: 'newkey')}" as="combined">
- *     ...
- *     </f:for>
+ * ```
+ * <f:for each="{array -> v:iterator.push(add: additionalObject, key: 'newkey')}" as="combined">
+ * ...
+ * </f:for>
+ * ```
  */
 class PushViewHelper extends AbstractViewHelper
 {

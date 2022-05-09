@@ -24,9 +24,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * ### Examples
  *
- *     <v:l>some.label</v:l>
- *     <v:l key="some.label" />
- *     <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
+ * ```
+ * <v:l>some.label</v:l>
+ * <v:l key="some.label" />
+ * <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
+ * ```
  */
 class LViewHelper extends AbstractViewHelper
 {

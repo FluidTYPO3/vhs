@@ -35,7 +35,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * ### Example usage:
  *
- *     <v:asset.prefetch domains="fedext.net,ajax.google.com" />
+ * ```
+ * <v:asset.prefetch domains="fedext.net,ajax.google.com" />
+ * ```
  *
  * See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
  *

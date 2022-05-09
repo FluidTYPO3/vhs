@@ -19,19 +19,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ### Examples
  *
- *     <!-- simple usage, content becomes then-child -->
- *     <v:condition.context.isFrontend>
- *         Hooray for BE contexts!
- *     </v:condition.context.isFrontend>
- *     <!-- extended use combined with f:then and f:else -->
- *     <v:condition.context.isFrontend>
- *         <f:then>
- *            Hooray for BE contexts!
- *         </f:then>
- *         <f:else>
- *            Maybe BE, maybe CLI.
- *         </f:else>
- *     </v:condition.context.isFrontend>
+ * ```
+ * <!-- simple usage, content becomes then-child -->
+ * <v:condition.context.isFrontend>
+ *     Hooray for BE contexts!
+ * </v:condition.context.isFrontend>
+ * <!-- extended use combined with f:then and f:else -->
+ * <v:condition.context.isFrontend>
+ *     <f:then>
+ *        Hooray for BE contexts!
+ *     </f:then>
+ *     <f:else>
+ *        Maybe BE, maybe CLI.
+ *     </f:else>
+ * </v:condition.context.isFrontend>
+ * ```
  */
 class IsFrontendViewHelper extends AbstractConditionViewHelper
 {
