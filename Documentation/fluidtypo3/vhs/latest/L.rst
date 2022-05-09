@@ -7,7 +7,8 @@ l
 =
 
 
-### L (localisation) ViewHelper
+L (localisation) ViewHelper
+===========================
 
 An extremely shortened and much more dev-friendly
 alternative to f:translate. Automatically outputs
@@ -15,7 +16,8 @@ the name of the LLL reference if it is not found
 and the default value is not set, making it much
 easier to identify missing labels when translating.
 
-### Examples
+Examples
+========
 
     <v:l>some.label</v:l>
     <v:l key="some.label" />

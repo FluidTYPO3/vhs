@@ -7,7 +7,8 @@ variable.get
 ============
 
 
-### Variable: Get
+Variable: Get
+=============
 
 ViewHelper used to read the value of a current template
 variable. Can be used with dynamic indices in arrays:

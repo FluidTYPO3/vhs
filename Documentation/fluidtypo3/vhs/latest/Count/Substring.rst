@@ -9,7 +9,8 @@ count.substring
 
 Counts number of lines in a string.
 
-#### Usage examples
+Usage examples
+--------------
 
     <v:count.substring string="{myString}">{haystack}</v:count.substring> (output for example `2`
 

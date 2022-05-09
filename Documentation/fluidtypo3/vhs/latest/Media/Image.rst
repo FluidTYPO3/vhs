@@ -19,11 +19,13 @@ enter a list of widths in the srcset to genereate copies of the same crop +
 ratio but in the specified widths. Put the width at the start that you want
 to use as a fallback to be shown when no srcset functionality is supported.
 
-### Example
+Example
+=======
 
     <v:media.image src="fileadmin/some-image.png" srcset="480,768,992,1200" />
 
-### Browser Support
+Browser Support
+===============
 
 To have the widest Browser-Support you should consider using a polyfill like:
 http://scottjehl.github.io/picturefill

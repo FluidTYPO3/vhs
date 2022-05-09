@@ -7,7 +7,8 @@ condition.type.isArray
 ======================
 
 
-### Condition: Type of value is array
+Condition: Type of value is array
+=================================
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is array.

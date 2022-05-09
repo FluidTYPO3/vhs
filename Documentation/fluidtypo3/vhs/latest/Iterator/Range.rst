@@ -7,19 +7,21 @@ iterator.range
 ==============
 
 
-### Iterator Range ViewHelper
+Iterator Range ViewHelper
+=========================
 
 Implementation of `range` for Fluid
 
 Creates a new array of numbers from the low to the high given
 value, incremented by the step value.
 
-#### Usage examples
+Usage examples
+--------------
 
-```xml
-Numbers 1-10: {v:iterator.implode(glue: ',') -> v:iterator.range(low: 1, high: 10)}
-Even numbers 0-10: {v:iterator.implode(glue: ',') -> v:iterator.range(low: 0, high: 10, step: 2)}
-```
+::
+
+    Numbers 1-10: {v:iterator.implode(glue: ',') -> v:iterator.range(low: 1, high: 10)}
+    Even numbers 0-10: {v:iterator.implode(glue: ',') -> v:iterator.range(low: 0, high: 10, step: 2)}
 
 Arguments
 =========

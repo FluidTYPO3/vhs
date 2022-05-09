@@ -7,7 +7,8 @@ variable.pregMatch
 ==================
 
 
-### PregMatch regular expression ViewHelper
+PregMatch regular expression ViewHelper
+=======================================
 
 Implementation of `preg_match' for Fluid.
 

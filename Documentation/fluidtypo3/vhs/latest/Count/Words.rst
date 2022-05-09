@@ -9,7 +9,8 @@ count.words
 
 Counts words in a string.
 
-#### Usage examples
+Usage examples
+--------------
 
     <v:count.words>{myString}</v:count.words> (output for example `42`
 

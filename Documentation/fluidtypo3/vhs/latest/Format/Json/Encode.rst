@@ -7,7 +7,8 @@ format.json.encode
 ==================
 
 
-### JSON Encoding ViewHelper
+JSON Encoding ViewHelper
+========================
 
 Returns a string containing the JSON representation of the argument.
 The argument may be any of the following types:

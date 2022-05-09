@@ -7,7 +7,8 @@ extension.path.siteRelative
 ===========================
 
 
-### Path: Relative Extension Folder Path
+Path: Relative Extension Folder Path
+====================================
 
 Returns the site relative path to an extension folder.
 

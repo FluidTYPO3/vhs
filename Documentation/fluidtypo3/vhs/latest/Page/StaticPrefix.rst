@@ -7,7 +7,8 @@ page.staticPrefix
 =================
 
 
-### Page: Static Prefix
+Page: Static Prefix
+===================
 
 Use this ViewHelper to read the contents of the `plugin.tx_vhs.settings.prependPath`
 TypoScript location - this setting stores the static prefix which gets added to all

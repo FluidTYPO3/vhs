@@ -7,7 +7,8 @@ system.timestamp
 ================
 
 
-### System: UNIX Timestamp
+System: UNIX Timestamp
+======================
 
 Returns the current system UNIX timestamp as integer.
 Useful combined with the Math group of ViewHelpers:

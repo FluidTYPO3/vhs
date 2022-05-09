@@ -7,12 +7,14 @@ condition.context.isFrontend
 ============================
 
 
-### Condition: Is context Frontend?
+Condition: Is context Frontend?
+===============================
 
 A condition ViewHelper which renders the `then` child if
 current context being rendered is FE.
 
-### Examples
+Examples
+========
 
     <!-- simple usage, content becomes then-child -->
     <v:condition.context.isFrontend>

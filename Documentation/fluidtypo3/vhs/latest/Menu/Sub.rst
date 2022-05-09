@@ -7,7 +7,8 @@ menu.sub
 ========
 
 
-### Page: Auto Sub Menu ViewHelper
+Page: Auto Sub Menu ViewHelper
+==============================
 
 Recycles the parent menu ViewHelper instance, resetting the
 page UID used as starting point and repeating rendering of

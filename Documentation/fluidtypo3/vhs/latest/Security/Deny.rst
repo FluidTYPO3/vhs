@@ -7,7 +7,8 @@ security.deny
 =============
 
 
-### Security: Deny
+Security: Deny
+==============
 
 Denies access to the child content based on given arguments.
 The ViewHelper is a condition based ViewHelper which means it

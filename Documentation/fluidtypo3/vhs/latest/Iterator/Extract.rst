@@ -7,18 +7,21 @@ iterator.extract
 ================
 
 
-### Iterator / Extract VieWHelper
+Iterator / Extract VieWHelper
+=============================
 
 Loop through the iterator and extract a key, optionally join the
 results if more than one value is found.
 
-#### Extract values from an array by key
+Extract values from an array by key
+-----------------------------------
 
 The extbase version of indexed_search returns an array of the
 previous search, which cannot easily be shown in the input field
 of the result page. This can be solved.
 
-#### Input from extbase version of indexed_search">
+Input from extbase version of indexed_search">
+----------------------------------------------
 
     [
         0 => [
@@ -38,12 +41,14 @@ of the result page. This can be solved.
 Show the previous search words in the search form of the
 result page:
 
-#### Example
+Example
+-------
     <f:form.textfield name="search[sword]"
         value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
         class="tx-indexedsearch-searchbox-sword" />
 
-#### Get the names of several users
+Get the names of several users
+------------------------------
 
 Provided we have a bunch of FrontendUsers and we need to show
 their firstname combined into a string:
@@ -54,17 +59,20 @@ their firstname combined into a string:
     {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
     </h2>
 
-#### Output
+Output
+------
 
     <h2>Welcome Peter, Paul, Marry</h2>
 
-#### Complex example
+Complex example
+---------------
 
     {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')
         -> v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')
         -> v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
 
-#### Single return value
+Single return value
+-------------------
 
     Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
     one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().

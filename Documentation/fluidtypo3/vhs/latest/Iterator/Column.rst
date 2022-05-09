@@ -7,7 +7,8 @@ iterator.column
 ===============
 
 
-### Iterator Column Extraction ViewHelper
+Iterator Column Extraction ViewHelper
+=====================================
 
 Implementation of `array_column` for Fluid.
 
@@ -15,14 +16,15 @@ Accepts an input iterator/array and creates a new array
 using values from one column and optionally keys from another
 column.
 
-#### Usage examples
+Usage examples
+--------------
 
-```xml
-<!-- Given input array of user data arrays with "name" and "uid" column: -->
-<f:for each="{users -> v:iterator.column(columnKey: 'name', indexKey: 'uid')}" as="username" key="uid">
-    User {username} has UID {uid}.
-</f:for>
-```
+::
+
+    <!-- Given input array of user data arrays with "name" and "uid" column: -->
+    <f:for each="{users -> v:iterator.column(columnKey: 'name', indexKey: 'uid')}" as="username" key="uid">
+        User {username} has UID {uid}.
+    </f:for>
 
 The above demonstrates the logic of the ViewHelper, but the
 example itself of course gives the same result as just iterating
@@ -30,32 +32,33 @@ the `users` variable itself and outputting `{user.username}` etc.,
 but the real power of the ViewHelper comes when using it to feed
 other ViewHelpers with data sets:
 
-```xml
-<!--
-Given same input array as above. Idea being that *any* iterator
-can be supported as input for "options".
--->
-Select user: <f:form.select options="{users -> v:iterator.column(columnKey: 'name', indexKey: 'uid')}" />
-```
+::
 
-```xml
-<!-- Given same input array as above. Idea being to output all user UIDs as CSV -->
-All UIDs: {users -> v:iterator.column(columnKey: 'uid') -> v:iterator.implode()}
-```
+    <!--
+    Given same input array as above. Idea being that *any* iterator
+    can be supported as input for "options".
+    -->
+    Select user: <f:form.select options="{users -> v:iterator.column(columnKey: 'name', indexKey: 'uid')}" />
 
-```xml
-<!-- Given same input array as above. Idea being to output all unique users' countries as a list: -->
-Our users live in the following countries:
-{users -> v:iterator.column(columnKey: 'countryName')
-    -> v:iterator.unique()
-    -> v:iterator.implode(glue: ' - ')}
-```
+::
+
+    <!-- Given same input array as above. Idea being to output all user UIDs as CSV -->
+    All UIDs: {users -> v:iterator.column(columnKey: 'uid') -> v:iterator.implode()}
+
+::
+
+    <!-- Given same input array as above. Idea being to output all unique users' countries as a list: -->
+    Our users live in the following countries:
+    {users -> v:iterator.column(columnKey: 'countryName')
+        -> v:iterator.unique()
+        -> v:iterator.implode(glue: ' - ')}
 
 Note that the ViewHelper also supports the "as" argument which
 allows you to not return the new array but instead assign it
 as a new template variable - like any other "as"-capable ViewHelper.
 
-#### Caveat
+Caveat
+------
 
 This ViewHelper passes the subject directly to `array_column` and
 as such it *does not support dotted paths in either key argument

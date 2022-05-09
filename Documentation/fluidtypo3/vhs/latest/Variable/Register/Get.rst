@@ -7,7 +7,8 @@ variable.register.get
 =====================
 
 
-### Variable\Register: Get
+Variable\Register: Get
+======================
 
 ViewHelper used to read the value of a TSFE-register
 Can be used to read names of variables which contain dynamic parts:

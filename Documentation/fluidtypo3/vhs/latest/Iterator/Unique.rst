@@ -7,7 +7,8 @@ iterator.unique
 ===============
 
 
-### Iterator Unique Values ViewHelper
+Iterator Unique Values ViewHelper
+=================================
 
 Implementation of `array_unique` for Fluid
 
@@ -19,36 +20,37 @@ Note that the ViewHelper does not support the sorting
 parameter - if you wish to sort the result you should
 use `v:iterator.sort` in a chain.
 
-#### Usage examples
+Usage examples
+--------------
 
-```xml
-<!--
-Given a (large) array of every user's country with possible duplicates.
-The idea being to output only a unique list of countries' names.
--->
+::
 
-Countries of our users: {userCountries -> v:iterator.unique() -> v:iterator.implode(glue: ' - ')}
-```
-
-Output:
-
-```xml
-Countries of our users: USA - USA - Denmark - Germany - Germany - USA - Denmark - Germany
-```
-
-```xml
-<!-- Given the same use case as above but also implementing sorting -->
-Countries of our users, in alphabetical order:
-{userCountries -> v:iterator.unique()
-    -> v:iterator.sort(sortFlags: 'SORT_NATURAL')
-    -> v:iterator.implode(glue: ' - ')}
-```
+    <!--
+    Given a (large) array of every user's country with possible duplicates.
+    The idea being to output only a unique list of countries' names.
+    -->
+    
+    Countries of our users: {userCountries -> v:iterator.unique() -> v:iterator.implode(glue: ' - ')}
 
 Output:
 
-```xml
-Countries of our users: Denmark - Germany - USA
-```
+::
+
+    Countries of our users: USA - USA - Denmark - Germany - Germany - USA - Denmark - Germany
+
+::
+
+    <!-- Given the same use case as above but also implementing sorting -->
+    Countries of our users, in alphabetical order:
+    {userCountries -> v:iterator.unique()
+        -> v:iterator.sort(sortFlags: 'SORT_NATURAL')
+        -> v:iterator.implode(glue: ' - ')}
+
+Output:
+
+::
+
+    Countries of our users: Denmark - Germany - USA
 
 Arguments
 =========

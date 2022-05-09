@@ -7,7 +7,8 @@ asset
 =====
 
 
-### Basic Asset ViewHelper
+Basic Asset ViewHelper
+======================
 
 Places the contents of the asset (the tag body) directly
 in the additional header content of the page. This most
@@ -39,9 +40,9 @@ features shared by every Asset type:
   settings can be applied through TypoScript per-Asset, globally
   or per-Asset-group.
 
-> Note: there are no static TypoScript templates for VHS but
-> you will find a complete list in the README.md file in the
-> root of the extension folder.
+    Note: there are no static TypoScript templates for VHS but
+    you will find a complete list in the README.md file in the
+    root of the extension folder.
 
 Arguments
 =========

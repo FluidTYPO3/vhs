@@ -7,7 +7,8 @@ tag
 ===
 
 
-### Tag building ViewHelper
+Tag building ViewHelper
+=======================
 
 Creates one HTML tag of any type, with various properties
 like class and ID applied only if arguments are not empty,

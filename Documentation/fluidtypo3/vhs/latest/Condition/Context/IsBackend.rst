@@ -7,12 +7,14 @@ condition.context.isBackend
 ===========================
 
 
-### Condition: Is context Backend?
+Condition: Is context Backend?
+==============================
 
 A condition ViewHelper which renders the `then` child if
 current context being rendered is BE.
 
-### Examples
+Examples
+========
 
     <!-- simple usage, content becomes then-child -->
     <v:condition.context.isBackend>

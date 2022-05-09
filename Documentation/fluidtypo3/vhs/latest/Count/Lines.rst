@@ -9,7 +9,8 @@ count.lines
 
 Counts number of lines in a string.
 
-#### Usage examples
+Usage examples
+--------------
 
     <v:count.lines>{myString}</v:count.lines> (output for example `42`
 

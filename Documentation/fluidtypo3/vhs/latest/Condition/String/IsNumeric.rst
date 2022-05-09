@@ -7,7 +7,8 @@ condition.string.isNumeric
 ==========================
 
 
-### Condition: Value is numeric
+Condition: Value is numeric
+===========================
 
 Condition ViewHelper which renders the `then` child if provided
 value is numeric.

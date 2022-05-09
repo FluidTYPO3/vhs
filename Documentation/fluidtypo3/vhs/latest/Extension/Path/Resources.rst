@@ -7,7 +7,8 @@ extension.path.resources
 ========================
 
 
-### Path: Relative Extension Resource Path
+Path: Relative Extension Resource Path
+======================================
 
 Site Relative path to Extension Resources/Public folder.
 

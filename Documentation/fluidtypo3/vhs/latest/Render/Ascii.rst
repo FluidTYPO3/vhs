@@ -7,7 +7,8 @@ render.ascii
 ============
 
 
-### Render: ASCII Character
+Render: ASCII Character
+=======================
 
 Renders a single character identified by its charset number.
 

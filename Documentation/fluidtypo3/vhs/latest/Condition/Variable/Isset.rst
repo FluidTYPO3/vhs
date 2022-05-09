@@ -7,7 +7,8 @@ condition.variable.isset
 ========================
 
 
-### Variable: Isset
+Variable: Isset
+===============
 
 Renders the `then` child if the variable name given in
 the `name` argument exists in the template. The value

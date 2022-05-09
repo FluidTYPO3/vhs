@@ -7,7 +7,8 @@ format.append
 =============
 
 
-### Format: Append string content
+Format: Append string content
+=============================
 
 Appends a string after another string. Although this task is very
 easily done in standard Fluid - i.e. {subject}{add} - this

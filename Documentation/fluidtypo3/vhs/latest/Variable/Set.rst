@@ -7,7 +7,8 @@ variable.set
 ============
 
 
-### Variable: Set
+Variable: Set
+=============
 
 Sets a single variable in the TemplateVariableContainer
 scope. The variable then becomes accessible as {var}.

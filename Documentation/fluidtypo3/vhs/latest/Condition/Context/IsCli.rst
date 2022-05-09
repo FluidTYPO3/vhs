@@ -7,12 +7,14 @@ condition.context.isCli
 =======================
 
 
-### Condition: Is context CLI?
+Condition: Is context CLI?
+==========================
 
 A condition ViewHelper which renders the `then` child if
 current context being rendered is CLI.
 
-### Examples
+Examples
+========
 
     <!-- simple usage, content becomes then-child -->
     <v:condition.context.isCli>

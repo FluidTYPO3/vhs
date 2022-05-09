@@ -7,12 +7,14 @@ format.dateRange
 ================
 
 
-### Date range calculation/formatting ViewHelper
+Date range calculation/formatting ViewHelper
+============================================
 
 Uses DateTime and DateInterval operations to calculate a range
 between two DateTimes.
 
-#### Usages
+Usages
+------
 
 - As formatter, the ViewHelper can output a string value such as
   "2013-04-30 - 2013-05-30" where you can configure both the start
@@ -36,7 +38,8 @@ between two DateTimes.
   - if "return" is an array of counter IDs, for example ["w", "d"],
     the corresponding counters from the range are returned as an array.
 
-#### Note about LLL support and array consumers
+Note about LLL support and array consumers
+------------------------------------------
 
 When used with the "return" attribute and when this attribute is an
 array, the output becomes suitable for consumption by f:translate, v:l
@@ -49,10 +52,10 @@ or f:format.sprintf for example - as the "arguments" attribute:
 Which if "myDateDisplay" is a string such as "Deadline: %d week(s) and
 %d day(s)" would output a result such as "Deadline: 4 week(s) and 2 day(s)".
 
-> Tip: the values returned by this ViewHelper in both array and single
-> value return modes, are also nicely consumable by the "math" suite
-> of ViewHelpers, for example `v:math.division` would be able to divide
-> number of days by two, three etc. to further divide the date range.
+    Tip: the values returned by this ViewHelper in both array and single
+    value return modes, are also nicely consumable by the "math" suite
+    of ViewHelpers, for example `v:math.division` would be able to divide
+    number of days by two, three etc. to further divide the date range.
 
 Arguments
 =========

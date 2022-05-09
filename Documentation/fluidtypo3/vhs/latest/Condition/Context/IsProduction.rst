@@ -7,12 +7,14 @@ condition.context.isProduction
 ==============================
 
 
-### Context: IsProduction
+Context: IsProduction
+=====================
 
 Returns true if current root application context is production otherwise false.
 If no application context has been set, then this is the default context.
 
-#### Note about how to set the application context
+Note about how to set the application context
+---------------------------------------------
 
 The context TYPO3 CMS runs in is specified through the environment variable TYPO3_CONTEXT.
 It can be set by .htaccess or in the server configuration

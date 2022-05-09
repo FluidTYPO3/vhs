@@ -7,7 +7,8 @@ render.request
 ==============
 
 
-### Render: Request
+Render: Request
+===============
 
 Renders a sub-request to the desired Extension, Plugin,
 Controller and action with the desired arguments.

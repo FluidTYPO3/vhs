@@ -7,7 +7,8 @@ asset.prefetch
 ==============
 
 
-### Asset DNS Prefetching ViewHelper
+Asset DNS Prefetching ViewHelper
+================================
 
 Enables the special `<link rel="dns-prefetch" />` tag
 which instructs the browser to start prefetching DNS
@@ -29,7 +30,8 @@ force-enabled this setting cannot be disabled (unless done so
 by manually adding an additional meta header tag as examplified
 by the `build()` method.
 
-### Example usage:
+Example usage:
+==============
 
     <v:asset.prefetch domains="fedext.net,ajax.google.com" />
 

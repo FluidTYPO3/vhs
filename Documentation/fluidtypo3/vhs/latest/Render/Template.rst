@@ -7,7 +7,8 @@ render.template
 ===============
 
 
-### Render: Template
+Render: Template
+================
 
 Render a template file (with arguments if desired).
 

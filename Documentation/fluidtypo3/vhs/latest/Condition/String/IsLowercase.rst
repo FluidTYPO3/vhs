@@ -7,7 +7,8 @@ condition.string.isLowercase
 ============================
 
 
-### Condition: String is lowercase
+Condition: String is lowercase
+==============================
 
 Condition ViewHelper which renders the `then` child if provided
 string is lowercase. By default only the first letter is tested.

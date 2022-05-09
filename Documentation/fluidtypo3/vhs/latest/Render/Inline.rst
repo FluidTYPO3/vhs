@@ -7,7 +7,8 @@ render.inline
 =============
 
 
-### Render: Inline
+Render: Inline
+==============
 
 Render as string containing Fluid as if it were
 part of the template currently being rendered.

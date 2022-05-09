@@ -7,7 +7,8 @@ condition.type.isObject
 =======================
 
 
-### Condition: Value is an object
+Condition: Value is an object
+=============================
 
 Condition ViewHelper which renders the `then` child if provided
 value is an object.

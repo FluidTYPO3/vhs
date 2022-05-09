@@ -7,7 +7,8 @@ condition.type.isBoolean
 ========================
 
 
-### Condition: Type of value is a boolean
+Condition: Type of value is a boolean
+=====================================
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is a boolean.

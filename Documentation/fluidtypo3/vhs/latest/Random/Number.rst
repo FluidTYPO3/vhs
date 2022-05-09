@@ -7,7 +7,8 @@ random.number
 =============
 
 
-### Random: Number Generator
+Random: Number Generator
+========================
 
 Generates a random number. The default minimum number is
 set to 100000 in order to generate a longer integer string

@@ -10,7 +10,8 @@ media.picture
 Renders a picture element with different images/sources for specific
 media breakpoints
 
-### Example
+Example
+=======
 
     <v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
         <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
@@ -19,7 +20,8 @@ media breakpoints
         <v:media.source width="80c" height="80c" />
     </v:media.picture>
 
-### Browser Support
+Browser Support
+===============
 
 To have the widest Browser-Support you should consider using a polyfill like:
 http://scottjehl.github.io/picturefill

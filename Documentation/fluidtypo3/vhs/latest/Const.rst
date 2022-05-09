@@ -7,7 +7,8 @@ const
 =====
 
 
-### Const ViewHelper
+Const ViewHelper
+================
 
 Renders the value of a PHP constant
 

@@ -7,7 +7,8 @@ page.menu.deferred
 ==================
 
 
-### Page: Deferred menu rendering ViewHelper
+Page: Deferred menu rendering ViewHelper
+========================================
 
 Place this ViewHelper inside any other ViewHelper which
 has been configured with the `deferred` attribute set to

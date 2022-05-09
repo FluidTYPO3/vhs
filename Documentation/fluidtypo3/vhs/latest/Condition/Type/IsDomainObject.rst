@@ -7,7 +7,8 @@ condition.type.isDomainObject
 =============================
 
 
-### Condition: Value is a domain object
+Condition: Value is a domain object
+===================================
 
 Condition ViewHelper which renders the `then` child if provided
 value is a domain object, i.e. it inherits from extbase's base

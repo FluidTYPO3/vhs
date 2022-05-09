@@ -7,7 +7,8 @@ variable.convert
 ================
 
 
-### Convert ViewHelper
+Convert ViewHelper
+==================
 
 Converts $value to $type which can be one of 'string', 'integer',
 'float', 'boolean', 'array' or 'ObjectStorage'. If $value is NULL

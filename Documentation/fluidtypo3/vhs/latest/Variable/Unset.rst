@@ -7,7 +7,8 @@ variable.unset
 ==============
 
 
-### Variable: Unset
+Variable: Unset
+===============
 
 Quite simply, removes a currently available variable
 from the TemplateVariableContainer:

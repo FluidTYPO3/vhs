@@ -10,7 +10,8 @@ condition.iterator.contains
 Condition ViewHelper. Renders the then-child if Iterator/array
 haystack contains needle value.
 
-### Example:
+Example:
+========
 
     {v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
 

@@ -7,7 +7,8 @@ condition.type.isTraversable
 ============================
 
 
-### Condition: Value implements interface Traversable
+Condition: Value implements interface Traversable
+=================================================
 
 Condition ViewHelper which renders the `then` child if provided
 value implements interface Traversable.

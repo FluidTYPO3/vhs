@@ -12,7 +12,8 @@ Resource: Language
 Reads a certain language file with returning not just one single label,
 but all the translated labels.
 
-### Examples
+Examples
+========
 
     <!-- Tag usage for force getting labels in a specific language (different to current is possible too) -->
     <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf" languageKey="en"/>

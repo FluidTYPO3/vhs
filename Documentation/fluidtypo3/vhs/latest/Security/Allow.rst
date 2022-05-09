@@ -7,7 +7,8 @@ security.allow
 ==============
 
 
-### Security: Allow
+Security: Allow
+===============
 
 Allows access to the child content based on given arguments.
 The ViewHelper is a condition based ViewHelper which means it

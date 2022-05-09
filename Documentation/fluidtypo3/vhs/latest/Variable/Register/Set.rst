@@ -7,7 +7,8 @@ variable.register.set
 =====================
 
 
-### Variable\Register: Set
+Variable\Register: Set
+======================
 
 Sets a single register in the TSFE-register.
 

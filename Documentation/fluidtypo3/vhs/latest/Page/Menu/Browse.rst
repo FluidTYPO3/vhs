@@ -7,7 +7,8 @@ page.menu.browse
 ================
 
 
-### Page: Browse Menu ViewHelper
+Page: Browse Menu ViewHelper
+============================
 
 ViewHelper for rendering TYPO3 browse menus in Fluid
 

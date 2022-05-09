@@ -7,7 +7,8 @@ condition.page.isChildPage
 ==========================
 
 
-### Condition: Page is child page
+Condition: Page is child page
+=============================
 
 Condition ViewHelper which renders the `then` child if current
 page or page with provided UID is a child of some other page in

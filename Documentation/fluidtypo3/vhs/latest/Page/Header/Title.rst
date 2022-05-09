@@ -7,7 +7,8 @@ page.header.title
 =================
 
 
-### ViewHelper used to override page title
+ViewHelper used to override page title
+======================================
 
 This ViewHelper uses the TYPO3 PageRenderer to set the
 page title - with everything this implies regarding
@@ -23,7 +24,8 @@ used in this ViewHelper will be used in the rendered page.
 If you use the ViewHelper in a plugin it has to be USER
 not USER_INT, what means it has to be cached!
 
-#### Why can I not forcibly override the title?
+Why can I not forcibly override the title?
+------------------------------------------
 
 This has been opted out with full intention. The reasoning
 behind not allowing a Fluid template to forcibly override the

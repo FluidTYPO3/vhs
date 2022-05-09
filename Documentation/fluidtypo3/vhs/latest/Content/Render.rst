@@ -9,7 +9,8 @@ content.render
 
 ViewHelper used to render content elements in Fluid templates.
 
-### Render a single content element by its UID
+Render a single content element by its UID
+==========================================
 
 Let's assume that the variable `settings.element.uid` contains the uid
 of a content element.

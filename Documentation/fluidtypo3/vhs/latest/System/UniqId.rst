@@ -7,7 +7,8 @@ system.uniqId
 =============
 
 
-### System: Unique ID
+System: Unique ID
+=================
 
 Returns a unique ID based on PHP's uniqid-function.
 

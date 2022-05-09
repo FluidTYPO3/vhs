@@ -7,7 +7,8 @@ math.product
 ============
 
 
-### Math: Product (multiplication)
+Math: Product (multiplication)
+==============================
 
 Product (multiplication) of $a and $b. A can be an array and $b a
 number, in which case each member of $a gets multiplied by $b.

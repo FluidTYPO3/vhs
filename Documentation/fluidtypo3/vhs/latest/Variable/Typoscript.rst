@@ -7,7 +7,8 @@ variable.typoscript
 ===================
 
 
-### Variable: TypoScript
+Variable: TypoScript
+====================
 
 Accesses Typoscript paths. Contrary to the Fluid-native
 `f:cObject` this ViewHelper does not render objects but

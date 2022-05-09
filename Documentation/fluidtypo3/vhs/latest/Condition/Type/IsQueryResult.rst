@@ -7,7 +7,8 @@ condition.type.isQueryResult
 ============================
 
 
-### Condition: Value is a query result
+Condition: Value is a query result
+==================================
 
 Condition ViewHelper which renders the `then` child if provided
 value is an extbase query result.

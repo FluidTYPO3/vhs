@@ -7,7 +7,8 @@ iterator.filter
 ===============
 
 
-### Iterator: Filter ViewHelper
+Iterator: Filter ViewHelper
+===========================
 
 Filters an array by filtering the array, analysing each member
 and asserting if it is equal to (weak type) the `filter` parameter.

@@ -7,7 +7,8 @@ condition.string.contains
 =========================
 
 
-### Condition: String contains substring
+Condition: String contains substring
+====================================
 
 Condition ViewHelper which renders the `then` child if provided
 string $haystack contains provided string $needle.

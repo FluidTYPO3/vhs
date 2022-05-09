@@ -9,7 +9,8 @@ count.bytes
 
 Counts bytes (multibyte-safe) in a string.
 
-#### Usage examples
+Usage examples
+--------------
 
     <v:count.bytes>{myString}</v:count.bytes> (output for example `42`
 

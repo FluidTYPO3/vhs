@@ -9,7 +9,8 @@ content.resources.fal
 
 Content FAL relations ViewHelper
 
-### Render a single image in a content element
+Render a single image in a content element
+==========================================
 
 We assume that the flux content element has an IRRE file field
 `<flux:field.inline.fal name="settings.image">`.
@@ -24,7 +25,8 @@ The file data can be loaded and displayed with:
     </f:if>
 
 
-### Image preview in backend
+Image preview in backend
+========================
 
 To load image data for the "Preview" section in the backend's page view,
 you have to pass the `record` attribute:

@@ -7,7 +7,8 @@ page.menu.list
 ==============
 
 
-### Page: List Menu ViewHelper
+Page: List Menu ViewHelper
+==========================
 
 ViewHelper for rendering TYPO3 list menus in Fluid
 

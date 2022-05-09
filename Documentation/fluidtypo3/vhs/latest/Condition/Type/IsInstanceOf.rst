@@ -7,7 +7,8 @@ condition.type.isInstanceOf
 ===========================
 
 
-### Condition: Value is an instance of a class
+Condition: Value is an instance of a class
+==========================================
 
 Condition ViewHelper which renders the `then` child if provided
 value is an instance of provided class name.

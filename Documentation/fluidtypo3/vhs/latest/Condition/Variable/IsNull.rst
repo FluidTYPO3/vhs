@@ -7,7 +7,8 @@ condition.variable.isNull
 =========================
 
 
-### Condition: Value is NULL
+Condition: Value is NULL
+========================
 
 Condition ViewHelper which renders the `then` child if provided
 value is NULL.

@@ -7,7 +7,8 @@ extension.icon
 ==============
 
 
-### Extension: Icon ViewHelper
+Extension: Icon ViewHelper
+==========================
 
 Outputs the icon of the extension key. Supports both
 extension key and extension name arguments.

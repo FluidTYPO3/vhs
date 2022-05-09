@@ -7,7 +7,8 @@ menu
 ====
 
 
-### Page: Menu ViewHelper
+Page: Menu ViewHelper
+=====================
 
 ViewHelper for rendering TYPO3 menus in Fluid
 

@@ -7,7 +7,8 @@ random.string
 =============
 
 
-### Random: String Generator
+Random: String Generator
+========================
 
 Use either `minimumLength` / `maximumLength` or just `length`.
 

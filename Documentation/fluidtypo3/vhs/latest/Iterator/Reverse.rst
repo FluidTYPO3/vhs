@@ -7,7 +7,8 @@ iterator.reverse
 ================
 
 
-### Iterator Reversal ViewHelper
+Iterator Reversal ViewHelper
+============================
 
 Reverses the order of every member of an Iterator/Array,
 preserving the original keys.

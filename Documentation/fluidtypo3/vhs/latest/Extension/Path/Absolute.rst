@@ -7,7 +7,8 @@ extension.path.absolute
 =======================
 
 
-### Path: Absolute Extension Folder Path
+Path: Absolute Extension Folder Path
+====================================
 
 Returns the absolute path to an extension folder.
 

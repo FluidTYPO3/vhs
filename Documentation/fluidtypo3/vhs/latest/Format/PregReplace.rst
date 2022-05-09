@@ -7,7 +7,8 @@ format.pregReplace
 ==================
 
 
-### PregReplace regular expression ViewHelper
+PregReplace regular expression ViewHelper
+=========================================
 
 Implementation of `preg_replace` for Fluid.
 

@@ -7,7 +7,8 @@ condition.page.isLanguage
 =========================
 
 
-### Condition: Is current language
+Condition: Is current language
+==============================
 
 A condition ViewHelper which renders the `then` child if
 current language matches the provided language uid or language

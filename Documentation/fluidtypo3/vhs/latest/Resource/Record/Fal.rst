@@ -9,7 +9,8 @@ resource.record.fal
 
 Resolve FAL relations and return file records.
 
-### Render a single image linked from a TCA record
+Render a single image linked from a TCA record
+==============================================
 
 We assume that the table `tx_users` has a column `photo`, which is a FAL
 relation field configured with

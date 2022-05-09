@@ -7,11 +7,13 @@ variable.extensionConfiguration
 ===============================
 
 
-### ExtConf ViewHelper
+ExtConf ViewHelper
+==================
 
 Reads settings from ext_conf_template.txt
 
-### Examples
+Examples
+========
 
     {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
 

@@ -7,11 +7,13 @@ extension.loaded
 ================
 
 
-### Extension: Loaded (Condition) ViewHelper
+Extension: Loaded (Condition) ViewHelper
+========================================
 
 Condition to check if an extension is loaded.
 
-### Example:
+Example:
+========
 
     {v:extension.loaded(extensionName: 'news', then: 'yes', else: 'no')}
 

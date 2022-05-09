@@ -7,7 +7,8 @@ page.menu.directory
 ===================
 
 
-### Page: Directory Menu ViewHelper
+Page: Directory Menu ViewHelper
+===============================
 
 ViewHelper for rendering TYPO3 list menus in Fluid
 

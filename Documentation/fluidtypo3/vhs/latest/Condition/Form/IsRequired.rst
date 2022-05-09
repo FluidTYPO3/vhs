@@ -7,7 +7,8 @@ condition.form.isRequired
 =========================
 
 
-### Is Field Required ViewHelper (condition)
+Is Field Required ViewHelper (condition)
+========================================
 
 Takes a property (dotted path supported) and renders the
 then-child if the property at the given path has an

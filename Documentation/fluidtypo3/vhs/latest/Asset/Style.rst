@@ -7,7 +7,8 @@ asset.style
 ===========
 
 
-### Basic Style ViewHelper
+Basic Style ViewHelper
+======================
 
 Allows inserting a `<link>` or `<style>` Asset. Settings
 specify where to insert the Asset and how to treat it.

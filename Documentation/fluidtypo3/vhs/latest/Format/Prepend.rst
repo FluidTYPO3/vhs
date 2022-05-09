@@ -7,7 +7,8 @@ format.prepend
 ==============
 
 
-### Format: Prepend string content
+Format: Prepend string content
+==============================
 
 Prepends one string on another. Although this task is very
 easily done in standard Fluid - i.e. {add}{subject} - this

@@ -7,7 +7,8 @@ unless
 ======
 
 
-### Unless
+Unless
+======
 
 The opposite of `f:if` and only supporting negative matching.
 Related to `v:or` but allows more complex conditions.
@@ -22,13 +23,15 @@ Is the same as writing:
 
 Except without the `f:else`.
 
-#### Example, tag mode
+Example, tag mode
+-----------------
 
     <v:unless condition="{somethingRequired}">
         Warning! Something required was not present.
     </v:unless>
 
-#### Example, inline mode illustrating `v:or` likeness
+Example, inline mode illustrating `v:or` likeness
+-------------------------------------------------
 
     {defaultText -> v:unless(condition: originalText)}
         // which is much the same as...

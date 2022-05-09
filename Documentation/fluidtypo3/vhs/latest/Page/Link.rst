@@ -7,7 +7,8 @@ page.link
 =========
 
 
-### Page: Link ViewHelper
+Page: Link ViewHelper
+=====================
 
 Viewhelper for rendering page links
 

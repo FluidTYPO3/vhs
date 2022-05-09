@@ -7,7 +7,8 @@ condition.type.isString
 =======================
 
 
-### Condition: Type of value is string
+Condition: Type of value is string
+==================================
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is string.

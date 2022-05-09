@@ -7,7 +7,8 @@ extension.path.relative
 =======================
 
 
-### Path: Relative Extension Folder Path
+Path: Relative Extension Folder Path
+====================================
 
 Returns the relative path to an Extension folder.
 

@@ -7,7 +7,8 @@ condition.type.isInteger
 ========================
 
 
-### Condition: Type of value is integer
+Condition: Type of value is integer
+===================================
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is integer.

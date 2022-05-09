@@ -7,7 +7,8 @@ condition.page.hasSubpages
 ==========================
 
 
-### Condition: Page has subpages
+Condition: Page has subpages
+============================
 
 A condition ViewHelper which renders the `then` child if
 current page or page with provided UID has subpages. By default

@@ -7,7 +7,8 @@ site.name
 =========
 
 
-### Site: Name
+Site: Name
+==========
 
 Returns the site name as specified in `$TYPO3_CONF_VARS`.
 

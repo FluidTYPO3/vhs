@@ -7,7 +7,8 @@ format.wordWrap
 ===============
 
 
-### Wordwrap: Wrap a string at provided character count
+Wordwrap: Wrap a string at provided character count
+===================================================
 
 Wraps a string to $limit characters and at $break character
 while maintaining complete words. Concatenates the resulting

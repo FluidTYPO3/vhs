@@ -7,7 +7,8 @@ try
 ===
 
 
-### Try ViewHelper
+Try ViewHelper
+==============
 
 Attempts to render child content. If an Exception is encountered
 while rendering, instead the `f:else` child node is rendered,
@@ -31,9 +32,11 @@ attribute is what is rendered if retrieving the `then` attribute's
 value fails. Which clearly only makes sense if for example complex
 inline ViewHelpers are used in the attributes.
 
-### Example usage
+Example usage
+=============
 
-#### Please note that this is a theoretical example!
+Please note that this is a theoretical example!
+-----------------------------------------------
 
 The example is theoretical in one major aspect: v:format.json.decode
 throws an Exception which Fluid displays as a string always - abstract

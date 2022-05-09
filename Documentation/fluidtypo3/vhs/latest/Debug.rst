@@ -7,7 +7,8 @@ debug
 =====
 
 
-### ViewHelper Debug ViewHelper (sic)
+ViewHelper Debug ViewHelper (sic)
+=================================
 
 Debugs instances of other ViewHelpers and language
 structures. Use in conjunction with other ViewHelpers
