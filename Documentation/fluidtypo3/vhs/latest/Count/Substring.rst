@@ -12,11 +12,19 @@ Counts number of lines in a string.
 Usage examples
 --------------
 
+::
+
     <v:count.substring string="{myString}">{haystack}</v:count.substring> (output for example `2`
+
+::
 
     {haystack -> v:count.substring(string: myString)} when used inline
 
+::
+
     <v:count.substring string="{myString}" haystack="{haystack}" />
+
+::
 
     {v:count.substring(string: myString, haystack: haystack)}
 

@@ -17,6 +17,8 @@ paths can be overridden and uses the same format as TS
 settings a' la plugin.tx_myext.view, which means that
 this can be done (from any extension, not just "foo")
 
+::
+
     <v:render.template
      file="EXT:foo/Resources/Private/Templates/Action/Show.html"
      variables="{object: customLoadedObject}"

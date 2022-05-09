@@ -14,6 +14,8 @@ Prepends one string on another. Although this task is very
 easily done in standard Fluid - i.e. {add}{subject} - this
 ViewHelper makes advanced chained inline processing possible:
 
+::
+
     {dateTime.timestamp
         -> v:math.sum(b: 3600)
         -> v:format.date(format: 'Y-m-d H:i')}

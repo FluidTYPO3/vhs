@@ -42,6 +42,8 @@ The example is theoretical in one major aspect: v:format.json.decode
 throws an Exception which Fluid displays as a string always - abstract
 from this and imagine that a plain Exception happens on errors.
 
+::
+
     <v:try>
         <!-- assume that the variable {badJson} contains the string "DontDecodeMe"
              which if course is invalid JSON and cannot be decoded. The default
@@ -73,7 +75,11 @@ from this and imagine that a plain Exception happens on errors.
             </pre>
         </f:else>
     </v:try>
-    ...or if you want a shorter version...
+
+...or if you want a shorter version...
+
+::
+
     <!-- Tries to encode an object, if it fails, falls back by returning a proper JSON
          value, thus preventing breakage by the JSON consumer whatever it may be. -->
     {v:try(then: '{badObject -> v:format.json.encode()}', else: '{"validJson": "validValue"')}

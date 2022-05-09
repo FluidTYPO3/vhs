@@ -15,6 +15,8 @@ Calls a method on an existing object. Usable as inline or tag.
 Examples
 ========
 
+::
+
     <!-- inline, useful as argument, for example in f:for -->
     {object -> v:call(method: 'toArray')}
     <!-- tag, useful to quickly output simple values -->

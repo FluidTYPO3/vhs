@@ -16,6 +16,8 @@ Let's assume that the variable `settings.element.uid` contains the uid
 of a content element.
 It can be rendered as follows:
 
+::
+
     <v:content.render contentUids="{0: settings.element.uid}"/>
 
 Arguments

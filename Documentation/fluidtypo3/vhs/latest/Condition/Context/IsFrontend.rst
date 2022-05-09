@@ -16,6 +16,8 @@ current context being rendered is FE.
 Examples
 ========
 
+::
+
     <!-- simple usage, content becomes then-child -->
     <v:condition.context.isFrontend>
         Hooray for BE contexts!

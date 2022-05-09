@@ -45,6 +45,8 @@ When used with the "return" attribute and when this attribute is an
 array, the output becomes suitable for consumption by f:translate, v:l
 or f:format.sprintf for example - as the "arguments" attribute:
 
+::
+
     <f:translate key="myDateDisplay"
         arguments="{v:format.dateRange(intervalFormat: 'P3W', return: {0: 'w', 1: 'd'})}"
     />

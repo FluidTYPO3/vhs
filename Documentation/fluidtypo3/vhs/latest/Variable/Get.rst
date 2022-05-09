@@ -13,6 +13,8 @@ Variable: Get
 ViewHelper used to read the value of a current template
 variable. Can be used with dynamic indices in arrays:
 
+::
+
     <v:variable.get name="array.{dynamicIndex}" />
     <v:variable.get name="array.{v:variable.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
     <f:for each="{v:variable.get(name: 'object.arrayProperty.{dynamicIndex}')}" as="nestedObject">
@@ -20,6 +22,8 @@ variable. Can be used with dynamic indices in arrays:
     </f:for>
 
 Or to read names of variables which contain dynamic parts:
+
+::
 
     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
     {v:variable.get(name: 'dynamic{variableName}')}
@@ -31,16 +35,16 @@ commonly seen in reindexed UID map arrays) use
 array/QueryResult/Iterator to be accessed by locating
 the Nth element - which is the default behavior.
 
-```warning
-Do not try `useRawKeys="TRUE"` on QueryResult or
-ObjectStorage unless you are fully aware what you are
-doing. These particular types require an unpredictable
-index value - the SPL object hash value - when accessing
-members directly. This SPL indexing and the very common
-occurrences of QueryResult and ObjectStorage variables
-in templates is the very reason why `useRawKeys` by
-default is set to `FALSE`.
-```
+::
+
+    Do not try `useRawKeys="TRUE"` on QueryResult or
+    ObjectStorage unless you are fully aware what you are
+    doing. These particular types require an unpredictable
+    index value - the SPL object hash value - when accessing
+    members directly. This SPL indexing and the very common
+    occurrences of QueryResult and ObjectStorage variables
+    in templates is the very reason why `useRawKeys` by
+    default is set to `FALSE`.
 
 Arguments
 =========

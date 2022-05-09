@@ -12,11 +12,19 @@ Counts bytes (multibyte-safe) in a string.
 Usage examples
 --------------
 
+::
+
     <v:count.bytes>{myString}</v:count.bytes> (output for example `42`
+
+::
 
     {myString -> v:count.bytes()} when used inline
 
+::
+
     <v:count.bytes string="{myString}" />
+
+::
 
     {v:count.bytes(string: myString)}
 

@@ -12,6 +12,8 @@ an Array or a QueryResult (including Lazy counterparts).
 
 Can be used inline, i.e.:
 
+::
+
     <f:for each="{dataset -> v:iterator.sort(sortBy: 'name')}" as="item">
         // iterating data which is ONLY sorted while rendering this particular loop
     </f:for>

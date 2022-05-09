@@ -13,6 +13,8 @@ media breakpoints
 Example
 =======
 
+::
+
     <v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
         <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
         <v:media.source media="(min-width: 992px)" width="300c" height="300c" />

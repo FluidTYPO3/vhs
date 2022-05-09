@@ -16,6 +16,8 @@ current context being rendered is CLI.
 Examples
 ========
 
+::
+
     <!-- simple usage, content becomes then-child -->
     <v:condition.context.isCli>
         Hooray for CLI contexts!

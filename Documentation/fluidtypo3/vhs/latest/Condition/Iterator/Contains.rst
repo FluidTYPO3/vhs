@@ -13,6 +13,8 @@ haystack contains needle value.
 Example:
 ========
 
+::
+
     {v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
 
 Arguments

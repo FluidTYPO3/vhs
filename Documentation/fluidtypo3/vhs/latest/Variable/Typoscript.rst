@@ -27,12 +27,18 @@ and even various `wrap` definitions.
 A quick example of how to parse a `wrap` TypoScript setting
 into two variables usable for a menu item:
 
+::
+
     <!-- This piece to be added as far up as possible in order to prevent multiple executions -->
     <v:variable.set name="menuSettings" value="{v:variable.typoscript(path: 'lib.menu.main.stdWrap')}" />
     <v:variable.set name="wrap" value="{menuSettings.wrap -> v:iterator.explode(glue: '|')}" />
 
+::
+
     <!-- This in the loop which renders the menu (see "VHS: manual menu rendering" in FAQ): -->
     {wrap.0}{menuItem.title}{wrap.1}
+
+::
 
     <!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
     {wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}

@@ -15,7 +15,11 @@ Condition to check if an extension is loaded.
 Example:
 ========
 
+::
+
     {v:extension.loaded(extensionName: 'news', then: 'yes', else: 'no')}
+
+::
 
     <v:extension.loaded extensionName="news">
         ...

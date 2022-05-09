@@ -15,6 +15,8 @@ Reads settings from ext_conf_template.txt
 Examples
 ========
 
+::
+
     {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
 
 Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt`.
