@@ -2,10 +2,16 @@ name: VHS ViewHelper Documentation
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-      - development
+  # Disable automatic rendering until Fluid Schema Generator is compatible
+  # with TYPO3 10+. Do it manually by working through the steps of this
+  # workflow in a local instance and applying the fix mentioned in the issue.
+  #
+  # Issue: https://github.com/TYPO3-Documentation/t3docs-ci-deploy/issues/4.
+  #
+  #  push:
+  #    branches:
+  #      - master
+  #      - development
 
 jobs:
   build:
