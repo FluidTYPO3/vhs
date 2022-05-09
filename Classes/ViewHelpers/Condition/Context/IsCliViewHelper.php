@@ -19,19 +19,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ### Examples
  *
- *     <!-- simple usage, content becomes then-child -->
- *     <v:condition.context.isCli>
- *         Hooray for CLI contexts!
- *     </v:condition.context.isCli>
- *     <!-- extended use combined with f:then and f:else -->
- *     <v:condition.context.isCli>
- *         <f:then>
- *            Hooray for CLI contexts!
- *         </f:then>
- *         <f:else>
- *            Maybe BE, maybe FE.
- *         </f:else>
- *     </v:condition.context.isCli>
+ * ```
+ * <!-- simple usage, content becomes then-child -->
+ * <v:condition.context.isCli>
+ *     Hooray for CLI contexts!
+ * </v:condition.context.isCli>
+ * <!-- extended use combined with f:then and f:else -->
+ * <v:condition.context.isCli>
+ *     <f:then>
+ *        Hooray for CLI contexts!
+ *     </f:then>
+ *     <f:else>
+ *        Maybe BE, maybe FE.
+ *     </f:else>
+ * </v:condition.context.isCli>
+ * ```
  */
 class IsCliViewHelper extends AbstractConditionViewHelper
 {

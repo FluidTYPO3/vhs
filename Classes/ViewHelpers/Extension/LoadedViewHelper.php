@@ -19,11 +19,15 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ### Example:
  *
- *     {v:extension.loaded(extensionName: 'news', then: 'yes', else: 'no')}
+ * ```
+ * {v:extension.loaded(extensionName: 'news', then: 'yes', else: 'no')}
+ * ```
  *
- *     <v:extension.loaded extensionName="news">
- *         ...
- *     </v:extension.loaded>
+ * ```
+ * <v:extension.loaded extensionName="news">
+ *     ...
+ * </v:extension.loaded>
+ * ```
  */
 class LoadedViewHelper extends AbstractConditionViewHelper
 {

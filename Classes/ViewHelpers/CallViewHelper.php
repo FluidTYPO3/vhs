@@ -19,13 +19,15 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * ### Examples
  *
- *     <!-- inline, useful as argument, for example in f:for -->
- *     {object -> v:call(method: 'toArray')}
- *     <!-- tag, useful to quickly output simple values -->
- *     <v:call object="{object}" method="unconventionalGetter" />
- *     <v:call method="unconventionalGetter">{object}</v:call>
- *     <!-- arguments for the method -->
- *     <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
+ * ```
+ * <!-- inline, useful as argument, for example in f:for -->
+ * {object -> v:call(method: 'toArray')}
+ * <!-- tag, useful to quickly output simple values -->
+ * <v:call object="{object}" method="unconventionalGetter" />
+ * <v:call method="unconventionalGetter">{object}</v:call>
+ * <!-- arguments for the method -->
+ * <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
+ * ```
  */
 class CallViewHelper extends AbstractViewHelper
 {

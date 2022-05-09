@@ -22,12 +22,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * Combines well with dynamic variable names:
  *
- *     <!-- if {variableContainingVariableName} is "foo" this checks existence of {foo} -->
- *     <v:condition.variable.isset name="{variableContainingVariableName}">...</v:condition.variable.isset>
- *     <!-- if {suffix} is "Name" this checks existence of "variableName" -->
- *     <v:condition.variable.isset name="variable{suffix}">...</v:condition.variable.isset>
- *     <!-- outputs value of {foo} if {bar} is defined -->
- *     {foo -> v:condition.variable.isset(name: bar)}
+ * ```
+ * <!-- if {variableContainingVariableName} is "foo" this checks existence of {foo} -->
+ * <v:condition.variable.isset name="{variableContainingVariableName}">...</v:condition.variable.isset>
+ * <!-- if {suffix} is "Name" this checks existence of "variableName" -->
+ * <v:condition.variable.isset name="variable{suffix}">...</v:condition.variable.isset>
+ * <!-- outputs value of {foo} if {bar} is defined -->
+ * {foo -> v:condition.variable.isset(name: bar)}
+ * ```
  *
  * ONLY WORKS ON TYPO3v8+!
  */

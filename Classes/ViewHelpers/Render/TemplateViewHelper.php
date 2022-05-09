@@ -20,11 +20,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * settings a' la plugin.tx_myext.view, which means that
  * this can be done (from any extension, not just "foo")
  *
- *     <v:render.template
- *      file="EXT:foo/Resources/Private/Templates/Action/Show.html"
- *      variables="{object: customLoadedObject}"
- *      paths="{v:variable.typoscript(path: 'plugin.tx_foo.view')}"
- *      format="xml" />
+ * ```
+ * <v:render.template
+ *  file="EXT:foo/Resources/Private/Templates/Action/Show.html"
+ *  variables="{object: customLoadedObject}"
+ *  paths="{v:variable.typoscript(path: 'plugin.tx_foo.view')}"
+ *  format="xml" />
+ * ```
  *
  * Which would render the "show" action's template from
  * EXT:foo using paths define in that extension's typoscript

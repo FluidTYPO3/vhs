@@ -25,11 +25,15 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * to inspect their current and possible arguments and
  * render their documentation:
  *
- *     <v:debug><f:format.html>{variable}</f:format.html></v:debug>
+ * ```
+ * <v:debug><f:format.html>{variable}</f:format.html></v:debug>
+ * ```
  *
  * Or the same expression in inline syntax:
  *
- *     {variable -> f:format.html() -> v:debug()}
+ * ```
+ * {variable -> f:format.html() -> v:debug()}
+ * ```
  *
  * Can also be used to inspect `ObjectAccessor` instances
  * (e.g. variables you try to access) and rather than just
@@ -43,18 +47,22 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * properties which can be accessed, along with the type
  * of variable that property currently contains:
  *
- *     {domainObject -> v:debug()}
+ * ```
+ * {domainObject -> v:debug()}
+ * ```
  *
  * Assuming that `{domainObject}` is an instance of an
  * object which has two methods: `getUid()` and `getTitle()`,
  * debugging that instance will render something like this
  * in plain text:
  *
- *     Path: {domainObject}
- *     Value type: object
- *     Accessible properties on {domainObject}:
- *        {form.uid} (integer)
- *        {form.title} (string)
+ * ```
+ * Path: {domainObject}
+ * Value type: object
+ * Accessible properties on {domainObject}:
+ *    {form.uid} (integer)
+ *    {form.title} (string)
+ * ```
  *
  * The class itself can contain any number of protected
  * properties, but only those which have a getter method

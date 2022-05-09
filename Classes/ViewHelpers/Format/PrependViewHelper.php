@@ -19,12 +19,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * easily done in standard Fluid - i.e. {add}{subject} - this
  * ViewHelper makes advanced chained inline processing possible:
  *
- *     <!-- Adds 1H to DateTime, formats using timestamp input which requires prepended @ -->
- *     {dateTime.timestamp
- *         -> v:math.sum(b: 3600)
- *         -> v:format.prepend(add: '@')
- *         -> v:format.date(format: 'Y-m-d H:i')}
- *     <!-- You don't have to break the syntax into lines; done here for display only -->
+ * ```
+ * <!-- Adds 1H to DateTime, formats using timestamp input which requires prepended @ -->
+ * {dateTime.timestamp
+ *     -> v:math.sum(b: 3600)
+ *     -> v:format.prepend(add: '@')
+ *     -> v:format.date(format: 'Y-m-d H:i')}
+ * <!-- You don't have to break the syntax into lines; done here for display only -->
+ * ```
  */
 class PrependViewHelper extends AbstractViewHelper
 {

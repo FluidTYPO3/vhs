@@ -21,7 +21,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ### Examples
  *
- *     {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
+ * ```
+ * {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
+ * ```
  *
  * Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt`.
  */

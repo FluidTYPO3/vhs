@@ -23,9 +23,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Combines well with `v:variable.get` to set shorter variable
  * names referencing dynamic variables, such as:
  *
- *     <v:variable.set name="myObject" value="{v:variable.get(name: 'arrayVariable.{offset}')}" />
- *     <!-- If {index} == 4 then {myObject} is now == {arrayVariable.4} -->
- *     {myObject.name} <!-- corresponds to {arrayVariable.4.name} -->
+ * ```
+ * <v:variable.set name="myObject" value="{v:variable.get(name: 'arrayVariable.{offset}')}" />
+ * <!-- If {index} == 4 then {myObject} is now == {arrayVariable.4} -->
+ * {myObject.name} <!-- corresponds to {arrayVariable.4.name} -->
+ * ```
  *
  * Note that `{arrayVariable.{offset}.name}` is not possible
  * due to the way Fluid parses nodes; the above piece of

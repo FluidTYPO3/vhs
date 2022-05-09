@@ -27,8 +27,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * it as linktext if that is omitted. The link will not render at all
  * if the requested page is not translated in the current language.
  *
- *      Automatic linktext: <v:page.link pageUid="UID" />
- *      Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
+ * ```
+ * Automatic linktext: <v:page.link pageUid="UID" />
+ * Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
+ * ```
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {

@@ -29,55 +29,69 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * #### Input from extbase version of indexed_search">
  *
- *     [
- *         0 => [
- *             'sword' => 'firstWord',
- *             'oper' => 'AND'
- *         ],
- *         1 => [
- *             'sword' => 'secondWord',
- *             'oper' => 'AND'
- *         ],
- *         3 => [
- *             'sword' => 'thirdWord',
- *             'oper' => 'AND'
- *         ]
+ * ```
+ * [
+ *     0 => [
+ *         'sword' => 'firstWord',
+ *         'oper' => 'AND'
+ *     ],
+ *     1 => [
+ *         'sword' => 'secondWord',
+ *         'oper' => 'AND'
+ *     ],
+ *     3 => [
+ *         'sword' => 'thirdWord',
+ *         'oper' => 'AND'
  *     ]
+ * ]
+ * ```
  *
  * Show the previous search words in the search form of the
  * result page:
  *
  * #### Example
- *     <f:form.textfield name="search[sword]"
- *         value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
- *         class="tx-indexedsearch-searchbox-sword" />
+ *
+ * ```
+ * <f:form.textfield name="search[sword]"
+ *     value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
+ *     class="tx-indexedsearch-searchbox-sword" />
+ * ```
  *
  * #### Get the names of several users
  *
  * Provided we have a bunch of FrontendUsers and we need to show
  * their firstname combined into a string:
  *
- *     <h2>Welcome
- *     <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
- *     <!-- alternative: -->
- *     {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
- *     </h2>
+ * ```
+ * <h2>Welcome
+ * <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
+ * <!-- alternative: -->
+ * {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
+ * </h2>
+ * ```
  *
  * #### Output
  *
- *     <h2>Welcome Peter, Paul, Marry</h2>
+ * ```
+ * <h2>Welcome Peter, Paul, Marry</h2>
+ * ```
  *
  * #### Complex example
  *
- *     {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')
- *         -> v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')
- *         -> v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
+ * ```
+ * {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')
+ *     -> v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')
+ *     -> v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
+ * ```
  *
  * #### Single return value
  *
- *     Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
- *     one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().
- *     {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
+ * Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
+ * one records. Always extracts the first value and then stops. Equivalent of changing -> v:iterator.first().
+ *
+ * ```
+ * {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
+ * ```
  */
 class ExtractViewHelper extends AbstractViewHelper
 {

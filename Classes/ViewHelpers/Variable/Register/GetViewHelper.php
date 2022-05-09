@@ -19,8 +19,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * ViewHelper used to read the value of a TSFE-register
  * Can be used to read names of variables which contain dynamic parts:
  *
- *     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
- *     {v:variable.register.get(name: 'dynamic{variableName}')}
+ * ```
+ * <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
+ * {v:variable.register.get(name: 'dynamic{variableName}')}
+ * ```
  */
 class GetViewHelper extends AbstractViewHelper
 {

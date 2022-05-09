@@ -19,27 +19,33 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * Is the same as writing:
  *
- *     <f:if condition="{theThingToCheck}">
- *         <f:else>
- *             The thing that gets done
- *         </f:else>
- *     </f:if>
+ * ```
+ * <f:if condition="{theThingToCheck}">
+ *     <f:else>
+ *         The thing that gets done
+ *     </f:else>
+ * </f:if>
+ * ```
  *
  * Except without the `f:else`.
  *
  * #### Example, tag mode
  *
- *     <v:unless condition="{somethingRequired}">
- *         Warning! Something required was not present.
- *     </v:unless>
+ * ```
+ * <v:unless condition="{somethingRequired}">
+ *     Warning! Something required was not present.
+ * </v:unless>
+ * ```
  *
  * #### Example, inline mode illustrating `v:or` likeness
  *
- *     {defaultText -> v:unless(condition: originalText)}
- *         // which is much the same as...
- *     {originalText -> v:or(alternative: defaultText}
- *         // ...but the "unless" counterpart supports anything as
- *         // condition instead of only checking "is content empty?"
+ * ```
+ * {defaultText -> v:unless(condition: originalText)}
+ *     // which is much the same as...
+ * {originalText -> v:or(alternative: defaultText}
+ *     // ...but the "unless" counterpart supports anything as
+ *     // condition instead of only checking "is content empty?"
+ * ```
  *
  * @package Vhs
  * @subpackage ViewHelpers

@@ -21,7 +21,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ### Example:
  *
- *     {v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
+ * ```
+ * {v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
+ * ```
  */
 class ContainsViewHelper extends AbstractConditionViewHelper
 {

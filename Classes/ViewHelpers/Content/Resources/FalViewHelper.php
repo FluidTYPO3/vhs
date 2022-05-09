@@ -18,12 +18,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  *
  * The file data can be loaded and displayed with:
  *
- *     {v:content.resources.fal(field: 'settings.image')
- *       -> v:iterator.first()
- *       -> v:variable.set(name: 'image')}
- *     <f:if condition="{image}">
- *       <f:image src="{image.id}"/>
- *     </f:if>
+ * ```
+ * {v:content.resources.fal(field: 'settings.image')
+ *   -> v:iterator.first()
+ *   -> v:variable.set(name: 'image')}
+ * <f:if condition="{image}">
+ *   <f:image src="{image.id}"/>
+ * </f:if>
+ * ```
  *
  *
  * ### Image preview in backend
@@ -31,7 +33,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  * To load image data for the "Preview" section in the backend's page view,
  * you have to pass the `record` attribute:
  *
- *     {v:content.resources.fal(field: 'settings.image', record: record)}
+ * ```
+ * {v:content.resources.fal(field: 'settings.image', record: record)}
+ * ```
  */
 class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper
 {

@@ -18,7 +18,9 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  *
  * ### Example
  *
- *     {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
+ * ```
+ * {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
+ * ```
  */
 class CollectionViewHelper extends AbstractResourceViewHelper
 {

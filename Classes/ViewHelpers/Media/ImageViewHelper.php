@@ -26,7 +26,9 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
  *
  * ### Example
  *
- *     <v:media.image src="fileadmin/some-image.png" srcset="480,768,992,1200" />
+ * ```
+ * <v:media.image src="fileadmin/some-image.png" srcset="480,768,992,1200" />
+ * ```
  *
  * ### Browser Support
  *

@@ -19,19 +19,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ### Examples
  *
- *     <!-- simple usage, content becomes then-child -->
- *     <v:condition.context.isBackend>
- *         Hooray for BE contexts!
- *     </v:condition.context.isBackend>
- *     <!-- extended use combined with f:then and f:else -->
- *     <v:condition.context.isBackend>
- *         <f:then>
- *            Hooray for BE contexts!
- *         </f:then>
- *         <f:else>
- *            Maybe FE, maybe CLI.
- *         </f:else>
- *     </v:condition.context.isBackend>
+ * ```
+ * <!-- simple usage, content becomes then-child -->
+ * <v:condition.context.isBackend>
+ *     Hooray for BE contexts!
+ * </v:condition.context.isBackend>
+ * <!-- extended use combined with f:then and f:else -->
+ * <v:condition.context.isBackend>
+ *     <f:then>
+ *        Hooray for BE contexts!
+ *     </f:then>
+ *     <f:else>
+ *        Maybe FE, maybe CLI.
+ *     </f:else>
+ * </v:condition.context.isBackend>
+ * ```
  */
 class IsBackendViewHelper extends AbstractConditionViewHelper
 {
