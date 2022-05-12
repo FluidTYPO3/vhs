@@ -219,7 +219,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected static function renderRecord(array $row)
     {
-        if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
+        if (0 < isset($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) ? $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']] : 0) {
             return null;
         }
         $conf = [
