@@ -167,8 +167,11 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-
-        if ( GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.preview', 'isPreview') ) {
+        
+        $content = GeneralUtility::makeInstance(Context::class);
+        $fePreview = ($content->hasAspect('frontend.preview')) ? $content->getPropertyFromAspect('frontend.preview', 'isPreview') : false;
+        
+        if ( $fePreview ) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
