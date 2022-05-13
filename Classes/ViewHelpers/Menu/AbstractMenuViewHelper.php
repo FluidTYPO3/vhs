@@ -220,7 +220,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $menu = $this->parseMenu($pages);
         $rootLine = $this->pageService->getRootLine(
             $this->arguments['pageUid'],
-            $this->arguments['reverse'],
+            $this->arguments['reverse'] ?? false,
             $this->arguments['showAccessProtected']
         );
         $this->cleanupSubmenuVariables();
