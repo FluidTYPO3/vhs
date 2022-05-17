@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -96,7 +97,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             false,
             'flag,name'
         );
-        $this->registerArgument('useCHash', 'boolean', 'Use cHash for typolink', false, true);
+        $this->registerArgument('useCHash', 'boolean', 'Use cHash for typolink. Has no effect on TYPO3 v9.5+', false, true);
         $this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', false, '');
         $this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', false, 'svg');
         $this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', false, true);
@@ -440,13 +441,15 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             'parameter' => $this->getPageUid(),
             'returnLast' => 'url',
             'additionalParams' => '&L=' . $uid,
-            'useCacheHash' => $this->arguments['useCHash'],
             'addQueryString' => 1,
             'addQueryString.' => [
                 'method' => 'GET',
                 'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
             ]
         ];
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.5', '<')) {
+            $config['useCacheHash'] = $this->arguments['useCHash'];
+        }
         if (true === is_array($this->arguments['configuration'])) {
             $config = $this->mergeArrays($config, $this->arguments['configuration']);
         }
