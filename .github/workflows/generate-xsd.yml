@@ -1,0 +1,53 @@
+name: VHS Schema Generation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Checkout VHS project
+        uses: actions/checkout@v2
+        with:
+          path: vhs
+          persist-credentials: false
+
+      - name: Install Schema Generator
+        working-directory: ./vhs
+        run: |
+          composer require -n -o --no-progress typo3/fluid-schema-generator "^2.1"
+
+      - name: Install XML Linter
+        working-directory: ./vhs
+        run: |
+          sudo apt install libxml2-utils
+
+      - name: Generate Schemata
+        working-directory: ./vhs
+        run: |
+          mkdir -p ../schemas/fluidtypo3/vhs/latest
+          ./vendor/bin/generateschema FluidTYPO3\\\Vhs > ../schemas/fluidtypo3/vhs/latest/schema.xsd
+
+      - name: Compare and Commit if changed
+        working-directory: ./vhs
+        continue-on-error: true
+        run: |
+          if [[ `diff ../schemas/fluidtypo3/vhs/latest/schema.xsd ./Resources/Private/Schemas/Vhs.xsd` != "" ]]; then
+            xmllint --format ../schemas/fluidtypo3/vhs/latest/schema.xsd > ./Resources/Private/Schemas/Vhs.xsd
+            git config user.name "FluidTYPO3 VHS"
+            git config user.email "claus@namelesscoder.net"
+            git add ./Resources/Private/Schemas/Vhs.xsd
+            git commit -m '[TASK] Update XSD schema'
+            git push https://${{ secrets.EXEMPT_PUSH_TOKEN }}@github.com/FluidTYPO3/vhs HEAD:development
+          fi
