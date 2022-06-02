@@ -1847,6 +1847,28 @@ Loads FAL records associated with records of arbitrary types.
   <xsd:element name="content.resources.fal">
     <xsd:annotation>
       <xsd:documentation><![CDATA[Content FAL relations ViewHelper
+
+### Render a single image in a content element
+
+We assume that the flux content element has an IRRE file field
+`<flux:field.inline.fal name="settings.image">`.
+
+The file data can be loaded and displayed with:
+
+    {v:content.resources.fal(field: 'settings.image')
+      -> v:iterator.first()
+      -> v:variable.set(name: 'image')}
+    <f:if condition="{image}">
+      <f:image src="{image.id}"/>
+    </f:if>
+
+
+### Image preview in backend
+
+To load image data for the "Preview" section in the backend's page view,
+you have to pass the `record` attribute:
+
+    {v:content.resources.fal(field: 'settings.image', record: record)}
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2444,7 +2466,7 @@ used and arguments can be used individually or in any combination.
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="whitespaceBetweenHtmlTags" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Eliminate ALL whitespace characters between HTML tags]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Eliminate ALL whitespace characters between HTML tags. Use this together with <f:format.raw>]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="tabs" default="false">
@@ -2839,8 +2861,10 @@ Prepends one string on another. Although this task is very
 easily done in standard Fluid - i.e. {add}{subject} - this
 ViewHelper makes advanced chained inline processing possible:
 
+    <!-- Adds 1H to DateTime, formats using timestamp input which requires prepended @ -->
     {dateTime.timestamp
         -> v:math.sum(b: 3600)
+        -> v:format.prepend(add: '@')
         -> v:format.date(format: 'Y-m-d H:i')}
     <!-- You don't have to break the syntax into lines; done here for display only -->
 /]]></xsd:documentation>
@@ -5082,7 +5106,7 @@ http://scottjehl.github.io/picturefill/
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="85">
+      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -5339,7 +5363,7 @@ pages the first page is rendered by default unless specified.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="85">
+      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -5503,7 +5527,7 @@ media breakpoints
 
 ### Example
 
-    <v:media.picture src="fileadmin/some-image.png" alt="Some Image">
+    <v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
         <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
         <v:media.source media="(min-width: 992px)" width="300c" height="300c" />
         <v:media.source media="(min-width: 768px)" width="200c" height="200c" />
@@ -5558,6 +5582,11 @@ http://scottjehl.github.io/picturefill/
       <xsd:attribute type="xsd:string" name="class" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[CSS class(es) to set.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:string" name="loading" default="NULL">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Native lazy-loading for images. Can be "lazy", "eager" or "auto"]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -5689,7 +5718,7 @@ information.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="85">
+      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -8829,12 +8858,12 @@ Require the extension static_info_table.
           <xsd:documentation><![CDATA[Tag name to use for child nodes surrounding links, list and flags only]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="defaultIsoFlag" default="'gb'">
+      <xsd:attribute type="xsd:string" name="defaultIsoFlag" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[ISO code of the default flag]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="defaultLanguageLabel" default="'English'">
+      <xsd:attribute type="xsd:string" name="defaultLanguageLabel" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Label for the default language]]></xsd:documentation>
         </xsd:annotation>
@@ -9078,7 +9107,7 @@ if the requested page is not translated in the current language.
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="noCacheHash" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[When TRUE supresses the cHash query parameter created by TypoLink. You should not need this.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[When TRUE supresses the cHash query parameter created by TypoLink. You should not need this. Has no effect on TYPO3v11 and above.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="section" default="''">
@@ -10664,6 +10693,12 @@ DEPRECATED: use v:menu.sub instead
   <xsd:element name="page.resources.fal">
     <xsd:annotation>
       <xsd:documentation><![CDATA[Page FAL resource ViewHelper.
+
+Do not use the "uid" argument in the "Preview" section.
+Instead, use the "record" argument and pass the entire record.
+This bypasses visibility restrictions that normally apply when you attempt
+to load a record by UID through TYPO3's PageRepository, which is what the
+resource ViewHelpers do if you only pass uid.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -11093,7 +11128,7 @@ arguments were sent directly to the Controller action.
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="vendorName" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Vendor name scope to use in request]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Vendor name scope to use in request. WARNING: only applies to TYPO3 versions below 10.4]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="pluginName" default="NULL">
@@ -12220,7 +12255,7 @@ or it's derivate if differing dimesions are provided.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="85">
+      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
