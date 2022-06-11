@@ -57,6 +57,7 @@ and iterators and array calculators and processors.
 .. toctree::
    :hidden:
 
+   Contribution/Index
    Changelog
    Sitemap
    genindex
