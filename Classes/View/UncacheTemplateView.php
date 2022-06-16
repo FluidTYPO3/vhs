@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
@@ -81,6 +82,10 @@ class UncacheTemplateView extends TemplateView
         $controllerContext = $this->objectManager->get(ControllerContext::class);
         $request = $this->objectManager->get(Request::class);
         $controllerContext->setRequest($request);
+
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $uriBuilder->setRequest($request);
+        $controllerContext->setUriBuilder($uriBuilder);
 
         if ($conf['controllerContext']) {
             $request->setControllerActionName($conf['controllerContext']['actionName']);
