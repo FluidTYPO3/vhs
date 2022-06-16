@@ -8890,7 +8890,7 @@ Require the extension static_info_table.
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="useCHash" default="true">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Use cHash for typolink]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Use cHash for typolink. Has no effect on TYPO3 v9.5+]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="flagPath" default="''">
