@@ -147,7 +147,9 @@ by the `build()` method.
 
 ### Example usage:
 
-    <v:asset.prefetch domains="fedext.net,ajax.google.com" />
+```
+<v:asset.prefetch domains="fedext.net,ajax.google.com" />
+```
 
 See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
 
@@ -452,13 +454,15 @@ Calls a method on an existing object. Usable as inline or tag.
 
 ### Examples
 
-    <!-- inline, useful as argument, for example in f:for -->
-    {object -> v:call(method: 'toArray')}
-    <!-- tag, useful to quickly output simple values -->
-    <v:call object="{object}" method="unconventionalGetter" />
-    <v:call method="unconventionalGetter">{object}</v:call>
-    <!-- arguments for the method -->
-    <v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
+```
+<!-- inline, useful as argument, for example in f:for -->
+{object -> v:call(method: 'toArray')}
+<!-- tag, useful to quickly output simple values -->
+<v:call object="{object}" method="unconventionalGetter" />
+<v:call method="unconventionalGetter">{object}</v:call>
+<!-- arguments for the method -->
+<v:call object="{object}" method="doSomethingWithArguments" arguments="{0: 'foo', 1: 'bar'}" />
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -491,19 +495,21 @@ current context being rendered is BE.
 
 ### Examples
 
-    <!-- simple usage, content becomes then-child -->
-    <v:condition.context.isBackend>
-        Hooray for BE contexts!
-    </v:condition.context.isBackend>
-    <!-- extended use combined with f:then and f:else -->
-    <v:condition.context.isBackend>
-        <f:then>
-           Hooray for BE contexts!
-        </f:then>
-        <f:else>
-           Maybe FE, maybe CLI.
-        </f:else>
-    </v:condition.context.isBackend>
+```
+<!-- simple usage, content becomes then-child -->
+<v:condition.context.isBackend>
+    Hooray for BE contexts!
+</v:condition.context.isBackend>
+<!-- extended use combined with f:then and f:else -->
+<v:condition.context.isBackend>
+    <f:then>
+       Hooray for BE contexts!
+    </f:then>
+    <f:else>
+       Maybe FE, maybe CLI.
+    </f:else>
+</v:condition.context.isBackend>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -531,19 +537,21 @@ current context being rendered is CLI.
 
 ### Examples
 
-    <!-- simple usage, content becomes then-child -->
-    <v:condition.context.isCli>
-        Hooray for CLI contexts!
-    </v:condition.context.isCli>
-    <!-- extended use combined with f:then and f:else -->
-    <v:condition.context.isCli>
-        <f:then>
-           Hooray for CLI contexts!
-        </f:then>
-        <f:else>
-           Maybe BE, maybe FE.
-        </f:else>
-    </v:condition.context.isCli>
+```
+<!-- simple usage, content becomes then-child -->
+<v:condition.context.isCli>
+    Hooray for CLI contexts!
+</v:condition.context.isCli>
+<!-- extended use combined with f:then and f:else -->
+<v:condition.context.isCli>
+    <f:then>
+       Hooray for CLI contexts!
+    </f:then>
+    <f:else>
+       Maybe BE, maybe FE.
+    </f:else>
+</v:condition.context.isCli>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -602,19 +610,21 @@ current context being rendered is FE.
 
 ### Examples
 
-    <!-- simple usage, content becomes then-child -->
-    <v:condition.context.isFrontend>
-        Hooray for BE contexts!
-    </v:condition.context.isFrontend>
-    <!-- extended use combined with f:then and f:else -->
-    <v:condition.context.isFrontend>
-        <f:then>
-           Hooray for BE contexts!
-        </f:then>
-        <f:else>
-           Maybe BE, maybe CLI.
-        </f:else>
-    </v:condition.context.isFrontend>
+```
+<!-- simple usage, content becomes then-child -->
+<v:condition.context.isFrontend>
+    Hooray for BE contexts!
+</v:condition.context.isFrontend>
+<!-- extended use combined with f:then and f:else -->
+<v:condition.context.isFrontend>
+    <f:then>
+       Hooray for BE contexts!
+    </f:then>
+    <f:else>
+       Maybe BE, maybe CLI.
+    </f:else>
+</v:condition.context.isFrontend>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -780,7 +790,9 @@ haystack contains needle value.
 
 ### Example:
 
-    {v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
+```
+{v:condition.iterator.contains(needle: 'foo', haystack: {0: 'foo'}, then: 'yes', else: 'no')}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -1414,12 +1426,14 @@ will still return TRUE if the variable exists.
 
 Combines well with dynamic variable names:
 
-    <!-- if {variableContainingVariableName} is "foo" this checks existence of {foo} -->
-    <v:condition.variable.isset name="{variableContainingVariableName}">...</v:condition.variable.isset>
-    <!-- if {suffix} is "Name" this checks existence of "variableName" -->
-    <v:condition.variable.isset name="variable{suffix}">...</v:condition.variable.isset>
-    <!-- outputs value of {foo} if {bar} is defined -->
-    {foo -> v:condition.variable.isset(name: bar)}
+```
+<!-- if {variableContainingVariableName} is "foo" this checks existence of {foo} -->
+<v:condition.variable.isset name="{variableContainingVariableName}">...</v:condition.variable.isset>
+<!-- if {suffix} is "Name" this checks existence of "variableName" -->
+<v:condition.variable.isset name="variable{suffix}">...</v:condition.variable.isset>
+<!-- outputs value of {foo} if {bar} is defined -->
+{foo -> v:condition.variable.isset(name: bar)}
+```
 
 ONLY WORKS ON TYPO3v8+!
 /]]></xsd:documentation>
@@ -1727,7 +1741,9 @@ Let's assume that the variable `settings.element.uid` contains the uid
 of a content element.
 It can be rendered as follows:
 
-    <v:content.render contentUids="{0: settings.element.uid}"/>
+```
+<v:content.render contentUids="{0: settings.element.uid}"/>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -1855,12 +1871,14 @@ We assume that the flux content element has an IRRE file field
 
 The file data can be loaded and displayed with:
 
-    {v:content.resources.fal(field: 'settings.image')
-      -> v:iterator.first()
-      -> v:variable.set(name: 'image')}
-    <f:if condition="{image}">
-      <f:image src="{image.id}"/>
-    </f:if>
+```
+{v:content.resources.fal(field: 'settings.image')
+  -> v:iterator.first()
+  -> v:variable.set(name: 'image')}
+<f:if condition="{image}">
+  <f:image src="{image.id}"/>
+</f:if>
+```
 
 
 ### Image preview in backend
@@ -1868,7 +1886,9 @@ The file data can be loaded and displayed with:
 To load image data for the "Preview" section in the backend's page view,
 you have to pass the `record` attribute:
 
-    {v:content.resources.fal(field: 'settings.image', record: record)}
+```
+{v:content.resources.fal(field: 'settings.image', record: record)}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -1937,13 +1957,21 @@ See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/I
 
 #### Usage examples
 
-    <v:count.bytes>{myString}</v:count.bytes> (output for example `42`
+```
+<v:count.bytes>{myString}</v:count.bytes> (output for example `42`
+```
 
-    {myString -> v:count.bytes()} when used inline
+```
+{myString -> v:count.bytes()} when used inline
+```
 
-    <v:count.bytes string="{myString}" />
+```
+<v:count.bytes string="{myString}" />
+```
 
-    {v:count.bytes(string: myString)}
+```
+{v:count.bytes(string: myString)}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -1968,13 +1996,21 @@ See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/I
 
 #### Usage examples
 
-    <v:count.lines>{myString}</v:count.lines> (output for example `42`
+```
+<v:count.lines>{myString}</v:count.lines> (output for example `42`
+```
 
-    {myString -> v:count.lines()} when used inline
+```
+{myString -> v:count.lines()} when used inline
+```
 
-    <v:count.lines string="{myString}" />
+```
+<v:count.lines string="{myString}" />
+```
 
-    {v:count.lines(string: myString)}
+```
+{v:count.lines(string: myString)}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -1994,13 +2030,21 @@ See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/I
 
 #### Usage examples
 
-    <v:count.substring string="{myString}">{haystack}</v:count.substring> (output for example `2`
+```
+<v:count.substring string="{myString}">{haystack}</v:count.substring> (output for example `2`
+```
 
-    {haystack -> v:count.substring(string: myString)} when used inline
+```
+{haystack -> v:count.substring(string: myString)} when used inline
+```
 
-    <v:count.substring string="{myString}" haystack="{haystack}" />
+```
+<v:count.substring string="{myString}" haystack="{haystack}" />
+```
 
-    {v:count.substring(string: myString, haystack: haystack)}
+```
+{v:count.substring(string: myString, haystack: haystack)}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2025,13 +2069,21 @@ See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/I
 
 #### Usage examples
 
-    <v:count.words>{myString}</v:count.words> (output for example `42`
+```
+<v:count.words>{myString}</v:count.words> (output for example `42`
+```
 
-    {myString -> v:count.words()} when used inline
+```
+{myString -> v:count.words()} when used inline
+```
 
-    <v:count.words string="{myString}" />
+```
+<v:count.words string="{myString}" />
+```
 
-    {v:count.words(string: myString)}
+```
+{v:count.words(string: myString)}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2054,11 +2106,15 @@ structures. Use in conjunction with other ViewHelpers
 to inspect their current and possible arguments and
 render their documentation:
 
-    <v:debug><f:format.html>{variable}</f:format.html></v:debug>
+```
+<v:debug><f:format.html>{variable}</f:format.html></v:debug>
+```
 
 Or the same expression in inline syntax:
 
-    {variable -> f:format.html() -> v:debug()}
+```
+{variable -> f:format.html() -> v:debug()}
+```
 
 Can also be used to inspect `ObjectAccessor` instances
 (e.g. variables you try to access) and rather than just
@@ -2072,18 +2128,22 @@ which have a getter method!) and only present those
 properties which can be accessed, along with the type
 of variable that property currently contains:
 
-    {domainObject -> v:debug()}
+```
+{domainObject -> v:debug()}
+```
 
 Assuming that `{domainObject}` is an instance of an
 object which has two methods: `getUid()` and `getTitle()`,
 debugging that instance will render something like this
 in plain text:
 
-    Path: {domainObject}
-    Value type: object
-    Accessible properties on {domainObject}:
-       {form.uid} (integer)
-       {form.title} (string)
+```
+Path: {domainObject}
+Value type: object
+Accessible properties on {domainObject}:
+   {form.uid} (integer)
+   {form.title} (string)
+```
 
 The class itself can contain any number of protected
 properties, but only those which have a getter method
@@ -2125,11 +2185,15 @@ Condition to check if an extension is loaded.
 
 ### Example:
 
-    {v:extension.loaded(extensionName: 'news', then: 'yes', else: 'no')}
+```
+{v:extension.loaded(extensionName: 'news', then: 'yes', else: 'no')}
+```
 
-    <v:extension.loaded extensionName="news">
-        ...
-    </v:extension.loaded>
+```
+<v:extension.loaded extensionName="news">
+    ...
+</v:extension.loaded>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2268,19 +2332,23 @@ Appends a string after another string. Although this task is very
 easily done in standard Fluid - i.e. {subject}{add} - this
 ViewHelper makes advanced chained inline processing possible:
 
-    <!-- useful when needing to chain string processing. Remove all "foo" and "bar"
-         then add a text containing both "foo" and "bar", then format as HTML -->
-    {text -> v:format.eliminate(strings: 'foo,bar')
-          -> v:format.append(add: ' - my foo and bar are the only ones in this text.')
-          -> f:format.html()}
-    <!-- NOTE: you do not have to break the lines; done here only for presentation purposes -->
+```
+<!-- useful when needing to chain string processing. Remove all "foo" and "bar"
+     then add a text containing both "foo" and "bar", then format as HTML -->
+{text -> v:format.eliminate(strings: 'foo,bar')
+      -> v:format.append(add: ' - my foo and bar are the only ones in this text.')
+      -> f:format.html()}
+<!-- NOTE: you do not have to break the lines; done here only for presentation purposes -->
+```
 
 Makes no sense used as tag based ViewHelper:
 
-    <!-- DO NOT USE - depicts COUNTERPRODUCTIVE usage! -->
-    <v:format.append add="{f:translate(key: 're')}">{subject}</v:format.append>
-    <!-- ... which is the exact same as ... -->
-    <f:translate key="re" />{subject} <!-- OR --> {f:translate(key: 're')}{subject}
+```
+<!-- DO NOT USE - depicts COUNTERPRODUCTIVE usage! -->
+<v:format.append add="{f:translate(key: 're')}">{subject}</v:format.append>
+<!-- ... which is the exact same as ... -->
+<f:translate key="re" />{subject} <!-- OR --> {f:translate(key: 're')}{subject}
+```
 
 In other words: use this only when you do not have the option of
 simply using {subject}{add}, i.e. in complex inline statements used
@@ -2363,9 +2431,11 @@ When used with the "return" attribute and when this attribute is an
 array, the output becomes suitable for consumption by f:translate, v:l
 or f:format.sprintf for example - as the "arguments" attribute:
 
-    <f:translate key="myDateDisplay"
-        arguments="{v:format.dateRange(intervalFormat: 'P3W', return: {0: 'w', 1: 'd'})}"
-    />
+```
+<f:translate key="myDateDisplay"
+    arguments="{v:format.dateRange(intervalFormat: 'P3W', return: {0: 'w', 1: 'd'})}"
+/>
+```
 
 Which if "myDateDisplay" is a string such as "Deadline: %d week(s) and
 %d day(s)" would output a result such as "Deadline: 4 week(s) and 2 day(s)".
@@ -2861,12 +2931,14 @@ Prepends one string on another. Although this task is very
 easily done in standard Fluid - i.e. {add}{subject} - this
 ViewHelper makes advanced chained inline processing possible:
 
-    <!-- Adds 1H to DateTime, formats using timestamp input which requires prepended @ -->
-    {dateTime.timestamp
-        -> v:math.sum(b: 3600)
-        -> v:format.prepend(add: '@')
-        -> v:format.date(format: 'Y-m-d H:i')}
-    <!-- You don't have to break the syntax into lines; done here for display only -->
+```
+<!-- Adds 1H to DateTime, formats using timestamp input which requires prepended @ -->
+{dateTime.timestamp
+    -> v:math.sum(b: 3600)
+    -> v:format.prepend(add: '@')
+    -> v:format.date(format: 'Y-m-d H:i')}
+<!-- You don't have to break the syntax into lines; done here for display only -->
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -3319,55 +3391,69 @@ of the result page. This can be solved.
 
 #### Input from extbase version of indexed_search">
 
-    [
-        0 => [
-            'sword' => 'firstWord',
-            'oper' => 'AND'
-        ],
-        1 => [
-            'sword' => 'secondWord',
-            'oper' => 'AND'
-        ],
-        3 => [
-            'sword' => 'thirdWord',
-            'oper' => 'AND'
-        ]
+```
+[
+    0 => [
+        'sword' => 'firstWord',
+        'oper' => 'AND'
+    ],
+    1 => [
+        'sword' => 'secondWord',
+        'oper' => 'AND'
+    ],
+    3 => [
+        'sword' => 'thirdWord',
+        'oper' => 'AND'
     ]
+]
+```
 
 Show the previous search words in the search form of the
 result page:
 
 #### Example
-    <f:form.textfield name="search[sword]"
-        value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
-        class="tx-indexedsearch-searchbox-sword" />
+
+```
+<f:form.textfield name="search[sword]"
+    value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
+    class="tx-indexedsearch-searchbox-sword" />
+```
 
 #### Get the names of several users
 
 Provided we have a bunch of FrontendUsers and we need to show
 their firstname combined into a string:
 
-    <h2>Welcome
-    <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
-    <!-- alternative: -->
-    {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
-    </h2>
+```
+<h2>Welcome
+<v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
+<!-- alternative: -->
+{frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
+</h2>
+```
 
 #### Output
 
-    <h2>Welcome Peter, Paul, Marry</h2>
+```
+<h2>Welcome Peter, Paul, Marry</h2>
+```
 
 #### Complex example
 
-    {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')
-        -> v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')
-        -> v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
+```
+{anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')
+    -> v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')
+    -> v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
+```
 
 #### Single return value
 
-    Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
-    one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().
-    {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
+Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
+one records. Always extracts the first value and then stops. Equivalent of changing -> v:iterator.first().
+
+```
+{someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -3771,9 +3857,11 @@ is not in $haystack.
 
 Example:
 
-    <f:for each="{array -> v:iterator.push(add: additionalObject, key: 'newkey')}" as="combined">
-    ...
-    </f:for>
+```
+<f:for each="{array -> v:iterator.push(add: additionalObject, key: 'newkey')}" as="combined">
+...
+</f:for>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -3954,9 +4042,11 @@ an Array or a QueryResult (including Lazy counterparts).
 
 Can be used inline, i.e.:
 
-    <f:for each="{dataset -> v:iterator.sort(sortBy: 'name')}" as="item">
-        // iterating data which is ONLY sorted while rendering this particular loop
-    </f:for>
+```
+<f:for each="{dataset -> v:iterator.sort(sortBy: 'name')}" as="item">
+    // iterating data which is ONLY sorted while rendering this particular loop
+</f:for>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -4112,9 +4202,11 @@ easier to identify missing labels when translating.
 
 ### Examples
 
-    <v:l>some.label</v:l>
-    <v:l key="some.label" />
-    <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
+```
+<v:l>some.label</v:l>
+<v:l key="some.label" />
+<v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -5034,7 +5126,9 @@ to use as a fallback to be shown when no srcset functionality is supported.
 
 ### Example
 
-    <v:media.image src="fileadmin/some-image.png" srcset="480,768,992,1200" />
+```
+<v:media.image src="fileadmin/some-image.png" srcset="480,768,992,1200" />
+```
 
 ### Browser Support
 
@@ -5527,12 +5621,14 @@ media breakpoints
 
 ### Example
 
-    <v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
-        <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
-        <v:media.source media="(min-width: 992px)" width="300c" height="300c" />
-        <v:media.source media="(min-width: 768px)" width="200c" height="200c" />
-        <v:media.source width="80c" height="80c" />
-    </v:media.picture>
+```
+<v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
+    <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
+    <v:media.source media="(min-width: 992px)" width="300c" height="300c" />
+    <v:media.source media="(min-width: 768px)" width="200c" height="200c" />
+    <v:media.source width="80c" height="80c" />
+</v:media.picture>
+```
 
 ### Browser Support
 
@@ -8977,8 +9073,10 @@ except for it fetches the title of the provided page UID and inserts
 it as linktext if that is omitted. The link will not render at all
 if the requested page is not translated in the current language.
 
-     Automatic linktext: <v:page.link pageUid="UID" />
-     Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
+```
+Automatic linktext: <v:page.link pageUid="UID" />
+Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -10875,17 +10973,23 @@ For example: `<v:render.character ascii="10" /> renders a UNIX linebreak
 as does {v:render.character(ascii: 10)}. Can be used in combination with
 `v:iterator.loop` to render sequences or repeat the same character:
 
-    {v:render.ascii(ascii: 10) -> v:iterator.loop(count: 5)}
+```
+{v:render.ascii(ascii: 10) -> v:iterator.loop(count: 5)}
+```
 
 And naturally you can feed any integer variable or ViewHelper return value
 into the `ascii` parameter throught `renderChildren` to allow chaining:
 
-    {variableWithAsciiInteger -> v:render.ascii()}
+```
+{variableWithAsciiInteger -> v:render.ascii()}
+```
 
 And arrays are also supported - they will produce a string of characters
 from each number in the array:
 
-    {v:render.ascii(ascii: {0: 13, 1: 10})}
+```
+{v:render.ascii(ascii: {0: 13, 1: 10})}
+```
 
 Will produce a Windows line break, \r\n.
 /]]></xsd:documentation>
@@ -11154,11 +11258,13 @@ paths can be overridden and uses the same format as TS
 settings a' la plugin.tx_myext.view, which means that
 this can be done (from any extension, not just "foo")
 
-    <v:render.template
-     file="EXT:foo/Resources/Private/Templates/Action/Show.html"
-     variables="{object: customLoadedObject}"
-     paths="{v:variable.typoscript(path: 'plugin.tx_foo.view')}"
-     format="xml" />
+```
+<v:render.template
+ file="EXT:foo/Resources/Private/Templates/Action/Show.html"
+ variables="{object: customLoadedObject}"
+ paths="{v:variable.typoscript(path: 'plugin.tx_foo.view')}"
+ format="xml" />
+```
 
 Which would render the "show" action's template from
 EXT:foo using paths define in that extension's typoscript
@@ -11252,7 +11358,9 @@ http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Inde
 
 ### Example
 
-    {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
+```
+{v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -11477,11 +11585,15 @@ but all the translated labels.
 
 ### Examples
 
-    <!-- Tag usage for force getting labels in a specific language (different to current is possible too) -->
-    <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf" languageKey="en"/>
+```
+<!-- Tag usage for force getting labels in a specific language (different to current is possible too) -->
+<v:resource.language extensionName="myext" path="Path/To/Locallang.xlf" languageKey="en"/>
+```
 
-    <!-- Tag usage for getting labels of current language -->
-    <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf"/>
+```
+<!-- Tag usage for getting labels of current language -->
+<v:resource.language extensionName="myext" path="Path/To/Locallang.xlf"/>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -11562,12 +11674,14 @@ records.
 At first, fetch the record and store it in a variable.
 Then use `<f:image>` to render it:
 
-    {v:resource.record.fal(table: 'tx_users', field: 'photo', record: user)
-     -> v:iterator.first()
-     -> v:variable.set(name: 'image')}
-    <f:if condition="{image}">
-      <f:image treatIdAsReference="1" src="{image.id}" title="{image.title}" alt="{image.alternative}"/>
-    </f:if>
+```
+{v:resource.record.fal(table: 'tx_users', field: 'photo', record: user)
+ -> v:iterator.first()
+ -> v:variable.set(name: 'image')}
+<f:if condition="{image}">
+  <f:image treatIdAsReference="1" src="{image.id}" title="{image.title}" alt="{image.alternative}"/>
+</f:if>
+```
 
 Use the `uid` attribute if you don't have a `record`.
 /]]></xsd:documentation>
@@ -11619,10 +11733,12 @@ this behaviour to invert the access (i.e. use f:else in a check
 if a frontend user is logged in, if you want to hide content
 from authenticated users):
 
-    <v:security.allow anyFrontendUser="TRUE">
-        <f:then><!-- protected information displayed --></f:then>
-        <f:else><!-- link to login form displayed --></f:else>
-    </v:security.allow>
+```
+<v:security.allow anyFrontendUser="TRUE">
+    <f:then><!-- protected information displayed --></f:then>
+    <f:else><!-- link to login form displayed --></f:else>
+</v:security.allow>
+```
 
 Is the mirror opposite of `v:security.deny`.
 /]]></xsd:documentation>
@@ -11847,8 +11963,10 @@ Returns the current system UNIX timestamp as DateTime.
 Returns the current system UNIX timestamp as integer.
 Useful combined with the Math group of ViewHelpers:
 
-    <!-- adds exactly one hour to a DateTime and formats it -->
-    <f:format.date format="H:i">{dateTime.timestamp -> v:math.sum(b: 3600)}</f:format.date>
+```
+<!-- adds exactly one hour to a DateTime and formats it -->
+<f:format.date format="H:i">{dateTime.timestamp -> v:math.sum(b: 3600)}</f:format.date>
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -12043,43 +12161,49 @@ The example is theoretical in one major aspect: v:format.json.decode
 throws an Exception which Fluid displays as a string always - abstract
 from this and imagine that a plain Exception happens on errors.
 
-    <v:try>
-        <!-- assume that the variable {badJson} contains the string "DontDecodeMe"
-             which if course is invalid JSON and cannot be decoded. The default
-             behavior is to simply output a simple "cannot decode" string. -->
-        <v:variable.set name="decodedBadJson" value="{badJson -> v:format.json.decode()}" />
-        Displayed only if the JSON decode worked. Much more code and many more
-        ViewHelpers can go here. Now, imagine that this block spans so much code
-        that potentially there could come an Exception from many additional places
-        (for example from Widgets) and you cannot be sure where the Exception comes
-        from but still want to tell the user what exactly went wrong and provide
-        an error code which makes sense to send to developers if problems persist:
-        <f:else>
-            <h4>
-                Error in "{exception.trace.0.class
-                    -> v:iterator.explode(glue: '_')
-                    -> v:iterator.pop()
-                    -> v:format.replace(substring: 'ViewHelper', replacement: ''}"
-                <small>{exception.code}</small>
-                <!-- Output example: "Error in Decode <small>1358440054</small>" -->
-            </h4>
-            <p>
-                {exception.message}
-                <!-- Output example: "The provided argument is invalid JSON" -->
-            </p>
-            <pre>
-                Value: ``{exception.trace.0.args.0}
-                <!-- Output example: "Value: ``DontDecodeMe" which is quite nice
-                     for developers to know as part of a bug report from users. -->
-            </pre>
-        </f:else>
-    </v:try>
-    ...or if you want a shorter version...
-    <!-- Tries to encode an object, if it fails, falls back by returning a proper JSON
-         value, thus preventing breakage by the JSON consumer whatever it may be. -->
-    {v:try(then: '{badObject -> v:format.json.encode()}', else: '{"validJson": "validValue"')}
-    <!-- Note: be VERY careful about the inline JSON syntax! It's very close to Fluids. Always
-         double quote your object variables' names, that prevents almost all issues! -->
+```
+<v:try>
+    <!-- assume that the variable {badJson} contains the string "DontDecodeMe"
+         which if course is invalid JSON and cannot be decoded. The default
+         behavior is to simply output a simple "cannot decode" string. -->
+    <v:variable.set name="decodedBadJson" value="{badJson -> v:format.json.decode()}" />
+    Displayed only if the JSON decode worked. Much more code and many more
+    ViewHelpers can go here. Now, imagine that this block spans so much code
+    that potentially there could come an Exception from many additional places
+    (for example from Widgets) and you cannot be sure where the Exception comes
+    from but still want to tell the user what exactly went wrong and provide
+    an error code which makes sense to send to developers if problems persist:
+    <f:else>
+        <h4>
+            Error in "{exception.trace.0.class
+                -> v:iterator.explode(glue: '_')
+                -> v:iterator.pop()
+                -> v:format.replace(substring: 'ViewHelper', replacement: ''}"
+            <small>{exception.code}</small>
+            <!-- Output example: "Error in Decode <small>1358440054</small>" -->
+        </h4>
+        <p>
+            {exception.message}
+            <!-- Output example: "The provided argument is invalid JSON" -->
+        </p>
+        <pre>
+            Value: ``{exception.trace.0.args.0}
+            <!-- Output example: "Value: ``DontDecodeMe" which is quite nice
+                 for developers to know as part of a bug report from users. -->
+        </pre>
+    </f:else>
+</v:try>
+```
+
+...or if you want a shorter version...
+
+```
+<!-- Tries to encode an object, if it fails, falls back by returning a proper JSON
+     value, thus preventing breakage by the JSON consumer whatever it may be. -->
+{v:try(then: '{badObject -> v:format.json.encode()}', else: '{"validJson": "validValue"')}
+<!-- Note: be VERY careful about the inline JSON syntax! It's very close to Fluids. Always
+     double quote your object variables' names, that prevents almost all issues! -->
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -12102,27 +12226,33 @@ Related to `v:or` but allows more complex conditions.
 
 Is the same as writing:
 
-    <f:if condition="{theThingToCheck}">
-        <f:else>
-            The thing that gets done
-        </f:else>
-    </f:if>
+```
+<f:if condition="{theThingToCheck}">
+    <f:else>
+        The thing that gets done
+    </f:else>
+</f:if>
+```
 
 Except without the `f:else`.
 
 #### Example, tag mode
 
-    <v:unless condition="{somethingRequired}">
-        Warning! Something required was not present.
-    </v:unless>
+```
+<v:unless condition="{somethingRequired}">
+    Warning! Something required was not present.
+</v:unless>
+```
 
 #### Example, inline mode illustrating `v:or` likeness
 
-    {defaultText -> v:unless(condition: originalText)}
-        // which is much the same as...
-    {originalText -> v:or(alternative: defaultText}
-        // ...but the "unless" counterpart supports anything as
-        // condition instead of only checking "is content empty?"
+```
+{defaultText -> v:unless(condition: originalText)}
+    // which is much the same as...
+{originalText -> v:or(alternative: defaultText}
+    // ...but the "unless" counterpart supports anything as
+    // condition instead of only checking "is content empty?"
+```
 
 /]]></xsd:documentation>
     </xsd:annotation>
@@ -12345,7 +12475,9 @@ Reads settings from ext_conf_template.txt
 
 ### Examples
 
-    {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
+```
+{v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
+```
 
 Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt`.
 /]]></xsd:documentation>
@@ -12373,16 +12505,20 @@ Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt
 ViewHelper used to read the value of a current template
 variable. Can be used with dynamic indices in arrays:
 
-    <v:variable.get name="array.{dynamicIndex}" />
-    <v:variable.get name="array.{v:variable.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
-    <f:for each="{v:variable.get(name: 'object.arrayProperty.{dynamicIndex}')}" as="nestedObject">
-        ...
-    </f:for>
+```
+<v:variable.get name="array.{dynamicIndex}" />
+<v:variable.get name="array.{v:variable.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
+<f:for each="{v:variable.get(name: 'object.arrayProperty.{dynamicIndex}')}" as="nestedObject">
+    ...
+</f:for>
+```
 
 Or to read names of variables which contain dynamic parts:
 
-    <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
-    {v:variable.get(name: 'dynamic{variableName}')}
+```
+<!-- if {variableName} is "Name", outputs value of {dynamicName} -->
+{v:variable.get(name: 'dynamic{variableName}')}
+```
 
 If your target object is an array with unsequential yet
 numeric indices (e.g. {123: 'value1', 513: 'value2'},
@@ -12459,8 +12595,10 @@ Implementation of `preg_match' for Fluid.
 ViewHelper used to read the value of a TSFE-register
 Can be used to read names of variables which contain dynamic parts:
 
-    <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
-    {v:variable.register.get(name: 'dynamic{variableName}')}
+```
+<!-- if {variableName} is "Name", outputs value of {dynamicName} -->
+{v:variable.register.get(name: 'dynamic{variableName}')}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -12510,9 +12648,11 @@ scope. The variable then becomes accessible as {var}.
 Combines well with `v:variable.get` to set shorter variable
 names referencing dynamic variables, such as:
 
-    <v:variable.set name="myObject" value="{v:variable.get(name: 'arrayVariable.{offset}')}" />
-    <!-- If {index} == 4 then {myObject} is now == {arrayVariable.4} -->
-    {myObject.name} <!-- corresponds to {arrayVariable.4.name} -->
+```
+<v:variable.set name="myObject" value="{v:variable.get(name: 'arrayVariable.{offset}')}" />
+<!-- If {index} == 4 then {myObject} is now == {arrayVariable.4} -->
+{myObject.name} <!-- corresponds to {arrayVariable.4.name} -->
+```
 
 Note that `{arrayVariable.{offset}.name}` is not possible
 due to the way Fluid parses nodes; the above piece of
@@ -12581,15 +12721,21 @@ and even various `wrap` definitions.
 A quick example of how to parse a `wrap` TypoScript setting
 into two variables usable for a menu item:
 
-    <!-- This piece to be added as far up as possible in order to prevent multiple executions -->
-    <v:variable.set name="menuSettings" value="{v:variable.typoscript(path: 'lib.menu.main.stdWrap')}" />
-    <v:variable.set name="wrap" value="{menuSettings.wrap -> v:iterator.explode(glue: '|')}" />
+```
+<!-- This piece to be added as far up as possible in order to prevent multiple executions -->
+<v:variable.set name="menuSettings" value="{v:variable.typoscript(path: 'lib.menu.main.stdWrap')}" />
+<v:variable.set name="wrap" value="{menuSettings.wrap -> v:iterator.explode(glue: '|')}" />
+```
 
-    <!-- This in the loop which renders the menu (see "VHS: manual menu rendering" in FAQ): -->
-    {wrap.0}{menuItem.title}{wrap.1}
+```
+<!-- This in the loop which renders the menu (see "VHS: manual menu rendering" in FAQ): -->
+{wrap.0}{menuItem.title}{wrap.1}
+```
 
-    <!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
-    {wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}
+```
+<!-- An additional example to demonstrate very compact conditions which prevent wraps from being displayed -->
+{wrap.0 -> f:if(condition: settings.wrapBefore)}{menuItem.title}{wrap.1 -> f:if(condition: settings.wrapAfter)}
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -12610,21 +12756,25 @@ into two variables usable for a menu item:
 Quite simply, removes a currently available variable
 from the TemplateVariableContainer:
 
-    <!-- Data: {person: {name: 'Elvis', nick: 'King'}} -->
-    I'm {person.name}. Call me "{person.nick}". A ding-dang doo!
-    <v:variable.unset name="person" />
-    <f:if condition="{person}">
-        <f:else>
-            You saw this coming...
-            <em>Elvis has left the building</em>
-        </f:else>
-    </f:if>
+```
+<!-- Data: {person: {name: 'Elvis', nick: 'King'}} -->
+I'm {person.name}. Call me "{person.nick}". A ding-dang doo!
+<v:variable.unset name="person" />
+<f:if condition="{person}">
+    <f:else>
+        You saw this coming...
+        <em>Elvis has left the building</em>
+    </f:else>
+</f:if>
+```
 
 At the time of writing this, `v:variable.unset` is not able
 to remove members of for example arrays:
 
-    <!-- DOES NOT WORK! -->
-    <v:variable.unset name="myObject.propertyName" />
+```
+<!-- DOES NOT WORK! -->
+<v:variable.unset name="myObject.propertyName" />
+```
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
