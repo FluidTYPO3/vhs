@@ -23,6 +23,8 @@ of the result page. This can be solved.
 Input from extbase version of indexed_search">
 ----------------------------------------------
 
+::
+
     [
         0 => [
             'sword' => 'firstWord',
@@ -43,6 +45,9 @@ result page:
 
 Example
 -------
+
+::
+
     <f:form.textfield name="search[sword]"
         value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
         class="tx-indexedsearch-searchbox-sword" />
@@ -53,6 +58,8 @@ Get the names of several users
 Provided we have a bunch of FrontendUsers and we need to show
 their firstname combined into a string:
 
+::
+
     <h2>Welcome
     <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
     <!-- alternative: -->
@@ -62,10 +69,14 @@ their firstname combined into a string:
 Output
 ------
 
+::
+
     <h2>Welcome Peter, Paul, Marry</h2>
 
 Complex example
 ---------------
+
+::
 
     {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')
         -> v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')
@@ -74,8 +85,11 @@ Complex example
 Single return value
 -------------------
 
-    Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
-    one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().
+Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
+one records. Always extracts the first value and then stops. Equivalent of changing -> v:iterator.first().
+
+::
+
     {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
 
 Arguments

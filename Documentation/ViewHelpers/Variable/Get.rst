@@ -13,6 +13,8 @@ Variable: Get
 ViewHelper used to read the value of a current template
 variable. Can be used with dynamic indices in arrays:
 
+::
+
     <v:variable.get name="array.{dynamicIndex}" />
     <v:variable.get name="array.{v:variable.get(name: 'arrayOfSelectedKeys.{indexInArray}')}" />
     <f:for each="{v:variable.get(name: 'object.arrayProperty.{dynamicIndex}')}" as="nestedObject">
@@ -20,6 +22,8 @@ variable. Can be used with dynamic indices in arrays:
     </f:for>
 
 Or to read names of variables which contain dynamic parts:
+
+::
 
     <!-- if {variableName} is "Name", outputs value of {dynamicName} -->
     {v:variable.get(name: 'dynamic{variableName}')}

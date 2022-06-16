@@ -17,6 +17,8 @@ will still return TRUE if the variable exists.
 
 Combines well with dynamic variable names:
 
+::
+
     <!-- if {variableContainingVariableName} is "foo" this checks existence of {foo} -->
     <v:condition.variable.isset name="{variableContainingVariableName}">...</v:condition.variable.isset>
     <!-- if {suffix} is "Name" this checks existence of "variableName" -->

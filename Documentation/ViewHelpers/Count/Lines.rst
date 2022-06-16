@@ -12,11 +12,19 @@ Counts number of lines in a string.
 Usage examples
 --------------
 
+::
+
     <v:count.lines>{myString}</v:count.lines> (output for example `42`
+
+::
 
     {myString -> v:count.lines()} when used inline
 
+::
+
     <v:count.lines string="{myString}" />
+
+::
 
     {v:count.lines(string: myString)}
 

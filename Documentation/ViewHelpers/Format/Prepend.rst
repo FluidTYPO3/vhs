@@ -14,6 +14,8 @@ Prepends one string on another. Although this task is very
 easily done in standard Fluid - i.e. {add}{subject} - this
 ViewHelper makes advanced chained inline processing possible:
 
+::
+
     <!-- Adds 1H to DateTime, formats using timestamp input which requires prepended @ -->
     {dateTime.timestamp
         -> v:math.sum(b: 3600)

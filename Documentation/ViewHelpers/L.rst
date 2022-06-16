@@ -19,6 +19,8 @@ easier to identify missing labels when translating.
 Examples
 ========
 
+::
+
     <v:l>some.label</v:l>
     <v:l key="some.label" />
     <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>

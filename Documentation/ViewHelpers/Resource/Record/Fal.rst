@@ -22,6 +22,8 @@ records.
 At first, fetch the record and store it in a variable.
 Then use `<f:image>` to render it:
 
+::
+
     {v:resource.record.fal(table: 'tx_users', field: 'photo', record: user)
      -> v:iterator.first()
      -> v:variable.set(name: 'image')}

@@ -17,6 +17,8 @@ We assume that the flux content element has an IRRE file field
 
 The file data can be loaded and displayed with:
 
+::
+
     {v:content.resources.fal(field: 'settings.image')
       -> v:iterator.first()
       -> v:variable.set(name: 'image')}
@@ -30,6 +32,8 @@ Image preview in backend
 
 To load image data for the "Preview" section in the backend's page view,
 you have to pass the `record` attribute:
+
+::
 
     {v:content.resources.fal(field: 'settings.image', record: record)}
 

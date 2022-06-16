@@ -15,8 +15,12 @@ but all the translated labels.
 Examples
 ========
 
+::
+
     <!-- Tag usage for force getting labels in a specific language (different to current is possible too) -->
     <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf" languageKey="en"/>
+
+::
 
     <!-- Tag usage for getting labels of current language -->
     <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf"/>

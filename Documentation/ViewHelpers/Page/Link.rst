@@ -17,8 +17,10 @@ except for it fetches the title of the provided page UID and inserts
 it as linktext if that is omitted. The link will not render at all
 if the requested page is not translated in the current language.
 
-     Automatic linktext: <v:page.link pageUid="UID" />
-     Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
+::
+
+    Automatic linktext: <v:page.link pageUid="UID" />
+    Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
 
 Arguments
 =========

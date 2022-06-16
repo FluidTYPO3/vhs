@@ -16,6 +16,8 @@ http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Inde
 Example
 =======
 
+::
+
     {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
 
 Arguments

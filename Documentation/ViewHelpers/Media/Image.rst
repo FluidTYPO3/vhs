@@ -22,6 +22,8 @@ to use as a fallback to be shown when no srcset functionality is supported.
 Example
 =======
 
+::
+
     <v:media.image src="fileadmin/some-image.png" srcset="480,768,992,1200" />
 
 Browser Support

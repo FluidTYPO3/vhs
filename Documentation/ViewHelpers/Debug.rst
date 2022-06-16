@@ -15,9 +15,13 @@ structures. Use in conjunction with other ViewHelpers
 to inspect their current and possible arguments and
 render their documentation:
 
+::
+
     <v:debug><f:format.html>{variable}</f:format.html></v:debug>
 
 Or the same expression in inline syntax:
+
+::
 
     {variable -> f:format.html() -> v:debug()}
 
@@ -33,12 +37,16 @@ which have a getter method!) and only present those
 properties which can be accessed, along with the type
 of variable that property currently contains:
 
+::
+
     {domainObject -> v:debug()}
 
 Assuming that `{domainObject}` is an instance of an
 object which has two methods: `getUid()` and `getTitle()`,
 debugging that instance will render something like this
 in plain text:
+
+::
 
     Path: {domainObject}
     Value type: object
