@@ -1,14 +1,25 @@
 .. include:: /Includes.rst.txt
 
-.. _view-helpers:
+==============
+fluidtypo3/vhs
+==============
 
-ViewHelpers
-===========
-
-This is the complete compendium of ViewHelpers that ship with this extension:
+* 10 ViewHelpers documented
+* 22 Sub namespaces
 
 .. toctree::
    :titlesonly:
    :glob:
 
-   **/*
+   */Index
+   Asset
+   Call
+   Const
+   Debug
+   L
+   Menu
+   Or
+   Tag
+   Try
+   Unless
+
