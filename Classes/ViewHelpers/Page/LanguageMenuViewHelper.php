@@ -224,7 +224,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             'altText' => $label,
             'titleText' => $label
         ];
-        return $this->cObj->render($this->cObj->getContentObject('IMAGE'), $conf);
+        
+        if (file_exists($conf['file'])){
+            return $this->cObj->render($this->cObj->getContentObject('IMAGE'), $conf);
+        }
+        return '';
     }
 
     /**
@@ -361,7 +365,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Get the list of languages from the sys_language table
-     * 
+     *
      * @param array $limitLanguages
      * @return array
      */
@@ -394,7 +398,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Get the list of languages from the site configuration
-     * 
+     *
      * @param array $limitLanguages
      * @return array
      */
@@ -473,7 +477,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Find the site corresponding to the page that the menu is being rendered for
-     * 
+     *
      * @return Site|\TYPO3\CMS\Core\Site\Entity\Site
      */
     protected function getSite()
