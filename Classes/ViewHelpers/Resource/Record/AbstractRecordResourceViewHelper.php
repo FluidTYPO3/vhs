@@ -170,7 +170,8 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         if (class_exists('\\TYPO3\\CMS\\Frontend\\Aspect\\PreviewAspect')) {
             //TYPO3 version >= 10
-            $fePreview = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.preview', 'isPreview');
+            $context = GeneralUtility::makeInstance(Context::class);
+            $fePreview = ($context->hasAspect('frontend.preview')) ? $context->getPropertyFromAspect('frontend.preview', 'isPreview') : false;
         } else {
             $fePreview = (bool)(isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fePreview);
         }
