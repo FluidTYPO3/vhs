@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -32,6 +33,6 @@ class IsProductionViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return GeneralUtility::getApplicationContext()->isProduction();
+        return (class_exists(Environment::class) ? Environment::getContext()->isProduction() : GeneralUtility::getApplicationContext()->isProduction());
     }
 }
