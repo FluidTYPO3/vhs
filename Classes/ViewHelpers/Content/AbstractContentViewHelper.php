@@ -219,7 +219,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected static function renderRecord(array $row)
     {
-        if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
+        if (!empty($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) && 0 < ($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']])) {
             return null;
         }
         $conf = [
@@ -230,7 +230,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $parent = $GLOBALS['TSFE']->currentRecord;
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It's should not be allowed to do this again then!!
-        if (false === empty($parent)) {
+        if (false === empty($parent) && !empty($GLOBALS['TSFE']->recordRegister[$parent])) {
             ++$GLOBALS['TSFE']->recordRegister[$parent];
         }
         $html = $GLOBALS['TSFE']->cObj->cObjGetSingle('RECORDS', $conf);

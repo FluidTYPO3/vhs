@@ -269,7 +269,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $this->unsetDeferredVariableStorage();
         } else {
             $content = $this->renderChildren();
-            if (0 < mb_strlen(trim($content))) {
+            if ($content !== null && 0 < mb_strlen(trim($content))) {
                 $output = $content;
             } elseif ((boolean) $this->arguments['hideIfEmpty'] === true) {
                 $output = '';
@@ -297,7 +297,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $itemsRendered = 0;
         $numberOfItems = count($menu);
         foreach ($menu as $page) {
-            if ($page['current'] && !$showCurrent) {
+            if (!empty($page['current']) && !$showCurrent) {
                 continue;
             }
             $class = (trim($page['class']) !== '') ? ' class="' . trim($page['class']) . '"' : '';
@@ -306,7 +306,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                 $html[] = '<' . $tagName . $elementId . $class . '>';
             }
             $html[] = $this->renderItemLink($page);
-            if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $levels) {
+            if ((!empty($page['active']) || $expandAll) && !empty($page['hasSubPages']) && $level < $levels) {
                 $subPages = $this->getMenu($page['uid']);
                 $subMenu = $this->parseMenu($subPages);
                 if (0 < count($subMenu)) {
@@ -352,11 +352,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     protected function renderItemLink(array $page)
     {
         $isSpacer = ($page['doktype'] === $this->pageService->readPageRepositoryConstant('DOKTYPE_SPACER'));
-        $isCurrent = (boolean) $page['current'];
-        $isActive = (boolean) $page['active'];
-        $linkCurrent = (boolean) $this->arguments['linkCurrent'];
-        $linkActive = (boolean) $this->arguments['linkActive'];
-        $includeAnchorTitle = (boolean) $this->arguments['includeAnchorTitle'];
+        $isCurrent = !empty($page['current']);
+        $isActive = !empty($page['active']);
+        $linkCurrent = !empty($this->arguments['linkCurrent']);
+        $linkActive = !empty($this->arguments['linkActive']);
+        $includeAnchorTitle = !empty($this->arguments['includeAnchorTitle']);
         $target = (!empty($page['target'])) ? ' target="' . $page['target'] . '"' : '';
         $class = (trim($page['class']) !== '') ? ' class="' . trim($page['class']) . '"' : '';
         if ($isSpacer || ($isCurrent && !$linkCurrent) || ($isActive && !$linkActive)) {
