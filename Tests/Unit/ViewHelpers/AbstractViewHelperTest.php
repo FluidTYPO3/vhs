@@ -18,14 +18,15 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
-use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 
 /**
  * Class AbstractViewHelperTest
@@ -128,16 +129,16 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
         if (method_exists($this->renderingContext, 'getVariableProvider')) {
             $this->renderingContext->getVariableProvider()->setSource($variables);
         } else {
-            /** @var TemplateVariableContainer $container */
-            $container = $this->objectManager->get(TemplateVariableContainer::class);
+            /** @var StandardVariableProvider $container */
+            $container = $this->objectManager->get(StandardVariableProvider::class);
             if (0 < count($variables)) {
                 ObjectAccess::setProperty($container, 'variables', $variables, true);
             }
             ObjectAccess::setProperty($this->renderingContext, 'templateVariableContainer', $container, true);
         }
 
-        /** @var ViewHelperVariableContainer $viewHelperContainer */
-        $viewHelperContainer = $this->objectManager->get(ViewHelperVariableContainer::class);
+        /** @var StandardVariableProvider $viewHelperContainer */
+        $viewHelperContainer = $this->objectManager->get(StandardVariableProvider::class);
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         /** @var Request $request */
@@ -227,10 +228,8 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
         $instance->setRenderChildrenClosure(function() use ($instance, $nodeValue, $context) {
             if (method_exists($instance, 'setChildNodes')
                 && (
-                    $nodeValue instanceof \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode
-                    || $nodeValue instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode
-                    || $nodeValue instanceof \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface
-                    || $nodeValue instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface
+                    $nodeValue instanceof ObjectAccessorNode
+                    || $nodeValue instanceof NodeInterface
                 )
             ) {
                 $instance->setChildNodes([$nodeValue]);
@@ -248,30 +247,20 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
      */
     protected function createViewHelperNode($instance, array $arguments)
     {
-        if (!$this->usesLegacyFluidVersion()) {
-            $node = $this->getMockBuilder(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class)
-                ->setMethods(['getChildNodes', 'getUninitializedViewHelper'])
-                ->disableOriginalConstructor()
-                ->getMock();
-        } else {
-            $node = $this->getMockBuilder(ViewHelperNode::class)
-                ->setMethods(['getChildNodes', 'getUninitializedViewHelper'])
-                ->setConstructorArgs([$instance, $arguments])
-                ->getMock();
-        }
+        $node = $this->getMockBuilder(ViewHelperNode::class)
+            ->setMethods(['getChildNodes', 'getUninitializedViewHelper'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $node->expects($this->any())->method('getUninitializedViewHelper')->willReturn($instance);
         return $node;
     }
 
     /**
      * @param string $accessor
-     * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode|\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode
+     * @return ObjectAccessorNode
      */
     protected function createObjectAccessorNode($accessor) {
-        if (!$this->usesLegacyFluidVersion()) {
-            return new \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode($accessor);
-        }
-        return new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode($accessor);
+        return new ObjectAccessorNode($accessor);
     }
 
     /**
@@ -280,18 +269,6 @@ abstract class AbstractViewHelperTest extends AbstractTestCase
      */
     protected function expectViewHelperException($message = null, $code = null)
     {
-        if ($this->usesLegacyFluidVersion()) {
-            $this->setExpectedException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class, $message, $code);
-        } else {
-            $this->setExpectedException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class, $message, $code);
-        }
-    }
-
-    /**
-     * @return boolean
-     */
-    protected function usesLegacyFluidVersion()
-    {
-        return version_compare(TYPO3_version, '8.0', '<');
+        $this->setExpectedException(Exception::class, $message, $code);
     }
 }

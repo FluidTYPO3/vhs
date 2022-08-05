@@ -2,3 +2,4 @@ vendor
 .idea
 composer.lock
 /build
+/Documentation-GENERATED-temp/

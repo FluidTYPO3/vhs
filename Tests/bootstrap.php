@@ -30,4 +30,11 @@ $autoloader = require __DIR__ . '/../vendor/autoload.php';
     ]
 );
 
-ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED);
+$forceErrorMode = getenv('FORCE_ERROR_MODE');
+if ((string)$forceErrorMode === '') {
+    $errorMode = E_ERROR | E_WARNING | E_PARSE;
+} else {
+    $errorMode = (int)$forceErrorMode;
+}
+
+ini_set('error_reporting', $errorMode);

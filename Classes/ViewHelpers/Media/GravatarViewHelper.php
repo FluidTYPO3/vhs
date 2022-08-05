@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders Gravatar <img/> tag.
@@ -76,7 +76,7 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
         $maximumRating = $this->checkArgument('maximumRating');
         $secure = (boolean) $this->arguments['secure'];
 
-        $url = (true === $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL);
+        $url = (true === $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL);
         $url .= md5(strtolower(trim($email)));
         $query = http_build_query(['s' => $size, 'd' => $imageSet, 'r' => $maximumRating]);
         $url .= (false === empty($query) ? '?' . $query : '');

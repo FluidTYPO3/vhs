@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders HTML code to embed a Spotify play button.
@@ -95,7 +95,7 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
             $height = 80;
         }
 
-        $src = self::SPOTIFY_BASEURL . '?uri=' . $spotifyUri . '&theme=' . $theme . '&view=' . $view;
+        $src = static::SPOTIFY_BASEURL . '?uri=' . $spotifyUri . '&theme=' . $theme . '&view=' . $view;
 
         $this->tag->forceClosingTag(true);
         $this->tag->addAttribute('src', $src);

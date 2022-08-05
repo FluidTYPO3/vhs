@@ -9,9 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -19,7 +18,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Implementation of `preg_match' for Fluid.
  */
-class PregMatchViewHelper extends AbstractViewHelper implements CompilableInterface
+class PregMatchViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
@@ -41,7 +40,7 @@ class PregMatchViewHelper extends AbstractViewHelper implements CompilableInterf
     {
         $this->registerAsArgument();
         $this->registerArgument('pattern', 'mixed', 'Regex pattern to match against', true);
-        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern', true);
+        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern', false);
         $this->registerArgument('global', 'boolean', 'Match global', false, false);
     }
 

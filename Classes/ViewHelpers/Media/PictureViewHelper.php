@@ -9,9 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders a picture element with different images/sources for specific
@@ -19,12 +19,14 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
  *
  * ### Example
  *
- *     <v:media.picture src="fileadmin/some-image.png" alt="Some Image">
- *         <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
- *         <v:media.source media="(min-width: 992px)" width="300c" height="300c" />
- *         <v:media.source media="(min-width: 768px)" width="200c" height="200c" />
- *         <v:media.source width="80c" height="80c" />
- *     </v:media.picture>
+ * ```
+ * <v:media.picture src="fileadmin/some-image.png" alt="Some Image" loading="lazy">
+ *     <v:media.source media="(min-width: 1200px)" width="500c" height="500c" />
+ *     <v:media.source media="(min-width: 992px)" width="300c" height="300c" />
+ *     <v:media.source media="(min-width: 768px)" width="200c" height="200c" />
+ *     <v:media.source width="80c" height="80c" />
+ * </v:media.picture>
+ * ```
  *
  * ### Browser Support
  *
@@ -66,6 +68,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('alt', 'string', 'Text for the alt attribute.', true);
         $this->registerArgument('title', 'string', 'Text for the title attribute.');
         $this->registerArgument('class', 'string', 'CSS class(es) to set.');
+        $this->registerArgument('loading', 'string', 'Native lazy-loading for images. Can be "lazy", "eager" or "auto"', false);
     }
 
     /**
@@ -82,21 +85,21 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
             $treatIdAsReference = true;
         }
 
-        $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_SRC, $src);
-        $this->viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_ID, $treatIdAsReference);
+        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
+        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
         $content = $this->renderChildren();
-        $this->viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_SRC);
-        $this->viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_ID);
+        $this->renderingContext->getViewHelperVariableContainer()->remove(static::SCOPE, static::SCOPE_VARIABLE_SRC);
+        $this->renderingContext->getViewHelperVariableContainer()->remove(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
-        if (false === $this->viewHelperVariableContainer->exists(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
+        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
             throw new Exception('Please add a source without a media query as a default.', 1438116616);
         }
-        $defaultSource = $this->viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE);
+        $defaultSource = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
 
         $defaultImage = new TagBuilder('img');
         $defaultImage->addAttribute('src', $defaultSource);
         $defaultImage->addAttribute('alt', $this->arguments['alt']);
-        
+
         if (false === empty($this->arguments['class'])) {
             $defaultImage->addAttribute('class', $this->arguments['class']);
         }
@@ -104,6 +107,11 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         if (false === empty($this->arguments['title'])) {
             $defaultImage->addAttribute('title', $this->arguments['title']);
         }
+
+        if (in_array($this->arguments['loading'] ?? '', ['lazy', 'eager', 'auto'], true)) {
+            $defaultImage->addAttribute('loading', $this->arguments['loading']);
+        }
+
         $content .= $defaultImage->render();
 
         $this->tag->setContent($content);

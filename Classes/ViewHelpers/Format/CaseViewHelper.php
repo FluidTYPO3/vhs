@@ -10,8 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -58,34 +58,34 @@ class CaseViewHelper extends AbstractViewHelper
         }
 
         switch ($case) {
-            case self::CASE_LOWER:
+            case static::CASE_LOWER:
                 $string = mb_strtolower($string);
                 break;
-            case self::CASE_UPPER:
+            case static::CASE_UPPER:
                 $string = mb_strtoupper($string);
                 break;
-            case self::CASE_UCWORDS:
+            case static::CASE_UCWORDS:
                 $string = ucwords($string);
                 break;
-            case self::CASE_UCFIRST:
+            case static::CASE_UCFIRST:
                 $firstChar = mb_substr($string, 0, 1);
                 $firstChar = mb_strtoupper($firstChar);
                 $remainder = mb_substr($string, 1, null);
                 $string = $firstChar . $remainder;
                 break;
-            case self::CASE_LCFIRST:
+            case static::CASE_LCFIRST:
                 $firstChar = mb_substr($string, 0, 1);
                 $firstChar = mb_strtolower($firstChar);
                 $remainder = mb_substr($string, 1, null);
                 $string = $firstChar . $remainder;
                 break;
-            case self::CASE_CAMELCASE:
+            case static::CASE_CAMELCASE:
                 $string = GeneralUtility::underscoredToUpperCamelCase($string);
                 break;
-            case self::CASE_LOWERCAMELCASE:
+            case static::CASE_LOWERCAMELCASE:
                 $string = GeneralUtility::underscoredToLowerCamelCase($string);
                 break;
-            case self::CASE_UNDERSCORED:
+            case static::CASE_UNDERSCORED:
                 $string = GeneralUtility::camelCaseToLowerCaseUnderscored($string);
                 break;
             default:

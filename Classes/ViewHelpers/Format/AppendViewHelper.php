@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -19,19 +19,23 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * easily done in standard Fluid - i.e. {subject}{add} - this
  * ViewHelper makes advanced chained inline processing possible:
  *
- *     <!-- useful when needing to chain string processing. Remove all "foo" and "bar"
- *          then add a text containing both "foo" and "bar", then format as HTML -->
- *     {text -> v:format.eliminate(strings: 'foo,bar')
- *           -> v:format.append(add: ' - my foo and bar are the only ones in this text.')
- *           -> f:format.html()}
- *     <!-- NOTE: you do not have to break the lines; done here only for presentation purposes -->
+ * ```
+ * <!-- useful when needing to chain string processing. Remove all "foo" and "bar"
+ *      then add a text containing both "foo" and "bar", then format as HTML -->
+ * {text -> v:format.eliminate(strings: 'foo,bar')
+ *       -> v:format.append(add: ' - my foo and bar are the only ones in this text.')
+ *       -> f:format.html()}
+ * <!-- NOTE: you do not have to break the lines; done here only for presentation purposes -->
+ * ```
  *
  * Makes no sense used as tag based ViewHelper:
  *
- *     <!-- DO NOT USE - depicts COUNTERPRODUCTIVE usage! -->
- *     <v:format.append add="{f:translate(key: 're')}">{subject}</v:format.append>
- *     <!-- ... which is the exact same as ... -->
- *     <f:translate key="re" />{subject} <!-- OR --> {f:translate(key: 're')}{subject}
+ * ```
+ * <!-- DO NOT USE - depicts COUNTERPRODUCTIVE usage! -->
+ * <v:format.append add="{f:translate(key: 're')}">{subject}</v:format.append>
+ * <!-- ... which is the exact same as ... -->
+ * <f:translate key="re" />{subject} <!-- OR --> {f:translate(key: 're')}{subject}
+ * ```
  *
  * In other words: use this only when you do not have the option of
  * simply using {subject}{add}, i.e. in complex inline statements used

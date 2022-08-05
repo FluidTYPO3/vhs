@@ -13,10 +13,9 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as LegacyFluidObjectAccessorNode;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as LegacyFluidViewHelperNode;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as StandaloneFluidObjectAccessorNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as StandaloneFluidViewHelperNode;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### ViewHelper Debug ViewHelper (sic)
@@ -26,11 +25,15 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as StandaloneFluidVie
  * to inspect their current and possible arguments and
  * render their documentation:
  *
- *     <v:debug><f:format.html>{variable}</f:format.html></v:debug>
+ * ```
+ * <v:debug><f:format.html>{variable}</f:format.html></v:debug>
+ * ```
  *
  * Or the same expression in inline syntax:
  *
- *     {variable -> f:format.html() -> v:debug()}
+ * ```
+ * {variable -> f:format.html() -> v:debug()}
+ * ```
  *
  * Can also be used to inspect `ObjectAccessor` instances
  * (e.g. variables you try to access) and rather than just
@@ -44,18 +47,22 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as StandaloneFluidVie
  * properties which can be accessed, along with the type
  * of variable that property currently contains:
  *
- *     {domainObject -> v:debug()}
+ * ```
+ * {domainObject -> v:debug()}
+ * ```
  *
  * Assuming that `{domainObject}` is an instance of an
  * object which has two methods: `getUid()` and `getTitle()`,
  * debugging that instance will render something like this
  * in plain text:
  *
- *     Path: {domainObject}
- *     Value type: object
- *     Accessible properties on {domainObject}:
- *        {form.uid} (integer)
- *        {form.title} (string)
+ * ```
+ * Path: {domainObject}
+ * Value type: object
+ * Accessible properties on {domainObject}:
+ *    {form.uid} (integer)
+ *    {form.title} (string)
+ * ```
  *
  * The class itself can contain any number of protected
  * properties, but only those which have a getter method
@@ -65,7 +72,7 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as StandaloneFluidVie
  * @package Vhs
  * @subpackage ViewHelpers
  */
-class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface
+class DebugViewHelper extends AbstractViewHelper
 {
 
     /**
@@ -122,7 +129,7 @@ class DebugViewHelper extends AbstractViewHelper implements ChildNodeAccessInter
         }
         if (0 < count($this->childObjectAccessorNodes)) {
             array_push($nodes, '[VARIABLE ACCESSORS]');
-            $templateVariables = $this->templateVariableContainer->getAll();
+            $templateVariables = $this->renderingContext->getVariableProvider()->getAll();
             foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
                 $path = $objectAccessorNode->getObjectPath();
                 $segments = explode('.', $path);

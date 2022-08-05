@@ -1,0 +1,58 @@
+name: VHS ViewHelper Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Setup PHP 7.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Checkout VHS project
+        uses: actions/checkout@v2
+        with:
+          path: vhs
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Checkout Fluid Documentation Generator
+        uses: actions/checkout@v2
+        if: ${{ contains(github.event.head_commit.message, '[TASK] Update XSD schema') }}
+        with:
+          repository: 'TYPO3-Documentation/fluid-documentation-generator'
+          fetch-depth: 0
+          path: generator
+
+      - name: Generate ViewHelper RST documentation
+        if: ${{ contains(github.event.head_commit.message, '[TASK] Update XSD schema') }}
+        working-directory: ./generator
+        run: |
+          echo "${{steps.set_changedfile.outputs.changedfile}}"
+          composer install --no-dev -n -o --no-progress
+          mkdir -p schemas/fluidtypo3/vhs/development/
+          cp -r ../vhs/Resources/Private/Schemas/Vhs.xsd schemas/fluidtypo3/vhs/development/schema.xsd
+          ./bin/generate-fluid-documentation
+          find public/fluidtypo3/vhs/development -type f -name '*.xsd' -delete
+          find public/fluidtypo3/vhs/development -type f -name '*.json' -delete
+          find public/fluidtypo3/vhs/development -type f -name '*.html' -delete
+          cp -r public/fluidtypo3/vhs/development/* ../vhs/Documentation/ViewHelpers/
+
+      - name: Commit and push
+        if: ${{ contains(github.event.head_commit.message, '[TASK] Update XSD schema') }}
+        working-directory: ./vhs
+        continue-on-error: true
+        run: |
+          git config user.name "FluidTYPO3 VHS"
+          git config user.email "claus@namelesscoder.net"
+          git add ./Documentation/ViewHelpers/*
+          git commit -m '[TASK] Regenerate ViewHelper documentation'
+          git push https://${{ secrets.EXEMPT_PUSH_TOKEN }}@github.com/FluidTYPO3/vhs HEAD:development

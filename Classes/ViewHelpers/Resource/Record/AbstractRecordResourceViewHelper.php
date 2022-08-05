@@ -10,12 +10,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: Record Resource ViewHelpers
@@ -157,7 +158,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     /**
      * @param mixed $id
-     * @return array
+     * @return array|null
      */
     public function getRecord($id)
     {
@@ -167,20 +168,27 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
-        if ($GLOBALS["TSFE"]->fePreview === 1){
+        if (class_exists('\\TYPO3\\CMS\\Frontend\\Aspect\\PreviewAspect')) {
+            //TYPO3 version >= 10
+            $context = GeneralUtility::makeInstance(Context::class);
+            $fePreview = ($context->hasAspect('frontend.preview')) ? $context->getPropertyFromAspect('frontend.preview', 'isPreview') : false;
+        } else {
+            $fePreview = (bool)(isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fePreview);
+        }
+        if ($fePreview) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        return reset($queryBuilder
-                ->select('*')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq($idField, ':id')
-                )
-                ->execute()
-                ->fetchAll());
+        return $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq($idField, ':id')
+            )
+            ->execute()
+            ->fetch() ?: null;
     }
 
     /**

@@ -178,7 +178,7 @@ class Asset implements AssetInterface
      */
     public static function createFromSettings(array $settings)
     {
-        $asset = self::getInstance();
+        $asset = static::getInstance();
         foreach ($settings as $propertyName => $value) {
             ObjectAccess::setProperty($asset, $propertyName, $value);
         }
@@ -191,7 +191,7 @@ class Asset implements AssetInterface
      */
     public static function createFromFile($filePathAndFilename)
     {
-        $asset = self::getInstance();
+        $asset = static::getInstance();
         $asset->setExternal(false);
         $asset->setPath($filePathAndFilename);
         return $asset->finalize();
@@ -203,7 +203,7 @@ class Asset implements AssetInterface
      */
     public static function createFromContent($content)
     {
-        $asset = self::getInstance();
+        $asset = static::getInstance();
         $asset->setContent($content);
         $asset->setName(md5($content));
         return $asset->finalize();
@@ -215,7 +215,7 @@ class Asset implements AssetInterface
      */
     public static function createFromUrl($url)
     {
-        $asset = self::getInstance();
+        $asset = static::getInstance();
         $asset->setStandalone(true);
         $asset->setExternal(true);
         $asset->setPath($url);
@@ -547,18 +547,18 @@ class Asset implements AssetInterface
      */
     public function getSettings()
     {
-        if (null === self::$settingsCache) {
+        if (null === static::$settingsCache) {
             $allTypoScript = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
             $settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
             if (true === $settingsExist) {
-                self::$settingsCache = GeneralUtility::removeDotsFromTS(
+                static::$settingsCache = GeneralUtility::removeDotsFromTS(
                     $allTypoScript['plugin.']['tx_vhs.']['settings.']
                 );
             }
         }
-        $settings = (array) self::$settingsCache;
+        $settings = (array) static::$settingsCache;
         $properties = get_class_vars(get_class($this));
         foreach (array_keys($properties) as $propertyName) {
             $properties[$propertyName] = $this->$propertyName;

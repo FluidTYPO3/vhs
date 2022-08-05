@@ -10,9 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -24,9 +23,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Combines well with `v:variable.get` to set shorter variable
  * names referencing dynamic variables, such as:
  *
- *     <v:variable.set name="myObject" value="{v:variable.get(name: 'arrayVariable.{offset}')}" />
- *     <!-- If {index} == 4 then {myObject} is now == {arrayVariable.4} -->
- *     {myObject.name} <!-- corresponds to {arrayVariable.4.name} -->
+ * ```
+ * <v:variable.set name="myObject" value="{v:variable.get(name: 'arrayVariable.{offset}')}" />
+ * <!-- If {index} == 4 then {myObject} is now == {arrayVariable.4} -->
+ * {myObject.name} <!-- corresponds to {arrayVariable.4.name} -->
+ * ```
  *
  * Note that `{arrayVariable.{offset}.name}` is not possible
  * due to the way Fluid parses nodes; the above piece of
@@ -57,7 +58,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Using as `{value -> v:variable.set(name: 'myVar')}` makes `{myVar}` contain
  * `{value}`.
  */
-class SetViewHelper extends AbstractViewHelper implements CompilableInterface
+class SetViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

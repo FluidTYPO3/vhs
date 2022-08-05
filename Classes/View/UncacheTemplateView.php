@@ -11,14 +11,16 @@ namespace FluidTYPO3\Vhs\View;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
-use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
-use TYPO3\CMS\Fluid\Core\Parser\TemplateParser;
+use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Uncache Template View
@@ -77,10 +79,27 @@ class UncacheTemplateView extends TemplateView
         $section = $conf['section'];
         $arguments = true === is_array($conf['arguments']) ? $conf['arguments'] : [];
         /** @var ControllerContext $controllerContext */
-        $controllerContext = $conf['controllerContext'];
+        $controllerContext = $this->objectManager->get(ControllerContext::class);
+        $request = $this->objectManager->get(Request::class);
+        $controllerContext->setRequest($request);
+
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $uriBuilder->setRequest($request);
+        $controllerContext->setUriBuilder($uriBuilder);
+
+        if ($conf['controllerContext']) {
+            $request->setControllerActionName($conf['controllerContext']['actionName']);
+            $request->setControllerExtensionName($conf['controllerContext']['extensionName']);
+            $request->setControllerName($conf['controllerContext']['controllerName']);
+            $request->setControllerObjectName($conf['controllerContext']['controllerObjectName']);
+            $request->setPluginName($conf['controllerContext']['pluginName']);
+            $request->setFormat($conf['controllerContext']['format']);
+        }
+
         if (true === empty($partial)) {
             return '';
         }
+
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->objectManager->get(RenderingContext::class);
         $this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
@@ -133,7 +152,7 @@ class UncacheTemplateView extends TemplateView
     ) {
         array_push(
             $this->renderingStack,
-            ['type' => self::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
+            ['type' => static::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
         );
         $rendered = $this->renderPartial($partial, $section, $arguments);
         array_pop($this->renderingStack);

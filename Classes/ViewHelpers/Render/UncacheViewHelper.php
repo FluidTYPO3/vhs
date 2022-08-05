@@ -8,12 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\View\UncacheTemplateView;
+use FluidTYPO3\Vhs\View\UncacheContentObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -22,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Please be aware that this will impact render time.
  * Arguments must be serializable and will be cached.
  */
-class UncacheViewHelper extends AbstractViewHelper implements CompilableInterface
+class UncacheViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -66,21 +65,30 @@ class UncacheViewHelper extends AbstractViewHelper implements CompilableInterfac
         $substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
         $content = '<!--' . $substKey . '-->';
 
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var UncacheTemplateView $templateView */
-        $templateView = $objectManager->get(UncacheTemplateView::class);
+        $controllerContextData = [];
+        $controllerContext = $renderingContext->getControllerContext();
+        if ($controllerContext instanceof ControllerContext) {
+            $request = $controllerContext->getRequest();
+            $controllerContextData = [
+                'actionName' => $request->getControllerActionName(),
+                'extensionName' => $request->getControllerExtensionName(),
+                'controllerName' => $request->getControllerName(),
+                'controllerObjectName' => $request->getControllerObjectName(),
+                'pluginName' => $request->getPluginName(),
+                'format' => $request->getFormat(),
+            ];
+        }
 
         $GLOBALS['TSFE']->config['INTincScript'][$substKey] = [
             'type' => 'POSTUSERFUNC',
-            'cObj' => serialize($templateView),
+            'cObj' => serialize(GeneralUtility::makeInstance(UncacheContentObject::class, $GLOBALS['TSFE']->cObj)),
             'postUserFunc' => 'render',
             'conf' => [
                 'partial' => $arguments['partial'],
                 'section' => $arguments['section'],
                 'arguments' => $partialArguments,
                 'partialRootPaths' => $renderingContext->getTemplatePaths()->getPartialRootPaths(),
-                'controllerContext' => $renderingContext->getControllerContext()
+                'controllerContext' => $controllerContextData,
             ],
             'content' => $content
         ];

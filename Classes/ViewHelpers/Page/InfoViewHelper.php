@@ -8,12 +8,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -21,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Does not work in the TYPO3 backend.
  */
-class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
+class InfoViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
@@ -62,17 +63,12 @@ class InfoViewHelper extends AbstractViewHelper implements CompilableInterface
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE']->sys_page instanceof PageRepository) {
-            ErrorUtility::throwViewHelperException(
-                sprintf('ViewHelper %s does not work in backend context without a simulated frontend.', static::class),
-                1489931508
-            );
-        }
+        $pageRepository = GeneralUtility::makeInstance(PageService::class)->getPageRepository();
         $pageUid = (integer) $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($pageUid);
+        $page = $pageRepository->getPage_noCheck($pageUid);
         $field = $arguments['field'];
         $content = null;
         if (true === empty($field)) {

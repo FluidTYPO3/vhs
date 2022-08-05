@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -17,13 +17,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * #### Usage examples
  *
- *     <v:count.lines>{myString}</v:count.lines> (output for example `42`
+ * ```
+ * <v:count.lines>{myString}</v:count.lines> (output for example `42`
+ * ```
  *
- *     {myString -> v:count.lines()} when used inline
+ * ```
+ * {myString -> v:count.lines()} when used inline
+ * ```
  *
- *     <v:count.lines string="{myString}" />
+ * ```
+ * <v:count.lines string="{myString}" />
+ * ```
  *
- *     {v:count.lines(string: myString)}
+ * ```
+ * {v:count.lines(string: myString)}
+ * ```
  */
 class LinesViewHelper extends AbstractViewHelper
 {

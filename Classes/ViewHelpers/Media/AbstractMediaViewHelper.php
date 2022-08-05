@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Base class for media related view helpers.
@@ -58,7 +58,10 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
      */
     public static function preprocessSourceUri($src, array $arguments)
     {
-        $src = $GLOBALS['TSFE']->absRefPrefix . str_replace('%2F', '/', rawurlencode($src));
+        $src = str_replace('%2F', '/', rawurlencode($src));
+        if (substr($src, 0, 1) !== '/' && substr($src, 0, 4) !== 'http') {
+            $src = $GLOBALS['TSFE']->absRefPrefix . $src;
+        }
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
         } elseif ('BE' === TYPO3_MODE || false === (boolean) $arguments['relative']) {

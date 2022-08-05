@@ -15,7 +15,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Base class for resource related view helpers.
@@ -88,6 +88,21 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 
         if (true === empty($identifier) && true === empty($categories)) {
              return null;
+        }
+
+        foreach ($identifier as $key => $maybeUrl) {
+            if (substr($maybeUrl, 0, 5) !== 't3://') {
+                continue;
+            }
+            $parts = parse_url($maybeUrl);
+            if (false === isset($parts['host']) || $parts['host'] !== 'file' || false === isset($parts['query'])) {
+                continue;
+            }
+            parse_str($parts['query'], $queryParts);
+            if (true === isset($queryParts['uid'])) {
+                $identifier[$key] = $queryParts['uid'];
+                $treatIdAsUid = true;
+            }
         }
 
         $files = [];

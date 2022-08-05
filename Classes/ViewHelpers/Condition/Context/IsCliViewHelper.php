@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Condition: Is context CLI?
@@ -18,27 +19,25 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ### Examples
  *
- *     <!-- simple usage, content becomes then-child -->
- *     <v:condition.context.isCli>
- *         Hooray for CLI contexts!
- *     </v:condition.context.isCli>
- *     <!-- extended use combined with f:then and f:else -->
- *     <v:condition.context.isCli>
- *         <f:then>
- *            Hooray for CLI contexts!
- *         </f:then>
- *         <f:else>
- *            Maybe BE, maybe FE.
- *         </f:else>
- *     </v:condition.context.isCli>
+ * ```
+ * <!-- simple usage, content becomes then-child -->
+ * <v:condition.context.isCli>
+ *     Hooray for CLI contexts!
+ * </v:condition.context.isCli>
+ * <!-- extended use combined with f:then and f:else -->
+ * <v:condition.context.isCli>
+ *     <f:then>
+ *        Hooray for CLI contexts!
+ *     </f:then>
+ *     <f:else>
+ *        Maybe BE, maybe FE.
+ *     </f:else>
+ * </v:condition.context.isCli>
+ * ```
  */
 class IsCliViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
         return (bool) (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
     }

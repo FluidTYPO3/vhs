@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Resource: Language
@@ -24,11 +24,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * ### Examples
  *
- *     <!-- Tag usage for force getting labels in a specific language (different to current is possible too) -->
- *     <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf" languageKey="en"/>
+ * ```
+ * <!-- Tag usage for force getting labels in a specific language (different to current is possible too) -->
+ * <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf" languageKey="en"/>
+ * ```
  *
- *     <!-- Tag usage for getting labels of current language -->
- *     <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf"/>
+ * ```
+ * <!-- Tag usage for getting labels of current language -->
+ * <v:resource.language extensionName="myext" path="Path/To/Locallang.xlf"/>
+ * ```
  */
 class LanguageViewHelper extends AbstractViewHelper
 {
@@ -56,7 +60,7 @@ class LanguageViewHelper extends AbstractViewHelper
             'string',
             'Absolute or relative path to the locallang file',
             false,
-            self::LOCALLANG_DEFAULT
+            static::LOCALLANG_DEFAULT
         );
         $this->registerArgument(
             'languageKey',
@@ -95,7 +99,7 @@ class LanguageViewHelper extends AbstractViewHelper
         $extensionName = $this->arguments['extensionName'];
 
         if ((null === $extensionName) && (true === $this->controllerContext instanceof ControllerContext)) {
-            $request = $this->controllerContext->getRequest();
+            $request = $this->renderingContext->getControllerContext()->getRequest();
             $extensionName = $request->getControllerExtensionName();
         }
 

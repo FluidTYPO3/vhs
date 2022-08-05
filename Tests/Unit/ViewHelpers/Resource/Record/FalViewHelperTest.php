@@ -21,9 +21,8 @@ class FalViewHelperTest extends AbstractViewHelperTest
      */
     public function testFalViewhHelperWorkspaceHandling()
     {
-        if (!$this->usesLegacyFluidVersion()) {
-            $this->markTestSkipped('Test skipped pending refactoring to Doctrine QueryBuilder');
-        }
+        $this->markTestSkipped('Test skipped pending refactoring to Doctrine QueryBuilder');
+
         $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)->getMock();
         $GLOBALS['TYPO3_DB']->expects($this->once())
             ->method('exec_SELECTgetRows')
@@ -51,9 +50,8 @@ class FalViewHelperTest extends AbstractViewHelperTest
      */
     public function testFalViewhHelperWithoutWorkspaces()
     {
-        if (!$this->usesLegacyFluidVersion()) {
-            $this->markTestSkipped('Test skipped pending refactoring to Doctrine QueryBuilder');
-        }
+        $this->markTestSkipped('Test skipped pending refactoring to Doctrine QueryBuilder');
+
         $viewHelper = $this->createInstance();
         $viewHelperNode = $this->createViewHelperNode($viewHelper, []);
         $this->executeViewHelper(['table' => 'pages', 'field' => 'media'], [], $viewHelperNode);

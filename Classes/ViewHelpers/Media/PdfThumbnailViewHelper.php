@@ -82,13 +82,15 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         $forceOverwrite = (boolean) $this->arguments['forceOverwrite'];
         $filename = basename($src);
         $pageArgument = $page > 0 ? $page - 1 : 0;
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'])) {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_colorspace'])) {
+            $colorspace = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_colorspace'];
+        } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'])) {
             $colorspace = $GLOBALS['TYPO3_CONF_VARS']['GFX']['colorspace'];
         } else {
             $colorspace = 'RGB';
         }
         $tempPath = (version_compare(TYPO3_version, 8.0, '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
-        $path = GeneralUtility::getFileAbsFileName($tempPath . 'vhs-pdf-' . $filename . '-page' . $page . '.png');
+        $path = GeneralUtility::getFileAbsFileName($tempPath . 'vhs-pdf-' . pathinfo($filename, PATHINFO_FILENAME) . '-' . $page . '-' . filemtime($src) . '.png');
         if (false === file_exists($path) || true === $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
             if (0 < (integer) $density) {

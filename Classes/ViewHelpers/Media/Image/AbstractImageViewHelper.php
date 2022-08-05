@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -15,7 +16,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class for image related view helpers adapted from FLUID
@@ -99,7 +100,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             'quality',
             'integer',
             'Quality of the processed image. If blank/not present falls back to the default quality defined in ' .
-            'install tool.'
+            'install tool.',
+            false,
+            $GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality']
         );
         $this->registerArgument(
             'treatIdAsReference',
@@ -230,15 +233,17 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     {
         $this->tsfeBackup = true === isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
         $this->workingDirectoryBackup = getcwd();
-        chdir(constant('PATH_site'));
+        chdir(CoreUtility::getSitePath());
         $typoScriptSetup = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
         $GLOBALS['TSFE'] = new \stdClass();
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = 0;
-        $template->init();
-        $template->getFileName_backPath = constant('PATH_site');
+        if (version_compare(TYPO3_version, 9.4, '<')) {
+            $template->init();
+        }
+        $template->getFileName_backPath = CoreUtility::getSitePath();
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
         $GLOBALS['TSFE']->config = $typoScriptSetup;

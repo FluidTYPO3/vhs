@@ -9,8 +9,12 @@ namespace FluidTYPO3\Vhs\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -41,10 +45,16 @@ class PageService implements SingletonInterface
      */
     protected static $cachedRootlines = [];
 
-    /**
-     * @var PageRepository
-     */
-    protected static $backendPageRepository;
+    public function readPageRepositoryConstant(string $constantName)
+    {
+        if (class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)) {
+            $class = \TYPO3\CMS\Core\Domain\Repository\PageRepository::class;
+        } else {
+            $class = \TYPO3\CMS\Frontend\Page\PageRepository::class;
+        }
+
+        return constant($class . '::' . $constantName);
+    }
 
     /**
      * @param integer $pageUid
@@ -110,10 +120,16 @@ class PageService implements SingletonInterface
         $cacheKey = md5($pageUid . (integer) $reverse . (integer) $disableGroupAccessCheck);
         if (false === isset(static::$cachedRootlines[$cacheKey])) {
             $pageRepository = $this->getPageRepository();
-            if (true === (boolean) $disableGroupAccessCheck) {
-                $pageRepository->where_groupAccess = '';
+            if (class_exists(RootlineUtility::class)) {
+                $rootline = (new RootlineUtility($pageUid))->get();
+            } elseif (method_exists($pageRepository, 'getRootLine')) {
+                if (true === (boolean) $disableGroupAccessCheck) {
+                    $pageRepository->where_groupAccess = '';
+                }
+                $rootline = $pageRepository->getRootLine($pageUid);
+            } else {
+                $rootline = [];
             }
-            $rootline = $pageRepository->getRootLine($pageUid);
             if (true === $reverse) {
                 $rootline = array_reverse($rootline);
             }
@@ -137,15 +153,15 @@ class PageService implements SingletonInterface
     ) {
         $constraints = [];
 
-        $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' .
-            PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
+        $constraints[] = 'doktype NOT IN (' . $this->readPageRepositoryConstant('DOKTYPE_BE_USER_SECTION') . ',' .
+            $this->readPageRepositoryConstant('DOKTYPE_RECYCLER') . ',' . $this->readPageRepositoryConstant('DOKTYPE_SYSFOLDER') . ')';
 
         if ($includeNotInMenu === false) {
             $constraints[] = 'nav_hide = 0';
         }
 
         if ($includeMenuSeparator === false) {
-            $constraints[] = 'doktype != ' . PageRepository::DOKTYPE_SPACER;
+            $constraints[] = 'doktype != ' . $this->readPageRepositoryConstant('DOKTYPE_SPACER');
         }
 
         if (0 < count($excludePages)) {
@@ -171,7 +187,11 @@ class PageService implements SingletonInterface
             $pageRecord = $this->getPage($pageUid);
         }
         if (-1 === (integer) $languageUid) {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+            if (class_exists(LanguageAspect::class)) {
+                $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            } else {
+                $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+            }
         }
         $l18nCfg = true === isset($pageRecord['l18n_cfg']) ? $pageRecord['l18n_cfg'] : 0;
         $hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
@@ -189,9 +209,9 @@ class PageService implements SingletonInterface
     }
 
     /**
-     * @return PageRepository
+     * @return \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
-    protected function getPageRepository()
+    public function getPageRepository()
     {
         if (TYPO3_MODE === 'BE') {
             return $this->getPageRepositoryForBackendContext();
@@ -200,14 +220,22 @@ class PageService implements SingletonInterface
     }
 
     /**
-     * @return PageRepository
+     * @return \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
     protected function getPageRepositoryForBackendContext()
     {
-        if (static::$backendPageRepository === null) {
-            static::$backendPageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        static $instance = null;
+        if ($instance === null) {
+            $instance = GeneralUtility::makeInstance(
+                class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)
+                    ? \TYPO3\CMS\Core\Domain\Repository\PageRepository::class
+                    : \TYPO3\CMS\Frontend\Page\PageRepository::class
+            );
+            if ($instance instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
+                $instance->init(TYPO3_MODE === 'BE');
+            }
         }
-        return static::$backendPageRepository;
+        return $instance;
     }
 
     /**
@@ -218,7 +246,7 @@ class PageService implements SingletonInterface
      */
     public function getItemLink(array $page, $forceAbsoluteUrl = false)
     {
-        if ((integer) $page['doktype'] === PageRepository::DOKTYPE_LINK) {
+        if ((integer) $page['doktype'] === $this->readPageRepositoryConstant('DOKTYPE_LINK')) {
             $parameter = $this->getPageRepository()->getExtURL($page);
         } else {
             $parameter = $page['uid'];
@@ -227,9 +255,11 @@ class PageService implements SingletonInterface
             'parameter' => $parameter,
             'returnLast' => 'url',
             'additionalParams' => '',
-            'useCacheHash' => false,
             'forceAbsoluteUrl' => $forceAbsoluteUrl,
         ];
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.5', '<')) {
+            $config['useCacheHash'] = false;
+        }
 
         return $GLOBALS['TSFE']->cObj->typoLink('', $config);
     }
@@ -335,7 +365,7 @@ class PageService implements SingletonInterface
      */
     public function getShortcutTargetPage(array $page)
     {
-        if ((integer) $page['doktype'] !== PageRepository::DOKTYPE_SHORTCUT) {
+        if ((integer) $page['doktype'] !== $this->readPageRepositoryConstant('DOKTYPE_SHORTCUT')) {
             return null;
         }
         $originalPageUid = $page['uid'];

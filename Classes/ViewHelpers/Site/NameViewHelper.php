@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Site;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -18,7 +17,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Returns the site name as specified in `$TYPO3_CONF_VARS`.
  */
-class NameViewHelper extends AbstractViewHelper implements CompilableInterface
+class NameViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

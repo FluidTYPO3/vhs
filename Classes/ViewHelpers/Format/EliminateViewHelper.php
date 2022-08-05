@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -53,7 +53,7 @@ class EliminateViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'whitespaceBetweenHtmlTags',
             'boolean',
-            'Eliminate ALL whitespace characters between HTML tags',
+            'Eliminate ALL whitespace characters between HTML tags. Use this together with <f:format.raw>',
             false,
             false
         );

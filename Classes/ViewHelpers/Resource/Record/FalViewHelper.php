@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -19,7 +18,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Resolve FAL relations and return file records.
@@ -36,12 +34,14 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * At first, fetch the record and store it in a variable.
  * Then use `<f:image>` to render it:
  *
- *     {v:resource.record.fal(table: 'tx_users', field: 'photo', record: user)
- *      -> v:iterator.first()
- *      -> v:variable.set(name: 'image')}
- *     <f:if condition="{image}">
- *       <f:image treatIdAsReference="1" src="{image.id}" title="{image.title}" alt="{image.alternative}"/>
- *     </f:if>
+ * ```
+ * {v:resource.record.fal(table: 'tx_users', field: 'photo', record: user)
+ *  -> v:iterator.first()
+ *  -> v:variable.set(name: 'image')}
+ * <f:if condition="{image}">
+ *   <f:image treatIdAsReference="1" src="{image.id}" title="{image.title}" alt="{image.alternative}"/>
+ * </f:if>
+ * ```
  *
  * Use the `uid` attribute if you don't have a `record`.
  */
@@ -59,11 +59,6 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     protected $fileRepository;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
-     */
-    protected $pageRepository;
-
-    /**
      * @var boolean
      */
     protected $escapeOutput = false;
@@ -75,7 +70,18 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     {
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+    }
+
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'asObjects',
+            'bool',
+            'Can be set to TRUE to return objects instead of file information arrays.',
+            false,
+            false
+        );
     }
 
     /**
@@ -105,20 +111,19 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $record = $uidOrRecord;
         } else {
             $record = $this->getRecord($uidOrRecord);
+            if (!is_array($record)) {
+                return [];
+            }
         }
 
-        if ($table === 'pages') {
-            $fileObjects = $this->pageRepository->getFileReferences($table, $field, $record);
+        if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
+            $sqlRecordUid = $record['t3ver_oid'];
+        } elseif (isset($record['_LOCALIZED_UID'])) {
+            $sqlRecordUid = $record['_LOCALIZED_UID'];
         } else {
-            if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
-                $sqlRecordUid = $record['t3ver_oid'];
-            } elseif (isset($record['_LOCALIZED_UID'])) {
-                $sqlRecordUid = $record['_LOCALIZED_UID'];
-            } else {
-                $sqlRecordUid = $record[$this->idField];
-            }
-            $fileObjects = $this->fileRepository->findByRelation($table, $field, $sqlRecordUid);
+            $sqlRecordUid = $record[$this->idField];
         }
+        $fileObjects = $this->fileRepository->findByRelation($table, $field, $sqlRecordUid);
         return $fileObjects;
     }
 
@@ -128,8 +133,10 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function getResources($record)
     {
-        $fileReferences = [];
-        if (empty($GLOBALS['TSFE']->sys_page) === false) {
+        if (!is_array($record)) {
+            return [];
+        }
+        if (!empty($GLOBALS['TSFE']->sys_page)) {
             $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $record);
         } else {
             if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
@@ -147,7 +154,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $queryBuilder->createNamedParameter($sqlRecordUid, \PDO::PARAM_INT, ':uid_foreign');
             $queryBuilder->createNamedParameter($this->getField(), \PDO::PARAM_STR, ':fieldname');
 
-            $references = $queryBuilder
+            $queryBuilder
                 ->select('uid')
                 ->from('sys_file_reference')
                 ->where(
@@ -162,7 +169,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
 
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->workspaceRec['uid'], \PDO::PARAM_INT, ':t3ver_wsid');
-                $references = $queryBuilder
+                $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->eq('deleted', 0)
                     )
@@ -175,7 +182,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                         $queryBuilder->expr()->neq('pid', -1)
                     );
             } else {
-                $references = $queryBuilder
+                $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->eq('deleted', 0)
                     )
@@ -196,28 +203,16 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 ->execute()
                 ->fetchAll();
 
-            // uid's as array key
-            $ids = [];
-            foreach ($references as $item) {
-                $ids[$item['uid']]['uid'] = $item['uid'];
-            }
+            $fileReferences = [];
 
-            $references = $ids;
-
-            if (empty($references) === false) {
-                $referenceUids = array_keys($references);
-                $fileReferences = [];
-                if (empty($referenceUids) === false) {
-                    foreach ($referenceUids as $referenceUid) {
-                        try {
-                            // Just passing the reference uid, the factory is doing workspace
-                            // overlays automatically depending on the current environment
-                            $fileReferences[] = $this->resourceFactory->getFileReferenceObject($referenceUid);
-                        } catch (ResourceDoesNotExistException $exception) {
-                            // No handling, just omit the invalid reference uid
-                            continue;
-                        }
-                    }
+            foreach ($references as $reference) {
+                try {
+                    // Just passing the reference uid, the factory is doing workspace
+                    // overlays automatically depending on the current environment
+                    $fileReferences[] = $this->resourceFactory->getFileReferenceObject($reference['uid']);
+                } catch (ResourceDoesNotExistException $exception) {
+                    // No handling, just omit the invalid reference uid
+                    continue;
                 }
             }
         }
@@ -226,7 +221,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             // Exclude workspace deleted files references
             if ($file->getProperty('t3ver_state') !== VersionState::DELETE_PLACEHOLDER) {
                 try {
-                    $resources[] = $this->getResource($file);
+                    $resources[] = $this->arguments['asObjects'] ? $file : $this->getResource($file);
                 } catch (\InvalidArgumentException $error) {
                     // Pokemon-style, catch-all and suppress. This exception type is thrown if a file gets removed.
                 }

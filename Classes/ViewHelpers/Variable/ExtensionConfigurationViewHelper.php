@@ -10,9 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -22,11 +21,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ### Examples
  *
- *     {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
+ * ```
+ * {v:variable.extensionConfiguration(extensionKey:'foo',path:'bar.baz')}
+ * ```
  *
  * Returns setting `bar.baz` from extension 'foo' located in `ext_conf_template.txt`.
  */
-class ExtensionConfigurationViewHelper extends AbstractViewHelper implements CompilableInterface
+class ExtensionConfigurationViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -71,10 +72,13 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper implements Com
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
         }
 
-        if (!array_key_exists($extensionKey, $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'])) {
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey]) &&
+            !isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
             return null;
         } elseif (!array_key_exists($extensionKey, static::$configurations)) {
-            if (is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey])) {
+                $extConf = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey];
+            } elseif (is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
                 $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
             } else {
                 $extConf = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey];

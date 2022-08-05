@@ -33,6 +33,6 @@ class FooterViewHelper extends AbstractAssetViewHelper
             return;
         }
         $content = $this->getContent();
-        $this->getPageRenderer()->addFooterData($content);
+        static::getPageRenderer()->addFooterData($content);
     }
 }

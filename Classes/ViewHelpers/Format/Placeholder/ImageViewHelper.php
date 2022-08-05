@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Placeholder Image ViewHelper
@@ -50,13 +50,13 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         $height = $this->arguments['height'] != $this->arguments['width'] ? $this->arguments['height'] : null;
         $addHeight = false === empty($height) ? 'x' . $height : null;
         $url = [
-            'https://placehold.it',
+            'https://via.placeholder.com',
             $this->arguments['width'] . $addHeight,
             $this->arguments['backgroundColor'],
             $this->arguments['textColor'],
         ];
         if (false === empty($text)) {
-            array_push($url, '&text=' . urlencode($text));
+            array_push($url, '?text=' . urlencode($text));
         }
         $imageUrl = implode('/', $url);
         $this->tag->forceClosingTag(false);

@@ -9,11 +9,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to access data of the current content element record.
@@ -98,7 +100,12 @@ class InfoViewHelper extends AbstractViewHelper
                 ->fetch();
 
             // Add the page overlay
-            $languageUid = (integer) $GLOBALS['TSFE']->sys_language_uid;
+            if (class_exists(LanguageAspect::class)) {
+                $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            } else {
+                $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+            }
+
             if (0 !== $languageUid && $GLOBALS['TSFE']->sys_language_contentOL) {
                 $record = $GLOBALS['TSFE']->sys_page->getRecordOverlay(
                     'tt_content',

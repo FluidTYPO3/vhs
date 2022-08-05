@@ -8,7 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Condition: Is context Backend?
@@ -18,27 +19,25 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ### Examples
  *
- *     <!-- simple usage, content becomes then-child -->
- *     <v:condition.context.isBackend>
- *         Hooray for BE contexts!
- *     </v:condition.context.isBackend>
- *     <!-- extended use combined with f:then and f:else -->
- *     <v:condition.context.isBackend>
- *         <f:then>
- *            Hooray for BE contexts!
- *         </f:then>
- *         <f:else>
- *            Maybe FE, maybe CLI.
- *         </f:else>
- *     </v:condition.context.isBackend>
+ * ```
+ * <!-- simple usage, content becomes then-child -->
+ * <v:condition.context.isBackend>
+ *     Hooray for BE contexts!
+ * </v:condition.context.isBackend>
+ * <!-- extended use combined with f:then and f:else -->
+ * <v:condition.context.isBackend>
+ *     <f:then>
+ *        Hooray for BE contexts!
+ *     </f:then>
+ *     <f:else>
+ *        Maybe FE, maybe CLI.
+ *     </f:else>
+ * </v:condition.context.isBackend>
+ * ```
  */
 class IsBackendViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
         return ('BE' === TYPO3_MODE);
     }

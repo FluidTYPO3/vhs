@@ -9,9 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -50,9 +50,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * array, the output becomes suitable for consumption by f:translate, v:l
  * or f:format.sprintf for example - as the "arguments" attribute:
  *
- *     <f:translate key="myDateDisplay"
- *         arguments="{v:format.dateRange(intervalFormat: 'P3W', return: {0: 'w', 1: 'd'})}"
- *     />
+ * ```
+ * <f:translate key="myDateDisplay"
+ *     arguments="{v:format.dateRange(intervalFormat: 'P3W', return: {0: 'w', 1: 'd'})}"
+ * />
+ * ```
  *
  * Which if "myDateDisplay" is a string such as "Deadline: %d week(s) and
  * %d day(s)" would output a result such as "Deadline: 4 week(s) and 2 day(s)".

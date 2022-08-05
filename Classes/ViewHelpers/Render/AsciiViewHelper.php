@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -22,21 +21,27 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * as does {v:render.character(ascii: 10)}. Can be used in combination with
  * `v:iterator.loop` to render sequences or repeat the same character:
  *
- *     {v:render.ascii(ascii: 10) -> v:iterator.loop(count: 5)}
+ * ```
+ * {v:render.ascii(ascii: 10) -> v:iterator.loop(count: 5)}
+ * ```
  *
  * And naturally you can feed any integer variable or ViewHelper return value
  * into the `ascii` parameter throught `renderChildren` to allow chaining:
  *
- *     {variableWithAsciiInteger -> v:render.ascii()}
+ * ```
+ * {variableWithAsciiInteger -> v:render.ascii()}
+ * ```
  *
  * And arrays are also supported - they will produce a string of characters
  * from each number in the array:
  *
- *     {v:render.ascii(ascii: {0: 13, 1: 10})}
+ * ```
+ * {v:render.ascii(ascii: {0: 13, 1: 10})}
+ * ```
  *
  * Will produce a Windows line break, \r\n.
  */
-class AsciiViewHelper extends AbstractViewHelper implements CompilableInterface
+class AsciiViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

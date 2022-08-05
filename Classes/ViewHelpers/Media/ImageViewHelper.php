@@ -26,7 +26,9 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
  *
  * ### Example
  *
- *     <v:media.image src="fileadmin/some-image.png" srcset="480,768,992,1200" />
+ * ```
+ * <v:media.image src="fileadmin/some-image.png" srcset="480,768,992,1200" />
+ * ```
  *
  * ### Browser Support
  *
@@ -90,7 +92,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      * Render method
      *
      * @return string
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function render()
     {
@@ -127,6 +129,10 @@ class ImageViewHelper extends AbstractImageViewHelper
         $this->tag->addAttribute('height', $height);
         $this->tag->addAttribute('src', $src);
 
+        // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
+        if (empty($this->arguments['alt'])) {
+            $this->tag->addAttribute('alt', '');
+        }
         if (true === empty($this->arguments['title'])) {
             $this->tag->addAttribute('title', $this->arguments['alt']);
         }

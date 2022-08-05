@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -17,13 +17,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * #### Usage examples
  *
- *     <v:count.words>{myString}</v:count.words> (output for example `42`
+ * ```
+ * <v:count.words>{myString}</v:count.words> (output for example `42`
+ * ```
  *
- *     {myString -> v:count.words()} when used inline
+ * ```
+ * {myString -> v:count.words()} when used inline
+ * ```
  *
- *     <v:count.words string="{myString}" />
+ * ```
+ * <v:count.words string="{myString}" />
+ * ```
  *
- *     {v:count.words(string: myString)}
+ * ```
+ * {v:count.words(string: myString)}
+ * ```
  */
 class WordsViewHelper extends AbstractViewHelper
 {

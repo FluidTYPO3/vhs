@@ -10,7 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper used to render a meta tag
@@ -38,9 +38,9 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerTagAttribute('name', 'string', 'Name property of meta tag');
+        $this->registerTagAttribute('http-equiv', 'string', 'Property: http-equiv');
         $this->registerTagAttribute('property', 'string', 'Property of meta tag');
         $this->registerTagAttribute('content', 'string', 'Content of meta tag');
-        $this->registerTagAttribute('http-equiv', 'string', 'Property: http-equiv');
         $this->registerTagAttribute('scheme', 'string', 'Property: scheme');
         $this->registerTagAttribute('lang', 'string', 'Property: lang');
         $this->registerTagAttribute('dir', 'string', 'Property: dir');
@@ -56,9 +56,29 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
         if ('BE' === TYPO3_MODE) {
             return;
         }
-        if (true === isset($this->arguments['content']) && false === empty($this->arguments['content'])) {
-            $this->getPageRenderer()
-                ->addMetaTag($this->renderTag($this->tagName, null, ['content' => $this->arguments['content']]));
+        $content = $this->arguments['content'];
+        if (!empty($content)) {
+            $pageRenderer = static::getPageRenderer();
+            if (!method_exists($pageRenderer, 'setMetaTag')) {
+                $pageRenderer->addMetaTag($this->renderTag($this->tagName, null, ['content' => $content]));
+            } else {
+                $properties = [];
+                $type = 'name';
+                $name = $this->tag->getAttribute('name');
+                if (!empty($this->tag->getAttribute('property'))) {
+                    $type = 'property';
+                    $name = $this->tag->getAttribute('property');
+                } elseif (!empty($this->tag->getAttribute('http-equiv'))) {
+                    $type = 'http-equiv';
+                    $name = $this->tag->getAttribute('http-equiv');
+                }
+                foreach (['http-equiv', 'property', 'scheme', 'lang', 'dir'] as $propertyName) {
+                    if (!empty($this->tag->getAttribute($propertyName))) {
+                        $properties[$propertyName] = $this->tag->getAttribute($propertyName);
+                    }
+                }
+                $pageRenderer->setMetaTag($type, $name, $content, $properties);
+            }
         }
     }
 }

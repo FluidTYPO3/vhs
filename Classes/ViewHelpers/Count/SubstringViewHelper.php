@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -17,13 +17,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * #### Usage examples
  *
- *     <v:count.substring string="{myString}">{haystack}</v:count.substring> (output for example `2`
+ * ```
+ * <v:count.substring string="{myString}">{haystack}</v:count.substring> (output for example `2`
+ * ```
  *
- *     {haystack -> v:count.substring(string: myString)} when used inline
+ * ```
+ * {haystack -> v:count.substring(string: myString)} when used inline
+ * ```
  *
- *     <v:count.substring string="{myString}" haystack="{haystack}" />
+ * ```
+ * <v:count.substring string="{myString}" haystack="{haystack}" />
+ * ```
  *
- *     {v:count.substring(string: myString, haystack: haystack)}
+ * ```
+ * {v:count.substring(string: myString, haystack: haystack)}
+ * ```
  */
 class SubstringViewHelper extends AbstractViewHelper
 {

@@ -17,11 +17,8 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -29,13 +26,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * Can be used inline, i.e.:
  *
- *     <f:for each="{dataset -> v:iterator.sort(sortBy: 'name')}" as="item">
- *         // iterating data which is ONLY sorted while rendering this particular loop
- *     </f:for>
+ * ```
+ * <f:for each="{dataset -> v:iterator.sort(sortBy: 'name')}" as="item">
+ *     // iterating data which is ONLY sorted while rendering this particular loop
+ * </f:for>
+ * ```
  */
-class SortViewHelper extends AbstractViewHelper implements CompilableInterface
+class SortViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
 
@@ -219,7 +217,7 @@ class SortViewHelper extends AbstractViewHelper implements CompilableInterface
     {
         $field = $arguments['sortBy'];
         $value = ObjectAccess::getPropertyPath($object, $field);
-        if (true === $value instanceof \DateTime) {
+        if (true === $value instanceof \DateTimeInterface) {
             $value = (integer) $value->format('U');
         } elseif (true === $value instanceof ObjectStorage || true === $value instanceof LazyObjectStorage) {
             $value = $value->count();

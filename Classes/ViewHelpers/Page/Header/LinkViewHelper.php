@@ -10,7 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper used to render a link tag in the `<head>` section of the page.
@@ -53,6 +53,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         if ('BE' === TYPO3_MODE) {
             return;
         }
-        static::getPageRenderer()->addMetaTag($this->renderTag($this->tagName));
+        static::getPageRenderer()->addHeaderData($this->renderTag($this->tagName));
     }
 }

@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * ### Unless
@@ -19,33 +19,47 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * Is the same as writing:
  *
- *     <f:if condition="{theThingToCheck}">
- *         <f:else>
- *             The thing that gets done
- *         </f:else>
- *     </f:if>
+ * ```
+ * <f:if condition="{theThingToCheck}">
+ *     <f:else>
+ *         The thing that gets done
+ *     </f:else>
+ * </f:if>
+ * ```
  *
  * Except without the `f:else`.
  *
  * #### Example, tag mode
  *
- *     <v:unless condition="{somethingRequired}">
- *         Warning! Something required was not present.
- *     </v:unless>
+ * ```
+ * <v:unless condition="{somethingRequired}">
+ *     Warning! Something required was not present.
+ * </v:unless>
+ * ```
  *
  * #### Example, inline mode illustrating `v:or` likeness
  *
- *     {defaultText -> v:unless(condition: originalText)}
- *         // which is much the same as...
- *     {originalText -> v:or(alternative: defaultText}
- *         // ...but the "unless" counterpart supports anything as
- *         // condition instead of only checking "is content empty?"
+ * ```
+ * {defaultText -> v:unless(condition: originalText)}
+ *     // which is much the same as...
+ * {originalText -> v:or(alternative: defaultText}
+ *     // ...but the "unless" counterpart supports anything as
+ *     // condition instead of only checking "is content empty?"
+ * ```
  *
  * @package Vhs
  * @subpackage ViewHelpers
  */
 class UnlessViewHelper extends AbstractConditionViewHelper
 {
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        if (!isset($this->argumentDefinitions['condition'])) {
+            $this->registerArgument('condition', 'boolean', 'Condition which must be true, or then is rendered', true);
+        }
+    }
+
     /**
      * Rendering with inversion and ignoring any f:then / f:else children.
      *

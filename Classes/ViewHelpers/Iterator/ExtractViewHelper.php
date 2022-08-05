@@ -8,12 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Iterator / Extract VieWHelper
@@ -29,60 +29,72 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * #### Input from extbase version of indexed_search">
  *
- *     [
- *         0 => [
- *             'sword' => 'firstWord',
- *             'oper' => 'AND'
- *         ],
- *         1 => [
- *             'sword' => 'secondWord',
- *             'oper' => 'AND'
- *         ],
- *         3 => [
- *             'sword' => 'thirdWord',
- *             'oper' => 'AND'
- *         ]
+ * ```
+ * [
+ *     0 => [
+ *         'sword' => 'firstWord',
+ *         'oper' => 'AND'
+ *     ],
+ *     1 => [
+ *         'sword' => 'secondWord',
+ *         'oper' => 'AND'
+ *     ],
+ *     3 => [
+ *         'sword' => 'thirdWord',
+ *         'oper' => 'AND'
  *     ]
+ * ]
+ * ```
  *
  * Show the previous search words in the search form of the
  * result page:
  *
  * #### Example
- *     <f:form.textfield name="search[sword]"
- *         value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
- *         class="tx-indexedsearch-searchbox-sword" />
+ *
+ * ```
+ * <f:form.textfield name="search[sword]"
+ *     value="{v:iterator.extract(key:'sword', content: searchWords) -> v:iterator.implode(glue: ' ')}"
+ *     class="tx-indexedsearch-searchbox-sword" />
+ * ```
  *
  * #### Get the names of several users
  *
  * Provided we have a bunch of FrontendUsers and we need to show
  * their firstname combined into a string:
  *
- *     <h2>Welcome
- *     <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
- *     <!-- alternative: -->
- *     {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
- *     </h2>
+ * ```
+ * <h2>Welcome
+ * <v:iterator.implode glue=", "><v:iterator.extract key="firstname" content="frontendUsers" /></v:iterator.implode>
+ * <!-- alternative: -->
+ * {frontendUsers -> v:iterator.extract(key: 'firstname') -> v:iterator.implode(glue: ', ')}
+ * </h2>
+ * ```
  *
  * #### Output
  *
- *     <h2>Welcome Peter, Paul, Marry</h2>
+ * ```
+ * <h2>Welcome Peter, Paul, Marry</h2>
+ * ```
  *
  * #### Complex example
  *
- *     {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')
- *         -> v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')
- *         -> v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
+ * ```
+ * {anArray->v:iterator.extract(path: 'childProperty.secondNestedChildObject')
+ *     -> v:iterator.sort(direction: 'DESC', sortBy: 'propertyOnSecondChild')
+ *     -> v:iterator.slice(length: 10)->v:iterator.extract(key: 'uid')}
+ * ```
  *
  * #### Single return value
  *
- *     Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
- *     one records. Always extracts the first value and then stops. Equivalent of chaning -> v:iterator.first().
- *     {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
+ * Outputs the "uid" value of the first record in variable $someRecords without caring if there are more than
+ * one records. Always extracts the first value and then stops. Equivalent of changing -> v:iterator.first().
+ *
+ * ```
+ * {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
+ * ```
  */
-class ExtractViewHelper extends AbstractViewHelper implements CompilableInterface
+class ExtractViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -115,7 +127,7 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = $renderChildrenClosure();
+        $content = $arguments['content'] ?? $renderChildrenClosure();
         $key = $arguments['key'];
         $recursive = (boolean) $arguments['recursive'];
         $single = (boolean) $arguments['single'];
@@ -129,7 +141,11 @@ class ExtractViewHelper extends AbstractViewHelper implements CompilableInterfac
                 $result = static::extractByKey($content, $key);
             }
         } catch (\Exception $error) {
-            GeneralUtility::sysLog($error->getMessage(), 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            if (class_exists(LogManager::class)) {
+                GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning($error->getMessage(), ['content' => $content]);
+            } else {
+                GeneralUtility::sysLog($error->getMessage(), 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            }
             $result = [];
         }
 

@@ -9,9 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  */
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -25,11 +24,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * ### Examples
  *
- *     <v:l>some.label</v:l>
- *     <v:l key="some.label" />
- *     <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
+ * ```
+ * <v:l>some.label</v:l>
+ * <v:l key="some.label" />
+ * <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
+ * ```
  */
-class LViewHelper extends AbstractViewHelper implements CompilableInterface
+class LViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

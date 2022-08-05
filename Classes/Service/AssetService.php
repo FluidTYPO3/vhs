@@ -9,18 +9,20 @@ namespace FluidTYPO3\Vhs\Service;
  */
 
 use FluidTYPO3\Vhs\Asset;
+use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Asset Handling Service
@@ -30,7 +32,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class AssetService implements SingletonInterface
 {
-
     /**
      * @var string
      */
@@ -101,8 +102,11 @@ class AssetService implements SingletonInterface
      * @param boolean $cached If TRUE, treats this inclusion as happening in a cached context
      * @return void
      */
-    public function buildAll(array $parameters, $caller, $cached = true)
+    public function buildAll(array $parameters, $caller, $cached = true, &$content = null)
     {
+        if ($content === null) {
+            $content = &$caller->content;
+        }
         if (false === $this->objectManager instanceof ObjectManager) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             $this->configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
@@ -121,7 +125,7 @@ class AssetService implements SingletonInterface
             }
             static::$typoScriptAssetsBuilt = true;
         }
-        if (!isset($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets'])) {
+        if (!isset($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets']) || empty($GLOBALS['VhsAssets'])) {
             return;
         }
         $assets = $GLOBALS['VhsAssets'];
@@ -138,26 +142,28 @@ class AssetService implements SingletonInterface
                 echo var_export($assets, true);
             }
         }
-        $this->placeAssetsInHeaderAndFooter($assets, $cached);
+        $this->placeAssetsInHeaderAndFooter($assets, $cached, $content);
     }
 
     /**
      * @param array $parameters
      * @param object $caller
+     * @param string|null $content
      * @return void
      */
-    public function buildAllUncached(array $parameters, $caller)
+    public function buildAllUncached(array $parameters, $caller, ?string &$content = null)
     {
-        $content = $caller->content;
+        if ($content === null) {
+            $content = &$caller->content;
+        }
         $matches = [];
         preg_match_all('/\<\![\-]+\ VhsAssetsDependenciesLoaded ([^ ]+) [\-]+\>/i', $content, $matches);
         foreach ($matches[1] as $key => $match) {
             $extractedDependencies = explode(',', $matches[1][$key]);
             static::$cachedDependencies = array_merge(static::$cachedDependencies, $extractedDependencies);
-            $content = str_replace($matches[0][$key], '', $content);
         }
-        $caller->content = $content;
-        $this->buildAll($parameters, $caller, false);
+
+        $this->buildAll($parameters, $caller, false, $content);
     }
 
     /**
@@ -190,9 +196,10 @@ class AssetService implements SingletonInterface
     /**
      * @param AssetInterface[] $assets
      * @param boolean $cached
+     * @param string $content
      * @return void
      */
-    protected function placeAssetsInHeaderAndFooter($assets, $cached)
+    protected function placeAssetsInHeaderAndFooter($assets, $cached, &$content)
     {
         $settings = $this->getSettings();
         $header = [];
@@ -215,37 +222,40 @@ class AssetService implements SingletonInterface
         } else {
             $uncachedSuffix = '';
             $dependenciesString = '<!-- VhsAssetsDependenciesLoaded ' . implode(',', array_keys($assets)) . ' -->';
-            $this->insertAssetsAtMarker('DependenciesLoaded', $dependenciesString);
+            $this->insertAssetsAtMarker('DependenciesLoaded', $dependenciesString, $content);
         }
-        $this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header);
-        $this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer);
+        $this->insertAssetsAtMarker('Header' . $uncachedSuffix, $header, $content);
+        $this->insertAssetsAtMarker('Footer' . $uncachedSuffix, $footer, $content);
         $GLOBALS['VhsAssets'] = [];
     }
 
     /**
      * @param string $markerName
      * @param mixed $assets
+     * @param string $content
      * @return void
      */
-    protected function insertAssetsAtMarker($markerName, $assets)
+    protected function insertAssetsAtMarker($markerName, $assets, &$content)
     {
         $assetMarker = '<!-- VhsAssets' . $markerName . ' -->';
-        if (false === strpos($GLOBALS['TSFE']->content, $assetMarker)) {
-            $inFooter = (boolean) (false !== strpos($markerName, 'Footer'));
-            $tag = true === $inFooter ? '</body>' : '</head>';
-            $content = $GLOBALS['TSFE']->content;
-            $position = strrpos($content, $tag);
 
-            if ($position) {
-                $GLOBALS['TSFE']->content = substr_replace($content, $assetMarker . LF, $position, 0);
-            }
-        }
         if (true === is_array($assets)) {
             $chunk = $this->buildAssetsChunk($assets);
         } else {
             $chunk = $assets;
         }
-        $GLOBALS['TSFE']->content = str_replace($assetMarker, $chunk, $GLOBALS['TSFE']->content);
+
+        if (false === strpos($content, $assetMarker)) {
+            $inFooter = (boolean) (false !== strpos($markerName, 'Footer'));
+            $tag = true === $inFooter ? '</body>' : '</head>';
+            $position = strrpos($content, $tag);
+
+            if ($position) {
+                $content = substr_replace($content, LF . $chunk, $position, 0);
+            }
+        } else {
+            $content = str_replace($assetMarker, $assetMarker . LF . $chunk, $content);
+        }
     }
 
     /**
@@ -299,7 +309,7 @@ class AssetService implements SingletonInterface
                                 );
                             } else {
                                 $integrity = $this->getFileIntegrity($path);
-                                $path = mb_substr($path, mb_strlen(PATH_site));
+                                $path = mb_substr($path, mb_strlen(CoreUtility::getSitePath()));
                                 $path = $this->prefixPath($path);
                                 array_push($chunks, $this->generateTagForAssetType($type, null, $path, $integrity, $assetSettings));
                             }
@@ -627,6 +637,10 @@ class AssetService implements SingletonInterface
         $replacements = [];
         $wrap = explode('|', $wrap);
         preg_match_all($regex, $contents, $matches);
+        $logger = null;
+        if (class_exists(LogManager::class)) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        }
         foreach ($matches[2] as $matchCount => $match) {
             $match = trim($match, '\'" ');
             if (false === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
@@ -640,17 +654,18 @@ class AssetService implements SingletonInterface
                 $newPath = basename($path);
                 $extension = pathinfo($newPath, PATHINFO_EXTENSION);
                 $temporaryFileName = 'vhs-assets-css-' . $checksum . '.' . $extension;
-                $temporaryFile = constant('PATH_site') . $this->getTempPath() . $temporaryFileName;
+                $temporaryFile = CoreUtility::getSitePath() . $this->getTempPath() . $temporaryFileName;
                 $rawPath = GeneralUtility::getFileAbsFileName(
                     $originalDirectory . (empty($originalDirectory) ? '' : '/')
                 ) . $path;
                 $realPath = realpath($rawPath);
                 if (false === $realPath) {
-                    GeneralUtility::sysLog(
-                        'Asset at path "' . $rawPath . '" not found. Processing skipped.',
-                        'vhs',
-                        GeneralUtility::SYSLOG_SEVERITY_WARNING
-                    );
+                    $message = 'Asset at path "' . $rawPath . '" not found. Processing skipped.';
+                    if ($logger instanceof LoggerInterface) {
+                        $logger->warning($message, ['rawPath' => $rawPath]);
+                    } else {
+                        GeneralUtility::sysLog($message, GeneralUtility::SYSLOG_SEVERITY_WARNING);
+                    }
                 } else {
                     if (false === file_exists($temporaryFile)) {
                         copy($realPath, $temporaryFile);
@@ -751,7 +766,7 @@ class AssetService implements SingletonInterface
         if (true === static::$cacheCleared) {
             return;
         }
-        if ('all' !== $parameters['cacheCmd']) {
+        if ('all' !== ($parameters['cacheCmd'] ?? '')) {
             return;
         }
         $assetCacheFiles = glob(GeneralUtility::getFileAbsFileName($this->getTempPath() . 'vhs-assets-*'));
@@ -759,7 +774,13 @@ class AssetService implements SingletonInterface
             return;
         }
         foreach ($assetCacheFiles as $assetCacheFile) {
-            touch($assetCacheFile, 0);
+            if (!@touch($assetCacheFile, 0)) {
+                $content = file_get_contents($assetCacheFile);
+                $temporaryAssetCacheFile = tempnam(dirname($assetCacheFile), basename($assetCacheFile) . '.');
+                $this->writeFile($temporaryAssetCacheFile, $content);
+                rename($temporaryAssetCacheFile, $assetCacheFile);
+                touch($assetCacheFile, 0);
+            }
         }
         static::$cacheCleared = true;
     }
