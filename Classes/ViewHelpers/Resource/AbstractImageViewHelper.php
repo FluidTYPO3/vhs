@@ -160,8 +160,10 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
                 );
             }
 
-            $GLOBALS['TSFE']->lastImageInfo = $imageInfo;
-            $GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
+            if (property_exists($GLOBALS['TSFE'], 'imagesOnPage')) {
+                $GLOBALS['TSFE']->lastImageInfo = $imageInfo;
+                $GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
+            }
 
             if (true === GeneralUtility::isValidUrl($imageInfo[3])) {
                 $imageSource = $imageInfo[3];

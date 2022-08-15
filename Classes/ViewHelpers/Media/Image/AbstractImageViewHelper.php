@@ -181,7 +181,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $src = mb_substr($src, 3);
         }
         $this->imageInfo = $this->contentObject->getImgResource($src, $setup);
-        $GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
+        if (property_exists($GLOBALS['TSFE'], 'lastImageInfo')) {
+            $GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
+        }
 
         if (false === is_array($this->imageInfo)) {
             throw new Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
@@ -217,7 +219,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $this->imageInfo[3] = $destinationFilename;
         }
 
-        $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
+        if (property_exists($GLOBALS['TSFE'], 'imagesOnPage')) {
+            $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
+        }
         $this->mediaSource = rawurldecode($this->imageInfo[3]);
         if (TYPO3_MODE === 'BE') {
             $this->resetFrontendEnvironment();
