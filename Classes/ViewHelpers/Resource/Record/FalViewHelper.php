@@ -133,7 +133,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function getResources($record)
     {
-        if (!is_array($record)) {
+        if (!is_array($record) || empty($record)) {
             return [];
         }
         if (!empty($GLOBALS['TSFE']->sys_page)) {
