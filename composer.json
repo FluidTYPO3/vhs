@@ -21,7 +21,8 @@
     "config": {
         "preferred-install": "dist",
         "allow-plugins": {
-            "typo3/cms-composer-installers": true
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true
         }
     },
     "minimum-stability": "dev",
