@@ -338,10 +338,11 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function getCurrentFrontendUser()
     {
-        if (true === empty($GLOBALS['TSFE']->loginUser)) {
-            return null;
+        if ($GLOBALS['TSFE']->isUserOrGroupSet()) {
+            return $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
         }
-        return $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+
+        return null;
     }
 
     /**
