@@ -209,6 +209,13 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             'Optional divider to insert between each menu item. Note that this does not mix well with automatic ' .
             'rendering due to the use of an ul > li structure'
         );
+        $this->registerArgument(
+            'normalWhenNoLanguage',
+            'boolean',
+            'If TRUE, a missing page overlay should be ignored',
+            false,
+            false
+        );
     }
 
     /**
@@ -419,6 +426,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
         $includeSpacers = (boolean) $this->arguments['includeSpacers'];
+        $normalWhenNoLanguage = (boolean) $this->arguments['normalWhenNoLanguage'];
         $excludePages = $this->processPagesArgument($this->arguments['excludePages']);
 
         return $this->pageService->getMenu(
@@ -426,7 +434,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $excludePages,
             $showHiddenInMenu,
             $includeSpacers,
-            $showAccessProtected
+            $showAccessProtected,
+            $normalWhenNoLanguage
         );
     }
 
