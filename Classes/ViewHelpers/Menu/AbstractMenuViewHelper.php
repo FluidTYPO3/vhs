@@ -472,6 +472,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             if (true === $this->pageService->isCurrent($targetPage['uid'] ?? $page['uid'])) {
                 $pages[$index]['current'] = true;
                 $class[] = $this->arguments['classCurrent'];
+            } else {
+                 $pages[$index]['current'] = false;
             }
             if (0 < count($this->getMenu($originalPageUid))) {
                 $pages[$index]['hasSubPages'] = true;
