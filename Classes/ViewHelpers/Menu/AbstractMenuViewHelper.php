@@ -466,6 +466,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             if (true === $this->pageService->isActive($originalPageUid, $showAccessProtected)) {
                 $pages[$index]['active'] = true;
                 $class[] = $this->arguments['classActive'];
+            } else {
+                $pages[$index]['active'] = false;
             }
             if (true === $this->pageService->isCurrent($targetPage['uid'] ?? $page['uid'])) {
                 $pages[$index]['current'] = true;
