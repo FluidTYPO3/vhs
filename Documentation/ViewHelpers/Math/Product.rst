@@ -34,19 +34,6 @@ a
 :aspect:`Description`
    First number for calculation
 
-.. _math.product_fail:
-
-fail
-----
-
-:aspect:`DataType`
-   boolean
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).
-
 .. _math.product_b:
 
 b
@@ -59,3 +46,16 @@ b
    false
 :aspect:`Description`
    Second number or Iterator/Traversable/Array for calculation
+
+.. _math.product_fail:
+
+fail
+----
+
+:aspect:`DataType`
+   boolean
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).
