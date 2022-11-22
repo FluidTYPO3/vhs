@@ -11,11 +11,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -59,9 +61,6 @@ class RequestViewHelper extends AbstractRenderViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string|ResponseInterface
      * @throws \Exception
      */
@@ -70,6 +69,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var RenderingContext $renderingContext */
         $action = $arguments['action'];
         $controller = $arguments['controller'];
         $extensionName = $arguments['extensionName'];
@@ -86,6 +86,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $request->getPluginName()
         );
 
+        /** @var ContentObjectRenderer $temporaryContentObject */
         $temporaryContentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         try {
             $targetConfiguration = $configurationManager->getConfiguration(
@@ -99,7 +100,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $configurationManager->setContentObject($temporaryContentObject);
             $configurationManager->setConfiguration($targetConfiguration);
 
-            if (version_compare(TYPO3_version, 10.0, '<')) {
+            if (version_compare(TYPO3_version, '10.0', '<')) {
                 /** @var Request $request */
                 $request = $objectManager->get(static::$requestType);
                 $request->setControllerActionName($action ?? reset(reset($targetConfiguration['controllerConfiguration'])['actions']));
@@ -118,16 +119,14 @@ class RequestViewHelper extends AbstractRenderViewHelper
                 $response = $possibleResponse;
             }
             $configurationManager->setContentObject($contentObjectBackup);
-            if (true === isset($configurationBackup)) {
-                $configurationManager->setConfiguration($configurationBackup);
-            }
-            return $response instanceof ResponseInterface ? (string) $response : $response->getBody()->getContents();
+            $configurationManager->setConfiguration($configurationBackup);
+            return $response instanceof ResponseInterface ? $response->getContent() : $response->getBody()->getContents();
         } catch (\Exception $error) {
             if (false === (boolean) $arguments['graceful']) {
                 throw $error;
             }
             if (false === empty($arguments['onError'])) {
-                return sprintf($arguments['onError'], [$error->getMessage()], $error->getCode());
+                return sprintf((string) $arguments['onError'], $error->getMessage(), $error->getCode());
             }
             return $error->getMessage() . ' (' . $error->getCode() . ')';
         }
@@ -138,7 +137,9 @@ class RequestViewHelper extends AbstractRenderViewHelper
      */
     protected static function getObjectManager()
     {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        return $objectManager;
     }
 
     /**
@@ -146,7 +147,9 @@ class RequestViewHelper extends AbstractRenderViewHelper
      */
     protected static function getDispatcher()
     {
-        return static::getObjectManager()->get(Dispatcher::class);
+        /** @var Dispatcher $dispatcher */
+        $dispatcher = static::getObjectManager()->get(Dispatcher::class);
+        return $dispatcher;
     }
 
     /**
@@ -154,7 +157,9 @@ class RequestViewHelper extends AbstractRenderViewHelper
      */
     protected static function getConfigurationManager()
     {
-        return static::getObjectManager()->get(ConfigurationManagerInterface::class);
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = static::getObjectManager()->get(ConfigurationManagerInterface::class);
+        return $configurationManager;
     }
 
     /**
@@ -163,31 +168,35 @@ class RequestViewHelper extends AbstractRenderViewHelper
      * @param string|null $controllerName
      * @param string|null $actionName
      * @param array $parameters
-     * @throws MvcException\InvalidActionNameException
-     * @throws MvcException\InvalidArgumentNameException
-     * @throws MvcException\InvalidControllerNameException
-     * @throws MvcException\InvalidExtensionNameException
+     * @return RequestInterface|\Psr\Http\Message\RequestInterface
      * @see \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration
      */
     protected static function loadDefaultValues($extensionName, $pluginName, $controllerName, $actionName, $parameters)
     {
         $configurationManager = static::getConfigurationManager();
         $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
+        /** @var string $defaultActionName */
         $defaultActionName = reset(reset($configuration['controllerConfiguration'])['actions']);
 
+        $firstControllerName = null;
         $controllerAliasToClassMapping = [];
+        $controllerClassToAliasMapping = [];
         foreach ($configuration['controllerConfiguration'] as $controllerClassName => $controllerConfiguration) {
+            $firstControllerName = $firstControllerName ?? $controllerClassName;
             $controllerAliasToClassMapping[$controllerConfiguration['alias']] = $controllerConfiguration['className'];
             $controllerClassToAliasMapping[$controllerConfiguration['className']] = $controllerConfiguration['alias'];
         }
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request|\TYPO3\CMS\Extbase\Mvc\Request $request */
+        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
         $request = static::getObjectManager()->get(class_exists(Request::class) ? Request::class : \TYPO3\CMS\Extbase\Mvc\Request::class);
+        if (method_exists($request, 'setControllerAliasToClassNameMapping')) {
+            $request->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
+        }
         $request->setPluginName($pluginName);
         $request->setControllerExtensionName($extensionName);
-        $request->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
-        $request->setControllerName($controllerName ?? $controllerClassToAliasMapping[$controllerClassName]);
+        $request->setControllerName($controllerName ?? $controllerClassToAliasMapping[$firstControllerName]);
         $request->setControllerActionName($actionName ?? $defaultActionName);
+
         if (!empty($configuration['format'])) {
             $request->setFormat($configuration['format']);
         }

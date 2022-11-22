@@ -48,6 +48,48 @@ jobs:
       - name: Run tests
         run: vendor/bin/phpunit
 
+  phpstan:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    name: "PHPStan, PHP ${{ matrix.php }} TYPO3 ${{ matrix.typo3 }}"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: "7.4"
+            typo3: "^8.7"
+          - php: "7.4"
+            typo3: "^9.5"
+          - php: "7.4"
+            typo3: "^10.4"
+          - php: "8.0"
+            typo3: "^11.5"
+          - php: "8.1"
+            typo3: "^11.5"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, json
+          ini-values: date.timezone="Europe/Copenhagen", opcache.fast_shutdown=0
+          tools: composer:v2.2
+
+      - name: Select TYPO3 version
+        run: "composer require typo3/cms-core:${{ matrix.typo3 }} -W --no-update"
+
+      - name: Composer install
+        uses: ramsey/composer-install@v2
+
+      - name: Run phpstan
+        run: vendor/bin/phpstan analyze
+
   coverage:
     runs-on: ubuntu-latest
     continue-on-error: true

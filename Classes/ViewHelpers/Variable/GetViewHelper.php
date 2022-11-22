@@ -71,9 +71,6 @@ class GetViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -82,6 +79,7 @@ class GetViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        /** @var string $name */
         $name = $arguments['name'];
         $useRawKeys = $arguments['useRawKeys'];
         if (false === strpos($name, '.')) {
@@ -100,12 +98,13 @@ class GetViewHelper extends AbstractViewHelper
                 try {
                     $value = $templateVariableRoot;
                     foreach ($segments as $segment) {
-                        if (true === ctype_digit($segment)) {
+                        if (is_numeric($segment) && (int) $segment == $segment) {
                             $segment = intval($segment);
                             $index = 0;
                             $found = false;
                                 // Note: this loop approach is not a stupid solution. If you doubt this,
                                 // attempt to feth a number at a numeric index from ObjectStorage ;)
+                            /** @var iterable $value */
                             foreach ($value as $possibleValue) {
                                 if ($index === $segment) {
                                     $value = $possibleValue;

@@ -68,7 +68,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('alt', 'string', 'Text for the alt attribute.', true);
         $this->registerArgument('title', 'string', 'Text for the title attribute.');
         $this->registerArgument('class', 'string', 'CSS class(es) to set.');
-        $this->registerArgument('loading', 'string', 'Native lazy-loading for images. Can be "lazy", "eager" or "auto"', false);
+        $this->registerArgument('loading', 'string', 'Native lazy-loading for images. Can be "lazy", "eager" or "auto"');
     }
 
     /**
@@ -85,19 +85,20 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
             $treatIdAsReference = true;
         }
 
-        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
-        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
+        $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
         $content = $this->renderChildren();
-        $this->renderingContext->getViewHelperVariableContainer()->remove(static::SCOPE, static::SCOPE_VARIABLE_SRC);
-        $this->renderingContext->getViewHelperVariableContainer()->remove(static::SCOPE, static::SCOPE_VARIABLE_ID);
+        $viewHelperVariableContainer->remove(static::SCOPE, static::SCOPE_VARIABLE_SRC);
+        $viewHelperVariableContainer->remove(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
-        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
+        if (!$viewHelperVariableContainer->exists(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
             throw new Exception('Please add a source without a media query as a default.', 1438116616);
         }
-        $defaultSource = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
+        $defaultSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
 
         $defaultImage = new TagBuilder('img');
-        $defaultImage->addAttribute('src', $defaultSource);
+        $defaultImage->addAttribute('src', is_scalar($defaultSource) ? (string) $defaultSource : '');
         $defaultImage->addAttribute('alt', $this->arguments['alt']);
 
         if (false === empty($this->arguments['class'])) {

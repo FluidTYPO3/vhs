@@ -39,7 +39,6 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
     /**
      * @param mixed $a
      * @param mixed $b
-     * @param array $arguments
      * @return mixed
      */
     protected static function calculateAction($a, $b, array $arguments)
@@ -55,7 +54,7 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
                 $b = static::arrayFromArrayOrTraversableOrCSVStatic($b);
             }
             foreach ($a as $index => $value) {
-                $bSide = $bIsIterable ? $b[$index] : $b;
+                $bSide = is_array($b) ? $b[$index] : $b;
                 $a[$index] = static::calculateAction($value, $bSide, $arguments);
             }
             return $a;

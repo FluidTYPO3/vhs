@@ -50,6 +50,7 @@ class LastViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return array_pop(static::arrayFromArrayOrTraversableOrCSVStatic($arguments['haystack'] ?? $renderChildrenClosure()));
+        $subject = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['haystack'] ?? $renderChildrenClosure());
+        return array_pop($subject);
     }
 }

@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -68,8 +69,12 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function __construct()
     {
-        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        /** @var ResourceFactory $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->resourceFactory = $resourceFactory;
+        /** @var FileRepository $fileRepository */
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $this->fileRepository = $fileRepository;
     }
 
     public function initializeArguments()
@@ -147,8 +152,10 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 $sqlRecordUid = $record[$this->idField];
             }
 
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
 
             $queryBuilder->createNamedParameter($this->getTable(), \PDO::PARAM_STR, ':tablenames');
             $queryBuilder->createNamedParameter($sqlRecordUid, \PDO::PARAM_INT, ':uid_foreign');
@@ -198,10 +205,10 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             }
 
             // Execute
-            $references = $queryBuilder
-                ->orderBy('sorting_foreign')
-                ->execute()
-                ->fetchAll();
+            /** @var Statement $statement */
+            $statement = $queryBuilder->orderBy('sorting_foreign')->execute();
+            /** @var array[] $references */
+            $references = $statement->fetchAll();
 
             $fileReferences = [];
 
@@ -209,7 +216,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 try {
                     // Just passing the reference uid, the factory is doing workspace
                     // overlays automatically depending on the current environment
-                    $fileReferences[] = $this->resourceFactory->getFileReferenceObject($reference['uid']);
+                    $fileReferences[] = $this->resourceFactory->getFileReferenceObject($reference['uid'] ?? 0);
                 } catch (ResourceDoesNotExistException $exception) {
                     // No handling, just omit the invalid reference uid
                     continue;

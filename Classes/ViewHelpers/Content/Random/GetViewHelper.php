@@ -16,6 +16,8 @@ class GetViewHelper extends RenderViewHelper
 
     /**
      * Initialize ViewHelper arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {

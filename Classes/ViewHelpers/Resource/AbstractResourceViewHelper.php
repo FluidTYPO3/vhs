@@ -8,10 +8,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,7 +25,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * Initialize arguments.
      *
@@ -69,7 +71,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
      * @param boolean $onlyProperties
      * @param mixed $identifier
      * @param mixed $categories
-     * @return array|NULL
+     * @return array|null
      * @throws \RuntimeException
      */
     public function getFiles($onlyProperties = false, $identifier = null, $categories = null)
@@ -110,12 +112,14 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         if (false === empty($categories)) {
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
             $queryBuilder->createNamedParameter($this->getTablenameForSystemConfiguration(), \PDO::PARAM_STR, ':tablenames');
             $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
 
-            $rows = $queryBuilder
+            /** @var Statement $statement */
+            $statement = $queryBuilder
                 ->select('uid_foreign')
                 ->from('sys_category_record_mm')
                 ->where(
@@ -124,8 +128,8 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                 ->andWhere(
                     $queryBuilder->expr()->in('uid_local', ':categories')
                 )
-                ->execute()
-                ->fetchAll();
+                ->execute();
+            $rows = $statement->fetchAll();
 
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));
 
@@ -159,12 +163,21 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                     $file = $resourceFactory->getFileObjectFromCombinedIdentifier($i);
                 }
 
+                /** @var File|ProcessedFile|null $file */
+                if ($file === null) {
+                    continue;
+                }
+
                 if (true === isset($fileUids) && false === in_array($file->getUid(), $fileUids)) {
                     continue;
                 }
 
                 if (true === $onlyProperties) {
-                    $file = ResourceUtility::getFileArray($file);
+                    if ($file instanceof ProcessedFile) {
+                        $file = $file->toArray();
+                    } else {
+                        $file = ResourceUtility::getFileArray($file);
+                    }
                 }
 
                 $files[] = $file;

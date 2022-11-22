@@ -111,7 +111,8 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
             $view->setFormat($controllerContext->getRequest()->getFormat());
             $view->getRenderingContext()->setViewHelperVariableContainer($renderingContext->getViewHelperVariableContainer());
         }
-        $view->assignMultiple(ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext)->getAll());
+        $variables = (array) ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext)->getAll();
+        $view->assignMultiple($variables);
         return $view;
     }
 
@@ -139,7 +140,9 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      */
     protected static function getPreparedView()
     {
-        return static::getObjectManager()->get(StandaloneView::class);
+        /** @var StandaloneView $view */
+        $view = static::getObjectManager()->get(StandaloneView::class);
+        return $view;
     }
 
     /**
@@ -147,6 +150,8 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      */
     protected static function getObjectManager()
     {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        return $objectManager;
     }
 }

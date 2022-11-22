@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -22,7 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class SourceViewHelper extends AbstractTagBasedViewHelper
 {
-
     const SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
     const SCOPE_VARIABLE_SRC = 'src';
     const SCOPE_VARIABLE_ID = 'treatIdAsReference';
@@ -109,8 +109,10 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $imageSource = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_SRC);
-        $treatIdAsRerefence = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_ID);
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        /** @var FileReference|string $imageSource */
+        $imageSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_SRC);
+        $treatIdAsRerefence = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
         if ('BE' === TYPO3_MODE) {
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
@@ -124,6 +126,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             'maxW' => $this->arguments['maxW'],
             'maxH' => $this->arguments['maxH'],
             'treatIdAsReference' => $treatIdAsRerefence,
+            'params' => '',
         ];
         $quality = $this->arguments['quality'];
         $format = $this->arguments['format'];
@@ -141,14 +144,15 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         }
         $result = $this->contentObject->getImgResource($imageSource, $setup);
 
+        $tsfeBackup = null;
         if ('BE' === TYPO3_MODE) {
             FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
         }
 
-        $src = $this->preprocessSourceUri(rawurldecode($result[3]));
+        $src = $this->preprocessSourceUri(rawurldecode($result[3] ?? ''));
 
         if (null === $this->arguments['media']) {
-            $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
+            $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
         } else {
             $this->tag->addAttribute('media', $this->arguments['media']);
         }

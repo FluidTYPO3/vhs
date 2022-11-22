@@ -20,7 +20,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class MetaViewHelper extends AbstractTagBasedViewHelper
 {
-
     use TagViewHelperTrait;
     use PageRendererTrait;
 
@@ -49,12 +48,12 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
     /**
      * Render method
      *
-     * @return void
+     * @return string
      */
     public function render()
     {
         if ('BE' === TYPO3_MODE) {
-            return;
+            return '';
         }
         $content = $this->arguments['content'];
         if (!empty($content)) {
@@ -64,6 +63,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
             } else {
                 $properties = [];
                 $type = 'name';
+                /** @var string $name */
                 $name = $this->tag->getAttribute('name');
                 if (!empty($this->tag->getAttribute('property'))) {
                     $type = 'property';
@@ -80,5 +80,6 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
                 $pageRenderer->setMetaTag($type, $name, $content, $properties);
             }
         }
+        return '';
     }
 }

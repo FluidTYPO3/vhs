@@ -52,9 +52,6 @@ class UnsetViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return void
      */
     public static function renderStatic(
@@ -62,6 +59,7 @@ class UnsetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $name */
         $name = $arguments['name'];
         $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
         if ($variableProvider->exists($name)) {

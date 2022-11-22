@@ -23,7 +23,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  */
 class BrowseViewHelper extends AbstractMenuViewHelper
 {
-
     /**
      * @var array
      */
@@ -91,7 +90,11 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         $parentPage = $this->pageService->getPage($parentUid, $showAccessProtected);
         $menuData = $this->getMenu($parentUid);
         if (empty($menuData)) {
-            return !empty($this->arguments['as']) ? $this->renderChildren() : '';
+            if (empty($this->arguments['as'])) {
+                $content = $this->renderChildren();
+                return is_scalar($content) ? (string) $content : '';
+            }
+            return '';
         }
         $pageUids = array_keys($menuData);
         $uidCount = count($pageUids);

@@ -121,16 +121,16 @@ class EliminateViewHelper extends AbstractViewHelper
 
     /**
      * @param string $content
-     * @param mixed $characters
+     * @param string|array $characters
      * @param boolean $caseSensitive
      * @return string
      */
     protected static function eliminateCharacters($content, $characters, $caseSensitive)
     {
-        if (true === is_array($characters)) {
+        if (is_array($characters)) {
             $subjects = $characters;
         } else {
-            $subjects = preg_split('//u', $characters, null, PREG_SPLIT_NO_EMPTY);
+            $subjects = (array) preg_split('//u', $characters, 0, PREG_SPLIT_NO_EMPTY);
         }
         foreach ($subjects as $subject) {
             if (true === $caseSensitive) {
@@ -144,13 +144,13 @@ class EliminateViewHelper extends AbstractViewHelper
 
     /**
      * @param string $content
-     * @param mixed $strings
+     * @param string|array $strings
      * @param boolean $caseSensitive
      * @return string
      */
     protected static function eliminateStrings($content, $strings, $caseSensitive)
     {
-        if (true === is_array($strings)) {
+        if (is_array($strings)) {
             $subjects = $strings;
         } else {
             $subjects = explode(',', $strings);
@@ -172,7 +172,7 @@ class EliminateViewHelper extends AbstractViewHelper
     protected static function eliminateWhitespace($content)
     {
         $content = preg_replace('/\s+/', '', $content);
-        return $content;
+        return (string) $content;
     }
 
     /**
@@ -181,7 +181,7 @@ class EliminateViewHelper extends AbstractViewHelper
      */
     protected static function eliminateWhitespaceBetweenHtmlTags($content)
     {
-        $content = trim(preg_replace('/>\s+</', '><', $content));
+        $content = trim((string) preg_replace('/>\s+</', '><', $content));
         return $content;
     }
 
@@ -222,7 +222,7 @@ class EliminateViewHelper extends AbstractViewHelper
     protected static function eliminateDigits($content)
     {
         $content = preg_replace('#[0-9]#', '', $content);
-        return $content;
+        return (string) $content;
     }
 
     /**
@@ -237,7 +237,7 @@ class EliminateViewHelper extends AbstractViewHelper
         } else {
             $content = preg_replace('/[a-z]/i', '', $content);
         }
-        return $content;
+        return (string) $content;
     }
 
     /**
@@ -249,6 +249,6 @@ class EliminateViewHelper extends AbstractViewHelper
     {
         $caseSensitiveIndicator = true === $caseSensitive ? 'i' : '';
         $content = preg_replace('/[^(\x20-\x7F)]*/' . $caseSensitiveIndicator, '', $content);
-        return $content;
+        return (string) $content;
     }
 }

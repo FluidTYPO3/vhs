@@ -1,0 +1,33 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 9
+    reportUnmatchedIgnoredErrors: false
+    checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        - "#^Class TYPO3\\\\CMS\\\\Core\\\\Context\\\\Context not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder not found\\.$#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Site\\\\Site#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Context\\\\Context#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Context\\\\LanguageAspect#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\Site#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Core\\\\Environment#"
+        - "#invalid return type TYPO3\\\\CMS\\\\Core\\\\Site\\\\Site#"
+        - "#invalid return type TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository#"
+        - "#invalid return type TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\Site#"
+        - "#no value type specified in iterable type#"
+        - "#^Strict comparison using === between 'CLI' and 'BE' will always evaluate to false\\.$#"
+        - "#^Strict comparison using === between 'CLI' and 'FE' will always evaluate to false\\.$#"
+        - "#^Strict comparison using === between 'FE' and 'CLI' will always evaluate to false\\.$#"
+        - "#^Strict comparison using === between 'BE' and 'CLI' will always evaluate to false\\.$#"
+        - "#^Parameter \\#2 \\$sectionName of method TYPO3Fluid\\\\Fluid\\\\View\\\\AbstractTemplateView\\:\\:renderPartial\\(\\) expects string, string\\|null given\\.$#"
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    paths:
+        - Classes
+        - Configuration
+    excludePaths:
+        - Classes/Middleware/AssetInclusion.php
+        - Configuration/RequestMiddlewares.php

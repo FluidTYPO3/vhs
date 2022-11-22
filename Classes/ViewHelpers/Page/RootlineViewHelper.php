@@ -40,9 +40,6 @@ class RootlineViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -67,6 +64,10 @@ class RootlineViewHelper extends AbstractViewHelper
      */
     protected static function getPageService()
     {
-        return GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var PageService $pageService */
+        $pageService = $objectManager->get(PageService::class);
+        return $pageService;
     }
 }

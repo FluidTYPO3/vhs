@@ -20,14 +20,17 @@ class SquareRootViewHelper extends AbstractSingleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param mixed $a
-     * @return integer
+     * @param integer|float|string|array $a
+     * @return float|array
      */
-    protected static function calculateAction($a)
+    protected static function calculateAction($a, array $arguments = [])
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map('sqrt', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
-        return sqrt($a);
+        if (!is_scalar($a)) {
+            return 0;
+        }
+        return sqrt((float) $a);
     }
 }

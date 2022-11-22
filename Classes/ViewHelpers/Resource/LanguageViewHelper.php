@@ -14,6 +14,8 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Lang\LanguageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -74,15 +76,15 @@ class LanguageViewHelper extends AbstractViewHelper
     /**
      * The main render method of this ViewHelper.
      *
-     * @return array|string
+     * @return mixed
      */
     public function render()
     {
         $path = $this->getResolvedPath();
         $languageKey = $this->getLanguageKey();
-        /** @var $languageFactory LocalizationFactory */
+        /** @var LocalizationFactory $languageFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-        $locallang = $languageFactory->getParsedData($path, $languageKey);
+        $locallang = (array) $languageFactory->getParsedData($path, $languageKey);
         $labels = $this->getLabelsByLanguageKey($locallang, $languageKey);
         $labels = $this->getLabelsFromTarget($labels);
         return $this->renderChildrenWithVariableOrReturnInput($labels);
@@ -96,10 +98,13 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected function getResolvedExtensionName()
     {
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $controllerContext = $renderingContext->getControllerContext();
         $extensionName = $this->arguments['extensionName'];
 
-        if ((null === $extensionName) && (true === $this->controllerContext instanceof ControllerContext)) {
-            $request = $this->renderingContext->getControllerContext()->getRequest();
+        if ((null === $extensionName) && (true === $controllerContext instanceof ControllerContext)) {
+            $request = $controllerContext->getRequest();
             $extensionName = $request->getControllerExtensionName();
         }
 
@@ -197,7 +202,7 @@ class LanguageViewHelper extends AbstractViewHelper
 
         if ('FE' === TYPO3_MODE) {
             $language = $GLOBALS['TSFE']->lang;
-        } elseif (true === is_object($GLOBALS['LANG'])) {
+        } elseif ($GLOBALS['LANG'] instanceof LanguageService) {
             $language = $GLOBALS['LANG']->lang;
         }
 

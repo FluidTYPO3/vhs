@@ -63,7 +63,9 @@ class InfoViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $pageRepository = GeneralUtility::makeInstance(PageService::class)->getPageRepository();
+        /** @var PageService $pageService */
+        $pageService = GeneralUtility::makeInstance(PageService::class);
+        $pageRepository = $pageService->getPageRepository();
         $pageUid = (integer) $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;

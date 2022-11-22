@@ -22,14 +22,15 @@ class FloorViewHelper extends AbstractSingleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param mixed $a
-     * @return integer
+     * @param integer|float|string|array|iterable $a
+     * @return integer|array
      */
-    protected static function calculateAction($a)
+    protected static function calculateAction($a, array $arguments = [])
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map('floor', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
-        return floor($a);
+        /** @var integer|float $a */
+        return (integer) floor($a);
     }
 }

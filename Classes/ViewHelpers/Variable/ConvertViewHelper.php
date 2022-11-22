@@ -40,6 +40,8 @@ class ConvertViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -61,9 +63,6 @@ class ConvertViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -121,6 +120,7 @@ class ConvertViewHelper extends AbstractViewHelper
                         $value = [];
                         break;
                     case 'ObjectStorage':
+                        /** @var ObjectManager $objectManager */
                         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
                         $value = $objectManager->get(ObjectStorage::class);
                         break;

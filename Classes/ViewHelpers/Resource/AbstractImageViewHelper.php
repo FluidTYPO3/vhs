@@ -29,7 +29,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     protected $tsfeBackup;
 
     /**
-     * @var string
+     * @var string|false
      */
     protected $workingDirectoryBackup;
 
@@ -200,12 +200,15 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
         $GLOBALS['TSFE'] = new \stdClass();
+        /** @var TemplateService $template */
         $template = GeneralUtility::makeInstance(TemplateService::class);
-        $template->tt_track = 0;
-        if (version_compare(TYPO3_version, 9.4, '<')) {
+        $template->tt_track = false;
+        if (version_compare(TYPO3_version, '9.4', '<')) {
             $template->init();
         }
-        $template->getFileName_backPath = CoreUtility::getSitePath();
+        if (property_exists($template, 'getFileName_backPath')) {
+            $template->getFileName_backPath = CoreUtility::getSitePath();
+        }
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
         $GLOBALS['TSFE']->config = $typoScriptSetup;
@@ -220,7 +223,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     protected function resetFrontendEnvironment()
     {
         $GLOBALS['TSFE'] = $this->tsfeBackup;
-        chdir($this->workingDirectoryBackup);
+        if ($this->workingDirectoryBackup !== false) {
+            chdir($this->workingDirectoryBackup);
+        }
     }
 
     /**

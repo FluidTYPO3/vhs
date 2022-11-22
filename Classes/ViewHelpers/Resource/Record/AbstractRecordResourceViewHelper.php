@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -165,11 +166,14 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         $table = $this->getTable();
         $idField = $this->idField;
 
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
 
         if (class_exists('\\TYPO3\\CMS\\Frontend\\Aspect\\PreviewAspect')) {
             //TYPO3 version >= 10
+            /** @var Context $context */
             $context = GeneralUtility::makeInstance(Context::class);
             $fePreview = ($context->hasAspect('frontend.preview')) ? $context->getPropertyFromAspect('frontend.preview', 'isPreview') : false;
         } else {
@@ -181,14 +185,17 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        return $queryBuilder
+        /** @var Statement $statement */
+        $statement = $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($idField, ':id')
             )
-            ->execute()
-            ->fetch() ?: null;
+            ->execute();
+        /** @var array|null $result */
+        $result = $statement->fetch() ?: null;
+        return $result;
     }
 
     /**
@@ -223,6 +230,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         // ViewHelperExceptions which render as an inline text error message.
         try {
             $resources = $this->getResources($record);
+            return $this->renderChildrenWithVariableOrReturnInput($resources);
         } catch (\Exception $error) {
             // we are doing the pokemon-thing and catching the very top level
             // of Exception because the range of Exceptions that are possibly
@@ -231,6 +239,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             // we are forced to "catch them all" - but we also output them.
             ErrorUtility::throwViewHelperException($error->getMessage(), $error->getCode());
         }
-        return $this->renderChildrenWithVariableOrReturnInput($resources);
+        return null;
     }
 }

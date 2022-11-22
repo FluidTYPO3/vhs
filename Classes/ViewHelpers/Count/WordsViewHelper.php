@@ -68,7 +68,7 @@ class WordsViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         return count(
-            preg_split(
+            (array) preg_split(
                 '~[^\p{L}\p{N}\']+~u',
                 strip_tags(
                     str_replace(

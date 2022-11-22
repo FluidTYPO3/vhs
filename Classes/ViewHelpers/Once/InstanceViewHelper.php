@@ -26,7 +26,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  */
 class InstanceViewHelper extends AbstractOnceViewHelper
 {
-
     /**
      * @param array $arguments
      * @return string

@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  */
 class CoreUtility
 {
-
     /**
      * Returns the flag icons path depending on the current core version
      *
@@ -27,16 +26,17 @@ class CoreUtility
      */
     public static function getLanguageFlagIconPath()
     {
-        if (version_compare(static::getCurrentCoreVersion(), 9.0, '<')) {
-            return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/PNG/';
+        $coreExtensionPath = ExtensionManagementUtility::extPath('core');
+        if (version_compare(static::getCurrentCoreVersion(), '9.0', '<')) {
+            return $coreExtensionPath . 'Resources/Public/Icons/Flags/PNG/';
         }
-        return ExtensionManagementUtility::extPath('core') . 'Resources/Public/Icons/Flags/';
+        return $coreExtensionPath . 'Resources/Public/Icons/Flags/';
     }
 
     public static function getSitePath(): string
     {
         if (defined('PATH_site')) {
-            return constant('PATH_site');
+            return PATH_site;
         }
         /** @see https://docs.typo3.org/m/typo3/reference-coreapi/9.5/en-us/ApiOverview/GlobalValues/Constants/Index.html#path-site */
         return Environment::getPublicPath() . '/';

@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -54,9 +55,6 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -64,7 +62,10 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var RenderingContext $renderingContext */
+        /** @var string|null $extensionKey */
         $extensionKey = $arguments['extensionKey'];
+        /** @var string $path */
         $path = $arguments['path'];
 
         if (null === $extensionKey) {

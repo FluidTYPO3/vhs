@@ -17,7 +17,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class ExistsViewHelper extends AbstractConditionViewHelper
 {
-
     /**
      * Initialize arguments
      *
@@ -34,12 +33,15 @@ class ExistsViewHelper extends AbstractConditionViewHelper
      * This method decides if the condition is TRUE or FALSE. It can be overriden in
      * extending viewhelpers to adjust functionality.
      *
-     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for
+     * @param array|null $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for
      *                         flexiblity in overriding this method.
      * @return bool
      */
     protected static function evaluateCondition($arguments = null)
     {
+        if ($arguments === null) {
+            return false;
+        }
         $file = GeneralUtility::getFileAbsFileName($arguments['file']);
         $directory = $arguments['directory'];
         $evaluation = false;

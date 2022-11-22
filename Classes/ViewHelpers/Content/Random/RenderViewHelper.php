@@ -18,6 +18,8 @@ class RenderViewHelper extends AbstractContentViewHelper
 
     /**
      * Initialize ViewHelper arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -28,7 +30,7 @@ class RenderViewHelper extends AbstractContentViewHelper
     /**
      * Render method
      *
-     * @return mixed
+     * @return string|array
      */
     public function render()
     {

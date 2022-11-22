@@ -27,7 +27,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class PageService implements SingletonInterface
 {
-
     const DOKTYPE_MOVE_TO_PLACEHOLDER = 0;
 
     /**
@@ -45,6 +44,10 @@ class PageService implements SingletonInterface
      */
     protected static $cachedRootlines = [];
 
+    /**
+     * @param string $constantName
+     * @return mixed
+     */
     public function readPageRepositoryConstant(string $constantName)
     {
         if (class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)) {
@@ -188,7 +191,11 @@ class PageService implements SingletonInterface
         }
         if (-1 === (integer) $languageUid) {
             if (class_exists(LanguageAspect::class)) {
-                $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+                /** @var Context $context */
+                $context = GeneralUtility::makeInstance(Context::class);
+                /** @var LanguageAspect $languageAspect */
+                $languageAspect = $context->getAspect('language');
+                $languageUid = $languageAspect->getId();
             } else {
                 $languageUid = $GLOBALS['TSFE']->sys_language_uid;
             }
@@ -226,12 +233,13 @@ class PageService implements SingletonInterface
     {
         static $instance = null;
         if ($instance === null) {
+            /** @var PageRepository|\TYPO3\CMS\Core\Domain\Repository\PageRepository $instance */
             $instance = GeneralUtility::makeInstance(
                 class_exists(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)
                     ? \TYPO3\CMS\Core\Domain\Repository\PageRepository::class
                     : \TYPO3\CMS\Frontend\Page\PageRepository::class
             );
-            if ($instance instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
+            if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.5', '<')) {
                 $instance->init(TYPO3_MODE === 'BE');
             }
         }

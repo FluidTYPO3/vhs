@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -45,6 +46,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * @param PageService $pageService
+     * @return void
      */
     public function injectPageService(PageService $pageService)
     {
@@ -143,7 +145,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render method
-     * @return NULL|string
+     * @return string|null
      */
     public function render()
     {
@@ -151,8 +153,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $pageUid = $this->arguments['pageUid'];
         $additionalParameters = (array) $this->arguments['additionalParams'];
         if (false === is_numeric($pageUid)) {
-            GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)
-                ->warning("pageUid must be numeric, got " . $pageUid);
+            /** @var LogManager $logManager */
+            $logManager = GeneralUtility::makeInstance(LogManager::class);
+            $logManager->getLogger(__CLASS__)->warning("pageUid must be numeric, got " . $pageUid);
             return null;
         }
 
@@ -186,7 +189,11 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         // Do not render the link, if the page should be hidden
         if (class_exists(LanguageAspect::class)) {
-            $currentLanguageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            /** @var Context $context */
+            $context = GeneralUtility::makeInstance(Context::class);
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $context->getAspect('language');
+            $currentLanguageUid = $languageAspect->getId();
         } else {
             $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
@@ -222,7 +229,10 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
         $additionalCssClasses = implode(' ', $class);
 
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+
+        $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($this->arguments['pageType'])
@@ -246,7 +256,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         } else {
             $this->tag->removeAttribute('class');
         }
-        $this->tag->setContent($title);
+        $this->tag->setContent(is_scalar($title) ? (string) $title : '');
         return $this->tag->render();
     }
 

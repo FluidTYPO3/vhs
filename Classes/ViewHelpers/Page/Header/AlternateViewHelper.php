@@ -14,6 +14,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -22,7 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class AlternateViewHelper extends AbstractViewHelper
 {
-
     use PageRendererTrait;
 
     /**
@@ -42,6 +42,7 @@ class AlternateViewHelper extends AbstractViewHelper
 
     /**
      * @param PageService $pageService
+     * @return void
      */
     public function injectPageService(PageService $pageService)
     {
@@ -54,10 +55,15 @@ class AlternateViewHelper extends AbstractViewHelper
      */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
+        /** @var TagBuilder $tagBuilder */
+        $tagBuilder = $objectManager->get(TagBuilder::class);
         $this->objectManager = $objectManager;
-        $this->tagBuilder = $this->objectManager->get(TagBuilder::class);
+        $this->tagBuilder = $tagBuilder;
     }
 
+    /**
+     * @return void
+     */
     public function initializeArguments()
     {
         $this->registerArgument(
@@ -89,7 +95,7 @@ class AlternateViewHelper extends AbstractViewHelper
     public function render()
     {
         if ('BE' === TYPO3_MODE) {
-            return null;
+            return '';
         }
 
         $languages = $this->arguments['languages'];
@@ -109,8 +115,10 @@ class AlternateViewHelper extends AbstractViewHelper
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
         $addQueryString = $this->arguments['addQueryString'];
 
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
         $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setCreateAbsoluteUri(true)
@@ -149,6 +157,6 @@ class AlternateViewHelper extends AbstractViewHelper
             return trim($output);
         }
 
-        return null;
+        return '';
     }
 }
