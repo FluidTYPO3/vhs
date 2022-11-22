@@ -15,7 +15,6 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
  */
 class SortViewHelperTest extends AbstractViewHelperTest
 {
-
     /**
      * @test
      */

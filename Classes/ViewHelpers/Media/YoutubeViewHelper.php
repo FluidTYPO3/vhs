@@ -15,7 +15,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class YoutubeViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * Base url
      *
@@ -116,7 +115,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
 
         if (false === (boolean) $this->arguments['legacyCode']) {
             $this->tag->addAttribute('src', $src);
-            $this->tag->addAttribute('frameborder', 0);
+            $this->tag->addAttribute('frameborder', '0');
             $this->tag->addAttribute('allowFullScreen', 'allowFullScreen');
             $this->tag->forceClosingTag(true);
         } else {

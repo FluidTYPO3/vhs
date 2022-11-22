@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
@@ -305,10 +306,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTest
      */
     public function testAssertBackendUserGroupLoggedIn($group, $currentUser, $expected)
     {
-        $GLOBALS['BE_USER'] = (object) ['user' => $currentUser];
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['dummy'])->getMockForAbstractClass();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['getCurrentBackendUser'])->getMockForAbstractClass();
+        $instance->method('getCurrentBackendUser')->willReturn($currentUser);
         $result = $instance->assertBackendUserGroupLoggedIn($group);
-        unset($GLOBALS['BE_USER']);
         $this->assertEquals($expected, $result);
     }
 

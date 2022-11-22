@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 use FluidTYPO3\Vhs\View\UncacheContentObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -53,6 +54,7 @@ class UncacheViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var RenderingContext $renderingContext */
         $templateVariableContainer = $renderingContext->getVariableProvider();
         $partialArguments = $arguments['arguments'];
         if (false === is_array($partialArguments)) {

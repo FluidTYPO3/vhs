@@ -15,7 +15,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class GravatarViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * Base url
      *
@@ -89,7 +88,7 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
     /**
      * Check if an argument is passed
      *
-     * @param $argument
+     * @param string $argument
      *
      * @return mixed
      */

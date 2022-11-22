@@ -14,7 +14,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  */
 interface AssetInterface
 {
-
     /**
      * Render method
      *
@@ -35,7 +34,7 @@ interface AssetInterface
      * renderChildren from within this function. Anything else goes; CLI
      * commands to build, caching implementations - you name it.
      *
-     * @return mixed
+     * @return string|null
      */
     public function build();
 

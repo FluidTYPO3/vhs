@@ -22,6 +22,8 @@ class IsDomainObjectViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -36,6 +38,6 @@ class IsDomainObjectViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === $arguments['value'] instanceof AbstractDomainObject;
+        return is_array($arguments) && $arguments['value'] instanceof AbstractDomainObject;
     }
 }

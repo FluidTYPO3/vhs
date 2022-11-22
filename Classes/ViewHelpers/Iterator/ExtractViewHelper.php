@@ -142,14 +142,16 @@ class ExtractViewHelper extends AbstractViewHelper
             }
         } catch (\Exception $error) {
             if (class_exists(LogManager::class)) {
-                GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning($error->getMessage(), ['content' => $content]);
+                /** @var LogManager $logManager */
+                $logManager = GeneralUtility::makeInstance(LogManager::class);
+                $logManager->getLogger(__CLASS__)->warning($error->getMessage(), ['content' => $content]);
             } else {
                 GeneralUtility::sysLog($error->getMessage(), 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
             }
             $result = [];
         }
 
-        if (true === (boolean) $single) {
+        if (true === (boolean) $single && $result instanceof \Traversable) {
             return reset($result);
         }
 
@@ -159,14 +161,14 @@ class ExtractViewHelper extends AbstractViewHelper
     /**
      * Extract by key
      *
-     * @param \Traversable $iterator
+     * @param mixed $iterator
      * @param string $key
      * @return mixed NULL or whatever we found at $key
      * @throws \Exception
      */
     protected static function extractByKey($iterator, $key)
     {
-        if (false === is_array($iterator) && false === $iterator instanceof \Traversable) {
+        if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
         }
 
@@ -178,14 +180,14 @@ class ExtractViewHelper extends AbstractViewHelper
     /**
      * Recursively extract the key
      *
-     * @param \Traversable $iterator
+     * @param mixed $iterator
      * @param string $key
-     * @return string
+     * @return array
      * @throws \Exception
      */
     protected static function recursivelyExtractKey($iterator, $key)
     {
-        if (false === is_array($iterator) && false === $iterator instanceof \Traversable) {
+        if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1515498714);
         }
 

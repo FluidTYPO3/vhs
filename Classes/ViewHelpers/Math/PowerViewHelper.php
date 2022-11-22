@@ -20,11 +20,12 @@ class PowerViewHelper extends AbstractMultipleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param mixed $a
-     * @param mixed $b
+     * @param float|integer $a
+     * @param float|integer $b
+     * @param array $arguments
      * @return integer
      */
-    protected static function calculateAction($a, $b)
+    protected static function calculateAction($a, $b, array $arguments)
     {
         return pow($a, $b);
     }

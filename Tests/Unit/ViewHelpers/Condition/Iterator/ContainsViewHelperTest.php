@@ -58,11 +58,11 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
         ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
         $lazyObjectStorage->attach($foo);
         return [
-            [['foo'], 'foo'],
-            ['foo,bar', 'foo'],
-            [[$foo], $foo],
-            [$objectStorage, $bar],
-            [$lazyObjectStorage, $foo]
+            'with array and string' => [['foo'], 'foo'],
+            'with csv' => ['foo,bar', 'foo'],
+            'with array and domain object' => [[$foo], $foo],
+            'with object storage' => [$objectStorage, $bar],
+            'with lazy object storage' => [$lazyObjectStorage, $foo],
         ];
     }
 

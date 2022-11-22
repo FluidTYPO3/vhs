@@ -4,6 +4,7 @@ namespace FluidTYPO3\Vhs\Traits;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,11 +19,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 trait SourceSetViewHelperTrait
 {
-
     /**
      * used to attach srcset variants of a given image to the specified tag
      *
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tag the tag to add the srcset as argument
+     * @param TagBuilder $tag the tag to add the srcset as argument
      * @param string $src image path to render srcsets for
      * @return array
      */
@@ -30,6 +30,7 @@ trait SourceSetViewHelperTrait
     {
         $srcsets = $this->getSourceSetWidths();
 
+        $tsfeBackup = null;
         if ('BE' === TYPO3_MODE) {
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
         }
@@ -74,19 +75,19 @@ trait SourceSetViewHelperTrait
      * @param string $src path of the image to convert
      * @param integer $width width to convert the image to
      * @param string $format format of the resulting copy
-     * @param string $quality quality of the resulting copy
-     * @param string $treatIdAsReference given src argument is a sys_file_reference record
+     * @param integer $quality quality of the resulting copy
+     * @param bool $treatIdAsReference given src argument is a sys_file_reference record
      * @param array $params additional params for the image rendering
      * @param string $crop image editor cropping configuration
-     * @return string
+     * @return array
      */
     public function getImgResource($src, $width, $format, $quality, $treatIdAsReference, $params = null, $crop = null)
     {
-
         $setup = [
             'width' => $width,
             'treatIdAsReference' => $treatIdAsReference,
-            'crop' => $crop
+            'crop' => $crop,
+            'params' => '',
         ];
         if (false === empty($format)) {
             $setup['ext'] = $format;
@@ -99,7 +100,7 @@ trait SourceSetViewHelperTrait
         if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
             $src = substr($src, 3);
         }
-        return $this->contentObject->getImgResource($src, $setup);
+        return (array) $this->contentObject->getImgResource($src, $setup);
     }
 
     /**

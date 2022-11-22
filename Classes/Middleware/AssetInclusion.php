@@ -24,7 +24,11 @@ class AssetInclusion implements MiddlewareInterface
         $contents = $body->getContents();
         $contentsBefore = $contents;
 
-        GeneralUtility::makeInstance(ObjectManager::class)->get(AssetService::class)->buildAllUncached([], $GLOBALS['TSFE'], $contents);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var AssetService $assetService */
+        $assetService = $objectManager->get(AssetService::class);
+        $assetService->buildAllUncached([], $GLOBALS['TSFE'], $contents);
 
         if ($contentsBefore === $contents) {
             // Content is unchanged, return the original response since there is no need to modify it, or the content-length header.
@@ -32,6 +36,7 @@ class AssetInclusion implements MiddlewareInterface
             return $response;
         }
 
+        /** @var resource $stream */
         $stream = fopen('php://temp', 'rw+');
         fputs($stream, $contents);
 

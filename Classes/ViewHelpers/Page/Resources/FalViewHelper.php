@@ -65,13 +65,15 @@ class FalViewHelper extends ResourcesFalViewHelper
 
     /**
      * @param integer $id
-     * @return array
+     * @return array|null
      */
     public function getRecord($id)
     {
         $record = parent::getRecord($id);
         if (!$this->isDefaultLanguage()) {
-            $pageRepository = GeneralUtility::makeInstance(PageService::class)->getPageRepository();
+            /** @var PageService $pageService */
+            $pageService = GeneralUtility::makeInstance(PageService::class);
+            $pageRepository = $pageService->getPageRepository();
             $localisation = $pageRepository->getPageOverlay($record, $this->getCurrentLanguageUid());
             if (is_array($localisation)) {
                 $record = $localisation;
@@ -98,6 +100,9 @@ class FalViewHelper extends ResourcesFalViewHelper
     protected function getSlideRecordsFromPage($pageUid, $limit)
     {
         $pageRecord = $this->getRecord($pageUid);
+        if ($pageRecord === null) {
+            return [];
+        }
         // NB: we call parent::getResources intentionally, as to not call the overridden
         // method on this class. Calling $this->getResources() would yield wrong result
         // for the purpose of this method.
@@ -122,7 +127,11 @@ class FalViewHelper extends ResourcesFalViewHelper
     protected function getCurrentLanguageUid()
     {
         if (class_exists(LanguageAspect::class)) {
-            $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            /** @var Context $context */
+            $context = GeneralUtility::makeInstance(Context::class);
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $context->getAspect('language');
+            $languageUid = $languageAspect->getId();
         } else {
             $languageUid = $GLOBALS['TSFE']->sys_language_uid;
         }

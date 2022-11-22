@@ -21,6 +21,8 @@ class IsQueryResultViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -34,6 +36,6 @@ class IsQueryResultViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === $arguments['value'] instanceof QueryResultInterface;
+        return is_array($arguments) && $arguments['value'] instanceof QueryResultInterface;
     }
 }

@@ -54,9 +54,6 @@ class CallViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -79,6 +76,8 @@ class CallViewHelper extends AbstractViewHelper
                 1356834755
             );
         }
-        return call_user_func_array([$object, $method], $methodArguments);
+        /** @var callable $callable */
+        $callable = [$object, $method];
+        return call_user_func_array($callable, $methodArguments);
     }
 }

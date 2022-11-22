@@ -49,10 +49,20 @@ class LipsumViewHelperTest extends AbstractViewHelperTest
     {
         $mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)->setMethods(['parseFunc'])->getMock();
         $mockContentObject->expects($this->once())->method('parseFunc')->willReturn('foobar');
-        GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class)->contentObject = $mockContentObject;
+        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        $configurationManager->method('getContentObject')->willReturn($mockContentObject);
+        $objectManager = $this->getMockBuilder(ObjectManager::class)->setMethods(['get'])->disableOriginalConstructor()->getMock();
+        $objectManager->method('get')->willReturn($configurationManager);
+
+        $singletons = GeneralUtility::getSingletonInstances();
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
+
         $arguments = $this->arguments;
         $arguments['html'] = true;
         $test = $this->executeViewHelper($arguments);
+
+        GeneralUtility::resetSingletonInstances($singletons);
+
         $this->assertNotEmpty($test);
     }
 

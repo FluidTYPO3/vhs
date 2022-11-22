@@ -20,6 +20,8 @@ class IsTraversableViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -33,6 +35,6 @@ class IsTraversableViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === $arguments['value'] instanceof \Traversable;
+        return is_array($arguments) && $arguments['value'] instanceof \Traversable;
     }
 }

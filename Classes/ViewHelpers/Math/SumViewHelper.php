@@ -53,6 +53,11 @@ class SumViewHelper extends AbstractMultipleMathViewHelper
                 $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
                 return array_sum($a);
             }
+            /**
+             * @var string|integer $index
+             * @var mixed $value
+             * @var array $a
+             */
             foreach ($a as $index => $value) {
                 $a[$index] = static::calculateAction($value, $b, $arguments);
             }

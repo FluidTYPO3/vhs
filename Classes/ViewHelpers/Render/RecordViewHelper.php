@@ -24,6 +24,8 @@ class RecordViewHelper extends AbstractContentViewHelper
 
     /**
      * Initialize
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -32,10 +34,7 @@ class RecordViewHelper extends AbstractContentViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return NULL|string
+     * @return string|null
      */
     public static function renderStatic(
         array $arguments,

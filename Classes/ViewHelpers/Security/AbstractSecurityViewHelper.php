@@ -14,6 +14,8 @@ use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -21,7 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
      */
@@ -130,7 +131,10 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        $proxy = GeneralUtility::makeInstance(ObjectManager::class)->get(static::class);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var static $proxy */
+        $proxy = $objectManager->get(static::class);
         $proxy->setArguments((array) $arguments);
         return $proxy->evaluateArguments();
     }
@@ -222,14 +226,17 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     /**
      * Returns TRUE only if currently logged in frontend user is in list.
      *
-     * @param ObjectStorage $frontendUsers
+     * @param ObjectStorage<FrontendUser> $frontendUsers
      * @return boolean
      * @api
      */
     public function assertFrontendUsersLoggedIn(ObjectStorage $frontendUsers = null)
     {
+        if ($frontendUsers === null) {
+            return false;
+        }
         foreach ($frontendUsers as $frontendUser) {
-            if (true === $this->assertFrontendUserLoggedIn($frontendUser)) {
+            if ($this->assertFrontendUserLoggedIn($frontendUser)) {
                 return true;
             }
         }
@@ -281,7 +288,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
                 return false;
             }
         }
-        return (boolean) (true === is_array($currentBackendUser));
+        return is_array($currentBackendUser);
     }
 
     /**
@@ -300,16 +307,19 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         }
         $currentBackendUser = $this->getCurrentBackendUser();
         $currentUserGroups = trim($currentBackendUser['usergroup'], ',');
-        $userGroups = false === empty($currentUserGroups) ? explode(',', $currentUserGroups) : [];
+        /** @var array $userGroups */
+        $userGroups = !empty($currentUserGroups) ? explode(',', $currentUserGroups) : [];
         if (0 === count($userGroups)) {
             return false;
         }
         if (true === is_string($groups)) {
             $groups = trim($groups, ',');
+            /** @var array $groups */
             $groups = false === empty($groups) ? explode(',', $groups) : [];
         }
-        if (0 < count($groups)) {
-            return (boolean) (0 < count(array_intersect($userGroups, $groups)));
+        /** @var array $groups */
+        if (count($groups) > 0) {
+            return count(array_intersect($userGroups, (array) $groups)) > 0;
         }
         return false;
     }
@@ -333,7 +343,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     /**
      * Gets the currently logged in Frontend User
      *
-     * @return FrontendUser|NULL
+     * @return FrontendUser|null
      * @api
      */
     public function getCurrentFrontendUser()
@@ -341,7 +351,13 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         if (true === empty($GLOBALS['TSFE']->loginUser)) {
             return null;
         }
-        return $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+        /** @var TypoScriptFrontendController $tsfe */
+        $tsfe = $GLOBALS['TSFE'];
+        /** @var FrontendUserAuthentication $frontendUserAuthentication */
+        $frontendUserAuthentication = $tsfe->fe_user;
+        /** @var FrontendUser|null $frontendUser */
+        $frontendUser = $this->frontendUserRepository->findByUid($frontendUserAuthentication->user['uid'] ?? 0);
+        return $frontendUser;
     }
 
     /**
@@ -365,7 +381,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      * If then attribute is not set, iterates through child nodes and renders ThenViewHelper.
      * If then attribute is not set and no ThenViewHelper and no ElseViewHelper is found, all child nodes are rendered
      *
-     * @return string rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
+     * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
      * @api
      */
     protected function renderThenChild()

@@ -20,10 +20,10 @@ class SquareViewHelper extends AbstractSingleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param mixed $a
-     * @return integer
+     * @param integer|float|string|iterable|array $a
+     * @return integer|float|array
      */
-    protected static function calculateAction($a)
+    protected static function calculateAction($a, array $arguments = [])
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map(
@@ -31,6 +31,10 @@ class SquareViewHelper extends AbstractSingleMathViewHelper
                 static::arrayFromArrayOrTraversableOrCSVStatic($a)
             );
         }
-        return pow($a, 2);
+        if (!is_scalar($a)) {
+            return 0;
+        }
+        /** @var numeric $a */
+        return $a ** 2;
     }
 }

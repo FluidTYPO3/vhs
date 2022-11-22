@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -28,6 +29,8 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -42,11 +45,18 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
+        if (!is_array($arguments)) {
+            return false;
+        }
         $language = $arguments['language'];
         $defaultTitle = $arguments['defaultTitle'];
 
         if (class_exists(LanguageAspect::class)) {
-            $currentLanguageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            /** @var Context $context */
+            $context = GeneralUtility::makeInstance(Context::class);
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $context->getAspect('language');
+            $currentLanguageUid = $languageAspect->getId();
         } else {
             $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
@@ -54,21 +64,23 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         if (true === is_numeric($language)) {
             $languageUid = intval($language);
         } else {
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_language');
 
             $queryBuilder->createNamedParameter($language, \PDO::PARAM_STR, ':title');
 
-            $row = $queryBuilder
+            /** @var Statement $result */
+            $result = $queryBuilder
                 ->select('uid')
                 ->from('sys_language')
                 ->where(
                     $queryBuilder->expr()->eq('title', ':title')
                 )
-                ->execute()
-                ->fetch();
+                ->execute();
+            $row = $result->fetch();
 
-            if (false !== $row) {
+            if (is_array($row)) {
                 $languageUid = intval($row['uid']);
             } else {
                 if ((string) $language === $defaultTitle) {

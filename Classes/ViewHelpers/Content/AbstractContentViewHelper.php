@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -18,7 +19,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractContentViewHelper extends AbstractViewHelper
 {
-
     use SlideViewHelperTrait;
 
     /**
@@ -48,6 +48,8 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
 
     /**
      * Initialize
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -203,7 +205,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             array_push($elements, static::renderRecord($row));
         }
         if (false === empty($this->arguments['loadRegister'])) {
-            $this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
+            $this->contentObject->cObjGetSingle('RESTORE_REGISTER', []);
         }
         return $elements;
     }
@@ -260,7 +262,9 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if ($limit) {
             $queryBuilder->setMaxResults((integer) $limit);
         }
-        return $queryBuilder->execute()->fetchAll();
+        /** @var Statement $result */
+        $result = $queryBuilder->execute();
+        return $result->fetchAll();
     }
 
     /**

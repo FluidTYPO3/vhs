@@ -108,18 +108,18 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param boolean $preventRecursion
      * @param string $recursionMarker
      * @param string $dateTimeFormat
-     * @return string
+     * @return string|false
      * @throws Exception
      */
     protected static function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat)
     {
-        if (true === $value instanceof \Traversable) {
+        if ($value instanceof \Traversable) {
             // Note: also converts ObjectStorage to \Vendor\Extname\Domain\Model\ObjectType[] which are each converted
             $value = iterator_to_array($value, $useTraversableKeys);
-        } elseif (true === $value instanceof DomainObjectInterface) {
+        } elseif ($value instanceof DomainObjectInterface) {
             // Convert to associative array,
             $value = static::recursiveDomainObjectToArray($value, $preventRecursion, $recursionMarker);
-        } elseif (true === $value instanceof \DateTime) {
+        } elseif ($value instanceof \DateTime) {
             $value = static::dateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
         }
 
@@ -150,9 +150,9 @@ class EncodeViewHelper extends AbstractViewHelper
     protected static function recursiveDateTimeToUnixtimeMiliseconds(array $array, $dateTimeFormat)
     {
         foreach ($array as $key => $possibleDateTime) {
-            if (true === $possibleDateTime instanceof \DateTime) {
+            if ($possibleDateTime instanceof \DateTime) {
                 $array[$key] = static::dateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
-            } elseif (true === is_array($possibleDateTime)) {
+            } elseif (is_array($possibleDateTime)) {
                 $array[$key] = static::recursiveDateTimeToUnixtimeMiliseconds($array[$key], $dateTimeFormat);
             }
         }
@@ -165,8 +165,8 @@ class EncodeViewHelper extends AbstractViewHelper
      * Default format is NULL a JS UNIXTIME (time()*1000) is produced.
      *
      * @param \DateTime $dateTime
-     * @param string $dateTimeFormat
-     * @return integer
+     * @param string|null $dateTimeFormat
+     * @return integer|string
      */
     protected static function dateTimeToUnixtimeMiliseconds(\DateTime $dateTime, $dateTimeFormat)
     {
@@ -184,9 +184,9 @@ class EncodeViewHelper extends AbstractViewHelper
      * value type. The type is checked and another recursive call is used to
      * convert any nested objects.
      *
-     * @param DomainObjectInterface[] $domainObjects
+     * @param DomainObjectInterface[]|\Traversable[] $domainObjects
      * @param boolean $preventRecursion
-     * @param mixed $recursionMarker
+     * @param string $recursionMarker
      * @return array
      */
     protected static function recursiveArrayOfDomainObjectsToArray(array $domainObjects, $preventRecursion, $recursionMarker)
@@ -198,7 +198,7 @@ class EncodeViewHelper extends AbstractViewHelper
                     $preventRecursion,
                     $recursionMarker
                 );
-            } elseif (true === $possibleDomainObject instanceof \Traversable) {
+            } elseif ($possibleDomainObject instanceof \Traversable) {
                 $traversableAsArray = iterator_to_array($possibleDomainObject);
                 $domainObjects[$key] = static::recursiveArrayOfDomainObjectsToArray(
                     $traversableAsArray,
@@ -217,8 +217,8 @@ class EncodeViewHelper extends AbstractViewHelper
      *
      * @param DomainObjectInterface $domainObject
      * @param boolean $preventRecursion
-     * @param mixed $recursionMarker
-     * @return array
+     * @param string $recursionMarker
+     * @return array|string
      */
     protected static function recursiveDomainObjectToArray(
         DomainObjectInterface $domainObject,

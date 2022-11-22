@@ -53,6 +53,7 @@ class CaseViewHelper extends AbstractViewHelper
         $string = $renderChildrenClosure();
         $case = $arguments['case'];
 
+        $tsfeBackup = null;
         if ('BE' === TYPO3_MODE) {
             $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
         }

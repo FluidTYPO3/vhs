@@ -40,6 +40,7 @@
     },
     "require": {
         "php": "^7.4.0 || ^8",
+        "ext-mbstring": "*",
         "typo3/cms-core": "^8.7 || ^9 || ^10 || ^11 || dev-master",
         "typo3/cms-extbase": "^8.7 || ^9 || ^10 || ^11 || dev-master",
         "typo3/cms-fluid": "^8.7 || ^9 || ^10 || ^11 || dev-master",
@@ -50,10 +51,13 @@
         "typo3-ter/vhs": "self.version"
     },
     "require-dev": {
-        "fluidtypo3/development": "^4.0"
+        "fluidtypo3/development": "^4.0",
+        "phpstan/phpstan": "^1.9"
     },
     "suggest": {
-        "ext-tidy": "Allows to make use of the tidy ViewHelper"
+        "ext-tidy": "Allows to make use of the tidy ViewHelper v:format.tidy",
+        "ext-zlib": "Enable use of v:format.placeholder.lipsum with default lipsum text",
+        "ext-json": "Enable use of v:format.json.encode and v:format.json.decode"
     },
     "scripts": {
         "post-autoload-dump": [

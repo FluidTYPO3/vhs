@@ -79,9 +79,6 @@ class TyposcriptViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -89,6 +86,7 @@ class TyposcriptViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $path */
         $path = $renderChildrenClosure();
         if (true === empty($path)) {
             return null;
@@ -117,7 +115,9 @@ class TyposcriptViewHelper extends AbstractViewHelper
         if (null !== static::$configurationManager) {
             return static::$configurationManager;
         }
+        /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
         static::$configurationManager = $configurationManager;
         return $configurationManager;

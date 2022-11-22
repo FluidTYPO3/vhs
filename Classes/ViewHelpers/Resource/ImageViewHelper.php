@@ -70,11 +70,11 @@ class ImageViewHelper extends AbstractImageViewHelper
     /**
      * Render method
      *
-     * @return string
+     * @return mixed
      */
     public function render()
     {
-        $files = $this->getFiles();
+        $files = (array) $this->getFiles();
 
         $images = $this->preprocessImages($files, true);
         if (true === empty($images)) {

@@ -20,6 +20,8 @@ class IsStringViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -33,6 +35,6 @@ class IsStringViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === is_string($arguments['value']);
+        return is_array($arguments) && is_string($arguments['value']);
     }
 }

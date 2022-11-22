@@ -62,8 +62,11 @@ class MarkdownViewHelper extends AbstractViewHelper
      * @return mixed|null|string
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $trim = (boolean) $arguments['trim'];
         $htmlentities = (boolean) $arguments['htmlentities'];
         $text = $renderChildrenClosure();
@@ -77,8 +80,9 @@ class MarkdownViewHelper extends AbstractViewHelper
             return $fromCache;
         }
 
+        /** @var string $markdownExecutablePath */
         $markdownExecutablePath = CommandUtility::getCommand('markdown');
-        if (false === is_executable($markdownExecutablePath)) {
+        if (!is_executable($markdownExecutablePath)) {
             ErrorUtility::throwViewHelperException(
                 'Use of Markdown requires the "markdown" shell utility to be installed and accessible; this binary ' .
                 'could not be found in any of your configured paths available to this script',
@@ -110,10 +114,13 @@ class MarkdownViewHelper extends AbstractViewHelper
         ];
 
         $process = proc_open($markdownExecutablePath, $descriptorspec, $pipes, null, $GLOBALS['_ENV']);
+        if ($process === false) {
+            return $text;
+        }
 
-        stream_set_blocking($pipes[0], 1);
-        stream_set_blocking($pipes[1], 1);
-        stream_set_blocking($pipes[2], 1);
+        stream_set_blocking($pipes[0], true);
+        stream_set_blocking($pipes[1], true);
+        stream_set_blocking($pipes[2], true);
 
         fwrite($pipes[0], $text);
         fclose($pipes[0]);
@@ -126,7 +133,7 @@ class MarkdownViewHelper extends AbstractViewHelper
 
         $exitCode = proc_close($process);
 
-        if ('' !== trim($errors)) {
+        if ('' !== trim((string) $errors)) {
             ErrorUtility::throwViewHelperException(
                 'There was an error while executing ' . $markdownExecutablePath . '. The return code was ' .
                 $exitCode . ' and the message reads: ' . $errors,
@@ -134,7 +141,7 @@ class MarkdownViewHelper extends AbstractViewHelper
             );
         }
 
-        return $transformed;
+        return (string) $transformed;
     }
 
     /**

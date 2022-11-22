@@ -22,7 +22,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  */
 class SubViewHelper extends AbstractMenuViewHelper
 {
-
     public function initializeArguments()
     {
         $this->registerArgument(
@@ -56,12 +55,14 @@ class SubViewHelper extends AbstractMenuViewHelper
             return null;
         }
         // retrieve the set of template variables which were in play when the parent menu VH started rendering.
+        /** @var iterable $variables */
         $variables = $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'variables');
         $parentInstance->setOriginal(false);
         $content = $parentInstance->render();
         // restore the previous set of variables after they most likely have changed during the render() above.
         foreach ($variables as $name => $value) {
-            if (true === $this->renderingContext->getVariableProvider()->exists($name)) {
+            /** @var string $name */
+            if ($this->renderingContext->getVariableProvider()->exists($name)) {
                 $this->renderingContext->getVariableProvider()->remove($name);
                 $this->renderingContext->getVariableProvider()->add($name, $value);
             }
