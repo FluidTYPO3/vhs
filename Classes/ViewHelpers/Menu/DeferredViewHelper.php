@@ -37,15 +37,16 @@ class DeferredViewHelper extends AbstractMenuViewHelper
      */
     public function render()
     {
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         $as = $this->arguments['as'];
-        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'deferredArray')) {
+        if (!$viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredArray')) {
             return '';
         }
-        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'deferredString')) {
+        if (!$viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredString')) {
             return '';
         }
         if (null === $as) {
-            $content = $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'deferredString');
+            $content = $viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'deferredString');
             $this->unsetDeferredVariableStorage();
             return is_scalar($content) ? (string) $content : '';
         } elseif (true === empty($as)) {
@@ -57,7 +58,7 @@ class DeferredViewHelper extends AbstractMenuViewHelper
         }
         $this->renderingContext->getVariableProvider()->add(
             $as,
-            $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'deferredArray')
+            $viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'deferredArray')
         );
         $this->unsetDeferredVariableStorage();
         $content = $this->renderChildren();

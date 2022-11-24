@@ -90,8 +90,11 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $value = $renderChildrenClosure();
         $useTraversableKeys = (boolean) $arguments['useTraversableKeys'];
         $preventRecursion = (boolean) $arguments['preventRecursion'];
@@ -111,8 +114,13 @@ class EncodeViewHelper extends AbstractViewHelper
      * @return string|false
      * @throws Exception
      */
-    protected static function encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat)
-    {
+    protected static function encodeValue(
+        $value,
+        $useTraversableKeys,
+        $preventRecursion,
+        $recursionMarker,
+        $dateTimeFormat
+    ) {
         if ($value instanceof \Traversable) {
             // Note: also converts ObjectStorage to \Vendor\Extname\Domain\Model\ObjectType[] which are each converted
             $value = iterator_to_array($value, $useTraversableKeys);
@@ -189,8 +197,11 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param string $recursionMarker
      * @return array
      */
-    protected static function recursiveArrayOfDomainObjectsToArray(array $domainObjects, $preventRecursion, $recursionMarker)
-    {
+    protected static function recursiveArrayOfDomainObjectsToArray(
+        array $domainObjects,
+        $preventRecursion,
+        $recursionMarker
+    ) {
         foreach ($domainObjects as $key => $possibleDomainObject) {
             if (true === $possibleDomainObject instanceof DomainObjectInterface) {
                 $domainObjects[$key] = static::recursiveDomainObjectToArray(

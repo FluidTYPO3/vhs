@@ -28,8 +28,14 @@ class IconViewHelper extends AbstractExtensionViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
-        return ExtensionManagementUtility::extPath(static::getExtensionKey($arguments, $renderingContext), 'ext_icon.gif');
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        return ExtensionManagementUtility::extPath(
+            static::getExtensionKey($arguments, $renderingContext),
+            'ext_icon.gif'
+        );
     }
 }

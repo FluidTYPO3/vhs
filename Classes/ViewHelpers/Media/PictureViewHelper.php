@@ -68,7 +68,11 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('alt', 'string', 'Text for the alt attribute.', true);
         $this->registerArgument('title', 'string', 'Text for the title attribute.');
         $this->registerArgument('class', 'string', 'CSS class(es) to set.');
-        $this->registerArgument('loading', 'string', 'Native lazy-loading for images. Can be "lazy", "eager" or "auto"');
+        $this->registerArgument(
+            'loading',
+            'string',
+            'Native lazy-loading for images. Can be "lazy", "eager" or "auto"'
+        );
     }
 
     /**

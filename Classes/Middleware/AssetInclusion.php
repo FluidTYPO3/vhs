@@ -31,8 +31,8 @@ class AssetInclusion implements MiddlewareInterface
         $assetService->buildAllUncached([], $GLOBALS['TSFE'], $contents);
 
         if ($contentsBefore === $contents) {
-            // Content is unchanged, return the original response since there is no need to modify it, or the content-length header.
-            // Case triggers when rendered page contains no VHS assets.
+            // Content is unchanged, return the original response since there is no need to modify it, or the
+            // content-length header. Case triggers when rendered page contains no VHS assets.
             return $response;
         }
 
@@ -44,8 +44,8 @@ class AssetInclusion implements MiddlewareInterface
 
         // Copied from \TYPO3\CMS\Frontend\Middleware\ContentLengthResponseHeader to ensure proper content-length.
         if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            if (
-                (!isset($GLOBALS['TSFE']->config['config']['enableContentLengthHeader']) || $GLOBALS['TSFE']->config['config']['enableContentLengthHeader'])
+            if ((!isset($GLOBALS['TSFE']->config['config']['enableContentLengthHeader'])
+                    || $GLOBALS['TSFE']->config['config']['enableContentLengthHeader'])
                 && !$GLOBALS['TSFE']->isBackendUserLoggedIn() && !($GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] ?? false)
                 && !($GLOBALS['TSFE']->config['config']['debug'] ?? false) && !$GLOBALS['TSFE']->doWorkspacePreview()
             ) {

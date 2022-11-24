@@ -109,7 +109,9 @@ class LanguageViewHelper extends AbstractViewHelper
         }
 
         if (true === empty($extensionName)) {
-            ErrorUtility::throwViewHelperException('Cannot read extension name from ControllerContext and value not manually specified');
+            ErrorUtility::throwViewHelperException(
+                'Cannot read extension name from ControllerContext and value not manually specified'
+            );
         }
 
         return $extensionName;

@@ -107,7 +107,9 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
             $controllerContext = clone $renderingContext->getControllerContext();
             $view->setControllerContext($controllerContext);
             $view->setFormat($controllerContext->getRequest()->getFormat());
-            $view->getRenderingContext()->setViewHelperVariableContainer($renderingContext->getViewHelperVariableContainer());
+            $view->getRenderingContext()->setViewHelperVariableContainer(
+                $renderingContext->getViewHelperVariableContainer()
+            );
         }
         $variables = (array) $renderingContext->getVariableProvider()->getAll();
         $view->assignMultiple($variables);

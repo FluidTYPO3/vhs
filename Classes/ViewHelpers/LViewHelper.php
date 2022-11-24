@@ -99,5 +99,4 @@ class LViewHelper extends AbstractViewHelper
         }
         return $value;
     }
-
 }

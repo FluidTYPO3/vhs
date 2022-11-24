@@ -114,7 +114,11 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             /** @var ConnectionPool $connectionPool */
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $queryBuilder = $connectionPool->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
-            $queryBuilder->createNamedParameter($this->getTablenameForSystemConfiguration(), \PDO::PARAM_STR, ':tablenames');
+            $queryBuilder->createNamedParameter(
+                $this->getTablenameForSystemConfiguration(),
+                \PDO::PARAM_STR,
+                ':tablenames'
+            );
             $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
 
             /** @var Statement $statement */

@@ -7,6 +7,40 @@ on:
     branches: [ master, development, '[0-9]+.[0-9]', '[0-9]+.[0-9]+.[0-9]+' ]
 
 jobs:
+  phpcs:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    name: "CodeSniffer, PHP ${{ matrix.php }} TYPO3 ${{ matrix.typo3 }}"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: "8.1"
+            typo3: "^11.5"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, json
+          ini-values: date.timezone="Europe/Copenhagen", opcache.fast_shutdown=0
+          tools: composer:v2.2
+
+      - name: Select TYPO3 version
+        run: "composer require typo3/cms-core:${{ matrix.typo3 }} -W --no-update"
+
+      - name: Composer install
+        uses: ramsey/composer-install@v2
+
+      - name: Run phpstan
+        run: vendor/bin/phpcs Classes --standard=PSR2
+
   phpstan:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     name: "PHPStan, PHP ${{ matrix.php }} TYPO3 ${{ matrix.typo3 }}"

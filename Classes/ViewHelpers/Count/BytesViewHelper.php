@@ -54,7 +54,13 @@ class BytesViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('string', 'string', 'String to count, if not provided as tag content');
-        $this->registerArgument('encoding', 'string', 'Character set encoding of string, e.g. UTF-8 or ISO-8859-1', false, 'UTF-8');
+        $this->registerArgument(
+            'encoding',
+            'string',
+            'Character set encoding of string, e.g. UTF-8 or ISO-8859-1',
+            false,
+            'UTF-8'
+        );
     }
 
     /**

@@ -47,8 +47,11 @@ class OrViewHelper extends AbstractViewHelper
     /**
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $content = $renderChildrenClosure() ?: static::getAlternativeValue($arguments, $renderingContext);
         return $content;
     }

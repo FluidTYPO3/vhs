@@ -34,7 +34,7 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
     /**
      * @var ReflectionService
      */
-    static protected $staticReflectionService;
+    protected static $staticReflectionService;
 
     /**
      * Initialize

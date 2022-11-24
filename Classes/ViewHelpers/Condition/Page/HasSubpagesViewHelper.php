@@ -27,7 +27,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
     /**
      * @var PageService
      */
-    static protected $pageService;
+    protected static $pageService;
 
     /**
      * @param PageService $pageService

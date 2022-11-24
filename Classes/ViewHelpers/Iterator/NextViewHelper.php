@@ -39,7 +39,7 @@ class NextViewHelper extends ContainsViewHelper
     ) {
         $evaluation = static::assertHaystackHasNeedle(
             $arguments['haystack'],
-                $arguments['needle'] ?? $renderChildrenClosure(),
+            $arguments['needle'] ?? $renderChildrenClosure(),
             $arguments
         );
         return static::getNeedleAtIndex($evaluation !== false ? $evaluation + 1 : -1, $arguments);

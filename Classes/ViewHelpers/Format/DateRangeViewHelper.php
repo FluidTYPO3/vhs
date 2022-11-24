@@ -128,8 +128,11 @@ class DateRangeViewHelper extends AbstractViewHelper
      * @return mixed
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $start = $renderChildrenClosure();
         if (empty($arguments['start'])) {
             $start = 'now';
@@ -224,7 +227,10 @@ class DateRangeViewHelper extends AbstractViewHelper
                 }
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             } catch (\Exception $exception) {
-                ErrorUtility::throwViewHelperException('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
+                ErrorUtility::throwViewHelperException(
+                    '"' . $date . '" could not be parsed by \DateTime constructor.',
+                    1369573112
+                );
             }
         }
         /** @var \DateTime $date */

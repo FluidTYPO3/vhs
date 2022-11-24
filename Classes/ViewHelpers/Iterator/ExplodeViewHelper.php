@@ -71,7 +71,10 @@ class ExplodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = !empty($arguments['as']) ? $arguments['content'] : ($arguments['content'] ?? $renderChildrenClosure());
+        $content = $arguments['content'];
+        if (empty($arguments['as'])) {
+            $content = $content ?? $renderChildrenClosure();
+        }
         $glue = $arguments['glue'];
         $limit = isset($arguments['limit']) ? $arguments['limit'] : PHP_INT_MAX;
         $output = explode($glue, $content, $limit);

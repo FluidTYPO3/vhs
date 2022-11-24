@@ -39,8 +39,11 @@ class SubstringViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $content = $renderChildrenClosure();
         $start = (integer) $arguments['start'];
         $length = $arguments['length'];

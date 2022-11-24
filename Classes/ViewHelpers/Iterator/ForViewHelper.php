@@ -67,14 +67,38 @@ class ForViewHelper extends AbstractLoopViewHelper
         }
 
         if ($from === $to) {
-            $content = static::renderIteration($from, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+            $content = static::renderIteration(
+                $from,
+                $from,
+                $to,
+                $step,
+                $iteration,
+                $renderingContext,
+                $renderChildrenClosure
+            );
         } elseif ($from < $to) {
             for ($i = $from; $i <= $to; $i += $step) {
-                $content .= static::renderIteration($i, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+                $content .= static::renderIteration(
+                    $i,
+                    $from,
+                    $to,
+                    $step,
+                    $iteration,
+                    $renderingContext,
+                    $renderChildrenClosure
+                );
             }
         } else {
             for ($i = $from; $i >= $to; $i += $step) {
-                $content .= static::renderIteration($i, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+                $content .= static::renderIteration(
+                    $i,
+                    $from,
+                    $to,
+                    $step,
+                    $iteration,
+                    $renderingContext,
+                    $renderChildrenClosure
+                );
             }
         }
 

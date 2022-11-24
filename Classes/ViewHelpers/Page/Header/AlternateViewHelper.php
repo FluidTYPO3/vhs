@@ -146,7 +146,6 @@ class AlternateViewHelper extends AbstractViewHelper
                     } else {
                         $pageRenderer->addHeaderData($renderedTag);
                     }
-
                 } else {
                     $output .= $renderedTag . LF;
                 }

@@ -314,7 +314,13 @@ class AssetService implements SingletonInterface
                                 $integrity = $this->getFileIntegrity($path);
                                 $path = mb_substr($path, mb_strlen(CoreUtility::getSitePath()));
                                 $path = $this->prefixPath($path);
-                                $chunks[] = $this->generateTagForAssetType($type, null, $path, $integrity, $assetSettings);
+                                $chunks[] = $this->generateTagForAssetType(
+                                    $type,
+                                    null,
+                                    $path,
+                                    $integrity,
+                                    $assetSettings
+                                );
                             }
                         }
                     }
@@ -405,8 +411,13 @@ class AssetService implements SingletonInterface
      * @throws \RuntimeException
      * @return string|null
      */
-    protected function generateTagForAssetType($type, $content, $file = null, $integrity = null, array $standaloneAssetSettings = null)
-    {
+    protected function generateTagForAssetType(
+        $type,
+        $content,
+        $file = null,
+        $integrity = null,
+        array $standaloneAssetSettings = null
+    ) {
         /** @var TagBuilder $tagBuilder */
         $tagBuilder = $this->objectManager->get(TagBuilder::class);
         if (null === $file && true === empty($content)) {
@@ -423,7 +434,7 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('src', (string) $file);
                 }
                 if (null !== $integrity && !empty($integrity)) {
-                    if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                    if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
                     $tagBuilder->addAttribute('integrity', $integrity);
@@ -451,7 +462,7 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('href', $file);
                 }
                 if (null !== $integrity && !empty($integrity)) {
-                    if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                    if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
                     $tagBuilder->addAttribute('integrity', $integrity);
@@ -821,10 +832,11 @@ class AssetService implements SingletonInterface
      */
     protected function getFileIntegrity($file)
     {
-        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'])) {
+        $typoScript = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'] ?? null;
+        if (isset($typoScript['assets.']['tagsAddSubresourceIntegrity'])) {
             // Note: 3 predefined hashing strategies (the ones suggestes in the rfc sheet)
-            if (0 < $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity']
-                && $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] < 4
+            if (0 < $typoScript['assets.']['tagsAddSubresourceIntegrity']
+                && $typoScript['assets.']['tagsAddSubresourceIntegrity'] < 4
             ) {
                 if (false === file_exists($file)) {
                     return '';
@@ -835,7 +847,7 @@ class AssetService implements SingletonInterface
 
                 $integrity = null;
                 $integrityMethod = ['sha256','sha384','sha512'][
-                    $typoScriptFrontendController->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] - 1
+                    $typoScript['assets.']['tagsAddSubresourceIntegrity'] - 1
                 ];
                 $integrityFile = sprintf(
                     $this->getTempPath() . 'vhs-assets-%s.%s',
@@ -852,7 +864,9 @@ class AssetService implements SingletonInterface
                     if (extension_loaded('hash') && function_exists('hash_file')) {
                         $integrity = base64_encode((string) hash_file($integrityMethod, $file, true));
                     } elseif (extension_loaded('openssl') && function_exists('openssl_digest')) {
-                        $integrity = base64_encode((string) openssl_digest((string) file_get_contents($file), $integrityMethod, true));
+                        $integrity = base64_encode(
+                            (string) openssl_digest((string) file_get_contents($file), $integrityMethod, true)
+                        );
                     } else {
                         return ''; // Sadly, no integrity generation possible
                     }

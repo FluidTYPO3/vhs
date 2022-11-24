@@ -42,8 +42,11 @@ class AbsoluteViewHelper extends AbstractExtensionViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         return ExtensionManagementUtility::extPath(
             static::getExtensionKey($arguments, $renderingContext),
             isset($arguments['path']) ? $arguments['path'] : null
