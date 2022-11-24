@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -78,7 +77,7 @@ class GetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $variableProvider = $renderingContext->getVariableProvider();
         /** @var string $name */
         $name = $arguments['name'];
         $useRawKeys = $arguments['useRawKeys'];

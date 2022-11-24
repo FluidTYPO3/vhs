@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -26,7 +25,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractRenderViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
@@ -111,7 +109,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
             $view->setFormat($controllerContext->getRequest()->getFormat());
             $view->getRenderingContext()->setViewHelperVariableContainer($renderingContext->getViewHelperVariableContainer());
         }
-        $variables = (array) ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext)->getAll();
+        $variables = (array) $renderingContext->getVariableProvider()->getAll();
         $view->assignMultiple($variables);
         return $view;
     }

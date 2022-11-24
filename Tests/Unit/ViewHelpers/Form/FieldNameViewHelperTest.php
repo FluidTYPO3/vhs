@@ -9,17 +9,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Class FieldNameViewHelperTest
  */
-class FieldNameViewHelperTest extends AbstractViewHelperTest
+class FieldNameViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @dataProvider getRenderTestValues
      * @param array $arguments
@@ -31,21 +28,16 @@ class FieldNameViewHelperTest extends AbstractViewHelperTest
     public function testRender(array $arguments, $prefix, $objectName, $names, $expected)
     {
         $instance = $this->buildViewHelperInstance($arguments, [], null, 'Vhs');
-        $viewHelperVariableContainer = new ViewHelperVariableContainer();
         if (null !== $objectName) {
-            $viewHelperVariableContainer->add(FormViewHelper::class, 'formObjectName', $objectName);
+            $this->viewHelperVariableContainer->add(FormViewHelper::class, 'formObjectName', $objectName);
         }
         if (null !== $prefix) {
-            $viewHelperVariableContainer->add(FormViewHelper::class, 'fieldNamePrefix', $prefix);
+            $this->viewHelperVariableContainer->add(FormViewHelper::class, 'fieldNamePrefix', $prefix);
         }
         if (null !== $names) {
-            $viewHelperVariableContainer->add(FormViewHelper::class, 'formFieldNames', $names);
+            $this->viewHelperVariableContainer->add(FormViewHelper::class, 'formFieldNames', $names);
         }
-        $context = $this->getMockBuilder(RenderingContextInterface::class)->setMethods(['getViewHelperVariableContainer'])->getMockForAbstractClass();
-        $context->expects($this->any())->method('getViewHelperVariableContainer')->willReturn($viewHelperVariableContainer);
-        ObjectAccess::setProperty($instance, 'renderingContext', $context, true);
-        $instance->setArguments($arguments);
-        $result = $instance->render();
+        $result = $this->executeViewHelper($arguments);
         $this->assertEquals($expected, $result);
     }
 

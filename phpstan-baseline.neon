@@ -56,3 +56,15 @@ parameters:
             message: "#^Unreachable statement \\- code above always terminates\\.$#"
             count: 2
             path: Classes/Utility/FrontendSimulationUtility.php
+        -
+            message: "#^Cannot call method getValidators\\(\\) on array\\.$#"
+            count: 2
+            path: Classes/ViewHelpers/Condition/Form/HasValidatorViewHelper.php
+        -
+            message: "#^Call to protected method init\\(\\) of class TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\.$#"
+            count: 2
+            path: Classes/Service/PageService.php
+        -
+            message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 2
+            path: Classes/ViewHelpers/Render/RequestViewHelper.php

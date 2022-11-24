@@ -150,49 +150,49 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     {
         $evaluationType = $this->arguments['evaluationType'];
         $evaluations = [];
-        if (true === (boolean) $this->arguments['anyFrontendUser']) {
+        if ($this->arguments['anyFrontendUser'] ?? false) {
             $evaluations['anyFrontendUser'] = intval($this->assertFrontendUserLoggedIn());
         }
-        if (true === (boolean) $this->arguments['anyFrontendUserGroup']) {
+        if ($this->arguments['anyFrontendUserGroup'] ?? false) {
             $evaluations['anyFrontendUserGroup'] = intval($this->assertFrontendUserGroupLoggedIn());
         }
-        if (true === isset($this->arguments['frontendUser'])) {
+        if (isset($this->arguments['frontendUser'])) {
             $evaluations['frontendUser'] =
                 intval($this->assertFrontendUserLoggedIn($this->arguments['frontendUser']));
         }
-        if (true === isset($this->arguments['frontendUsers'])) {
+        if (isset($this->arguments['frontendUsers'])) {
             $evaluations['frontendUsers'] =
                 intval($this->assertFrontendUsersLoggedIn($this->arguments['frontendUsers']));
         }
-        if (true === isset($this->arguments['frontendUserGroup'])) {
+        if (isset($this->arguments['frontendUserGroup'])) {
             $evaluations['frontendUserGroup'] =
                 intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroup']));
         }
-        if (true === isset($this->arguments['frontendUserGroups'])) {
+        if (isset($this->arguments['frontendUserGroups'])) {
             $evaluations['frontendUserGroups'] =
                 intval($this->assertFrontendUserGroupLoggedIn($this->arguments['frontendUserGroups']));
         }
-        if (true === (boolean) $this->arguments['anyBackendUser']) {
+        if ($this->arguments['anyBackendUser'] ?? false) {
             $evaluations['anyBackendUser'] = intval($this->assertBackendUserLoggedIn());
         }
-        if (true === (boolean) $this->arguments['anyBackendUserGroup']) {
+        if ($this->arguments['anyBackendUserGroup'] ?? false) {
             $evaluations['anyBackendUserGroup'] = intval($this->assertBackendUserGroupLoggedIn());
         }
-        if (true === isset($this->arguments['backendUser'])) {
+        if (isset($this->arguments['backendUser'])) {
             $evaluations['backendUser'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUser']));
         }
-        if (true === isset($this->arguments['backendUsers'])) {
+        if (isset($this->arguments['backendUsers'])) {
             $evaluations['backendUsers'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUsers']));
         }
-        if (true === isset($this->arguments['backendUserGroup'])) {
+        if (isset($this->arguments['backendUserGroup'])) {
             $evaluations['backendUserGroup'] =
                 intval($this->assertBackendUserGroupLoggedIn($this->arguments['backendUserGroup']));
         }
-        if (true === isset($this->arguments['backendUserGroups'])) {
+        if (isset($this->arguments['backendUserGroups'])) {
             $evaluations['backendUserGroups'] =
                 intval($this->assertBackendUserGroupLoggedIn($this->arguments['backendUserGroups']));
         }
-        if (true === (boolean) $this->arguments['admin']) {
+        if ($this->arguments['admin'] ?? false) {
             $evaluations['admin'] = intval($this->assertAdminLoggedIn());
         }
         $sum = array_sum($evaluations);

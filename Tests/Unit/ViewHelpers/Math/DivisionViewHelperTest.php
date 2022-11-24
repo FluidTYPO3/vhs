@@ -13,7 +13,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 class DivisionViewHelperTest extends AbstractMathViewHelperTest
 {
-
     /**
      * @test
      */
@@ -35,7 +34,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeMissingArgumentTest()
     {
-        $this->expectViewHelperException('Required argument "b" was not supplied');
+        $this->expectViewHelperException();
         $this->executeViewHelper(['a' => 1, 'fail' => true]);
     }
 
@@ -44,7 +43,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidFirstArgumentTypeTest()
     {
-        $this->expectViewHelperException('Required argument "a" was not supplied');
+        $this->expectViewHelperException();
         $this->executeViewHelper(['b' => 1, 'fail' => true]);
     }
 
@@ -53,7 +52,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidSecondArgumentTypeTest()
     {
-        $this->expectViewHelperException('Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, or only $a, must be array/Iterator');
+        $this->expectViewHelperException();
         $this->executeViewHelper(['a' => 1, 'b' => [1], 'fail' => true]);
     }
 }

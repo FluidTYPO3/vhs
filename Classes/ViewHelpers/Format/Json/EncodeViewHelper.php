@@ -11,9 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -124,7 +124,7 @@ class EncodeViewHelper extends AbstractViewHelper
         }
 
         // process output of conversion, catching specially supported object types such as DomainObject and DateTime
-        if (true === is_array($value)) {
+        if (is_array($value)) {
             $value = static::recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
             $value = static::recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
         }
@@ -226,7 +226,7 @@ class EncodeViewHelper extends AbstractViewHelper
         $recursionMarker
     ) {
         $hash = spl_object_hash($domainObject);
-        if (true === $preventRecursion && true === in_array($hash, static::$encounteredClasses)) {
+        if ($preventRecursion && in_array($hash, static::$encounteredClasses)) {
             return $recursionMarker;
         }
         $converted = ObjectAccess::getGettableProperties($domainObject);

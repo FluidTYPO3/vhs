@@ -18,7 +18,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
  */
 class ImageViewHelper extends AbstractImageViewHelper
 {
-
     /**
      * Render method
      *

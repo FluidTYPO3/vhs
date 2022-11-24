@@ -9,13 +9,15 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Asset;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Class PrefetchViewHelperTest
  */
-class PrefetchViewHelperTest extends AbstractViewHelperTest
+class PrefetchViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -25,5 +27,16 @@ class PrefetchViewHelperTest extends AbstractViewHelperTest
         $instance->render();
         $result = $instance->build();
         $this->assertStringStartsWith('<meta', $result);
+    }
+
+    protected function createObjectManagerInstance(): ObjectManagerInterface
+    {
+        $instance = parent::createObjectManagerInstance();
+        $instance->method('get')->willReturnMap(
+            [
+                [TagBuilder::class, new TagBuilder()],
+            ]
+        );
+        return $instance;
     }
 }

@@ -9,10 +9,11 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class AllowViewHelperTest
  */
-class AllowViewHelperTest extends AbstractViewHelperTest
+class AllowViewHelperTest extends AbstractViewHelperTestCase
 {
 }

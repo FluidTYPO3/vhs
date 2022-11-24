@@ -58,9 +58,9 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
         $content = $this->arguments['content'];
         if (!empty($content)) {
             $pageRenderer = static::getPageRenderer();
-            if (!method_exists($pageRenderer, 'setMetaTag')) {
+            if (method_exists($pageRenderer, 'addMetaTag')) {
                 $pageRenderer->addMetaTag($this->renderTag($this->tagName, null, ['content' => $content]));
-            } else {
+            } elseif (method_exists($pageRenderer, 'setMetaTag')) {
                 $properties = [];
                 $type = 'name';
                 /** @var string $name */

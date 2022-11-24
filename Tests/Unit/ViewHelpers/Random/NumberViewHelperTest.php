@@ -9,13 +9,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Random;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Class NumberViewHelperTest
  */
-class NumberViewHelperTest extends AbstractViewHelperTest
+class NumberViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -24,8 +25,8 @@ class NumberViewHelperTest extends AbstractViewHelperTest
         $arguments = ['minimum' => 0, 'maximum' => 999999];
         $result1 = $this->executeViewHelper($arguments);
         $result2 = $this->executeViewHelper($arguments);
-        $this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
-        $this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
+        $this->assertThat($result1, new IsType(IsType::TYPE_INT));
+        $this->assertThat($result2, new IsType(IsType::TYPE_INT));
         $this->assertNotEquals($result1, $result2);
     }
 
@@ -37,8 +38,8 @@ class NumberViewHelperTest extends AbstractViewHelperTest
         $arguments = ['minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 0, 'maximumDecimals' => 0];
         $result1 = $this->executeViewHelper($arguments);
         $result2 = $this->executeViewHelper($arguments);
-        $this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
-        $this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT));
+        $this->assertThat($result1, new IsType(IsType::TYPE_INT));
+        $this->assertThat($result2, new IsType(IsType::TYPE_INT));
         $this->assertNotEquals($result1, $result2);
     }
 
@@ -50,8 +51,8 @@ class NumberViewHelperTest extends AbstractViewHelperTest
         $arguments = ['minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 2, 'maximumDecimals' => 8];
         $result1 = $this->executeViewHelper($arguments);
         $result2 = $this->executeViewHelper($arguments);
-        $this->assertThat($result1, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_NUMERIC));
-        $this->assertThat($result2, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_NUMERIC));
+        $this->assertThat($result1, new IsType(IsType::TYPE_NUMERIC));
+        $this->assertThat($result2, new IsType(IsType::TYPE_NUMERIC));
         $this->assertNotEquals($result1, $result2);
     }
 }

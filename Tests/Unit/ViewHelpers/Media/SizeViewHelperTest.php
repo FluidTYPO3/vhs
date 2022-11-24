@@ -9,15 +9,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Class SizeViewHelperTest
  */
-class SizeViewHelperTest extends AbstractViewHelperTest
+class SizeViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @var string
      */
@@ -26,10 +25,11 @@ class SizeViewHelperTest extends AbstractViewHelperTest
     /**
      * Setup
      */
-    public function setUp()
+    public function setUp(): void
     {
+        $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
         parent::setUp();
-        $this->fixturesPath = 'EXT:vhs/Tests/Fixtures/Files';
+        $this->fixturesPath = realpath(__DIR__ . '/../../../../Tests/Fixtures/Files');
     }
 
     /**
@@ -37,14 +37,7 @@ class SizeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsZeroForEmptyArguments()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
-        $viewHelper->setArguments([]);
-        $this->assertEquals(0, $viewHelper->render());
+        $this->assertEquals(0, $this->executeViewHelper());
     }
 
     /**
@@ -52,14 +45,7 @@ class SizeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsFileSizeAsInteger()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/typo3_logo.jpg'));
-        $viewHelper->setArguments([]);
-        $this->assertEquals(7094, $viewHelper->render());
+        $this->assertEquals(7094, $this->executeViewHelperUsingTagContent($this->fixturesPath . '/typo3_logo.jpg'));
     }
 
     /**
@@ -67,15 +53,8 @@ class SizeViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionWhenFileNotFound()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist.txt'));
-        $viewHelper->setArguments([]);
         $this->expectViewHelperException();
-        $viewHelper->render();
+        $this->executeViewHelperUsingTagContent('/this/path/hopefully/does/not/exist.txt');
     }
 
     /**
@@ -83,14 +62,7 @@ class SizeViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
-        $viewHelper->setArguments([]);
         $this->expectViewHelperException();
-        $viewHelper->render();
+        $this->executeViewHelperUsingTagContent($this->fixturesPath);
     }
 }

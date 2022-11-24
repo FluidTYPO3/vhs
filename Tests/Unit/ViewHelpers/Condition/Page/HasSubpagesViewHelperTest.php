@@ -10,13 +10,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class HasSubpagesViewHelperTest
  */
-class HasSubpagesViewHelperTest extends AbstractViewHelperTest
+class HasSubpagesViewHelperTest extends AbstractViewHelperTestCase
 {
-
     public function testRenderWithAPageThatHasSubpages()
     {
         $pageService = $this->getMockBuilder(PageService::class)->setMethods(['getMenu'])->disableOriginalConstructor()->getMock();
@@ -31,9 +31,6 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTest
         $instance::setPageService($pageService);
         $result = $instance->initializeArgumentsAndRender();
         $this->assertEquals('then', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     public function testRenderWithAPageWithoutSubpages()
@@ -50,8 +47,5 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTest
         $instance::setPageService($pageService);
         $result = $instance->initializeArgumentsAndRender();
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 }

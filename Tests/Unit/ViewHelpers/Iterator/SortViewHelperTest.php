@@ -9,11 +9,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class SortViewHelperTest
  */
-class SortViewHelperTest extends AbstractViewHelperTest
+class SortViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
      * @test
@@ -21,7 +22,7 @@ class SortViewHelperTest extends AbstractViewHelperTest
     public function throwsExceptionOnUnsupportedSortFlag()
     {
         $arguments = ['sortFlags' => 'FOOBAR'];
-        $this->expectViewHelperException('The constant "FOOBAR" you\'re trying to use as a sortFlag is not allowed.');
+        $this->expectViewHelperException();
         $this->executeViewHelperUsingTagContent(['a', 'b', 'c'], $arguments);
     }
 }

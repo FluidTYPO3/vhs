@@ -9,20 +9,25 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Uri;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class ImageViewHelperTest
  */
-class ImageViewHelperTest extends AbstractViewHelperTest
+class ImageViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function callsExpectedMethodSequence()
     {
-        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['preProcessImage'])->getMock();
-        $mock->setArguments(['src' => 'foobar']);
-        $this->assertStringStartsWith('http://', $mock->render());
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['preprocessImage'])->getMock();
+        $arguments = $this->buildViewHelperArguments($mock, ['src' => 'foobar']);
+        $mock->setArguments($arguments);
+        $output = $mock->render();
+        unset($GLOBALS['TSFE']);
+        $this->assertSame('', $output);
     }
 }

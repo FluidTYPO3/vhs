@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Variable;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class IsNullViewHelperTest
  */
-class IsNullViewHelperTest extends AbstractViewHelperTest
+class IsNullViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -28,9 +28,6 @@ class IsNullViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals($arguments['then'], $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     /**
@@ -45,8 +42,5 @@ class IsNullViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals($arguments['else'], $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 }

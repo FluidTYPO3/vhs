@@ -9,19 +9,21 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Site;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class NameViewHelperTest
  */
-class NameViewHelperTest extends AbstractViewHelperTest
+class NameViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function rendersSiteName()
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'test';
         $test = $this->executeViewHelper();
-        $this->assertSame($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], $test);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $this->assertSame('test', $test);
     }
 }

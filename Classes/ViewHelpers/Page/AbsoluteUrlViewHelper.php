@@ -32,9 +32,12 @@ class AbsoluteUrlViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $url */
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        if (0 !== strpos($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
-            $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+        /** @var string $siteUrl */
+        $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        if (0 !== strpos($url, $siteUrl)) {
+            $url = $siteUrl . $url;
         }
         return $url;
     }

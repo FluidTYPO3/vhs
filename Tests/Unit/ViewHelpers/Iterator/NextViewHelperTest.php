@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class NextViewHelperTest
  */
-class NextViewHelperTest extends AbstractViewHelperTest
+class NextViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -29,8 +29,5 @@ class NextViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('c', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 }

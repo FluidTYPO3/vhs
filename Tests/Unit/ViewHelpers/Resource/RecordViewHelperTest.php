@@ -9,19 +9,19 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class RecordViewHelperTest
  */
-class RecordViewHelperTest extends AbstractViewHelperTest
+class RecordViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function testRenderFailsWithoutFieldArgument()
     {
-        $this->expectViewHelperException('The "field" argument must be specified');
+        $this->expectViewHelperException();
         $this->executeViewHelper();
     }
 }

@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**

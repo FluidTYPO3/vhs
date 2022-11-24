@@ -9,9 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders a picture element with different images/sources for specific
