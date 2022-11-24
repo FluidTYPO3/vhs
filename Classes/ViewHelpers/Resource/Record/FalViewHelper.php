@@ -167,14 +167,18 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     $queryBuilder->expr()->eq('tablenames', ':tablenames')
                 )
                 ->andWhere(
-                    $queryBuilder->expr()->eq('uid_foreign', ':uid_foreign' )
+                    $queryBuilder->expr()->eq('uid_foreign', ':uid_foreign')
                 )
                 ->andWhere(
                     $queryBuilder->expr()->eq('fieldname', ':fieldname')
                 );
 
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
-                $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->workspaceRec['uid'], \PDO::PARAM_INT, ':t3ver_wsid');
+                $queryBuilder->createNamedParameter(
+                    $GLOBALS['BE_USER']->workspaceRec['uid'],
+                    \PDO::PARAM_INT,
+                    ':t3ver_wsid'
+                );
                 $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->eq('deleted', 0)

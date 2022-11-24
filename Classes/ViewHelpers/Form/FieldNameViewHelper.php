@@ -110,7 +110,10 @@ class FieldNameViewHelper extends AbstractViewHelper
     {
         return (
             $this->hasArgument('property')
-            && $this->renderingContext->getViewHelperVariableContainer()->exists(FormViewHelper::class, 'formObjectName')
+            && $this->renderingContext->getViewHelperVariableContainer()->exists(
+                FormViewHelper::class,
+                'formObjectName'
+            )
         );
     }
 }

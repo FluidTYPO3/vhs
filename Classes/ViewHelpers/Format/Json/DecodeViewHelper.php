@@ -36,8 +36,11 @@ class DecodeViewHelper extends AbstractViewHelper
      * @return mixed
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $json = $renderChildrenClosure();
         if (true === empty($json)) {
             return null;

@@ -53,7 +53,15 @@ class LoopViewHelper extends AbstractLoopViewHelper
         }
 
         for ($i = 0; $i < $count; $i++) {
-            $content .= static::renderIteration($i, 0, $count, 1, $iteration, $renderingContext, $renderChildrenClosure);
+            $content .= static::renderIteration(
+                $i,
+                0,
+                $count,
+                1,
+                $iteration,
+                $renderingContext,
+                $renderChildrenClosure
+            );
         }
 
         if (true === isset($backupVariable)) {

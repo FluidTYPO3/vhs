@@ -85,7 +85,7 @@ class PageService implements SingletonInterface
 
             static::$cachedMenus[$cacheKey] = array_filter(
                 $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints),
-                function($page) {
+                function ($page) {
                     return $this->hidePageForLanguageUid($page) === false;
                 }
             );
@@ -156,8 +156,13 @@ class PageService implements SingletonInterface
     ) {
         $constraints = [];
 
-        $constraints[] = 'doktype NOT IN (' . $this->readPageRepositoryConstant('DOKTYPE_BE_USER_SECTION') . ',' .
-            $this->readPageRepositoryConstant('DOKTYPE_RECYCLER') . ',' . $this->readPageRepositoryConstant('DOKTYPE_SYSFOLDER') . ')';
+        $constraints[] = 'doktype NOT IN ('
+            . $this->readPageRepositoryConstant('DOKTYPE_BE_USER_SECTION')
+            . ','
+            . $this->readPageRepositoryConstant('DOKTYPE_RECYCLER')
+            . ','
+            . $this->readPageRepositoryConstant('DOKTYPE_SYSFOLDER')
+            . ')';
 
         if ($includeNotInMenu === false) {
             $constraints[] = 'nav_hide = 0';

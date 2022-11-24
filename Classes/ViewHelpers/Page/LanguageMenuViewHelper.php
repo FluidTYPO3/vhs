@@ -29,7 +29,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 {
-
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -98,7 +97,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             false,
             'flag,name'
         );
-        $this->registerArgument('useCHash', 'boolean', 'Use cHash for typolink. Has no effect on TYPO3 v9.5+', false, true);
+        $this->registerArgument(
+            'useCHash',
+            'boolean',
+            'Use cHash for typolink. Has no effect on TYPO3 v9.5+',
+            false,
+            true
+        );
         $this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', false, '');
         $this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', false, 'svg');
         $this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', false, true);
@@ -120,7 +125,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
         $this->registerArgument('configuration', 'array', 'Additional typoLink configuration', false, []);
         $this->registerArgument('excludeQueryVars', 'string', 'Comma-separate list of variables to exclude', false, '');
-        $this->registerArgument('languages', 'mixed', 'Array, CSV or Traversable containing UIDs of languages to render');
+        $this->registerArgument(
+            'languages',
+            'mixed',
+            'Array, CSV or Traversable containing UIDs of languages to render'
+        );
     }
 
     /**
@@ -364,7 +373,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             if (isset($value['flagIdentifier']) && empty($this->arguments['flagPath'])) {
                 $languageMenu[$key]['flagCode'] = $this->getLanguageFlagByIdentifier($value['flagIdentifier']);
             } else {
-                $languageMenu[$key]['flagCode'] = $this->getLanguageFlag($value['flag'] ?? $value['iso'], $value['label']);
+                $languageMenu[$key]['flagCode'] = $this->getLanguageFlag(
+                    $value['flag'] ?? $value['iso'],
+                    $value['label']
+                );
             }
             if (true === (boolean) $this->arguments['hideNotTranslated'] && true === (boolean) $inactive) {
                 unset($languageMenu[$key]);
@@ -392,9 +404,15 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $from = 'sys_language';
 
         if (!empty($limitLanguages)) {
-            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => 'root', 'uidInList' => implode(',', $limitLanguages)]);
+            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords(
+                $from,
+                ['selectFields' => $select, 'pidInList' => 'root', 'uidInList' => implode(',', $limitLanguages)]
+            );
         } else {
-            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => 'root']);
+            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords(
+                $from,
+                ['selectFields' => $select, 'pidInList' => 'root']
+            );
         }
 
         foreach ($sysLanguage as $value) {
@@ -501,6 +519,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      * Fetches system languages available on the page depending on the TYPO3 version.
      *
      * @return int[]
+     * @phpcsSuppress
      * @see https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.0/Important-82445-MigratePagesLanguageOverlayIntoPages.html
      */
     protected function getSystemLanguageUids()

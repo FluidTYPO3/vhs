@@ -100,7 +100,8 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument(
             'noCacheHash',
             'boolean',
-            'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this. Has no effect on TYPO3v11 and above.',
+            'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this. '
+            . 'Has no effect on TYPO3v11 and above.',
             false,
             false
         );

@@ -560,11 +560,12 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         if (false === $this->original) {
             return;
         }
-        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'parentInstance')) {
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        if (false === $viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'parentInstance')) {
             return;
         }
-        $this->renderingContext->getViewHelperVariableContainer()->remove(AbstractMenuViewHelper::class, 'parentInstance');
-        $this->renderingContext->getViewHelperVariableContainer()->remove(AbstractMenuViewHelper::class, 'variables');
+        $viewHelperVariableContainer->remove(AbstractMenuViewHelper::class, 'parentInstance');
+        $viewHelperVariableContainer->remove(AbstractMenuViewHelper::class, 'variables');
     }
 
     /**

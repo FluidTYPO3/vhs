@@ -107,7 +107,10 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         $field = $this->getField();
 
         if (false === isset($record[$field])) {
-            ErrorUtility::throwViewHelperException('The "field" argument was not found on the selected record.', 1384612728);
+            ErrorUtility::throwViewHelperException(
+                'The "field" argument was not found on the selected record.',
+                1384612728
+            );
         }
 
         if (true === empty($record[$field])) {
@@ -128,7 +131,10 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         }
 
         if (true === empty($table) || false === is_string($table)) {
-            ErrorUtility::throwViewHelperException('The "table" argument must be specified and must be a string.', 1384611336);
+            ErrorUtility::throwViewHelperException(
+                'The "table" argument must be specified and must be a string.',
+                1384611336
+            );
         }
 
         return $table;
@@ -145,7 +151,10 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         }
 
         if (true === empty($field) || false === is_string($field)) {
-            ErrorUtility::throwViewHelperException('The "field" argument must be specified and must be a string.', 1384611355);
+            ErrorUtility::throwViewHelperException(
+                'The "field" argument must be specified and must be a string.',
+                1384611355
+            );
         }
 
         return $field;
@@ -169,7 +178,9 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             //TYPO3 version >= 10
             /** @var Context $context */
             $context = GeneralUtility::makeInstance(Context::class);
-            $fePreview = ($context->hasAspect('frontend.preview')) ? $context->getPropertyFromAspect('frontend.preview', 'isPreview') : false;
+            $fePreview = $context->hasAspect('frontend.preview')
+                ? $context->getPropertyFromAspect('frontend.preview', 'isPreview')
+                : false;
         } else {
             $fePreview = (bool)(isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fePreview);
         }
@@ -219,7 +230,10 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         }
 
         if (null === $record) {
-            ErrorUtility::throwViewHelperException('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
+            ErrorUtility::throwViewHelperException(
+                'No record was found. The "record" or "uid" argument must be specified.',
+                1384611413
+            );
         }
 
         // attempt to load resources. If any Exceptions happen, transform them to

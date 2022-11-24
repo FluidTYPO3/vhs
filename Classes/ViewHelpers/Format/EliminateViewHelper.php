@@ -83,11 +83,18 @@ class EliminateViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $content = $renderChildrenClosure();
         if (true === isset($arguments['characters'])) {
-            $content = static::eliminateCharacters($content, $arguments['characters'], (boolean) $arguments['caseSensitive']);
+            $content = static::eliminateCharacters(
+                $content,
+                $arguments['characters'],
+                (boolean) $arguments['caseSensitive']
+            );
         }
         if (true === isset($arguments['strings'])) {
             $content = static::eliminateStrings($content, $arguments['strings'], (boolean) $arguments['caseSensitive']);

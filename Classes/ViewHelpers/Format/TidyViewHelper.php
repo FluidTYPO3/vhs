@@ -41,8 +41,11 @@ class TidyViewHelper extends AbstractViewHelper
      * @throws \RuntimeException
      * @return string|\tidy
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $content = $renderChildrenClosure();
         $encoding = $arguments['encoding'];
         if (true === class_exists('tidy')) {

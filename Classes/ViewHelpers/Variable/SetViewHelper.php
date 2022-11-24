@@ -78,8 +78,11 @@ class SetViewHelper extends AbstractViewHelper
     /**
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $name = $arguments['name'];
         $value = $renderChildrenClosure();
         $variableProvider = $renderingContext->getVariableProvider();

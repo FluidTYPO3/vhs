@@ -109,10 +109,31 @@ class ExtractViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('content', 'mixed', 'The array or Iterator that contains either the value or arrays of values');
-        $this->registerArgument('key', 'string', 'The name of the key from which you wish to extract the value', true);
-        $this->registerArgument('recursive', 'boolean', 'If TRUE, attempts to extract the key from deep nested arrays', false, true);
-        $this->registerArgument('single', 'boolean', 'If TRUE, returns only one value - always the first one - instead of an array of values', false, false);
+        $this->registerArgument(
+            'content',
+            'mixed',
+            'The array or Iterator that contains either the value or arrays of values'
+        );
+        $this->registerArgument(
+            'key',
+            'string',
+            'The name of the key from which you wish to extract the value',
+            true
+        );
+        $this->registerArgument(
+            'recursive',
+            'boolean',
+            'If TRUE, attempts to extract the key from deep nested arrays',
+            false,
+            true
+        );
+        $this->registerArgument(
+            'single',
+            'boolean',
+            'If TRUE, returns only one value - always the first one - instead of an array of values',
+            false,
+            false
+        );
     }
 
     /**
