@@ -76,8 +76,8 @@ class UncacheTemplateView extends TemplateView
      */
     public function callUserFunction($postUserFunc, $conf, $content)
     {
-        $partial = $conf['partial'] ?? '';
-        $section = $conf['section'] ?? '';
+        $partial = $conf['partial'] ?? null;
+        $section = $conf['section'] ?? null;
         $arguments = $conf['arguments'] ?? [];
         /** @var ControllerContext $controllerContext */
         $controllerContext = $this->objectManager->get(ControllerContext::class);
@@ -133,7 +133,7 @@ class UncacheTemplateView extends TemplateView
     /**
      * @param RenderingContextInterface $renderingContext
      * @param string $partial
-     * @param string $section
+     * @param string|null $section
      * @param array $arguments
      * @return string|null
      */
