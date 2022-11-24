@@ -23,7 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class TagViewHelper extends AbstractTagBasedViewHelper
 {
-
     use TagViewHelperTrait;
 
     /**
@@ -43,6 +42,7 @@ class TagViewHelper extends AbstractTagBasedViewHelper
     {
         $this->arguments['class'] = trim((string) $this->arguments['class']);
         $this->arguments['class'] = str_replace(',', ' ', $this->arguments['class']);
+        /** @var string $content */
         $content = $this->renderChildren();
         return $this->renderTag($this->arguments['name'], $content);
     }

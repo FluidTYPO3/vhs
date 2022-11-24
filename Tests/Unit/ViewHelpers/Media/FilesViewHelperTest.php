@@ -8,16 +8,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Class FilesViewHelperTest
  */
-class FilesViewHelperTest extends AbstractViewHelperTest
+class FilesViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @var string
      */
@@ -26,10 +27,25 @@ class FilesViewHelperTest extends AbstractViewHelperTest
     /**
      * Setup
      */
-    public function setUp()
+    public function setUp(): void
     {
+        $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
         parent::setUp();
-        $this->fixturesPath = dirname(__FILE__) . '/../../../Fixtures/Files';
+        $this->fixturesPath = 'EXT:vhs/Tests/Fixtures/Files';
+        $packageManager = $this->getMockBuilder(PackageManager::class)->setMethods(['resolvePackagePath'])->disableOriginalConstructor()->getMock();
+        $packageManager->method('resolvePackagePath')->willReturnMap(
+            [
+                ['EXT:vhs/Tests/Fixtures/Files/typo3_logo.jpg', 'Tests/Fixtures/Files/typo3_logo.jpg'],
+                ['EXT:vhs/Tests/Fixtures/Files', 'Tests/Fixtures/Files'],
+            ]
+        );
+        AccessibleExtensionManagementUtility::setPackageManager($packageManager);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        AccessibleExtensionManagementUtility::setPackageManager(null);
     }
 
     /**
@@ -37,14 +53,7 @@ class FilesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmtpyArrayWhenArgumentsAreNotSet()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
-        $viewHelper->setArguments([]);
-        $this->assertEquals([], $viewHelper->render());
+        $this->assertEquals([], $this->executeViewHelper());
     }
 
     /**
@@ -52,14 +61,7 @@ class FilesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmptyArrayWhenPathIsInaccessible()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('/this/path/hopefully/does/not/exist'));
-        $viewHelper->setArguments([]);
-        $this->assertEquals([], $viewHelper->render());
+        $this->assertEquals([], $this->executeViewHelperUsingTagContent('/this/path/hopefully/does/not/exist'));
     }
 
     /**
@@ -67,16 +69,9 @@ class FilesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsPopulatedArrayOfAllFoundFiles()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $actualFiles = glob($this->fixturesPath . '/*');
         $actualFilesCount = count($actualFiles);
-        $viewHelper->setArguments([]);
-        $this->assertCount($actualFilesCount, $viewHelper->render());
+        $this->assertCount($actualFilesCount, $this->executeViewHelperUsingTagContent($this->fixturesPath));
     }
 
     /**
@@ -84,16 +79,8 @@ class FilesViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsPopulatedArrayOfFilteredFiles()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath));
-        $viewHelper->setArguments(['extensionList' => 'txt']);
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
         $actualFiles = glob($this->fixturesPath . '/*.txt');
         $actualFilesCount = count($actualFiles);
-
-        $this->assertCount($actualFilesCount, $viewHelper->render());
+        $this->assertCount($actualFilesCount, $this->executeViewHelperUsingTagContent($this->fixturesPath));
     }
 }

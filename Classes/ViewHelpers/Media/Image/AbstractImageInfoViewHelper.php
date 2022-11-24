@@ -13,15 +13,14 @@ use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference as ExtbaseFileReference;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Media\Image view helpers.
  */
 abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var \TYPO3\CMS\Core\Resource\ResourceFactory
      */
@@ -37,7 +36,9 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
      */
     public function __construct()
     {
-        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        /** @var ResourceFactory $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->resourceFactory = $resourceFactory;
     }
 
     /**
@@ -111,9 +112,9 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
             }
             $imageSize = getimagesize($file);
             $info = [
-                'width'  => $imageSize[0],
-                'height' => $imageSize[1],
-                'type'   => $imageSize['mime'],
+                'width'  => $imageSize[0] ?? '',
+                'height' => $imageSize[1] ?? '',
+                'type'   => $imageSize['mime'] ?? '',
             ];
         }
 

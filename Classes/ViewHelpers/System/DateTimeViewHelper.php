@@ -35,9 +35,6 @@ class DateTimeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -45,6 +42,6 @@ class DateTimeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return \DateTime::createFromFormat('U', static::getTimestamp());
+        return \DateTime::createFromFormat('U', (string) static::getTimestamp());
     }
 }

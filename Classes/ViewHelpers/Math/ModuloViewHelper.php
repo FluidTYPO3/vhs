@@ -33,9 +33,10 @@ class ModuloViewHelper extends AbstractMultipleMathViewHelper
     /**
      * @param mixed $a
      * @param mixed $b
+     * @param array $arguments
      * @return integer
      */
-    protected static function calculateAction($a, $b)
+    protected static function calculateAction($a, $b, array $arguments)
     {
         return $a % $b;
     }

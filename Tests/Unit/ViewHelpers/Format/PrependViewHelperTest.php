@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class PrependViewHelperTest
  */
-class PrependViewHelperTest extends AbstractViewHelperTest
+class PrependViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */

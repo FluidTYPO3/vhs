@@ -3596,7 +3596,7 @@ Implodes an array or array-convertible object by $glue.
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="glue" default="','">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[String used as glue in the string to be exploded. To use a constant (like PHP_EOL) use v:const to read it.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[String used as glue in the string to be exploded. To read a constant (like PHP_EOL) use v:const.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -4262,14 +4262,14 @@ average value of itself.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional: Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -4364,14 +4364,14 @@ against the corresponding member in $b compared using index.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL" use="required">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -4418,14 +4418,14 @@ number of numbers $a and $b.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -4473,14 +4473,14 @@ number of numbers $a and $b.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -4512,14 +4512,14 @@ If $a and $b are both numbers simple modulo is performed.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL" use="required">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -4540,14 +4540,14 @@ Performs pow($a, $b) where $a is the base and $b is the exponent.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL" use="required">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -4573,14 +4573,14 @@ member in $b compared using index.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL" use="required">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -4707,14 +4707,14 @@ member in $b compared using index.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional: Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -4740,14 +4740,14 @@ member in $b compared using index.
           <xsd:documentation><![CDATA[First number for calculation]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fail" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="b" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional: Second number or Iterator/Traversable/Array for calculation]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="fail" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -5200,7 +5200,7 @@ http://scottjehl.github.io/picturefill/
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
+      <xsd:attribute type="xsd:integer" name="quality" default="90">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -5457,7 +5457,7 @@ pages the first page is rendered by default unless specified.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
+      <xsd:attribute type="xsd:integer" name="quality" default="90">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -5814,7 +5814,7 @@ information.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
+      <xsd:attribute type="xsd:integer" name="quality" default="90">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -11298,6 +11298,16 @@ place when rendering an Extbase plugin's content object.
       <xsd:sequence>
         <xsd:any minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
+      <xsd:attribute type="xsd:string" name="onError" default="NULL">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Optional error message to display if error occur while rendering. If NULL, lets the error Exception pass trough (and break rendering)]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If forced to FALSE, errors are not caught but rather "transmitted" as every other error would be]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="file" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Path to template file, EXT:myext/... paths supported]]></xsd:documentation>
@@ -12385,7 +12395,7 @@ or it's derivate if differing dimesions are provided.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
+      <xsd:attribute type="xsd:integer" name="quality" default="90">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>

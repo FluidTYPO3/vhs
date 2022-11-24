@@ -54,7 +54,7 @@ trait TemplateVariableViewHelperTrait
     }
 
     /**
-     * @param string $variable
+     * @param mixed $variable
      *
      * @return mixed
      */
@@ -130,9 +130,9 @@ trait TemplateVariableViewHelperTrait
         $templateVariableContainer,
         $renderChildrenClosure
     ) {
-        $backups = static::backupVariables($variables, $templateVariableContainer);
+        $backups = self::backupVariables($variables, $templateVariableContainer);
         $content = $renderChildrenClosure();
-        static::restoreVariables($variables, $backups, $templateVariableContainer);
+        self::restoreVariables($variables, $backups, $templateVariableContainer);
         return $content;
     }
 

@@ -8,9 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -18,7 +20,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractContentViewHelper extends AbstractViewHelper
 {
-
     use SlideViewHelperTrait;
 
     /**
@@ -43,11 +44,15 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->contentObject = $configurationManager->getContentObject();
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $this->configurationManager->getContentObject();
+        $this->contentObject = $contentObject;
     }
 
     /**
      * Initialize
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -178,10 +183,10 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     {
         $pageUid = (integer) $this->arguments['pageUid'];
         if (1 > $pageUid) {
-            $pageUid = (integer) $GLOBALS['TSFE']->page['content_from_pid'];
+            $pageUid = (integer) ($GLOBALS['TSFE']->page['content_from_pid'] ?? 0);
         }
         if (1 > $pageUid) {
-            $pageUid = (integer) $GLOBALS['TSFE']->id;
+            $pageUid = (integer) ($GLOBALS['TSFE']->id ?? 0);
         }
         return $pageUid;
     }
@@ -203,7 +208,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             array_push($elements, static::renderRecord($row));
         }
         if (false === empty($this->arguments['loadRegister'])) {
-            $this->contentObject->cObjGetSingle('RESTORE_REGISTER', '');
+            $this->contentObject->cObjGetSingle('RESTORE_REGISTER', []);
         }
         return $elements;
     }
@@ -219,7 +224,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected static function renderRecord(array $row)
     {
-        if (0 < $GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']]) {
+        if (0 < ($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']] ?? 0)) {
             return null;
         }
         $conf = [
@@ -260,7 +265,9 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if ($limit) {
             $queryBuilder->setMaxResults((integer) $limit);
         }
-        return $queryBuilder->execute()->fetchAll();
+        /** @var Statement $result */
+        $result = $queryBuilder->execute();
+        return $result->fetchAll();
     }
 
     /**

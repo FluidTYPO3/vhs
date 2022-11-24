@@ -40,7 +40,7 @@ class RenderViewHelper extends AbstractContentViewHelper
     /**
      * Render method
      *
-     * @return string
+     * @return mixed
      */
     public function render()
     {

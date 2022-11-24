@@ -37,7 +37,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
  */
 class ImageViewHelper extends AbstractImageViewHelper
 {
-
     use SourceSetViewHelperTrait;
 
     /**
@@ -120,10 +119,9 @@ class ImageViewHelper extends AbstractImageViewHelper
             $height = $srcSetVariantDefault['height'];
         } else {
             $src = static::preprocessSourceUri($this->mediaSource, $this->arguments);
-            $width = $this->imageInfo[0];
-            $height = $this->imageInfo[1];
+            $width = $this->imageInfo[0] ?? '';
+            $height = $this->imageInfo[1] ?? '';
         }
-
 
         $this->tag->addAttribute('width', $width);
         $this->tag->addAttribute('height', $height);

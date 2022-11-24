@@ -17,7 +17,6 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
  */
 class Foo extends AbstractEntity
 {
-
     /**
      * @var string
      */
@@ -25,7 +24,7 @@ class Foo extends AbstractEntity
 
     /**
      * @var string
-     * @Extbase\Validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
      */
     protected $bar;
 

@@ -9,12 +9,35 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use PHPUnit\Framework\Constraint\IsType;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Class TyposcriptViewHelperTest
  */
-class TyposcriptViewHelperTest extends AbstractViewHelperTest
+class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
 {
+    private ?ConfigurationManagerInterface $configurationManager;
+
+    protected function setUp(): void
+    {
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
+            ->getMockForAbstractClass();
+        $this->configurationManager->method('getConfiguration')->willReturn(
+            [
+                'config' => [
+                    'tx_extbase' => [
+                        'features' => [
+                            'foo' => 'bar',
+                        ],
+                    ],
+                ],
+            ]
+        );
+        parent::setUp();
+    }
 
     /**
      * @test
@@ -29,7 +52,7 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsArrayIfPathContainsArray()
     {
-        $this->assertThat($this->executeViewHelper(['path' => 'config.tx_extbase.features']), new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY));
+        $this->assertThat($this->executeViewHelper(['path' => 'config.tx_extbase.features']), new IsType(IsType::TYPE_ARRAY));
     }
 
     /**
@@ -46,5 +69,16 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTest
     public function canGetPathUsingTagContent()
     {
         $this->assertNotEmpty($this->executeViewHelperUsingTagContent('config.tx_extbase.features'));
+    }
+
+    protected function createObjectManagerInstance(): ObjectManagerInterface
+    {
+        $instance = parent::createObjectManagerInstance();
+        $instance->method('get')->willReturnMap(
+            [
+                [ConfigurationManagerInterface::class, $this->configurationManager],
+            ]
+        );
+        return $instance;
     }
 }

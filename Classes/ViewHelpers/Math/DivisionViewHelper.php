@@ -47,7 +47,7 @@ class DivisionViewHelper extends AbstractMultipleMathViewHelper
                 $b = static::arrayFromArrayOrTraversableOrCSVStatic($b);
             }
             foreach ($a as $index => $value) {
-                $bSide = $bIsIterable ? $b[$index] : $b;
+                $bSide = is_array($b) ? $b[$index] : $b;
                 $a[$index] = static::calculateAction($value, $bSide, $arguments);
             }
             return $a;

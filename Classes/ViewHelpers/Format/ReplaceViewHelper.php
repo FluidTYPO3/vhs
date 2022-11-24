@@ -37,8 +37,11 @@ class ReplaceViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $content = $renderChildrenClosure();
         $substring = $arguments['substring'];
         $replacement = $arguments['replacement'];

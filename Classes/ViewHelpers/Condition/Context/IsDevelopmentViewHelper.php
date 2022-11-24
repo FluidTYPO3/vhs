@@ -30,6 +30,8 @@ class IsDevelopmentViewHelper extends AbstractConditionViewHelper
 {
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
-        return (class_exists(Environment::class) ? Environment::getContext()->isDevelopment() : GeneralUtility::getApplicationContext()->isDevelopment());
+        return class_exists(Environment::class)
+            ? Environment::getContext()->isDevelopment()
+            : GeneralUtility::getApplicationContext()->isDevelopment();
     }
 }

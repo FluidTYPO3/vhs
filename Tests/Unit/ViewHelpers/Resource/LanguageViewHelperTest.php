@@ -9,19 +9,19 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class LanguageViewHelperTest
  */
-class LanguageViewHelperTest extends AbstractViewHelperTest
+class LanguageViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function testRenderFailsWhenUnableToResolveExtensionName()
     {
-        $this->expectViewHelperException('Cannot read extension name from ControllerContext and value not manually specified');
+        $this->expectViewHelperException();
         $this->executeViewHelper();
     }
 }

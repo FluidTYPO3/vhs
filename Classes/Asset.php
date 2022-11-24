@@ -62,7 +62,6 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  */
 class Asset implements AssetInterface
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
@@ -89,7 +88,7 @@ class Asset implements AssetInterface
     protected $content = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $path = null;
 
@@ -167,8 +166,10 @@ class Asset implements AssetInterface
      */
     public static function getInstance()
     {
-        /** @var $asset Asset */
-        $asset = GeneralUtility::makeInstance(ObjectManager::class)->get(Asset::class);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var Asset $asset */
+        $asset = $objectManager->get(Asset::class);
         return $asset;
     }
 
@@ -432,13 +433,16 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getContent()
     {
+        if ($this->path === null) {
+            return $this->content;
+        }
         $path = (0 === strpos($this->path, '/') ? $this->path : GeneralUtility::getFileAbsFileName($this->path));
-        if (true === empty($this->content) && null !== $this->path && file_exists($path)) {
-            return file_get_contents($path);
+        if (empty($this->content) && null !== $this->path && file_exists($path)) {
+            return (string) file_get_contents($path);
         }
         return $this->content;
     }
@@ -454,7 +458,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPath()
     {
@@ -462,7 +466,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @param string $path
+     * @param string|null $path
      * @return Asset
      */
     public function setPath($path)
@@ -547,20 +551,22 @@ class Asset implements AssetInterface
      */
     public function getSettings()
     {
-        if (null === static::$settingsCache) {
+        if (null === self::$settingsCache) {
             $allTypoScript = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
-            $settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
-            if (true === $settingsExist) {
-                static::$settingsCache = GeneralUtility::removeDotsFromTS(
-                    $allTypoScript['plugin.']['tx_vhs.']['settings.']
-                );
-            }
+            self::$settingsCache = GeneralUtility::removeDotsFromTS(
+                $allTypoScript['plugin.']['tx_vhs.']['settings.'] ?? []
+            );
         }
-        $settings = (array) static::$settingsCache;
+        $settings = (array) self::$settingsCache;
         $properties = get_class_vars(get_class($this));
-        foreach (array_keys($properties) as $propertyName) {
+        $skipProperties = ['settingsCache', 'configurationManager'];
+        foreach (array_keys($properties) as $index => $propertyName) {
+            if (in_array($propertyName, $skipProperties, true)) {
+                unset($properties[$propertyName]);
+                continue;
+            }
             $properties[$propertyName] = $this->$propertyName;
         }
 
@@ -667,7 +673,7 @@ class Asset implements AssetInterface
     public function assertDebugEnabled()
     {
         $settings = $this->getSettings();
-        $enabled = (true === isset($settings['debug']) ? (boolean) $settings['debug'] : false);
+        $enabled = (bool) ($settings['debug'] ?? false);
         return $enabled;
     }
 

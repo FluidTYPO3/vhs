@@ -34,7 +34,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  */
 abstract class AbstractAssetViewHelper extends AbstractViewHelper implements AssetInterface
 {
-
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -53,17 +52,17 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     protected $assetService;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected static $settingsCache = null;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $assetSettingsCache;
 
     /**
-     * @var array
+     * @var array|\ArrayAccess|null
      */
     protected $localSettings;
 
@@ -120,7 +119,9 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->tagBuilder = $this->objectManager->get(TagBuilder::class);
+        /** @var TagBuilder $tagBuilder */
+        $tagBuilder = $this->objectManager->get(TagBuilder::class);
+        $this->tagBuilder = $tagBuilder;
     }
 
     /**
@@ -230,7 +231,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function __toString()
     {
-        return $this->build();
+        return (string) $this->build();
     }
 
     /**
@@ -260,7 +261,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      * renderChildren from within this function. Anything else goes; CLI
      * commands to build, caching implementations - you name it.
      *
-     * @return mixed
+     * @return string|false
      */
     public function build()
     {
@@ -304,14 +305,13 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     protected function debug()
     {
         $settings = $this->getSettings();
         $debugOutputEnabled = $this->assertDebugEnabled();
-        $useDebugUtility = !isset($settings['useDebugUtility'])
-            || (isset($settings['useDebugUtility']) && $settings['useDebugUtility']);
+        $useDebugUtility = (bool) ($settings['useDebugUtility'] ?? true);
         $debugInformation = $this->getDebugInformation();
         if ($debugOutputEnabled) {
             if ($useDebugUtility) {
@@ -321,6 +321,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
                 return var_export($debugInformation, true);
             }
         }
+        return null;
     }
 
     /**
@@ -441,12 +442,11 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
 
     /**
      * @param array|\ArrayAccess $settings
+     * @return void
      */
     public function setSettings($settings)
     {
-        if (is_array($settings) || $settings instanceof \ArrayAccess) {
-            $this->localSettings = $settings;
-        }
+        $this->localSettings = $settings;
     }
 
     /**
@@ -560,7 +560,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         $groupName = $this->arguments['group'];
         $settings = $this->getSettings();
         $dependencies = $this->getDependencies();
-        array_push($dependencies, $this->getName());
+        $dependencies[] = $this->getName();
         foreach ($dependencies as $name) {
             if (isset($settings['asset'][$name]['remove']) && $settings['asset'][$name]['remove'] > 0) {
                 return true;

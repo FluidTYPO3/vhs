@@ -21,6 +21,8 @@ class IsLowercaseViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -35,6 +37,9 @@ class IsLowercaseViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
+        if (!is_array($arguments)) {
+            return false;
+        }
         if (true === $arguments['fullString']) {
             $result = ctype_lower($arguments['string']);
         } else {

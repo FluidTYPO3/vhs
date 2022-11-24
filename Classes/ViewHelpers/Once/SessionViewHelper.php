@@ -50,7 +50,7 @@ class SessionViewHelper extends AbstractOnceViewHelper
     {
         $identifier = static::getIdentifier($arguments);
         $index = static::class;
-        if (false === is_array($_SESSION[$index])) {
+        if (!is_array($_SESSION[$index] ?? false)) {
             $_SESSION[$index] = [];
         }
         $_SESSION[$index][$identifier] = time();
@@ -64,7 +64,7 @@ class SessionViewHelper extends AbstractOnceViewHelper
     {
         $identifier = static::getIdentifier($arguments);
         $index = static::class;
-        return (boolean) (true === isset($_SESSION[$index][$identifier]));
+        return isset($_SESSION[$index][$identifier]);
     }
 
     /**

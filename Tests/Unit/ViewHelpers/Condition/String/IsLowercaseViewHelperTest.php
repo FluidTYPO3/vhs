@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\String;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class IsLowercaseViewHelperTest
  */
-class IsLowercaseViewHelperTest extends AbstractViewHelperTest
+class IsLowercaseViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -29,9 +29,6 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     /**
@@ -47,9 +44,6 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     /**
@@ -65,9 +59,6 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     /**
@@ -83,8 +74,5 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 }

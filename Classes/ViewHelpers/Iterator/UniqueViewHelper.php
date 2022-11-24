@@ -94,7 +94,9 @@ class UniqueViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $array = static::arrayFromArrayOrTraversableOrCSVStatic(empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']);
+        $array = static::arrayFromArrayOrTraversableOrCSVStatic(
+            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+        );
         $array = array_unique($array);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $array,

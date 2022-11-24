@@ -23,6 +23,8 @@ class IsBooleanViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -36,6 +38,6 @@ class IsBooleanViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === is_bool($arguments['value']);
+        return is_array($arguments) && is_bool($arguments['value']);
     }
 }

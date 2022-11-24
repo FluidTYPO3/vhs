@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class SanitizeStringViewHelperTest
  */
-class SanitizeStringViewHelperTest extends AbstractViewHelperTest
+class SanitizeStringViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      * @dataProvider getInputsAndExpectedOutputs

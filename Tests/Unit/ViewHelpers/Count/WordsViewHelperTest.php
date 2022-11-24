@@ -9,11 +9,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Count;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class WordsViewHelperTest
  */
-class WordsViewHelperTest extends AbstractViewHelperTest
+class WordsViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
      * @param array $arguments

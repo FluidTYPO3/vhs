@@ -20,6 +20,8 @@ class ContainsViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -34,6 +36,6 @@ class ContainsViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return false !== strpos((string) $arguments['haystack'], (string) $arguments['needle']);
+        return is_array($arguments) && false !== strpos((string) $arguments['haystack'], (string) $arguments['needle']);
     }
 }

@@ -28,7 +28,7 @@ class MedianViewHelper extends AbstractSingleMathViewHelper
      * @param mixed $a
      * @return mixed
      */
-    protected static function calculateAction($a)
+    protected static function calculateAction($a, array $arguments = [])
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         if (true === $aIsIterable) {
@@ -38,13 +38,13 @@ class MedianViewHelper extends AbstractSingleMathViewHelper
             $midpoint = $size / 2;
             if (1 === $size % 2) {
                 /*
-				 * Array indexes of float are truncated to integers,
-				 * not everybody knows, let's make it explicit for everybody
-				 * wondering.
-				 */
+                 * Array indexes of float are truncated to integers,
+                 * not everybody knows, let's make it explicit for everybody
+                 * wondering.
+                 */
                 return $a[(integer) $midpoint];
             }
-            $candidates = array_slice($a, floor($midpoint) - 1, 2);
+            $candidates = array_slice($a, (integer) (floor($midpoint) - 1), 2);
             return array_sum($candidates) / 2;
         }
         return $a;

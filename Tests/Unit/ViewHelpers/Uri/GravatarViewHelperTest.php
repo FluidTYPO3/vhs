@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Uri;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class GravatarViewHelperTest
  */
-class GravatarViewHelperTest extends AbstractViewHelperTest
+class GravatarViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @var array
      */

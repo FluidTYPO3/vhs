@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -26,7 +25,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractRenderViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
@@ -109,9 +107,12 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
             $controllerContext = clone $renderingContext->getControllerContext();
             $view->setControllerContext($controllerContext);
             $view->setFormat($controllerContext->getRequest()->getFormat());
-            $view->getRenderingContext()->setViewHelperVariableContainer($renderingContext->getViewHelperVariableContainer());
+            $view->getRenderingContext()->setViewHelperVariableContainer(
+                $renderingContext->getViewHelperVariableContainer()
+            );
         }
-        $view->assignMultiple(ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext)->getAll());
+        $variables = (array) $renderingContext->getVariableProvider()->getAll();
+        $view->assignMultiple($variables);
         return $view;
     }
 
@@ -139,7 +140,9 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      */
     protected static function getPreparedView()
     {
-        return static::getObjectManager()->get(StandaloneView::class);
+        /** @var StandaloneView $view */
+        $view = static::getObjectManager()->get(StandaloneView::class);
+        return $view;
     }
 
     /**
@@ -147,6 +150,8 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      */
     protected static function getObjectManager()
     {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        return $objectManager;
     }
 }

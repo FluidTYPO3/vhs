@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -138,10 +139,12 @@ class CacheViewHelper extends AbstractRenderViewHelper
     }
 
     /**
-     * @return mixed
+     * @return FrontendInterface
      */
     protected static function getCache()
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('vhs_main');
+        /** @var CacheManager $cacheManager */
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        return $cacheManager->getCache('vhs_main');
     }
 }

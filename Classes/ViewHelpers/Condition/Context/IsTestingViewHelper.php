@@ -33,6 +33,8 @@ class IsTestingViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return (class_exists(Environment::class) ? Environment::getContext()->isTesting() : GeneralUtility::getApplicationContext()->isTesting());
+        return class_exists(Environment::class)
+            ? Environment::getContext()->isTesting()
+            : GeneralUtility::getApplicationContext()->isTesting();
     }
 }

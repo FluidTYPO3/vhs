@@ -42,7 +42,7 @@ glue
 :aspect:`Required`
    false
 :aspect:`Description`
-   String used as glue in the string to be exploded. To use a constant (like PHP_EOL) use v:const to read it.
+   String used as glue in the string to be exploded. To read a constant (like PHP_EOL) use v:const.
 
 .. _iterator.implode_as:
 

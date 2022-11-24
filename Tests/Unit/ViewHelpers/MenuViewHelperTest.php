@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -13,7 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 /**
  * Class MenuViewHelperTest
  */
-class MenuViewHelperTest extends AbstractViewHelperTest
+class MenuViewHelperTest extends AbstractViewHelperTestCase
 {
 
 }

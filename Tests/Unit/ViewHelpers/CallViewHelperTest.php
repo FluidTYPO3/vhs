@@ -11,15 +11,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 /**
  * Class CallViewHelperTest
  */
-class CallViewHelperTest extends AbstractViewHelperTest
+class CallViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function throwsRuntimeExceptionIfObjectNotFound()
     {
-        $this->setExpectedException('RuntimeException', null, 1356849652);
+        $this->expectExceptionCode(1356849652);
         $this->executeViewHelper(['method' => 'method', 'arguments' => []]);
     }
 
@@ -29,7 +28,7 @@ class CallViewHelperTest extends AbstractViewHelperTest
     public function throwsRuntimeExceptionIfMethodNotFound()
     {
         $object = new \ArrayIterator(['foo', 'bar']);
-        $this->setExpectedException('RuntimeException', null, 1356834755);
+        $this->expectExceptionCode(1356834755);
         $this->executeViewHelper(['method' => 'notfound', 'object' => $object, 'arguments' => []]);
     }
 
