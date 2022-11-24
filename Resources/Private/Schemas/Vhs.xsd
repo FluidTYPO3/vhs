@@ -5200,7 +5200,7 @@ http://scottjehl.github.io/picturefill/
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
+      <xsd:attribute type="xsd:integer" name="quality" default="90">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -5457,7 +5457,7 @@ pages the first page is rendered by default unless specified.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
+      <xsd:attribute type="xsd:integer" name="quality" default="90">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -5814,7 +5814,7 @@ information.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
+      <xsd:attribute type="xsd:integer" name="quality" default="90">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
@@ -11298,6 +11298,16 @@ place when rendering an Extbase plugin's content object.
       <xsd:sequence>
         <xsd:any minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
+      <xsd:attribute type="xsd:string" name="onError" default="NULL">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Optional error message to display if error occur while rendering. If NULL, lets the error Exception pass trough (and break rendering)]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If forced to FALSE, errors are not caught but rather "transmitted" as every other error would be]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="file" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Path to template file, EXT:myext/... paths supported]]></xsd:documentation>
@@ -12385,7 +12395,7 @@ or it's derivate if differing dimesions are provided.
           <xsd:documentation><![CDATA[Format of the processed file - also determines the target file format. If blank, TYPO3/IM/GM default is taken into account.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="quality" default="NULL">
+      <xsd:attribute type="xsd:integer" name="quality" default="90">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Quality of the processed image. If blank/not present falls back to the default quality defined in install tool.]]></xsd:documentation>
         </xsd:annotation>
