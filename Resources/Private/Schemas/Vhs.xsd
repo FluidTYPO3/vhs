@@ -3596,7 +3596,7 @@ Implodes an array or array-convertible object by $glue.
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="glue" default="','">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[String used as glue in the string to be exploded. To use a constant (like PHP_EOL) use v:const to read it.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[String used as glue in the string to be exploded. To read a constant (like PHP_EOL) use v:const.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
