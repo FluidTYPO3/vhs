@@ -53,7 +53,11 @@ class KeysViewHelper extends AbstractViewHelper
     ) {
         return static::renderChildrenWithVariableOrReturnInputStatic(
             array_keys(
-                static::arrayFromArrayOrTraversableOrCSVStatic(empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'])
+                static::arrayFromArrayOrTraversableOrCSVStatic(
+                    empty($arguments['as'])
+                        ? ($arguments['subject'] ?? $renderChildrenClosure())
+                        : $arguments['subject']
+                )
             ),
             $arguments['as'],
             $renderingContext,

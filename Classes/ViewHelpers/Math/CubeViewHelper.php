@@ -20,14 +20,15 @@ class CubeViewHelper extends AbstractSingleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
-     * @param mixed $a
-     * @return integer
+     * @param integer|float|string|array|iterable $a
+     * @return float|array
      */
-    protected static function calculateAction($a)
+    protected static function calculateAction($a, array $arguments = [])
     {
         if (static::assertIsArrayOrIterator($a)) {
-            return array_map([static::class, 'calculateAction'], $a);
+            return array_map([static::class, 'calculateAction'], static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
+        /** @var integer|float $a */
         return pow($a, 3);
     }
 }

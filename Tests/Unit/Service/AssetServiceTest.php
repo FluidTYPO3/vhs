@@ -1,11 +1,13 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Service;
 
-use FluidTYPO3\Development\AbstractTestCase;
 use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\Service\AssetService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Class AssetServiceTest
@@ -22,15 +24,18 @@ class AssetServiceTest extends AbstractTestCase
     public function testBuildAll(array $assets, $cached, $expectedFiles)
     {
         $GLOBALS['VhsAssets'] = $assets;
-        $GLOBALS['TSFE'] = (object) ['content' => 'content'];
-        $instance = $this->getMockBuilder(AssetService::class)->setMethods(['writeFile'])->getMock();
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['TSFE']->content = 'content';
+        $instance = $this->getMockBuilder(AssetService::class)->setMethods(['writeFile', 'getSettings', 'resolveAbsolutePathForFile'])->getMock();
         $instance->expects($this->exactly($expectedFiles))->method('writeFile')->with($this->anything(), $this->anything());
+        $instance->method('getSettings')->willReturn([]);
+        $instance->method('resolveAbsolutePathForFile')->willReturnArgument(0);
         if (true === $cached) {
             $instance->buildAll([], $this, $cached);
         } else {
             $instance->buildAllUncached([], $this);
         }
-        unset($GLOBALS['VhsAssets']);
+        unset($GLOBALS['VhsAssets'], $GLOBALS['TSFE']);
     }
 
     /**
@@ -39,7 +44,7 @@ class AssetServiceTest extends AbstractTestCase
     public function getBuildAllTestValues()
     {
         /** @var Asset $asset1 */
-        $asset1 = GeneralUtility::makeInstance(ObjectManager::class)->get(Asset::class);
+        $asset1 = new Asset();
         $asset1->setContent('asset');
         $asset1->setName('asset1');
         $asset1->setType('js');
@@ -101,5 +106,17 @@ class AssetServiceTest extends AbstractTestCase
         }
 
         unset($GLOBALS['TSFE']);
+    }
+
+    protected function createObjectManagerInstance(): ObjectManagerInterface
+    {
+        $instance = parent::createObjectManagerInstance();
+        $instance->method('get')->willReturnMap(
+            [
+                [TagBuilder::class, new TagBuilder()],
+                [ConfigurationManagerInterface::class, $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()],
+            ]
+        );
+        return $instance;
     }
 }

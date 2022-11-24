@@ -20,6 +20,8 @@ class IsInstanceOfViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -34,6 +36,6 @@ class IsInstanceOfViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === $arguments['value'] instanceof $arguments['class'];
+        return is_array($arguments) && $arguments['value'] instanceof $arguments['class'];
     }
 }

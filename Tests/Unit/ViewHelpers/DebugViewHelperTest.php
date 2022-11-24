@@ -28,9 +28,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 /**
  * Class DebugViewHelperTest
  */
-class DebugViewHelperTest extends AbstractViewHelperTest
+class DebugViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -39,10 +38,10 @@ class DebugViewHelperTest extends AbstractViewHelperTest
         $viewHelper2 = $this->buildViewHelperInstance();
         $viewHelper = $this->buildViewHelperInstance([], [], $this->createViewHelperNode($viewHelper2, []));
         $result = $viewHelper->render();
-        $this->assertContains('ViewHelper Debug ViewHelper', $result);
-        $this->assertContains('[ARGUMENTS]', $result);
-        $this->assertContains('[CURRENT ARGUMENTS]', $result);
-        $this->assertContains('[RENDER METHOD DOC]', $result);
+        $this->assertStringContainsString('ViewHelper Debug ViewHelper', $result);
+        $this->assertStringContainsString('[ARGUMENTS]', $result);
+        $this->assertStringContainsString('[CURRENT ARGUMENTS]', $result);
+        $this->assertStringContainsString('[RENDER METHOD DOC]', $result);
     }
 
     /**
@@ -51,7 +50,8 @@ class DebugViewHelperTest extends AbstractViewHelperTest
     public function debugsChildNodeObjectAccessors()
     {
         $viewHelper = $this->buildViewHelperInstance([], ['test' => ['test' => 'test']], $this->createObjectAccessorNode('test.test'));
+        $viewHelper->setRenderingContext($this->renderingContext);
         $result = $viewHelper->render();
-        $this->assertContains('[VARIABLE ACCESSORS]', $result);
+        $this->assertStringContainsString('[VARIABLE ACCESSORS]', $result);
     }
 }

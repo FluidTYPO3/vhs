@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Random;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class StringViewHelperTest
  */
-class StringViewHelperTest extends AbstractViewHelperTest
+class StringViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */

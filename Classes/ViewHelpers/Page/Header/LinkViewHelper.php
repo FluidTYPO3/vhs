@@ -19,7 +19,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {
-
     use TagViewHelperTrait;
     use PageRendererTrait;
 
@@ -46,13 +45,14 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     /**
      * Render method
      *
-     * @return void
+     * @return string
      */
     public function render()
     {
         if ('BE' === TYPO3_MODE) {
-            return;
+            return '';
         }
         static::getPageRenderer()->addHeaderData($this->renderTag($this->tagName));
+        return '';
     }
 }

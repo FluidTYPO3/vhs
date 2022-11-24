@@ -9,20 +9,21 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 
 /**
  * Class MarkdownViewHelperTest
  */
-class MarkdownViewHelperTest extends AbstractViewHelperTest
+class MarkdownViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function supportsHtmlEntities()
     {
         if (trim(shell_exec('which markdown')) === '') {
-            $this->expectViewHelperException('Use of Markdown requires the "markdown" shell utility to be installed');
+            $this->expectException(NoSuchCacheException::class);
         }
         $this->executeViewHelper(['text' => 'test < test', 'trim' => true, 'htmlentities' => true]);
     }
@@ -33,7 +34,7 @@ class MarkdownViewHelperTest extends AbstractViewHelperTest
     public function rendersMarkdown()
     {
         if (trim(shell_exec('which markdown')) === '') {
-            $this->expectViewHelperException('Use of Markdown requires the "markdown" shell utility to be installed');
+            $this->expectException(NoSuchCacheException::class);
         }
         $this->executeViewHelper(['text' => 'test', 'trim' => true, 'htmlentities' => false]);
     }

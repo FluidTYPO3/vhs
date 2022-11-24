@@ -28,7 +28,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  */
 trait SlideViewHelperTrait
 {
-
     /**
      * Default initialisation of arguments - will be used
      * if the implementing ViewHelper does not itself define
@@ -85,8 +84,11 @@ trait SlideViewHelperTrait
      */
     protected function getPageService()
     {
+        /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        return $objectManager->get(PageService::class);
+        /** @var PageService $pageService */
+        $pageService = $objectManager->get(PageService::class);
+        return $pageService;
     }
 
     /**
@@ -128,7 +130,7 @@ trait SlideViewHelperTrait
             if (true === $slideCollectReverse && 0 !== $slideCollect) {
                 $reverse = true;
             }
-            $rootLine = $this->getPageService()->getRootLine($pageUid, null);
+            $rootLine = $this->getPageService()->getRootLine($pageUid);
             if (-1 !== $slide) {
                 $rootLine = array_slice($rootLine, 0, $slide);
             }
@@ -142,9 +144,9 @@ trait SlideViewHelperTrait
         // select records, respecting slide and slideCollect.
         $records = [];
         do {
-            $storagePageUid = array_shift($storagePageUids);
-            $limitRemaining = null;
-            if (null !== $limit) {
+            $storagePageUid = (integer) array_shift($storagePageUids);
+            $limitRemaining = 0;
+            if (0 !== $limit) {
                 $limitRemaining = $limit - count($records);
                 if (0 >= $limitRemaining) {
                     break;

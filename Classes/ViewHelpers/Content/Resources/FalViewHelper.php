@@ -23,7 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  *   -> v:iterator.first()
  *   -> v:variable.set(name: 'image')}
  * <f:if condition="{image}">
- *   <f:image src="{image.id}"/>
+ *   <f:image src="{image.uid}"/>
  * </f:if>
  * ```
  *
@@ -39,7 +39,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  */
 class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper
 {
-
     const DEFAULT_TABLE = 'tt_content';
     const DEFAULT_FIELD = 'image';
 

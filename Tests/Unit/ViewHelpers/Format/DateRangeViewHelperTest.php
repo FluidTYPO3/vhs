@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class DateRangeViewHelperTest
  */
-class DateRangeViewHelperTest extends AbstractViewHelperTest
+class DateRangeViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @var array
      */
@@ -126,7 +126,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         unset($arguments['end'], $arguments['intervalFormat']);
-        $this->expectViewHelperException('Either end or intervalFormat has to be provided.');
+        $this->expectViewHelperException();
         $this->executeViewHelper($arguments);
     }
 
@@ -138,7 +138,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
         $arguments = $this->arguments;
         $arguments['intervalFormat'] = 'what is this then';
         unset($arguments['end']);
-        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateInterval constructor');
+        $this->expectViewHelperException();
         $this->executeViewHelper($arguments);
     }
 
@@ -149,7 +149,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['start'] = 'what is this then';
-        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateTime constructor');
+        $this->expectViewHelperException();
         $this->executeViewHelper($arguments);
     }
 
@@ -160,7 +160,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = $this->arguments;
         $arguments['end'] = 'what is this then';
-        $this->expectViewHelperException('"what is this then" could not be parsed by \\DateTime constructor');
+        $this->expectViewHelperException();
         $this->executeViewHelper($arguments);
     }
 }

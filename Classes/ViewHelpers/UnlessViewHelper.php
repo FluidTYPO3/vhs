@@ -52,6 +52,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class UnlessViewHelper extends AbstractConditionViewHelper
 {
+    /**
+     * @return void
+     */
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -63,7 +66,7 @@ class UnlessViewHelper extends AbstractConditionViewHelper
     /**
      * Rendering with inversion and ignoring any f:then / f:else children.
      *
-     * @return string|NULL
+     * @return mixed|null
      */
     public function render()
     {
@@ -76,9 +79,6 @@ class UnlessViewHelper extends AbstractConditionViewHelper
     /**
      * Static rendering with inversion and ignoring any f:then / f:else children.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

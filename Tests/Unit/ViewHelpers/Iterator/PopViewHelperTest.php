@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class PopViewHelperTest
  */
-class PopViewHelperTest extends AbstractViewHelperTest
+class PopViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      * @dataProvider getRenderTestValues
@@ -46,7 +46,7 @@ class PopViewHelperTest extends AbstractViewHelperTest
      */
     public function testThrowsErrorsOnInvalidSubjectType($subject)
     {
-        $this->expectViewHelperException('Unsupported input type; cannot convert to array!');
+        $this->expectViewHelperException();
         $this->executeViewHelper(['subject' => $subject]);
     }
 

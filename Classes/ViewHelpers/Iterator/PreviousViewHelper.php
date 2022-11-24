@@ -16,6 +16,9 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class PreviousViewHelper extends ContainsViewHelper
 {
+    /**
+     * @return mixed
+     */
     public function render()
     {
         return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);

@@ -56,6 +56,32 @@ Arguments
 =========
 
 
+.. _render.template_onerror:
+
+onError
+-------
+
+:aspect:`DataType`
+   string
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Optional error message to display if error occur while rendering. If NULL, lets the error Exception pass trough (and break rendering)
+
+.. _render.template_graceful:
+
+graceful
+--------
+
+:aspect:`DataType`
+   boolean
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   If forced to FALSE, errors are not caught but rather "transmitted" as every other error would be
+
 .. _render.template_file:
 
 file

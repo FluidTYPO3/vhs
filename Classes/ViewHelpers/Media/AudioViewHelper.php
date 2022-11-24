@@ -139,7 +139,10 @@ class AudioViewHelper extends AbstractMediaViewHelper
                     $src = $source;
                     $type = mb_substr($source, mb_strrpos($source, '.') + 1);
                 } else {
-                    $src = mb_substr(GeneralUtility::getFileAbsFileName($source), mb_strlen(CoreUtility::getSitePath()));
+                    $src = mb_substr(
+                        GeneralUtility::getFileAbsFileName($source),
+                        mb_strlen(CoreUtility::getSitePath())
+                    );
                     $type = pathinfo($src, PATHINFO_EXTENSION);
                 }
             } elseif (is_array($source)) {

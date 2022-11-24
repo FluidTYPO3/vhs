@@ -8,13 +8,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -22,7 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class InfoViewHelper extends AbstractViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -36,7 +36,7 @@ class InfoViewHelper extends AbstractViewHelper
     protected $configurationManager;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface An instance of the Configuration Manager
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @return void
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
@@ -72,36 +72,45 @@ class InfoViewHelper extends AbstractViewHelper
     public function render()
     {
         $contentUid = (integer) $this->arguments['contentUid'];
+        $record = false;
+
         if (0 === $contentUid) {
+            /** @var ContentObjectRenderer $cObj */
             $cObj = $this->configurationManager->getContentObject();
             $record = $cObj->data;
         }
 
         $field = $this->arguments['field'];
+        $selectFields = $field;
 
-        if (false === isset($record) && 0 !== $contentUid) {
-            if (null !== $field && true === isset($GLOBALS['TCA']['tt_content']['columns'][$field])) {
-                $selectFields = $field;
-            } else {
+        if ($record === false && 0 !== $contentUid) {
+            if (!isset($GLOBALS['TCA']['tt_content']['columns'][$field])) {
                 $selectFields = '*';
             }
 
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
             $queryBuilder->createNamedParameter($contentUid, \PDO::PARAM_INT, ':uid');
 
-            $record = $queryBuilder
+            /** @var Statement $result */
+            $result = $queryBuilder
                 ->select($selectFields)
                 ->from('tt_content')
                 ->where(
                     $queryBuilder->expr()->eq('uid', ':uid')
                 )
-                ->execute()
-                ->fetch();
+                ->execute();
+            /** @var array|null $record */
+            $record = $result->fetch();
 
             // Add the page overlay
             if (class_exists(LanguageAspect::class)) {
-                $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+                /** @var Context $context */
+                $context = GeneralUtility::makeInstance(Context::class);
+                /** @var LanguageAspect $languageAspect */
+                $languageAspect = $context->getAspect('language');
+                $languageUid = $languageAspect->getId();
             } else {
                 $languageUid = $GLOBALS['TSFE']->sys_language_uid;
             }
@@ -116,7 +125,7 @@ class InfoViewHelper extends AbstractViewHelper
             }
         }
 
-        if (false === $record && false === isset($record)) {
+        if (false === $record) {
             throw new \Exception(
                 sprintf('Either record with uid %d or field %s do not exist.', $contentUid, $selectFields),
                 1358679983

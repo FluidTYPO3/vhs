@@ -9,15 +9,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class RootlineViewHelperTest
  */
-class RootlineViewHelperTest extends AbstractViewHelperTest
+class RootlineViewHelperTest extends AbstractViewHelperTestCase
 {
-
     public function testRender()
     {
         if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {

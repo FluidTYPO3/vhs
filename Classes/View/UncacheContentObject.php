@@ -9,7 +9,11 @@ class UncacheContentObject extends AbstractContentObject
 {
     public function callUserFunction(string $function, array $conf): string
     {
-        return GeneralUtility::makeInstance(ObjectManager::class)->get(UncacheTemplateView::class)->callUserFunction('', $conf, '');
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var UncacheTemplateView $uncacheTemplateView */
+        $uncacheTemplateView = $objectManager->get(UncacheTemplateView::class);
+        return (string) $uncacheTemplateView->callUserFunction('', $conf, '');
     }
 
     public function render($conf = [])

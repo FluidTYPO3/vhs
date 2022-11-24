@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -25,7 +26,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 {
-
     /**
      * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current
      * $GLOBALS['TSFE'] if used in BE mode
@@ -33,7 +33,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     protected $tsfeBackup;
 
     /**
-     * @var string
+     * @var string|false
      */
     protected $workingDirectoryBackup;
 
@@ -49,7 +49,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 
     /**
      * Result of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
-     * @var array
+     * @var array|null
      */
     protected $imageInfo;
 
@@ -60,7 +60,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->contentObject = $this->configurationManager->getContentObject();
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $this->configurationManager->getContentObject();
+        $this->contentObject = $contentObject;
     }
 
     /**
@@ -102,7 +104,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             'Quality of the processed image. If blank/not present falls back to the default quality defined in ' .
             'install tool.',
             false,
-            $GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality']
+            $GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality'] ?? 90
         );
         $this->registerArgument(
             'treatIdAsReference',
@@ -128,6 +130,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 
     /**
      * @param string|null $imageSource
+     * @return void
      * @throws Exception
      */
     public function preprocessImage($imageSource = null)
@@ -189,7 +192,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $canvasColor = str_replace('#', '', $this->arguments['canvasColor']);
             $originalFilename = $this->imageInfo[3];
             $originalExtension = mb_substr($originalFilename, -3);
-            $tempPath = (version_compare(TYPO3_version, 8.0, '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
+            $tempPath = (version_compare(TYPO3_version, '8.0', '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
             $destinationFilename = $tempPath . 'vhs-canvas-' .
                 md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
             $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);
@@ -238,12 +241,15 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
         $GLOBALS['TSFE'] = new \stdClass();
+        /** @var TemplateService $template */
         $template = GeneralUtility::makeInstance(TemplateService::class);
-        $template->tt_track = 0;
-        if (version_compare(TYPO3_version, 9.4, '<')) {
+        $template->tt_track = false;
+        if (version_compare(TYPO3_version, '9.4', '<')) {
             $template->init();
         }
-        $template->getFileName_backPath = CoreUtility::getSitePath();
+        if (property_exists($template, 'getFileName_backPath')) {
+            $template->getFileName_backPath = CoreUtility::getSitePath();
+        }
         $GLOBALS['TSFE']->tmpl = $template;
         $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
         $GLOBALS['TSFE']->config = $typoScriptSetup;
@@ -259,6 +265,8 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     protected function resetFrontendEnvironment()
     {
         $GLOBALS['TSFE'] = $this->tsfeBackup;
-        chdir($this->workingDirectoryBackup);
+        if ($this->workingDirectoryBackup !== false) {
+            chdir($this->workingDirectoryBackup);
+        }
     }
 }

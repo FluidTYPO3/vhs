@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -37,6 +38,7 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
      */
     protected static function getExtensionKey(array $arguments, RenderingContextInterface $renderingContext)
     {
+        /** @var string $extensionName */
         $extensionName = static::getExtensionName($arguments, $renderingContext);
         return GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
     }
@@ -49,6 +51,7 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
      */
     protected static function getExtensionName(array $arguments, RenderingContextInterface $renderingContext)
     {
+        /** @var RenderingContext $renderingContext */
         if (isset($arguments['extensionName']) && !empty($arguments['extensionName'])) {
             return $arguments['extensionName'];
         }

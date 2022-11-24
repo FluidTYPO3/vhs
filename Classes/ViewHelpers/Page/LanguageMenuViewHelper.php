@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -28,7 +29,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 {
-
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -97,7 +97,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             false,
             'flag,name'
         );
-        $this->registerArgument('useCHash', 'boolean', 'Use cHash for typolink. Has no effect on TYPO3 v9.5+', false, true);
+        $this->registerArgument(
+            'useCHash',
+            'boolean',
+            'Use cHash for typolink. Has no effect on TYPO3 v9.5+',
+            false,
+            true
+        );
         $this->registerArgument('flagPath', 'string', 'Overwrites the path to the flag folder', false, '');
         $this->registerArgument('flagImageType', 'string', 'Sets type of flag image: png, gif, jpeg', false, 'svg');
         $this->registerArgument('linkCurrent', 'boolean', 'Sets flag to link current language or not', false, true);
@@ -119,7 +125,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pageUid', 'integer', 'Optional page uid to use.', false, 0);
         $this->registerArgument('configuration', 'array', 'Additional typoLink configuration', false, []);
         $this->registerArgument('excludeQueryVars', 'string', 'Comma-separate list of variables to exclude', false, '');
-        $this->registerArgument('languages', 'mixed', 'Array, CSV or Traversable containing UIDs of languages to render');
+        $this->registerArgument(
+            'languages',
+            'mixed',
+            'Array, CSV or Traversable containing UIDs of languages to render'
+        );
     }
 
     /**
@@ -130,9 +140,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         if (false === is_object($GLOBALS['TSFE']->sys_page)) {
-            return null;
+            return '';
         }
-        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $this->cObj = $contentObject;
         $this->tagName = $this->arguments['tagName'];
         $this->tag->setTagName($this->tagName);
 
@@ -143,6 +155,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->languageMenu = $this->parseLanguageMenu();
         $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $this->languageMenu);
         $content = $this->renderChildren();
+        $content = is_scalar($content) ? (string) $content : '';
         $this->renderingContext->getVariableProvider()->remove($this->arguments['as']);
         if (0 === mb_strlen(trim($content))) {
             $content = $this->autoRender();
@@ -224,17 +237,22 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             'altText' => $label,
             'titleText' => $label
         ];
-        return $this->cObj->render($this->cObj->getContentObject('IMAGE'), $conf);
+        $contentObjectDefinition = $this->cObj->getContentObject('IMAGE');
+        if ($contentObjectDefinition === null) {
+            return '';
+        }
+        return $this->cObj->render($contentObjectDefinition, $conf);
     }
 
     /**
      * Returns the flag source given a TYPO3 icon identifier
      *
-     * @param string $iso
+     * @param string $identifier
      * @return string
      */
     protected function getLanguageFlagByIdentifier($identifier)
     {
+        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon = $iconFactory->getIcon($identifier, Icon::SIZE_SMALL);
         return $icon->render();
@@ -281,7 +299,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function parseLanguageMenu()
     {
+        /** @var iterable $order */
         $order = $this->arguments['order'] ? GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
+        /** @var array $labelOverwrite */
         $labelOverwrite = $this->arguments['labelOverwrite'];
         if (!empty($labelOverwrite)) {
             $labelOverwrite = GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']);
@@ -326,7 +346,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $languageUids = $this->getSystemLanguageUids();
 
         if (class_exists(LanguageAspect::class)) {
-            $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            /** @var Context $context */
+            $context = GeneralUtility::makeInstance(Context::class);
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $context->getAspect('language');
+            $languageUid = $languageAspect->getId();
         } else {
             $languageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
@@ -349,7 +373,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             if (isset($value['flagIdentifier']) && empty($this->arguments['flagPath'])) {
                 $languageMenu[$key]['flagCode'] = $this->getLanguageFlagByIdentifier($value['flagIdentifier']);
             } else {
-                $languageMenu[$key]['flagCode'] = $this->getLanguageFlag($value['flag'] ?? $value['iso'], $value['label']);
+                $languageMenu[$key]['flagCode'] = $this->getLanguageFlag(
+                    $value['flag'] ?? $value['iso'],
+                    $value['label']
+                );
             }
             if (true === (boolean) $this->arguments['hideNotTranslated'] && true === (boolean) $inactive) {
                 unset($languageMenu[$key]);
@@ -361,7 +388,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Get the list of languages from the sys_language table
-     * 
+     *
      * @param array $limitLanguages
      * @return array
      */
@@ -377,9 +404,15 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $from = 'sys_language';
 
         if (!empty($limitLanguages)) {
-            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => 'root', 'uidInList' => implode(',', $limitLanguages)]);
+            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords(
+                $from,
+                ['selectFields' => $select, 'pidInList' => 'root', 'uidInList' => implode(',', $limitLanguages)]
+            );
         } else {
-            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords($from, ['selectFields' => $select, 'pidInList' => 'root']);
+            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords(
+                $from,
+                ['selectFields' => $select, 'pidInList' => 'root']
+            );
         }
 
         foreach ($sysLanguage as $value) {
@@ -394,14 +427,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Get the list of languages from the site configuration
-     * 
+     *
      * @param array $limitLanguages
      * @return array
      */
     protected function getLanguagesFromSiteConfiguration(array $limitLanguages)
     {
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        $site = $siteFinder->getSiteByPageId($this->getPageUid());
+        $site = $this->getSite();
         // get only languages set as visible in frontend
         $languages = $site->getLanguages();
         $defaultLanguage = $site->getDefaultLanguage();
@@ -431,16 +463,16 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     /**
      * Get link of language menu entry
      *
-     * @param $uid
+     * @param int|string $languageId
      * @return string
      */
-    protected function getLanguageUrl($uid)
+    protected function getLanguageUrl($languageId)
     {
         $excludedVars = trim((string) $this->arguments['excludeQueryVars']);
         $config = [
             'parameter' => $this->getPageUid(),
             'returnLast' => 'url',
-            'additionalParams' => '&L=' . $uid,
+            'additionalParams' => '&L=' . $languageId,
             'addQueryString' => 1,
             'addQueryString.' => [
                 'method' => 'GET',
@@ -473,11 +505,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Find the site corresponding to the page that the menu is being rendered for
-     * 
+     *
      * @return Site|\TYPO3\CMS\Core\Site\Entity\Site
      */
     protected function getSite()
     {
+        /** @var SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         return $siteFinder->getSiteByPageId($this->getPageUid());
     }
@@ -486,11 +519,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      * Fetches system languages available on the page depending on the TYPO3 version.
      *
      * @return int[]
+     * @phpcsSuppress
      * @see https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.0/Important-82445-MigratePagesLanguageOverlayIntoPages.html
      */
     protected function getSystemLanguageUids()
     {
-        if (version_compare(TYPO3_branch, '9.0', '<')) {
+        if (version_compare(TYPO3_version, '9.0', '<')) {
             $table = 'pages_language_overlay';
             $parentField = 'pid';
         } else {
@@ -498,17 +532,20 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $parentField = 'l10n_parent';
         }
 
+        /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
+        /** @var Statement $result */
         $result = $queryBuilder->select('sys_language_uid')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($parentField, $this->getPageUid())
             )
-            ->execute()
-        ;
+            ->execute();
+        /** @var array $rows */
+        $rows = $result->fetchAll();
 
-        return array_column($result->fetchAll(), 'sys_language_uid');
+        return array_column($rows, 'sys_language_uid');
     }
 }

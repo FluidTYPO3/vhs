@@ -57,7 +57,10 @@ class SplitViewHelper extends AbstractViewHelper
             return [];
         }
         return static::renderChildrenWithVariableOrReturnInputStatic(
-            str_split(empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'], $arguments['length']),
+            str_split(
+                empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
+                $arguments['length']
+            ),
             $arguments['as'],
             $renderingContext,
             $renderChildrenClosure

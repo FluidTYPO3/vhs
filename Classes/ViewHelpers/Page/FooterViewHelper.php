@@ -19,7 +19,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
  */
 class FooterViewHelper extends AbstractAssetViewHelper
 {
-
     use PageRendererTrait;
 
     /**

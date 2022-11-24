@@ -9,23 +9,23 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class RecordViewHelperTest
  */
-class RecordViewHelperTest extends AbstractViewHelperTest
+class RecordViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->cObj = $this->getMockBuilder(ContentObjectRenderer::class)->setMethods(['cObjGetSingle'])->getMock();
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['TSFE']->cObj = $this->getMockBuilder(ContentObjectRenderer::class)->setMethods(['cObjGetSingle'])->disableOriginalConstructor()->getMock();
         $GLOBALS['TSFE']->cObj->expects($this->any())->method('cObjGetSingle')->willReturnArgument(0);
     }
 
@@ -35,11 +35,7 @@ class RecordViewHelperTest extends AbstractViewHelperTest
     public function requiresUid()
     {
         $record = ['hasnouid' => 1];
-        $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $mock->setRenderingContext(new RenderingContext());
-        $mock->setArguments(['record' => $record]);
-        $mock->expects($this->never())->method('renderChildren');
-        $result = $mock->render();
+        $result = $this->executeViewHelper(['record' => $record]);
         $this->assertNull($result);
     }
 
@@ -50,7 +46,7 @@ class RecordViewHelperTest extends AbstractViewHelperTest
     {
         $record = ['uid' => 1];
         $mock = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $mock->setRenderingContext(new RenderingContext());
+        $mock->setRenderingContext($this->renderingContext);
         $mock->setArguments(['record' => $record]);
         $mock->expects($this->never())->method('renderChildren');
         $result = $mock->render();

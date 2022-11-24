@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class RangeViewHelperTest
  */
-class RangeViewHelperTest extends AbstractViewHelperTest
+class RangeViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @param array $arguments
      * @param array $expected

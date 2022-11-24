@@ -8,23 +8,38 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Base class: Math ViewHelpers operating on one number or an
  * array of numbers.
  */
-abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelper
+abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+    use ArrayConsumingViewHelperTrait;
+
     /**
      * @return void
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('a', 'mixed', 'First number for calculation');
         $this->registerArgument('b', 'mixed', 'Second number or Iterator/Traversable/Array for calculation', true);
+        $this->registerArgument(
+            'fail',
+            'boolean',
+            'If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument ' .
+            'is found. Usually okay to use a NULL value (as integer zero).',
+            false,
+            false
+        );
     }
 
     /**
@@ -46,10 +61,10 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
     }
 
     /**
-     * @param mixed $a
-     * @param mixed $b
+     * @param numeric|array|iterable $a
+     * @param numeric|array|iterable|null $b
      * @param array $arguments
-     * @return mixed
+     * @return numeric|array
      * @throws Exception
      */
     protected static function calculate($a, $b = null, array $arguments = [])
@@ -66,4 +81,12 @@ abstract class AbstractMultipleMathViewHelper extends AbstractSingleMathViewHelp
         }
         return static::calculateAction($a, $b, $arguments);
     }
+
+    /**
+     * @param numeric|array|iterable $a
+     * @param numeric|array|iterable|null $b
+     * @param array $arguments $b
+     * @return numeric|array
+     */
+    abstract protected static function calculateAction($a, $b, array $arguments);
 }

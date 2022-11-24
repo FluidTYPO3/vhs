@@ -11,18 +11,15 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Iterator;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * Class ContainsViewHelperTest
  */
-class ContainsViewHelperTest extends AbstractViewHelperTest
+class ContainsViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @dataProvider getPositiveTestValues
      * @param mixed $haystack
@@ -37,9 +34,6 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     /**
@@ -48,21 +42,24 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
     public function getPositiveTestValues()
     {
         $bar = new Bar();
-        ObjectAccess::setProperty($bar, 'uid', 1, true);
+        $this->setInaccessiblePropertyValue($bar, 'uid', 1);
         $foo = new Foo();
-        ObjectAccess::setProperty($foo, 'uid', 2, true);
+        $this->setInaccessiblePropertyValue($foo, 'uid', 2);
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($bar);
         /** @var LazyObjectStorage $lazyObjectStorage */
-        $lazyObjectStorage = GeneralUtility::makeInstance(ObjectManager::class)->get(LazyObjectStorage::class, $bar, 'foo', 0);
-        ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
+        $lazyObjectStorage = $this->getMockBuilder(LazyObjectStorage::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->setInaccessiblePropertyValue($lazyObjectStorage, 'isInitialized', true);
         $lazyObjectStorage->attach($foo);
         return [
-            [['foo'], 'foo'],
-            ['foo,bar', 'foo'],
-            [[$foo], $foo],
-            [$objectStorage, $bar],
-            [$lazyObjectStorage, $foo]
+            'with array and string' => [['foo'], 'foo'],
+            'with csv' => ['foo,bar', 'foo'],
+            'with array and domain object' => [[$foo], $foo],
+            'with object storage' => [$objectStorage, $bar],
+            'with lazy object storage' => [$lazyObjectStorage, $foo],
         ];
     }
 
@@ -80,9 +77,6 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     /**
@@ -91,14 +85,17 @@ class ContainsViewHelperTest extends AbstractViewHelperTest
     public function getNegativeTestValues()
     {
         $bar = new Bar();
-        ObjectAccess::setProperty($bar, 'uid', 1, true);
+        $this->setInaccessiblePropertyValue($bar, 'uid', 1);
         $foo = new Foo();
-        ObjectAccess::setProperty($foo, 'uid', 2, true);
+        $this->setInaccessiblePropertyValue($foo, 'uid', 2);
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($bar);
         /** @var LazyObjectStorage $lazyObjectStorage */
-        $lazyObjectStorage = GeneralUtility::makeInstance(ObjectManager::class)->get(LazyObjectStorage::class, $bar, 'foo', 0);
-        ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', true, true);
+        $lazyObjectStorage = $this->getMockBuilder(LazyObjectStorage::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->setInaccessiblePropertyValue($lazyObjectStorage, 'isInitialized', true);
         $lazyObjectStorage->attach($foo);
         return [
             [['foo'], 'bar'],

@@ -20,7 +20,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class DeferredViewHelper extends AbstractMenuViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -33,22 +32,23 @@ class DeferredViewHelper extends AbstractMenuViewHelper
     }
 
     /**
-     * @return NULL|string
+     * @return string
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function render()
     {
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         $as = $this->arguments['as'];
-        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'deferredArray')) {
-            return null;
+        if (!$viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredArray')) {
+            return '';
         }
-        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(AbstractMenuViewHelper::class, 'deferredString')) {
-            return null;
+        if (!$viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredString')) {
+            return '';
         }
         if (null === $as) {
-            $content = $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'deferredString');
+            $content = $viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'deferredString');
             $this->unsetDeferredVariableStorage();
-            return $content;
+            return is_scalar($content) ? (string) $content : '';
         } elseif (true === empty($as)) {
             throw new Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
         }
@@ -58,7 +58,7 @@ class DeferredViewHelper extends AbstractMenuViewHelper
         }
         $this->renderingContext->getVariableProvider()->add(
             $as,
-            $this->renderingContext->getViewHelperVariableContainer()->get(AbstractMenuViewHelper::class, 'deferredArray')
+            $viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'deferredArray')
         );
         $this->unsetDeferredVariableStorage();
         $content = $this->renderChildren();
@@ -67,6 +67,6 @@ class DeferredViewHelper extends AbstractMenuViewHelper
             $this->renderingContext->getVariableProvider()->add($as, $backupVariable);
         }
 
-        return $content;
+        return is_scalar($content) ? (string) $content : '';
     }
 }

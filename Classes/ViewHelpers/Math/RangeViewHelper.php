@@ -24,11 +24,11 @@ class RangeViewHelper extends AbstractSingleMathViewHelper
     use ArrayConsumingViewHelperTrait;
 
     /**
-     * @param mixed $a
-     * @return mixed
+     * @param array $a
+     * @return array
      * @throw Exception
      */
-    protected static function calculateAction($a)
+    protected static function calculateAction($a, array $arguments = [])
     {
         return [min($a), max($a)];
     }

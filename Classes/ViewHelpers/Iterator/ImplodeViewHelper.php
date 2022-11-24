@@ -46,7 +46,7 @@ class ImplodeViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'glue',
             'string',
-            'String used as glue in the string to be exploded. To use a constant (like PHP_EOL) use v:const to read it.',
+            'String used as glue in the string to be exploded. To read a constant (like PHP_EOL) use v:const.',
             false,
             ','
         );
@@ -64,7 +64,9 @@ class ImplodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = !empty($arguments['as']) ? $arguments['content'] : ($arguments['content'] ?? $renderChildrenClosure());
+        $content = !empty($arguments['as'])
+            ? $arguments['content']
+            : ($arguments['content'] ?? $renderChildrenClosure());
         $glue = $arguments['glue'];
         $output = implode($glue, $content);
         return static::renderChildrenWithVariableOrReturnInputStatic(

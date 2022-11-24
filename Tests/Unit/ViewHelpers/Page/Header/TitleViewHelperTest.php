@@ -9,11 +9,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class TitleViewHelperTest
  */
-class TitleViewHelperTest extends AbstractViewHelperTest
+class TitleViewHelperTest extends AbstractViewHelperTestCase
 {
 
 }

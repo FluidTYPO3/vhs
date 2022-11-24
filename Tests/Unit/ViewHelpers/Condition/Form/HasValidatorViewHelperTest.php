@@ -12,17 +12,29 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * Class HasValidatorViewHelperTest
  */
-class HasValidatorViewHelperTest extends AbstractViewHelperTest
+class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
 {
+
+    protected function setUp(): void
+    {
+        $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[FileRepository::class] = $this->getMockBuilder(FileRepository::class)->disableOriginalConstructor()->getMock();
+
+        parent::setUp();
+    }
 
     protected function getInstanceOfFoo()
     {
-        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+        if (version_compare(TYPO3_version, '9.3', '>=')) {
             return new Foo();
         }
         return new LegacyFoo();
@@ -30,7 +42,7 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTest
 
     protected function getNestedPathToFoo()
     {
-        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+        if (version_compare(TYPO3_version, '9.3', '>=')) {
             return 'foo';
         }
         return 'legacyFoo';
@@ -47,9 +59,6 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     public function testRenderElseWithNestedSingleProperty()
@@ -64,9 +73,6 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     public function testRenderElseWithNestedMultiProperty()
@@ -81,8 +87,16 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
+    }
 
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+    protected function createObjectManagerInstance(): ObjectManagerInterface
+    {
+        $instance = parent::createObjectManagerInstance();
+        $instance->method('get')->willReturnMap(
+            [
+                [ReflectionService::class, $this->getMockBuilder(ReflectionService::class)->setMethods(['__destruct'])->disableOriginalConstructor()->getMock()],
+            ]
+        );
+        return $instance;
     }
 }

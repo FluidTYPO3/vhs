@@ -50,6 +50,9 @@ class InlineViewHelper extends AbstractRenderViewHelper
         parent::initializeArguments();
     }
 
+    /**
+     * @return string
+     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,

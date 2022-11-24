@@ -9,14 +9,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Site;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class UrlViewHelperTest
  */
-class UrlViewHelperTest extends AbstractViewHelperTest
+class UrlViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */

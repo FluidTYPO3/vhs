@@ -183,6 +183,9 @@ quality
 :aspect:`DataType`
    integer
 
+:aspect:`Default`
+   90
+
 :aspect:`Required`
    false
 :aspect:`Description`

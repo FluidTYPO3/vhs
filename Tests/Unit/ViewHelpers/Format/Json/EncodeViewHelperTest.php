@@ -11,18 +11,29 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * Class EncodeViewHelperTest
  */
-class EncodeViewHelperTest extends AbstractViewHelperTest
+class EncodeViewHelperTest extends AbstractViewHelperTestCase
 {
+
+    protected function setUp(): void
+    {
+        $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
+            ->setMethods(['__destruct'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        parent::setUp();
+    }
 
     protected function getInstanceOfFoo()
     {
-        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
+        if (version_compare(TYPO3_version, '9.3', '>=')) {
             return new Foo();
         }
         return new LegacyFoo();
@@ -73,7 +84,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function encodesTraversable()
     {
-        $traversable = $this->objectManager->get(ObjectStorage::class);
+        $traversable = new ObjectStorage();
         $instance = $this->createInstance();
         $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null);
         $this->assertEquals('[]', $test);
@@ -116,7 +127,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNumberOnTopLevel()
     {
-        $this->assertEquals('1.0', $this->executeViewHelper(['value' => 1.0]));
+        $this->assertSame(json_encode(1.0), $this->executeViewHelper(['value' => 1.0]));
     }
 
     /**
@@ -133,7 +144,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     public function returnsExpectedStringForProvidedArguments()
     {
 
-        $storage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+        $storage = new ObjectStorage();
         $fixture = [
             'foo' => 'bar',
             'bar' => true,

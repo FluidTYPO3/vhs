@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -16,7 +17,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class CanonicalViewHelper extends AbstractTagBasedViewHelper
 {
-
     use PageRendererTrait;
 
     /**
@@ -48,7 +48,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function render()
     {
@@ -69,18 +69,23 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
             );
         }
 
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
-        $uri = $uriBuilder->reset()
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
-            ->setUseCacheHash(true)
             ->setCreateAbsoluteUri(true)
             ->setAddQueryString(true)
             ->setAddQueryStringMethod($queryStringMethod)
-            ->setArgumentsToBeExcludedFromQueryString(['id'])
-            ->build();
+            ->setArgumentsToBeExcludedFromQueryString(['id']);
+        if (method_exists($uriBuilder, 'setUseCacheHash')) {
+            $uriBuilder->setUseCacheHash(true);
+        }
+
+        $uri = $uriBuilder->build();
 
         if (true === empty($uri)) {
-            return null;
+            return '';
         }
 
         $uri = $GLOBALS['TSFE']->baseUrlWrap($uri);
@@ -95,5 +100,6 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
         }
 
         static::getPageRenderer()->addHeaderData($renderedTag);
+        return '';
     }
 }

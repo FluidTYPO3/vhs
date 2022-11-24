@@ -85,7 +85,11 @@ class LanguageViewHelper extends AbstractViewHelper
 
         $pageService = static::getPageService();
         if (class_exists(LanguageAspect::class)) {
-            $currentLanguageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            /** @var Context $context */
+            $context = GeneralUtility::makeInstance(Context::class);
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $context->getAspect('language');
+            $currentLanguageUid = $languageAspect->getId();
         } else {
             $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
@@ -110,6 +114,10 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected static function getPageService()
     {
-        return static::$pageService = GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var PageService $pageService */
+        $pageService = $objectManager->get(PageService::class);
+        return static::$pageService = $pageService;
     }
 }

@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  */
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
@@ -44,13 +45,13 @@ class OrViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $content = $renderChildrenClosure() ?: static::getAlternativeValue($arguments, $renderingContext);
         return $content;
     }
@@ -60,6 +61,7 @@ class OrViewHelper extends AbstractViewHelper
      */
     protected static function getAlternativeValue(array $arguments, RenderingContextInterface $renderingContext)
     {
+        /** @var RenderingContext $renderingContext */
         $alternative = $arguments['alternative'];
         $arguments = (array) $arguments['arguments'];
         if (0 === count($arguments)) {
@@ -68,7 +70,7 @@ class OrViewHelper extends AbstractViewHelper
         if (0 === strpos($alternative, 'LLL:EXT:')) {
             $alternative = LocalizationUtility::translate($alternative, null, $arguments);
         } elseif (0 === strpos($alternative, 'LLL:')) {
-            $extensionName = $arguments['extensionName'];
+            $extensionName = $arguments['extensionName'] ?? null;
             if (null === $extensionName) {
                 $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
             }
