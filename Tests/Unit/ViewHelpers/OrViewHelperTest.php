@@ -8,11 +8,41 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * Class OrViewHelperTest
  */
-class OrViewHelperTest extends AbstractViewHelperTest
+class OrViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected function setUp(): void
+    {
+        $this->singletonInstances[LocalizationFactory::class] = $this->getMockBuilder(LocalizationFactory::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->singletonInstances[LocalizationFactory::class]->method('getParsedData')->willReturn([]);
+        $this->singletonInstances[ConfigurationManagerInterface::class] = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+
+        parent::setUp();
+
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $GLOBALS['TYPO3_REQUEST'] = null;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($GLOBALS['TSFE'], $GLOBALS['LANG'], $GLOBALS['TYPO3_REQUEST']);
+    }
 
     /**
      * @test
@@ -40,29 +70,21 @@ class OrViewHelperTest extends AbstractViewHelperTest
             [['extensionName' => 'Vhs', 'content' => '', 'alternative' => 'alternative'], 'alternative'],
             [['extensionName' => 'Vhs', 'content' => null, 'alternative' => 'alternative'], 'alternative'],
             [['extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'alternative'], 'alternative'],
-            /*
-			array(
-				array(
-					'extensionName' => 'Vhs',
-					'content' => 0,
-					'alternative' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionManager'
-				),
-				'Extension Manager'
-			),
-			array(
-				array(
-					'extensionName' => 'Vhs',
-					'content' => 0,
-					'alternative' => 'LLL:extensionManager',
-					'extensionName' => 'extensionmanager'
-				),
-				'Extension Manager'
-			),
-			*/
             [
                 ['extensionName' => 'Vhs', 'content' => 0, 'alternative' => 'LLL:notfound'],
                 'LLL:notfound'
             ],
         ];
+    }
+
+    protected function createObjectManagerInstance(): ObjectManagerInterface
+    {
+        $instance = parent::createObjectManagerInstance();
+        $instance->method('get')->willReturnMap(
+            [
+                [ConfigurationManagerInterface::class, $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()],
+            ]
+        );
+        return $instance;
     }
 }

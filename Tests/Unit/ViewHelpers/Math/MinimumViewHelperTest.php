@@ -13,7 +13,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 class MinimumViewHelperTest extends AbstractMathViewHelperTest
 {
-
     /**
      * @test
      */
@@ -43,7 +42,7 @@ class MinimumViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeMissingArgumentTest()
     {
-        $this->expectViewHelperException('Required argument "b" was not supplied');
+        $this->expectViewHelperException();
         $this->executeViewHelper(['a' => 1, 'fail' => true]);
     }
 
@@ -52,7 +51,7 @@ class MinimumViewHelperTest extends AbstractMathViewHelperTest
      */
     public function executeInvalidArgumentTypeTest()
     {
-        $this->expectViewHelperException('Required argument "a" was not supplied');
+        $this->expectViewHelperException();
         $this->executeViewHelper(['b' => 1, 'fail' => true]);
     }
 }

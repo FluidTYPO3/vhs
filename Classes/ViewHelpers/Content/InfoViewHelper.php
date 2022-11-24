@@ -13,9 +13,9 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -23,7 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class InfoViewHelper extends AbstractViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -76,6 +75,7 @@ class InfoViewHelper extends AbstractViewHelper
         $record = false;
 
         if (0 === $contentUid) {
+            /** @var ContentObjectRenderer $cObj */
             $cObj = $this->configurationManager->getContentObject();
             $record = $cObj->data;
         }

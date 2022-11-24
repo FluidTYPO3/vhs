@@ -7,47 +7,6 @@ on:
     branches: [ master, development, '[0-9]+.[0-9]', '[0-9]+.[0-9]+.[0-9]+' ]
 
 jobs:
-  build:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    name: "PHP ${{ matrix.php-versions }} Test (deps: ${{ matrix.dependencies }})"
-
-    continue-on-error: ${{ matrix.experimental }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php-versions: ['7.4']
-        dependencies: ['highest']
-        composer-arguments: [''] # to run --ignore-platform-reqs in experimental builds
-        typo3-version: ['^9.5', '^8.7']
-        experimental: [false]
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, json
-          ini-values: date.timezone="Europe/Copenhagen", opcache.fast_shutdown=0
-          tools: composer:v2.2
-
-      - name: Select TYPO3 version
-        run: "composer require typo3/cms-core:${{ matrix.typo3-version }}"
-
-      - name: Composer install
-        uses: ramsey/composer-install@v2
-        with:
-          dependency-versions: ${{ matrix.dependencies }}
-          composer-options: ${{ matrix.composer-arguments }}
-
-      - name: Run tests
-        run: vendor/bin/phpunit
-
   phpstan:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     name: "PHPStan, PHP ${{ matrix.php }} TYPO3 ${{ matrix.typo3 }}"
@@ -90,6 +49,46 @@ jobs:
       - name: Run phpstan
         run: vendor/bin/phpstan analyze
 
+  build:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    name: "PHPUnit, PHP ${{ matrix.php }} TYPO3 ${{ matrix.typo3 }}"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: "7.4"
+            typo3: "^9.5"
+          - php: "7.4"
+            typo3: "^10.4"
+          - php: "8.0"
+            typo3: "^11.5"
+          - php: "8.1"
+            typo3: "^11.5"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, json
+          ini-values: date.timezone="Europe/Copenhagen", opcache.fast_shutdown=0
+          tools: composer:v2.2
+
+      - name: Select TYPO3 version
+        run: "composer require typo3/cms-core:${{ matrix.typo3 }} --no-update"
+
+      - name: Composer install
+        uses: ramsey/composer-install@v2
+
+      - name: Run tests
+        run: vendor/bin/phpunit
+
   coverage:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -103,14 +102,14 @@ jobs:
         with:
           php-version: "7.4"
           extensions: mbstring, json
-          coverage: xdebug #optional
+          coverage: xdebug
           ini-values: date.timezone="Europe/Copenhagen", opcache.fast_shutdown=0
 
       - name: Select TYPO3 version 9.5
-        run: "composer require typo3/cms-core:^9.5"
+        run: "composer require typo3/cms-core:^9.5 --no-update"
 
       - name: Composer install
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
 
       - name: Run tests
         run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
@@ -119,15 +118,3 @@ jobs:
         run: vendor/bin/php-coveralls -vvv
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Use this step to configure a required build pass via gh branch protection rules (currently makes experimental builds unusable due to https://github.com/actions/toolkit/issues/581)
-  #buildall:
-  #  if: "!contains(github.event.head_commit.message, '[skip ci]')"
-  #  runs-on: ubuntu-latest
-  #  name: CI build (matrix)
-  #  needs: build
-  #  steps:
-  #    - name: Check build matrix status
-  #      if: ${{ needs.build.result != 'success' }}
-  #      run: exit 1
-

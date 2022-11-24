@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class AbstractMathViewHelperTest
  */
-abstract class AbstractMathViewHelperTest extends AbstractViewHelperTest
+abstract class AbstractMathViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @param mixed $a
      * @param mixed $expected

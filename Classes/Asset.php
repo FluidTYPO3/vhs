@@ -561,7 +561,12 @@ class Asset implements AssetInterface
         }
         $settings = (array) self::$settingsCache;
         $properties = get_class_vars(get_class($this));
-        foreach (array_keys($properties) as $propertyName) {
+        $skipProperties = ['settingsCache', 'configurationManager'];
+        foreach (array_keys($properties) as $index => $propertyName) {
+            if (in_array($propertyName, $skipProperties, true)) {
+                unset($properties[$propertyName]);
+                continue;
+            }
             $properties[$propertyName] = $this->$propertyName;
         }
 

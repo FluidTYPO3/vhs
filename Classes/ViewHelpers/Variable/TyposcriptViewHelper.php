@@ -66,11 +66,6 @@ class TyposcriptViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var ConfigurationManagerInterface
-     */
-    protected static $configurationManager;
-
-    /**
      * @return void
      */
     public function initializeArguments()
@@ -88,7 +83,7 @@ class TyposcriptViewHelper extends AbstractViewHelper
     ) {
         /** @var string|null $path */
         $path = $renderChildrenClosure();
-        if (true === empty($path)) {
+        if (empty($path)) {
             return null;
         }
         $all = static::getConfigurationManager()->getConfiguration(
@@ -97,9 +92,9 @@ class TyposcriptViewHelper extends AbstractViewHelper
         $segments = explode('.', $path);
         $value = $all;
         foreach ($segments as $path) {
-            $value = (true === isset($value[$path . '.']) ? $value[$path . '.'] : $value[$path]);
+            $value = $value[$path . '.'] ?? $value[$path] ?? null;
         }
-        if (true === is_array($value)) {
+        if (is_array($value)) {
             $value = GeneralUtility::removeDotsFromTS($value);
         }
         return $value;
@@ -112,14 +107,10 @@ class TyposcriptViewHelper extends AbstractViewHelper
      */
     protected static function getConfigurationManager()
     {
-        if (null !== static::$configurationManager) {
-            return static::$configurationManager;
-        }
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-        static::$configurationManager = $configurationManager;
         return $configurationManager;
     }
 }

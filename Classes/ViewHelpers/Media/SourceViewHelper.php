@@ -53,7 +53,9 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->contentObject = $this->configurationManager->getContentObject();
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $this->configurationManager->getContentObject();
+        $this->contentObject = $contentObject;
     }
 
     /**
@@ -97,7 +99,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             'Quality of the processed image. If blank/not present falls back to the default quality defined ' .
             'in install tool.',
             false,
-            $GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality']
+            $GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality'] ?? 90
         );
         $this->registerArgument('relative', 'boolean', 'Produce a relative URL instead of absolute', false, false);
     }
@@ -178,7 +180,9 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             } elseif (TYPO3_MODE === 'FE') {
                 $src = $GLOBALS['TSFE']->absRefPrefix . ltrim($src, '/');
             } else {
-                $src = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($src, '/');
+                /** @var string $siteUrl */
+                $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+                $src = $siteUrl . ltrim($src, '/');
             }
         }
         return $src;

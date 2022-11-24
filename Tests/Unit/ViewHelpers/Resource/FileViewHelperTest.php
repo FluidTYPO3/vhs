@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class FileViewHelperTest
  */
-class FileViewHelperTest extends AbstractViewHelperTest
+class FileViewHelperTest extends AbstractViewHelperTestCase
 {
-
     public function testRender()
     {
         $this->assertEmpty($this->executeViewHelper());

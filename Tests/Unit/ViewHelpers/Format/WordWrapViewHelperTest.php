@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class WordWrapViewHelperTest
  */
-class WordWrapViewHelperTest extends AbstractViewHelperTest
+class WordWrapViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -28,6 +28,6 @@ class WordWrapViewHelperTest extends AbstractViewHelperTest
             'glue' => '|',
         ];
         $test = $this->executeViewHelperUsingTagContent($content, $arguments);
-        $this->assertRegExp('/.{0,25}\|/', $test);
+        $this->assertMatchesRegularExpression('/.{0,25}\|/', $test);
     }
 }

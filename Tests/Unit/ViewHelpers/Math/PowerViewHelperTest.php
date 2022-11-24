@@ -13,7 +13,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 class PowerViewHelperTest extends AbstractMathViewHelperTest
 {
-
     /**
      * @test
      */

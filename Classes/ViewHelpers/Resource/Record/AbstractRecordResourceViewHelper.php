@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -24,7 +25,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface
 {
-
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -74,24 +74,18 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         $this->registerArgument(
             'record',
             'array',
-            'The actual record. Alternatively you can use the "uid" argument.',
-            false,
-            null
+            'The actual record. Alternatively you can use the "uid" argument.'
         );
         $this->registerArgument(
             'uid',
             'integer',
-            'The uid of the record. Alternatively you can use the "record" argument.',
-            false,
-            null
+            'The uid of the record. Alternatively you can use the "record" argument.'
         );
         $this->registerArgument(
             'as',
             'string',
             'If specified, a template variable with this name containing the requested data will be inserted ' .
-            'instead of returning it.',
-            false,
-            null
+            'instead of returning it.'
         );
     }
 
@@ -203,7 +197,9 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
      */
     public function getActiveRecord()
     {
-        return $this->configurationManager->getContentObject()->data;
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $this->configurationManager->getContentObject();
+        return $contentObject->data;
     }
 
     /**

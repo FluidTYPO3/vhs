@@ -10,14 +10,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Class GetViewHelperTest
  */
-class GetViewHelperTest extends AbstractViewHelperTest
+class GetViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */

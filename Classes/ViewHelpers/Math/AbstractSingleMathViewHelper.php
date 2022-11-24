@@ -66,7 +66,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
         if (null === $value && true === (boolean) $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
-        return static::calculateAction($value);
+        return static::calculateAction($value, $arguments);
     }
 
     /**

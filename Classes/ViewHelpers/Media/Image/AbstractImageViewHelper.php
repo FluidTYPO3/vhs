@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -59,7 +60,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->contentObject = $this->configurationManager->getContentObject();
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $this->configurationManager->getContentObject();
+        $this->contentObject = $contentObject;
     }
 
     /**
@@ -101,7 +104,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             'Quality of the processed image. If blank/not present falls back to the default quality defined in ' .
             'install tool.',
             false,
-            $GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality']
+            $GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality'] ?? 90
         );
         $this->registerArgument(
             'treatIdAsReference',

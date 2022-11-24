@@ -171,6 +171,8 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-        return $configurationManager->getContentObject();
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $configurationManager->getContentObject();
+        return $contentObject;
     }
 }

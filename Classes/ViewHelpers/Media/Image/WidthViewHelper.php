@@ -13,7 +13,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 class WidthViewHelper extends AbstractImageInfoViewHelper
 {
-
     /**
      * @return int
      */

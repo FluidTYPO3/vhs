@@ -347,7 +347,7 @@ class AssetService implements SingletonInterface
             }
         }
         $fileRelativePathAndFilename = $this->getTempPath() . 'vhs-assets-' . $assetName . '.' . $type;
-        $fileAbsolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
+        $fileAbsolutePathAndFilename = $this->resolveAbsolutePathForFile($fileRelativePathAndFilename);
         if (false === file_exists($fileAbsolutePathAndFilename)
             || 0 === filemtime($fileAbsolutePathAndFilename)
             || true === isset($GLOBALS['BE_USER'])
@@ -596,10 +596,10 @@ class AssetService implements SingletonInterface
     protected function prefixPath($fileRelativePathAndFilename)
     {
         $settings = $this->getSettings();
-        $prefixPath = $settings['prependPath'];
-        if (false === empty($GLOBALS['TSFE']->absRefPrefix) && true === empty($prefixPath)) {
+        $prefixPath = $settings['prependPath'] ?? '';
+        if (!empty($GLOBALS['TSFE']->absRefPrefix) && empty($prefixPath)) {
             $fileRelativePathAndFilename = $GLOBALS['TSFE']->absRefPrefix . $fileRelativePathAndFilename;
-        } elseif (false === empty($prefixPath)) {
+        } elseif (!empty($prefixPath)) {
             $fileRelativePathAndFilename = $prefixPath . $fileRelativePathAndFilename;
         }
         return $fileRelativePathAndFilename;
@@ -874,5 +874,10 @@ class AssetService implements SingletonInterface
     private function getTempPath()
     {
         return 'typo3temp/assets/';
+    }
+
+    protected function resolveAbsolutePathForFile(string $filename): string
+    {
+        return GeneralUtility::getFileAbsFileName($filename);
     }
 }

@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -40,7 +39,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
         $maximum = (integer) $arguments['maximum'];
         $iteration = $arguments['iteration'];
         $content = '';
-        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $variableProvider = $renderingContext->getVariableProvider();
 
         if ($count < $minimum) {
             $count = $minimum;

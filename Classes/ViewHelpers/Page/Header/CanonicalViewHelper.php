@@ -72,14 +72,17 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->renderingContext;
         $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
-        $uri = $uriBuilder->reset()
+        $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
-            ->setUseCacheHash(true)
             ->setCreateAbsoluteUri(true)
             ->setAddQueryString(true)
             ->setAddQueryStringMethod($queryStringMethod)
-            ->setArgumentsToBeExcludedFromQueryString(['id'])
-            ->build();
+            ->setArgumentsToBeExcludedFromQueryString(['id']);
+        if (method_exists($uriBuilder, 'setUseCacheHash')) {
+            $uriBuilder->setUseCacheHash(true);
+        }
+
+        $uri = $uriBuilder->build();
 
         if (true === empty($uri)) {
             return '';

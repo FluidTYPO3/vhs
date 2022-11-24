@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -16,10 +15,10 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
-use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
-use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -77,9 +76,9 @@ class UncacheTemplateView extends TemplateView
      */
     public function callUserFunction($postUserFunc, $conf, $content)
     {
-        $partial = $conf['partial'];
-        $section = $conf['section'];
-        $arguments = true === is_array($conf['arguments']) ? $conf['arguments'] : [];
+        $partial = $conf['partial'] ?? '';
+        $section = $conf['section'] ?? '';
+        $arguments = $conf['arguments'] ?? [];
         /** @var ControllerContext $controllerContext */
         $controllerContext = $this->objectManager->get(ControllerContext::class);
         /** @var Request $request */
@@ -91,7 +90,7 @@ class UncacheTemplateView extends TemplateView
         $uriBuilder->setRequest($request);
         $controllerContext->setUriBuilder($uriBuilder);
 
-        if ($conf['controllerContext']) {
+        if ($conf['controllerContext'] ?? false) {
             $request->setControllerActionName($conf['controllerContext']['actionName']);
             $request->setControllerExtensionName($conf['controllerContext']['extensionName']);
             $request->setControllerName($conf['controllerContext']['controllerName']);
@@ -100,7 +99,7 @@ class UncacheTemplateView extends TemplateView
             $request->setFormat($conf['controllerContext']['format']);
         }
 
-        if (true === empty($partial)) {
+        if (empty($partial)) {
             return '';
         }
 

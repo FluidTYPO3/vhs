@@ -31,6 +31,8 @@ class SiteRelativeViewHelper extends AbstractExtensionViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath(static::getExtensionKey($arguments, $renderingContext)));
+        $extensionKey = static::getExtensionKey($arguments, $renderingContext);
+        $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
+        return PathUtility::getAbsoluteWebPath($extensionPath);
     }
 }

@@ -25,7 +25,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 class ConvertViewHelper extends AbstractViewHelper
 {
-
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
@@ -56,9 +55,7 @@ class ConvertViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'default',
             'mixed',
-            'Optional default value to assign to the converted variable in case it is NULL.',
-            false,
-            null
+            'Optional default value to assign to the converted variable in case it is NULL.'
         );
     }
 

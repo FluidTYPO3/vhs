@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -50,7 +51,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->contentObject = $this->configurationManager->getContentObject();
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $this->configurationManager->getContentObject();
+        $this->contentObject = $contentObject;
     }
 
     /**
@@ -240,7 +243,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $source = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;
         } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
-            $source = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $source;
+            /** @var string $siteUrl */
+            $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+            $source = $siteUrl . $source;
         }
         return $source;
     }

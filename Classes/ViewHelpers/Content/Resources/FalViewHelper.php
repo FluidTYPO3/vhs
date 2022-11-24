@@ -39,7 +39,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  */
 class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper
 {
-
     const DEFAULT_TABLE = 'tt_content';
     const DEFAULT_FIELD = 'image';
 
