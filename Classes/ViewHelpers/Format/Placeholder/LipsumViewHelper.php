@@ -27,6 +27,8 @@ class LipsumViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -56,13 +58,18 @@ class LipsumViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return mixed|string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $lipsum = $arguments['lipsum'];
         if (mb_strlen($lipsum) === 0) {
             $lipsum = static::getDefaultLoremIpsum();
         }
-        if ((mb_strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum)) || 0 === mb_strpos($lipsum, 'EXT:')) {
+        if ((mb_strlen($lipsum) < 255 && !preg_match('/[^a-z0-9_\.\:\/]/i', $lipsum))
+            || 0 === mb_strpos($lipsum, 'EXT:')
+        ) {
             // argument is most likely a file reference.
             $sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
             if (file_exists($sourceFile)) {
@@ -85,7 +92,7 @@ class LipsumViewHelper extends AbstractViewHelper
         $lipsum = implode("\n", $paragraphs);
         if ($arguments['html']) {
             $tsParserPath = $arguments['parseFuncTSPath'] ? '< ' . $arguments['parseFuncTSPath'] : null;
-            $lipsum = static::getContentObject()->parseFunc($lipsum, [], $tsParserPath);
+            $lipsum = static::getContentObject()->parseFunc($lipsum, [], (string) $tsParserPath);
         }
         return $lipsum;
     }
@@ -156,7 +163,7 @@ x6M5TL9+9eRSN6k7qIfMQASX3oQXVGMtmPSfLjuBzGGeNjszJMznOLW8FUMbkptifPaZV13sSQyF0qOd
 DMIQpga2uYYtOVQwtd838NhauhXzLF9AYQu16hr9u1C42SO8/kznuFkuu8wtkKoFbuoDxm3Cvn8OMziHcxkfZKgc+egBghffP+bZb9GrsmjORQPza31VR4
 fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
         $uncompressed = gzuncompress(base64_decode($lipsum));
-        $safeLipsum = htmlentities(strip_tags($uncompressed));
+        $safeLipsum = htmlentities(strip_tags((string) $uncompressed));
         return $safeLipsum;
     }
 
@@ -165,6 +172,12 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
      */
     protected static function getContentObject()
     {
-        return GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class)->contentObject;
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $configurationManager->getContentObject();
+        return $contentObject;
     }
 }

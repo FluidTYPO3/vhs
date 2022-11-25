@@ -20,6 +20,8 @@ class IsIntegerViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -33,6 +35,6 @@ class IsIntegerViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === is_integer($arguments['value']);
+        return is_array($arguments) && is_integer($arguments['value']);
     }
 }

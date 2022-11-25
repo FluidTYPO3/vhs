@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -50,7 +49,7 @@ class ForViewHelper extends AbstractLoopViewHelper
         $step = (integer) $arguments['step'];
         $iteration = $arguments['iteration'];
         $content = '';
-        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $variableProvider = $renderingContext->getVariableProvider();
 
         if (0 === $step) {
             throw new \RuntimeException('"step" may not be 0.', 1383267698);
@@ -68,14 +67,38 @@ class ForViewHelper extends AbstractLoopViewHelper
         }
 
         if ($from === $to) {
-            $content = static::renderIteration($from, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+            $content = static::renderIteration(
+                $from,
+                $from,
+                $to,
+                $step,
+                $iteration,
+                $renderingContext,
+                $renderChildrenClosure
+            );
         } elseif ($from < $to) {
             for ($i = $from; $i <= $to; $i += $step) {
-                $content .= static::renderIteration($i, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+                $content .= static::renderIteration(
+                    $i,
+                    $from,
+                    $to,
+                    $step,
+                    $iteration,
+                    $renderingContext,
+                    $renderChildrenClosure
+                );
             }
         } else {
             for ($i = $from; $i >= $to; $i += $step) {
-                $content .= static::renderIteration($i, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+                $content .= static::renderIteration(
+                    $i,
+                    $from,
+                    $to,
+                    $step,
+                    $iteration,
+                    $renderingContext,
+                    $renderChildrenClosure
+                );
             }
         }
 

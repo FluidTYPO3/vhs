@@ -26,7 +26,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  */
 class InstanceViewHelper extends AbstractOnceViewHelper
 {
-
     /**
      * @param array $arguments
      * @return string
@@ -53,7 +52,7 @@ class InstanceViewHelper extends AbstractOnceViewHelper
     protected static function storeIdentifier(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
-        if (false === is_array($GLOBALS[static::class])) {
+        if (!isset($GLOBALS[static::class])) {
             $GLOBALS[static::class] = [];
         }
         $GLOBALS[static::class][$identifier] = true;

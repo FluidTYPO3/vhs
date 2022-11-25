@@ -12,7 +12,7 @@ use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class ArrayConsumingViewHelperTrait
@@ -69,7 +69,7 @@ trait ArrayConsumingViewHelperTrait
     }
 
     /**
-     * @param mixed $candidate
+     * @param \Traversable|string $candidate
      * @param boolean $useKeys
      *
      * @return array
@@ -89,23 +89,25 @@ trait ArrayConsumingViewHelperTrait
      */
     protected static function arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys = true)
     {
-        if (true === $candidate instanceof \Traversable) {
-            return iterator_to_array($candidate, $useKeys);
-        } elseif (true === $candidate instanceof QueryResultInterface) {
-            /** @var QueryResultInterface $candidate */
+        if ($candidate instanceof QueryResultInterface) {
             return $candidate->toArray();
+        }
+        if (true === is_array($candidate)) {
+            return $candidate;
+        }
+        if ($candidate instanceof \Traversable) {
+            return iterator_to_array($candidate, $useKeys);
         }
         if (true === is_string($candidate)) {
             return GeneralUtility::trimExplode(',', $candidate, true);
-        } elseif (true === is_array($candidate)) {
-            return $candidate;
         }
         ErrorUtility::throwViewHelperException('Unsupported input type; cannot convert to array!');
+        return [];
     }
 
     /**
-     * @param $array1
-     * @param $array2
+     * @param array $array1
+     * @param array $array2
      * @return array
      */
     protected function mergeArrays($array1, $array2)

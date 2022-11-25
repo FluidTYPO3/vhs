@@ -40,9 +40,6 @@ class StringViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string
      */
     public static function renderStatic(
@@ -53,6 +50,7 @@ class StringViewHelper extends AbstractViewHelper
         $length = $arguments['length'];
         $minimumLength = (integer) $arguments['minimumLength'];
         $maximumLength = (integer) $arguments['maximumLength'];
+        /** @var string $characters */
         $characters = $arguments['characters'];
         if ($minimumLength != $maximumLength) {
             $length = random_int($minimumLength, $maximumLength);
@@ -64,7 +62,7 @@ class StringViewHelper extends AbstractViewHelper
             $string = bin2hex(random_bytes($length));
         } else {
             for ($i = 0; $i < $length; $i++) {
-                $randomIndex = random_int(0, mb_strlen($characters) - 1);
+                $randomIndex = random_int(0, max(mb_strlen($characters) - 1, 1));
                 $string .= $characters[$randomIndex];
             }
         }

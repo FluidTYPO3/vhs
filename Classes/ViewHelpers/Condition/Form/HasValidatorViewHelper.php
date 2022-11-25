@@ -8,10 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Form;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
@@ -33,10 +34,12 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
     /**
      * @var ReflectionService
      */
-    static protected $staticReflectionService;
+    protected static $staticReflectionService;
 
     /**
      * Initialize
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -67,47 +70,51 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        if (static::$staticReflectionService === null) {
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            static::$staticReflectionService = $objectManager->get(ReflectionService::class);
+        if (!is_array($arguments)) {
+            return false;
         }
+
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ReflectionService $reflectionService */
+        $reflectionService = $objectManager->get(ReflectionService::class);
 
         $property = $arguments['property'];
-        $validatorName = isset($arguments['validatorName']) ? $arguments['validatorName'] : null;
-        $object = isset($arguments['object']) ? $arguments['object'] : null;
+        $validatorName = $arguments['validatorName'] ?? null;
+        $object = $arguments['object'] ?? null;
 
-        $className = get_class($object);
-        if (false !== strpos($property, '.')) {
-            $pathSegments = explode('.', $property);
-            foreach ($pathSegments as $property) {
-                if (true === ctype_digit($property)) {
-                    continue;
-                }
-                $annotations = static::$staticReflectionService->getPropertyTagValues($className, $property, 'var');
-                $possibleClassName = array_pop($annotations);
-                if (false !== strpos($possibleClassName, '<')) {
-                    $className = array_pop(explode('<', trim($possibleClassName, '>')));
-                } elseif (true === class_exists($possibleClassName)) {
-                    $className = $possibleClassName;
+        $path = null;
+        if (strpos($property, '.') !== false) {
+            $parts = explode('.', $property);
+            $property = array_pop($parts);
+            $path = implode('.', $parts);
+            $object = ObjectAccess::getPropertyPath($object, $path);
+        }
+
+        if (!is_object($object)) {
+            return false;
+        }
+
+        if (!method_exists($reflectionService, 'getPropertyTagValues')) {
+            // TYPO3 version no longer contains the raw property tag value extractor. Instead, we can check for a given
+            // validator by extracting the validators and analysing those.
+            $validators = $reflectionService->getClassSchema($object)->getProperty($property)->getValidators();
+            foreach ($validators as $validatorConfiguration) {
+                if ($validatorConfiguration['name'] === $validatorName) {
+                    return true;
                 }
             }
+            return false;
         }
 
-        // If we are on TYPO3 9.3 or above, the old validator ID is no longer possible to use and we must use the new one.
-        $fluidCoreVersion = ExtensionManagementUtility::getExtensionVersion('fluid');
-        if (version_compare($fluidCoreVersion, 9.3, '>=')) {
-            $annotationName = 'Extbase\\Validate';
-        } else {
-            $annotationName = 'validate';
-        }
-        $annotations = static::$staticReflectionService->getPropertyTagValues($className, $property, $annotationName);
-        if (empty($annotations) && $annotationName === 'validate' && version_compare($fluidCoreVersion, 9.1, '>=')) {
+        $className = get_class($object);
+        $annotations = $reflectionService->getPropertyTagValues($className, $property, 'validate');
+        if (empty($annotations)) {
             // We tried looking for the legacy validator name but found none. Retry with the new way. We have to do this
             // as a retry, because we cannot assume that any site using TYPO3 9.1+ will also be using the modern
             // annotations. Hence we cannot change the validator name until we've also looked for the legacy ones (which
             // will take priority if found).
-            $annotationName = 'Extbase\\Validate';
-            $annotations = static::$staticReflectionService->getPropertyTagValues($className, $property, $annotationName);
+            $annotations = $reflectionService->getPropertyTagValues($className, $property, 'Extbase\\Validate');
         }
         return (count($annotations) && (!$validatorName || in_array($validatorName, $annotations)));
     }

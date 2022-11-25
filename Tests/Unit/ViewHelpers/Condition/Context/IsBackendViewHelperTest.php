@@ -9,13 +9,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Context;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Class IsBackendViewHelperTest
  */
-class IsBackendViewHelperTest extends AbstractViewHelperTest
+class IsBackendViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -23,7 +24,7 @@ class IsBackendViewHelperTest extends AbstractViewHelperTest
     {
         $instance = $this->createInstance();
         $result = $this->callInaccessibleMethod($instance, 'evaluateCondition');
-        $this->assertThat($result, new \PHPUnit_Framework_Constraint_IsType(\PHPUnit_Framework_Constraint_IsType::TYPE_BOOL));
+        $this->assertThat($result, new IsType(IsType::TYPE_BOOL));
     }
 
     /**
@@ -33,9 +34,6 @@ class IsBackendViewHelperTest extends AbstractViewHelperTest
     {
         $arguments = ['then' => true, 'else' => false];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(true, $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
+        $this->assertEquals(false, $result);
     }
 }

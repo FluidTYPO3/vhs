@@ -15,10 +15,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -111,30 +111,12 @@ class SortViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = static::arrayFromArrayOrTraversableOrCSVStatic(!empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure());
-        $sorted = null;
-        if (true === is_array($subject)) {
-            $sorted = static::sortArray($subject, $arguments);
+        $candidate = !empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
+        if ($candidate instanceof ObjectStorage) {
+            $sorted = static::sortObjectStorage($candidate, $arguments);
         } else {
-            if (true === $subject instanceof ObjectStorage || true === $subject instanceof LazyObjectStorage) {
-                $sorted = static::sortObjectStorage($subject, $arguments);
-            } elseif (true === $subject instanceof \Iterator) {
-                /** @var \Iterator $subject */
-                $array = iterator_to_array($subject, true);
-                $sorted = static::sortArray($array, $arguments);
-            } elseif (true === $subject instanceof QueryResultInterface) {
-                /** @var QueryResultInterface $subject */
-                $sorted = static::sortArray($subject->toArray(), $arguments);
-            } elseif (null !== $subject) {
-                // a NULL value is respected and ignored, but any
-                // unrecognized value other than this is considered a
-                // fatal error.
-                ErrorUtility::throwViewHelperException(
-                    'Unsortable variable type passed to Iterator/SortViewHelper. Expected any of Array, QueryResult, ' .
-                    ' ObjectStorage or Iterator implementation but got ' . gettype($subject),
-                    1351958941
-                );
-            }
+            $subject = static::arrayFromArrayOrTraversableOrCSVStatic($candidate);
+            $sorted = static::sortArray($subject, $arguments);
         }
 
         return static::renderChildrenWithVariableOrReturnInputStatic(
@@ -199,6 +181,7 @@ class SortViewHelper extends AbstractViewHelper
             $temp->attach($item);
         }
         $sorted = static::sortArray($storage, $arguments);
+        /** @var ObjectStorage $storage */
         $storage = $objectManager->get(ObjectStorage::class);
         foreach ($sorted as $item) {
             $storage->attach($item);

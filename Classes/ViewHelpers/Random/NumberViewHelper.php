@@ -64,9 +64,6 @@ class NumberViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return integer|float
      */
     public static function renderStatic(
@@ -82,10 +79,11 @@ class NumberViewHelper extends AbstractViewHelper
         if (0 === (integer) $minimumDecimals && 0 === (integer) $maximumDecimals) {
             return $natural;
         }
+        /** @var array $decimals */
         $decimals = array_fill(0, random_int($minimumDecimals, $maximumDecimals), 0);
         $decimals = array_map(function () {
             return random_int(0, 9);
         }, $decimals);
-        return $natural . '.' . implode('', $decimals);
+        return (float) ($natural . '.' . implode('', $decimals));
     }
 }

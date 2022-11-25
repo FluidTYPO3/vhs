@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -17,7 +18,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
 {
-
     /**
      * Standard storage - static variable meaning uniqueness of $identifier
      * across each Request, i.e. unique to each individual plugin/content.
@@ -31,7 +31,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      * which applied at the exact time that the ViewHelper was asked to
      * evaluate whether or not to render content.
      *
-     * @var RenderingContextInterface
+     * @var RenderingContextInterface&RenderingContext
      */
     protected static $currentRenderingContext;
 
@@ -77,6 +77,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var RenderingContext $renderingContext */
         static::$currentRenderingContext = $renderingContext;
         return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
@@ -87,6 +88,9 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
+        if ($arguments === null) {
+            return false;
+        }
         static::removeIfExpired($arguments);
         return static::assertShouldSkip($arguments) === false;
     }
@@ -138,19 +142,6 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param boolean $hasEvaluated
-     * @return string
-     */
-    protected static function renderStaticThenChild($arguments, &$hasEvaluated)
-    {
-        if (TYPO3_MODE === 'FE') {
-            $GLOBALS['TSFE']->no_cache = 1;
-        }
-        return parent::renderStaticThenChild($arguments, $hasEvaluated);
-    }
-
-    /**
      * Override: forcibly disables page caching - a TRUE condition
      * in this ViewHelper means page content would be depending on
      * the current visitor's session/cookie/auth etc.
@@ -159,7 +150,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      * If then attribute is not set, iterates through child nodes and renders ThenViewHelper.
      * If then attribute is not set and no ThenViewHelper and no ElseViewHelper is found, all child nodes are rendered
      *
-     * @return string rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
+     * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
      * @api
      */
     protected function renderThenChild()

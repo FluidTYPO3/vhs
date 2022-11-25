@@ -9,14 +9,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable\Register;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class SetViewHelperTest
  */
-class SetViewHelperTest extends AbstractViewHelperTest
+class SetViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */

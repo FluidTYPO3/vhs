@@ -25,7 +25,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 class ConvertViewHelper extends AbstractViewHelper
 {
-
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
@@ -40,6 +39,8 @@ class ConvertViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -54,16 +55,11 @@ class ConvertViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'default',
             'mixed',
-            'Optional default value to assign to the converted variable in case it is NULL.',
-            false,
-            null
+            'Optional default value to assign to the converted variable in case it is NULL.'
         );
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -121,6 +117,7 @@ class ConvertViewHelper extends AbstractViewHelper
                         $value = [];
                         break;
                     case 'ObjectStorage':
+                        /** @var ObjectManager $objectManager */
                         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
                         $value = $objectManager->get(ObjectStorage::class);
                         break;

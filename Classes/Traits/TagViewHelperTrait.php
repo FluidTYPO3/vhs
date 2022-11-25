@@ -22,7 +22,6 @@ namespace FluidTYPO3\Vhs\Traits;
  */
 trait TagViewHelperTrait
 {
-
     /**
      * Default implementation to register only the tag
      * arguments along with universal attributes.
@@ -103,7 +102,7 @@ trait TagViewHelperTrait
      * (additional) attributes not already provided as arguments.
      *
      * @param string $tagName
-     * @param mixed $content
+     * @param scalar|null $content
      * @param array $attributes
      * @param array $nonEmptyAttributes
      * @return string

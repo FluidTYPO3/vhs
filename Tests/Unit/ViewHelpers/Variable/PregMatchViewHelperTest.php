@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class PregMatchViewHelperTest
  */
-class PregMatchViewHelperTest extends AbstractViewHelperTest
+class PregMatchViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */

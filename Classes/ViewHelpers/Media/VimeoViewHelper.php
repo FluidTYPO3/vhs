@@ -15,7 +15,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class VimeoViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * Base URL for Vimeo video player
      */
@@ -125,7 +124,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('src', $src);
         $this->tag->addAttribute('width', $width);
         $this->tag->addAttribute('height', $height);
-        $this->tag->addAttribute('frameborder', 0);
+        $this->tag->addAttribute('frameborder', '0');
         $this->tag->addAttribute('webkitAllowFullScreen', 'webkitAllowFullScreen');
         $this->tag->addAttribute('mozAllowFullScreen', 'mozAllowFullScreen');
         $this->tag->addAttribute('allowFullScreen', 'allowFullScreen');

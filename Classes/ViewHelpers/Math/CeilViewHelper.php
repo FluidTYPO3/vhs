@@ -23,13 +23,14 @@ class CeilViewHelper extends AbstractSingleMathViewHelper
 
     /**
      * @param mixed $a
-     * @return integer
+     * @return integer|array
      */
-    protected static function calculateAction($a)
+    protected static function calculateAction($a, array $arguments = [])
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map('ceil', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
-        return ceil($a);
+        /** @var integer|float $a */
+        return (integer) ceil($a);
     }
 }

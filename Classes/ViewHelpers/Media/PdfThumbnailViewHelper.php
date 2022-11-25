@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PdfThumbnailViewHelper extends ImageViewHelper
 {
-
     /**
      * @return void
      */
@@ -73,7 +72,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
     {
         $src = GeneralUtility::getFileAbsFileName($this->arguments['src']);
         if (false === file_exists($src)) {
-            return null;
+            return '';
         }
         $density = $this->arguments['density'];
         $rotate = $this->arguments['rotate'];
@@ -89,8 +88,17 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         } else {
             $colorspace = 'RGB';
         }
-        $tempPath = (version_compare(TYPO3_version, 8.0, '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
-        $path = GeneralUtility::getFileAbsFileName($tempPath . 'vhs-pdf-' . pathinfo($filename, PATHINFO_FILENAME) . '-' . $page . '-' . filemtime($src) . '.png');
+        $tempPath = (version_compare(TYPO3_version, '8.0', '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
+        $path = GeneralUtility::getFileAbsFileName(
+            $tempPath
+            . 'vhs-pdf-'
+            . pathinfo($filename, PATHINFO_FILENAME)
+            . '-'
+            . $page
+            . '-'
+            . filemtime($src)
+            . '.png'
+        );
         if (false === file_exists($path) || true === $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
             if (0 < (integer) $density) {

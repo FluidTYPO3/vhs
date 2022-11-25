@@ -9,12 +9,27 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class CookieViewHelperTest
  */
-class CookieViewHelperTest extends AbstractViewHelperTest
+class CookieViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($GLOBALS['TSFE']);
+    }
 
     /**
      * @return void

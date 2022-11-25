@@ -45,8 +45,14 @@ class GetViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
-        return (string) (class_exists(Environment::class) ? Environment::getContext() : GeneralUtility::getApplicationContext());
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $context = class_exists(Environment::class)
+            ? Environment::getContext()
+            : GeneralUtility::getApplicationContext();
+        return (string) ($context);
     }
 }

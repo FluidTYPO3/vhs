@@ -9,13 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class FirstViewHelperTest
  */
-class FirstViewHelperTest extends AbstractViewHelperTest
+class FirstViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -87,7 +87,7 @@ class FirstViewHelperTest extends AbstractViewHelperTest
         $arguments = [
             'haystack' => new \DateTime('now')
         ];
-        $this->expectViewHelperException('Invalid argument supplied to Iterator/FirstViewHelper - expected array, Iterator or NULL but got');
+        $this->expectViewHelperException();
         $this->executeViewHelper($arguments);
     }
 }

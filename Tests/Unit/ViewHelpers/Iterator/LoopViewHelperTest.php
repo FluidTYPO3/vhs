@@ -9,11 +9,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class LoopViewHelperTest
  */
-class LoopViewHelperTest extends AbstractViewHelperTest
+class LoopViewHelperTest extends AbstractViewHelperTestCase
 {
 
 }

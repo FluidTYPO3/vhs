@@ -23,7 +23,7 @@ The file data can be loaded and displayed with:
       -> v:iterator.first()
       -> v:variable.set(name: 'image')}
     <f:if condition="{image}">
-      <f:image src="{image.id}"/>
+      <f:image src="{image.uid}"/>
     </f:if>
 
 

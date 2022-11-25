@@ -75,8 +75,11 @@ class FilesViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      * @return array|string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $path = $renderChildrenClosure();
 
         $extensionList = $arguments['extensionList'];

@@ -56,7 +56,7 @@ class RandomViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            static::arrayFromArrayOrTraversableOrCSVStatic(empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'])
+            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
         if (empty($subject)) {
             return null;

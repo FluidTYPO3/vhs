@@ -9,11 +9,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class DeferredViewHelperTest
  */
-class DeferredViewHelperTest extends AbstractViewHelperTest
+class DeferredViewHelperTest extends AbstractViewHelperTestCase
 {
 
 }

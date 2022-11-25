@@ -37,6 +37,6 @@ class NameViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+        return $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? 'Uknonwn TYPO3 site';
     }
 }

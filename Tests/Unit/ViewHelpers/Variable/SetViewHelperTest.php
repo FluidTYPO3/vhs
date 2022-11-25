@@ -10,21 +10,21 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class SetViewHelperTest
  */
-class SetViewHelperTest extends AbstractViewHelperTest
+class SetViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function canSetVariable()
     {
-        $variables = new \ArrayObject(['test' => true]);
+        $variables = ['test' => true];
         $this->executeViewHelper(['name' => 'test', 'value' => false], $variables);
-        $this->assertFalse($variables['test']);
+        $this->assertFalse($this->templateVariableContainer->get('test'));
     }
 
     /**
@@ -32,9 +32,9 @@ class SetViewHelperTest extends AbstractViewHelperTest
      */
     public function canSetVariableInExistingArrayValue()
     {
-        $variables = new \ArrayObject(['test' => ['test' => true]]);
+        $variables = ['test' => ['test' => true]];
         $this->executeViewHelper(['name' => 'test.test', 'value' => false], $variables);
-        $this->assertFalse($variables['test']['test']);
+        $this->assertFalse($this->templateVariableContainer->get('test.test'));
     }
 
     /**
@@ -42,9 +42,8 @@ class SetViewHelperTest extends AbstractViewHelperTest
      */
     public function ignoresNestedVariableIfRootDoesNotExist()
     {
-        $variables = new \ArrayObject(['test' => ['test' => true]]);
-        $result = $this->executeViewHelper(['name' => 'doesnotexist.test', 'value' => false], $variables);
-        $this->assertNull($result);
+        $result = $this->executeViewHelper(['name' => 'doesnotexist.test', 'value' => false]);
+        $this->assertNull($this->templateVariableContainer->get('test.test'));
     }
 
     /**
@@ -53,7 +52,7 @@ class SetViewHelperTest extends AbstractViewHelperTest
     public function ignoresNestedVariableIfRootDoesNotAllowSetting()
     {
         $domainObject = new Foo();
-        $variables = new \ArrayObject(['test' => $domainObject]);
+        $variables = ['test' => $domainObject];
         $result = $this->executeViewHelper(['name' => 'test.propertydoesnotexist', 'value' => false], $variables);
         $this->assertNull($result);
     }
@@ -63,7 +62,7 @@ class SetViewHelperTest extends AbstractViewHelperTest
      */
     public function ignoresNestedVariableIfRootPropertyNameIsInvalid()
     {
-        $variables = new \ArrayObject(['test' => 'test']);
+        $variables = ['test' => 'test'];
         $result = $this->executeViewHelper(['name' => 'test.test', 'value' => false], $variables);
         $this->assertNull($result);
     }
@@ -73,8 +72,8 @@ class SetViewHelperTest extends AbstractViewHelperTest
      */
     public function canSetVariableWithValueFromTagContent()
     {
-        $variables = new \ArrayObject(['test' => true]);
+        $variables = ['test' => true];
         $this->executeViewHelperUsingTagContent(false, ['name' => 'test'], $variables);
-        $this->assertFalse($variables['test']);
+        $this->assertFalse($this->templateVariableContainer->get('test'));
     }
 }

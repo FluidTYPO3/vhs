@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Utility;
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Frontend Simulation Utility
@@ -18,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FrontendSimulationUtility
 {
-
     /**
      * Sets the global variables $GLOBALS['TSFE']->csConvObj and $GLOBALS['TSFE']->renderCharset in Backend mode
      * This somewhat hacky work around is currently needed because the conv_case() and convCaseFirst() functions of
@@ -31,7 +31,7 @@ class FrontendSimulationUtility
         if ('BE' !== TYPO3_MODE) {
             return;
         }
-        $tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
+        $tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();
         // preparing csConvObj
         if (false === is_object($GLOBALS['TSFE']->csConvObj)) {
@@ -55,7 +55,7 @@ class FrontendSimulationUtility
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
      *
-     * @param mixed $tsfeBackup
+     * @param TypoScriptFrontendController|null $tsfeBackup
      * @return void
      * @see simulateFrontendEnvironment()
      */

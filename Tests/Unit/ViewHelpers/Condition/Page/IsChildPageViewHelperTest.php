@@ -9,14 +9,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Page;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
  * Class IsChildPageViewHelperTest
  */
-class IsChildPageViewHelperTest extends AbstractViewHelperTest
+class IsChildPageViewHelperTest extends AbstractViewHelperTestCase
 {
-
     public function testRender()
     {
         if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
@@ -31,8 +31,5 @@ class IsChildPageViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 }

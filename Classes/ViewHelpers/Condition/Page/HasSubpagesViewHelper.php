@@ -27,7 +27,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
     /**
      * @var PageService
      */
-    static protected $pageService;
+    protected static $pageService;
 
     /**
      * @param PageService $pageService
@@ -40,6 +40,8 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
 
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -57,6 +59,9 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
+        if (!is_array($arguments)) {
+            return false;
+        }
         $pageUid = $arguments['pageUid'];
         //TODO: remove fallback with removal of deprecated argument
         if (null !== $arguments['showHiddenInMenu']) {
@@ -71,8 +76,11 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
         }
 
         if (static::$pageService === null) {
+            /** @var ObjectManager $objectManager */
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            static::$pageService = $objectManager->get(PageService::class);
+            /** @var PageService $pageService */
+            $pageService = $objectManager->get(PageService::class);
+            static::$pageService = $pageService;
         }
 
         $menu = static::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);

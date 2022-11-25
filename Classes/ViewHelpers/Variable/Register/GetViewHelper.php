@@ -26,7 +26,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 class GetViewHelper extends AbstractViewHelper
 {
-
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
@@ -59,7 +58,7 @@ class GetViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $name = $renderChildrenClosure();
-        if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+        if (false === ($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             return null;
         }
         $value = null;

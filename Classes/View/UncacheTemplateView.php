@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -16,10 +15,10 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
-use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
-use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -43,7 +42,7 @@ class UncacheTemplateView extends TemplateView
     protected $templateCompiler;
 
     /**
-     * @return void
+     * @return array
      */
     public function __sleep()
     {
@@ -55,7 +54,9 @@ class UncacheTemplateView extends TemplateView
      */
     public function __wakeup()
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -71,23 +72,25 @@ class UncacheTemplateView extends TemplateView
      * @param string $postUserFunc
      * @param array $conf
      * @param string $content
-     * @return string
+     * @return string|null
      */
     public function callUserFunction($postUserFunc, $conf, $content)
     {
-        $partial = $conf['partial'];
-        $section = $conf['section'];
-        $arguments = true === is_array($conf['arguments']) ? $conf['arguments'] : [];
+        $partial = $conf['partial'] ?? null;
+        $section = $conf['section'] ?? null;
+        $arguments = $conf['arguments'] ?? [];
         /** @var ControllerContext $controllerContext */
         $controllerContext = $this->objectManager->get(ControllerContext::class);
+        /** @var Request $request */
         $request = $this->objectManager->get(Request::class);
         $controllerContext->setRequest($request);
 
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($request);
         $controllerContext->setUriBuilder($uriBuilder);
 
-        if ($conf['controllerContext']) {
+        if ($conf['controllerContext'] ?? false) {
             $request->setControllerActionName($conf['controllerContext']['actionName']);
             $request->setControllerExtensionName($conf['controllerContext']['extensionName']);
             $request->setControllerName($conf['controllerContext']['controllerName']);
@@ -96,7 +99,7 @@ class UncacheTemplateView extends TemplateView
             $request->setFormat($conf['controllerContext']['format']);
         }
 
-        if (true === empty($partial)) {
+        if (empty($partial)) {
             return '';
         }
 
@@ -120,29 +123,19 @@ class UncacheTemplateView extends TemplateView
         RenderingContextInterface $renderingContext,
         ControllerContext $controllerContext
     ) {
+        /** @var RenderingContext $renderingContext */
         $renderingContext->setControllerContext($controllerContext);
         $this->setRenderingContext($renderingContext);
-        if (method_exists($renderingContext, 'getTemplateParser')) {
-            $this->templateParser = $renderingContext->getTemplateParser();
-        } else {
-            $this->templateParser = TemplateParserBuilder::build();
-        }
-        if (method_exists($renderingContext, 'getTemplateCompiler')) {
-            $this->templateCompiler = $renderingContext->getTemplateCompiler();
-        } else {
-            $this->templateCompiler = $this->objectManager->get(TemplateCompiler::class);
-            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-
-            $this->templateCompiler->setTemplateCache($cacheManager->getCache('fluid_template'));
-        }
+        $this->templateParser = $renderingContext->getTemplateParser();
+        $this->templateCompiler = $renderingContext->getTemplateCompiler();
     }
 
     /**
      * @param RenderingContextInterface $renderingContext
      * @param string $partial
-     * @param string $section
+     * @param string|null $section
      * @param array $arguments
-     * @return string
+     * @return string|null
      */
     protected function renderPartialUncached(
         RenderingContextInterface $renderingContext,
@@ -150,10 +143,11 @@ class UncacheTemplateView extends TemplateView
         $section = null,
         array $arguments = []
     ) {
-        array_push(
-            $this->renderingStack,
-            ['type' => static::RENDERING_TEMPLATE, 'parsedTemplate' => null, 'renderingContext' => $renderingContext]
-        );
+        $this->renderingStack[] = [
+            'type' => static::RENDERING_TEMPLATE,
+            'parsedTemplate' => null,
+            'renderingContext' => $renderingContext,
+        ];
         $rendered = $this->renderPartial($partial, $section, $arguments);
         array_pop($this->renderingStack);
         return $rendered;

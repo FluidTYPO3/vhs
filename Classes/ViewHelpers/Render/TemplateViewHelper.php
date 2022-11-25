@@ -57,17 +57,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TemplateViewHelper extends AbstractRenderViewHelper
 {
-
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported', false);
         $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering', false);
         $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered', false);
         $this->registerArgument(
             'paths',
             'array',
-            'Optional array of arrays of layout and partial root paths, EXT:mypath/... paths supported',
-            false
+            'Optional array of arrays of layout and partial root paths, EXT:mypath/... paths supported'
         );
     }
 

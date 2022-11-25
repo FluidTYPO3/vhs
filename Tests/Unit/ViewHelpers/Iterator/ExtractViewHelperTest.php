@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
@@ -17,9 +18,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Class ExtractViewHelperTest
  */
-class ExtractViewHelperTest extends AbstractViewHelperTest
+class ExtractViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @var ExtractViewHelper
      */

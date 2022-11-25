@@ -9,21 +9,20 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Format\Json\DecodeViewHelper;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Class DecodeViewHelperTest
  */
-class DecodeViewHelperTest extends AbstractViewHelperTest
+class DecodeViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function returnsNullForEmptyArguments()
     {
-        $result = DecodeViewHelper::renderStatic([], function () {}, $this->objectManager->get(RenderingContext::class));
+        $result = DecodeViewHelper::renderStatic([], function () {}, $this->renderingContext);
         $this->assertNull($result);
     }
 

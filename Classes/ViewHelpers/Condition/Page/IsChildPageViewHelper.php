@@ -24,6 +24,8 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initialize arguments
+     *
+     * @return void
      */
     public function initializeArguments()
     {
@@ -38,13 +40,18 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
+        if (!is_array($arguments)) {
+            return false;
+        }
         $pageUid = $arguments['pageUid'];
         $respectSiteRoot = $arguments['respectSiteRoot'];
 
         if (null === $pageUid || true === empty($pageUid) || 0 === intval($pageUid)) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = GeneralUtility::makeInstance(PageService::class)->getPageRepository()->getPage($pageUid);
+        /** @var PageService $pageService */
+        $pageService = GeneralUtility::makeInstance(PageService::class);
+        $page = $pageService->getPageRepository()->getPage($pageUid);
 
         if ($respectSiteRoot && isset($page['is_siteroot']) && $page['is_siteroot']) {
             return false;

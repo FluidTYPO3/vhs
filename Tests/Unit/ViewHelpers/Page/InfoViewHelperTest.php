@@ -9,12 +9,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class InfoViewHelperTest
  */
-class InfoViewHelperTest extends AbstractViewHelperTest
+class InfoViewHelperTest extends AbstractViewHelperTestCase
 {
     public function testReturnsCorrectSingleFieldValue()
     {

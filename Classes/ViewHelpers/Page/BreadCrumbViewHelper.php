@@ -15,7 +15,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
  */
 class BreadCrumbViewHelper extends AbstractMenuViewHelper
 {
-
     /**
      * @return void
      */
@@ -72,7 +71,7 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
         }
         $rootLine = $this->parseMenu($rootLineData);
         if (0 === count($rootLine)) {
-            return null;
+            return '';
         }
         $this->backupVariables();
         $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $rootLine);

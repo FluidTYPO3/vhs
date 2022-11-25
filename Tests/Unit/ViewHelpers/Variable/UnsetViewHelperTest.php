@@ -8,15 +8,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class UnsetViewHelperTest
  */
-class UnsetViewHelperTest extends AbstractViewHelperTest
+class UnsetViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
@@ -24,10 +22,8 @@ class UnsetViewHelperTest extends AbstractViewHelperTest
     {
         $variables = new \ArrayObject(['test' => 'test']);
         $instance = $this->buildViewHelperInstance(['name' => 'test']);
-        $context = ObjectAccess::getProperty($instance, 'renderingContext', true);
-        $provider = $context->getVariableProvider();
-        $provider['test'] = 'test';
+        $this->templateVariableContainer->add('test', 'test');
         $instance->initializeArgumentsAndRender();
-        $this->assertNotContains('test', $provider->getAll());
+        $this->assertNotContains('test', $this->templateVariableContainer->getAll());
     }
 }

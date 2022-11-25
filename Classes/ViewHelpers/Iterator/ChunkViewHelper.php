@@ -80,7 +80,8 @@ class ChunkViewHelper extends AbstractViewHelper
         if (true === (boolean) $fixed) {
             $subjectSize = count($subject);
             if (0 < $subjectSize) {
-                $chunkSize = ceil($subjectSize / $count);
+                /** @var int<1, max> $chunkSize */
+                $chunkSize = (integer) ceil($subjectSize / $count);
                 $output = array_chunk($subject, $chunkSize, $preserveKeys);
             }
             // Fill the resulting array with empty items to get the desired element count
