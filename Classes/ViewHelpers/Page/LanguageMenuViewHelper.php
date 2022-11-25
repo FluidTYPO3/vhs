@@ -238,7 +238,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             'titleText' => $label
         ];
 
-        if (file_exists($conf['file'])){
+        if (file_exists($conf['file'])) {
             $contentObjectDefinition = $this->cObj->getContentObject('IMAGE');
             if ($contentObjectDefinition === null) {
                 return '';
