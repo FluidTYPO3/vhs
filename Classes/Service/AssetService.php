@@ -354,11 +354,11 @@ class AssetService implements SingletonInterface
         }
         $fileRelativePathAndFilename = $this->getTempPath() . 'vhs-assets-' . $assetName . '.' . $type;
         $fileAbsolutePathAndFilename = $this->resolveAbsolutePathForFile($fileRelativePathAndFilename);
-        if (false === file_exists($fileAbsolutePathAndFilename)
+        if (!file_exists($fileAbsolutePathAndFilename)
             || 0 === filemtime($fileAbsolutePathAndFilename)
-            || true === isset($GLOBALS['BE_USER'])
-            || true === (boolean) $GLOBALS['TSFE']->no_cache
-            || true === (boolean) $GLOBALS['TSFE']->page['no_cache']
+            || isset($GLOBALS['BE_USER'])
+            || (boolean) ($GLOBALS['TSFE']->no_cache ?? false)
+            || (boolean) ($GLOBALS['TSFE']->page['no_cache'] ?? false)
         ) {
             foreach ($assets as $name => $asset) {
                 $assetSettings = $this->extractAssetSettings($asset);
@@ -372,9 +372,9 @@ class AssetService implements SingletonInterface
             }
             $this->writeFile($fileAbsolutePathAndFilename, $source);
         }
-        if (false === empty($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'])) {
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'])) {
             $timestampMode = $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'];
-            if (true === file_exists($fileRelativePathAndFilename)) {
+            if (file_exists($fileRelativePathAndFilename)) {
                 $lastModificationTime = filemtime($fileRelativePathAndFilename);
                 if ('querystring' === $timestampMode) {
                     $fileRelativePathAndFilename .= '?' . $lastModificationTime;
