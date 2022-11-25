@@ -237,11 +237,15 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             'altText' => $label,
             'titleText' => $label
         ];
-        $contentObjectDefinition = $this->cObj->getContentObject('IMAGE');
-        if ($contentObjectDefinition === null) {
-            return '';
+
+        if (file_exists($conf['file'])){
+            $contentObjectDefinition = $this->cObj->getContentObject('IMAGE');
+            if ($contentObjectDefinition === null) {
+                return '';
+            }
+            return $this->cObj->render($contentObjectDefinition, $conf);
         }
-        return $this->cObj->render($contentObjectDefinition, $conf);
+        return '';
     }
 
     /**
