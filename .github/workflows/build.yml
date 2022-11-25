@@ -38,7 +38,7 @@ jobs:
       - name: Composer install
         uses: ramsey/composer-install@v2
 
-      - name: Run phpstan
+      - name: Run phpcs
         run: vendor/bin/phpcs Classes --standard=PSR2
 
   phpstan:
