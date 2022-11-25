@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -30,7 +31,7 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('pageUid', 'integer', 'value to check', false, null);
+        $this->registerArgument('pageUid', 'integer', 'value to check');
         $this->registerArgument('respectSiteRoot', 'boolean', 'value to check', false, false);
     }
 
@@ -38,24 +39,21 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
      * @param array $arguments
      * @return bool
      */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
-        if (!is_array($arguments)) {
-            return false;
-        }
         $pageUid = $arguments['pageUid'];
         $respectSiteRoot = $arguments['respectSiteRoot'];
 
-        if (null === $pageUid || true === empty($pageUid) || 0 === intval($pageUid)) {
+        if (null === $pageUid || empty($pageUid) || 0 === intval($pageUid)) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);
         $page = $pageService->getPageRepository()->getPage($pageUid);
 
-        if ($respectSiteRoot && isset($page['is_siteroot']) && $page['is_siteroot']) {
+        if ($respectSiteRoot && ($page['is_siteroot'] ?? false)) {
             return false;
         }
-        return true === isset($page['pid']) && 0 < $page['pid'];
+        return ($page['pid'] ?? 0) > 0;
     }
 }
