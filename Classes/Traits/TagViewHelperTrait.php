@@ -22,6 +22,7 @@ namespace FluidTYPO3\Vhs\Traits;
  */
 trait TagViewHelperTrait
 {
+
     /**
      * Default implementation to register only the tag
      * arguments along with universal attributes.
@@ -114,8 +115,8 @@ trait TagViewHelperTrait
         array $nonEmptyAttributes = ['id', 'class']
     ) {
         $trimmedContent = trim((string) $content);
-        $forceClosingTag = (boolean) $this->arguments['forceClosingTag'];
-        if (true === empty($trimmedContent) && true === (boolean) $this->arguments['hideIfEmpty']) {
+        $forceClosingTag = (boolean) ($this->arguments['forceClosingTag'] ?? false);
+        if (true === empty($trimmedContent) && true === (boolean) ($this->arguments['hideIfEmpty'] ?? false)) {
             return '';
         }
         if ('none' === $tagName || true === empty($tagName)) {
@@ -130,7 +131,7 @@ trait TagViewHelperTrait
         }
         // process some attributes differently - if empty, remove the property:
         foreach ($nonEmptyAttributes as $propertyName) {
-            $value = $this->arguments[$propertyName];
+            $value = ($this->arguments[$propertyName] ?? '');
             if (true === empty($value)) {
                 $this->tag->removeAttribute($propertyName);
             } else {
