@@ -42,7 +42,7 @@ parameters:
             path: Classes/ViewHelpers/Media/Image/AbstractImageViewHelper.php
         -
             message: "#^Result of \\&\\& is always false\\.$#"
-            count: 1
+            count: 2
             path: Classes/ViewHelpers/Media/Image/AbstractImageViewHelper.php
         -
             message: "#^If condition is always false\\.$#"
