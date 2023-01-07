@@ -147,13 +147,12 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
         $crop = $this->arguments['crop'];
 
-        if (is_object($src) && $src instanceof FileReference) {
+        if ($src instanceof FileReference) {
+            if ($crop === null) {
+                $crop = $src->_getProperty('crop');
+            }
             $src = $src->getUid();
             $treatIdAsReference = true;
-        }
-
-        if ($crop === null) {
-            $crop = (is_object($src) && $src instanceof FileReference) ? $src->_getProperty('crop') : null;
         }
 
         if ('BE' === TYPO3_MODE) {

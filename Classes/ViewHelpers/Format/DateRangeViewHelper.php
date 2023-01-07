@@ -218,6 +218,7 @@ class DateRangeViewHelper extends AbstractViewHelper
     {
         if (false === $date instanceof \DateTime) {
             try {
+                $input = $date;
                 if (true === is_integer($date)) {
                     $date = new \DateTime('@' . $date);
                 } elseif (is_scalar($date)) {
@@ -228,7 +229,7 @@ class DateRangeViewHelper extends AbstractViewHelper
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             } catch (\Exception $exception) {
                 ErrorUtility::throwViewHelperException(
-                    '"' . $date . '" could not be parsed by \DateTime constructor.',
+                    '"' . (string) $input . '" could not be parsed by \DateTime constructor.',
                     1369573112
                 );
             }
