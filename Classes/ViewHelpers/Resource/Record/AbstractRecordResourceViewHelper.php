@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -190,7 +190,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        /** @var Statement $statement */
+        /** @var Result $statement */
         $statement = $queryBuilder
             ->select('*')
             ->from($table)
@@ -199,7 +199,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             )
             ->execute();
         /** @var array|null $result */
-        $result = $statement->fetch() ?: null;
+        $result = $statement->fetchOne() ?: null;
         return $result;
     }
 

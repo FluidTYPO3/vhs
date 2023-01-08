@@ -8,12 +8,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
+use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -155,9 +156,8 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $treatIdAsReference = true;
         }
 
-        if ('BE' === TYPO3_MODE) {
-            $this->simulateFrontendEnvironment();
-        }
+        $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
+
         $setup = [
             'width' => $width,
             'height' => $height,
@@ -176,7 +176,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $setup['params'] = '-quality ' . $quality;
         }
 
-        if (TYPO3_MODE === 'BE' && strpos($src, '../') === 0) {
+        if (ContextUtility::isBackend() && strpos($src, '../') === 0) {
             $src = mb_substr($src, 3);
         }
         $this->imageInfo = $this->contentObject->getImgResource($src, $setup);
@@ -191,7 +191,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $canvasColor = str_replace('#', '', $this->arguments['canvasColor']);
             $originalFilename = $this->imageInfo[3];
             $originalExtension = mb_substr($originalFilename, -3);
-            $tempPath = (version_compare(TYPO3_version, '8.0', '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
+            $tempPath = (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '8.0', '>='))
+                ? 'typo3temp/assets/'
+                : 'typo3temp/';
             $destinationFilename = $tempPath . 'vhs-canvas-' .
                 md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
             $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);
@@ -218,54 +220,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 
         $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
         $this->mediaSource = rawurldecode($this->imageInfo[3]);
-        if (TYPO3_MODE === 'BE') {
-            $this->resetFrontendEnvironment();
-        }
-    }
 
-    /**
-     * Prepares $GLOBALS['TSFE'] for Backend mode
-     * This somewhat hacky work around is currently needed because the
-     * getImgResource() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-     * relies on those variables to be set
-     *
-     * @return void
-     */
-    protected function simulateFrontendEnvironment()
-    {
-        $this->tsfeBackup = true === isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
-        $this->workingDirectoryBackup = getcwd();
-        chdir(CoreUtility::getSitePath());
-        $typoScriptSetup = $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-        );
-        $GLOBALS['TSFE'] = new \stdClass();
-        /** @var TemplateService $template */
-        $template = GeneralUtility::makeInstance(TemplateService::class);
-        $template->tt_track = false;
-        if (version_compare(TYPO3_version, '9.4', '<')) {
-            $template->init();
-        }
-        if (property_exists($template, 'getFileName_backPath')) {
-            $template->getFileName_backPath = CoreUtility::getSitePath();
-        }
-        $GLOBALS['TSFE']->tmpl = $template;
-        $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
-        $GLOBALS['TSFE']->config = $typoScriptSetup;
-    }
-
-    /**
-     * Resets $GLOBALS['TSFE'] if it was previously changed
-     * by simulateFrontendEnvironment()
-     *
-     * @return void
-     * @see simulateFrontendEnvironment()
-     */
-    protected function resetFrontendEnvironment()
-    {
-        $GLOBALS['TSFE'] = $this->tsfeBackup;
-        if ($this->workingDirectoryBackup !== false) {
-            chdir($this->workingDirectoryBackup);
-        }
+        FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
     }
 }

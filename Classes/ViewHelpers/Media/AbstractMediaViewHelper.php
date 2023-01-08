@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -63,7 +64,7 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
         }
         if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-        } elseif ('BE' === TYPO3_MODE || false === (boolean) $arguments['relative']) {
+        } elseif (ContextUtility::isBackend() || false === (boolean) $arguments['relative']) {
             /** @var string $siteUrl */
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $src = $siteUrl . ltrim($src, '/');

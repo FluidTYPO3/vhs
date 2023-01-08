@@ -42,12 +42,6 @@ class FilesViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        AccessibleExtensionManagementUtility::setPackageManager(null);
-    }
-
     /**
      * @test
      */

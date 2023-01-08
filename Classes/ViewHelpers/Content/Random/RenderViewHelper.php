@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
 /**
@@ -34,7 +35,7 @@ class RenderViewHelper extends AbstractContentViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
         // Remove limit for getContentRecords()

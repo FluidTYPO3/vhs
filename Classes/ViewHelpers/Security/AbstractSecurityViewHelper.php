@@ -8,11 +8,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -28,12 +30,15 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     protected $frontendUserRepository;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
-     * @return void
-     */
-    public function injectFrontendUserRepository(FrontendUserRepository $frontendUserRepository)
+    public function __construct()
     {
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.0', '>=')
+            && !ExtensionManagementUtility::isLoaded('feuserextrafields')
+        ) {
+            throw new \Exception('On TYPO3v12, v:security.* requires EXT:feuserextrafields', 1670521759);
+        }
+        /** @var FrontendUserRepository $frontendUserRepository */
+        $frontendUserRepository = GeneralUtility::makeInstance(FrontendUserRepository::class);
         $this->frontendUserRepository = $frontendUserRepository;
         $query = $this->frontendUserRepository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -131,10 +136,8 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var static $proxy */
-        $proxy = $objectManager->get(static::class);
+        $proxy = GeneralUtility::makeInstance(static::class);
         $proxy->setArguments((array) $arguments);
         return $proxy->evaluateArguments();
     }
@@ -386,17 +389,17 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     protected function renderThenChild()
     {
-        if (true === $this->isFrontendContext()) {
+        if ($this->isFrontendContext()) {
             $GLOBALS['TSFE']->no_cache = 1;
         }
         return parent::renderThenChild();
     }
 
     /**
-     * @return boolean
+     * @codeCoverageIgnore
      */
-    protected function isFrontendContext()
+    protected function isFrontendContext(): bool
     {
-        return 'FE' === TYPO3_MODE;
+        return ContextUtility::isFrontend();
     }
 }

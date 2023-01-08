@@ -10,9 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -26,11 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 abstract class AbstractRenderViewHelper extends AbstractViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
@@ -39,15 +31,6 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      * @var boolean
      */
     protected $escapeOutput = false;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
@@ -103,13 +86,19 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     protected static function getPreparedClonedView(RenderingContextInterface $renderingContext)
     {
         $view = static::getPreparedView();
+        $newRenderingContext = $view->getRenderingContext();
         if (method_exists($renderingContext, 'getControllerContext')) {
             $controllerContext = clone $renderingContext->getControllerContext();
-            $view->setControllerContext($controllerContext);
+
             $view->setFormat($controllerContext->getRequest()->getFormat());
-            $view->getRenderingContext()->setViewHelperVariableContainer(
+            $newRenderingContext->setViewHelperVariableContainer(
                 $renderingContext->getViewHelperVariableContainer()
             );
+            if (method_exists($newRenderingContext, 'setControllerContext')) {
+                $newRenderingContext->setControllerContext($controllerContext);
+            }
+        } elseif (method_exists($renderingContext, 'getRequest') && method_exists($newRenderingContext, 'setRequest')) {
+            $newRenderingContext->setRequest($renderingContext->getRequest());
         }
         $variables = (array) $renderingContext->getVariableProvider()->getAll();
         $view->assignMultiple($variables);
@@ -117,12 +106,12 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
+     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface|\TYPO3Fluid\Fluid\View\ViewInterface $view
      * @param array $arguments
      * @throws \Exception
      * @return string
      */
-    protected static function renderView(ViewInterface $view, array $arguments)
+    protected static function renderView($view, array $arguments)
     {
         try {
             $content = $view->render();
@@ -141,17 +130,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     protected static function getPreparedView()
     {
         /** @var StandaloneView $view */
-        $view = static::getObjectManager()->get(StandaloneView::class);
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
         return $view;
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    protected static function getObjectManager()
-    {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        return $objectManager;
     }
 }

@@ -24,26 +24,26 @@ class FrontendSimulationUtility
      * This somewhat hacky work around is currently needed because the conv_case() and convCaseFirst() functions of
      * tslib_cObj rely on those variables to be set
      *
-     * @return mixed
+     * @return TypoScriptFrontendController|null
      */
     public static function simulateFrontendEnvironment()
     {
-        if ('BE' !== TYPO3_MODE) {
-            return;
+        if (!ContextUtility::isBackend()) {
+            return null;
         }
         $tsfeBackup = $GLOBALS['TSFE'] ?? null;
-        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE'] = (object) ['csConvObj' => null, 'renderCharset' => null];
         // preparing csConvObj
-        if (false === is_object($GLOBALS['TSFE']->csConvObj)) {
-            if (true === is_object($GLOBALS['LANG'])) {
+        if (!is_object($GLOBALS['TSFE']->csConvObj)) {
+            if (is_object($GLOBALS['LANG']) && property_exists($GLOBALS['LANG'], 'csConvObj')) {
                 $GLOBALS['TSFE']->csConvObj = $GLOBALS['LANG']->csConvObj;
             } else {
                 $GLOBALS['TSFE']->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
             }
         }
         // preparing renderCharset
-        if (false === is_object($GLOBALS['TSFE']->renderCharset)) {
-            if (true === is_object($GLOBALS['LANG'])) {
+        if (!is_object($GLOBALS['TSFE']->renderCharset)) {
+            if (is_object($GLOBALS['LANG']) && property_exists($GLOBALS['LANG'], 'charSet')) {
                 $GLOBALS['TSFE']->renderCharset = $GLOBALS['LANG']->charSet;
             } else {
                 $GLOBALS['TSFE']->renderCharset = 'utf-8';
@@ -61,7 +61,7 @@ class FrontendSimulationUtility
      */
     public static function resetFrontendEnvironment($tsfeBackup)
     {
-        if ('BE' !== TYPO3_MODE) {
+        if (!ContextUtility::isBackend()) {
             return;
         }
         $GLOBALS['TSFE'] = $tsfeBackup;

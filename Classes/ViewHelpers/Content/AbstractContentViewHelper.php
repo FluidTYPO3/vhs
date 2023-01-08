@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -265,9 +265,9 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if ($limit) {
             $queryBuilder->setMaxResults((integer) $limit);
         }
-        /** @var Statement $result */
+        /** @var Result $result */
         $result = $queryBuilder->execute();
-        return $result->fetchAll();
+        return $result->fetchAllAssociative();
     }
 
     /**

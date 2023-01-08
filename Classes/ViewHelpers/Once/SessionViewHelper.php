@@ -49,7 +49,7 @@ class SessionViewHelper extends AbstractOnceViewHelper
     protected static function storeIdentifier(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
-        $index = static::class;
+        $index = self::class;
         if (!is_array($_SESSION[$index] ?? false)) {
             $_SESSION[$index] = [];
         }
@@ -63,7 +63,7 @@ class SessionViewHelper extends AbstractOnceViewHelper
     protected static function assertShouldSkip(array $arguments)
     {
         $identifier = static::getIdentifier($arguments);
-        $index = static::class;
+        $index = self::class;
         return isset($_SESSION[$index][$identifier]);
     }
 
@@ -74,9 +74,9 @@ class SessionViewHelper extends AbstractOnceViewHelper
     protected static function removeIfExpired(array $arguments)
     {
         $id = static::getIdentifier($arguments);
-        $index = static::class;
-        $existsInSession = (boolean) (true === isset($_SESSION[$index]) && true === isset($_SESSION[$index][$id]));
-        if (true === $existsInSession && time() - $arguments['ttl'] >= $_SESSION[$index][$id]) {
+        $index = self::class;
+        $existsInSession = isset($_SESSION[$index], $_SESSION[$index][$id]);
+        if ($existsInSession && time() - $arguments['ttl'] >= $_SESSION[$index][$id]) {
             unset($_SESSION[$index][$id]);
         }
     }

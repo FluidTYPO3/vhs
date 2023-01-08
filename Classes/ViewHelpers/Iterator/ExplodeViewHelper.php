@@ -75,9 +75,10 @@ class ExplodeViewHelper extends AbstractViewHelper
         if (empty($arguments['as'])) {
             $content = $content ?? $renderChildrenClosure();
         }
-        $glue = $arguments['glue'];
+        /** @var string&non-empty-string $glue */
+        $glue = (string) $arguments['glue'];
         $limit = isset($arguments['limit']) ? $arguments['limit'] : PHP_INT_MAX;
-        $output = explode($glue, $content, $limit);
+        $output = explode($glue, (string) $content, $limit);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $arguments['as'],

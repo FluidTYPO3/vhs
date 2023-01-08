@@ -8,10 +8,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -134,9 +137,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             return null;
         }
 
-        if ('BE' === TYPO3_MODE) {
-            $this->simulateFrontendEnvironment();
-        }
+        $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         $setup = [
             'width' => $this->arguments['width'],
@@ -180,9 +181,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             ];
         }
 
-        if ('BE' === TYPO3_MODE) {
-            $this->resetFrontendEnvironment();
-        }
+        FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
         return $images;
     }
@@ -206,7 +205,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         /** @var TemplateService $template */
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = false;
-        if (version_compare(TYPO3_version, '9.4', '<')) {
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.4', '<')) {
             $template->init();
         }
         if (property_exists($template, 'getFileName_backPath')) {
@@ -242,7 +241,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     {
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $source = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;
-        } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
+        } elseif (ContextUtility::isBackend() || false === (boolean) $this->arguments['relative']) {
             /** @var string $siteUrl */
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $source = $siteUrl . $source;

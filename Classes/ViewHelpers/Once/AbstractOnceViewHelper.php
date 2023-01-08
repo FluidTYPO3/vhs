@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
@@ -155,7 +156,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      */
     protected function renderThenChild()
     {
-        if (TYPO3_MODE === 'FE') {
+        if (ContextUtility::isFrontend()) {
             $GLOBALS['TSFE']->no_cache = 1;
         }
         return parent::renderThenChild();

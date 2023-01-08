@@ -8,14 +8,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Driver\Result;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -121,7 +120,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             );
             $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
 
-            /** @var Statement $statement */
+            /** @var Result $statement */
             $statement = $queryBuilder
                 ->select('uid_foreign')
                 ->from('sys_category_record_mm')
@@ -132,8 +131,9 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                     $queryBuilder->expr()->in('uid_local', ':categories')
                 )
                 ->execute();
-            $rows = $statement->fetchAll();
+            $rows = $statement->fetchAllAssociative();
 
+            /** @var int[] $fileUids */
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));
 
             if (true === empty($identifier)) {
@@ -225,9 +225,6 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
      */
     private function getTablenameForSystemConfiguration()
     {
-        if (ExtensionManagementUtility::isLoaded('filemetadata') || version_compare(TYPO3_version, '8.0.0', '>=')) {
-            return 'sys_file_metadata';
-        }
-        return 'sys_file';
+        return 'sys_file_metadata';
     }
 }

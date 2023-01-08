@@ -13,7 +13,6 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
@@ -72,11 +71,6 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     protected $content;
 
     /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
      */
     protected $tagBuilder;
@@ -93,6 +87,12 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     protected $type = 'raw';
 
+    public function __construct()
+    {
+        /** @var TagBuilder $tagBuilder */
+        $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
+        $this->tagBuilder = $tagBuilder;
+    }
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
@@ -110,18 +110,6 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function injectAssetService(AssetService $assetService)
     {
         $this->assetService = $assetService;
-    }
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-        /** @var TagBuilder $tagBuilder */
-        $tagBuilder = $this->objectManager->get(TagBuilder::class);
-        $this->tagBuilder = $tagBuilder;
     }
 
     /**

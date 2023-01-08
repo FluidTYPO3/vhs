@@ -13,7 +13,6 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
@@ -21,6 +20,16 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  */
 class IsRequiredViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected function setUp(): void
+    {
+        $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
+            ->setMethods(['__destruct'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        parent::setUp();
+    }
+
     protected function getInstanceOfFoo()
     {
         if (version_compare(TYPO3_version, '9.3', '>=')) {
@@ -73,16 +82,5 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTestCase
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [ReflectionService::class, $this->getMockBuilder(ReflectionService::class)->setMethods(['__destruct'])->disableOriginalConstructor()->getMock()],
-            ]
-        );
-        return $instance;
     }
 }

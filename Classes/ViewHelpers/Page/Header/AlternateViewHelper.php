@@ -10,11 +10,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -31,11 +30,6 @@ class AlternateViewHelper extends AbstractViewHelper
     protected $pageService;
 
     /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
      */
     protected $tagBuilder;
@@ -49,17 +43,13 @@ class AlternateViewHelper extends AbstractViewHelper
         $this->pageService = $pageService;
     }
 
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    public function __construct()
     {
         /** @var TagBuilder $tagBuilder */
-        $tagBuilder = $objectManager->get(TagBuilder::class);
-        $this->objectManager = $objectManager;
+        $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
         $this->tagBuilder = $tagBuilder;
     }
+
 
     /**
      * @return void
@@ -94,7 +84,7 @@ class AlternateViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
 
@@ -115,10 +105,9 @@ class AlternateViewHelper extends AbstractViewHelper
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
         $addQueryString = $this->arguments['addQueryString'];
 
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
         $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setCreateAbsoluteUri(true)
@@ -130,7 +119,7 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $usePageRenderer = (1 !== (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']);
+        $usePageRenderer = (1 !== (integer) ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'] ?? 0));
         $output = '';
 
         foreach ($languages as $languageUid => $languageName) {

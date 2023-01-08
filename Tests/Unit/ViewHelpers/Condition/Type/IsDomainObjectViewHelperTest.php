@@ -22,6 +22,9 @@ class IsDomainObjectViewHelperTest extends AbstractViewHelperTestCase
      */
     public function rendersThenChildIfConditionMatched()
     {
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
         $arguments = [
             'then' => 'then',
             'else' => 'else',

@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Converts the provided PDF file into a PNG thumbnail and renders
@@ -88,7 +89,9 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         } else {
             $colorspace = 'RGB';
         }
-        $tempPath = (version_compare(TYPO3_version, '8.0', '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
+        $tempPath = (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '8.0', '>='))
+            ? 'typo3temp/assets/'
+            : 'typo3temp/';
         $path = GeneralUtility::getFileAbsFileName(
             $tempPath
             . 'vhs-pdf-'

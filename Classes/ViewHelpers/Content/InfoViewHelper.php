@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -93,7 +93,7 @@ class InfoViewHelper extends AbstractViewHelper
             $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
             $queryBuilder->createNamedParameter($contentUid, \PDO::PARAM_INT, ':uid');
 
-            /** @var Statement $result */
+            /** @var Result $result */
             $result = $queryBuilder
                 ->select($selectFields)
                 ->from('tt_content')
@@ -102,7 +102,7 @@ class InfoViewHelper extends AbstractViewHelper
                 )
                 ->execute();
             /** @var array|null $record */
-            $record = $result->fetch();
+            $record = $result->fetchAssociative();
 
             // Add the page overlay
             if (class_exists(LanguageAspect::class)) {

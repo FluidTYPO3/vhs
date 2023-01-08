@@ -11,10 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class RootlineViewHelperTest
@@ -25,7 +22,7 @@ class RootlineViewHelperTest extends AbstractViewHelperTestCase
 
     protected function setUp(): void
     {
-        $this->pageService = $this->getMockBuilder(PageService::class)
+        $this->pageService = $this->singletonInstances[PageService::class] = $this->getMockBuilder(PageService::class)
             ->setMethods(['getRootLine'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -57,12 +54,5 @@ class RootlineViewHelperTest extends AbstractViewHelperTestCase
         $rootLine = [['uid' => 1], ['uid' => 2]];
         $this->pageService->method('getRootLine')->willReturn($rootLine);
         $this->assertSame($rootLine, $this->executeViewHelper(['pageUid' => 0]));
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturn($this->pageService);
-        return $instance;
     }
 }

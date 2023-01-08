@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  FluidTYPO3\Vhs\ViewHelpers\:
+    resource: '../Classes/ViewHelpers/*'
+    public: true
+
+  FluidTYPO3\Vhs\:
+    resource: '../Classes/*'
+
+  FluidTYPO3\Vhs\Utility\DispatcherProxy:
+    autowire: true
+    autoconfigure: true
+    public: true

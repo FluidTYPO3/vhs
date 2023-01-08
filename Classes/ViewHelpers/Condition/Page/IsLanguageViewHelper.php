@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -69,7 +69,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
 
             $queryBuilder->createNamedParameter($language, \PDO::PARAM_STR, ':title');
 
-            /** @var Statement $result */
+            /** @var Result $result */
             $result = $queryBuilder
                 ->select('uid')
                 ->from('sys_language')
@@ -77,7 +77,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
                     $queryBuilder->expr()->eq('title', ':title')
                 )
                 ->execute();
-            $row = $result->fetch();
+            $row = $result->fetchAssociative();
 
             if (is_array($row)) {
                 $languageUid = intval($row['uid']);

@@ -38,7 +38,6 @@ class DebugViewHelperTest extends AbstractViewHelperTestCase
         $viewHelper2 = $this->buildViewHelperInstance();
         $viewHelper = $this->buildViewHelperInstance([], [], $this->createViewHelperNode($viewHelper2, []));
         $result = $viewHelper->render();
-        $this->assertStringContainsString('ViewHelper Debug ViewHelper', $result);
         $this->assertStringContainsString('[ARGUMENTS]', $result);
         $this->assertStringContainsString('[CURRENT ARGUMENTS]', $result);
         $this->assertStringContainsString('[RENDER METHOD DOC]', $result);

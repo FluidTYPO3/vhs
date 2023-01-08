@@ -17,9 +17,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -49,11 +46,6 @@ class AssetService implements SingletonInterface
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var array
      */
     protected static $settingsCache = null;
@@ -75,15 +67,6 @@ class AssetService implements SingletonInterface
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
     }
 
     /**
@@ -109,14 +92,7 @@ class AssetService implements SingletonInterface
         if ($content === null) {
             $content = &$caller->content;
         }
-        if (false === $this->objectManager instanceof ObjectManager) {
-            /** @var ObjectManager $objectManager */
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $this->objectManager = $objectManager;
-            /** @var ConfigurationManagerInterface $configurationManager */
-            $configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
-            $this->configurationManager = $configurationManager;
-        }
+
         $settings = $this->getSettings();
         $cached = (boolean) $cached;
         $buildTypoScriptAssets = (!static::$typoScriptAssetsBuilt && ($cached || $GLOBALS['TSFE']->no_cache));
@@ -419,7 +395,7 @@ class AssetService implements SingletonInterface
         array $standaloneAssetSettings = null
     ) {
         /** @var TagBuilder $tagBuilder */
-        $tagBuilder = $this->objectManager->get(TagBuilder::class);
+        $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
         if (null === $file && true === empty($content)) {
             $content = '<!-- Empty tag content -->';
         }
@@ -591,7 +567,7 @@ class AssetService implements SingletonInterface
         }
         $variables = GeneralUtility::removeDotsFromTS($variables);
         /** @var StandaloneView $view */
-        $view = $this->objectManager->get(StandaloneView::class);
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplateSource($contents);
         $view->assignMultiple($variables);
         $content = $view->render();
@@ -808,9 +784,11 @@ class AssetService implements SingletonInterface
      */
     protected function writeFile($file, $contents)
     {
-        /** @var Dispatcher $signalSlotDispatcher */
+        ///** @var Dispatcher $signalSlotDispatcher */
+        /*
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $signalSlotDispatcher->dispatch(__CLASS__, static::ASSET_SIGNAL, [&$file, &$contents]);
+        */
 
         GeneralUtility::writeFile($file, $contents, true);
     }

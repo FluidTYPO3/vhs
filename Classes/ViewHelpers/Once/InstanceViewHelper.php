@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+
 /**
  * Once: Instance
  *
@@ -32,10 +34,12 @@ class InstanceViewHelper extends AbstractOnceViewHelper
      */
     protected static function getIdentifier(array $arguments)
     {
-        if (true === isset($arguments['identifier']) && null !== $arguments['identifier']) {
+        if (isset($arguments['identifier']) && $arguments['identifier']) {
             return $arguments['identifier'];
         }
-        $request = static::$currentRenderingContext->getControllerContext()->getRequest();
+
+        $request = RequestResolver::resolveRequestFromRenderingContext(static::$currentRenderingContext);
+
         $identifier = implode('_', [
             $request->getControllerActionName(),
             $request->getControllerName(),

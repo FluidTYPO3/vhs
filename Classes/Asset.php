@@ -12,7 +12,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
@@ -166,10 +165,8 @@ class Asset implements AssetInterface
      */
     public static function getInstance()
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var Asset $asset */
-        $asset = $objectManager->get(Asset::class);
+        $asset = GeneralUtility::makeInstance(Asset::class);
         return $asset;
     }
 
