@@ -15,7 +15,6 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
@@ -28,6 +27,10 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
     {
         $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
         $this->singletonInstances[FileRepository::class] = $this->getMockBuilder(FileRepository::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
+            ->setMethods(['__destruct'])
+            ->disableOriginalConstructor()
+            ->getMock();
 
         parent::setUp();
     }
@@ -87,16 +90,5 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [ReflectionService::class, $this->getMockBuilder(ReflectionService::class)->setMethods(['__destruct'])->disableOriginalConstructor()->getMock()],
-            ]
-        );
-        return $instance;
     }
 }

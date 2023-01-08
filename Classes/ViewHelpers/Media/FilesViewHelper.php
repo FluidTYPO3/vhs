@@ -80,7 +80,7 @@ class FilesViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $path = $renderChildrenClosure();
+        $path = (string) $renderChildrenClosure();
 
         $extensionList = $arguments['extensionList'];
         $prependPath = $arguments['prependPath'];

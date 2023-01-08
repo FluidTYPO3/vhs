@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -77,7 +78,7 @@ class TitleViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return;
         }
         if (false === empty($arguments['title'])) {

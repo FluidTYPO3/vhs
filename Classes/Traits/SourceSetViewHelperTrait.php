@@ -1,6 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Traits;
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -30,10 +31,7 @@ trait SourceSetViewHelperTrait
     {
         $srcsets = $this->getSourceSetWidths();
 
-        $tsfeBackup = null;
-        if ('BE' === TYPO3_MODE) {
-            $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
-        }
+        $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         $format = $this->arguments['format'];
         $quality = $this->arguments['quality'];
@@ -65,9 +63,7 @@ trait SourceSetViewHelperTrait
 
         $tag->addAttribute('srcset', implode(',', $srcsetVariants));
 
-        if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
-        }
+        FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
         return $imageSources;
     }
@@ -100,7 +96,7 @@ trait SourceSetViewHelperTrait
             $setup['params'] .= ' -quality ' . $quality;
         }
 
-        if ('BE' === TYPO3_MODE && '../' === substr($src, 0, 3)) {
+        if (ContextUtility::isBackend() && '../' === substr($src, 0, 3)) {
             $src = substr($src, 3);
         }
         return (array) $this->contentObject->getImgResource($src, $setup);

@@ -26,7 +26,12 @@ class TidyViewHelperTest extends AbstractViewHelperTestCase
             // Note: CI setup has tidy on some but not all variants. We can only test for exceptions on those that don't.
             $this->expectExceptionCode(1352059753);
         }
-        TidyViewHelper::renderStatic(['content' => 'test', 'encoding' => 'utf8'], function () {}, $this->renderingContext);
+        $output = (string) TidyViewHelper::renderStatic(
+            ['content' => 'test', 'encoding' => 'utf8'],
+            function () {},
+            $this->renderingContext
+        );
+        self::assertNotSame('test', $output);
     }
 
     /**
@@ -35,7 +40,7 @@ class TidyViewHelperTest extends AbstractViewHelperTestCase
     public function canTidySource()
     {
         $instance = $this->createInstance();
-        if (false === class_exists('tidy')) {
+        if (!class_exists('tidy')) {
             $this->markTestSkipped('No tidy support');
             return;
         }

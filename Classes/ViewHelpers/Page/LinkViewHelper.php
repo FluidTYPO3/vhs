@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -233,7 +234,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->renderingContext;
 
-        $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($this->arguments['pageType'])

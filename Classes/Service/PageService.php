@@ -12,6 +12,7 @@ namespace FluidTYPO3\Vhs\Service;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -205,9 +206,21 @@ class PageService implements SingletonInterface
                 $languageUid = $GLOBALS['TSFE']->sys_language_uid;
             }
         }
+
         $l18nCfg = true === isset($pageRecord['l18n_cfg']) ? $pageRecord['l18n_cfg'] : 0;
-        $hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
-        $hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
+        if (class_exists(PageTranslationVisibility::class)) {
+            /** @var PageTranslationVisibility $visibilityBitSet */
+            $visibilityBitSet = GeneralUtility::makeInstance(
+                PageTranslationVisibility::class,
+                $pageRecord['l18n_cfg'] ?? 0
+            );
+            $hideIfNotTranslated = $visibilityBitSet->shouldHideTranslationIfNoTranslatedRecordExists();
+            $hideIfDefaultLanguage = $visibilityBitSet->shouldBeHiddenInDefaultLanguage();
+        } else {
+            $hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
+            $hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
+        }
+
         $pageOverlay = [];
         if (0 !== $languageUid) {
             $pageOverlay = $this->getPageRepository()->getPageOverlay($pageUid, $languageUid);
@@ -225,10 +238,7 @@ class PageService implements SingletonInterface
      */
     public function getPageRepository()
     {
-        if (TYPO3_MODE === 'BE') {
-            return $this->getPageRepositoryForBackendContext();
-        }
-        return clone $GLOBALS['TSFE']->sys_page;
+        return clone ($GLOBALS['TSFE']->sys_page ?? $this->getPageRepositoryForBackendContext());
     }
 
     /**
@@ -244,9 +254,6 @@ class PageService implements SingletonInterface
                     ? \TYPO3\CMS\Core\Domain\Repository\PageRepository::class
                     : \TYPO3\CMS\Frontend\Page\PageRepository::class
             );
-            if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.5', '<')) {
-                $instance->init(TYPO3_MODE === 'BE');
-            }
         }
         return $instance;
     }

@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -55,8 +56,8 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
         if (isset($arguments['extensionName']) && !empty($arguments['extensionName'])) {
             return $arguments['extensionName'];
         }
-        $request = $renderingContext->getControllerContext()->getRequest();
-        $extensionName = $request->getControllerExtensionName();
+        $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+            ->getControllerExtensionName();
         if (empty($extensionName)) {
             throw new \RuntimeException(
                 'Unable to read extension name from ControllerContext and value not manually specified',

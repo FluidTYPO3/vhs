@@ -49,7 +49,7 @@ class AbsoluteViewHelper extends AbstractExtensionViewHelper
     ) {
         return ExtensionManagementUtility::extPath(
             static::getExtensionKey($arguments, $renderingContext),
-            isset($arguments['path']) ? $arguments['path'] : null
+            (string) ($arguments['path'] ?? '')
         );
     }
 }

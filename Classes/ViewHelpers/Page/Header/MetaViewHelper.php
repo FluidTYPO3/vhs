@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -52,7 +53,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
         $content = $this->arguments['content'];

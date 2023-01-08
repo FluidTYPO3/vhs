@@ -37,12 +37,6 @@ class RelativeViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        AccessibleExtensionManagementUtility::setPackageManager(null);
-    }
-
     /**
      * @test
      */
@@ -54,28 +48,5 @@ class RelativeViewHelperTest extends AbstractViewHelperTestCase
         $extPath = PathUtility::stripPathSitePrefix($extPath);
 
         $this->assertSame($extPath, $test);
-    }
-
-    /**
-     * @test
-     */
-    public function rendersUsingControllerContext()
-    {
-        $this->controllerContext->getRequest()->setControllerExtensionName('Vhs');
-        $test = $this->executeViewHelper([], [], null, 'Vhs');
-
-        $extPath = ExtensionManagementUtility::extPath('vhs');
-        $extPath = PathUtility::stripPathSitePrefix($extPath);
-
-        $this->assertSame($extPath, $test);
-    }
-
-    /**
-     * @test
-     */
-    public function throwsErrorWhenUnableToDetectExtensionName()
-    {
-        $this->expectExceptionCode(1364167519);
-        $this->executeViewHelper([], [], null, null, 'FakePlugin');
     }
 }

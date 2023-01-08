@@ -56,10 +56,7 @@ class CaseViewHelper extends AbstractViewHelper
         $string = $renderChildrenClosure();
         $case = $arguments['case'];
 
-        $tsfeBackup = null;
-        if ('BE' === TYPO3_MODE) {
-            $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
-        }
+        $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         switch ($case) {
             case static::CASE_LOWER:
@@ -95,9 +92,9 @@ class CaseViewHelper extends AbstractViewHelper
             default:
                 break;
         }
-        if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
-        }
+
+        FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
+
         return $string;
     }
 }

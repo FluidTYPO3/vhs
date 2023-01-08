@@ -9,12 +9,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -98,20 +97,11 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected function getResolvedExtensionName()
     {
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
-        $controllerContext = $renderingContext->getControllerContext();
         $extensionName = $this->arguments['extensionName'];
 
-        if ((null === $extensionName) && (true === $controllerContext instanceof ControllerContext)) {
-            $request = $controllerContext->getRequest();
-            $extensionName = $request->getControllerExtensionName();
-        }
-
-        if (true === empty($extensionName)) {
-            ErrorUtility::throwViewHelperException(
-                'Cannot read extension name from ControllerContext and value not manually specified'
-            );
+        if (empty($extensionName)) {
+            $extensionName = RequestResolver::resolveRequestFromRenderingContext($this->renderingContext)
+                ->getControllerExtensionName();
         }
 
         return $extensionName;
@@ -202,7 +192,7 @@ class LanguageViewHelper extends AbstractViewHelper
     {
         $language = 'default';
 
-        if ('FE' === TYPO3_MODE) {
+        if (ContextUtility::isFrontend()) {
             $language = $GLOBALS['TSFE']->lang;
         } elseif ($GLOBALS['LANG'] instanceof LanguageService) {
             $language = $GLOBALS['LANG']->lang;

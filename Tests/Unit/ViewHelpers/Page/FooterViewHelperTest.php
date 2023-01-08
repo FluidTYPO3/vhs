@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * Class FooterViewHelperTest
@@ -20,6 +21,10 @@ class FooterViewHelperTest extends AbstractViewHelperTestCase
 {
     protected function setUp(): void
     {
+        $this->singletonInstances[PageRenderer::class] = $this->getMockBuilder(PageRenderer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         parent::setUp();
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
@@ -32,12 +37,6 @@ class FooterViewHelperTest extends AbstractViewHelperTestCase
             ]
         );
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        AccessibleExtensionManagementUtility::setPackageManager(null);
     }
 
     public function testRender()

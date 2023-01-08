@@ -9,10 +9,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -63,7 +63,7 @@ class LanguageViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
 
@@ -114,10 +114,8 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected static function getPageService()
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var PageService $pageService */
-        $pageService = $objectManager->get(PageService::class);
+        $pageService = GeneralUtility::makeInstance(PageService::class);
         return static::$pageService = $pageService;
     }
 }

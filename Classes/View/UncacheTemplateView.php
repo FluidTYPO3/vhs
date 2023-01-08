@@ -10,12 +10,12 @@ namespace FluidTYPO3\Vhs\View;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
@@ -26,11 +26,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class UncacheTemplateView extends TemplateView
 {
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
     /**
      * @var TemplateParser|\TYPO3Fluid\Fluid\Core\Parser\TemplateParser
      */
@@ -50,25 +45,6 @@ class UncacheTemplateView extends TemplateView
     }
 
     /**
-     * @return void
-     */
-    public function __wakeup()
-    {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * @param string $postUserFunc
      * @param array $conf
      * @param string $content
@@ -79,34 +55,66 @@ class UncacheTemplateView extends TemplateView
         $partial = $conf['partial'] ?? null;
         $section = $conf['section'] ?? null;
         $arguments = $conf['arguments'] ?? [];
-        /** @var ControllerContext $controllerContext */
-        $controllerContext = $this->objectManager->get(ControllerContext::class);
-        /** @var Request $request */
-        $request = $this->objectManager->get(Request::class);
-        $controllerContext->setRequest($request);
-
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $uriBuilder->setRequest($request);
-        $controllerContext->setUriBuilder($uriBuilder);
-
-        if ($conf['controllerContext'] ?? false) {
-            $request->setControllerActionName($conf['controllerContext']['actionName']);
-            $request->setControllerExtensionName($conf['controllerContext']['extensionName']);
-            $request->setControllerName($conf['controllerContext']['controllerName']);
-            $request->setControllerObjectName($conf['controllerContext']['controllerObjectName']);
-            $request->setPluginName($conf['controllerContext']['pluginName']);
-            $request->setFormat($conf['controllerContext']['format']);
-        }
+        $parameters = $conf['controllerContext'] ?? null;
 
         if (empty($partial)) {
             return '';
         }
 
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->objectManager->get(RenderingContext::class);
-        $this->prepareContextsForUncachedRendering($renderingContext, $controllerContext);
-        $this->setControllerContext($controllerContext);
+        if (class_exists(ExtbaseRequestParameters::class)) {
+            /** @var RenderingContextFactory $renderingContextFactory */
+            $renderingContextFactory = GeneralUtility::makeInstance(RenderingContextFactory::class);
+            /** @var RenderingContext $renderingContext */
+            $renderingContext = $renderingContextFactory->create();
+
+            if (method_exists($renderingContext, 'setRequest')) {
+                $renderingContext->setRequest(
+                    new Request($GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters))
+                );
+            }
+        } else {
+            /** @var ControllerContext $controllerContext */
+            $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
+            /** @var Request $request */
+            $request = GeneralUtility::makeInstance(Request::class);
+            $controllerContext->setRequest($request);
+
+            /** @var UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $uriBuilder->setRequest($request);
+            $controllerContext->setUriBuilder($uriBuilder);
+
+            if ($parameters) {
+                if (method_exists($request, 'setControllerActionName')) {
+                    $request->setControllerActionName($parameters['actionName']);
+                }
+
+                if (method_exists($request, 'setControllerExtensionName')) {
+                    $request->setControllerExtensionName($parameters['extensionName']);
+                }
+
+                if (method_exists($request, 'setControllerName')) {
+                    $request->setControllerName($parameters['controllerName']);
+                }
+
+                if (method_exists($request, 'setControllerObjectName')) {
+                    $request->setControllerObjectName($parameters['controllerObjectName']);
+                }
+
+                if (method_exists($request, 'setPluginName')) {
+                    $request->setPluginName($parameters['pluginName']);
+                }
+
+                if (method_exists($request, 'setFormat')) {
+                    $request->setFormat($parameters['format']);
+                }
+            }
+
+            /** @var RenderingContext $renderingContext */
+            $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
+        }
+
+        $this->prepareContextsForUncachedRendering($renderingContext);
         if (!empty($conf['partialRootPaths'])) {
             $templatePaths = $renderingContext->getTemplatePaths();
             $templatePaths->setPartialRootPaths($conf['partialRootPaths']);
@@ -114,17 +122,8 @@ class UncacheTemplateView extends TemplateView
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
 
-    /**
-     * @param RenderingContextInterface $renderingContext
-     * @param ControllerContext $controllerContext
-     * @return void
-     */
-    protected function prepareContextsForUncachedRendering(
-        RenderingContextInterface $renderingContext,
-        ControllerContext $controllerContext
-    ) {
-        /** @var RenderingContext $renderingContext */
-        $renderingContext->setControllerContext($controllerContext);
+    protected function prepareContextsForUncachedRendering(RenderingContextInterface $renderingContext): void
+    {
         $this->setRenderingContext($renderingContext);
         $this->templateParser = $renderingContext->getTemplateParser();
         $this->templateCompiler = $renderingContext->getTemplateCompiler();

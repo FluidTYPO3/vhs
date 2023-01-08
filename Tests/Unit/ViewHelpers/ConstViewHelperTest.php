@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 class ConstViewHelperTest extends AbstractViewHelperTestCase
 {

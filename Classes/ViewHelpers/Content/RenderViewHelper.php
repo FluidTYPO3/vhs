@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 
 /**
  * ViewHelper used to render content elements in Fluid templates.
@@ -44,7 +45,7 @@ class RenderViewHelper extends AbstractContentViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
 

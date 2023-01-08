@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
+
 /**
  * ViewHelper used to render get content elements in Fluid templates
  */
@@ -30,7 +32,7 @@ class GetViewHelper extends AbstractContentViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
         $contentRecords = $this->getContentRecords();

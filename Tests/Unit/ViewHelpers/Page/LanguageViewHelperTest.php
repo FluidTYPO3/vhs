@@ -9,10 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyTypoScriptFrontendController;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class LanguageViewHelperTest
@@ -23,10 +22,14 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
 
     protected function setUp(): void
     {
-        $this->pageService = $this->getMockBuilder(PageService::class)->setMethods(['hidePageForLanguageUid'])->disableOriginalConstructor()->getMock();
+        $this->pageService = $this->singletonInstances[PageService::class] = $this->getMockBuilder(PageService::class)
+            ->setMethods(['hidePageForLanguageUid'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         parent::setUp();
 
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['TSFE'] = new DummyTypoScriptFrontendController();
     }
 
     protected function tearDown(): void
@@ -40,16 +43,5 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
     {
         $this->pageService->method('hidePageForLanguageUid')->willReturn(false);
         $this->assertEmpty($this->executeViewHelper());
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [PageService::class, $this->pageService],
-            ]
-        );
-        return $instance;
     }
 }

@@ -8,9 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\View\UncacheContentObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -67,11 +68,13 @@ class UncacheViewHelper extends AbstractViewHelper
         $substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
         $content = '<!--' . $substKey . '-->';
 
-        $controllerContextData = [];
-        $controllerContext = $renderingContext->getControllerContext();
-        if ($controllerContext instanceof ControllerContext) {
-            $request = $controllerContext->getRequest();
-            $controllerContextData = [
+        $request = RequestResolver::resolveRequestFromRenderingContext($renderingContext);
+
+        if (class_exists(ExtbaseRequestParameters::class) && method_exists($request, 'getAttribute')) {
+            /** @var ExtbaseRequestParameters $extbaseParameters */
+            $extbaseParameters = $request->getAttribute('extbase');
+        } else {
+            $extbaseParameters = [
                 'actionName' => $request->getControllerActionName(),
                 'extensionName' => $request->getControllerExtensionName(),
                 'controllerName' => $request->getControllerName(),
@@ -90,7 +93,7 @@ class UncacheViewHelper extends AbstractViewHelper
                 'section' => $arguments['section'],
                 'arguments' => $partialArguments,
                 'partialRootPaths' => $renderingContext->getTemplatePaths()->getPartialRootPaths(),
-                'controllerContext' => $controllerContextData,
+                'controllerContext' => $extbaseParameters,
             ],
             'content' => $content
         ];

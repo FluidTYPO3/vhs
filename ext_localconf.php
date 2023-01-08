@@ -1,7 +1,4 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
 
 if (class_exists(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)) {
     $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs'] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(

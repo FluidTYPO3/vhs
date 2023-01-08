@@ -13,7 +13,6 @@ use FluidTYPO3\Flux\Form\Field\Custom;
 use FluidTYPO3\Flux\Service\FluxService;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -22,8 +21,6 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3Fluid\Fluid\Core\Parser\Interceptor\Escape;
 
 /**
@@ -33,7 +30,6 @@ abstract class AbstractTestCase extends TestCase
 {
     private array $singletonInstancesBackup = [];
     protected array $singletonInstances = [];
-    protected ?ObjectManagerInterface $objectManager;
 
     /**
      * @return void
@@ -86,14 +82,7 @@ abstract class AbstractTestCase extends TestCase
             'backend' => TransientMemoryBackend::class,
         ];
 
-        $this->objectManager = $this->createObjectManagerInstance();
-
         $this->singletonInstancesBackup = GeneralUtility::getSingletonInstances();
-
-        $this->singletonInstances[ObjectManagerInterface::class] =
-            $this->singletonInstances[ObjectManagerInterface::class] ?? $this->objectManager;
-        $this->singletonInstances[ObjectManager::class] =
-            $this->singletonInstances[ObjectManager::class] ?? $this->objectManager;
 
         foreach ($this->singletonInstances as $className => $instance) {
             GeneralUtility::setSingletonInstance($className, $instance);
@@ -278,13 +267,5 @@ abstract class AbstractTestCase extends TestCase
     {
         $instanceClassName = $this->createInstanceClassName();
         return new $instanceClassName();
-    }
-
-    /**
-     * @return ObjectManagerInterface|MockObject
-     */
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        return $this->getMockBuilder(ObjectManager::class)->setMethods(['get'])->disableOriginalConstructor()->getMockForAbstractClass();
     }
 }

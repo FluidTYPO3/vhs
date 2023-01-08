@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -26,6 +26,15 @@ class OrViewHelperTest extends AbstractViewHelperTestCase
             ->getMock();
         $this->singletonInstances[LocalizationFactory::class]->method('getParsedData')->willReturn([]);
         $this->singletonInstances[ConfigurationManagerInterface::class] = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        if (class_exists(ObjectManager::class)) {
+            $this->singletonInstances[ObjectManager::class] = $this->getMockBuilder(ObjectManager::class)
+                ->setMethods(['get'])
+                ->disableOriginalConstructor()
+                ->getMock();
+            $this->singletonInstances[ObjectManager::class]->method('get')->willReturn(
+                $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()
+            );
+        }
 
         parent::setUp();
 
@@ -75,16 +84,5 @@ class OrViewHelperTest extends AbstractViewHelperTestCase
                 'LLL:notfound'
             ],
         ];
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [ConfigurationManagerInterface::class, $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()],
-            ]
-        );
-        return $instance;
     }
 }

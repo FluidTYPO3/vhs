@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -143,7 +143,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             return '';
         }
         /** @var ContentObjectRenderer $contentObject */
-        $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObject = $GLOBALS['TSFE']->cObj;
         $this->cObj = $contentObject;
         $this->tagName = $this->arguments['tagName'];
         $this->tag->setTagName($this->tagName);
@@ -528,7 +528,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getSystemLanguageUids()
     {
-        if (version_compare(TYPO3_version, '9.0', '<')) {
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.0', '<')) {
             $table = 'pages_language_overlay';
             $parentField = 'pid';
         } else {
@@ -540,7 +540,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
-        /** @var Statement $result */
+        /** @var Result $result */
         $result = $queryBuilder->select('sys_language_uid')
             ->from($table)
             ->where(
@@ -548,7 +548,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             )
             ->execute();
         /** @var array $rows */
-        $rows = $result->fetchAll();
+        $rows = $result->fetchAllAssociative();
 
         return array_column($rows, 'sys_language_uid');
     }

@@ -36,12 +36,6 @@ class IconViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        AccessibleExtensionManagementUtility::setPackageManager(null);
-    }
-
     /**
      * @test
      */
@@ -49,24 +43,5 @@ class IconViewHelperTest extends AbstractViewHelperTestCase
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs']);
         $this->assertSame(ExtensionManagementUtility::extPath('vhs', 'ext_icon.gif'), $test);
-    }
-
-    /**
-     * @test
-     */
-    public function rendersUsingControllerContext()
-    {
-        $this->controllerContext->getRequest()->setControllerExtensionName('Vhs');
-        $test = $this->executeViewHelper([], [], null, 'Vhs');
-        $this->assertSame(ExtensionManagementUtility::extPath('vhs', 'ext_icon.gif'), $test);
-    }
-
-    /**
-     * @test
-     */
-    public function throwsErrorWhenUnableToDetectExtensionName()
-    {
-        $this->expectExceptionCode(1364167519);
-        $this->executeViewHelper([], [], null, null, 'FakePlugin');
     }
 }

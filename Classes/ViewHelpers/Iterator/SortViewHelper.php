@@ -12,7 +12,6 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -173,16 +172,14 @@ class SortViewHelper extends AbstractViewHelper
      */
     protected static function sortObjectStorage($storage, $arguments)
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var ObjectStorage $temp */
-        $temp = $objectManager->get(ObjectStorage::class);
+        $temp = GeneralUtility::makeInstance(ObjectStorage::class);
         foreach ($storage as $item) {
             $temp->attach($item);
         }
         $sorted = static::sortArray($storage, $arguments);
         /** @var ObjectStorage $storage */
-        $storage = $objectManager->get(ObjectStorage::class);
+        $storage = GeneralUtility::makeInstance(ObjectStorage::class);
         foreach ($sorted as $item) {
             $storage->attach($item);
         }

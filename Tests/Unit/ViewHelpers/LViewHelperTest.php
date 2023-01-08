@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -27,19 +27,27 @@ class LViewHelperTest extends AbstractViewHelperTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->singletonInstances[LocalizationFactory::class]->method('getParsedData')->willReturn([]);
+        if (class_exists(ObjectManager::class)) {
+            $this->singletonInstances[ObjectManager::class] = $this->getMockBuilder(ObjectManager::class)
+                ->setMethods(['get'])
+                ->disableOriginalConstructor()
+                ->getMock();
+            $this->singletonInstances[ObjectManager::class]->method('get')->willReturn(
+                $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()
+            );
+        }
 
         parent::setUp();
 
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
-        $GLOBALS['TYPO3_REQUEST'] = null;
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        unset($GLOBALS['TSFE'], $GLOBALS['LANG'], $GLOBALS['TYPO3_REQUEST']);
+        unset($GLOBALS['TSFE'], $GLOBALS['LANG']);
     }
 
     public function testRender()
@@ -48,16 +56,5 @@ class LViewHelperTest extends AbstractViewHelperTestCase
             'key',
             $this->executeViewHelperUsingTagContent('key', ['extensionName' => 'Vhs'])
         );
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [ConfigurationManagerInterface::class, $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()],
-            ]
-        );
-        return $instance;
     }
 }

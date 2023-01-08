@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Driver\Result;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -208,10 +208,10 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             }
 
             // Execute
-            /** @var Statement $statement */
+            /** @var Result $statement */
             $statement = $queryBuilder->orderBy('sorting_foreign')->execute();
             /** @var array[] $references */
-            $references = $statement->fetchAll();
+            $references = $statement->fetchAllAssociative();
 
             $fileReferences = [];
 

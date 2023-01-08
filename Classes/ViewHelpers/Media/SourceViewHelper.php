@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -116,9 +117,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $imageSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_SRC);
         $treatIdAsRerefence = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
-        if ('BE' === TYPO3_MODE) {
-            $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
-        }
+        $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         $setup = [
             'width' => $this->arguments['width'],
@@ -141,15 +140,12 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             $setup['params'] .= ' -quality ' . $quality;
         }
 
-        if (is_string($imageSource) && 'BE' === TYPO3_MODE && '../' === mb_substr($imageSource, 0, 3)) {
+        if (is_string($imageSource) && ContextUtility::isBackend() && '../' === mb_substr($imageSource, 0, 3)) {
             $imageSource = mb_substr($imageSource, 3);
         }
         $result = $this->contentObject->getImgResource($imageSource, $setup);
 
-        $tsfeBackup = null;
-        if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
-        }
+        FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
         $src = $this->preprocessSourceUri(rawurldecode($result[3] ?? ''));
 
@@ -174,10 +170,10 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     {
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-        } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
+        } elseif (ContextUtility::isBackend() || false === (boolean) $this->arguments['relative']) {
             if (GeneralUtility::isValidUrl($src)) {
                 $src = ltrim($src, '/');
-            } elseif (TYPO3_MODE === 'FE') {
+            } elseif (ContextUtility::isFrontend()) {
                 $src = $GLOBALS['TSFE']->absRefPrefix . ltrim($src, '/');
             } else {
                 /** @var string $siteUrl */

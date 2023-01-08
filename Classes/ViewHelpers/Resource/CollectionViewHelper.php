@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ### Collection ViewHelper
@@ -24,21 +25,6 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
  */
 class CollectionViewHelper extends AbstractResourceViewHelper
 {
-
-    /**
-     * @var RecordCollectionRepository
-     */
-    protected $collectionRepository;
-
-    /**
-     * @param RecordCollectionRepository $collectionRepository
-     * @return void
-     */
-    public function injectCollectionRepository(RecordCollectionRepository $collectionRepository)
-    {
-        $this->collectionRepository = $collectionRepository;
-    }
-
     /**
      * @return void
      */
@@ -56,8 +42,13 @@ class CollectionViewHelper extends AbstractResourceViewHelper
     {
         $uid = $this->arguments['uid'];
         if (null !== $uid) {
+            if (!class_exists(RecordCollectionRepository::class)) {
+                throw new \Exception('On TYPO3v12, v:resource.collection requires EXT:legacy_collections', 1670521759);
+            }
+            /** @var RecordCollectionRepository $collectionRepository */
+            $collectionRepository = GeneralUtility::makeInstance(RecordCollectionRepository::class);
             /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
-            $collection = $this->collectionRepository->findByUid($uid);
+            $collection = $collectionRepository->findByUid($uid);
             if (null !== $collection) {
                 $collection->loadContents();
             }

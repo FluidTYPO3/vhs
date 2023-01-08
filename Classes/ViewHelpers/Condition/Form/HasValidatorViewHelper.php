@@ -9,9 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Form;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
@@ -74,10 +72,8 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
             return false;
         }
 
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var ReflectionService $reflectionService */
-        $reflectionService = $objectManager->get(ReflectionService::class);
+        $reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
 
         $property = $arguments['property'];
         $validatorName = $arguments['validatorName'] ?? null;

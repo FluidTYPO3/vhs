@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -72,7 +73,8 @@ class OrViewHelper extends AbstractViewHelper
         } elseif (0 === strpos($alternative, 'LLL:')) {
             $extensionName = $arguments['extensionName'] ?? null;
             if (null === $extensionName) {
-                $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+                $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+                    ->getControllerExtensionName();
             }
             $translated = LocalizationUtility::translate(substr($alternative, 4), $extensionName ?: 'core', $arguments);
             if (null !== $translated) {

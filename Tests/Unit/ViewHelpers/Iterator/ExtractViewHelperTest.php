@@ -80,6 +80,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
      */
     public function nestedStructures()
     {
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
         $structures = [
             // structure, key, expected
             'simple indexed_search searchWords array' => [

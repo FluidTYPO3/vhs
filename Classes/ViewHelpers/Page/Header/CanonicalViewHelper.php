@@ -9,7 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -52,7 +54,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
 
@@ -69,15 +71,17 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
             );
         }
 
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
-        $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
         $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setCreateAbsoluteUri(true)
             ->setAddQueryString(true)
-            ->setAddQueryStringMethod($queryStringMethod)
             ->setArgumentsToBeExcludedFromQueryString(['id']);
+        if (method_exists($uriBuilder, 'setAddQueryStringMethod')) {
+            $uriBuilder->setAddQueryStringMethod($queryStringMethod);
+        }
         if (method_exists($uriBuilder, 'setUseCacheHash')) {
             $uriBuilder->setUseCacheHash(true);
         }

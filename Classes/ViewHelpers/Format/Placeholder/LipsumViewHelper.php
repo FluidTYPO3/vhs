@@ -9,8 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -172,10 +172,8 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
      */
     protected static function getContentObject()
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         /** @var ContentObjectRenderer $contentObject */
         $contentObject = $configurationManager->getContentObject();
         return $contentObject;
