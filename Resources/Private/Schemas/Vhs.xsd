@@ -37,7 +37,6 @@ features shared by every Asset type:
 > Note: there are no static TypoScript templates for VHS but
 > you will find a complete list in the README.md file in the
 > root of the extension folder.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -152,7 +151,6 @@ by the `build()` method.
 ```
 
 See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -262,7 +260,6 @@ See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
 
 Allows inserting a `<script>` Asset. Settings specify
 where to insert the Asset and how to treat it.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -362,7 +359,6 @@ where to insert the Asset and how to treat it.
 
 Allows inserting a `<link>` or `<style>` Asset. Settings
 specify where to insert the Asset and how to treat it.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -1119,7 +1115,6 @@ provided value is array.
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is a boolean.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2149,7 +2144,6 @@ The class itself can contain any number of protected
 properties, but only those which have a getter method
 can be accessed by Fluid and as therefore we only dump
 those properties which you **can in fact access**.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2676,7 +2670,7 @@ result in fatal JavaScript errors in the client browser.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="recursionMarker" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Any value - string, integer, boolean, object or NULL - inserted instead of recursive instances of objects]]></xsd:documentation>
+          <xsd:documentation><![CDATA[String or null - inserted instead of recursive instances of objects]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="dateTimeFormat" default="NULL">
@@ -8388,7 +8382,6 @@ well as the "then" and "else" arguments.
   <xsd:element name="page.footer">
     <xsd:annotation>
       <xsd:documentation><![CDATA[ViewHelper used to place header blocks in document footer
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -8475,7 +8468,6 @@ well as the "then" and "else" arguments.
   <xsd:element name="page.header">
     <xsd:annotation>
       <xsd:documentation><![CDATA[ViewHelper used to place header blocks in document header
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -12018,7 +12010,6 @@ for usage with JavaScript.
 Creates one HTML tag of any type, with various properties
 like class and ID applied only if arguments are not empty,
 rather than apply them always - empty or not - if provided.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -12263,7 +12254,6 @@ Except without the `f:else`.
     // ...but the "unless" counterpart supports anything as
     // condition instead of only checking "is content empty?"
 ```
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
