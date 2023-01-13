@@ -91,7 +91,7 @@ recursionMarker
 :aspect:`Required`
    false
 :aspect:`Description`
-   Any value - string, integer, boolean, object or NULL - inserted instead of recursive instances of objects
+   String or null - inserted instead of recursive instances of objects
 
 .. _format.json.encode_datetimeformat:
 
