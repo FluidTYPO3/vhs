@@ -32,12 +32,7 @@ class UncacheViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('partial', 'string', 'Reference to a partial.', true);
         $this->registerArgument('section', 'string', 'Name of section inside the partial to render.', false, null);
@@ -45,9 +40,6 @@ class UncacheViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

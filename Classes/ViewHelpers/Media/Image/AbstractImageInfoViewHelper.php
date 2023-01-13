@@ -41,13 +41,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         $this->resourceFactory = $resourceFactory;
     }
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'src',
@@ -71,11 +65,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @throws Exception
-     * @return array
-     */
-    public function getInfo()
+    public function getInfo(): array
     {
         $src = $this->arguments['src'];
         $treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
@@ -121,22 +111,14 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         return $info;
     }
 
-    /**
-     * @param integer $id
-     * @return array
-     */
-    public function getInfoByReference($id)
+    public function getInfoByReference(int $id): array
     {
         $fileReference = $this->resourceFactory->getFileReferenceObject($id);
         $file = $fileReference->getOriginalFile();
         return ResourceUtility::getFileArray($file);
     }
 
-    /**
-     * @param integer $uid
-     * @return array
-     */
-    public function getInfoByUid($uid)
+    public function getInfoByUid(int $uid): array
     {
         $file = $this->resourceFactory->getFileObject($uid);
         return ResourceUtility::getFileArray($file);

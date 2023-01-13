@@ -41,12 +41,7 @@ class RangeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('low', 'integer', 'The low number of the range to be generated', false, 1);
         $this->registerArgument('high', 'integer', 'The high number of the range to be generated', true);
@@ -55,9 +50,6 @@ class RangeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

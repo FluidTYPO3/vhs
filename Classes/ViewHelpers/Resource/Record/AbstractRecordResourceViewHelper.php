@@ -27,20 +27,9 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 {
     use TemplateVariableViewHelperTrait;
 
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @var string
-     */
-    protected $field;
-
-    /**
-     * @var string
-     */
-    protected $idField = 'uid';
+    protected string $table = '';
+    protected string $field = '';
+    protected string $idField = 'uid';
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -52,22 +41,12 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
      */
     protected $escapeOutput = false;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('table', 'string', 'The table to lookup records.', true);
         $this->registerArgument('field', 'string', 'The field of the table associated to resources.', true);
@@ -98,11 +77,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         return $identity;
     }
 
-    /**
-     * @param array $record
-     * @return array
-     */
-    public function getResources($record)
+    public function getResources(array $record): array
     {
         $field = $this->getField();
 
@@ -120,10 +95,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         return GeneralUtility::trimExplode(',', $record[$field]);
     }
 
-    /**
-     * @return string
-     */
-    public function getTable()
+    public function getTable(): string
     {
         $table = $this->arguments['table'];
         if (null === $table) {
@@ -140,10 +112,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         return $table;
     }
 
-    /**
-     * @return string
-     */
-    public function getField()
+    public function getField(): string
     {
         $field = $this->arguments['field'];
         if (null === $field) {
@@ -160,11 +129,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         return $field;
     }
 
-    /**
-     * @param mixed $id
-     * @return array|null
-     */
-    public function getRecord($id)
+    public function getRecord(int $id): ?array
     {
         $table = $this->getTable();
         $idField = $this->idField;
@@ -203,10 +168,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         return $result;
     }
 
-    /**
-     * @return array
-     */
-    public function getActiveRecord()
+    public function getActiveRecord(): array
     {
         /** @var ContentObjectRenderer $contentObject */
         $contentObject = $this->configurationManager->getContentObject();

@@ -31,10 +31,7 @@ class ChunkViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'mixed', 'The subject Traversable/Array instance to shift');
         $this->registerArgument('count', 'integer', 'Number of items/chunk or if fixed then number of chunks', true);
@@ -56,9 +53,6 @@ class ChunkViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return array|mixed
      */
     public static function renderStatic(

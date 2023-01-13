@@ -26,10 +26,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'link';
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();

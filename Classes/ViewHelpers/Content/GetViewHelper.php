@@ -15,11 +15,7 @@ use FluidTYPO3\Vhs\Utility\ContextUtility;
  */
 class GetViewHelper extends AbstractContentViewHelper
 {
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument('render', 'boolean', 'Return rendered result', false, false);

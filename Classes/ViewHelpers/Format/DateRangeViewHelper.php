@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -73,10 +72,7 @@ class DateRangeViewHelper extends AbstractViewHelper
      */
     protected $escapingInterceptorEnabled = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'start',
@@ -122,11 +118,7 @@ class DateRangeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
-     * @throws Exception
      */
     public static function renderStatic(
         array $arguments,
@@ -212,9 +204,8 @@ class DateRangeViewHelper extends AbstractViewHelper
 
     /**
      * @param \DateTime|scalar|null $date
-     * @return \DateTime
      */
-    protected static function enforceDateTime($date)
+    protected static function enforceDateTime($date): \DateTime
     {
         if (false === $date instanceof \DateTime) {
             try {
@@ -238,12 +229,7 @@ class DateRangeViewHelper extends AbstractViewHelper
         return $date;
     }
 
-    /**
-     * @param \DateTime $date
-     * @param string $format
-     * @return string
-     */
-    protected static function formatDate($date, $format = 'Y-m-d')
+    protected static function formatDate(\DateTime $date, string $format = 'Y-m-d'): string
     {
         if (false !== strpos($format, '%')) {
             return (string) strftime($format, (integer) $date->format('U'));

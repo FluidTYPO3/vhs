@@ -28,10 +28,7 @@ class RootlineViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerAsArgument();
@@ -58,10 +55,7 @@ class RootlineViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @return PageService
-     */
-    protected static function getPageService()
+    protected static function getPageService(): PageService
     {
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);

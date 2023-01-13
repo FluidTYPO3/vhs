@@ -15,10 +15,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
  */
 class BreadCrumbViewHelper extends AbstractMenuViewHelper
 {
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(

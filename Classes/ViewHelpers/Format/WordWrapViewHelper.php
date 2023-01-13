@@ -24,10 +24,7 @@ class WordWrapViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'string', 'Text to wrap');
         $this->registerArgument('limit', 'integer', 'Maximum length of resulting parts after wrapping', false, 80);
@@ -36,9 +33,6 @@ class WordWrapViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

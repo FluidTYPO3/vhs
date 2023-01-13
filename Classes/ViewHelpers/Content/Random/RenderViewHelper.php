@@ -16,13 +16,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {
-
-    /**
-     * Initialize ViewHelper arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument('limit', 'integer', 'Optional limit number of content elements to render', false, 1);

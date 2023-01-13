@@ -28,11 +28,7 @@ use FluidTYPO3\Vhs\Utility\RequestResolver;
  */
 class InstanceViewHelper extends AbstractOnceViewHelper
 {
-    /**
-     * @param array $arguments
-     * @return string
-     */
-    protected static function getIdentifier(array $arguments)
+    protected static function getIdentifier(array $arguments): string
     {
         if (isset($arguments['identifier']) && $arguments['identifier']) {
             return $arguments['identifier'];
@@ -49,11 +45,7 @@ class InstanceViewHelper extends AbstractOnceViewHelper
         return $identifier;
     }
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function storeIdentifier(array $arguments)
+    protected static function storeIdentifier(array $arguments): void
     {
         $identifier = static::getIdentifier($arguments);
         if (!isset($GLOBALS[static::class])) {
@@ -62,11 +54,7 @@ class InstanceViewHelper extends AbstractOnceViewHelper
         $GLOBALS[static::class][$identifier] = true;
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    protected static function assertShouldSkip(array $arguments)
+    protected static function assertShouldSkip(array $arguments): bool
     {
         $identifier = static::getIdentifier($arguments);
         return isset($GLOBALS[static::class][$identifier]);

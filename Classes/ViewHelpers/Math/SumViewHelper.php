@@ -27,10 +27,7 @@ class SumViewHelper extends AbstractMultipleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation');
@@ -39,7 +36,6 @@ class SumViewHelper extends AbstractMultipleMathViewHelper
     /**
      * @param mixed $a
      * @param mixed $b
-     * @param array $arguments
      * @return mixed
      */
     protected static function calculateAction($a, $b, array $arguments)

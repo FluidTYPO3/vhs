@@ -76,7 +76,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         $this->fileRepository = $fileRepository;
     }
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -102,14 +102,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     }
 
     /**
-     * Fetch a fileReference from the file repository
-     *
-     * @param string $table name of the table to get the file reference for
-     * @param string $field name of the field referencing a file
      * @param array|integer $uidOrRecord Database row
-     * @return array
      */
-    protected function getFileReferences($table, $field, $uidOrRecord)
+    protected function getFileReferences(string $table, string $field, $uidOrRecord): array
     {
         if (is_array($uidOrRecord)) {
             $record = $uidOrRecord;
@@ -131,13 +126,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         return $fileObjects;
     }
 
-    /**
-     * @param array $record
-     * @return array
-     */
-    public function getResources($record)
+    public function getResources(array $record): array
     {
-        if (!is_array($record) || empty($record)) {
+        if (empty($record)) {
             return [];
         }
         if (!empty($GLOBALS['TSFE']->sys_page)) {

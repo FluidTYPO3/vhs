@@ -25,10 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CollectionViewHelper extends AbstractResourceViewHelper
 {
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('uid', 'integer', 'UID of the collection to be rendered', true);
     }

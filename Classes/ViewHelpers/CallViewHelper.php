@@ -43,10 +43,7 @@ class CallViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('object', 'object', 'Instance to call method on');
         $this->registerArgument('method', 'string', 'Name of method to call on instance', true);

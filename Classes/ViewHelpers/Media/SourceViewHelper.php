@@ -47,11 +47,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     protected $configurationManager;
 
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
         /** @var ContentObjectRenderer $contentObject */
@@ -59,13 +55,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->contentObject = $contentObject;
     }
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -161,12 +151,9 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Turns a relative source URI into an absolute URL
-     * if required
-     *
-     * @param string $src
-     * @return string
+     * if required.
      */
-    public function preprocessSourceUri($src)
+    public function preprocessSourceUri(string $src): string
     {
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;

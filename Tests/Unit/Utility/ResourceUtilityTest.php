@@ -12,10 +12,6 @@ use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 
-/**
- * @protection on
- * @package Vhs
- */
 class ResourceUtilityTest extends AbstractTestCase
 {
 

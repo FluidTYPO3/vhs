@@ -49,12 +49,7 @@ class TitleViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
     use PageRendererTrait;
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('title', 'string', 'Title tag content');
         $this->registerArgument(
@@ -68,9 +63,6 @@ class TitleViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

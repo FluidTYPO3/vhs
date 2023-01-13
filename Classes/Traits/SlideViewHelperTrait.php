@@ -31,10 +31,8 @@ trait SlideViewHelperTrait
      * Default initialisation of arguments - will be used
      * if the implementing ViewHelper does not itself define
      * this method.
-     *
-     * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerSlideArguments();
     }
@@ -43,11 +41,8 @@ trait SlideViewHelperTrait
      * Register the "limit", "slide", "slideCollect" and "slideCollectReverse"
      * arguments which are consumed by getSlideRecords.
      * Should be used inside registerArguments().
-     *
-     * @return void
-     * @api
      */
-    protected function registerSlideArguments()
+    protected function registerSlideArguments(): void
     {
         $this->registerArgument('limit', 'integer', 'Optional limit to the total number of records to render');
         $this->registerArgument(
@@ -78,33 +73,16 @@ trait SlideViewHelperTrait
         );
     }
 
-    /**
-     * @return PageService
-     */
-    protected function getPageService()
+    protected function getPageService(): PageService
     {
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);
         return $pageService;
     }
 
-    /**
-     * Get a number of records from a page for sliding
-     *
-     * @param integer $pageUid PID to get the records from
-     * @param integer $limit number of records to get at maximum
-     */
-    abstract protected function getSlideRecordsFromPage($pageUid, $limit);
+    abstract protected function getSlideRecordsFromPage(int $pageUid, ?int $limit): array;
 
-    /**
-     * Get records, optionally sliding up the page rootline
-     *
-     * @param integer $pageUid
-     * @param integer $limit
-     * @return array
-     * @api
-     */
-    protected function getSlideRecords($pageUid, $limit = null)
+    protected function getSlideRecords(int $pageUid, ?int $limit = null): array
     {
         if (null === $limit && false === empty($this->arguments['limit'])) {
             $limit = (integer) $this->arguments['limit'];

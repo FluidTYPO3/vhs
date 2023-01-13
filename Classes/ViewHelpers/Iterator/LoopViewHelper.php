@@ -15,12 +15,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class LoopViewHelper extends AbstractLoopViewHelper
 {
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 
@@ -71,14 +66,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
         return $content;
     }
 
-    /**
-     * @param integer $i
-     * @param integer $from
-     * @param integer $to
-     * @param integer $step
-     * @return boolean
-     */
-    protected static function isLast($i, $from, $to, $step)
+    protected static function isLast(int $i, int $from, int $to, int $step): bool
     {
         return ($i + $step >= $to);
     }

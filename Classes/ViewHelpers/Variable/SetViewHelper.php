@@ -66,10 +66,7 @@ class SetViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'mixed', 'Value to set');
         $this->registerArgument('name', 'string', 'Name of variable to assign');

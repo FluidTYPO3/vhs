@@ -120,7 +120,6 @@ class AssetServiceTest extends AbstractTestCase
         $file = 'Tests/Fixtures/Files/dummy.js';
         $method = (new \ReflectionClass(AssetService::class))->getMethod('getFileIntegrity');
         $instance = $this->getMockBuilder(AssetService::class)->setMethods(['writeFile'])->getMock();
-        $instance->method('writeFile')->willReturn(null);
 
         $method->setAccessible(true);
         foreach ($expectedIntegrities as $settingLevel => $expectedIntegrity) {

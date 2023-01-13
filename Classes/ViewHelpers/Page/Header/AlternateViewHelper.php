@@ -34,11 +34,7 @@ class AlternateViewHelper extends AbstractViewHelper
      */
     protected $tagBuilder;
 
-    /**
-     * @param PageService $pageService
-     * @return void
-     */
-    public function injectPageService(PageService $pageService)
+    public function injectPageService(PageService $pageService): void
     {
         $this->pageService = $pageService;
     }
@@ -50,11 +46,7 @@ class AlternateViewHelper extends AbstractViewHelper
         $this->tagBuilder = $tagBuilder;
     }
 
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'languages',

@@ -22,10 +22,7 @@ class AbsoluteViewHelper extends AbstractExtensionViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -37,9 +34,6 @@ class AbsoluteViewHelper extends AbstractExtensionViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string
      */
     public static function renderStatic(

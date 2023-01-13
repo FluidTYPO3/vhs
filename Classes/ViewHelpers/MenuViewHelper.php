@@ -23,11 +23,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
  */
 class MenuViewHelper extends AbstractMenuViewHelper
 {
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(

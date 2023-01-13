@@ -17,19 +17,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
 {
-    /**
-     *
-     * @var string
-     */
-    protected $mediaSource;
+    protected string $mediaSource = '';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -50,13 +40,9 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Turns a relative source URI into an absolute URL
-     * if required
-     *
-     * @param string $src
-     * @param array $arguments
-     * @return string
+     * if required.
      */
-    public static function preprocessSourceUri($src, array $arguments)
+    public static function preprocessSourceUri(string $src, array $arguments): string
     {
         $src = str_replace('%2F', '/', rawurlencode($src));
         if (substr($src, 0, 1) !== '/' && substr($src, 0, 4) !== 'http') {
@@ -76,11 +62,8 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
      * Returns an array of sources resolved from src argument
      * which can be either an array, CSV or implement Traversable
      * to be consumed by ViewHelpers handling multiple sources.
-     *
-     * @param array $arguments
-     * @return array
      */
-    public static function getSourcesFromArgument(array $arguments)
+    public static function getSourcesFromArgument(array $arguments): array
     {
         $src = $arguments['src'];
         if ($src instanceof \Traversable) {

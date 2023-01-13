@@ -57,7 +57,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TemplateViewHelper extends AbstractRenderViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported', false);

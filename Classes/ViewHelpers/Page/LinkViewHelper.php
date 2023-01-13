@@ -45,11 +45,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $pageService;
 
-    /**
-     * @param PageService $pageService
-     * @return void
-     */
-    public function injectPageService(PageService $pageService)
+    public function injectPageService(PageService $pageService): void
     {
         $this->pageService = $pageService;
     }
@@ -59,12 +55,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -264,11 +255,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    /**
-     * @param array $record
-     * @return string
-     */
-    private function getTitleValue($record)
+    private function getTitleValue(array $record): string
     {
         $titleFieldList = GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
         foreach ($titleFieldList as $titleFieldName) {

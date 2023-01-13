@@ -65,10 +65,7 @@ class TyposcriptViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('path', 'string', 'Path to TypoScript value or configuration array');
     }

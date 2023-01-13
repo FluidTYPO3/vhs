@@ -24,10 +24,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
     use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('a', 'mixed', 'First number for calculation');
@@ -43,9 +40,6 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

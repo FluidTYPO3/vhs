@@ -22,12 +22,7 @@ class RecordViewHelper extends AbstractContentViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('record', 'array', 'Record to render');

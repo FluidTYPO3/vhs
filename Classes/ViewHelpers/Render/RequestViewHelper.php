@@ -41,17 +41,14 @@ class RequestViewHelper extends AbstractRenderViewHelper
     /**
      * @var class-string
      */
-    protected static $requestType = Request::class;
+    protected static string $requestType = Request::class;
 
     /**
      * @var class-string
      */
-    protected static $responseType = Response::class;
+    protected static string $responseType = Response::class;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('action', 'string', 'Controller action to call in request');
@@ -68,7 +65,6 @@ class RequestViewHelper extends AbstractRenderViewHelper
 
     /**
      * @return string|ResponseInterface
-     * @throws \Exception
      */
     public static function renderStatic(
         array $arguments,
@@ -152,10 +148,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
         return $dispatcher;
     }
 
-    /**
-     * @return ConfigurationManagerInterface
-     */
-    protected static function getConfigurationManager()
+    protected static function getConfigurationManager(): ConfigurationManagerInterface
     {
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
@@ -163,22 +156,16 @@ class RequestViewHelper extends AbstractRenderViewHelper
     }
 
     /**
-     * @param RenderingContextInterface $renderingContext
-     * @param string $extensionName
-     * @param string $pluginName
-     * @param string|null $controllerName
-     * @param string|null $actionName
-     * @param array $arguments
      * @return RequestInterface|ServerRequestInterface
      * @see \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration
      */
     protected static function loadDefaultValues(
-        $renderingContext,
-        $extensionName,
-        $pluginName,
-        $controllerName,
-        $actionName,
-        $arguments
+        RenderingContextInterface $renderingContext,
+        string $extensionName,
+        string $pluginName,
+        ?string $controllerName,
+        ?string $actionName,
+        array $arguments
     ) {
         $configurationManager = static::getConfigurationManager();
         $configuration = $configurationManager->getConfiguration(

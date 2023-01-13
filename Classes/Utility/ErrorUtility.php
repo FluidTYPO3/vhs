@@ -17,12 +17,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class ErrorUtility
 {
-    /**
-     * @param null|string $message
-     * @param null|integer $code
-     * @return void
-     */
-    public static function throwViewHelperException($message = null, $code = null)
+    public static function throwViewHelperException(?string $message = null, ?int $code = null): void
     {
         throw new Exception((string) $message, (integer) $code);
     }

@@ -23,13 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 {
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -64,15 +58,9 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Returns the files
-     *
-     * @param boolean $onlyProperties
-     * @param mixed $identifier
      * @param mixed $categories
-     * @return array|null
-     * @throws \RuntimeException
      */
-    public function getFiles($onlyProperties = false, $identifier = null, $categories = null)
+    public function getFiles(bool $onlyProperties = false, ?string $identifier = null, $categories = null): ?array
     {
         $identifier = $this->arrayForMixedArgument($identifier, 'identifier');
         $categories = $this->arrayForMixedArgument($categories, 'categories');
@@ -196,10 +184,8 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
      * Mixed argument with CSV, array, Traversable
      *
      * @param mixed $argument
-     * @param string $name
-     * @return array
      */
-    public function arrayForMixedArgument($argument, $name)
+    public function arrayForMixedArgument($argument, string $name): array
     {
         if (null === $argument) {
             $argument = $this->arguments[$name];
@@ -219,11 +205,9 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
     /**
      * This fuction decides if sys_file or sys_file_metadata is used for a query on sys_category_record_mm
      * This is neccessary because it depends on the TYPO3 version and the state of the extension filemetadata if
-     * 'sys_file' should be used or 'sys_file_metadata'
-     *
-     * @return string
+     * 'sys_file' should be used or 'sys_file_metadata'.
      */
-    private function getTablenameForSystemConfiguration()
+    private function getTablenameForSystemConfiguration(): string
     {
         return 'sys_file_metadata';
     }

@@ -30,10 +30,7 @@ class SplitViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'string', 'The string that will be split into an array');
         $this->registerArgument('length', 'integer', 'Number of bytes per chunk in the new array', false, 1);
@@ -41,9 +38,6 @@ class SplitViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

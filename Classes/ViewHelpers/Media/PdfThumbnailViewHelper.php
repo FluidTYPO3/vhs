@@ -20,10 +20,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  */
 class PdfThumbnailViewHelper extends ImageViewHelper
 {
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('path', 'string', 'DEPRECATED: Use src instead');

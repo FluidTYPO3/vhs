@@ -24,16 +24,11 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     use PageRendererTrait;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $tagName = 'link';
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('rel', 'string', 'Property: rel');

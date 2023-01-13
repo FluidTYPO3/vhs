@@ -25,7 +25,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
 {
-
     /**
      * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of
      * the current $GLOBALS['TSFE'] if used in BE mode
@@ -47,11 +46,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
      */
     protected $contentObject;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
         /** @var ContentObjectRenderer $contentObject */
@@ -59,13 +54,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         $this->contentObject = $contentObject;
     }
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -125,13 +114,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         );
     }
 
-    /**
-     * @param array $files
-     * @param boolean $onlyProperties
-     * @throws Exception
-     * @return array|NULL
-     */
-    public function preprocessImages($files, $onlyProperties = false)
+    public function preprocessImages(array $files, bool $onlyProperties = false): ?array
     {
         if (true === empty($files)) {
             return null;
@@ -189,11 +172,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     /**
      * Prepares $GLOBALS['TSFE'] for Backend mode
      * This somewhat hacky work around is currently needed because the getImgResource() function of
-     * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
-     *
-     * @return void
+     * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set.
      */
-    protected function simulateFrontendEnvironment()
+    protected function simulateFrontendEnvironment(): void
     {
         $this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
         $this->workingDirectoryBackup = getcwd();
@@ -219,10 +200,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
      *
-     * @return void
      * @see simulateFrontendEnvironment()
      */
-    protected function resetFrontendEnvironment()
+    protected function resetFrontendEnvironment(): void
     {
         $GLOBALS['TSFE'] = $this->tsfeBackup;
         if ($this->workingDirectoryBackup !== false) {
@@ -232,12 +212,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
 
     /**
      * Turns a relative source URI into an absolute URL
-     * if required
-     *
-     * @param string $source
-     * @return string
+     * if required.
      */
-    public function preprocessSourceUri($source)
+    public function preprocessSourceUri(string $source): string
     {
         if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $source = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;

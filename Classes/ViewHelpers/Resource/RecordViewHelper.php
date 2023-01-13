@@ -15,5 +15,4 @@ use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\AbstractRecordResourceViewHelper;
  */
 class RecordViewHelper extends AbstractRecordResourceViewHelper
 {
-
 }

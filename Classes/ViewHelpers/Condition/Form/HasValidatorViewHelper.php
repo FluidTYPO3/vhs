@@ -29,17 +29,7 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
      */
     const ALTERNATE_FORM_VIEWHELPER_CLASSNAME = FormViewHelper::class;
 
-    /**
-     * @var ReflectionService
-     */
-    protected static $staticReflectionService;
-
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(

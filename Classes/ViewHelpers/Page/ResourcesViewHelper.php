@@ -15,27 +15,13 @@ use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
  */
 class ResourcesViewHelper extends RecordViewHelper
 {
-
     const DEFAULT_TABLE = 'pages';
     const DEFAULT_FIELD = 'media';
 
-    /**
-     * @var string
-     */
-    protected $table = self::DEFAULT_TABLE;
+    protected string $table = self::DEFAULT_TABLE;
+    protected string $field = self::DEFAULT_FIELD;
 
-    /**
-     * @var string
-     */
-    protected $field = self::DEFAULT_FIELD;
-
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 

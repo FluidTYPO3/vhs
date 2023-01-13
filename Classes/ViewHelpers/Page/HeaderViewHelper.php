@@ -13,13 +13,9 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
 
 /**
  * ViewHelper used to place header blocks in document header
- *
- * @package Vhs
- * @subpackage ViewHelpers\Page
  */
 class HeaderViewHelper extends AbstractAssetViewHelper
 {
-
     /**
      * Render method
      *

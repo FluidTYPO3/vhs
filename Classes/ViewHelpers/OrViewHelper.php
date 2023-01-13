@@ -32,12 +32,7 @@ class OrViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'mixed', 'Input to either use, if not empty');
         $this->registerArgument('alternative', 'mixed', 'Alternative if content is empty, can use LLL: shortcut');

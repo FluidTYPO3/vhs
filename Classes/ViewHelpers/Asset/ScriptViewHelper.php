@@ -13,23 +13,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  *
  * Allows inserting a `<script>` Asset. Settings specify
  * where to insert the Asset and how to treat it.
- *
- * @package Vhs
- * @subpackage ViewHelpers\Asset
  */
 class ScriptViewHelper extends AbstractAssetViewHelper
 {
+    protected string $type = 'js';
 
-    /**
-     * @var string
-     */
-    protected $type = 'js';
-
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 

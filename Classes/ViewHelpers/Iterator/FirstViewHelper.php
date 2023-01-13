@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Returns the first element of $haystack.
@@ -28,22 +27,13 @@ class FirstViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle');
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return null
-     * @throws Exception
      */
     public static function renderStatic(
         array $arguments,

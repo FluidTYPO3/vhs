@@ -23,10 +23,8 @@ class FrontendSimulationUtility
      * Sets the global variables $GLOBALS['TSFE']->csConvObj and $GLOBALS['TSFE']->renderCharset in Backend mode
      * This somewhat hacky work around is currently needed because the conv_case() and convCaseFirst() functions of
      * tslib_cObj rely on those variables to be set
-     *
-     * @return TypoScriptFrontendController|null
      */
-    public static function simulateFrontendEnvironment()
+    public static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
     {
         if (!ContextUtility::isBackend()) {
             return null;
@@ -55,11 +53,9 @@ class FrontendSimulationUtility
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
      *
-     * @param TypoScriptFrontendController|null $tsfeBackup
-     * @return void
      * @see simulateFrontendEnvironment()
      */
-    public static function resetFrontendEnvironment($tsfeBackup)
+    public static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
     {
         if (!ContextUtility::isBackend()) {
             return;

@@ -60,22 +60,13 @@ class PageService implements SingletonInterface
         return constant($class . '::' . $constantName);
     }
 
-    /**
-     * @param integer $pageUid
-     * @param array $excludePages
-     * @param boolean $includeNotInMenu
-     * @param boolean $includeMenuSeparator
-     * @param boolean $disableGroupAccessCheck
-     *
-     * @return array
-     */
     public function getMenu(
-        $pageUid,
+        int $pageUid,
         array $excludePages = [],
-        $includeNotInMenu = false,
-        $includeMenuSeparator = false,
-        $disableGroupAccessCheck = false
-    ) {
+        bool $includeNotInMenu = false,
+        bool $includeMenuSeparator = false,
+        bool $disableGroupAccessCheck = false
+    ): array {
         $pageRepository = $this->getPageRepository();
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
         $cacheKey = md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
@@ -95,12 +86,7 @@ class PageService implements SingletonInterface
         return static::$cachedMenus[$cacheKey];
     }
 
-    /**
-     * @param integer $pageUid
-     * @param boolean $disableGroupAccessCheck
-     * @return array
-     */
-    public function getPage($pageUid, $disableGroupAccessCheck = false)
+    public function getPage(int $pageUid, bool $disableGroupAccessCheck = false): array
     {
         $cacheKey = md5($pageUid . (integer) $disableGroupAccessCheck);
         if (false === isset(static::$cachedPages[$cacheKey])) {
@@ -110,14 +96,11 @@ class PageService implements SingletonInterface
         return static::$cachedPages[$cacheKey];
     }
 
-    /**
-     * @param integer $pageUid
-     * @param boolean $reverse
-     * @param boolean $disableGroupAccessCheck
-     * @return array
-     */
-    public function getRootLine($pageUid = null, $reverse = false, $disableGroupAccessCheck = false)
-    {
+    public function getRootLine(
+        ?int $pageUid = null,
+        bool $reverse = false,
+        bool $disableGroupAccessCheck = false
+    ): array {
         if (null === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
@@ -143,18 +126,11 @@ class PageService implements SingletonInterface
         return static::$cachedRootlines[$cacheKey];
     }
 
-    /**
-     * @param array $excludePages
-     * @param boolean $includeNotInMenu
-     * @param boolean $includeMenuSeparator
-     *
-     * @return string
-     */
     protected function getPageConstraints(
         array $excludePages = [],
-        $includeNotInMenu = false,
-        $includeMenuSeparator = false
-    ) {
+        bool $includeNotInMenu = false,
+        bool $includeMenuSeparator = false
+    ): string {
         $constraints = [];
 
         $constraints[] = 'doktype NOT IN ('
@@ -181,12 +157,9 @@ class PageService implements SingletonInterface
     }
 
     /**
-     * @param array|integer $page
-     * @param integer $languageUid
-     * @param boolean $normalWhenNoLanguage
-     * @return boolean
+     * @param array|integer|null $page
      */
-    public function hidePageForLanguageUid($page = null, $languageUid = -1, $normalWhenNoLanguage = true)
+    public function hidePageForLanguageUid($page = null, int $languageUid = -1, bool $normalWhenNoLanguage = true): bool
     {
         if (is_array($page)) {
             $pageUid = $page['uid'];
@@ -258,13 +231,7 @@ class PageService implements SingletonInterface
         return $instance;
     }
 
-    /**
-     * @param array $page
-     * @param boolean $forceAbsoluteUrl
-     *
-     * @return string
-     */
-    public function getItemLink(array $page, $forceAbsoluteUrl = false)
+    public function getItemLink(array $page, bool $forceAbsoluteUrl = false): string
     {
         if ((integer) $page['doktype'] === $this->readPageRepositoryConstant('DOKTYPE_LINK')) {
             $parameter = $this->getPageRepository()->getExtURL($page);
@@ -284,20 +251,12 @@ class PageService implements SingletonInterface
         return $GLOBALS['TSFE']->cObj->typoLink('', $config);
     }
 
-    /**
-     * @param array $page
-     * @return boolean
-     */
-    public function isAccessProtected(array $page)
+    public function isAccessProtected(array $page): bool
     {
         return (0 !== (integer) $page['fe_group']);
     }
 
-    /**
-     * @param array $page
-     * @return boolean
-     */
-    public function isAccessGranted(array $page)
+    public function isAccessGranted(array $page): bool
     {
         if (!$this->isAccessProtected($page)) {
             return true;
@@ -321,21 +280,12 @@ class PageService implements SingletonInterface
         return false;
     }
 
-    /**
-     * @param integer $pageUid
-     * @return boolean
-     */
-    public function isCurrent($pageUid)
+    public function isCurrent(int $pageUid): bool
     {
         return ((integer) $pageUid === (integer) $GLOBALS['TSFE']->id);
     }
 
-    /**
-     * @param integer $pageUid
-     * @param boolean $showAccessProtected
-     * @return boolean
-     */
-    public function isActive($pageUid, $showAccessProtected = false)
+    public function isActive(int $pageUid, bool $showAccessProtected = false): bool
     {
         $rootLineData = $this->getRootLine(null, false, $showAccessProtected);
         foreach ($rootLineData as $page) {
@@ -347,11 +297,7 @@ class PageService implements SingletonInterface
         return false;
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    public function shouldUseShortcutTarget(array $arguments)
+    public function shouldUseShortcutTarget(array $arguments): bool
     {
         $useShortcutTarget = (boolean) $arguments['useShortcutData'];
         if ($arguments['useShortcutTarget'] !== null) {
@@ -361,11 +307,7 @@ class PageService implements SingletonInterface
         return $useShortcutTarget;
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    public function shouldUseShortcutUid(array $arguments)
+    public function shouldUseShortcutUid(array $arguments): bool
     {
         $useShortcutUid = (boolean) $arguments['useShortcutData'];
         if ($arguments['useShortcutUid'] !== null) {
@@ -379,11 +321,8 @@ class PageService implements SingletonInterface
      * Determines the target page record for the provided page record
      * if it is configured as a shortcut in any of the possible modes.
      * Returns NULL otherwise.
-     *
-     * @param array $page
-     * @return NULL|array
      */
-    public function getShortcutTargetPage(array $page)
+    public function getShortcutTargetPage(array $page): ?array
     {
         if ((integer) $page['doktype'] !== $this->readPageRepositoryConstant('DOKTYPE_SHORTCUT')) {
             return null;

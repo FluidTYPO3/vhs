@@ -13,7 +13,7 @@ class UncacheContentObject extends AbstractContentObject
         return (string) $uncacheTemplateView->callUserFunction('', $conf, '');
     }
 
-    public function render($conf = [])
+    public function render($conf = []): string
     {
         return $this->callUserFunction('', $conf);
     }

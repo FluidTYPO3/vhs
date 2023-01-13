@@ -25,13 +25,7 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'iframe';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();

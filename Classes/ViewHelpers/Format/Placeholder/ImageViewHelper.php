@@ -22,12 +22,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'img';
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();

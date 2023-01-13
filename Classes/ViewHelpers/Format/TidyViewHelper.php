@@ -25,20 +25,13 @@ class TidyViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content to tidy');
         $this->registerArgument('encoding', 'string', 'Encoding of string', false, 'utf8');
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @throws \RuntimeException
      * @return string|\tidy
      */
     public static function renderStatic(

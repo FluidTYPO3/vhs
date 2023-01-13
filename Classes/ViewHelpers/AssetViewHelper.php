@@ -46,17 +46,10 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
  * > Note: there are no static TypoScript templates for VHS but
  * > you will find a complete list in the README.md file in the
  * > root of the extension folder.
- *
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class AssetViewHelper extends AbstractAssetViewHelper
 {
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument(

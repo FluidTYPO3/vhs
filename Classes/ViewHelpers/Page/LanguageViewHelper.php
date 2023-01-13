@@ -34,12 +34,7 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected static $pageService;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('languages', 'mixed', 'The languages (either CSV, array or implementing Traversable)');
         $this->registerArgument('pageUid', 'integer', 'The page uid to check', false, 0);
@@ -53,9 +48,6 @@ class LanguageViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -109,10 +101,7 @@ class LanguageViewHelper extends AbstractViewHelper
         return $languageUid;
     }
 
-    /**
-     * @return PageService
-     */
-    protected static function getPageService()
+    protected static function getPageService(): PageService
     {
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);
