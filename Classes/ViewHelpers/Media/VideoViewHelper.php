@@ -26,7 +26,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class VideoViewHelper extends AbstractMediaViewHelper
 {
-
     use TagViewHelperTrait;
 
     /**
@@ -34,33 +33,16 @@ class VideoViewHelper extends AbstractMediaViewHelper
      */
     protected $tagName = 'video';
 
-    /**
-     * @var array
-     */
-    protected $validTypes = ['mp4', 'webm', 'ogg', 'ogv'];
-
-    /**
-     * @var array
-     */
-    protected $mimeTypesMap = [
+    protected array $validTypes = ['mp4', 'webm', 'ogg', 'ogv'];
+    protected array $mimeTypesMap = [
         'mp4' => 'video/mp4',
         'webm' => 'video/webm',
         'ogg' => 'video/ogg',
         'ogv' => 'video/ogg'
     ];
+    protected array $validPreloadModes = ['auto', 'metadata', 'none'];
 
-    /**
-     * @var array
-     */
-    protected $validPreloadModes = ['auto', 'metadata', 'none'];
-
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();

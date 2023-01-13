@@ -25,12 +25,7 @@ class LipsumViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('lipsum', 'string', 'Optional, custom lipsum source');
         $this->registerArgument('paragraphs', 'integer', 'Number of paragraphs to output');
@@ -53,9 +48,6 @@ class LipsumViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed|string
      */
     public static function renderStatic(
@@ -102,10 +94,8 @@ class LipsumViewHelper extends AbstractViewHelper
      * of course cleaned thoroughly to avoid any injection) contains
      * 20 full paragraphs of Lorem Ipsum in standard latin. No bells
      * and whistles there.
-     *
-     * @return string
      */
-    protected static function getDefaultLoremIpsum()
+    protected static function getDefaultLoremIpsum(): string
     {
         static $safeLipsum;
 
@@ -167,10 +157,7 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
         return $safeLipsum;
     }
 
-    /**
-     * @return ContentObjectRenderer
-     */
-    protected static function getContentObject()
+    protected static function getContentObject(): ContentObjectRenderer
     {
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);

@@ -25,16 +25,11 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
     use PageRendererTrait;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $tagName = 'meta';
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('name', 'string', 'Name property of meta tag');

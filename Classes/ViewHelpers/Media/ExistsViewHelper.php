@@ -17,12 +17,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class ExistsViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('file', 'string', 'Filename which must exist to trigger f:then rendering');

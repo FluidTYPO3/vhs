@@ -17,14 +17,10 @@ use TYPO3\CMS\Core\Resource\File;
  */
 class ResourceUtility
 {
-
     /**
      * Fixes a bug in TYPO3 6.2.0 that the properties metadata is not overlayed on localization.
-     *
-     * @param File $file
-     * @return array
      */
-    public static function getFileArray(File $file)
+    public static function getFileArray(File $file): array
     {
         $properties = $file->getProperties();
         $stat = $file->getStorage()->getFileInfo($file);

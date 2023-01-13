@@ -34,13 +34,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'iframe';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -149,12 +143,9 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Returns video source url according to provided arguments
-     *
-     * @param string $videoId
-     * @return string
+     * Returns video source url according to provided arguments.
      */
-    private function getSourceUrl($videoId)
+    private function getSourceUrl(string $videoId): string
     {
         $src = $this->arguments['extendedPrivacy'] ? static::YOUTUBE_PRIVACY_BASEURL : static::YOUTUBE_BASEURL;
 
@@ -212,15 +203,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
         return $src;
     }
 
-    /**
-     * Renders the provided tag and its attributes
-     *
-     * @param string $tagName
-     * @param array $attributes
-     * @param boolean $forceClosingTag
-     * @return string
-     */
-    private function renderChildTag($tagName, $attributes = [], $forceClosingTag = false)
+    private function renderChildTag(string $tagName, array $attributes = [], bool $forceClosingTag = false): string
     {
         $tagBuilder = clone $this->tag;
         $tagBuilder->reset();

@@ -38,10 +38,7 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
      */
     protected static $configurations = [];
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'extensionKey',

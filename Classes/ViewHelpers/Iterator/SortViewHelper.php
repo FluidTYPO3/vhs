@@ -61,12 +61,7 @@ class SortViewHelper extends AbstractViewHelper
         'SORT_FLAG_CASE'
     ];
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'mixed', 'The array/Traversable instance to sort');
         $this->registerArgument(
@@ -100,9 +95,6 @@ class SortViewHelper extends AbstractViewHelper
      * Returns the same type as $subject. Ignores NULL values which would be
      * OK to use in an f:for (empty loop as result)
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

@@ -52,7 +52,6 @@ class CacheViewHelper extends AbstractRenderViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     const ID_PREFIX = 'vhs-render-cache-viewhelper';
-
     const ID_SEPARATOR = '-';
 
     /**
@@ -60,10 +59,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content to be cached');
         $this->registerArgument('identity', 'string', 'Identity for cached entry', true);
@@ -71,9 +67,6 @@ class CacheViewHelper extends AbstractRenderViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -106,30 +99,23 @@ class CacheViewHelper extends AbstractRenderViewHelper
         return $content;
     }
 
-    /**
-     * @param string $id
-     * @return boolean
-     */
-    protected static function has($id)
+    protected static function has(string $id): bool
     {
         return (boolean) static::getCache()->has(static::ID_PREFIX . static::ID_SEPARATOR . $id);
     }
 
     /**
      * @param mixed $value
-     * @param string $id
-     * @return void
      */
-    protected static function store($value, $id)
+    protected static function store($value, string $id): void
     {
         static::getCache()->set(static::ID_PREFIX . static::ID_SEPARATOR . $id, $value);
     }
 
     /**
-     * @param string $id
      * @return mixed
      */
-    protected static function retrieve($id)
+    protected static function retrieve(string $id)
     {
         $cache = static::getCache();
         if ($cache->has(static::ID_PREFIX . static::ID_SEPARATOR . $id)) {
@@ -138,10 +124,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
         return null;
     }
 
-    /**
-     * @return FrontendInterface
-     */
-    protected static function getCache()
+    protected static function getCache(): FrontendInterface
     {
         /** @var CacheManager $cacheManager */
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);

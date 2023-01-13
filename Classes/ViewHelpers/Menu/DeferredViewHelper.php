@@ -20,7 +20,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class DeferredViewHelper extends AbstractMenuViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument(

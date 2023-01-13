@@ -31,12 +31,7 @@ class SliceViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('haystack', 'mixed', 'The input array/Traversable to reverse');
         $this->registerArgument('start', 'integer', 'Starting offset', false, 0);
@@ -46,9 +41,6 @@ class SliceViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

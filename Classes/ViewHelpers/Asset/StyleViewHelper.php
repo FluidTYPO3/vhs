@@ -13,17 +13,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  *
  * Allows inserting a `<link>` or `<style>` Asset. Settings
  * specify where to insert the Asset and how to treat it.
- *
- * @package Vhs
- * @subpackage ViewHelpers\Asset
  */
 class StyleViewHelper extends AbstractAssetViewHelper
 {
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument(
@@ -36,8 +29,5 @@ class StyleViewHelper extends AbstractAssetViewHelper
         );
     }
 
-    /**
-     * @var string
-     */
-    protected $type = 'css';
+    protected string $type = 'css';
 }

@@ -31,20 +31,12 @@ class FieldNameViewHelper extends AbstractViewHelper
      */
     protected $persistenceManager;
 
-    /**
-     * @param PersistenceManagerInterface $persistenceManager
-     * @return void
-     */
-    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
     }
 
-    /**
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('name', 'string', 'Name of the form field to generate the HMAC for.');
         $this->registerArgument(
@@ -103,10 +95,7 @@ class FieldNameViewHelper extends AbstractViewHelper
         return $name;
     }
 
-    /**
-     * @return boolean
-     */
-    protected function isObjectAccessorMode()
+    protected function isObjectAccessorMode(): bool
     {
         return (
             $this->hasArgument('property')

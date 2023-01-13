@@ -21,13 +21,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 trait SourceSetViewHelperTrait
 {
     /**
-     * used to attach srcset variants of a given image to the specified tag
-     *
-     * @param TagBuilder $tag the tag to add the srcset as argument
-     * @param string $src image path to render srcsets for
-     * @return array
+     * Used to attach srcset variants of a given image to the specified tag.
      */
-    public function addSourceSet($tag, $src)
+    public function addSourceSet(TagBuilder $tag, string $src): array
     {
         $srcsets = $this->getSourceSetWidths();
 
@@ -69,29 +65,36 @@ trait SourceSetViewHelperTrait
     }
 
     /**
-     * generates a copy of a give image with a specific width
+     * Generates a copy of a give image with a specific width
      *
      * @param string $src path of the image to convert
      * @param integer $width width to convert the image to
      * @param string $format format of the resulting copy
      * @param integer $quality quality of the resulting copy
      * @param bool $treatIdAsReference given src argument is a sys_file_reference record
-     * @param array $params additional params for the image rendering
-     * @param string $crop image editor cropping configuration
+     * @param string|null $params additional params for the image rendering
+     * @param string|null $crop image editor cropping configuration
      * @return array
      */
-    public function getImgResource($src, $width, $format, $quality, $treatIdAsReference, $params = null, $crop = null)
-    {
+    public function getImgResource(
+        string $src,
+        int $width,
+        string $format,
+        int $quality,
+        bool $treatIdAsReference,
+        ?string $params = null,
+        ?string $crop = null
+    ): array {
         $setup = [
             'width' => $width,
             'treatIdAsReference' => $treatIdAsReference,
             'crop' => $crop,
-            'params' => '',
+            'params' => $params,
         ];
-        if (false === empty($format)) {
+        if (!empty($format)) {
             $setup['ext'] = $format;
         }
-        if (0 < intval($quality)) {
+        if (0 < $quality) {
             $quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
             $setup['params'] .= ' -quality ' . $quality;
         }
@@ -103,12 +106,10 @@ trait SourceSetViewHelperTrait
     }
 
     /**
-     * returns an array of srcsets based on the mixed ViewHelper
-     * input (list, csv, array, iterator)
-     *
-     * @return array
+     * Returns an array of srcsets based on the mixed ViewHelper
+     * input (list, csv, array, iterator).
      */
-    public function getSourceSetWidths()
+    public function getSourceSetWidths(): array
     {
         $srcsets = $this->arguments['srcset'];
         if (true === $srcsets instanceof \Traversable) {

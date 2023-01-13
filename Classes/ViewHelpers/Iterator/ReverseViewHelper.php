@@ -34,12 +34,7 @@ class ReverseViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'mixed', 'The input array/Traversable to reverse');
         $this->registerAsArgument();
@@ -52,9 +47,6 @@ class ReverseViewHelper extends AbstractViewHelper
      * Returns the same type as $subject. Ignores NULL values which would be
      * OK to use in an f:for (empty loop as result)
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

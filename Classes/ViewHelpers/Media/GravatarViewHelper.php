@@ -37,11 +37,8 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
     /**
      * Initialize arguments.
      * Size argument has no default value to prevent the creation of an unnecessary URI parameter.
-     *
-     * @return void
-     * @api
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();

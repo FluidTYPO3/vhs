@@ -27,10 +27,7 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation');

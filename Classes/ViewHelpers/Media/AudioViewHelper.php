@@ -26,7 +26,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class AudioViewHelper extends AbstractMediaViewHelper
 {
-
     use TagViewHelperTrait;
 
     /**
@@ -34,33 +33,16 @@ class AudioViewHelper extends AbstractMediaViewHelper
      */
     protected $tagName = 'audio';
 
-    /**
-     * @var array
-     */
-    protected $validTypes = ['mp3', 'ogg', 'oga', 'wav'];
-
-    /**
-     * @var array
-     */
-    protected $mimeTypesMap = [
+    protected array $validTypes = ['mp3', 'ogg', 'oga', 'wav'];
+    protected array $mimeTypesMap = [
         'mp3' => 'audio/mpeg',
         'ogg' => 'audio/ogg',
         'oga' => 'audio/ogg',
         'wav' => 'audio/wav'
     ];
+    protected array $validPreloadModes = ['auto', 'metadata', 'none'];
 
-    /**
-     * @var array
-     */
-    protected $validPreloadModes = ['auto', 'metadata', 'none'];
-
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();

@@ -42,11 +42,8 @@ class GravatarViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      * Size argument has no default value to prevent the creation of an unnecessary URI parameter.
-     *
-     * @return void
-     * @api
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('email', 'string', 'Email address', true);
         $this->registerArgument('size', 'integer', 'Size in pixels, defaults to 80px [ 1 - 2048 ]', false);

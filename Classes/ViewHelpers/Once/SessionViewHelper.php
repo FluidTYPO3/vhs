@@ -26,9 +26,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class SessionViewHelper extends AbstractOnceViewHelper
 {
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -42,11 +39,7 @@ class SessionViewHelper extends AbstractOnceViewHelper
         return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function storeIdentifier(array $arguments)
+    protected static function storeIdentifier(array $arguments): void
     {
         $identifier = static::getIdentifier($arguments);
         $index = self::class;
@@ -56,22 +49,14 @@ class SessionViewHelper extends AbstractOnceViewHelper
         $_SESSION[$index][$identifier] = time();
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    protected static function assertShouldSkip(array $arguments)
+    protected static function assertShouldSkip(array $arguments): bool
     {
         $identifier = static::getIdentifier($arguments);
         $index = self::class;
         return isset($_SESSION[$index][$identifier]);
     }
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function removeIfExpired(array $arguments)
+    protected static function removeIfExpired(array $arguments): void
     {
         $id = static::getIdentifier($arguments);
         $index = self::class;

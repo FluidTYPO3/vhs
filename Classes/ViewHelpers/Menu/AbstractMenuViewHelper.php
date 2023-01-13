@@ -28,39 +28,24 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     protected $tagName = 'ul';
 
     /**
-     * @var PageService
-     */
-    protected $pageService;
-
-    /**
-     * @var boolean
-     */
-    private $original = true;
-
-    /**
-     * @var array
-     */
-    private $backupValues = [];
-
-    /**
      * @var boolean
      */
     protected $escapeOutput = false;
 
     /**
-     * @param PageService $pageService
-     * @return void
+     * @var PageService
      */
-    public function injectPageService(PageService $pageService)
+    protected $pageService;
+
+    private bool $original = true;
+    private array $backupValues = [];
+
+    public function injectPageService(PageService $pageService): void
     {
         $this->pageService = $pageService;
     }
 
-    /**
-     * Initialize
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -240,12 +225,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Renders the tag's content or if omitted auto
-     * renders the menu for the provided arguments
-     *
-     * @param array $menu
-     * @return string
+     * renders the menu for the provided arguments.
      */
-    public function renderContent(array $menu)
+    public function renderContent(array $menu): string
     {
         $deferredRendering = (boolean) $this->arguments['deferred'];
         if (0 === count($menu) && false === $deferredRendering) {
@@ -286,12 +268,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         return is_scalar($output) ? (string) $output : '';
     }
 
-    /**
-     * @param array $menu
-     * @param integer $level
-     * @return string
-     */
-    protected function autoRender(array $menu, $level = 1)
+    protected function autoRender(array $menu, int $level = 1): string
     {
         $tagName = $this->arguments['tagNameChildren'];
         $this->tag->setTagName($this->getWrappingTagName());
@@ -350,11 +327,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         return implode(LF, $html);
     }
 
-    /**
-     * @param array $page
-     * @return string
-     */
-    protected function renderItemLink(array $page)
+    protected function renderItemLink(array $page): string
     {
         $isSpacer = ($page['doktype'] === $this->pageService->readPageRepositoryConstant('DOKTYPE_SPACER'));
         $isCurrent = (boolean) $page['current'];
@@ -388,12 +361,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         return $html;
     }
 
-    /**
-     * @param null|integer $pageUid
-     * @param integer|null $entryLevel
-     * @return null|integer
-     */
-    protected function determineParentPageUid($pageUid = null, $entryLevel = 0)
+    protected function determineParentPageUid(?int $pageUid = null, ?int $entryLevel = 0): ?int
     {
         $rootLineData = $this->pageService->getRootLine();
         if (null === $pageUid) {
@@ -410,12 +378,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         return $pageUid;
     }
 
-    /**
-     * @param null|integer $pageUid
-     * @param integer $entryLevel
-     * @return array
-     */
-    public function getMenu($pageUid = null, $entryLevel = 0)
+    public function getMenu(?int $pageUid = null, ?int $entryLevel = 0): array
     {
         $pageUid = $this->determineParentPageUid($pageUid, $entryLevel);
         if ($pageUid === null) {
@@ -435,11 +398,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    /**
-     * @param array $pages
-     * @return array
-     */
-    public function parseMenu(array $pages)
+    public function parseMenu(array $pages): array
     {
         $count = 0;
         $total = count($pages);
@@ -504,11 +463,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         return $processedPages;
     }
 
-    /**
-     * @param array $page
-     * @return string
-     */
-    protected function getItemTitle(array $page)
+    protected function getItemTitle(array $page): string
     {
         $titleFieldList = GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
         foreach ($titleFieldList as $titleFieldName) {
@@ -527,12 +482,10 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      * Note that the submenu VieWHelper is only capable of recycling one type of menu at
      * a time - for example, a List menu nested inside a regular Menu ViewHelper will
      * simply start another menu rendering completely separate from the parent menu.
-     *
-     * @return void
      */
-    protected function initalizeSubmenuVariables()
+    protected function initalizeSubmenuVariables(): void
     {
-        if (false === $this->original) {
+        if (!$this->original) {
             return;
         }
         $variables = $this->renderingContext->getVariableProvider()->getAll();
@@ -548,25 +501,18 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    /**
-     * @param boolean $original
-     * @return void
-     */
-    public function setOriginal($original)
+    public function setOriginal(bool $original): void
     {
         $this->original = (boolean) $original;
     }
 
-    /**
-     * @return void
-     */
-    protected function cleanupSubmenuVariables()
+    protected function cleanupSubmenuVariables(): void
     {
-        if (false === $this->original) {
+        if (!$this->original) {
             return;
         }
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-        if (false === $viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'parentInstance')) {
+        if (!$viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'parentInstance')) {
             return;
         }
         $viewHelperVariableContainer->remove(AbstractMenuViewHelper::class, 'parentInstance');
@@ -575,11 +521,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Saves copies of all template variables while rendering
-     * the menu
-     *
-     * @return void
+     * the menu.
      */
-    public function backupVariables()
+    public function backupVariables(): void
     {
         $backups = [$this->arguments['as'], $this->arguments['rootLineAs']];
         foreach ($backups as $var) {
@@ -591,11 +535,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Restores all saved template variables
-     *
-     * @return void
+     * Restores all saved template variables.
      */
-    public function restoreVariables()
+    public function restoreVariables(): void
     {
         if (0 < count($this->backupValues)) {
             foreach ($this->backupValues as $var => $value) {
@@ -612,11 +554,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      * will allow custom menu ViewHelpers to work as sub menu ViewHelpers without being
      * forced to implement their own variable retrieval or subclass Page / Menu / Sub.
      * Returns NULL if no parent exists.
+     *
      * @param integer $pageUid UID of page that's the new parent page, overridden in arguments of cloned and
-     *                         recycled menu ViewHelper instance
-     * @return AbstractMenuViewHelper|null
+     *                         recycled menu ViewHelper instance.
      */
-    protected function retrieveReconfiguredParentMenuInstance($pageUid)
+    protected function retrieveReconfiguredParentMenuInstance(int $pageUid): ?self
     {
         if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(
             AbstractMenuViewHelper::class,
@@ -636,10 +578,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         return $parentInstance;
     }
 
-    /**
-     * @return void
-     */
-    protected function cleanTemplateVariableContainer()
+    protected function cleanTemplateVariableContainer(): void
     {
         if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(
             AbstractMenuViewHelper::class,
@@ -665,10 +604,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getMenuArguments()
+    public function getMenuArguments(): array
     {
         if (!is_array($this->arguments)) {
             return $this->arguments->toArray();
@@ -676,10 +612,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         return $this->arguments;
     }
 
-    /**
-     * @return void
-     */
-    protected function unsetDeferredVariableStorage()
+    protected function unsetDeferredVariableStorage(): void
     {
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredString')) {
@@ -688,23 +621,16 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         }
     }
 
-    /**
-     * Returns the wrapping tag to use
-     *
-     * @return string
-     */
-    public function getWrappingTagName()
+    public function getWrappingTagName(): string
     {
         return $this->isNonWrappingMode() ? 'nav' : $this->arguments['tagName'];
     }
 
     /**
      * Returns TRUE for non-wrapping mode which is triggered
-     * by setting tagNameChildren to 'a'
-     *
-     * @return boolean
+     * by setting tagNameChildren to 'a'.
      */
-    public function isNonWrappingMode()
+    public function isNonWrappingMode(): bool
     {
         return ('a' === strtolower($this->arguments['tagNameChildren']));
     }
@@ -713,9 +639,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      * Returns array of page UIDs from provided pages
      *
      * @param mixed $pages
-     * @return array
      */
-    public function processPagesArgument($pages = null)
+    public function processPagesArgument($pages = null): array
     {
         if (null === $pages) {
             $pages = $this->arguments['pages'];

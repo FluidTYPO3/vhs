@@ -22,7 +22,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  */
 class SubViewHelper extends AbstractMenuViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'pageUid',

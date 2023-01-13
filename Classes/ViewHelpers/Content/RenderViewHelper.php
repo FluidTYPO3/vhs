@@ -26,13 +26,9 @@ use FluidTYPO3\Vhs\Utility\ContextUtility;
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerAsArgument();

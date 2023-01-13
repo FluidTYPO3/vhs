@@ -15,3 +15,7 @@ services:
     autowire: true
     autoconfigure: true
     public: true
+
+  TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder:
+    autowire: true
+    public: true

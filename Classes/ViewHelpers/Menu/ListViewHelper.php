@@ -27,7 +27,7 @@ class ListViewHelper extends AbstractMenuViewHelper
      */
     protected $backups = ['menu'];
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(

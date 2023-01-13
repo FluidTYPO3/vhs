@@ -17,14 +17,11 @@ namespace FluidTYPO3\Vhs\Traits;
  */
 trait PageRecordViewHelperTrait
 {
-
     /**
      * Registers all page record related arguments required
      * to handle access restrictions and shortcuts.
-     *
-     * @return void
      */
-    protected function registerPageRecordArguments()
+    protected function registerPageRecordArguments(): void
     {
         $this->registerArgument(
             'showAccessProtected',

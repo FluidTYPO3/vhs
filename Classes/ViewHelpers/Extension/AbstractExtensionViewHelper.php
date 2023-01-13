@@ -24,20 +24,12 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('extensionName', 'string', 'Name, in UpperCamelCase, of the extension to be checked');
     }
 
-    /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    protected static function getExtensionKey(array $arguments, RenderingContextInterface $renderingContext)
+    protected static function getExtensionKey(array $arguments, RenderingContextInterface $renderingContext): string
     {
         /** @var string $extensionName */
         $extensionName = static::getExtensionName($arguments, $renderingContext);
@@ -45,9 +37,6 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @throws \RuntimeException
      * @return mixed
      */
     protected static function getExtensionName(array $arguments, RenderingContextInterface $renderingContext)

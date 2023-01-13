@@ -15,16 +15,9 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  */
 class FileViewHelper extends AbstractResourceViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerAsArgument();

@@ -30,19 +30,13 @@ class SetViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'mixed', 'Value to set');
         $this->registerArgument('name', 'string', 'Name of register', true);
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -50,7 +44,7 @@ class SetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (false === $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+        if (!$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             return null;
         }
         $GLOBALS['TSFE']->register[$arguments['name']] = $renderChildrenClosure();

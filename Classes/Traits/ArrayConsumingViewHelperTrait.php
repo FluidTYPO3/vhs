@@ -12,7 +12,6 @@ use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class ArrayConsumingViewHelperTrait
@@ -28,7 +27,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 trait ArrayConsumingViewHelperTrait
 {
-
     /**
      * Override of VhsViewHelperTrait equivalent. Does what
      * that function does, but also ensures an array return.
@@ -36,7 +34,7 @@ trait ArrayConsumingViewHelperTrait
      * @param string $argumentName
      * @return mixed
      */
-    protected function getArgumentFromArgumentsOrTagContentAndConvertToArray($argumentName)
+    protected function getArgumentFromArgumentsOrTagContentAndConvertToArray(string $argumentName)
     {
         return static::getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
             $this->arguments,
@@ -49,15 +47,11 @@ trait ArrayConsumingViewHelperTrait
      * Override of VhsViewHelperTrait equivalent. Does what
      * that function does, but also ensures an array return.
      *
-     * @param array $arguments
-     * @param string $argumentName
-     * @param \Closure $renderChildrenClosure
-     *
      * @return mixed
      */
     protected static function getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
         array $arguments,
-        $argumentName,
+        string $argumentName,
         \Closure $renderChildrenClosure
     ) {
         if (!isset($arguments[$argumentName])) {
@@ -70,24 +64,16 @@ trait ArrayConsumingViewHelperTrait
 
     /**
      * @param \Traversable|string $candidate
-     * @param boolean $useKeys
-     *
-     * @return array
-     * @throws Exception
      */
-    protected function arrayFromArrayOrTraversableOrCSV($candidate, $useKeys = true)
+    protected function arrayFromArrayOrTraversableOrCSV($candidate, bool $useKeys = true): array
     {
         return static::arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys);
     }
 
     /**
      * @param mixed $candidate
-     * @param boolean $useKeys
-     *
-     * @return array
-     * @throws Exception
      */
-    protected static function arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys = true)
+    protected static function arrayFromArrayOrTraversableOrCSVStatic($candidate, bool $useKeys = true): array
     {
         if ($candidate instanceof QueryResultInterface) {
             return $candidate->toArray();
@@ -105,22 +91,12 @@ trait ArrayConsumingViewHelperTrait
         return [];
     }
 
-    /**
-     * @param array $array1
-     * @param array $array2
-     * @return array
-     */
-    protected function mergeArrays($array1, $array2)
+    protected function mergeArrays(array $array1, array $array2): array
     {
         return static::mergeArraysStatic($array1, $array2);
     }
 
-    /**
-     * @param array $array1
-     * @param array $array2
-     * @return array
-     */
-    protected static function mergeArraysStatic($array1, $array2)
+    protected static function mergeArraysStatic(array $array1, array $array2): array
     {
         ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
         return $array1;
@@ -128,10 +104,9 @@ trait ArrayConsumingViewHelperTrait
 
     /**
      * @param mixed $subject
-     * @return boolean
      */
-    protected static function assertIsArrayOrIterator($subject)
+    protected static function assertIsArrayOrIterator($subject): bool
     {
-        return (boolean) (true === is_array($subject) || true === $subject instanceof \Traversable);
+        return is_array($subject) || $subject instanceof \Traversable;
     }
 }

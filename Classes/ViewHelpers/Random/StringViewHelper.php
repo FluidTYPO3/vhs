@@ -28,10 +28,7 @@ class StringViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('length', 'integer', 'Length of string to generate');
         $this->registerArgument('minimumLength', 'integer', 'Minimum length of string if random length', false, 32);

@@ -48,13 +48,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'picture';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('src', 'mixed', 'Path to the image or FileReference.', true);

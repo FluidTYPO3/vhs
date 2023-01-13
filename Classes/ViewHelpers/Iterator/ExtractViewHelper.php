@@ -104,10 +104,7 @@ class ExtractViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'content',
@@ -137,9 +134,6 @@ class ExtractViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -182,11 +176,10 @@ class ExtractViewHelper extends AbstractViewHelper
      * Extract by key
      *
      * @param mixed $iterator
-     * @param string $key
      * @return mixed NULL or whatever we found at $key
      * @throws \Exception
      */
-    protected static function extractByKey($iterator, $key)
+    protected static function extractByKey($iterator, string $key)
     {
         if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
@@ -201,11 +194,10 @@ class ExtractViewHelper extends AbstractViewHelper
      * Recursively extract the key
      *
      * @param mixed $iterator
-     * @param string $key
      * @return array
      * @throws \Exception
      */
-    protected static function recursivelyExtractKey($iterator, $key)
+    protected static function recursivelyExtractKey($iterator, string $key)
     {
         if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1515498714);
@@ -218,7 +210,7 @@ class ExtractViewHelper extends AbstractViewHelper
             $result = ObjectAccess::getPropertyPath($v, $key);
             if (null !== $result) {
                 $content[] = $result;
-            } elseif (true === is_array($v) || true === $v instanceof \Traversable) {
+            } elseif (is_array($v) || $v instanceof \Traversable) {
                 $content[] = static::recursivelyExtractKey($v, $key);
             }
         }
@@ -230,19 +222,15 @@ class ExtractViewHelper extends AbstractViewHelper
 
     /**
      * Flatten the result structure, to iterate it cleanly in fluid
-     *
-     * @param array $content
-     * @param array $flattened
-     * @return array
      */
-    protected static function flattenArray(array $content, $flattened = null)
+    protected static function flattenArray(array $content, array $flattened = []): array
     {
         if (empty($content)) {
             return $content;
         }
 
         foreach ($content as $sub) {
-            if (true === is_array($sub)) {
+            if (is_array($sub)) {
                 $flattened = static::flattenArray($sub, $flattened);
             } else {
                 $flattened[] = $sub;

@@ -37,7 +37,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class LanguageViewHelper extends AbstractViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
     const LOCALLANG_DEFAULT = 'locallang.xlf';
@@ -47,12 +46,7 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Registers all arguments for this ViewHelper.
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerAsArgument();
         $this->registerArgument('extensionName', 'string', 'Name of the extension', false, null);
@@ -92,10 +86,8 @@ class LanguageViewHelper extends AbstractViewHelper
     /**
      * Gets the extension name from defined argument or
      * tries to resolve it from the controller context if not set.
-     *
-     * @return string
      */
-    protected function getResolvedExtensionName()
+    protected function getResolvedExtensionName(): string
     {
         $extensionName = $this->arguments['extensionName'];
 
@@ -110,10 +102,8 @@ class LanguageViewHelper extends AbstractViewHelper
     /**
      * Gets the resolved file path with trying to resolve relative paths even if no
      * extension key is defined.
-     *
-     * @return string
      */
-    protected function getResolvedPath()
+    protected function getResolvedPath(): string
     {
         $path = $this->arguments['path'];
         $absoluteFileName = GeneralUtility::getFileAbsFileName($this->arguments['path']);
@@ -130,12 +120,8 @@ class LanguageViewHelper extends AbstractViewHelper
     /**
      * Gets the translated labels by a specific language key
      * or fallback to 'default'.
-     *
-     * @param array $locallang
-     * @param string $languageKey
-     * @return array
      */
-    protected function getLabelsByLanguageKey($locallang, $languageKey)
+    protected function getLabelsByLanguageKey(array $locallang, string $languageKey): array
     {
         $labels = [];
 
@@ -150,16 +136,11 @@ class LanguageViewHelper extends AbstractViewHelper
 
     /**
      * Simplify label array with just taking the value from target.
-     *
-     * @param array $labels
-     * @return array
      */
-    protected function getLabelsFromTarget($labels)
+    protected function getLabelsFromTarget(array $labels): array
     {
-        if (true === is_array($labels)) {
-            foreach ($labels as $labelKey => $label) {
-                $labels[$labelKey] = $label[0]['target'];
-            }
+        foreach ($labels as $labelKey => $label) {
+            $labels[$labelKey] = $label[0]['target'];
         }
 
         return $labels;
@@ -168,10 +149,8 @@ class LanguageViewHelper extends AbstractViewHelper
     /**
      * Gets the language key from arguments or from current
      * initialized language if argument is not defined.
-     *
-     * @return string
      */
-    protected function getLanguageKey()
+    protected function getLanguageKey(): string
     {
         $languageKey = $this->arguments['languageKey'];
 
@@ -185,10 +164,8 @@ class LanguageViewHelper extends AbstractViewHelper
     /**
      * Gets the key of current initialized language
      * or fallback to 'default'.
-     *
-     * @return string
      */
-    protected function getInitializedLanguage()
+    protected function getInitializedLanguage(): string
     {
         $language = 'default';
 
@@ -198,6 +175,6 @@ class LanguageViewHelper extends AbstractViewHelper
             $language = $GLOBALS['LANG']->lang;
         }
 
-        return $language;
+        return (string) $language;
     }
 }

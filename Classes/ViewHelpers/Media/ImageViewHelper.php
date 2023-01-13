@@ -47,13 +47,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      */
     protected $tagName = 'img';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -99,12 +93,9 @@ class ImageViewHelper extends AbstractImageViewHelper
         return $this->renderTag();
     }
 
-    /**
-     * @return string
-     */
-    public function renderTag()
+    public function renderTag(): string
     {
-        if (false === empty($this->arguments['srcset'])) {
+        if (!empty($this->arguments['srcset'])) {
             $srcSetVariants = $this->addSourceSet($this->tag, $this->mediaSource);
         }
 
@@ -112,7 +103,7 @@ class ImageViewHelper extends AbstractImageViewHelper
             $width = $this->arguments['canvasWidth'];
             $height = $this->arguments['canvasHeight'];
             $src = $this->mediaSource;
-        } elseif (false === empty($srcSetVariants) && false === empty($this->arguments['srcsetDefault'])) {
+        } elseif (!empty($srcSetVariants) && !empty($this->arguments['srcsetDefault'])) {
             $srcSetVariantDefault = $srcSetVariants[$this->arguments['srcsetDefault']];
             $src = $srcSetVariantDefault['src'];
             $width = $srcSetVariantDefault['width'];
@@ -131,7 +122,7 @@ class ImageViewHelper extends AbstractImageViewHelper
         if (empty($this->arguments['alt'])) {
             $this->tag->addAttribute('alt', '');
         }
-        if (true === empty($this->arguments['title'])) {
+        if (empty($this->arguments['title'])) {
             $this->tag->addAttribute('title', $this->arguments['alt']);
         }
         return $this->tag->render();

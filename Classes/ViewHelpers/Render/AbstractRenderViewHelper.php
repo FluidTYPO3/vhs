@@ -32,21 +32,12 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'onError',
@@ -65,11 +56,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @param array $arguments
-     * @return array
-     */
-    protected static function getPreparedNamespaces(array $arguments)
+    protected static function getPreparedNamespaces(array $arguments): array
     {
         $namespaces = [];
         foreach ((array) $arguments['namespaces'] as $namespaceIdentifier => $namespace) {
@@ -79,11 +66,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return $namespaces;
     }
 
-    /**
-     * @param RenderingContextInterface $renderingContext
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
-     */
-    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext)
+    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): StandaloneView
     {
         $view = static::getPreparedView();
         $newRenderingContext = $view->getRenderingContext();
@@ -107,11 +90,8 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface|\TYPO3Fluid\Fluid\View\ViewInterface $view
-     * @param array $arguments
-     * @throws \Exception
-     * @return string
      */
-    protected static function renderView($view, array $arguments)
+    protected static function renderView($view, array $arguments): string
     {
         try {
             $content = $view->render();
@@ -124,10 +104,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return $content;
     }
 
-    /**
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
-     */
-    protected static function getPreparedView()
+    protected static function getPreparedView(): StandaloneView
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);

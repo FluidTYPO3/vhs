@@ -16,10 +16,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ForViewHelper extends AbstractLoopViewHelper
 {
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('to', 'integer', 'Number that the index needs to reach before stopping', true);
@@ -34,9 +31,6 @@ class ForViewHelper extends AbstractLoopViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

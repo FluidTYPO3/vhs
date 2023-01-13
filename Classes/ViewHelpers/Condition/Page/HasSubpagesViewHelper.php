@@ -28,21 +28,12 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
      */
     protected static $pageService;
 
-    /**
-     * @param PageService $pageService
-     * @return void
-     */
-    public static function setPageService(PageService $pageService)
+    public static function setPageService(PageService $pageService): void
     {
         static::$pageService = $pageService;
     }
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('pageUid', 'integer', 'Parent page to check');

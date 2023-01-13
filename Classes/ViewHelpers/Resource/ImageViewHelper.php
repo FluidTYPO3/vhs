@@ -15,7 +15,6 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  */
 class ImageViewHelper extends AbstractImageViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -26,13 +25,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      */
     protected $tagName = 'img';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();

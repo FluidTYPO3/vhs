@@ -31,9 +31,6 @@ class IsRequiredViewHelper extends HasValidatorViewHelper
     /**
      * Default implementation for use in compiled templates
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

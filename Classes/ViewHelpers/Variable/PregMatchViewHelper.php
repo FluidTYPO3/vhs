@@ -33,10 +33,7 @@ class PregMatchViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerAsArgument();
         $this->registerArgument('pattern', 'mixed', 'Regex pattern to match against', true);

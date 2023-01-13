@@ -27,12 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class ContainsViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('needle', 'mixed', 'Needle to search for in haystack', true);
@@ -57,11 +52,9 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param integer $index
-     * @param array $arguments
      * @return mixed
      */
-    protected static function getNeedleAtIndex($index, $arguments)
+    protected static function getNeedleAtIndex(int $index, array $arguments)
     {
         if (0 > $index) {
             return null;
@@ -83,10 +76,9 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     /**
      * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage $haystack
      * @param integer|DomainObjectInterface $needle
-     * @param array $arguments
      * @return boolean|integer
      */
-    protected static function assertHaystackHasNeedle($haystack, $needle, $arguments)
+    protected static function assertHaystackHasNeedle($haystack, $needle, array $arguments)
     {
         if (is_array($haystack)) {
             return static::assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments);

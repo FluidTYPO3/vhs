@@ -91,89 +91,94 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             self::markTestSkipped('Skipping test with FrontendUser dependency');
         }
         $frontendUser = new FrontendUser();
+        $frontendUser->_setProperty('uid', 1);
         $frontendUsers = new ObjectStorage();
         $frontendUsers->attach($frontendUser);
         $frontendUserGroup = new FrontendUserGroup();
+        $frontendUserGroup->_setProperty('uid', 2);
         $frontendUserGroups = new ObjectStorage();
         $frontendUserGroups->attach($frontendUserGroup);
         $backendUser = new BackendUser();
+        $backendUser->_setProperty('uid', 3);
         $backendUsers = new ObjectStorage();
         $backendUsers->attach($backendUser);
         $backendUserGroup = new BackendUserGroup();
+        $backendUserGroup->_setProperty('uid', 4);
         $backendUserGroups = new ObjectStorage();
         $backendUserGroups->attach($backendUserGroup);
         return [
-            [
+            'any frontend user' => [
                 ['anyFrontendUser' => true],
                 ['assertFrontendUserLoggedIn'],
                 true
             ],
-            [
+            'any frontend user group' => [
                 ['anyFrontendUserGroup' => true],
                 ['assertFrontendUserGroupLoggedIn'],
                 true
             ],
-            [
+            'specific frontend user' => [
                 ['frontendUser' => $frontendUser],
                 ['assertFrontendUserLoggedIn'],
                 true
             ],
-            [
+            'one of provided frontend users' =>
+                [
                 ['frontendUsers' => $frontendUsers],
                 ['assertFrontendUsersLoggedIn'],
                 true
             ],
-            [
+            'specific frontend uer group' => [
                 ['frontendUserGroup' => true],
                 ['assertFrontendUserGroupLoggedIn'],
                 true
             ],
-            [
+            'one of provided frontend user groups' => [
                 ['frontendUserGroups' => true],
                 ['assertFrontendUserGroupLoggedIn'],
                 true
             ],
-            [
+            'any backend user' => [
                 ['anyBackendUser' => true],
                 ['assertBackendUserLoggedIn'],
                 true
             ],
-            [
+            'any backend user group' => [
                 ['anyBackendUserGroup' => true],
                 ['assertBackendUserGroupLoggedIn'],
                 true
             ],
-            [
+            'specific backend user' => [
                 ['backendUser' => $backendUser],
                 ['assertBackendUserLoggedIn'],
                 true
             ],
-            [
+            'one of provided backend users' => [
                 ['backendUsers' => $backendUsers],
                 ['assertBackendUserLoggedIn'],
                 true
             ],
-            [
+            'specific backend user group' => [
                 ['backendUserGroup' => $backendUserGroup],
                 ['assertBackendUserGroupLoggedIn'],
                 true
             ],
-            [
+            'one of provided backend user groups' => [
                 ['backendUserGroups' => $backendUserGroups],
                 ['assertBackendUserGroupLoggedIn'],
                 true
             ],
-            [
+            'admin' => [
                 ['admin' => true],
                 ['assertAdminLoggedIn'],
                 true
             ],
-            [
+            'frontend user and admin' => [
                 ['admin' => true, 'anyFrontendUser' => true, 'evaluationMode' => 'AND'],
                 ['assertAdminLoggedIn', 'assertFrontendUserLoggedIn'],
                 true
             ],
-            [
+            'frontned user or admin' => [
                 ['admin' => true, 'anyFrontendUser' => true, 'evaluationMode' => 'OR'],
                 ['assertAdminLoggedIn', 'assertFrontendUserLoggedIn'],
                 true
@@ -434,6 +439,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         }
         $GLOBALS['TSFE'] = (object) ['loginUser' => 1, 'fe_user' => (object) ['user' => ['uid' => 1]]];
 
+        $frontendUser = new FrontendUser();
+
         $querySettings = $this->getMockBuilder(Typo3QuerySettings::class)->disableOriginalConstructor()->getMock();
 
         $query = $this->getMockBuilder(Query::class)
@@ -448,7 +455,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             ->getMock();
         $repository->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
         $repository->expects($this->once())->method('createQuery')->willReturn($query);
-        $repository->expects($this->once())->method('findByUid')->with(1)->willReturn('test');
+        $repository->expects($this->once())->method('findByUid')->with(1)->willReturn($frontendUser);
         GeneralUtility::setSingletonInstance(FrontendUserRepository::class, $repository);
 
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
@@ -456,7 +463,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             ->getMockForAbstractClass();
 
         $result = $instance->getCurrentFrontendUser();
-        $this->assertEquals('test', $result);
+        $this->assertEquals($frontendUser, $result);
     }
 
     /**

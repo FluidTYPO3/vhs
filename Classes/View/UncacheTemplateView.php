@@ -27,12 +27,12 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class UncacheTemplateView extends TemplateView
 {
     /**
-     * @var TemplateParser|\TYPO3Fluid\Fluid\Core\Parser\TemplateParser
+     * @var TemplateParser
      */
     protected $templateParser;
 
     /**
-     * @var TemplateCompiler|\TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler
+     * @var TemplateCompiler
      */
     protected $templateCompiler;
 
@@ -44,13 +44,7 @@ class UncacheTemplateView extends TemplateView
         return ['renderingStack'];
     }
 
-    /**
-     * @param string $postUserFunc
-     * @param array $conf
-     * @param string $content
-     * @return string|null
-     */
-    public function callUserFunction($postUserFunc, $conf, $content)
+    public function callUserFunction(string $postUserFunc, array $conf, string $content): string
     {
         $partial = $conf['partial'] ?? null;
         $section = $conf['section'] ?? null;
@@ -129,19 +123,12 @@ class UncacheTemplateView extends TemplateView
         $this->templateCompiler = $renderingContext->getTemplateCompiler();
     }
 
-    /**
-     * @param RenderingContextInterface $renderingContext
-     * @param string $partial
-     * @param string|null $section
-     * @param array $arguments
-     * @return string|null
-     */
     protected function renderPartialUncached(
         RenderingContextInterface $renderingContext,
-        $partial,
-        $section = null,
+        string $partial,
+        ?string $section = null,
         array $arguments = []
-    ) {
+    ): string {
         $this->renderingStack[] = [
             'type' => static::RENDERING_TEMPLATE,
             'parsedTemplate' => null,

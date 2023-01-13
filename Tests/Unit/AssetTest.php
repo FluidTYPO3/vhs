@@ -116,7 +116,24 @@ class AssetTest extends AbstractTestCase
         $settableProperties = $asset->getSettings();
         foreach ($settableProperties as $propertyName => $_) {
             $setter = 'set' . ucfirst($propertyName);
-            $asset = $asset->$setter(null);
+            $methodReflection = new \ReflectionMethod(Asset::class, $setter);
+            $parameter = $methodReflection->getParameters()[0];
+            if ($parameter->allowsNull()) {
+                $value = null;
+            } else {
+                switch ($parameter->getType()->getName()) {
+                    case 'bool':
+                        $value = true;
+                        break;
+                    case 'string':
+                        $value = 'string';
+                        break;
+                    case 'array':
+                        $value = [];
+                        break;
+                }
+            }
+            $asset = $asset->$setter($value);
             $this->assertInstanceOf(Asset::class, $asset, 'The ' . $setter . ' method does not support chaining');
         }
     }
@@ -212,18 +229,17 @@ class AssetTest extends AbstractTestCase
         $asset = Asset::createFromFile($file);
         $gettableProperties = array_keys($asset->getSettings());
         foreach ($gettableProperties as $propertyName) {
-            if (false === property_exists(Asset::class, $propertyName)) {
+            if (!property_exists(Asset::class, $propertyName)) {
                 continue;
             }
             $getter = 'get' . ucfirst($propertyName);
             $propertyValue = $asset->$getter();
-            /** @var \ReflectionProperty $propertyReflection */
-            $propertyReflection = new \ReflectionProperty(Asset::class, $propertyName);
-            $docComment = $propertyReflection->getDocComment();
-            $matches = [];
-            preg_match('/@var ([a-z\\\\0-9_]+)/i', $docComment, $matches);
-            $expectedDataType = $matches[1];
-            $constraint = new IsType($expectedDataType);
+            $methodReflection = new \ReflectionMethod(Asset::class, $getter);
+            $returnType = $methodReflection->getReturnType();
+            if ($returnType->allowsNull()) {
+                continue;
+            }
+            $constraint = new IsType($returnType);
             $this->assertThat($propertyValue, $constraint);
         }
         $constraint = new IsType(IsType::TYPE_ARRAY);

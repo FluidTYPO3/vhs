@@ -32,10 +32,7 @@ class CaseViewHelper extends AbstractViewHelper
     const CASE_LOWERCAMELCASE = 'lowerCamelCase';
     const CASE_UNDERSCORED = 'lowercase_underscored';
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('string', 'string', 'String to case format');
         $this->registerArgument('case', 'string', 'Case to convert to');
@@ -43,9 +40,6 @@ class CaseViewHelper extends AbstractViewHelper
 
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

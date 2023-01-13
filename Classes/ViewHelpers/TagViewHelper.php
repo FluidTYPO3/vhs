@@ -17,18 +17,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Creates one HTML tag of any type, with various properties
  * like class and ID applied only if arguments are not empty,
  * rather than apply them always - empty or not - if provided.
- *
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class TagViewHelper extends AbstractTagBasedViewHelper
 {
     use TagViewHelperTrait;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
