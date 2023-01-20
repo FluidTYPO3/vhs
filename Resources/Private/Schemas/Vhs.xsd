@@ -1533,7 +1533,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -1543,7 +1543,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -1635,7 +1635,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -1645,7 +1645,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -1711,7 +1711,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -1721,7 +1721,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -1797,7 +1797,7 @@ It can be rendered as follows:
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -1807,7 +1807,7 @@ It can be rendered as follows:
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -10832,7 +10832,7 @@ resource ViewHelpers do if you only pass uid.
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -10842,7 +10842,7 @@ resource ViewHelpers do if you only pass uid.
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -11161,7 +11161,7 @@ If you simply want to render a content element, try `<v:content.render>`.
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -11171,7 +11171,7 @@ If you simply want to render a content element, try `<v:content.render>`.
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
