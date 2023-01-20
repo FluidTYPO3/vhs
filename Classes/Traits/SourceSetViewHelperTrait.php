@@ -33,7 +33,7 @@ trait SourceSetViewHelperTrait
         $quality = $this->arguments['quality'];
         $crop = $this->arguments['crop'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
-        if (true === $treatIdAsReference) {
+        if ($treatIdAsReference) {
             $src = $this->arguments['src'];
         }
 
@@ -112,9 +112,9 @@ trait SourceSetViewHelperTrait
     public function getSourceSetWidths(): array
     {
         $srcsets = $this->arguments['srcset'];
-        if (true === $srcsets instanceof \Traversable) {
+        if ($srcsets instanceof \Traversable) {
             $srcsets = iterator_to_array($srcsets);
-        } elseif (true === is_string($srcsets)) {
+        } elseif (is_string($srcsets)) {
             $srcsets = GeneralUtility::trimExplode(',', $srcsets, true);
         } else {
             $srcsets = (array) $srcsets;
