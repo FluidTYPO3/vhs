@@ -30,11 +30,8 @@ trait ArrayConsumingViewHelperTrait
     /**
      * Override of VhsViewHelperTrait equivalent. Does what
      * that function does, but also ensures an array return.
-     *
-     * @param string $argumentName
-     * @return mixed
      */
-    protected function getArgumentFromArgumentsOrTagContentAndConvertToArray(string $argumentName)
+    protected function getArgumentFromArgumentsOrTagContentAndConvertToArray(string $argumentName): array
     {
         return static::getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
             $this->arguments,
@@ -46,28 +43,18 @@ trait ArrayConsumingViewHelperTrait
     /**
      * Override of VhsViewHelperTrait equivalent. Does what
      * that function does, but also ensures an array return.
-     *
-     * @return mixed
      */
     protected static function getArgumentFromArgumentsOrTagContentAndConvertToArrayStatic(
         array $arguments,
         string $argumentName,
         \Closure $renderChildrenClosure
-    ) {
+    ): array {
         if (!isset($arguments[$argumentName])) {
             $value = $renderChildrenClosure();
         } else {
             $value = $arguments[$argumentName];
         }
         return static::arrayFromArrayOrTraversableOrCSVStatic($value);
-    }
-
-    /**
-     * @param \Traversable|string $candidate
-     */
-    protected function arrayFromArrayOrTraversableOrCSV($candidate, bool $useKeys = true): array
-    {
-        return static::arrayFromArrayOrTraversableOrCSVStatic($candidate, $useKeys);
     }
 
     /**
@@ -78,13 +65,13 @@ trait ArrayConsumingViewHelperTrait
         if ($candidate instanceof QueryResultInterface) {
             return $candidate->toArray();
         }
-        if (true === is_array($candidate)) {
+        if (is_array($candidate)) {
             return $candidate;
         }
         if ($candidate instanceof \Traversable) {
             return iterator_to_array($candidate, $useKeys);
         }
-        if (true === is_string($candidate)) {
+        if (is_string($candidate)) {
             return GeneralUtility::trimExplode(',', $candidate, true);
         }
         ErrorUtility::throwViewHelperException('Unsupported input type; cannot convert to array!');

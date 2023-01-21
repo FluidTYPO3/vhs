@@ -129,7 +129,7 @@ trait TemplateVariableViewHelperTrait
     ): array {
         $backups = [];
         foreach ($variables as $variableName => $variableValue) {
-            if (true === $templateVariableContainer->exists($variableName)) {
+            if ($templateVariableContainer->exists($variableName)) {
                 $backups[$variableName] = $templateVariableContainer->get($variableName);
                 $templateVariableContainer->remove($variableName);
             }
@@ -145,8 +145,8 @@ trait TemplateVariableViewHelperTrait
     ): void {
         foreach ($variables as $variableName => $variableValue) {
             $templateVariableContainer->remove($variableName);
-            if (true === isset($backups[$variableName])) {
-                $templateVariableContainer->add($variableName, $variableValue);
+            if (isset($backups[$variableName])) {
+                $templateVariableContainer->add($variableName, $backups[$variableName]);
             }
         }
     }

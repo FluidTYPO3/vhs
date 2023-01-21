@@ -104,10 +104,10 @@ trait TagViewHelperTrait
     ): string {
         $trimmedContent = trim((string) $content);
         $forceClosingTag = (boolean) $this->arguments['forceClosingTag'];
-        if (true === empty($trimmedContent) && true === (boolean) $this->arguments['hideIfEmpty']) {
+        if (empty($trimmedContent) && $this->arguments['hideIfEmpty']) {
             return '';
         }
-        if ('none' === $tagName || true === empty($tagName)) {
+        if ('none' === $tagName || empty($tagName)) {
             // skip building a tag if special keyword "none" is used, or tag name is empty
             return $trimmedContent;
         }
@@ -119,8 +119,8 @@ trait TagViewHelperTrait
         }
         // process some attributes differently - if empty, remove the property:
         foreach ($nonEmptyAttributes as $propertyName) {
-            $value = $this->arguments[$propertyName];
-            if (true === empty($value)) {
+            $value = $this->arguments[$propertyName] ?? null;
+            if (empty($value)) {
                 $this->tag->removeAttribute($propertyName);
             } else {
                 $this->tag->addAttribute($propertyName, $value);
@@ -140,6 +140,8 @@ trait TagViewHelperTrait
         bool $forceClosingTag = false,
         string $mode = 'none'
     ): string {
+        $content = $this->tag->getContent();
+
         $tagBuilder = clone $this->tag;
         $tagBuilder->reset();
         $tagBuilder->setTagName($tagName);
@@ -147,7 +149,6 @@ trait TagViewHelperTrait
         $tagBuilder->forceClosingTag($forceClosingTag);
         $childTag = $tagBuilder->render();
         if ('append' === $mode || 'prepend' === $mode) {
-            $content = $this->tag->getContent();
             if ('append' === $mode) {
                 $content = $content . $childTag;
             } else {
