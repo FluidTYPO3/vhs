@@ -2,7 +2,6 @@
 [![TYPO3 12](https://img.shields.io/badge/TYPO3-12-orange.svg?style=flat-square)](https://get.typo3.org/version/12)
 [![TYPO3 11](https://img.shields.io/badge/TYPO3-11-orange.svg?style=flat-square)](https://get.typo3.org/version/11)
 [![TYPO3 10](https://img.shields.io/badge/TYPO3-10-orange.svg?style=flat-square)](https://get.typo3.org/version/10)
-
 [![Total Downloads](https://poser.pugx.org/fluidtypo3/vhs/d/total?style=flat-square)](https://packagist.org/packages/fluidtypo3/vhs)
 [![Monthly Downloads](https://poser.pugx.org/fluidtypo3/vhs/d/monthly?style=flat-square)](https://packagist.org/packages/fluidtypo3/vhs)
 [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/vhs/development.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/vhs)
