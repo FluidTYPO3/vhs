@@ -17,33 +17,10 @@ use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\View\TemplateView;
-use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
-use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
-/**
- * Uncache Template View
- */
 class UncacheTemplateView extends TemplateView
 {
-    /**
-     * @var TemplateParser
-     */
-    protected $templateParser;
-
-    /**
-     * @var TemplateCompiler
-     */
-    protected $templateCompiler;
-
-    /**
-     * @return array
-     */
-    public function __sleep()
-    {
-        return ['renderingStack'];
-    }
-
     public function callUserFunction(string $postUserFunc, array $conf, string $content): string
     {
         $partial = $conf['partial'] ?? null;
@@ -56,10 +33,7 @@ class UncacheTemplateView extends TemplateView
         }
 
         if (class_exists(ExtbaseRequestParameters::class)) {
-            /** @var RenderingContextFactory $renderingContextFactory */
-            $renderingContextFactory = GeneralUtility::makeInstance(RenderingContextFactory::class);
-            /** @var RenderingContext $renderingContext */
-            $renderingContext = $renderingContextFactory->create();
+            $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
 
             if (method_exists($renderingContext, 'setRequest')) {
                 $renderingContext->setRequest(
@@ -110,8 +84,7 @@ class UncacheTemplateView extends TemplateView
 
         $this->prepareContextsForUncachedRendering($renderingContext);
         if (!empty($conf['partialRootPaths'])) {
-            $templatePaths = $renderingContext->getTemplatePaths();
-            $templatePaths->setPartialRootPaths($conf['partialRootPaths']);
+            $renderingContext->getTemplatePaths()->setPartialRootPaths($conf['partialRootPaths']);
         }
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
@@ -119,8 +92,6 @@ class UncacheTemplateView extends TemplateView
     protected function prepareContextsForUncachedRendering(RenderingContextInterface $renderingContext): void
     {
         $this->setRenderingContext($renderingContext);
-        $this->templateParser = $renderingContext->getTemplateParser();
-        $this->templateCompiler = $renderingContext->getTemplateCompiler();
     }
 
     protected function renderPartialUncached(
@@ -137,5 +108,15 @@ class UncacheTemplateView extends TemplateView
         $rendered = $this->renderPartial($partial, $section, $arguments);
         array_pop($this->renderingStack);
         return $rendered;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    protected function createRenderingContextWithRenderingContextFactory(): RenderingContextInterface
+    {
+        /** @var RenderingContextFactory $renderingContextFactory */
+        $renderingContextFactory = GeneralUtility::makeInstance(RenderingContextFactory::class);
+        return $renderingContextFactory->create();
     }
 }
