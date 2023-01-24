@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\View;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
+use TYPO3\CMS\Backend\Controller\BackendController;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -76,7 +77,14 @@ class UncacheTemplateViewTest extends AbstractTestCase
         $configuration = [
             'partial' => 'dummy',
             'section' => 'dummy',
-            'controllerContext' => [],
+            'controllerContext' => [
+                'actionName' => 'test',
+                'extensionName' => 'vhs',
+                'controllerName' => 'test',
+                'controllerObjectName' => BackendController::class,
+                'pluginName' => 'foo',
+                'format' => 'html',
+            ],
             'partialRootPaths' => ['foo']
         ];
         $mock->expects($this->once())->method('setRenderingContext');
