@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -205,8 +206,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $menu = $this->parseMenu($pages);
         $rootLine = $this->pageService->getRootLine(
             $this->arguments['pageUid'],
-            $this->arguments['reverse'] ?? false,
-            $this->arguments['showAccessProtected']
+            $this->arguments['reverse'] ?? false
         );
         $this->cleanupSubmenuVariables();
         $this->cleanTemplateVariableContainer();
@@ -329,7 +329,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
 
     protected function renderItemLink(array $page): string
     {
-        $isSpacer = ($page['doktype'] === $this->pageService->readPageRepositoryConstant('DOKTYPE_SPACER'));
+        $isSpacer = $page['doktype'] === PageRepository::DOKTYPE_SPACER;
         $isCurrent = (boolean) $page['current'];
         $isActive = (boolean) $page['active'];
         $linkCurrent = (boolean) $this->arguments['linkCurrent'];
@@ -427,7 +427,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                     $pages[$index]['uid'] = $targetPage['uid'];
                 }
             }
-            if (true === $this->pageService->isActive($originalPageUid, $showAccessProtected)) {
+            if (true === $this->pageService->isActive($originalPageUid)) {
                 $pages[$index]['active'] = true;
                 $class[] = $this->arguments['classActive'];
             } else {
