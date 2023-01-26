@@ -3,9 +3,6 @@
 namespace FluidTYPO3\Vhs\Tests\Fixtures\Classes;
 
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\Variables\VariableProviderInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
