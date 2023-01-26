@@ -8,8 +8,13 @@ namespace FluidTYPO3\Vhs\Utility;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -20,9 +25,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class FrontendSimulationUtility
 {
     /**
-     * Sets the global variables $GLOBALS['TSFE']->csConvObj and $GLOBALS['TSFE']->renderCharset in Backend mode
-     * This somewhat hacky work around is currently needed because the conv_case() and convCaseFirst() functions of
-     * tslib_cObj rely on those variables to be set
+     * Sets the global variable $GLOBALS['TSFE'] in Backend mode.
      */
     public static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
     {
@@ -30,23 +33,38 @@ class FrontendSimulationUtility
             return null;
         }
         $tsfeBackup = $GLOBALS['TSFE'] ?? null;
-        $GLOBALS['TSFE'] = (object) ['csConvObj' => null, 'renderCharset' => null];
-        // preparing csConvObj
-        if (!is_object($GLOBALS['TSFE']->csConvObj)) {
-            if (is_object($GLOBALS['LANG']) && property_exists($GLOBALS['LANG'], 'csConvObj')) {
-                $GLOBALS['TSFE']->csConvObj = $GLOBALS['LANG']->csConvObj;
-            } else {
-                $GLOBALS['TSFE']->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
-            }
-        }
-        // preparing renderCharset
-        if (!is_object($GLOBALS['TSFE']->renderCharset)) {
-            if (is_object($GLOBALS['LANG']) && property_exists($GLOBALS['LANG'], 'charSet')) {
-                $GLOBALS['TSFE']->renderCharset = $GLOBALS['LANG']->charSet;
-            } else {
-                $GLOBALS['TSFE']->renderCharset = 'utf-8';
-            }
-        }
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] ?? 'fe_user';
+
+        /** @var SiteFinder $siteFinder */
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $sites = $siteFinder->getAllSites();
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var Site $site */
+        $site = reset($sites);
+        $siteLanguage = $site->getDefaultLanguage();
+        /** @var PageArguments $pageArguments */
+        $pageArguments = GeneralUtility::makeInstance(
+            PageArguments::class,
+            0,
+            (string) PageRepository::DOKTYPE_DEFAULT,
+            []
+        );
+        /** @var FrontendUserAuthentication $frontendUser */
+        $frontendUser = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
+
+        $controller = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            $context,
+            $site,
+            $siteLanguage,
+            $pageArguments,
+            $frontendUser
+        );
+
+        $GLOBALS['TSFE'] = $controller;
+
         return $tsfeBackup;
     }
 

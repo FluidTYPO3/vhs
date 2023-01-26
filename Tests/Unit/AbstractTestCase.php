@@ -94,6 +94,7 @@ abstract class AbstractTestCase extends TestCase
         parent::tearDown();
 
         GeneralUtility::resetSingletonInstances($this->singletonInstancesBackup);
+        GeneralUtility::purgeInstances();
     }
 
     /**
