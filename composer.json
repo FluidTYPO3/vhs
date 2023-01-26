@@ -55,7 +55,8 @@
         "phpunit/phpunit": "^5.7 || ^9.5",
         "php-coveralls/php-coveralls": "^2.5",
         "squizlabs/php_codesniffer": "^3.7",
-        "mikey179/vfsstream": "^1.6"
+        "mikey179/vfsstream": "^1.6",
+        "fluidtypo3/development": "^5"
     },
     "suggest": {
         "ext-tidy": "Allows to make use of the tidy ViewHelper v:format.tidy",
