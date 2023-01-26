@@ -15,7 +15,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 /**
  * Core Utility
  *
- * Utility to get core informations.
+ * Utility to get core information.
  */
 class CoreUtility
 {
