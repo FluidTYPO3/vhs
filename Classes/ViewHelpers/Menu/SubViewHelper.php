@@ -33,13 +33,13 @@ class SubViewHelper extends AbstractMenuViewHelper
     }
 
     /**
-     * @return NULL|string
+     * @return null|string
      */
     public function render()
     {
         $pageUid = $this->arguments['pageUid'];
         $parentInstance = $this->retrieveReconfiguredParentMenuInstance($pageUid);
-        if (null === $parentInstance) {
+        if (!$parentInstance) {
             return null;
         }
         $parentArguments = $parentInstance->getMenuArguments();
@@ -49,9 +49,9 @@ class SubViewHelper extends AbstractMenuViewHelper
         // rendered - which is expected for example if using a page setting to render a different page in menus.
         // This means that the following check although it appears redundant, it is in fact not.
         $isCurrent = $this->pageService->isCurrent($pageUid);
-        $isExpanded = (boolean) (true === (boolean) $parentArguments['expandAll']);
-        $shouldRender = (boolean) (true === $isActive || true === $isCurrent || true === $isExpanded);
-        if (false === $shouldRender) {
+        $isExpanded = (boolean) $parentArguments['expandAll'];
+        $shouldRender = $isActive || $isCurrent || $isExpanded;
+        if (!$shouldRender) {
             return null;
         }
         // retrieve the set of template variables which were in play when the parent menu VH started rendering.

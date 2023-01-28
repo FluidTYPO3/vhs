@@ -14,6 +14,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 
 class LinkViewHelperTest extends AbstractViewHelperTestCase
 {
@@ -55,10 +56,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         unset($GLOBALS['TSFE']);
     }
 
-    /**
-     * @return AbstractViewHelper
-     */
-    protected function createInstance()
+    protected function createInstance(): LinkViewHelper
     {
         $instance = parent::createInstance();
         $instance->injectPageService($this->pageService);

@@ -21,12 +21,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  */
 class ListViewHelper extends AbstractMenuViewHelper
 {
-
-    /**
-     * @var array
-     */
-    protected $backups = ['menu'];
-
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -39,7 +33,7 @@ class ListViewHelper extends AbstractMenuViewHelper
     }
 
     /**
-     * @return NULL|string
+     * @return null|string
      */
     public function render()
     {
@@ -57,9 +51,10 @@ class ListViewHelper extends AbstractMenuViewHelper
         }
         $menu = $this->parseMenu($menuData);
         $this->backupVariables();
-        $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $menu);
+        $variableProvider = $this->renderingContext->getVariableProvider();
+        $variableProvider->add($this->arguments['as'], $menu);
         $output = $this->renderContent($menu);
-        $this->renderingContext->getVariableProvider()->remove($this->arguments['as']);
+        $variableProvider->remove($this->arguments['as']);
         $this->restoreVariables();
 
         return $output;
