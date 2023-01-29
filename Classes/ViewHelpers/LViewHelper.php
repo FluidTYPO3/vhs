@@ -78,20 +78,20 @@ class LViewHelper extends AbstractViewHelper
         $extensionName = $arguments['extensionName'];
         $translationArguments = $arguments['arguments'];
         $id = $renderChildrenClosure();
-        if (true === empty($default)) {
+        if (empty($default)) {
             $default = $id;
         }
-        if (true === empty($extensionName)) {
+        if (empty($extensionName)) {
             $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
                 ->getControllerExtensionName();
         }
         $value = LocalizationUtility::translate($id, $extensionName, $translationArguments);
-        if (true === empty($value)) {
+        if (empty($value)) {
             $value = $default;
-            if (true === is_array($translationArguments)) {
+            if (is_array($translationArguments)) {
                 $value = vsprintf($value, $translationArguments);
             }
-        } elseif (true === $htmlEscape) {
+        } elseif ($htmlEscape) {
             $value = htmlspecialchars($value);
         }
         return $value;

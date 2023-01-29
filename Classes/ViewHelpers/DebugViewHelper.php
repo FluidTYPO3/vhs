@@ -141,7 +141,7 @@ class DebugViewHelper extends AbstractViewHelper
                     'Path: {' . $path . '}',
                     'Value type: ' . $type,
                 ];
-                if (true === is_object($value)) {
+                if (is_object($value)) {
                     $sections[] = 'Accessible properties on {' . $path . '}:';
                     $gettable = ObjectAccess::getGettablePropertyNames($value);
                     unset($gettable[0]);
@@ -159,7 +159,7 @@ class DebugViewHelper extends AbstractViewHelper
                         true
                     );
                 }
-                array_push($nodes, implode(LF, $sections));
+                $nodes[] = implode(LF, $sections);
             }
         }
         return '<pre>' . implode(LF . LF, $nodes) . '</pre>';

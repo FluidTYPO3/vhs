@@ -55,7 +55,7 @@ class ForViewHelper extends AbstractLoopViewHelper
             throw new \RuntimeException('"step" must be smaller than 0 if "from" is greater than "to".', 1383268415);
         }
 
-        if (true === $variableProvider->exists($iteration)) {
+        if ($variableProvider->exists($iteration)) {
             $backupVariable = $variableProvider->get($iteration);
             $variableProvider->remove($iteration);
         }
@@ -96,7 +96,7 @@ class ForViewHelper extends AbstractLoopViewHelper
             }
         }
 
-        if (true === isset($backupVariable)) {
+        if (isset($backupVariable)) {
             $variableProvider->add($iteration, $backupVariable);
         }
 

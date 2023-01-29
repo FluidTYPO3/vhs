@@ -30,7 +30,7 @@ class AlternateViewHelper extends AbstractViewHelper
     protected $pageService;
 
     /**
-     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
+     * @var TagBuilder
      */
     protected $tagBuilder;
 
@@ -81,9 +81,9 @@ class AlternateViewHelper extends AbstractViewHelper
         }
 
         $languages = $this->arguments['languages'];
-        if (true === $languages instanceof \Traversable) {
+        if ($languages instanceof \Traversable) {
             $languages = iterator_to_array($languages);
-        } elseif (true === is_string($languages)) {
+        } elseif (is_string($languages)) {
             $languages = GeneralUtility::trimExplode(',', $languages, true);
         } else {
             $languages = (array) $languages;
@@ -115,13 +115,13 @@ class AlternateViewHelper extends AbstractViewHelper
         $output = '';
 
         foreach ($languages as $languageUid => $languageName) {
-            if (false === $this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
+            if (!$this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
                 $uri = $uriBuilder->setArguments(['L' => $languageUid])->build();
                 $this->tagBuilder->addAttribute('href', $uri);
                 $this->tagBuilder->addAttribute('hreflang', $languageName);
 
                 $renderedTag = $this->tagBuilder->render();
-                if (true === $usePageRenderer) {
+                if ($usePageRenderer) {
                     if (method_exists($pageRenderer, 'addMetaTag')) {
                         $pageRenderer->addMetaTag($renderedTag);
                     } else {
@@ -133,7 +133,7 @@ class AlternateViewHelper extends AbstractViewHelper
             }
         }
 
-        if (false === $usePageRenderer) {
+        if (!$usePageRenderer) {
             return trim($output);
         }
 

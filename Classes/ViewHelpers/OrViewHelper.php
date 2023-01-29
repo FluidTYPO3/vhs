@@ -76,6 +76,6 @@ class OrViewHelper extends AbstractViewHelper
                 $alternative = $translated;
             }
         }
-        return null !== $arguments && false === empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
+        return null !== $arguments && !empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
     }
 }

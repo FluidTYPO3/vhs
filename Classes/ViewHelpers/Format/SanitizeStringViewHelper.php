@@ -133,7 +133,7 @@ class SanitizeStringViewHelper extends AbstractViewHelper
 
         $characterMap = static::$characterMap;
         $customMap = $arguments['customMap'];
-        if (true === is_array($customMap) && 0 < count($customMap)) {
+        if (is_array($customMap) && 0 < count($customMap)) {
             $characterMap = array_merge($characterMap, $customMap);
         }
         $specialCharsSearch = array_keys($characterMap);

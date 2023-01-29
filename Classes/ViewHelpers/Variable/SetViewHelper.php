@@ -84,7 +84,7 @@ class SetViewHelper extends AbstractViewHelper
         $value = $renderChildrenClosure();
         $variableProvider = $renderingContext->getVariableProvider();
         if (false === strpos($name, '.')) {
-            if (true === $variableProvider->exists($name)) {
+            if ($variableProvider->exists($name)) {
                 $variableProvider->remove($name);
             }
             $variableProvider->add($name, $value);
@@ -92,7 +92,7 @@ class SetViewHelper extends AbstractViewHelper
             $parts = explode('.', $name);
             $objectName = array_shift($parts);
             $path = implode('.', $parts);
-            if (false === $variableProvider->exists($objectName)) {
+            if (!$variableProvider->exists($objectName)) {
                 return null;
             }
             $object = $variableProvider->get($objectName);

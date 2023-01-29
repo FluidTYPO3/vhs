@@ -42,7 +42,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
             $count = $maximum;
         }
 
-        if (true === $variableProvider->exists($iteration)) {
+        if ($variableProvider->exists($iteration)) {
             $backupVariable = $variableProvider->get($iteration);
             $variableProvider->remove($iteration);
         }
@@ -59,7 +59,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
             );
         }
 
-        if (true === isset($backupVariable)) {
+        if (isset($backupVariable)) {
             $variableProvider->add($iteration, $backupVariable);
         }
 

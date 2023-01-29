@@ -40,10 +40,10 @@ class RenderViewHelper extends AbstractContentViewHelper
         // was found. As a potential optimization, $render could be overrided
         // so all the content records that end up unused do not get rendered.
         $contentRecords = $this->getContentRecords();
-        if (false === empty($contentRecords)) {
+        if (!empty($contentRecords)) {
             shuffle($contentRecords);
             $contentRecords = array_slice($contentRecords, 0, $limit);
-            if (true === (boolean) $this->arguments['render']) {
+            if ($this->arguments['render']) {
                 $contentRecords = implode(LF, $contentRecords);
             }
         }

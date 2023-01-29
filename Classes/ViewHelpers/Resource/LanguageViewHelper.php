@@ -49,7 +49,7 @@ class LanguageViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         $this->registerAsArgument();
-        $this->registerArgument('extensionName', 'string', 'Name of the extension', false, null);
+        $this->registerArgument('extensionName', 'string', 'Name of the extension');
         $this->registerArgument(
             'path',
             'string',
@@ -60,9 +60,7 @@ class LanguageViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'languageKey',
             'string',
-            'Key for getting translation of a different than current initialized language',
-            false,
-            null
+            'Key for getting translation of a different than current initialized language'
         );
     }
 
@@ -108,7 +106,7 @@ class LanguageViewHelper extends AbstractViewHelper
         $path = $this->arguments['path'];
         $absoluteFileName = GeneralUtility::getFileAbsFileName($this->arguments['path']);
 
-        if (false === file_exists($absoluteFileName)) {
+        if (!file_exists($absoluteFileName)) {
             $extensionName = $this->getResolvedExtensionName();
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
             $absoluteFileName = ExtensionManagementUtility::extPath($extensionKey, $path);
@@ -125,9 +123,9 @@ class LanguageViewHelper extends AbstractViewHelper
     {
         $labels = [];
 
-        if (false === empty($locallang[$languageKey])) {
+        if (!empty($locallang[$languageKey])) {
             $labels = $locallang[$languageKey];
-        } elseif (false === empty($locallang['default'])) {
+        } elseif (!empty($locallang['default'])) {
             $labels = $locallang['default'];
         }
 

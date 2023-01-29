@@ -35,8 +35,8 @@ class UncacheViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         $this->registerArgument('partial', 'string', 'Reference to a partial.', true);
-        $this->registerArgument('section', 'string', 'Name of section inside the partial to render.', false, null);
-        $this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.', false, null);
+        $this->registerArgument('section', 'string', 'Name of section inside the partial to render.');
+        $this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.');
     }
 
     /**
@@ -50,10 +50,10 @@ class UncacheViewHelper extends AbstractViewHelper
         /** @var RenderingContext $renderingContext */
         $templateVariableContainer = $renderingContext->getVariableProvider();
         $partialArguments = $arguments['arguments'];
-        if (false === is_array($partialArguments)) {
+        if (!is_array($partialArguments)) {
             $partialArguments = [];
         }
-        if (false === isset($partialArguments['settings']) && true === $templateVariableContainer->exists('settings')) {
+        if (!isset($partialArguments['settings']) && $templateVariableContainer->exists('settings')) {
             $partialArguments['settings'] = $templateVariableContainer->get('settings');
         }
 

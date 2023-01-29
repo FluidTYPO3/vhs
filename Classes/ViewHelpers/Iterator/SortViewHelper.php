@@ -129,7 +129,7 @@ class SortViewHelper extends AbstractViewHelper
     {
         $sorted = [];
         foreach ($array as $index => $object) {
-            if (true === isset($arguments['sortBy'])) {
+            if (isset($arguments['sortBy'])) {
                 $index = static::getSortValue($object, $arguments);
             }
             while (isset($sorted[$index])) {
@@ -189,9 +189,9 @@ class SortViewHelper extends AbstractViewHelper
     {
         $field = $arguments['sortBy'];
         $value = ObjectAccess::getPropertyPath($object, $field);
-        if (true === $value instanceof \DateTimeInterface) {
+        if ($value instanceof \DateTimeInterface) {
             $value = (integer) $value->format('U');
-        } elseif (true === $value instanceof ObjectStorage || true === $value instanceof LazyObjectStorage) {
+        } elseif ($value instanceof ObjectStorage || $value instanceof LazyObjectStorage) {
             $value = $value->count();
         } elseif (is_array($value)) {
             $value = count($value);
@@ -212,7 +212,7 @@ class SortViewHelper extends AbstractViewHelper
         $constants = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['sortFlags']);
         $flags = 0;
         foreach ($constants as $constant) {
-            if (false === in_array($constant, static::$allowedSortFlags)) {
+            if (!in_array($constant, static::$allowedSortFlags)) {
                 ErrorUtility::throwViewHelperException(
                     'The constant "' . $constant . '" you\'re trying to use as a sortFlag is not allowed. Allowed ' .
                     'constants are: ' . implode(', ', static::$allowedSortFlags) . '.',

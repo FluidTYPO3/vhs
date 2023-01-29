@@ -60,12 +60,11 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerPageRecordArguments();
-        $this->registerTagAttribute('target', 'string', 'Target of link', false);
+        $this->registerTagAttribute('target', 'string', 'Target of link');
         $this->registerTagAttribute(
             'rel',
             'string',
-            'Specifies the relationship between the current document and the linked document',
-            false
+            'Specifies the relationship between the current document and the linked document'
         );
         $this->registerArgument(
             'pageUid',
@@ -144,7 +143,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         // Check if link wizard link
         $pageUid = $this->arguments['pageUid'];
         $additionalParameters = (array) $this->arguments['additionalParams'];
-        if (false === is_numeric($pageUid)) {
+        if (!is_numeric($pageUid)) {
             /** @var LogManager $logManager */
             $logManager = GeneralUtility::makeInstance(LogManager::class);
             $logManager->getLogger(__CLASS__)->warning("pageUid must be numeric, got " . $pageUid);
@@ -186,7 +185,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         $hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
-        if (true === $hidePage) {
+        if ($hidePage) {
             return null;
         }
 
@@ -215,9 +214,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $class[] = $this->arguments['classAccessGranted'];
         }
         $additionalCssClasses = implode(' ', $class);
-
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

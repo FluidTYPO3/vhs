@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
+     * @var FrontendUserRepository
      */
     protected $frontendUserRepository;
 
@@ -195,7 +195,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
             $evaluations['admin'] = intval($this->assertAdminLoggedIn());
         }
         $sum = array_sum($evaluations);
-        return (boolean) ('AND' === $evaluationType ? count($evaluations) === $sum : $sum > 0);
+        return 'AND' === $evaluationType ? count($evaluations) === $sum : $sum > 0;
     }
 
     /**
@@ -207,17 +207,17 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     public function assertFrontendUserLoggedIn($frontendUser = null): bool
     {
         $currentFrontendUser = $this->getCurrentFrontendUser();
-        if (false === $currentFrontendUser instanceof FrontendUser) {
+        if (!$currentFrontendUser instanceof FrontendUser) {
             return false;
         }
-        if (true === $frontendUser instanceof FrontendUser && true === $currentFrontendUser instanceof FrontendUser) {
+        if ($frontendUser instanceof FrontendUser) {
             if ($currentFrontendUser->getUid() === $frontendUser->getUid()) {
                 return true;
             } else {
                 return false;
             }
         }
-        return (boolean) (true === is_object($currentFrontendUser));
+        return is_object($currentFrontendUser);
     }
 
     /**
@@ -288,7 +288,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function assertBackendUserGroupLoggedIn($groups = null): bool
     {
-        if (false === $this->assertBackendUserLoggedIn()) {
+        if (!$this->assertBackendUserLoggedIn()) {
             return false;
         }
         $currentBackendUser = $this->getCurrentBackendUser();
@@ -298,10 +298,10 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         if (0 === count($userGroups)) {
             return false;
         }
-        if (true === is_string($groups)) {
+        if (is_string($groups)) {
             $groups = trim($groups, ',');
             /** @var array $groups */
-            $groups = false === empty($groups) ? explode(',', $groups) : [];
+            $groups = !empty($groups) ? explode(',', $groups) : [];
         }
         /** @var array $groups */
         if (count($groups) > 0) {
@@ -316,7 +316,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function assertAdminLoggedIn(): bool
     {
-        if (false === $this->assertBackendUserLoggedIn()) {
+        if (!$this->assertBackendUserLoggedIn()) {
             return false;
         }
         $currentBackendUser = $this->getCurrentBackendUser();

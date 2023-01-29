@@ -97,8 +97,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
         $this->registerArgument(
             'unsupported',
             'string',
-            'Add a message for old browsers like Internet Explorer 9 without audio support.',
-            false
+            'Add a message for old browsers like Internet Explorer 9 without audio support.'
         );
     }
 
@@ -153,19 +152,19 @@ class AudioViewHelper extends AbstractMediaViewHelper
             'height'  => $this->arguments['height'],
             'preload' => 'auto',
         ];
-        if (true === (boolean) $this->arguments['autoplay']) {
+        if ($this->arguments['autoplay']) {
             $tagAttributes['autoplay'] = 'autoplay';
         }
-        if (true === (boolean) $this->arguments['controls']) {
+        if ($this->arguments['controls']) {
             $tagAttributes['controls'] = 'controls';
         }
-        if (true === (boolean) $this->arguments['loop']) {
+        if ($this->arguments['loop']) {
             $tagAttributes['loop'] = 'loop';
         }
-        if (true === (boolean) $this->arguments['muted']) {
+        if ($this->arguments['muted']) {
             $tagAttributes['muted'] = 'muted';
         }
-        if (true === in_array($this->arguments['preload'], $this->validPreloadModes)) {
+        if (in_array($this->arguments['preload'], $this->validPreloadModes)) {
             $tagAttributes['preload'] = $this->arguments['preload'];
         }
         if (null !== $this->arguments['poster']) {

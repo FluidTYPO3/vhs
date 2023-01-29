@@ -79,7 +79,7 @@ class FilterViewHelper extends AbstractViewHelper
         if (!is_array($subject) && !$subject instanceof \Traversable) {
             return [];
         }
-        if ((false === (boolean) $nullFilter && null === $filter) || '' === $filter) {
+        if ((!$nullFilter && null === $filter) || '' === $filter) {
             return $subject;
         }
         if ($subject instanceof \Traversable) {
@@ -92,7 +92,7 @@ class FilterViewHelper extends AbstractViewHelper
                 $items[$key] = $item;
             }
         }
-        return true === $preserveKeys ? $items : array_values($items);
+        return $preserveKeys ? $items : array_values($items);
     }
 
     /**

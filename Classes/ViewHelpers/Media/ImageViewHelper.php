@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
 use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Renders an image tag for the given resource including all valid
@@ -85,7 +86,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      * Render method
      *
      * @return string
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     * @throws Exception
      */
     public function render()
     {

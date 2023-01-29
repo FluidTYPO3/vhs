@@ -74,7 +74,7 @@ class ConvertViewHelper extends AbstractViewHelper
                     $storage->attach($item);
                 }
                 $value = $storage;
-            } elseif ('array' === $type && true === $value instanceof \Traversable) {
+            } elseif ('array' === $type && $value instanceof \Traversable) {
                 $value = iterator_to_array($value, false);
             } elseif ('array' === $type) {
                 $value = [$value];
@@ -82,7 +82,7 @@ class ConvertViewHelper extends AbstractViewHelper
                 settype($value, $type);
             }
         } else {
-            if (true === isset($arguments['default'])) {
+            if (isset($arguments['default'])) {
                 $default = $arguments['default'];
                 if (gettype($default) !== $type) {
                     throw new \RuntimeException(

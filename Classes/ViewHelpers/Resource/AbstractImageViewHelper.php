@@ -36,12 +36,12 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
     protected $workingDirectoryBackup;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer
      */
     protected $contentObject;
 
@@ -67,55 +67,43 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             'width',
             'string',
             'Width of the image. Numeric value in pixels or simple calculations. See imgResource.width ' .
-            'for possible options.',
-            false,
-            null
+            'for possible options.'
         );
         $this->registerArgument(
             'height',
             'string',
             'Height of the image. Numeric value in pixels or simple calculations. See imgResource.width for ' .
-            'possible options.',
-            false,
-            null
+            'possible options.'
         );
         $this->registerArgument(
             'minWidth',
             'string',
             'Minimum width of the image. Numeric value in pixels or simple calculations. See imgResource.width ' .
-            'for possible options.',
-            false,
-            null
+            'for possible options.'
         );
         $this->registerArgument(
             'minHeight',
             'string',
             'Minimum height of the image. Numeric value in pixels or simple calculations. ' .
-            'See imgResource.width for possible options.',
-            false,
-            null
+            'See imgResource.width for possible options.'
         );
         $this->registerArgument(
             'maxWidth',
             'string',
             'Maximum width of the image. Numeric value in pixels or simple calculations. ' .
-            'See imgResource.width for possible options.',
-            false,
-            null
+            'See imgResource.width for possible options.'
         );
         $this->registerArgument(
             'maxHeight',
             'string',
             'Maximum height of the image. Numeric value in pixels or simple calculations. ' .
-            'See imgResource.width for possible options.',
-            false,
-            null
+            'See imgResource.width for possible options.'
         );
     }
 
     public function preprocessImages(array $files, bool $onlyProperties = false): ?array
     {
-        if (true === empty($files)) {
+        if (empty($files)) {
             return null;
         }
 
@@ -136,7 +124,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         foreach ($files as $file) {
             $imageInfo = $this->contentObject->getImgResource($file->getUid(), $setup);
 
-            if (false === is_array($imageInfo)) {
+            if (!is_array($imageInfo)) {
                 throw new Exception(
                     'Could not get image resource for "' . htmlspecialchars($file->getCombinedIdentifier()) . '".',
                     1253191060
@@ -146,13 +134,13 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             $GLOBALS['TSFE']->lastImageInfo = $imageInfo;
             $GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
 
-            if (true === GeneralUtility::isValidUrl($imageInfo[3])) {
+            if (GeneralUtility::isValidUrl($imageInfo[3])) {
                 $imageSource = $imageInfo[3];
             } else {
                 $imageSource = $GLOBALS['TSFE']->absRefPrefix . str_replace('%2F', '/', rawurlencode($imageInfo[3]));
             }
 
-            if (true === $onlyProperties) {
+            if ($onlyProperties) {
                 $file = ResourceUtility::getFileArray($file);
             }
 
@@ -175,7 +163,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
      */
     protected function simulateFrontendEnvironment(): void
     {
-        $this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
+        $this->tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $this->workingDirectoryBackup = getcwd();
         chdir(CoreUtility::getSitePath());
         $typoScriptSetup = $this->configurationManager->getConfiguration(
@@ -212,9 +200,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
      */
     public function preprocessSourceUri(string $source): string
     {
-        if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $source = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;
-        } elseif (ContextUtility::isBackend() || false === (boolean) $this->arguments['relative']) {
+        } elseif (ContextUtility::isBackend() || !$this->arguments['relative']) {
             /** @var string $siteUrl */
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $source = $siteUrl . $source;

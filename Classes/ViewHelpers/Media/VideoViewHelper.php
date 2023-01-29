@@ -109,7 +109,7 @@ class VideoViewHelper extends AbstractMediaViewHelper
             throw new Exception('No video sources provided.', 1359382189);
         }
         foreach ($sources as $source) {
-            if (true === is_string($source)) {
+            if (is_string($source)) {
                 if (false !== strpos($source, '//')) {
                     $src = $source;
                     $type = mb_substr($source, mb_strrpos($source, '.') + 1);
@@ -120,12 +120,12 @@ class VideoViewHelper extends AbstractMediaViewHelper
                     );
                     $type = pathinfo($src, PATHINFO_EXTENSION);
                 }
-            } elseif (true === is_array($source)) {
-                if (false === isset($source['src'])) {
+            } elseif (is_array($source)) {
+                if (!isset($source['src'])) {
                     throw new Exception('Missing value for "src" in sources array.', 1359381250);
                 }
                 $src = $source['src'];
-                if (false === isset($source['type'])) {
+                if (!isset($source['type'])) {
                     throw new Exception('Missing value for "type" in sources array.', 1359381255);
                 }
                 $type = $source['type'];
@@ -133,7 +133,7 @@ class VideoViewHelper extends AbstractMediaViewHelper
                 // skip invalid source
                 continue;
             }
-            if (false === in_array(strtolower($type), $this->validTypes)) {
+            if (!in_array(strtolower($type), $this->validTypes)) {
                     throw new Exception('Invalid video type "' . $type . '".', 1359381260);
             }
             $type = $this->mimeTypesMap[$type];
@@ -145,19 +145,19 @@ class VideoViewHelper extends AbstractMediaViewHelper
             'height'  => $this->arguments['height'],
             'preload' => 'auto',
         ];
-        if (true === (boolean) $this->arguments['autoplay']) {
+        if ($this->arguments['autoplay']) {
             $tagAttributes['autoplay'] = 'autoplay';
         }
-        if (true === (boolean) $this->arguments['controls']) {
+        if ($this->arguments['controls']) {
             $tagAttributes['controls'] = 'controls';
         }
-        if (true === (boolean) $this->arguments['loop']) {
+        if ($this->arguments['loop']) {
             $tagAttributes['loop'] = 'loop';
         }
-        if (true === (boolean) $this->arguments['muted']) {
+        if ($this->arguments['muted']) {
             $tagAttributes['muted'] = 'muted';
         }
-        if (true === in_array($this->arguments['preload'], $this->validPreloadModes)) {
+        if (in_array($this->arguments['preload'], $this->validPreloadModes)) {
             $tagAttributes['preload'] = $this->arguments['preload'];
         }
         if (null !== $this->arguments['poster']) {

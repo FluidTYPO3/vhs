@@ -29,7 +29,7 @@ class HeaderViewHelper extends AbstractAssetViewHelper
         $content = $this->getContent();
         $name = $this->getName();
         $overwrite = $this->getOverwrite();
-        if (true === isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && false === $overwrite) {
+        if (isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && !$overwrite) {
             return;
         }
         $GLOBALS['TSFE']->additionalHeaderData[$name] = $content;

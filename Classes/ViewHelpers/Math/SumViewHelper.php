@@ -41,10 +41,10 @@ class SumViewHelper extends AbstractMultipleMathViewHelper
     protected static function calculateAction($a, $b, array $arguments)
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
-        if (false === $aIsIterable && $b === null && (boolean) $arguments['fail']) {
+        if (!$aIsIterable && $b === null && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
-        if (true === $aIsIterable) {
+        if ($aIsIterable) {
             if (null === $b) {
                 $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
                 return array_sum($a);

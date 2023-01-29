@@ -95,11 +95,11 @@ class PrefetchViewHelper extends AbstractAssetViewHelper
     public function build(): string
     {
         $domains = $this->arguments['domains'];
-        if (false === is_array($domains)) {
+        if (!is_array($domains)) {
             $domains = GeneralUtility::trimExplode(',', $domains, true);
         }
         $headerCode = '';
-        if (true === (boolean) $this->arguments['force']) {
+        if ($this->arguments['force']) {
             $headerCode .= '<meta http-equiv="x-dns-prefetch-control" content="off">' . LF;
         }
         foreach ($domains as $domain) {

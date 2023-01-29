@@ -61,13 +61,13 @@ class CallViewHelper extends AbstractViewHelper
         $object = $renderChildrenClosure();
         $method = $arguments['method'];
         $methodArguments = $arguments['arguments'];
-        if (false === is_object($object)) {
+        if (!is_object($object)) {
             throw new \RuntimeException(
                 'Using v:call requires an object either as "object" attribute, tag content or inline argument',
                 1356849652
             );
         }
-        if (false === method_exists($object, $method)) {
+        if (!method_exists($object, $method)) {
             throw new \RuntimeException(
                 'Method "' . $method . '" does not exist on object of type ' . get_class($object),
                 1356834755

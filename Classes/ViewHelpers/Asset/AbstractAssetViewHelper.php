@@ -51,7 +51,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     protected $assetService;
 
     /**
-     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
+     * @var TagBuilder
      */
     protected $tagBuilder;
 
@@ -225,10 +225,10 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function build(): ?string
     {
-        if (false === isset($this->arguments['path']) || true === empty($this->arguments['path'])) {
+        if (empty($this->arguments['path'] ?? false)) {
             return $this->content;
         }
-        if (true === isset($this->arguments['external']) && true === (boolean) $this->arguments['external']) {
+        if ($this->arguments['external'] ?? false) {
             $path = $this->arguments['path'];
         } else {
             $path = GeneralUtility::getFileAbsFileName($this->arguments['path']);
@@ -386,7 +386,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         $settings = $this->getSettings();
         $assetSettings = $this->arguments;
         $assetSettings['type'] = $this->getType();
-        if (isset($settings['asset']) && true === is_array($settings['asset'])) {
+        if (isset($settings['asset']) && is_array($settings['asset'])) {
             $assetSettings = $this->mergeArrays($assetSettings, $settings['asset']);
         }
         if (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName])) {
@@ -423,10 +423,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function assertFluidEnabled(): bool
     {
         $settings = $this->getAssetSettings();
-        if (true === (isset($settings['fluid']) && $settings['fluid'] > 0)) {
-            return true;
-        }
-        return false;
+        return ($settings['fluid'] ?? 0) > 0;
     }
 
     /**
@@ -447,20 +444,17 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     public function assertDebugEnabled(): bool
     {
         $settings = $this->getSettings();
-        if (isset($settings['debug']) && $settings['debug']) {
+        if ($settings['debug'] ?? false) {
             return true;
         }
         $settings = $this->getAssetSettings();
-        if (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0) {
-            return true;
-        }
-        return false;
+        return $settings['asset']['debug'] ?? false;
     }
 
     public function assertAllowedInFooter(): bool
     {
         $settings = $this->getAssetSettings();
-        return (isset($settings['movable']) && $settings['movable']);
+        return $settings['movable'] ?? false;
     }
 
     public function assertHasBeenRemoved(): bool
@@ -470,13 +464,10 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         $dependencies = $this->getDependencies();
         $dependencies[] = $this->getName();
         foreach ($dependencies as $name) {
-            if (isset($settings['asset'][$name]['remove']) && $settings['asset'][$name]['remove'] > 0) {
+            if ($settings['asset'][$name]['remove'] ?? false) {
                 return true;
             }
         }
-        if (isset($settings['assetGroup'][$groupName]['remove']) && $settings['assetGroup'][$groupName]['remove'] > 0) {
-            return true;
-        }
-        return false;
+        return $settings['assetGroup'][$groupName]['remove'] ?? false;
     }
 }

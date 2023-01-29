@@ -60,9 +60,9 @@ class LanguageViewHelper extends AbstractViewHelper
         }
 
         $languages = $arguments['languages'];
-        if (true === $languages instanceof \Traversable) {
+        if ($languages instanceof \Traversable) {
             $languages = iterator_to_array($languages);
-        } elseif (true === is_string($languages)) {
+        } elseif (is_string($languages)) {
             $languages = GeneralUtility::trimExplode(',', $languages, true);
         } else {
             $languages = (array) $languages;
@@ -86,15 +86,15 @@ class LanguageViewHelper extends AbstractViewHelper
             $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
         $languageUid = 0;
-        if (false === $pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
+        if (!$pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
             $languageUid = $currentLanguageUid;
         } elseif (0 !== $currentLanguageUid) {
-            if (true === $pageService->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
+            if ($pageService->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
                 return '';
             }
         }
 
-        if (false === empty($languages[$languageUid])) {
+        if (!empty($languages[$languageUid])) {
             return $languages[$languageUid];
         }
 

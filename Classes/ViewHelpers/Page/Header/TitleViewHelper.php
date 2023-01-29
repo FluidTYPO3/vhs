@@ -73,14 +73,14 @@ class TitleViewHelper extends AbstractViewHelper
         if (ContextUtility::isBackend()) {
             return;
         }
-        if (false === empty($arguments['title'])) {
+        if (!empty($arguments['title'])) {
             $title = $arguments['title'];
         } else {
             $title = $renderChildrenClosure();
         }
         $title = trim(preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
         static::getPageRenderer()->setTitle($title);
-        if (true === $arguments['setIndexedDocTitle']) {
+        if ($arguments['setIndexedDocTitle']) {
             $GLOBALS['TSFE']->indexedDocTitle = $title;
         }
     }

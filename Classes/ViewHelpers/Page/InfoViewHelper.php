@@ -65,9 +65,9 @@ class InfoViewHelper extends AbstractViewHelper
         $page = $pageRepository->getPage_noCheck($pageUid);
         $field = $arguments['field'];
         $content = null;
-        if (true === empty($field)) {
+        if (empty($field)) {
             $content = $page;
-        } elseif (true === is_array($page) && true === isset($page[$field])) {
+        } elseif (is_array($page) && isset($page[$field])) {
             $content = $page[$field];
         }
 

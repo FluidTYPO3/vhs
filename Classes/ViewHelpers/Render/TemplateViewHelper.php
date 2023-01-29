@@ -60,9 +60,9 @@ class TemplateViewHelper extends AbstractRenderViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported', false);
-        $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering', false);
-        $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered', false);
+        $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported');
+        $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering');
+        $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered');
         $this->registerArgument(
             'paths',
             'array',

@@ -40,9 +40,9 @@ class ExistsViewHelper extends AbstractConditionViewHelper
         $file = GeneralUtility::getFileAbsFileName($arguments['file']);
         $directory = $arguments['directory'];
         $evaluation = false;
-        if (true === isset($arguments['file'])) {
+        if (isset($arguments['file'])) {
             $evaluation = ((file_exists($file) || file_exists(CoreUtility::getSitePath() . $file)) && is_file($file));
-        } elseif (true === isset($arguments['directory'])) {
+        } elseif (isset($arguments['directory'])) {
             $evaluation = (is_dir($directory) || is_dir(CoreUtility::getSitePath() . $directory));
         }
         return $evaluation;

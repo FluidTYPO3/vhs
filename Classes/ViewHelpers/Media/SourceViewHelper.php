@@ -122,7 +122,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $quality = $this->arguments['quality'];
         $format = $this->arguments['format'];
 
-        if (false === empty($format)) {
+        if (!empty($format)) {
             $setup['ext'] = $format;
         }
         if (0 < intval($quality)) {
@@ -155,9 +155,9 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     public function preprocessSourceUri(string $src): string
     {
-        if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-        } elseif (ContextUtility::isBackend() || false === (boolean) $this->arguments['relative']) {
+        } elseif (ContextUtility::isBackend() || !$this->arguments['relative']) {
             if (GeneralUtility::isValidUrl($src)) {
                 $src = ltrim($src, '/');
             } elseif (ContextUtility::isFrontend()) {

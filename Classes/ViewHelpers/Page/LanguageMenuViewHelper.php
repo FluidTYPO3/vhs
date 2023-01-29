@@ -39,12 +39,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     protected $tagName = 'ul';
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer
      */
     protected $cObj;
 
     /**
-     * @var \TYPO3\CMS\Core\Site\Site|\TYPO3\CMS\Core\Site\Entity\Site
+     * @var Site|\TYPO3\CMS\Core\Site\Entity\Site
      */
     protected $site;
 
@@ -66,8 +66,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             false,
             'li'
         );
-        $this->registerArgument('defaultIsoFlag', 'string', 'ISO code of the default flag', false);
-        $this->registerArgument('defaultLanguageLabel', 'string', 'Label for the default language', false);
+        $this->registerArgument('defaultIsoFlag', 'string', 'ISO code of the default flag');
+        $this->registerArgument('defaultLanguageLabel', 'string', 'Label for the default language');
         $this->registerArgument('order', 'mixed', 'Orders the languageIds after this list', false, '');
         $this->registerArgument('labelOverwrite', 'mixed', 'Overrides language labels');
         $this->registerArgument(
@@ -127,7 +127,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        if (false === is_object($GLOBALS['TSFE']->sys_page)) {
+        if (!is_object($GLOBALS['TSFE']->sys_page)) {
             return '';
         }
         /** @var ContentObjectRenderer $contentObject */
@@ -155,7 +155,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     {
         $content = $this->getLanguageMenu();
         $content = trim($content);
-        if (false === empty($content)) {
+        if (!empty($content)) {
             $this->tag->setContent($content);
             $content = $this->tag->render();
         }
@@ -173,10 +173,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         foreach ($this->languageMenu as $index => $var) {
             $class = '';
             $classes = [];
-            if (true === (boolean) $var['inactive']) {
+            if ($var['inactive']) {
                 $classes[] = 'inactive';
             }
-            if (true === (boolean) $var['current']) {
+            if ($var['current']) {
                 $classes[] = $this->arguments['classCurrent'];
             }
             if (0 === $index) {
@@ -187,7 +187,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             if (0 < count($classes)) {
                 $class = ' class="' . implode(' ', $classes) . '" ';
             }
-            if (true === (boolean) $var['current'] && false === (boolean) $this->arguments['linkCurrent']) {
+            if ($var['current'] && !$this->arguments['linkCurrent']) {
                 $html[] = '<' . $tagName . $class . '>' . $this->getLayout($var) . '</' . $tagName . '>';
             } else {
                 $html[] = '<' . $tagName . $class . '><a href="' . htmlspecialchars($var['url']) . '">' .
@@ -281,22 +281,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         // first gather languages into this array so we can reorder it later
-        $tempArray = [];
         $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
         $limitLanguages = array_filter($limitLanguages);
-
-        if (!class_exists(SiteFinder::class)) {
-            // TYPO3 < 9 legacy
-            $tempArray = $this->getLanguagesFromSysLanguage($limitLanguages);
-        } else {
-            // site configuration is available since TYPO3 9 and offers a consolidated and more
-            // detailed view of the language configuration, so it is preferred
-            $tempArray = $this->getLanguagesFromSiteConfiguration($limitLanguages);
-        }
+        $tempArray = $this->getLanguagesFromSiteConfiguration($limitLanguages);
 
         // reorder languageMenu
         $languageMenu = [];
-        if (false === empty($order)) {
+        if (!empty($order)) {
             foreach ($order as $value) {
                 if (isset($tempArray[$value])) {
                     $languageMenu[$value] = $tempArray[$value];
@@ -307,7 +298,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         // overwrite of label
-        if (false === empty($labelOverwrite)) {
+        if (!empty($labelOverwrite)) {
             $i = 0;
             foreach ($languageMenu as $key => $value) {
                 $languageMenu[$key]['label'] = $labelOverwrite[$i];
@@ -332,7 +323,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $current = $languageUid === (integer) $key ? 1 : 0;
             $inactive = in_array($key, $languageUids) || (integer) $key === $this->defaultLangUid ? 0 : 1;
             $url = $this->getLanguageUrl($key);
-            if (true === empty($url)) {
+            if (empty($url)) {
                 $url = GeneralUtility::getIndpEnv('REQUEST_URI');
             }
             $languageMenu[$key]['current'] = $current;
@@ -351,7 +342,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                     $value['label']
                 );
             }
-            if (true === (boolean) $this->arguments['hideNotTranslated'] && true === (boolean) $inactive) {
+            if ($this->arguments['hideNotTranslated'] && $inactive) {
                 unset($languageMenu[$key]);
             }
         }
@@ -445,7 +436,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                 'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
             ]
         ];
-        if (true === is_array($this->arguments['configuration'])) {
+        if (is_array($this->arguments['configuration'])) {
             $config = $this->mergeArrays($config, $this->arguments['configuration']);
         }
         return $this->cObj->typoLink('', $config);

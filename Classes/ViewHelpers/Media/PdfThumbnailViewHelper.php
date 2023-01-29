@@ -68,7 +68,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
     public function render()
     {
         $src = GeneralUtility::getFileAbsFileName($this->arguments['src']);
-        if (false === file_exists($src)) {
+        if (!file_exists($src)) {
             return '';
         }
         $density = $this->arguments['density'];
@@ -96,7 +96,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
             . filemtime($src)
             . '.png'
         );
-        if (false === file_exists($path) || true === $forceOverwrite) {
+        if (!file_exists($path) || $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
             if (0 < (integer) $density) {
                 $arguments .= ' -density ' . $density;

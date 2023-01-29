@@ -72,19 +72,19 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
         $width      = (integer) $this->arguments['width'];
         $height     = (integer) $this->arguments['height'];
 
-        if (true === in_array($this->arguments['theme'], ['black', 'white'])) {
+        if (in_array($this->arguments['theme'], ['black', 'white'])) {
             $theme = $this->arguments['theme'];
         } else {
             $theme = 'black';
         }
 
-        if (true === in_array($this->arguments['view'], ['coverart', 'list'])) {
+        if (in_array($this->arguments['view'], ['coverart', 'list'])) {
             $view = $this->arguments['view'];
         } else {
             $view = 'list';
         }
 
-        if (true === (boolean) $this->arguments['compact']) {
+        if ($this->arguments['compact']) {
             $height = 80;
         }
 

@@ -90,16 +90,13 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
 
     protected static function getIdentifier(array $arguments): string
     {
-        if (true === isset($arguments['identifier'])) {
-            return $arguments['identifier'];
-        }
-        return static::class;
+        return $arguments['identifier'] ?? static::class;
     }
 
     protected static function storeIdentifier(array $arguments): void
     {
         $identifier = static::getIdentifier($arguments);
-        if (false === isset(static::$identifiers[$identifier])) {
+        if (!isset(static::$identifiers[$identifier])) {
             static::$identifiers[$identifier] = time();
         }
     }
@@ -115,7 +112,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     protected static function assertShouldSkip(array $arguments): bool
     {
         $identifier = static::getIdentifier($arguments);
-        return (true === isset(static::$identifiers[$identifier]));
+        return isset(static::$identifiers[$identifier]);
     }
 
     /**

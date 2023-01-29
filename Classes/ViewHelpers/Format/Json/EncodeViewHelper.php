@@ -142,7 +142,7 @@ class EncodeViewHelper extends AbstractViewHelper
             if ($possibleDateTime instanceof \DateTime) {
                 $array[$key] = static::dateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
             } elseif (is_array($possibleDateTime)) {
-                $array[$key] = static::recursiveDateTimeToUnixtimeMiliseconds($array[$key], $dateTimeFormat);
+                $array[$key] = static::recursiveDateTimeToUnixtimeMiliseconds($possibleDateTime, $dateTimeFormat);
             }
         }
         return $array;

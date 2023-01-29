@@ -29,16 +29,12 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument(
             'identifier',
             'mixed',
-            'The FAL combined identifiers (either CSV, array or implementing Traversable).',
-            false,
-            null
+            'The FAL combined identifiers (either CSV, array or implementing Traversable).'
         );
         $this->registerArgument(
             'categories',
             'mixed',
-            'The sys_category records to select the resources from (either CSV, array or implementing Traversable).',
-            false,
-            null
+            'The sys_category records to select the resources from (either CSV, array or implementing Traversable).'
         );
         $this->registerArgument(
             'treatIdAsUid',
@@ -67,14 +63,14 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         $treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
-        if (true === $treatIdAsUid && true === $treatIdAsReference) {
+        if ($treatIdAsUid && $treatIdAsReference) {
             throw new \RuntimeException(
                 'The arguments "treatIdAsUid" and "treatIdAsReference" may not both be TRUE.',
                 1384604695
             );
         }
 
-        if (true === empty($identifier) && true === empty($categories)) {
+        if (empty($identifier) && empty($categories)) {
              return null;
         }
 
@@ -83,11 +79,11 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                 continue;
             }
             $parts = parse_url($maybeUrl);
-            if (false === isset($parts['host']) || $parts['host'] !== 'file' || false === isset($parts['query'])) {
+            if (!isset($parts['host']) || $parts['host'] !== 'file' || !isset($parts['query'])) {
                 continue;
             }
             parse_str($parts['query'], $queryParts);
-            if (true === isset($queryParts['uid'])) {
+            if (isset($queryParts['uid'])) {
                 $identifier[$key] = $queryParts['uid'];
                 $treatIdAsUid = true;
             }
@@ -97,7 +93,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         /** @var ResourceFactory $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
-        if (false === empty($categories)) {
+        if (!empty($categories)) {
             /** @var ConnectionPool $connectionPool */
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $queryBuilder = $connectionPool->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
@@ -124,12 +120,12 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             /** @var int[] $fileUids */
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));
 
-            if (true === empty($identifier)) {
+            if (empty($identifier)) {
                 foreach ($fileUids as $fileUid) {
                     try {
                         $file = $resourceFactory->getFileObject($fileUid);
 
-                        if (true === $onlyProperties) {
+                        if ($onlyProperties) {
                             $file = ResourceUtility::getFileArray($file);
                         }
 
@@ -145,9 +141,9 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 
         foreach ($identifier as $i) {
             try {
-                if (true === $treatIdAsUid) {
+                if ($treatIdAsUid) {
                     $file = $resourceFactory->getFileObject(intval($i));
-                } elseif (true === $treatIdAsReference) {
+                } elseif ($treatIdAsReference) {
                     $fileReference = $resourceFactory->getFileReferenceObject(intval($i));
                     $file = $fileReference->getOriginalFile();
                 } else {
@@ -159,11 +155,11 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                     continue;
                 }
 
-                if (true === isset($fileUids) && false === in_array($file->getUid(), $fileUids)) {
+                if (isset($fileUids) && !in_array($file->getUid(), $fileUids)) {
                     continue;
                 }
 
-                if (true === $onlyProperties) {
+                if ($onlyProperties) {
                     if ($file instanceof ProcessedFile) {
                         $file = $file->toArray();
                     } else {
@@ -191,9 +187,9 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             $argument = $this->arguments[$name];
         }
 
-        if (true === $argument instanceof \Traversable) {
+        if ($argument instanceof \Traversable) {
             $argument = iterator_to_array($argument);
-        } elseif (true === is_string($argument)) {
+        } elseif (is_string($argument)) {
             $argument = GeneralUtility::trimExplode(',', $argument, true);
         } else {
             $argument = (array) $argument;

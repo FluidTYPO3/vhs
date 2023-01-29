@@ -75,10 +75,10 @@ class CacheViewHelper extends AbstractRenderViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $identity = $arguments['identity'];
-        if (false === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
-            if (true === $identity instanceof DomainObjectInterface) {
+        if (ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
+            if ($identity instanceof DomainObjectInterface) {
                 $identity = get_class($identity) . static::ID_SEPARATOR . $identity->getUid();
-            } elseif (true === method_exists($identity, '__toString')) {
+            } elseif (method_exists($identity, '__toString')) {
                 $identity = (string) $identity;
             } else {
                 throw new \RuntimeException(
@@ -91,7 +91,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
         // Hash the cache-key to circumvent disallowed chars
         $identity = sha1($identity);
 
-        if (true === static::has($identity)) {
+        if (static::has($identity)) {
             return static::retrieve($identity);
         }
         $content = $renderChildrenClosure();
@@ -101,7 +101,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
 
     protected static function has(string $id): bool
     {
-        return (boolean) static::getCache()->has(static::ID_PREFIX . static::ID_SEPARATOR . $id);
+        return static::getCache()->has(static::ID_PREFIX . static::ID_SEPARATOR . $id);
     }
 
     /**

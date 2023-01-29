@@ -149,7 +149,7 @@ class ExtractViewHelper extends AbstractViewHelper
             // extraction from Iterators could potentially use a getter method which throws
             // exceptions - although this would be bad practice. Catch the exception here
             // and turn it into a WARNING log message so that output does not break.
-            if (true === (boolean) $recursive) {
+            if ($recursive) {
                 $result = static::recursivelyExtractKey($content, $key);
             } else {
                 $result = static::extractByKey($content, $key);
@@ -165,7 +165,7 @@ class ExtractViewHelper extends AbstractViewHelper
             $result = [];
         }
 
-        if (true === (boolean) $single && $result instanceof \Traversable) {
+        if ($single && $result instanceof \Traversable) {
             return reset($result);
         }
 

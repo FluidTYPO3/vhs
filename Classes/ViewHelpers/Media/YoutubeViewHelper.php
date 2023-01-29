@@ -86,8 +86,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
             'windowMode',
             'string',
             'Set the Window-Mode of the YouTube player (transparent,opaque). This is necessary for ' .
-            'z-index handling in IE10/11.',
-            false
+            'z-index handling in IE10/11.'
         );
     }
 
@@ -107,7 +106,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
 
         $src = $this->getSourceUrl($videoId);
 
-        if (false === (boolean) $this->arguments['legacyCode']) {
+        if (!$this->arguments['legacyCode']) {
             $this->tag->addAttribute('src', $src);
             $this->tag->addAttribute('frameborder', '0');
             $this->tag->addAttribute('allowFullScreen', 'allowFullScreen');
@@ -151,44 +150,44 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
 
         $params = [];
 
-        if (false === (boolean) $this->arguments['showRelated']) {
+        if (!$this->arguments['showRelated']) {
             $params[] = 'rel=0';
         }
-        if (true === (boolean) $this->arguments['autoplay']) {
+        if ($this->arguments['autoplay']) {
             $params[] = 'autoplay=1';
         }
-        if (true === (boolean) $this->arguments['hideControl']) {
+        if ($this->arguments['hideControl']) {
             $params[] = 'controls=0';
         }
-        if (true === (boolean) $this->arguments['hideInfo']) {
+        if ($this->arguments['hideInfo']) {
             $params[] = 'showinfo=0';
         }
-        if (true === (boolean) $this->arguments['enableJsApi']) {
+        if ($this->arguments['enableJsApi']) {
             $params[] = 'enablejsapi=1';
         }
-        if (false === empty($this->arguments['playlist'])) {
+        if (!empty($this->arguments['playlist'])) {
             $params[] = 'playlist=' . $this->arguments['playlist'];
         }
-        if (true === (boolean) $this->arguments['loop']) {
+        if ($this->arguments['loop']) {
             $params[] = 'loop=1';
         }
-        if (false === empty($this->arguments['start'])) {
+        if (!empty($this->arguments['start'])) {
             $params[] = 'start=' . $this->arguments['start'];
         }
-        if (false === empty($this->arguments['end'])) {
+        if (!empty($this->arguments['end'])) {
             $params[] = 'end=' . $this->arguments['end'];
         }
-        if (true === (boolean) $this->arguments['lightTheme']) {
+        if ($this->arguments['lightTheme']) {
             $params[] = 'theme=light';
         }
-        if (false === empty($this->arguments['videoQuality'])) {
+        if (!empty($this->arguments['videoQuality'])) {
             $params[] = 'vq=' . $this->arguments['videoQuality'];
         }
-        if (false === empty($this->arguments['windowMode'])) {
+        if (!empty($this->arguments['windowMode'])) {
             $params[] = 'wmode=' . $this->arguments['windowMode'];
         }
 
-        if (false === $this->arguments['legacyCode']) {
+        if (!$this->arguments['legacyCode']) {
             $src .= '/embed/'. $videoId;
             $seperator = '?';
         } else {
@@ -196,7 +195,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
             $seperator = '&';
         }
 
-        if (false === empty($params)) {
+        if (!empty($params)) {
             $src .= $seperator . implode('&', $params);
         }
 
