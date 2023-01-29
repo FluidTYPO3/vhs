@@ -502,22 +502,6 @@ classCurrent
 :aspect:`Description`
    Optional class name to add to current link
 
-.. _page.breadcrumb_classhassubpages:
-
-classHasSubpages
-----------------
-
-:aspect:`DataType`
-   string
-
-:aspect:`Default`
-   'sub'
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Optional class name to add to links which have subpages
-
 .. _page.breadcrumb_substelementuid:
 
 substElementUid
