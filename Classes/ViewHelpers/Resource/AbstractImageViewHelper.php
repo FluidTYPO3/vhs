@@ -14,7 +14,6 @@ use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -186,9 +185,6 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         /** @var TemplateService $template */
         $template = GeneralUtility::makeInstance(TemplateService::class);
         $template->tt_track = false;
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.4', '<')) {
-            $template->init();
-        }
         if (property_exists($template, 'getFileName_backPath')) {
             $template->getFileName_backPath = CoreUtility::getSitePath();
         }

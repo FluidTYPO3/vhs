@@ -14,7 +14,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -176,9 +175,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $canvasColor = str_replace('#', '', $this->arguments['canvasColor']);
             $originalFilename = $this->imageInfo[3];
             $originalExtension = mb_substr($originalFilename, -3);
-            $tempPath = (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '8.0', '>='))
-                ? 'typo3temp/assets/'
-                : 'typo3temp/';
+            $tempPath = 'typo3temp/assets/';
             $destinationFilename = $tempPath . 'vhs-canvas-' .
                 md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
             $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);

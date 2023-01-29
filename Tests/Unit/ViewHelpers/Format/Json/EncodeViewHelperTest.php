@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
  */
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
-use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -33,10 +32,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
 
     protected function getInstanceOfFoo()
     {
-        if (version_compare(TYPO3_version, '9.3', '>=')) {
-            return new Foo();
-        }
-        return new LegacyFoo();
+        return new Foo();
     }
 
     /**
