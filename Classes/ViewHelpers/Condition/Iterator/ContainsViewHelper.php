@@ -70,7 +70,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         } elseif (is_string($haystack)) {
             $asArray = str_split($haystack);
         }
-        return (true === isset($asArray[$index]) ? $asArray[$index] : false);
+        return $asArray[$index] ?? false;
     }
 
     /**
@@ -147,7 +147,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     {
         if (!$needle instanceof DomainObjectInterface) {
             if ($arguments['considerKeys']) {
-                $result = false !== array_search($needle, $haystack) || true === isset($haystack[$needle]);
+                $result = false !== array_search($needle, $haystack) || isset($haystack[$needle]);
             } else {
                 /** @var integer|false $result */
                 $result = array_search($needle, $haystack);

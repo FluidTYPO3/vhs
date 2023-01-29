@@ -23,12 +23,12 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     use SlideViewHelperTrait;
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer
      */
     protected $contentObject;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -97,7 +97,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $contentRecords = $this->getSlideRecords($pageUid, $limit);
         }
 
-        if (true === (boolean) $this->arguments['render']) {
+        if ($this->arguments['render']) {
             $contentRecords = $this->getRenderedRecords($contentRecords);
         }
 
@@ -107,7 +107,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     protected function getSlideRecordsFromPage(int $pageUid, ?int $limit): array
     {
         $order = $this->arguments['order'];
-        if (false === empty($order)) {
+        if (!empty($order)) {
             $sortDirection = strtoupper(trim($this->arguments['sortDirection']));
             if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
                 $sortDirection = 'ASC';
@@ -116,7 +116,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         }
 
         $contentUids = $this->arguments['contentUids'];
-        if (true === is_array($contentUids) && !empty($contentUids)) {
+        if (is_array($contentUids) && !empty($contentUids)) {
             return $GLOBALS['TSFE']->cObj->getRecords(
                 'tt_content',
                 [
@@ -135,7 +135,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if (is_numeric($this->arguments['column'])) {
             $conditions = sprintf('colPos = %d', (integer) $this->arguments['column']);
         }
-        if (true === (boolean) $this->arguments['sectionIndexOnly']) {
+        if ($this->arguments['sectionIndexOnly']) {
             $conditions .= ' AND sectionIndex = 1';
         }
 
@@ -176,14 +176,14 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected function getRenderedRecords(array $rows): array
     {
-        if (false === empty($this->arguments['loadRegister'])) {
+        if (!empty($this->arguments['loadRegister'])) {
             $this->contentObject->cObjGetSingle('LOAD_REGISTER', $this->arguments['loadRegister']);
         }
         $elements = [];
         foreach ($rows as $row) {
-            array_push($elements, static::renderRecord($row));
+            $elements[] = static::renderRecord($row);
         }
-        if (false === empty($this->arguments['loadRegister'])) {
+        if (!empty($this->arguments['loadRegister'])) {
             $this->contentObject->cObjGetSingle('RESTORE_REGISTER', []);
         }
         return $elements;
@@ -208,13 +208,13 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $parent = $GLOBALS['TSFE']->currentRecord;
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It's should not be allowed to do this again then!!
-        if (false === empty($parent)) {
+        if (!empty($parent)) {
             ++$GLOBALS['TSFE']->recordRegister[$parent];
         }
         $html = $GLOBALS['TSFE']->cObj->cObjGetSingle('RECORDS', $conf);
 
         $GLOBALS['TSFE']->currentRecord = $parent;
-        if (false === empty($parent)) {
+        if (!empty($parent)) {
             --$GLOBALS['TSFE']->recordRegister[$parent];
         }
         return $html;
@@ -229,7 +229,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $queryBuilder->orderBy($orderings[0], $orderings[1]);
         }
         if ($limit) {
-            $queryBuilder->setMaxResults((integer) $limit);
+            $queryBuilder->setMaxResults($limit);
         }
         /** @var Result $result */
         $result = $queryBuilder->execute();

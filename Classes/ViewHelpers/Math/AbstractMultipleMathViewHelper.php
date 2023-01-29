@@ -48,7 +48,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $value = $renderChildrenClosure();
-        if (null === $value && true === (boolean) $arguments['fail']) {
+        if (null === $value && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
         return static::calculate($value, $arguments['b'], $arguments);
@@ -65,8 +65,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         $bIsIterable = static::assertIsArrayOrIterator($b);
-        if (false === $aIsIterable && true === $bIsIterable) {
-            // condition matched if $a is not iterable but $b is.
+        if (!$aIsIterable && $bIsIterable) {
             ErrorUtility::throwViewHelperException(
                 'Math operation attempted using an iterator $b against a numeric value $a. Either both $a and $b, ' .
                 'or only $a, must be array/Iterator',

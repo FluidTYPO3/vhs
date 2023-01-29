@@ -37,7 +37,7 @@ class PregMatchViewHelper extends AbstractViewHelper
     {
         $this->registerAsArgument();
         $this->registerArgument('pattern', 'mixed', 'Regex pattern to match against', true);
-        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern', false);
+        $this->registerArgument('subject', 'mixed', 'String to match with the regex pattern');
         $this->registerArgument('global', 'boolean', 'Match global', false, false);
     }
 
@@ -54,7 +54,7 @@ class PregMatchViewHelper extends AbstractViewHelper
         } else {
             $subject = $arguments['subject'];
         }
-        if (true === (boolean) $arguments['global']) {
+        if ($arguments['global']) {
             preg_match_all($arguments['pattern'], $subject, $matches, PREG_SET_ORDER);
         } else {
             preg_match($arguments['pattern'], $subject, $matches);

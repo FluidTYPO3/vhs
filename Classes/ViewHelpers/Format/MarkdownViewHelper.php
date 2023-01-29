@@ -81,10 +81,10 @@ class MarkdownViewHelper extends AbstractViewHelper
                 1350511561
             );
         }
-        if (true === (boolean) $trim) {
+        if ($trim) {
             $text = trim($text);
         }
-        if (true === (boolean) $htmlentities) {
+        if ($htmlentities) {
             $text = htmlentities($text);
         }
         $transformed = static::transform($text, $markdownExecutablePath);
@@ -135,11 +135,7 @@ class MarkdownViewHelper extends AbstractViewHelper
     {
         static $cache;
         if (!isset($cache)) {
-            if (isset($GLOBALS['typo3CacheManager'])) {
-                $cacheManager = $GLOBALS['typo3CacheManager'];
-            } else {
-                $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-            }
+            $cacheManager = $GLOBALS['typo3CacheManager'] ?? GeneralUtility::makeInstance(CacheManager::class);
             $cache = $cacheManager->getCache('vhs_markdown');
         }
         return $cache;

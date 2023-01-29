@@ -49,7 +49,7 @@ class WordWrapViewHelper extends AbstractViewHelper
         if (is_array($subject)) {
             return $subject;
         }
-        $subject = wordwrap($subject, $limit, $break, false);
+        $subject = wordwrap($subject, $limit, $break);
         $output = '';
         foreach (explode($break, $subject) as $line) {
             if (mb_strlen($line) <= $limit) {
@@ -61,7 +61,7 @@ class WordWrapViewHelper extends AbstractViewHelper
                 $temp .= mb_substr($line, 0, $limit - 1);
                 $line = mb_substr($line, $limit - 1);
             }
-            if (false === empty($temp)) {
+            if (!empty($temp)) {
                 $output .= $temp . $glue . $line . $glue;
             } else {
                 $output .= $line . $glue;

@@ -55,7 +55,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $value = $renderChildrenClosure();
-        if (null === $value && true === (boolean) $arguments['fail']) {
+        if (null === $value && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
         return static::calculateAction($value, $arguments);

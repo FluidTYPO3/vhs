@@ -46,14 +46,13 @@ class GravatarViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         $this->registerArgument('email', 'string', 'Email address', true);
-        $this->registerArgument('size', 'integer', 'Size in pixels, defaults to 80px [ 1 - 2048 ]', false);
+        $this->registerArgument('size', 'integer', 'Size in pixels, defaults to 80px [ 1 - 2048 ]');
         $this->registerArgument(
             'imageSet',
             'string',
-            'Default image set to use. Possible values [ 404 | mm | identicon | monsterid | wavatar ] ',
-            false
+            'Default image set to use. Possible values [ 404 | mm | identicon | monsterid | wavatar ] '
         );
-        $this->registerArgument('maximumRating', 'string', 'Maximum rating (inclusive) [ g | pg | r | x ]', false);
+        $this->registerArgument('maximumRating', 'string', 'Maximum rating (inclusive) [ g | pg | r | x ]');
         $this->registerArgument(
             'secure',
             'boolean',
@@ -77,10 +76,10 @@ class GravatarViewHelper extends AbstractViewHelper
         $maximumRating = $arguments['maximumRating'];
         $secure = (boolean) $arguments['secure'];
 
-        $url = (true === $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL);
+        $url = $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL;
         $url .= md5(strtolower(trim($email)));
         $query = http_build_query(['s' => $size, 'd' => $imageSet, 'r' => $maximumRating]);
-        $url .= (false === empty($query) ? '?' . $query : '');
+        $url .= !empty($query) ? '?' . $query : '';
 
         return $url;
     }

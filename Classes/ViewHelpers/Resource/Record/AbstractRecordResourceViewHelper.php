@@ -32,7 +32,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
     protected string $idField = 'uid';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -81,14 +81,14 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
     {
         $field = $this->getField();
 
-        if (false === isset($record[$field])) {
+        if (!isset($record[$field])) {
             ErrorUtility::throwViewHelperException(
                 'The "field" argument was not found on the selected record.',
                 1384612728
             );
         }
 
-        if (true === empty($record[$field])) {
+        if (empty($record[$field])) {
             return [];
         }
 
@@ -102,7 +102,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             $table = $this->table;
         }
 
-        if (true === empty($table) || false === is_string($table)) {
+        if (empty($table) || !is_string($table)) {
             ErrorUtility::throwViewHelperException(
                 'The "table" argument must be specified and must be a string.',
                 1384611336
@@ -119,7 +119,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             $field = $this->field;
         }
 
-        if (true === empty($field) || false === is_string($field)) {
+        if (empty($field) || !is_string($field)) {
             ErrorUtility::throwViewHelperException(
                 'The "field" argument must be specified and must be a string.',
                 1384611355
@@ -142,8 +142,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         $fePreview = $context->hasAspect('frontend.preview')
-            ? $context->getPropertyFromAspect('frontend.preview', 'isPreview')
-            : false;
+            && $context->getPropertyFromAspect('frontend.preview', 'isPreview');
 
         if ($fePreview) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);

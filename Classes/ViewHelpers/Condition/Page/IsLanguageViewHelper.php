@@ -55,7 +55,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
             $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
 
-        if (true === is_numeric($language)) {
+        if (is_numeric($language)) {
             $languageUid = intval($language);
         } else {
             /** @var ConnectionPool $connectionPool */

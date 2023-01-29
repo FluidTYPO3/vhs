@@ -40,7 +40,7 @@ trait SourceSetViewHelperTrait
         $imageSources = [];
         $srcsetVariants = [];
 
-        foreach ($srcsets as $key => $width) {
+        foreach ($srcsets as $width) {
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference, null, $crop);
 
             $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);

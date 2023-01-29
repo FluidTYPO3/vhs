@@ -100,7 +100,7 @@ class TyposcriptViewHelper extends AbstractViewHelper
     /**
      * Returns instance of the configuration manager
      *
-     * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @return ConfigurationManagerInterface
      */
     protected static function getConfigurationManager()
     {

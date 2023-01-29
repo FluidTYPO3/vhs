@@ -40,7 +40,7 @@ class HashViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
-        $content = hash($arguments['algorithm'], $content, false);
+        $content = hash($arguments['algorithm'], $content);
         return $content;
     }
 }

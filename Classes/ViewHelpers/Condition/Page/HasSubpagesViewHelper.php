@@ -55,7 +55,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
         $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
         $includeAccessProtected = (boolean) $arguments['includeAccessProtected'];
 
-        if (null === $pageUid || true === empty($pageUid) || 0 === (integer) $pageUid) {
+        if (empty($pageUid) || 0 === (integer) $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 

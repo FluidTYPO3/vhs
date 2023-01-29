@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  * want wo switch between these methods.
  *
  * Or if you have all settings in an array (with members named according to
- * the properties on this class:
+ * the properties on this class):
  *
  *     \FluidTYPO3\Vhs\Asset::createFromSettings($settings)->finalize();
  *
@@ -62,7 +62,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 class Asset implements AssetInterface
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -140,7 +140,7 @@ class Asset implements AssetInterface
      * Build this asset. Override this method in the specific
      * implementation of an Asset in order to:
      *
-     * - if necessary compile the Asset (LESS, SASS, CoffeeScript etc)
+     * - if necessary compile the Asset (LESS, SASS, CoffeeScript etc.)
      * - make a final rendering decision based on arguments
      *
      * Note that within this function the ViewHelper and TemplateVariable
@@ -364,7 +364,7 @@ class Asset implements AssetInterface
         $settings = (array) self::$settingsCache;
         $properties = get_class_vars(get_class($this));
         $skipProperties = ['settingsCache', 'configurationManager'];
-        foreach (array_keys($properties) as $index => $propertyName) {
+        foreach (array_keys($properties) as $propertyName) {
             if (in_array($propertyName, $skipProperties, true)) {
                 unset($properties[$propertyName]);
                 continue;

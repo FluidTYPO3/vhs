@@ -46,7 +46,7 @@ class RenderViewHelper extends AbstractContentViewHelper
         }
 
         $content = $this->getContentRecords();
-        if (false === $this->hasArgument('as')) {
+        if (!$this->hasArgument('as')) {
             return implode(LF, $content);
         }
 

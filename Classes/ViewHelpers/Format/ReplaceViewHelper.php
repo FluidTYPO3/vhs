@@ -41,7 +41,7 @@ class ReplaceViewHelper extends AbstractViewHelper
         $replacement = $arguments['replacement'];
         $count = (integer) $arguments['count'];
         $caseSensitive = (boolean) $arguments['caseSensitive'];
-        $function = (true === $caseSensitive ? 'str_replace' : 'str_ireplace');
+        $function = $caseSensitive ? 'str_replace' : 'str_ireplace';
         return $function($substring, $replacement, $content, $count);
     }
 }

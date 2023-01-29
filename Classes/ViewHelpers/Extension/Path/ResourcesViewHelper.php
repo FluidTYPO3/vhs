@@ -41,7 +41,7 @@ class ResourcesViewHelper extends AbstractExtensionViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $path = true === empty($arguments['path']) ? '' : $arguments['path'];
+        $path = empty($arguments['path']) ? '' : $arguments['path'];
 
         $extPath = ExtensionManagementUtility::extPath(
             static::getExtensionKey($arguments, $renderingContext),

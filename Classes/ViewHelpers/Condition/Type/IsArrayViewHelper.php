@@ -30,6 +30,6 @@ class IsArrayViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return (isset($arguments['value']) && (true === is_array($arguments['value'])));
+        return is_array($arguments['value'] ?? null);
     }
 }

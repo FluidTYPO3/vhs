@@ -31,7 +31,7 @@ class InfoViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -76,7 +76,7 @@ class InfoViewHelper extends AbstractViewHelper
         $field = $this->arguments['field'];
         $selectFields = $field;
 
-        if ($record === false && 0 !== $contentUid) {
+        if (!$record && 0 !== $contentUid) {
             if (!isset($GLOBALS['TCA']['tt_content']['columns'][$field])) {
                 $selectFields = '*';
             }
@@ -118,7 +118,7 @@ class InfoViewHelper extends AbstractViewHelper
             }
         }
 
-        if (false === $record) {
+        if ($record === false) {
             throw new \Exception(
                 sprintf('Either record with uid %d or field %s do not exist.', $contentUid, $selectFields),
                 1358679983
@@ -129,7 +129,7 @@ class InfoViewHelper extends AbstractViewHelper
         $content = null;
         if (null === $field) {
             $content = $record;
-        } elseif (true === isset($record[$field])) {
+        } elseif (isset($record[$field])) {
             $content = $record[$field];
         }
 

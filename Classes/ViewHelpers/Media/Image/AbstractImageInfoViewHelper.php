@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+     * @var ResourceFactory
      */
     protected $resourceFactory;
 
@@ -78,23 +78,23 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
             }
         }
 
-        if (is_object($src) && ($src instanceof CoreFileReference || $src instanceof ExtbaseFileReference)) {
+        if ($src instanceof CoreFileReference || $src instanceof ExtbaseFileReference) {
             $src = $src->getUid();
             $treatIdAsUid = false;
             $treatIdAsReference = true;
         }
 
-        if (true === $treatIdAsUid || true === $treatIdAsReference) {
+        if ($treatIdAsUid || $treatIdAsReference) {
             $id = (integer) $src;
             $info = [];
-            if (true === $treatIdAsUid) {
+            if ($treatIdAsUid) {
                 $info = $this->getInfoByUid($id);
-            } elseif (true === $treatIdAsReference) {
+            } elseif ($treatIdAsReference) {
                 $info = $this->getInfoByReference($id);
             }
         } else {
             $file = GeneralUtility::getFileAbsFileName($src);
-            if (false === file_exists($file) || true === is_dir($file)) {
+            if (!file_exists($file) || is_dir($file)) {
                 throw new Exception(
                     'Cannot determine info for "' . $file . '". File does not exist or is a directory.',
                     1357066532

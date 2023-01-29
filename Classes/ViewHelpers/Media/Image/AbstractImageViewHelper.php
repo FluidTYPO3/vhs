@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -27,18 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current
-     * $GLOBALS['TSFE'] if used in BE mode
-     */
-    protected $tsfeBackup;
-
-    /**
-     * @var string|false
-     */
-    protected $workingDirectoryBackup;
-
-    /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer
      */
     protected $contentObject;
 

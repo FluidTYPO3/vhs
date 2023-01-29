@@ -13,13 +13,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 class MimetypeViewHelper extends AbstractImageInfoViewHelper
 {
-
     /**
      * @return string
      */
     public function render()
     {
         $info = $this->getInfo();
-        return true === isset($info['type']) ? $info['type'] : '';
+        return $info['type'] ?? '';
     }
 }

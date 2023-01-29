@@ -78,7 +78,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
     {
         $src = $this->arguments['src'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
-        if (is_object($src) && $src instanceof FileReference) {
+        if ($src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsReference = true;
         }
@@ -99,11 +99,11 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $defaultImage->addAttribute('src', is_scalar($defaultSource) ? (string) $defaultSource : '');
         $defaultImage->addAttribute('alt', $this->arguments['alt']);
 
-        if (false === empty($this->arguments['class'])) {
+        if (!empty($this->arguments['class'])) {
             $defaultImage->addAttribute('class', $this->arguments['class']);
         }
 
-        if (false === empty($this->arguments['title'])) {
+        if (!empty($this->arguments['title'])) {
             $defaultImage->addAttribute('title', $this->arguments['title']);
         }
 

@@ -102,9 +102,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper
                 if ($i > 0) {
                     $prevUid = $pageUids[$i - 1];
                 }
-                if ($i < $uidCount) {
-                    $nextUid = $pageUids[$i + 1];
-                }
+                $nextUid = $pageUids[$i + 1] ?? null;
                 break;
             }
         }

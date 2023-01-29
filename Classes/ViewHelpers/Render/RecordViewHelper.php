@@ -36,7 +36,7 @@ class RecordViewHelper extends AbstractContentViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (false === isset($arguments['record']['uid'])) {
+        if (!isset($arguments['record']['uid'])) {
             return null;
         }
         return static::renderRecord($arguments['record']);

@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -44,7 +45,7 @@ class CollectionViewHelper extends AbstractResourceViewHelper
             }
             /** @var RecordCollectionRepository $collectionRepository */
             $collectionRepository = GeneralUtility::makeInstance(RecordCollectionRepository::class);
-            /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $collection */
+            /** @var AbstractRecordCollection $collection */
             $collection = $collectionRepository->findByUid($uid);
             if (null !== $collection) {
                 $collection->loadContents();

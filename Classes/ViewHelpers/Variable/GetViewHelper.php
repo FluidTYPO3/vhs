@@ -79,16 +79,16 @@ class GetViewHelper extends AbstractViewHelper
         $name = $arguments['name'];
         $useRawKeys = $arguments['useRawKeys'];
         if (false === strpos($name, '.')) {
-            if (true === $variableProvider->exists($name)) {
+            if ($variableProvider->exists($name)) {
                 return $variableProvider->get($name);
             }
         } else {
             $segments = explode('.', $name);
             $lastSegment = array_shift($segments);
             $templateVariableRootName = $lastSegment;
-            if (true === $variableProvider->exists($templateVariableRootName)) {
+            if ($variableProvider->exists($templateVariableRootName)) {
                 $templateVariableRoot = $variableProvider->get($templateVariableRootName);
-                if (true === $useRawKeys) {
+                if ($useRawKeys) {
                     return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
                 }
                 try {

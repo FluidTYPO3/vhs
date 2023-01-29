@@ -34,7 +34,7 @@ class DecodeViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $json = $renderChildrenClosure();
-        if (true === empty($json)) {
+        if (empty($json)) {
             return null;
         }
         $value = json_decode($json, true);

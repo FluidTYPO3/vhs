@@ -13,6 +13,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * ### Base class for all rendering ViewHelpers.
@@ -23,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 abstract class AbstractRenderViewHelper extends AbstractViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -43,9 +44,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
             'onError',
             'string',
             'Optional error message to display if error occur while rendering. If NULL, lets the error Exception ' .
-            'pass trough (and break rendering)',
-            false,
-            null
+            'pass trough (and break rendering)'
         );
         $this->registerArgument(
             'graceful',
@@ -61,7 +60,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         $namespaces = [];
         foreach ((array) $arguments['namespaces'] as $namespaceIdentifier => $namespace) {
             $addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . '}';
-            array_push($namespaces, $addedOverriddenNamespace);
+            $namespaces[] = $addedOverriddenNamespace;
         }
         return $namespaces;
     }
@@ -89,7 +88,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface|\TYPO3Fluid\Fluid\View\ViewInterface $view
+     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface|ViewInterface $view
      */
     protected static function renderView($view, array $arguments): string
     {

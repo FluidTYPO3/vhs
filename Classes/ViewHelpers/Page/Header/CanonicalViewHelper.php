@@ -85,7 +85,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
 
         $uri = $uriBuilder->build();
 
-        if (true === empty($uri)) {
+        if (empty($uri)) {
             return '';
         }
 

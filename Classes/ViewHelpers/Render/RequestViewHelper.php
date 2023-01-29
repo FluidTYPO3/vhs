@@ -76,7 +76,6 @@ class RequestViewHelper extends AbstractRenderViewHelper
         $controller = $arguments['controller'];
         $extensionName = $arguments['extensionName'];
         $pluginName = $arguments['pluginName'];
-        $vendorName = $arguments['vendorName'];
         $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
         /** @var ContentObjectRenderer $contentObjectBackup */
@@ -131,10 +130,10 @@ class RequestViewHelper extends AbstractRenderViewHelper
             }
             return '';
         } catch (\Exception $error) {
-            if (false === (boolean) $arguments['graceful']) {
+            if (!$arguments['graceful']) {
                 throw $error;
             }
-            if (false === empty($arguments['onError'])) {
+            if (!empty($arguments['onError'])) {
                 return sprintf((string) $arguments['onError'], $error->getMessage(), $error->getCode());
             }
             return $error->getMessage() . ' (' . $error->getCode() . ')';

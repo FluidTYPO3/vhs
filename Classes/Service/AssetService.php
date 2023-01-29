@@ -33,7 +33,7 @@ class AssetService implements SingletonInterface
     const ASSET_SIGNAL = 'writeAssetFile';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -81,9 +81,9 @@ class AssetService implements SingletonInterface
         $buildDebugRequested = (isset($settings['asset']['debugBuild']) && $settings['asset']['debugBuild'] > 0);
         $assetDebugRequested = (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0);
         $useDebugUtility = (isset($settings['asset']['useDebugUtility']) && $settings['asset']['useDebugUtility'] > 0)
-            || false === isset($settings['asset']['useDebugUtility']);
-        if (true === ($buildDebugRequested || $assetDebugRequested)) {
-            if (true === $useDebugUtility) {
+            || !isset($settings['asset']['useDebugUtility']);
+        if ($buildDebugRequested || $assetDebugRequested) {
+            if ($useDebugUtility) {
                 DebuggerUtility::var_dump($assets);
             } else {
                 echo var_export($assets, true);
@@ -118,7 +118,6 @@ class AssetService implements SingletonInterface
             $allTypoScript = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
-            $settingsExist = isset($allTypoScript['plugin.']['tx_vhs.']['settings.']);
             static::$settingsCache = GeneralUtility::removeDotsFromTS(
                 $allTypoScript['plugin.']['tx_vhs.']['settings.'] ?? []
             );
@@ -147,13 +146,13 @@ class AssetService implements SingletonInterface
             if (0 < count($variables)) {
                 $name .= '-' . md5(serialize($variables));
             }
-            if (true === ($this->assertAssetAllowedInFooter($asset) && $footerRelocationEnabled)) {
+            if ($this->assertAssetAllowedInFooter($asset) && $footerRelocationEnabled) {
                 $footer[$name] = $asset;
             } else {
                 $header[$name] = $asset;
             }
         }
-        if (false === $cached) {
+        if (!$cached) {
             $uncachedSuffix = 'Uncached';
         } else {
             $uncachedSuffix = '';
@@ -197,7 +196,7 @@ class AssetService implements SingletonInterface
         foreach ($assets as $name => $asset) {
             $assetSettings = $this->extractAssetSettings($asset);
             $type = $assetSettings['type'];
-            if (false === isset($spool[$type])) {
+            if (!isset($spool[$type])) {
                 $spool[$type] = [];
             }
             $spool[$type][$name] = $asset;
@@ -215,7 +214,7 @@ class AssetService implements SingletonInterface
                 $external = (boolean) $assetSettings['external'];
                 $rewrite = (boolean) $assetSettings['rewrite'];
                 $path = $assetSettings['path'];
-                if (false === $standalone) {
+                if (!$standalone) {
                     $chunk[$name] = $asset;
                 } else {
                     if (0 < count($chunk)) {
@@ -223,14 +222,14 @@ class AssetService implements SingletonInterface
                         $chunks[] = $mergedFileTag;
                         $chunk = [];
                     }
-                    if (true === empty($path)) {
+                    if (empty($path)) {
                         $assetContent = $this->extractAssetContent($asset);
                         $chunks[] = $this->generateTagForAssetType($type, $assetContent, null, null, $assetSettings);
                     } else {
-                        if (true === $external) {
+                        if ($external) {
                             $chunks[] = $this->generateTagForAssetType($type, null, $path, null, $assetSettings);
                         } else {
-                            if (true === $rewrite) {
+                            if ($rewrite) {
                                 $chunks[] = $this->writeCachedMergedFileAndReturnTag([$name => $asset], $type);
                             } else {
                                 $integrity = $this->getFileIntegrity($path);
@@ -274,8 +273,8 @@ class AssetService implements SingletonInterface
         if (!file_exists($fileAbsolutePathAndFilename)
             || 0 === filemtime($fileAbsolutePathAndFilename)
             || isset($GLOBALS['BE_USER'])
-            || (boolean) ($GLOBALS['TSFE']->no_cache ?? false)
-            || (boolean) ($GLOBALS['TSFE']->page['no_cache'] ?? false)
+            || ($GLOBALS['TSFE']->no_cache ?? false)
+            || ($GLOBALS['TSFE']->page['no_cache'] ?? false)
         ) {
             foreach ($assets as $name => $asset) {
                 $assetSettings = $this->extractAssetSettings($asset);
@@ -328,7 +327,7 @@ class AssetService implements SingletonInterface
     ): ?string {
         /** @var TagBuilder $tagBuilder */
         $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
-        if (null === $file && true === empty($content)) {
+        if (null === $file && empty($content)) {
             $content = '<!-- Empty tag content -->';
         }
         switch ($type) {
@@ -341,7 +340,7 @@ class AssetService implements SingletonInterface
                 } else {
                     $tagBuilder->addAttribute('src', (string) $file);
                 }
-                if (null !== $integrity && !empty($integrity)) {
+                if (!empty($integrity)) {
                     if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
@@ -369,7 +368,7 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('rel', 'stylesheet');
                     $tagBuilder->addAttribute('href', $file);
                 }
-                if (null !== $integrity && !empty($integrity)) {
+                if (!empty($integrity)) {
                     if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
@@ -406,11 +405,11 @@ class AssetService implements SingletonInterface
         foreach ($assets as $name => $asset) {
             $assetSettings = $this->extractAssetSettings($asset);
             $groupName = $assetSettings['group'];
-            $removed = (boolean) (true === isset($assetSettings['removed']) ? $assetSettings['removed'] : false);
+            $removed = $assetSettings['removed'] ?? false;
             if ($removed) {
                 continue;
             }
-            $localSettings = (array) $assetSettings;
+            $localSettings = $assetSettings;
             if (isset($settings['asset'])) {
                 $localSettings = $this->mergeArrays($localSettings, (array) $settings['asset']);
             }
@@ -444,13 +443,13 @@ class AssetService implements SingletonInterface
             $assetSettings = $this->extractAssetSettings($asset);
             $name = array_shift($assetNames);
             $dependencies = $assetSettings['dependencies'];
-            if (false === is_array($dependencies)) {
+            if (!is_array($dependencies)) {
                 $dependencies = GeneralUtility::trimExplode(',', $assetSettings['dependencies'], true);
             }
             foreach ($dependencies as $dependency) {
-                if (true === array_key_exists($dependency, $assets)
-                    && false === isset($placed[$dependency])
-                    && false === in_array($dependency, static::$cachedDependencies)
+                if (array_key_exists($dependency, $assets)
+                    && !isset($placed[$dependency])
+                    && !in_array($dependency, static::$cachedDependencies)
                 ) {
                     // shove the Asset back to the end of the queue, the dependency has
                     // not yet been encountered and moving this item to the back of the
@@ -472,7 +471,7 @@ class AssetService implements SingletonInterface
                     $postpone = true;
                 }
             }
-            if (false === $postpone) {
+            if (!$postpone) {
                 $placed[$name] = $asset;
             }
         }
@@ -579,7 +578,7 @@ class AssetService implements SingletonInterface
                         GeneralUtility::sysLog($message, 'vhs', GeneralUtility::SYSLOG_SEVERITY_WARNING);
                     }
                 } else {
-                    if (false === file_exists($temporaryFile)) {
+                    if (!file_exists($temporaryFile)) {
                         copy($realPath, $temporaryFile);
                         GeneralUtility::fixPermissions($temporaryFile);
                     }
@@ -587,7 +586,7 @@ class AssetService implements SingletonInterface
                 }
             }
         }
-        if (false === empty($replacements)) {
+        if (!empty($replacements)) {
             $contents = str_replace(array_keys($replacements), array_values($replacements), $contents);
         }
         return $contents;
@@ -623,10 +622,10 @@ class AssetService implements SingletonInterface
         if ($asset instanceof AssetInterface) {
             return $asset->build();
         }
-        if (false === isset($asset['path']) || true === empty($asset['path'])) {
-            return (true === isset($asset['content']) ? $asset['content'] : null);
+        if (!isset($asset['path']) || empty($asset['path'])) {
+            return $asset['content'] ?? null;
         }
-        if (true === isset($asset['external']) && true === (boolean) $asset['external']) {
+        if (isset($asset['external']) && $asset['external']) {
             $path = $asset['path'];
         } else {
             $path = GeneralUtility::getFileAbsFileName($asset['path']);
@@ -644,13 +643,13 @@ class AssetService implements SingletonInterface
         $fileRelativePathAndFilename = $assetSettings['path'];
         $fileRelativePath = dirname($assetSettings['path']);
         $absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
-        $isExternal = true === isset($assetSettings['external']) && true === (boolean) $assetSettings['external'];
-        $isFluidTemplate = true === isset($assetSettings['fluid']) && true === (boolean) $assetSettings['fluid'];
+        $isExternal = $assetSettings['external'] ?? false;
+        $isFluidTemplate = $assetSettings['fluid'] ?? false;
         if (!empty($fileRelativePathAndFilename)) {
             if (!$isExternal && !file_exists($absolutePathAndFilename)) {
                 throw new \RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
             }
-            if (true === $isFluidTemplate) {
+            if ($isFluidTemplate) {
                 $content = $this->renderAssetAsFluidTemplate($asset);
             } else {
                 $content = $this->buildAsset($asset);
@@ -666,14 +665,14 @@ class AssetService implements SingletonInterface
 
     public function clearCacheCommand(array $parameters): void
     {
-        if (true === static::$cacheCleared) {
+        if (static::$cacheCleared) {
             return;
         }
         if ('all' !== ($parameters['cacheCmd'] ?? '')) {
             return;
         }
         $assetCacheFiles = glob(GeneralUtility::getFileAbsFileName($this->getTempPath() . 'vhs-assets-*'));
-        if (false === $assetCacheFiles) {
+        if (!$assetCacheFiles) {
             return;
         }
         foreach ($assetCacheFiles as $assetCacheFile) {
@@ -713,7 +712,7 @@ class AssetService implements SingletonInterface
             if (0 < $typoScript['assets.']['tagsAddSubresourceIntegrity']
                 && $typoScript['assets.']['tagsAddSubresourceIntegrity'] < 4
             ) {
-                if (false === file_exists($file)) {
+                if (!file_exists($file)) {
                     return '';
                 }
 
@@ -730,11 +729,11 @@ class AssetService implements SingletonInterface
                     $integrityMethod
                 );
 
-                if (false === file_exists($integrityFile)
+                if (!file_exists($integrityFile)
                     || 0 === filemtime($integrityFile)
-                    || true === isset($GLOBALS['BE_USER'])
-                    || true === (boolean) $typoScriptFrontendController->no_cache
-                    || true === (boolean) $typoScriptFrontendController->page['no_cache']
+                    || isset($GLOBALS['BE_USER'])
+                    || $typoScriptFrontendController->no_cache
+                    || $typoScriptFrontendController->page['no_cache']
                 ) {
                     if (extension_loaded('hash') && function_exists('hash_file')) {
                         $integrity = base64_encode((string) hash_file($integrityMethod, $file, true));

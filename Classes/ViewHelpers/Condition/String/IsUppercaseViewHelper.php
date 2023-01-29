@@ -35,11 +35,11 @@ class IsUppercaseViewHelper extends AbstractConditionViewHelper
         if (!is_array($arguments)) {
             return false;
         }
-        if (true === $arguments['fullString']) {
+        if ($arguments['fullString']) {
             $result = ctype_upper($arguments['string']);
         } else {
             $result = ctype_upper(substr($arguments['string'], 0, 1));
         }
-        return true === $result;
+        return $result;
     }
 }

@@ -49,12 +49,12 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class FalViewHelper extends AbstractRecordResourceViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+     * @var ResourceFactory
      */
     protected $resourceFactory;
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\FileRepository
+     * @var FileRepository
      */
     protected $fileRepository;
 

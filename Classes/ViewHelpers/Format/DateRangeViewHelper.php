@@ -132,12 +132,12 @@ class DateRangeViewHelper extends AbstractViewHelper
         $startDateTime = static::enforceDateTime($start);
 
         $endDateTime = null;
-        if (true === isset($arguments['end']) && false === empty($arguments['end'])) {
+        if (!empty($arguments['end'])) {
             $endDateTime = static::enforceDateTime($arguments['end']);
         }
 
         $intervalFormat = null;
-        if (true === isset($arguments['intervalFormat']) && false === empty($arguments['intervalFormat'])) {
+        if (!empty($arguments['intervalFormat'])) {
             $intervalFormat = $arguments['intervalFormat'];
         }
 
@@ -172,10 +172,10 @@ class DateRangeViewHelper extends AbstractViewHelper
             $glue = strval($arguments['glue']);
             $startFormat = $arguments['format'] ?? '';
             $endFormat = $arguments['format'] ?? '';
-            if (false === empty($arguments['startFormat'])) {
+            if (!empty($arguments['startFormat'])) {
                 $startFormat = $arguments['startFormat'];
             }
-            if (false === empty($arguments['endFormat'])) {
+            if (!empty($arguments['endFormat'])) {
                 $endFormat = $arguments['endFormat'];
             }
             $output = static::formatDate($startDateTime, $startFormat);
@@ -185,18 +185,18 @@ class DateRangeViewHelper extends AbstractViewHelper
             $output .= static::formatDate($endDateTime ?? new \DateTime('now'), $endFormat);
         } elseif ('DateTime' === $return) {
             $output = $endDateTime;
-        } elseif (true === is_string($return) && $interval instanceof \DateInterval) {
+        } elseif (is_string($return) && $interval instanceof \DateInterval) {
             if (false === strpos($return, '%')) {
                 $return = '%' . $return;
             }
             $output = $interval->format($return);
-        } elseif (true === is_array($return) && $interval instanceof \DateInterval) {
+        } elseif (is_array($return) && $interval instanceof \DateInterval) {
             $output = [];
             foreach ($return as $format) {
                 if (false === strpos($format, '%')) {
                     $format = '%' . $format;
                 }
-                array_push($output, $interval->format($format));
+                $output[] = $interval->format($format);
             }
         }
         return $output;
@@ -207,10 +207,10 @@ class DateRangeViewHelper extends AbstractViewHelper
      */
     protected static function enforceDateTime($date): \DateTime
     {
-        if (false === $date instanceof \DateTime) {
+        if (!$date instanceof \DateTime) {
             try {
                 $input = $date;
-                if (true === is_integer($date)) {
+                if (is_integer($date)) {
                     $date = new \DateTime('@' . $date);
                 } elseif (is_scalar($date)) {
                     $date = new \DateTime((string) $date);

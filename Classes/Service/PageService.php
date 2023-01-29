@@ -137,12 +137,12 @@ class PageService implements SingletonInterface
             }
         }
 
-        $l18nCfg = isset($pageRecord['l18n_cfg']) ? $pageRecord['l18n_cfg'] : 0;
+        $l18nCfg = $pageRecord['l18n_cfg'] ?? 0;
         if (class_exists(PageTranslationVisibility::class)) {
             /** @var PageTranslationVisibility $visibilityBitSet */
             $visibilityBitSet = GeneralUtility::makeInstance(
                 PageTranslationVisibility::class,
-                $pageRecord['l18n_cfg'] ?? 0
+                $l18nCfg
             );
             $hideIfNotTranslated = $visibilityBitSet->shouldHideTranslationIfNoTranslatedRecordExists();
             $hideIfDefaultLanguage = $visibilityBitSet->shouldBeHiddenInDefaultLanguage();

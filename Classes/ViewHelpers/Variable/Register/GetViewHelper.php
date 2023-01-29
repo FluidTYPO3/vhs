@@ -52,13 +52,9 @@ class GetViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $name = $renderChildrenClosure();
-        if (false === ($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
+        if (!($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             return null;
         }
-        $value = null;
-        if (true === isset($GLOBALS['TSFE']->register[$name])) {
-            $value = $GLOBALS['TSFE']->register[$name];
-        }
-        return $value;
+        return $GLOBALS['TSFE']->register[$name] ?? null;
     }
 }
