@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -446,9 +445,6 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                 'exclude' => 'id,L,cHash' . ($excludedVars ? ',' . $excludedVars : '')
             ]
         ];
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.5', '<')) {
-            $config['useCacheHash'] = $this->arguments['useCHash'];
-        }
         if (true === is_array($this->arguments['configuration'])) {
             $config = $this->mergeArrays($config, $this->arguments['configuration']);
         }
@@ -489,13 +485,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getSystemLanguageUids(): array
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '9.0', '<')) {
-            $table = 'pages_language_overlay';
-            $parentField = 'pid';
-        } else {
-            $table = 'pages';
-            $parentField = 'l10n_parent';
-        }
+        $table = 'pages';
+        $parentField = 'l10n_parent';
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);

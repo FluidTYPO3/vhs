@@ -11,22 +11,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Variable;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
-/**
- * Class IssetViewHelperTest
- */
 class IssetViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @return void
-     */
-    public function setUp(): void
-    {
-        if (version_compare(TYPO3_version, '8.0', '<')) {
-            $this->markTestSkipped('Skipped, ViewHelper does not work on 7.6');
-        }
-        parent::setUp();
-    }
-
     /**
      * @test
      */
