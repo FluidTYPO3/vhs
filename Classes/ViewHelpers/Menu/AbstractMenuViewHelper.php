@@ -86,13 +86,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             'current'
         );
         $this->registerArgument(
-            'classHasSubpages',
-            'string',
-            'Optional class name to add to links which have subpages',
-            false,
-            'sub'
-        );
-        $this->registerArgument(
             'substElementUid',
             'boolean',
             'Optional parameter for wrapping the link with the uid of the page',
@@ -443,10 +436,6 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $pages[$index]['hasSubPages'] = false;
             if (0 < count($this->getMenu($originalPageUid))) {
                 $pages[$index]['hasSubPages'] = true;
-                //TODO: Remove deprecated argument in next major version
-                $class[] = $this->arguments[
-                    $this->hasArgument('classHasSubpages') ? 'classHasSubpages' : 'classHasSubPages'
-                ];
             }
             if (1 === $count) {
                 $class[] = $this->arguments['classFirst'];

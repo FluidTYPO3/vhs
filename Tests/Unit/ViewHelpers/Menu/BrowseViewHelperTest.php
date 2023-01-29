@@ -101,20 +101,20 @@ class BrowseViewHelperTest extends AbstractViewHelperTestCase
         $output = $this->executeInstance($subject, $arguments);
 
         self::assertSame(
-            '<ul><li class="active sub">' . PHP_EOL .
-            '<a href="link" title="First" class="active sub">First</a>' . PHP_EOL .
+            '<ul><li class="active">' . PHP_EOL .
+            '<a href="link" title="First" class="active">First</a>' . PHP_EOL .
             '</li>' . PHP_EOL .
-            '<li class="active sub">' . PHP_EOL .
-            '<a href="link" title="First" class="active sub">First</a>' . PHP_EOL .
+            '<li class="active">' . PHP_EOL .
+            '<a href="link" title="First" class="active">First</a>' . PHP_EOL .
             '</li>' . PHP_EOL .
-            '<li class="active sub">' . PHP_EOL .
-            '<a href="link" title="First" class="active sub">First</a>' . PHP_EOL .
+            '<li class="active">' . PHP_EOL .
+            '<a href="link" title="First" class="active">First</a>' . PHP_EOL .
             '</li>' . PHP_EOL .
-            '<li class="active sub">' . PHP_EOL .
-            '<a href="link" title="Third" class="active sub">Third</a>' . PHP_EOL .
+            '<li class="active">' . PHP_EOL .
+            '<a href="link" title="Third" class="active">Third</a>' . PHP_EOL .
             '</li>' . PHP_EOL .
-            '<li class="active sub">' . PHP_EOL .
-            '<a href="link" title="Third" class="active sub">Third</a>' . PHP_EOL .
+            '<li class="active">' . PHP_EOL .
+            '<a href="link" title="Third" class="active">Third</a>' . PHP_EOL .
             '</li></ul>',
             $output
         );
