@@ -139,16 +139,12 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
 
-        if (class_exists('\\TYPO3\\CMS\\Frontend\\Aspect\\PreviewAspect')) {
-            //TYPO3 version >= 10
-            /** @var Context $context */
-            $context = GeneralUtility::makeInstance(Context::class);
-            $fePreview = $context->hasAspect('frontend.preview')
-                ? $context->getPropertyFromAspect('frontend.preview', 'isPreview')
-                : false;
-        } else {
-            $fePreview = (bool)(isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fePreview);
-        }
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        $fePreview = $context->hasAspect('frontend.preview')
+            ? $context->getPropertyFromAspect('frontend.preview', 'isPreview')
+            : false;
+
         if ($fePreview) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
