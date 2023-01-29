@@ -98,7 +98,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             false
         );
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
-        $this->registerArgument('linkAccessRestrictedPages', 'boolean', 'DEPRECATED: Use showAccessProtected instead.');
         $this->registerArgument(
             'absolute',
             'boolean',
@@ -159,11 +158,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
-
-        //TODO: Remove handling of deprecated argument
-        if ($this->hasArgument('linkAccessRestrictedPages')) {
-            $showAccessProtected = (boolean) $this->arguments['linkAccessRestrictedPages'];
-        }
 
         $page = $this->pageService->getPage($pageUid, $showAccessProtected);
         if (empty($page)) {

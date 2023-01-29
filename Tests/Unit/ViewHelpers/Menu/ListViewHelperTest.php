@@ -47,8 +47,8 @@ class ListViewHelperTest extends AbstractViewHelperTestCase
 
         $output = $this->executeInstance($subject, $arguments);
         self::assertSame(
-            '<ul><li class="active current sub">' . PHP_EOL .
-            '<a href="link" title="page" class="active current sub">page</a>' . PHP_EOL .
+            '<ul><li class="active current">' . PHP_EOL .
+            '<a href="link" title="page" class="active current">page</a>' . PHP_EOL .
             '</li></ul>',
             $output
         );

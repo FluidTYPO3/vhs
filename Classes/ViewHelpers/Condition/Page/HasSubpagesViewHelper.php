@@ -40,7 +40,6 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('includeHidden', 'boolean', 'DEPRECATED: Include hidden pages', false, false);
         $this->registerArgument('includeAccessProtected', 'boolean', 'Include access protected pages', false, false);
         $this->registerArgument('includeHiddenInMenu', 'boolean', 'Include pages hidden in menu', false, false);
-        $this->registerArgument('showHiddenInMenu', 'boolean', 'DEPRECATED: Use includeHiddenInMenu');
     }
 
     /**
@@ -53,12 +52,7 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
             return false;
         }
         $pageUid = $arguments['pageUid'];
-        //TODO: remove fallback with removal of deprecated argument
-        if (null !== $arguments['showHiddenInMenu']) {
-            $includeHiddenInMenu = (boolean) $arguments['showHiddenInMenu'];
-        } else {
-            $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
-        }
+        $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
         $includeAccessProtected = (boolean) $arguments['includeAccessProtected'];
 
         if (null === $pageUid || true === empty($pageUid) || 0 === (integer) $pageUid) {
