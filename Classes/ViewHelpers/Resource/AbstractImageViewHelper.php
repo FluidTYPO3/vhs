@@ -9,10 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
-use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -24,17 +22,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
 {
-    /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of
-     * the current $GLOBALS['TSFE'] if used in BE mode
-     */
-    protected $tsfeBackup;
-
-    /**
-     * @var string|false
-     */
-    protected $workingDirectoryBackup;
-
     /**
      * @var ConfigurationManagerInterface
      */
@@ -110,12 +97,12 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         $setup = [
-            'width' => $this->arguments['width'],
-            'height' => $this->arguments['height'],
-            'minW' => $this->arguments['minWidth'],
-            'minH' => $this->arguments['minHeight'],
-            'maxW' => $this->arguments['maxWidth'],
-            'maxH' => $this->arguments['maxHeight'],
+            'width' => $this->arguments['width'] ?? null,
+            'height' => $this->arguments['height'] ?? null,
+            'minW' => $this->arguments['minWidth'] ?? null,
+            'minH' => $this->arguments['minHeight'] ?? null,
+            'maxW' => $this->arguments['maxWidth'] ?? null,
+            'maxH' => $this->arguments['maxHeight'] ?? null,
             'treatIdAsReference' => false
         ];
 
@@ -154,44 +141,6 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
         return $images;
-    }
-
-    /**
-     * Prepares $GLOBALS['TSFE'] for Backend mode
-     * This somewhat hacky work around is currently needed because the getImgResource() function of
-     * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set.
-     */
-    protected function simulateFrontendEnvironment(): void
-    {
-        $this->tsfeBackup = $GLOBALS['TSFE'] ?? null;
-        $this->workingDirectoryBackup = getcwd();
-        chdir(CoreUtility::getSitePath());
-        $typoScriptSetup = $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-        );
-        $GLOBALS['TSFE'] = new \stdClass();
-        /** @var TemplateService $template */
-        $template = GeneralUtility::makeInstance(TemplateService::class);
-        $template->tt_track = false;
-        if (property_exists($template, 'getFileName_backPath')) {
-            $template->getFileName_backPath = CoreUtility::getSitePath();
-        }
-        $GLOBALS['TSFE']->tmpl = $template;
-        $GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
-        $GLOBALS['TSFE']->config = $typoScriptSetup;
-    }
-
-    /**
-     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
-     *
-     * @see simulateFrontendEnvironment()
-     */
-    protected function resetFrontendEnvironment(): void
-    {
-        $GLOBALS['TSFE'] = $this->tsfeBackup;
-        if ($this->workingDirectoryBackup !== false) {
-            chdir($this->workingDirectoryBackup);
-        }
     }
 
     /**

@@ -97,7 +97,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     public function getTable(): string
     {
-        $table = $this->arguments['table'];
+        $table = $this->arguments['table'] ?? null;
         if (null === $table) {
             $table = $this->table;
         }
@@ -114,7 +114,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     public function getField(): string
     {
-        $field = $this->arguments['field'];
+        $field = $this->arguments['field'] ?? null;
         if (null === $field) {
             $field = $this->field;
         }
@@ -175,8 +175,8 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
      */
     public function render()
     {
-        $record = $this->arguments['record'];
-        $uid = $this->arguments['uid'];
+        $record = $this->arguments['record'] ?? null;
+        $uid = $this->arguments['uid'] ?? null;
 
         if (null === $record) {
             if (null === $uid) {
@@ -195,9 +195,10 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         // attempt to load resources. If any Exceptions happen, transform them to
         // ViewHelperExceptions which render as an inline text error message.
+        $content = null;
         try {
             $resources = $this->getResources($record);
-            return $this->renderChildrenWithVariableOrReturnInput($resources);
+            $content = $this->renderChildrenWithVariableOrReturnInput($resources);
         } catch (\Exception $error) {
             // we are doing the pokemon-thing and catching the very top level
             // of Exception because the range of Exceptions that are possibly
@@ -206,6 +207,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             // we are forced to "catch them all" - but we also output them.
             ErrorUtility::throwViewHelperException($error->getMessage(), $error->getCode());
         }
-        return null;
+        return $content;
     }
 }
