@@ -66,7 +66,7 @@ class FalViewHelper extends ResourcesFalViewHelper
 
     public function getResources(array $record): array
     {
-        return $this->getSlideRecords($record['uid']);
+        return $this->getSlideRecordsFromPage($record['uid'], null);
     }
 
     protected function getSlideRecordsFromPage(int $pageUid, ?int $limit): array
