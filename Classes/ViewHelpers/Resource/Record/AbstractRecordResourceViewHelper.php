@@ -159,7 +159,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             )
             ->execute();
         /** @var array|null $result */
-        $result = $statement->fetchOne() ?: null;
+        $result = $statement->fetchAssociative() ?: null;
         return $result;
     }
 
