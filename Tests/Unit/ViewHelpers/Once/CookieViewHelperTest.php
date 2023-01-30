@@ -24,13 +24,6 @@ class CookieViewHelperTest extends AbstractViewHelperTestCase
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($GLOBALS['TSFE']);
-    }
-
     /**
      * @return void
      */

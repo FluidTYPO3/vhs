@@ -95,6 +95,8 @@ abstract class AbstractTestCase extends TestCase
 
         GeneralUtility::resetSingletonInstances($this->singletonInstancesBackup);
         GeneralUtility::purgeInstances();
+
+        unset($GLOBALS['TSFE']);
     }
 
     /**

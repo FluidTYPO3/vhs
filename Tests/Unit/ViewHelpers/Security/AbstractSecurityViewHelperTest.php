@@ -391,7 +391,6 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             ->getMockForAbstractClass();
         $result = $instance->getCurrentFrontendUser();
         $this->assertNull($result);
-        unset($GLOBALS['TSFE']);
     }
 
     public function testGetCurrentFrontendUserFetchesFromFrontendUserRepository(): void
@@ -445,6 +444,5 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance->expects($this->once())->method('isFrontendContext')->willReturn(true);
         $this->callInaccessibleMethod($instance, 'renderThenChild');
         $this->assertEquals(1, $GLOBALS['TSFE']->no_cache);
-        unset($GLOBALS['TSFE']);
     }
 }

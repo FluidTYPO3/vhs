@@ -40,13 +40,6 @@ class InfoViewHelperTest extends AbstractViewHelperTestCase
         parent::setUp();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($GLOBALS['TSFE']);
-    }
-
     public function testUsesPageUidFromTsfe(): void
     {
         $GLOBALS['TSFE']->id = 123;

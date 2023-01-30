@@ -48,13 +48,6 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         GeneralUtility::addInstance(UriBuilder::class, $uriBuilder);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($GLOBALS['TSFE']);
-    }
-
     protected function createInstance(): LinkViewHelper
     {
         $instance = parent::createInstance();

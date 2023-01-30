@@ -126,7 +126,5 @@ class AssetServiceTest extends AbstractTestCase
             $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] = $settingLevel;
             $this->assertEquals($expectedIntegrity, $method->invokeArgs($instance, [$file]));
         }
-
-        unset($GLOBALS['TSFE']);
     }
 }
