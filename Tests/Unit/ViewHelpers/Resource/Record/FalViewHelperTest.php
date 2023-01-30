@@ -8,23 +8,16 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Result;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyQueryBuilder;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class FalViewHelperTest
- */
 class FalViewHelperTest extends AbstractViewHelperTestCase
 {
     protected function setUp(): void
@@ -39,12 +32,6 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
             ->getMock();
 
         parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        unset($GLOBALS['TSFE']);
     }
 
     public function testFalViewhHelperWithoutWorkspaces(): void
@@ -105,33 +92,8 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
 
         $this->singletonInstances[ResourceFactory::class]->method('getFileReferenceObject')->willReturn($file);
 
-        $statement = $this->getMockBuilder(Result::class)->getMockForAbstractClass();
-        $statement->method('fetchAllAssociative')->willReturn([['uid' => 1]]);
-
-        $expressionBuilder = $this->getMockBuilder(ExpressionBuilder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
-            ->setMethods(['expr', 'createNamedParameter', 'execute', 'select', 'from', 'where', 'andWhere', 'orderBy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $queryBuilder->method('expr')->willReturn($expressionBuilder);
-        $queryBuilder->method('createNamedParameter')->willReturn('named');
-        $queryBuilder->method('execute')->willReturn($statement);
-        $queryBuilder->method('select')->willReturnSelf();
-        $queryBuilder->method('from')->willReturnSelf();
-        $queryBuilder->method('where')->willReturnSelf();
-        $queryBuilder->method('andWhere')->willReturnSelf();
-        $queryBuilder->method('orderBy')->willReturnSelf();
-
-        $connectionPool = $this->getMockBuilder(ConnectionPool::class)
-            ->setMethods(['getQueryBuilderForTable'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $connectionPool->method('getQueryBuilderForTable')->willReturn($queryBuilder);
-
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool);
+        $mockQueryBuilder = new DummyQueryBuilder($this);
+        $mockQueryBuilder->result->method('fetchAllAssociative')->willReturn([['uid' => 1]]);
 
         $GLOBALS['BE_USER'] = (object) ['workspaceRec' => ['uid' => $workspaceUid]];
 
