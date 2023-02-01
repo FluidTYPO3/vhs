@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  */
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -316,11 +318,20 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function assertAdminLoggedIn(): bool
     {
-        if (!$this->assertBackendUserLoggedIn()) {
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '<')) {
+            if (!$this->assertBackendUserLoggedIn()) {
+                return false;
+            }
+            $currentBackendUser = $this->getCurrentBackendUser();
+            return is_array($currentBackendUser) && (boolean) ($currentBackendUser['admin'] ?? false);
+        }
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        try {
+            return (bool) $context->getPropertyFromAspect('backend.user', 'isAdmin');
+        } catch (AspectNotFoundException $e) {
             return false;
         }
-        $currentBackendUser = $this->getCurrentBackendUser();
-        return is_array($currentBackendUser) && (boolean) ($currentBackendUser['admin'] ?? false);
     }
 
     /**
