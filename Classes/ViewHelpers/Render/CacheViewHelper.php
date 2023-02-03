@@ -75,7 +75,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $identity = $arguments['identity'];
-        if (ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
+        if (!ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
             if ($identity instanceof DomainObjectInterface) {
                 $identity = get_class($identity) . static::ID_SEPARATOR . $identity->getUid();
             } elseif (method_exists($identity, '__toString')) {
