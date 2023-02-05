@@ -196,6 +196,9 @@ class Asset implements AssetInterface
 
     public function getType(): string
     {
+        if (empty($this->type) && !empty($this->path)) {
+            return pathinfo($this->path, PATHINFO_EXTENSION);
+        }
         return $this->type;
     }
 
