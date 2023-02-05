@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
@@ -84,8 +85,10 @@ class Asset implements AssetInterface
     protected bool $rewrite = true;
     private static ?array $settingsCache = null;
 
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    public function __construct()
     {
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $this->configurationManager = $configurationManager;
     }
 
