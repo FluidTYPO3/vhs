@@ -330,6 +330,9 @@ class AssetService implements SingletonInterface
         if (null === $file && empty($content)) {
             $content = '<!-- Empty tag content -->';
         }
+        if (empty($type) && !empty($file)) {
+            $type = pathinfo($file, PATHINFO_EXTENSION);
+        }
         switch ($type) {
             case 'js':
                 $tagBuilder->setTagName('script');
