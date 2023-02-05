@@ -378,6 +378,10 @@ class Asset implements AssetInterface
             $properties[$propertyName] = $this->$propertyName;
         }
 
+        if (empty($properties['type']) && !empty($properties['path'])) {
+            $properties['type'] = pathinfo($properties['path'], PATHINFO_EXTENSION);
+        }
+
         ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
         ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
         return $settings;
