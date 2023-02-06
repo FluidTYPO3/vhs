@@ -195,10 +195,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $pages = $this->getMenu($this->arguments['pageUid'], $this->arguments['entryLevel']);
+        $pageUid = $this->arguments['pageUid'] !== null ? (int) $this->arguments['pageUid'] : null;
+        $pages = $this->getMenu($pageUid, (int) $this->arguments['entryLevel']);
         $menu = $this->parseMenu($pages);
         $rootLine = $this->pageService->getRootLine(
-            $this->arguments['pageUid'],
+            $pageUid,
             $this->arguments['reverse'] ?? false
         );
         $this->cleanupSubmenuVariables();
