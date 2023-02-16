@@ -86,6 +86,13 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             'Maximum height of the image. Numeric value in pixels or simple calculations. ' .
             'See imgResource.width for possible options.'
         );
+        $this->registerArgument(
+            'graceful',
+            'bool',
+            'Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.',
+            false,
+            false
+        );
     }
 
     public function preprocessImages(array $files, bool $onlyProperties = false): ?array
@@ -112,6 +119,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             $imageInfo = $this->contentObject->getImgResource($file->getUid(), $setup);
 
             if (!is_array($imageInfo)) {
+                if ($this->arguments['graceful'] ?? false) {
+                    continue;
+                }
                 throw new Exception(
                     'Could not get image resource for "' . htmlspecialchars($file->getCombinedIdentifier()) . '".',
                     1253191060
