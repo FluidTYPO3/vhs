@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Page Service
@@ -43,12 +44,14 @@ class PageService implements SingletonInterface
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
         $cacheKey = md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
         if (!isset(static::$cachedMenus[$cacheKey])) {
-            if ($disableGroupAccessCheck) {
+            if ($disableGroupAccessCheck
+                && version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.1', '<=')
+            ) {
                 $pageRepository->where_groupAccess = '';
             }
 
             static::$cachedMenus[$cacheKey] = array_filter(
-                $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints),
+                $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints, true, !$disableGroupAccessCheck),
                 function ($page) {
                     return !$this->hidePageForLanguageUid($page);
                 }
