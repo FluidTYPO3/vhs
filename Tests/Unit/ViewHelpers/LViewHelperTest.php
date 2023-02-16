@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -21,12 +23,24 @@ class LViewHelperTest extends AbstractViewHelperTestCase
 {
     protected function setUp(): void
     {
+        $languageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+
+        $cache = $this->getMockBuilder(FrontendInterface::class)->getMockForAbstractClass();
+        $cache->method('has')->willReturn(true);
+        $cache->method('get')->willReturn($languageService);
+
         $this->singletonInstances[ConfigurationManagerInterface::class] = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
         $this->singletonInstances[LocalizationFactory::class] = $this->getMockBuilder(LocalizationFactory::class)
             ->setMethods(['getParsedData'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->singletonInstances[LocalizationFactory::class]->method('getParsedData')->willReturn([]);
+        $this->singletonInstances[CacheManager::class] = $this->getMockBuilder(CacheManager::class)
+            ->setMethods(['getCache'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->singletonInstances[CacheManager::class]->method('getCache')->willReturn($cache);
+
         if (class_exists(ObjectManager::class)) {
             $this->singletonInstances[ObjectManager::class] = $this->getMockBuilder(ObjectManager::class)
                 ->setMethods(['get'])
