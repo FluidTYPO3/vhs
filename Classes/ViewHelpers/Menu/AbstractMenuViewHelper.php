@@ -311,7 +311,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                 $html[] = '<' . $tagName . $elementId . $class . '>';
             }
             $html[] = $this->renderItemLink($page);
-            if (($page['active'] || $expandAll) && $page['hasSubPages'] && $level < $levels) {
+            if (($page['active'] || $expandAll) && ($page['hasSubPages'] ?? false) && $level < $levels) {
                 $subPages = $this->getMenu($page['uid']);
                 $subMenu = $this->parseMenu($subPages);
                 if (0 < count($subMenu)) {
