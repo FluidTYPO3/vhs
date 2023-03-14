@@ -58,7 +58,7 @@ class OrViewHelper extends AbstractViewHelper
     protected static function getAlternativeValue(array $arguments, RenderingContextInterface $renderingContext)
     {
         /** @var RenderingContext $renderingContext */
-        $alternative = $arguments['alternative'];
+        $alternative = $arguments['alternative'] ?? '';
         $arguments = (array) $arguments['arguments'];
         if (0 === count($arguments)) {
             $arguments = null;
