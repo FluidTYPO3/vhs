@@ -19,9 +19,14 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  */
 class EncodeViewHelperTest extends AbstractViewHelperTestCase
 {
+    private int $defaultOptions = 0;
 
     protected function setUp(): void
     {
+        if (!function_exists('json_encode')) {
+            self::markTestSkipped('Skipped: no ext-json PHP module is not installed');
+        }
+        $this->defaultOptions = JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG;
         $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
             ->setMethods(['__destruct'])
             ->disableOriginalConstructor()
@@ -42,7 +47,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     {
         $dateTime = \DateTime::createFromFormat('U', 86400);
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $dateTime, false, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $dateTime, false, true, null, null, $this->defaultOptions);
         $this->assertEquals(86400000, $test);
     }
 
@@ -55,7 +60,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
         $object = $this->getInstanceOfFoo();
         $object->setFoo($object);
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null, $this->defaultOptions);
         $this->assertEquals('{"bar":"baz","children":[],"foo":null,"name":null,"pid":null,"uid":null}', $test);
     }
 
@@ -82,7 +87,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     {
         $traversable = new ObjectStorage();
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null, $this->defaultOptions);
         $this->assertEquals('[]', $test);
     }
 
