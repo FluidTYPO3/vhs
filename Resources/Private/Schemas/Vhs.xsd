@@ -2673,6 +2673,11 @@ result in fatal JavaScript errors in the client browser.
           <xsd:documentation><![CDATA[A date() format for DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="pretty" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, outputs JSON with JSON_PRETTY_PRINT]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="format.markdown">
