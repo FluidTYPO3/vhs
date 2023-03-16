@@ -84,6 +84,6 @@ condition
    boolean
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Condition which must be true, or then is rendered

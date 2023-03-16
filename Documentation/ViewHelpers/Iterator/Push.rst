@@ -43,7 +43,7 @@ add
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Member to add to end of array
 

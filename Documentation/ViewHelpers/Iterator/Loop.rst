@@ -35,7 +35,7 @@ count
    integer
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Number of times to render child content
 

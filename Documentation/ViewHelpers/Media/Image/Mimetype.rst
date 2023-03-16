@@ -22,7 +22,7 @@ src
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Path to or id of the image file to determine info for. In case a FileReference is supplied, treatIdAsUid and treatIdAsReference will automatically be activated.
 

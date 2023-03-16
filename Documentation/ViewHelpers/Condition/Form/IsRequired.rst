@@ -52,7 +52,7 @@ property
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    The property name, dotted path supported, to determine required.
 
@@ -65,7 +65,7 @@ validatorName
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    The name of the validator that must exist for the condition to be true.
 
@@ -78,6 +78,6 @@ object
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Optional object - if not specified, grabs the associated form object.

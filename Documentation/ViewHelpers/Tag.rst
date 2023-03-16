@@ -300,6 +300,6 @@ name
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Tag name

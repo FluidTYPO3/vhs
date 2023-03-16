@@ -43,7 +43,7 @@ b
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Second number or Iterator/Traversable/Array for calculation
 
