@@ -736,6 +736,6 @@ pages
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Parent page UIDs of subpages to include in the menu. Can be CSV, array or an object implementing Traversable.

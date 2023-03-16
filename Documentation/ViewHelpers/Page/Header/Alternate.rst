@@ -22,7 +22,7 @@ languages
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    The languages (either CSV, array or implementing Traversable)
 

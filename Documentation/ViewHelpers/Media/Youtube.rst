@@ -178,7 +178,7 @@ videoId
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    YouTube id of the video to embed.
 

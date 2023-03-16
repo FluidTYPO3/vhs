@@ -736,6 +736,6 @@ pages
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Page UIDs to include in the menu. Can be CSV, array or an object implementing Traversable.

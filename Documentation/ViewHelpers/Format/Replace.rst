@@ -35,7 +35,7 @@ substring
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Substring to replace
 

@@ -64,7 +64,7 @@ src
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).
 
@@ -434,7 +434,7 @@ alt
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Equivalent content for those who cannot process images or who have image loading disabled.
 

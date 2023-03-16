@@ -25,7 +25,7 @@ partial
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Reference to a partial.
 

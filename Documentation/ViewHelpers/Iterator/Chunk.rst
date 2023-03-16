@@ -35,7 +35,7 @@ count
    integer
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Number of items/chunk or if fixed then number of chunks
 

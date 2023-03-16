@@ -22,7 +22,7 @@ email
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Email address
 

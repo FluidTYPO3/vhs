@@ -52,7 +52,7 @@ high
    integer
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    The high number of the range to be generated
 
