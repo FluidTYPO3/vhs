@@ -128,12 +128,22 @@ class AssetService implements SingletonInterface
     public function getSettings(): array
     {
         if (null === static::$settingsCache) {
-            $allTypoScript = $this->configurationManager->getConfiguration(
-                ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-            );
-            static::$settingsCache = GeneralUtility::removeDotsFromTS(
-                $allTypoScript['plugin.']['tx_vhs.']['settings.'] ?? []
-            );
+            try {
+                $allTypoScript = $this->configurationManager->getConfiguration(
+                    ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+                );
+                static::$settingsCache = GeneralUtility::removeDotsFromTS(
+                    $allTypoScript['plugin.']['tx_vhs.']['settings.'] ?? []
+                );
+            } catch (\RuntimeException $e) {
+                // If RuntimeException = 1666513645, then generate this over forcedTemplateParsing
+                // [Setup array has not been initialized. This happens in cached Frontend scope where full TypoScript is not needed by the system.]
+                if ($e->getCode() === 1666513645) {
+                    static::$settingsCache = GeneralUtility::removeDotsFromTS(
+                        []
+                    );
+                }
+            }
         }
         $settings = (array) static::$settingsCache;
         return $settings;
