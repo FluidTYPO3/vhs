@@ -136,7 +136,7 @@ class AssetService implements SingletonInterface
                     $allTypoScript['plugin.']['tx_vhs.']['settings.'] ?? []
                 );
             } catch (\RuntimeException $e) {
-                // If RuntimeException = 1666513645, then generate this over forcedTemplateParsing
+                // If RuntimeException = 1666513645
                 // [Setup array has not been initialized. This happens in cached Frontend scope where full TypoScript is not needed by the system.]
                 if ($e->getCode() === 1666513645) {
                     static::$settingsCache = GeneralUtility::removeDotsFromTS(
