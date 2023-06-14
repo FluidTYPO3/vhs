@@ -643,9 +643,14 @@ class AssetService implements SingletonInterface
     protected function extractAssetContent($asset): ?string
     {
         $assetSettings = $this->extractAssetSettings($asset);
-        $fileRelativePathAndFilename = $assetSettings['path'];
-        $fileRelativePath = dirname($assetSettings['path']);
-        $absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
+        $fileRelativePathAndFilename = null;
+        $absolutePathAndFilename = null;
+        $fileRelativePath = null;
+        if (!empty($assetSettings['path'])) {
+            $fileRelativePathAndFilename = $assetSettings['path'];
+            $fileRelativePath = dirname($assetSettings['path']);
+            $absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
+        }
         $isExternal = $assetSettings['external'] ?? false;
         $isFluidTemplate = $assetSettings['fluid'] ?? false;
         if (!empty($fileRelativePathAndFilename)) {
