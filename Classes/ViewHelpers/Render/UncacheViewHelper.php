@@ -51,7 +51,7 @@ class UncacheViewHelper extends AbstractViewHelper
         $templateVariableContainer = $renderingContext->getVariableProvider();
         $partialArguments = $arguments['arguments'];
         if (!is_array($partialArguments)) {
-            $partialArguments = [];
+            $partialArguments = (array) $partialArguments;
         }
         if (!isset($partialArguments['settings']) && $templateVariableContainer->exists('settings')) {
             $partialArguments['settings'] = $templateVariableContainer->get('settings');
