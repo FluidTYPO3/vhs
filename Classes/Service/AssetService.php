@@ -422,7 +422,7 @@ class AssetService implements SingletonInterface
             if (isset($settings['assetGroup'][$groupName])) {
                 $localSettings = $this->mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
             }
-            if ($asset instanceof Asset) {
+            if ($asset instanceof AssetInterface) {
                 $asset->setSettings($localSettings);
                 $filtered[$name] = $asset;
             } else {
@@ -644,7 +644,7 @@ class AssetService implements SingletonInterface
     {
         $assetSettings = $this->extractAssetSettings($asset);
         $fileRelativePathAndFilename = $assetSettings['path'];
-        $fileRelativePath = dirname($assetSettings['path']);
+        $fileRelativePath = dirname($assetSettings['path'] ?? '');
         $absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
         $isExternal = $assetSettings['external'] ?? false;
         $isFluidTemplate = $assetSettings['fluid'] ?? false;
