@@ -221,11 +221,11 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $request->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
         }
 
-        if (method_exists($request, 'setPluginName')) {
+        if ($pluginName !== null && method_exists($request, 'setPluginName')) {
             $request->setPluginName($pluginName);
         }
 
-        if (method_exists($request, 'setControllerExtensionName')) {
+        if ($extensionName !== null && method_exists($request, 'setControllerExtensionName')) {
             $request->setControllerExtensionName($extensionName);
         }
 

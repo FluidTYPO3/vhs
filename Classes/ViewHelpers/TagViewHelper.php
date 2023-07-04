@@ -34,6 +34,7 @@ class TagViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
+        /** @var string|null $class */
         $class = $this->arguments['class'] ?? null;
         $class = trim((string) (is_scalar($class) ? $class : null));
         $class = str_replace(',', ' ', $class);

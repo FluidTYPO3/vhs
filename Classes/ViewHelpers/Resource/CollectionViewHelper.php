@@ -38,8 +38,9 @@ class CollectionViewHelper extends AbstractResourceViewHelper
      */
     public function render()
     {
+        /** @var int $uid */
         $uid = $this->arguments['uid'];
-        if (null !== $uid) {
+        if ($uid > 0) {
             if (!class_exists(RecordCollectionRepository::class)) {
                 throw new \Exception('On TYPO3v12, v:resource.collection requires EXT:legacy_collections', 1670521759);
             }

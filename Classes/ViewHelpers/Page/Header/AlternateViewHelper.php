@@ -99,8 +99,7 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
-        /** @var string $addQueryString */
-        $addQueryString = $this->arguments['addQueryString'];
+        $addQueryString = (boolean) $this->arguments['addQueryString'];
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

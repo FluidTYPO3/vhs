@@ -224,7 +224,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $section = $this->arguments['section'];
         /** @var bool $absolute */
         $absolute = $this->arguments['absolute'];
-        /** @var string|int|bool $addQueryString */
+        /** @var bool $addQueryString */
         $addQueryString = $this->arguments['addQueryString'];
         /** @var array $excludedArguments */
         $excludedArguments = (array) $this->arguments['argumentsToBeExcludedFromQueryString'];

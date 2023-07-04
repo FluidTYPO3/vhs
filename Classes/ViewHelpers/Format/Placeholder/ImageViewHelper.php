@@ -63,7 +63,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('src', $imageUrl);
         $this->tag->addAttribute('alt', $imageUrl);
         $this->tag->addAttribute('width', (string) $width);
-        $this->tag->addAttribute('height', (string) !empty($height) ? $height : $width);
+        $this->tag->addAttribute('height', (string) (!empty($height) ? $height : $width));
         return $this->tag->render();
     }
 }
