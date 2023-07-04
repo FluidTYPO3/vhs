@@ -38,10 +38,15 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
+        /** @var int $width */
+        $width = $this->arguments['width'];
+        /** @var string|null $text */
         $text = $this->arguments['text'];
         if (null === $text) {
+            /** @var string $text */
             $text = $this->renderChildren();
         }
+        /** @var int $height */
         $height = $this->arguments['height'] != $this->arguments['width'] ? $this->arguments['height'] : null;
         $addHeight = !empty($height) ? 'x' . $height : null;
         $url = [
@@ -57,8 +62,8 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->tag->forceClosingTag(false);
         $this->tag->addAttribute('src', $imageUrl);
         $this->tag->addAttribute('alt', $imageUrl);
-        $this->tag->addAttribute('width', $this->arguments['width']);
-        $this->tag->addAttribute('height', !empty($height) ? $height : $this->arguments['width']);
+        $this->tag->addAttribute('width', (string) $width);
+        $this->tag->addAttribute('height', (string) !empty($height) ? $height : $width);
         return $this->tag->render();
     }
 }

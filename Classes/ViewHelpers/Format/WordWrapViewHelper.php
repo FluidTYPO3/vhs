@@ -40,10 +40,15 @@ class WordWrapViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $subject */
         $subject = $renderChildrenClosure();
-        $limit = (integer) $arguments['limit'];
+        /** @var int $limit */
+        $limit = $arguments['limit'];
+        /** @var non-empty-string $break */
         $break = $arguments['break'];
+        /** @var string $glue */
         $glue = $arguments['glue'];
+        /** @var string $subject */
         $subject = preg_replace('/ +/', ' ', $subject);
         $subject = str_replace(["\r\n", "\r"], PHP_EOL, $subject);
         if (is_array($subject)) {

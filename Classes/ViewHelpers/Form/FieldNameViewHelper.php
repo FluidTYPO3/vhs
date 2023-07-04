@@ -52,20 +52,24 @@ class FieldNameViewHelper extends AbstractViewHelper
      */
     public function render()
     {
+        /** @var string $property */
+        $property = $this->arguments['property'];
+
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($this->isObjectAccessorMode()) {
             $formObjectName = $viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName');
             if (!empty($formObjectName)) {
-                $propertySegments = explode('.', $this->arguments['property']);
+                $propertySegments = explode('.', $property);
                 $propertyPath = '';
                 foreach ($propertySegments as $segment) {
                     $propertyPath .= '[' . $segment . ']';
                 }
                 $name = $formObjectName . $propertyPath;
             } else {
-                $name = $this->arguments['property'];
+                $name = $property;
             }
         } else {
+            /** @var string $name */
             $name = $this->arguments['name'];
         }
         if (null === $name || '' === $name) {

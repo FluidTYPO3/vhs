@@ -37,9 +37,12 @@ class ReplaceViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
+        /** @var string $substring */
         $substring = $arguments['substring'];
+        /** @var string $replacement */
         $replacement = $arguments['replacement'];
-        $count = (integer) $arguments['count'];
+        /** @var int $count */
+        $count = $arguments['count'];
         $caseSensitive = (boolean) $arguments['caseSensitive'];
         $function = $caseSensitive ? 'str_replace' : 'str_ireplace';
         return $function($substring, $replacement, $content, $count);

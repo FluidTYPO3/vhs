@@ -73,10 +73,14 @@ class LViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var RenderingContext $renderingContext */
+        /** @var string|null $default */
         $default = $arguments['default'];
         $htmlEscape = (boolean) $arguments['htmlEscape'];
+        /** @var string|null $extensionName */
         $extensionName = $arguments['extensionName'];
+        /** @var array|null $translationArguments */
         $translationArguments = $arguments['arguments'];
+        /** @var string $id */
         $id = $renderChildrenClosure();
         if (empty($default)) {
             $default = $id;
@@ -85,14 +89,15 @@ class LViewHelper extends AbstractViewHelper
             $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
                 ->getControllerExtensionName();
         }
-        $value = LocalizationUtility::translate($id, $extensionName, $translationArguments);
+        /** @var string|null $value */
+        $value = LocalizationUtility::translate((string) $id, $extensionName, $translationArguments);
         if (empty($value)) {
             $value = $default;
-            if (is_array($translationArguments)) {
+            if (!empty($translationArguments)) {
                 $value = vsprintf($value, $translationArguments);
             }
         } elseif ($htmlEscape) {
-            $value = htmlspecialchars($value);
+            $value = htmlspecialchars((string) $value);
         }
         return $value;
     }

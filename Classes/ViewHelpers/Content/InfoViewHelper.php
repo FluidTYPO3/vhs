@@ -64,7 +64,8 @@ class InfoViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $contentUid = (integer) $this->arguments['contentUid'];
+        /** @var int $contentUid */
+        $contentUid = $this->arguments['contentUid'];
         $record = false;
 
         if (0 === $contentUid) {
@@ -73,6 +74,7 @@ class InfoViewHelper extends AbstractViewHelper
             $record = $cObj->data;
         }
 
+        /** @var string $field */
         $field = $this->arguments['field'];
         $selectFields = $field;
 

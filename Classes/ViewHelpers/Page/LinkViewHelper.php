@@ -140,7 +140,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         // Check if link wizard link
+        /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
+        /** @var array $additionalParameters */
         $additionalParameters = (array) $this->arguments['additionalParams'];
         if (!is_numeric($pageUid)) {
             /** @var LogManager $logManager */
@@ -214,18 +216,30 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
         $additionalCssClasses = implode(' ', $class);
 
+        /** @var int $pageType */
+        $pageType = $this->arguments['pageType'];
+        /** @var bool $noCache */
+        $noCache = $this->arguments['noCache'];
+        /** @var string $section */
+        $section = $this->arguments['section'];
+        /** @var bool $absolute */
+        $absolute = $this->arguments['absolute'];
+        /** @var string|int|bool $addQueryString */
+        $addQueryString = $this->arguments['addQueryString'];
+        /** @var array $excludedArguments */
+        $excludedArguments = (array) $this->arguments['argumentsToBeExcludedFromQueryString'];
+
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
-            ->setTargetPageType($this->arguments['pageType'])
-            ->setNoCache($this->arguments['noCache'])
-            ->setSection($this->arguments['section'])
+            ->setTargetPageType($pageType)
+            ->setNoCache($noCache)
+            ->setSection($section)
             ->setArguments($additionalParameters)
-            ->setCreateAbsoluteUri($this->arguments['absolute'])
-            ->setAddQueryString($this->arguments['addQueryString'])
-            ->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
+            ->setCreateAbsoluteUri($absolute)
+            ->setAddQueryString($addQueryString)
+            ->setArgumentsToBeExcludedFromQueryString($excludedArguments)
             ->setLinkAccessRestrictedPages($showAccessProtected);
 
         if (method_exists($uriBuilder, 'setUseCacheHash')) {
@@ -246,7 +260,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
     private function getTitleValue(array $record): string
     {
-        $titleFieldList = GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
+        /** @var string $titleFields */
+        $titleFields = $this->arguments['titleFields'];
+        $titleFieldList = GeneralUtility::trimExplode(',', $titleFields);
         foreach ($titleFieldList as $titleFieldName) {
             if (!empty($record[$titleFieldName])) {
                 return $record[$titleFieldName];

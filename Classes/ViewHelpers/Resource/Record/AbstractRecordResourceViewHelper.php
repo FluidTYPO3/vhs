@@ -97,6 +97,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     public function getTable(): string
     {
+        /** @var string|null $table */
         $table = $this->arguments['table'] ?? null;
         if (null === $table) {
             $table = $this->table;
@@ -114,6 +115,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     public function getField(): string
     {
+        /** @var string|null $field */
         $field = $this->arguments['field'] ?? null;
         if (null === $field) {
             $field = $this->field;
@@ -175,7 +177,9 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
      */
     public function render()
     {
+        /** @var array|null $record */
         $record = $this->arguments['record'] ?? null;
+        /** @var int|null $uid */
         $uid = $this->arguments['uid'] ?? null;
 
         if (null === $record) {
@@ -197,7 +201,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         // ViewHelperExceptions which render as an inline text error message.
         $content = null;
         try {
-            $resources = $this->getResources($record);
+            $resources = $this->getResources((array) $record);
             $content = $this->renderChildrenWithVariableOrReturnInput($resources);
         } catch (\Exception $error) {
             // we are doing the pokemon-thing and catching the very top level

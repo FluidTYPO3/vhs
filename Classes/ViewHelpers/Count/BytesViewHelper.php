@@ -68,6 +68,8 @@ class BytesViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return (integer) mb_strlen($renderChildrenClosure(), $arguments['encoding']);
+        /** @var string $encoding */
+        $encoding = $arguments['encoding'];
+        return (integer) mb_strlen($renderChildrenClosure(), $encoding);
     }
 }

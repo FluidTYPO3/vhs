@@ -97,12 +97,15 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
+        /** @var string $videoId */
         $videoId = $this->arguments['videoId'];
+        /** @var int $width */
         $width = $this->arguments['width'];
+        /** @var int height */
         $height = $this->arguments['height'];
 
-        $this->tag->addAttribute('width', $width);
-        $this->tag->addAttribute('height', $height);
+        $this->tag->addAttribute('width', (string) $width);
+        $this->tag->addAttribute('height', (string) $height);
 
         $src = $this->getSourceUrl($videoId);
 

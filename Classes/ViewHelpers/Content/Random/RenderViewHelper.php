@@ -33,6 +33,7 @@ class RenderViewHelper extends AbstractContentViewHelper
             return '';
         }
         // Remove limit for getContentRecords()
+        /** @var int $limit */
         $limit = $this->arguments['limit'];
         $this->arguments['limit'] = null;
         // Just using getContentRecords with a limit of 1 would not support

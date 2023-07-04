@@ -45,13 +45,15 @@ class ShiftViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $as */
+        $as = $arguments['as'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
         $output = array_shift($subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

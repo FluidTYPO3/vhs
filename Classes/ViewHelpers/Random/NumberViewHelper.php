@@ -68,9 +68,13 @@ class NumberViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var int $minimum */
         $minimum = $arguments['minimum'];
+        /** @var int $maximum */
         $maximum = $arguments['maximum'];
+        /** @var int $minimumDecimals */
         $minimumDecimals = $arguments['minimumDecimals'];
+        /** @var int $maximumDecimals */
         $maximumDecimals = $arguments['maximumDecimals'];
         $natural = random_int($minimum, $maximum);
         if (0 === (integer) $minimumDecimals && 0 === (integer) $maximumDecimals) {

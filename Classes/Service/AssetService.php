@@ -423,7 +423,9 @@ class AssetService implements SingletonInterface
                 $localSettings = $this->mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
             }
             if ($asset instanceof AssetInterface) {
-                $asset->setSettings($localSettings);
+                if (method_exists($asset, 'setSettings')) {
+                    $asset->setSettings($localSettings);
+                }
                 $filtered[$name] = $asset;
             } else {
                 $filtered[$name] = Asset::createFromSettings($assetSettings);

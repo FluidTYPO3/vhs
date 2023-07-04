@@ -50,18 +50,22 @@ class PregMatchViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         if (!isset($arguments['subject']) && !isset($arguments['as'])) {
-            $subject = $renderChildrenClosure();
+            $subject = (string) $renderChildrenClosure();
         } else {
-            $subject = $arguments['subject'];
+            $subject = is_scalar($arguments['subject']) ? (string) $arguments['subject'] : '';
         }
+        /** @var string $pattern */
+        $pattern = $arguments['pattern'];
         if ($arguments['global']) {
-            preg_match_all($arguments['pattern'], $subject, $matches, PREG_SET_ORDER);
+            preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
         } else {
-            preg_match($arguments['pattern'], $subject, $matches);
+            preg_match($pattern, $subject, $matches);
         }
+        /** @var string|null $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $matches,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

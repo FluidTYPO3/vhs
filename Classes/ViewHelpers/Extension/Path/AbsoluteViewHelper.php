@@ -41,9 +41,11 @@ class AbsoluteViewHelper extends AbstractExtensionViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $path */
+        $path = $arguments['path'];
         return ExtensionManagementUtility::extPath(
             static::getExtensionKey($arguments, $renderingContext),
-            (string) ($arguments['path'] ?? '')
+            (string) ($path ?? '')
         );
     }
 }

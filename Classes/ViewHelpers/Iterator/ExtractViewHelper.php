@@ -141,7 +141,9 @@ class ExtractViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var array $content */
         $content = $arguments['content'] ?? $renderChildrenClosure();
+        /** @var string $key */
         $key = $arguments['key'];
         $recursive = (boolean) $arguments['recursive'];
         $single = (boolean) $arguments['single'];

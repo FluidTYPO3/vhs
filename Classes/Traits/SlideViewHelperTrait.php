@@ -77,10 +77,13 @@ trait SlideViewHelperTrait
 
     protected function getSlideRecords(int $pageUid, ?int $limit = null): array
     {
+        /** @var int $limit */
         $limit = $limit ?? $this->arguments['limit'];
-        $slide = (integer) $this->arguments['slide'];
+        /** @var int $slide */
+        $slide = $this->arguments['slide'];
         $slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
-        $slideCollect = (integer) $this->arguments['slideCollect'];
+        /** @var int $slideCollect */
+        $slideCollect = $this->arguments['slideCollect'];
 
         if ($slideCollect && !$slide) {
             $slide = $slideCollect;

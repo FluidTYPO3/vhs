@@ -62,9 +62,11 @@ class SubstringViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $string */
+        $string = $arguments['string'];
         return mb_substr_count(
             $renderChildrenClosure(),
-            $arguments['string']
+            $string
         );
     }
 }

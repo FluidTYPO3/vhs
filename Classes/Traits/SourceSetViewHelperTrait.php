@@ -29,11 +29,15 @@ trait SourceSetViewHelperTrait
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
+        /** @var string $format */
         $format = $this->arguments['format'];
+        /** @var int $quality */
         $quality = $this->arguments['quality'];
+        /** @var string|null $crop */
         $crop = $this->arguments['crop'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
         if ($treatIdAsReference) {
+            /** @var string $src */
             $src = $this->arguments['src'];
         }
 

@@ -40,6 +40,7 @@ class TidyViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
+        /** @var string $encoding */
         $encoding = $arguments['encoding'];
         if (class_exists('tidy')) {
             $tidy = tidy_parse_string($content, [], $encoding);

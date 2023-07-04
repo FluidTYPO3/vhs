@@ -119,6 +119,7 @@ trait TagViewHelperTrait
         }
         // process some attributes differently - if empty, remove the property:
         foreach ($nonEmptyAttributes as $propertyName) {
+            /** @var string|null $value */
             $value = $this->arguments[$propertyName] ?? null;
             if (empty($value)) {
                 $this->tag->removeAttribute($propertyName);

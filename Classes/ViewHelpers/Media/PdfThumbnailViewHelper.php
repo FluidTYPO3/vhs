@@ -67,13 +67,19 @@ class PdfThumbnailViewHelper extends ImageViewHelper
      */
     public function render()
     {
-        $src = GeneralUtility::getFileAbsFileName($this->arguments['src']);
+        /** @var string $srcArgument */
+        $srcArgument = $this->arguments['src'];
+        $src = GeneralUtility::getFileAbsFileName($srcArgument);
         if (!file_exists($src)) {
             return '';
         }
+        /** @var int $density */
         $density = $this->arguments['density'];
+        /** @var int $rotate */
         $rotate = $this->arguments['rotate'];
-        $page = (integer) $this->arguments['page'];
+        /** @var int $page */
+        $page = $this->arguments['page'];
+        /** @var string|null $background */
         $background = $this->arguments['background'];
         $forceOverwrite = (boolean) $this->arguments['forceOverwrite'];
         $filename = basename($src);

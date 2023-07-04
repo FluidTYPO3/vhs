@@ -69,8 +69,10 @@ class FilterViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var array|iterable $subject */
         $subject = $arguments['subject'] ?? $renderChildrenClosure();
         $filter = $arguments['filter'];
+        /** @var string $propertyName */
         $propertyName = $arguments['propertyName'];
         $preserveKeys = (boolean) $arguments['preserveKeys'];
         $invert = (boolean) $arguments['invert'];

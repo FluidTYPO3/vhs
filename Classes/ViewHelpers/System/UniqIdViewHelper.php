@@ -55,7 +55,11 @@ class UniqIdViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $uniqueId = uniqid($arguments['prefix'], $arguments['moreEntropy']);
+        /** @var string $prefix */
+        $prefix = $arguments['prefix'];
+        /** @var boolean $moreEntropy */
+        $moreEntropy = $arguments['moreEntropy'];
+        $uniqueId = uniqid($prefix, $moreEntropy);
         return $uniqueId;
     }
 }

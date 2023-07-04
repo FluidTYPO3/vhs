@@ -116,6 +116,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 
     public function preprocessImage(?string $imageSource = null): void
     {
+        /** @var string $src */
         $src = (null === $imageSource) ? $this->arguments['src'] : $imageSource;
         $width = $this->arguments['width'];
         $height = $this->arguments['height'];
@@ -124,6 +125,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         $maxW = $this->arguments['maxW'];
         $maxH = $this->arguments['maxH'];
         $format = $this->arguments['format'];
+        /** @var int $quality */
         $quality = $this->arguments['quality'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
         $crop = $this->arguments['crop'];
@@ -152,6 +154,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $setup['ext'] = $format;
         }
         if (0 < (integer) $quality) {
+            /** @var int $quality */
             $quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
             $setup['params'] = '-quality ' . $quality;
         }
@@ -173,9 +176,13 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         $GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
 
         if ($this->hasArgument('canvasWidth') && $this->hasArgument('canvasHeight')) {
-            $canvasWidth = (integer) $this->arguments['canvasWidth'];
-            $canvasHeight = (integer) $this->arguments['canvasHeight'];
-            $canvasColor = str_replace('#', '', $this->arguments['canvasColor']);
+            /** @var int $canvasWidth */
+            $canvasWidth = $this->arguments['canvasWidth'];
+            /** @var int $canvasHeight */
+            $canvasHeight = $this->arguments['canvasHeight'];
+            /** @var string $canvasColor */
+            $canvasColor = $this->arguments['canvasColor'];
+            $canvasColor = str_replace('#', '', $canvasColor);
             $originalFilename = $this->imageInfo[3];
             $originalExtension = mb_substr($originalFilename, -3);
             $tempPath = 'typo3temp/assets/';
@@ -184,7 +191,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);
             $transparency = '';
             if ($this->hasArgument('transparencyColor')) {
-                $transparencyColor = str_replace('#', '', $this->arguments['transparencyColor']);
+                /** @var string $transparencyColor */
+                $transparencyColor = $this->arguments['transparencyColor'];
+                $transparencyColor = str_replace('#', '', $transparencyColor);
                 $transparency = ' -transparent \'#' . $transparencyColor . '\'';
             }
             if (!file_exists($destinationFilepath)) {

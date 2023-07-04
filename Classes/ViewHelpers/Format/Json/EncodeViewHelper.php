@@ -89,7 +89,9 @@ class EncodeViewHelper extends AbstractViewHelper
         $value = $renderChildrenClosure();
         $useTraversableKeys = (boolean) $arguments['useTraversableKeys'];
         $preventRecursion = (boolean) $arguments['preventRecursion'];
+        /** @var string $recursionMarker */
         $recursionMarker = $arguments['recursionMarker'] ?? '**recursion**';
+        /** @var string|null $dateTimeFormat */
         $dateTimeFormat = $arguments['dateTimeFormat'];
         $options = JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG;
         if ($arguments['pretty']) {

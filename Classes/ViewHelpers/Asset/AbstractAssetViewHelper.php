@@ -225,13 +225,13 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function build(): ?string
     {
-        if (empty($this->arguments['path'] ?? false)) {
+        /** @var string|null $path */
+        $path = $this->arguments['path'];
+        if (empty($path ?? false)) {
             return $this->content;
         }
-        if ($this->arguments['external'] ?? false) {
-            $path = $this->arguments['path'];
-        } else {
-            $path = GeneralUtility::getFileAbsFileName($this->arguments['path']);
+        if (!($this->arguments['external'] ?? false)) {
+            $path = GeneralUtility::getFileAbsFileName($path);
         }
         $content = file_get_contents($path);
         return $content ?: null;

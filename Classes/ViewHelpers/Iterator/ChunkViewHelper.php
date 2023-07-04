@@ -60,11 +60,14 @@ class ChunkViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $count = (integer) $arguments['count'];
+        /** @var string|null $as */
+        $as = $arguments['as'];
+        /** @var int $count */
+        $count = $arguments['count'];
         $fixed = (boolean) $arguments['fixed'];
         $preserveKeys = (boolean) $arguments['preserveKeys'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
+            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
             $preserveKeys
         );
         $output = [];
@@ -89,7 +92,7 @@ class ChunkViewHelper extends AbstractViewHelper
 
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

@@ -42,7 +42,9 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         if (!is_array($arguments)) {
             return false;
         }
+        /** @var string $language */
         $language = $arguments['language'];
+        /** @var string $defaultTitle */
         $defaultTitle = $arguments['defaultTitle'];
 
         if (class_exists(LanguageAspect::class)) {
@@ -75,7 +77,8 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
             $row = $result->fetchAssociative();
 
             if (is_array($row)) {
-                $languageUid = intval($row['uid']);
+                /** @var int $languageUid */
+                $languageUid = $row['uid'];
             } else {
                 if ((string) $language === $defaultTitle) {
                     $languageUid = $currentLanguageUid;

@@ -72,9 +72,13 @@ class RequestViewHelper extends AbstractRenderViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var RenderingContext $renderingContext */
+        /** @var string|null $action */
         $action = $arguments['action'];
+        /** @var string|null $controller */
         $controller = $arguments['controller'];
+        /** @var string|null $extensionName */
         $extensionName = $arguments['extensionName'];
+        /** @var string|null $pluginName */
         $pluginName = $arguments['pluginName'];
         $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
@@ -133,8 +137,10 @@ class RequestViewHelper extends AbstractRenderViewHelper
             if (!$arguments['graceful']) {
                 throw $error;
             }
-            if (!empty($arguments['onError'])) {
-                return sprintf((string) $arguments['onError'], $error->getMessage(), $error->getCode());
+            /** @var string|null $onError */
+            $onError = $arguments['onError'];
+            if ($onError !== null) {
+                return sprintf($onError, $error->getMessage(), $error->getCode());
             }
             return $error->getMessage() . ' (' . $error->getCode() . ')';
         }
@@ -160,8 +166,8 @@ class RequestViewHelper extends AbstractRenderViewHelper
      */
     protected static function loadDefaultValues(
         RenderingContextInterface $renderingContext,
-        string $extensionName,
-        string $pluginName,
+        ?string $extensionName,
+        ?string $pluginName,
         ?string $controllerName,
         ?string $actionName,
         array $arguments
@@ -189,8 +195,12 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $parameters = GeneralUtility::makeInstance(ExtbaseRequestParameters::class);
 
             $parameters->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
-            $parameters->setPluginName($pluginName);
-            $parameters->setControllerExtensionName($extensionName);
+            if ($pluginName !== null) {
+                $parameters->setPluginName($pluginName);
+            }
+            if ($extensionName !== null) {
+                $parameters->setControllerExtensionName($extensionName);
+            }
             $parameters->setControllerName($controllerName ?? $controllerClassToAliasMapping[$firstControllerName]);
             $parameters->setControllerActionName($actionName ?? $defaultActionName);
 

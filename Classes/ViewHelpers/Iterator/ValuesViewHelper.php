@@ -66,9 +66,11 @@ class ValuesViewHelper extends AbstractViewHelper
             empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
         $output = array_values($subject);
+        /** @var string|null $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

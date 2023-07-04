@@ -146,15 +146,18 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         }
         $variableProvider = $this->renderingContext->getVariableProvider();
         $this->backupVariables();
-        $variableProvider->add($this->arguments['as'], $menu);
+        /** @var string $as */
+        $as = $this->arguments['as'];
+        $variableProvider->add($as, $menu);
         $output = $this->renderContent($menu);
-        $variableProvider->remove($this->arguments['as']);
+        $variableProvider->remove($as);
         $this->restoreVariables();
         return $output;
     }
 
     protected function getCustomLabelOrPageTitle(string $labelName, array $pageRecord): string
     {
+        /** @var string $title */
         $title = $this->arguments[$labelName];
         if ($this->arguments['usePageTitles']) {
             $title = $this->getItemTitle($pageRecord);

@@ -42,6 +42,8 @@ class IssetViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
-        return $renderingContext->getVariableProvider()->exists($arguments['name']);
+        /** @var string $name */
+        $name = $arguments['name'];
+        return $renderingContext->getVariableProvider()->exists($name);
     }
 }

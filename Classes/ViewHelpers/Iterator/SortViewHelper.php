@@ -110,9 +110,11 @@ class SortViewHelper extends AbstractViewHelper
             $sorted = static::sortArray($subject, $arguments);
         }
 
+        /** @var string|null $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $sorted,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

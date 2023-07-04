@@ -67,11 +67,13 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 
     public function getInfo(): array
     {
+        /** @var string|int|CoreFileReference|ExtbaseFileReference|null $src */
         $src = $this->arguments['src'];
         $treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
         if (null === $src) {
+            /** @var string|int|CoreFileReference|ExtbaseFileReference|null $src */
             $src = $this->renderChildren();
             if (null === $src) {
                 return [];
@@ -93,7 +95,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
                 $info = $this->getInfoByReference($id);
             }
         } else {
-            $file = GeneralUtility::getFileAbsFileName($src);
+            $file = GeneralUtility::getFileAbsFileName((string) $src);
             if (!file_exists($file) || is_dir($file)) {
                 throw new Exception(
                     'Cannot determine info for "' . $file . '". File does not exist or is a directory.',

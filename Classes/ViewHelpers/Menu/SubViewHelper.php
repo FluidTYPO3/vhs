@@ -37,6 +37,7 @@ class SubViewHelper extends AbstractMenuViewHelper
      */
     public function render()
     {
+        /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
         $parentInstance = $this->retrieveReconfiguredParentMenuInstance($pageUid);
         if (!$parentInstance) {
@@ -55,7 +56,7 @@ class SubViewHelper extends AbstractMenuViewHelper
             return null;
         }
         // retrieve the set of template variables which were in play when the parent menu VH started rendering.
-        /** @var iterable $variables */
+        /** @var array<string, mixed> $variables */
         $variables = $this->renderingContext->getViewHelperVariableContainer()->get(
             AbstractMenuViewHelper::class,
             'variables'
@@ -65,7 +66,6 @@ class SubViewHelper extends AbstractMenuViewHelper
         // restore the previous set of variables after they most likely have changed during the render() above.
         $variableProvider = $this->renderingContext->getVariableProvider();
         foreach ($variables as $name => $value) {
-            /** @var string $name */
             if ($variableProvider->exists($name)) {
                 $variableProvider->remove($name);
                 $variableProvider->add($name, $value);

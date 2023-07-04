@@ -59,6 +59,7 @@ class LanguageViewHelper extends AbstractViewHelper
             return '';
         }
 
+        /** @var array|string|\Traversable $languages */
         $languages = $arguments['languages'];
         if ($languages instanceof \Traversable) {
             $languages = iterator_to_array($languages);
@@ -68,7 +69,10 @@ class LanguageViewHelper extends AbstractViewHelper
             $languages = (array) $languages;
         }
 
-        $pageUid = intval($arguments['pageUid']);
+        /** @var int $pageUid */
+        $pageUid = $arguments['pageUid'];
+        $pageUid = (integer) $pageUid;
+        /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
 
         if (0 === $pageUid) {

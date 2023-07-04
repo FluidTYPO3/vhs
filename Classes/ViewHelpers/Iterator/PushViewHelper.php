@@ -55,7 +55,9 @@ class PushViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $subject = empty($arguments['as'])
+        /** @var string|null $as */
+        $as = $arguments['as'];
+        $subject = empty($as)
             ? ($arguments['subject'] ?? $renderChildrenClosure())
             : $arguments['subject'];
         $add = $arguments['add'];
@@ -67,7 +69,7 @@ class PushViewHelper extends AbstractViewHelper
         }
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $subject,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

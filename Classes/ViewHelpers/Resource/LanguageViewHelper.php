@@ -87,14 +87,11 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected function getResolvedExtensionName(): string
     {
+        /** @var string|null $extensionName */
         $extensionName = $this->arguments['extensionName'];
 
-        if (empty($extensionName)) {
-            $extensionName = RequestResolver::resolveRequestFromRenderingContext($this->renderingContext)
-                ->getControllerExtensionName();
-        }
-
-        return $extensionName;
+        return $extensionName ?? RequestResolver::resolveRequestFromRenderingContext($this->renderingContext)
+            ->getControllerExtensionName();
     }
 
     /**
@@ -103,8 +100,9 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected function getResolvedPath(): string
     {
+        /** @var string $path */
         $path = $this->arguments['path'];
-        $absoluteFileName = GeneralUtility::getFileAbsFileName($this->arguments['path']);
+        $absoluteFileName = GeneralUtility::getFileAbsFileName($path);
 
         if (!file_exists($absoluteFileName)) {
             $extensionName = $this->getResolvedExtensionName();
@@ -150,13 +148,9 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected function getLanguageKey(): string
     {
+        /** @var string|null $languageKey */
         $languageKey = $this->arguments['languageKey'];
-
-        if (null === $languageKey) {
-            $languageKey = $this->getInitializedLanguage();
-        }
-
-        return $languageKey;
+        return $languageKey ?? $this->getInitializedLanguage();
     }
 
     /**
