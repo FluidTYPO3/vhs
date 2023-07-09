@@ -12,10 +12,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - name: Setup PHP 7.4
+      - name: Setup PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.2'
 
       - name: Checkout VHS project
         uses: actions/checkout@v3
