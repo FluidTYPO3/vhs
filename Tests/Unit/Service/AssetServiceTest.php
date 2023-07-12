@@ -29,6 +29,9 @@ class AssetServiceTest extends AbstractTestCase
     {
         $this->singletonInstances[ConfigurationManager::class] = $this->configurationManager;
 
+        // Required for TYPO3v10
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] = 'en_US';
+
         parent::setUp();
     }
 
