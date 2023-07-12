@@ -37,6 +37,22 @@ class UncacheViewHelper extends AbstractViewHelper
         $this->registerArgument('partial', 'string', 'Reference to a partial.', true);
         $this->registerArgument('section', 'string', 'Name of section inside the partial to render.');
         $this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.');
+        $this->registerArgument(
+            'persistPartialPaths',
+            'bool',
+            'Normally, v:render.uncache will persist the partialRootPaths array that was active when the ViewHelper' .
+            'was called, so the exact paths will be reused when rendering the uncached portion of the page output. ' .
+            'This is done to ensure that even if you manually added some partial paths through some dynamic means (' .
+            'for example, based on a controller argument) then those paths would be used. However, in some cases ' .
+            'this will be undesirable - namely when using a cache that is shared between multiple TYPO3 instances ' .
+            'and each instance has a different path in the server\'s file system (e.g. load balanced setups). ' .
+            'On such setups you should set persistPartialPaths="0" on this ViewHelper to prevent it from caching ' .
+            'the resolved partialRootPaths. The ViewHelper will then instead use whichever partialRootPaths are ' .
+            'configured for the extension that calls `v:render.uncache`. Note that when this is done, the special ' .
+            'use case of dynamic or controller-overridden partialRootPaths is simply not supported.',
+            false,
+            true
+        );
     }
 
     /**
@@ -76,17 +92,22 @@ class UncacheViewHelper extends AbstractViewHelper
             ];
         }
 
+        $conf = [
+            'partial' => $arguments['partial'],
+            'section' => $arguments['section'],
+            'arguments' => $partialArguments,
+            'controllerContext' => $extbaseParameters,
+        ];
+
+        if ($arguments['persistPartialPaths'] ?? true) {
+            $conf['partialRootPaths'] = $renderingContext->getTemplatePaths()->getPartialRootPaths();
+        }
+
         $GLOBALS['TSFE']->config['INTincScript'][$substKey] = [
             'type' => 'POSTUSERFUNC',
             'cObj' => serialize(GeneralUtility::makeInstance(UncacheContentObject::class, $GLOBALS['TSFE']->cObj)),
             'postUserFunc' => 'render',
-            'conf' => [
-                'partial' => $arguments['partial'],
-                'section' => $arguments['section'],
-                'arguments' => $partialArguments,
-                'partialRootPaths' => $renderingContext->getTemplatePaths()->getPartialRootPaths(),
-                'controllerContext' => $extbaseParameters,
-            ],
+            'conf' => $conf,
             'content' => $content
         ];
 
