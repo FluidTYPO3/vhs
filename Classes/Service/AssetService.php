@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -232,21 +233,17 @@ class AssetService implements SingletonInterface
                             if ($rewrite) {
                                 $chunks[] = $this->writeCachedMergedFileAndReturnTag([$name => $asset], $type);
                             } else {
-                                $integrity = $this->getFileIntegrity($path);
-                                $path = mb_substr($path, mb_strlen(CoreUtility::getSitePath()));
-                                $path = $this->prefixPath($path);
                                 $chunks[] = $this->generateTagForAssetType(
                                     $type,
                                     null,
                                     $path,
-                                    $integrity,
+                                    $this->getFileIntegrity($path),
                                     $assetSettings
                                 );
                             }
                         }
                     }
                 }
-                unset($integrity);
             }
             if (0 < count($chunk)) {
                 $mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
@@ -332,6 +329,10 @@ class AssetService implements SingletonInterface
         }
         if (empty($type) && !empty($file)) {
             $type = pathinfo($file, PATHINFO_EXTENSION);
+        }
+        if ($file !== null) {
+            $file = PathUtility::getAbsoluteWebPath($file);
+            $file = $this->prefixPath($file);
         }
         switch ($type) {
             case 'js':
@@ -514,9 +515,7 @@ class AssetService implements SingletonInterface
     {
         $settings = $this->getSettings();
         $prefixPath = $settings['prependPath'] ?? '';
-        if (!empty($GLOBALS['TSFE']->absRefPrefix) && empty($prefixPath)) {
-            $fileRelativePathAndFilename = $GLOBALS['TSFE']->absRefPrefix . $fileRelativePathAndFilename;
-        } elseif (!empty($prefixPath)) {
+        if (!empty($prefixPath)) {
             $fileRelativePathAndFilename = $prefixPath . $fileRelativePathAndFilename;
         }
         return $fileRelativePathAndFilename;
@@ -709,7 +708,7 @@ class AssetService implements SingletonInterface
         return $array1;
     }
 
-    protected function getFileIntegrity(string $file): string
+    protected function getFileIntegrity(string $file): ?string
     {
         $typoScript = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'] ?? null;
         if (isset($typoScript['assets.']['tagsAddSubresourceIntegrity'])) {
@@ -718,7 +717,7 @@ class AssetService implements SingletonInterface
                 && $typoScript['assets.']['tagsAddSubresourceIntegrity'] < 4
             ) {
                 if (!file_exists($file)) {
-                    return '';
+                    return null;
                 }
 
                 /** @var TypoScriptFrontendController $typoScriptFrontendController */
@@ -747,14 +746,14 @@ class AssetService implements SingletonInterface
                             (string) openssl_digest((string) file_get_contents($file), $integrityMethod, true)
                         );
                     } else {
-                        return ''; // Sadly, no integrity generation possible
+                        return null; // Sadly, no integrity generation possible
                     }
                     $this->writeFile($integrityFile, $integrity);
                 }
                 return sprintf('%s-%s', $integrityMethod, $integrity ?: (string) file_get_contents($integrityFile));
             }
         }
-        return '';
+        return null;
     }
 
     private function getTempPath(): string
