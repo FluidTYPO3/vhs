@@ -167,7 +167,7 @@ class ExtractViewHelper extends AbstractViewHelper
             $result = [];
         }
 
-        if ($single && $result instanceof \Traversable) {
+        if ($single && ($result instanceof \Traversable || is_array($result))) {
             return reset($result);
         }
 
