@@ -218,13 +218,17 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $parent = $GLOBALS['TSFE']->currentRecord;
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It's should not be allowed to do this again then!!
-        if (!empty($parent) && isset($GLOBALS['TSFE']->recordRegister[$parent])) {
-            ++$GLOBALS['TSFE']->recordRegister[$parent];
+        if (!empty($parent)) {
+            if (isset($GLOBALS['TSFE']->recordRegister[$parent])) {
+                ++$GLOBALS['TSFE']->recordRegister[$parent];
+            } else {
+                $GLOBALS['TSFE']->recordRegister[$parent] = 1;
+            }
         }
         $html = $GLOBALS['TSFE']->cObj->cObjGetSingle('RECORDS', $conf);
 
         $GLOBALS['TSFE']->currentRecord = $parent;
-        if (!empty($parent) && isset($GLOBALS['TSFE']->recordRegister[$parent])) {
+        if (!empty($parent)) {
             --$GLOBALS['TSFE']->recordRegister[$parent];
         }
         return $html;
