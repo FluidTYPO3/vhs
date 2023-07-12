@@ -377,7 +377,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                 if ($entryLevel < 0) {
                     $entryLevel = count($rootLineData) - 1 + $entryLevel;
                 }
-                $pageUid = $rootLineData[$entryLevel]['uid'];
+                if (is_array($rootLineData[$entryLevel] ?? null)) {
+                    $pageUid = $rootLineData[$entryLevel]['uid'] ?? null;
+                }
             } else {
                 $pageUid = $GLOBALS['TSFE']->id;
             }
