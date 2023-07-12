@@ -113,8 +113,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $direction = $this->arguments['sortDirection'];
         /** @var string $order */
         $order = $this->arguments['order'];
-        /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
         if (!empty($order)) {
             $sortDirection = strtoupper(trim($direction));
             if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
