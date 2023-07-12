@@ -82,7 +82,7 @@ class TitleViewHelper extends AbstractViewHelper
         }
         /** @var string $whitespace */
         $whitespace = $arguments['whitespaceString'];
-        $title = trim((string) preg_replace('/\s+/', $whitespace, $title), $whitespace);
+        $title = trim((string) preg_replace('/\s+/u', $whitespace, $title), $whitespace);
         static::getPageRenderer()->setTitle($title);
         if ($arguments['setIndexedDocTitle']) {
             $GLOBALS['TSFE']->indexedDocTitle = $title;
