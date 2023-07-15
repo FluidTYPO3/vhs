@@ -209,11 +209,14 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
                 $command = CommandUtility::imageMagickCommand('convert', $arguments);
                 CommandUtility::exec($command);
             }
-            $this->imageInfo[3] = $destinationFilename;
+            $this->mediaSource = $destinationFilename;
+        } elseif ($this->imageInfo['processedFile'] ?? false) {
+            $this->mediaSource = $this->imageInfo['processedFile']->getPublicUrl();
+        } else {
+            $this->mediaSource = rawurldecode($this->imageInfo[3]);
         }
 
         $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
-        $this->mediaSource = rawurldecode($this->imageInfo[3]);
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
     }

@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -55,7 +56,7 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $src = $siteUrl . ltrim($src, '/');
         }
-        return $src;
+        return PathUtility::getAbsoluteWebPath($src);
     }
 
     /**
