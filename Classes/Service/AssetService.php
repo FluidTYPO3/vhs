@@ -108,6 +108,11 @@ class AssetService implements SingletonInterface
         $this->buildAll($parameters, $caller, false, $content);
     }
 
+    public function isAlreadyDefined(string $assetName): bool
+    {
+        return isset($GLOBALS['VhsAssets'][$assetName]) || in_array($assetName, self::$cachedDependencies, true);
+    }
+
     /**
      * Returns the settings used by this particular Asset
      * during inclusion. Public access allows later inspection

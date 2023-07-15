@@ -252,8 +252,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         }
         $name = $this->getName();
         $overwrite = $this->getOverwrite();
-        $slotFree = !isset($GLOBALS['VhsAssets'][$name]);
-        if (!($overwrite || $slotFree)) {
+        if (!$overwrite && $this->assetService->isAlreadyDefined($name)) {
             return;
         }
         $this->content = (string) $this->getContent();
