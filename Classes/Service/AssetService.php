@@ -764,7 +764,12 @@ class AssetService implements SingletonInterface
 
     private function getTempPath(): string
     {
-        return 'typo3temp/assets/';
+        $publicDirectory = CoreUtility::getSitePath();
+        $directory = 'typo3temp/assets/vhs/';
+        if (!file_exists($publicDirectory . $directory)) {
+            GeneralUtility::mkdir($publicDirectory . $directory);
+        }
+        return $directory;
     }
 
     protected function resolveAbsolutePathForFile(string $filename): string
