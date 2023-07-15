@@ -68,6 +68,13 @@ class AssetService implements SingletonInterface
                     if (!isset($typoScriptAsset['name'])) {
                         $typoScriptAsset['name'] = $name;
                     }
+                    if (isset($typoScriptAsset['dependencies']) && !is_array($typoScriptAsset['dependencies'])) {
+                        $typoScriptAsset['dependencies'] = GeneralUtility::trimExplode(
+                            ',',
+                            (string) $typoScriptAsset['dependencies'],
+                            true
+                        );
+                    }
                     Asset::createFromSettings($typoScriptAsset);
                 }
             }
