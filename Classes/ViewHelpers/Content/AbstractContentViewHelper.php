@@ -245,8 +245,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if ($limit) {
             $queryBuilder->setMaxResults($limit);
         }
-        /** @var Result $result */
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         return $result->fetchAllAssociative();
     }
 

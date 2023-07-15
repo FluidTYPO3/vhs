@@ -504,13 +504,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
-        /** @var Result $result */
         $result = $queryBuilder->select('sys_language_uid')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($parentField, $this->getPageUid())
             )
-            ->execute();
+            ->executeQuery();
         /** @var array $rows */
         $rows = $result->fetchAllAssociative();
 
