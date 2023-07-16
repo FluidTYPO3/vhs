@@ -68,6 +68,13 @@ class AssetService implements SingletonInterface
                     if (!isset($typoScriptAsset['name'])) {
                         $typoScriptAsset['name'] = $name;
                     }
+                    if (isset($typoScriptAsset['dependencies']) && !is_array($typoScriptAsset['dependencies'])) {
+                        $typoScriptAsset['dependencies'] = GeneralUtility::trimExplode(
+                            ',',
+                            (string) $typoScriptAsset['dependencies'],
+                            true
+                        );
+                    }
                     Asset::createFromSettings($typoScriptAsset);
                 }
             }
@@ -106,6 +113,11 @@ class AssetService implements SingletonInterface
         }
 
         $this->buildAll($parameters, $caller, false, $content);
+    }
+
+    public function isAlreadyDefined(string $assetName): bool
+    {
+        return isset($GLOBALS['VhsAssets'][$assetName]) || in_array($assetName, self::$cachedDependencies, true);
     }
 
     /**
@@ -759,7 +771,12 @@ class AssetService implements SingletonInterface
 
     private function getTempPath(): string
     {
-        return 'typo3temp/assets/';
+        $publicDirectory = CoreUtility::getSitePath();
+        $directory = 'typo3temp/assets/vhs/';
+        if (!file_exists($publicDirectory . $directory)) {
+            GeneralUtility::mkdir($publicDirectory . $directory);
+        }
+        return $directory;
     }
 
     protected function resolveAbsolutePathForFile(string $filename): string

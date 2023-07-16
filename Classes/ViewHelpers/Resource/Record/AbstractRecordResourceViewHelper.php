@@ -152,14 +152,13 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        /** @var Result $statement */
         $statement = $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($idField, ':id')
             )
-            ->execute();
+            ->executeQuery();
         /** @var array|null $result */
         $result = $statement->fetchAssociative() ?: null;
         return $result;

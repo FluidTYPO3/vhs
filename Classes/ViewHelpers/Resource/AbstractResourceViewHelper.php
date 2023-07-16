@@ -104,7 +104,6 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             );
             $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
 
-            /** @var Result $statement */
             $statement = $queryBuilder
                 ->select('uid_foreign')
                 ->from('sys_category_record_mm')
@@ -114,7 +113,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                 ->andWhere(
                     $queryBuilder->expr()->in('uid_local', ':categories')
                 )
-                ->execute();
+                ->executeQuery();
             $rows = $statement->fetchAllAssociative();
 
             /** @var int[] $fileUids */

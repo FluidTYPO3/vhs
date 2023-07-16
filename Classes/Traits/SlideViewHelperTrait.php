@@ -77,7 +77,7 @@ trait SlideViewHelperTrait
 
     protected function getSlideRecords(int $pageUid, ?int $limit = null): array
     {
-        /** @var int $limit */
+        /** @var int|null $limit */
         $limit = $limit ?? $this->arguments['limit'];
         /** @var int $slide */
         $slide = $this->arguments['slide'];

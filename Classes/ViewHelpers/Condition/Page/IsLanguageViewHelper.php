@@ -66,14 +66,13 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
 
             $queryBuilder->createNamedParameter($language, \PDO::PARAM_STR, ':title');
 
-            /** @var Result $result */
             $result = $queryBuilder
                 ->select('uid')
                 ->from('sys_language')
                 ->where(
                     $queryBuilder->expr()->eq('title', ':title')
                 )
-                ->execute();
+                ->executeQuery();
             $row = $result->fetchAssociative();
 
             if (is_array($row)) {

@@ -2,7 +2,7 @@
 
 namespace FluidTYPO3\Vhs\Tests\Fixtures\Classes;
 
-use Doctrine\DBAL\Driver\Result;
+use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -83,7 +83,7 @@ class DummyQueryBuilder extends QueryBuilder
         return $this->expressionBuilder;
     }
 
-    public function execute()
+    public function executeQuery(): Result
     {
         return $this->result;
     }

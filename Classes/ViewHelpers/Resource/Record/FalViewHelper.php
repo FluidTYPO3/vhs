@@ -199,8 +199,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             }
 
             // Execute
-            /** @var Result $statement */
-            $statement = $queryBuilder->orderBy('sorting_foreign')->execute();
+            $statement = $queryBuilder->orderBy('sorting_foreign')->executeQuery();
             /** @var array[] $references */
             $references = $statement->fetchAllAssociative();
 
