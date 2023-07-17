@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 
 use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -88,13 +89,13 @@ class InfoViewHelper extends AbstractViewHelper
             $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
             $queryBuilder->createNamedParameter($contentUid, \PDO::PARAM_INT, ':uid');
 
-            $result = $queryBuilder
+            $queryBuilder
                 ->select($selectFields)
                 ->from('tt_content')
                 ->where(
                     $queryBuilder->expr()->eq('uid', ':uid')
-                )
-                ->executeQuery();
+                );
+            $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
             /** @var array|null $record */
             $record = $result->fetchAssociative();
 

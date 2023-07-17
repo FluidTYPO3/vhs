@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
 use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -152,13 +153,13 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        $statement = $queryBuilder
+        $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($idField, ':id')
-            )
-            ->executeQuery();
+            );
+        $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
         /** @var array|null $result */
         $result = $statement->fetchAssociative() ?: null;
         return $result;

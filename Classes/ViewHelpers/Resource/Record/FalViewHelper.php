@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  */
 
 use Doctrine\DBAL\Driver\Result;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -198,8 +199,10 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     );
             }
 
+            $queryBuilder->orderBy('sorting_foreign');
+
             // Execute
-            $statement = $queryBuilder->orderBy('sorting_foreign')->executeQuery();
+            $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
             /** @var array[] $references */
             $references = $statement->fetchAllAssociative();
 

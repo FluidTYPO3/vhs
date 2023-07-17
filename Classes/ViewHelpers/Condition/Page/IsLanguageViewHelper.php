@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  */
 
 use Doctrine\DBAL\Result;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -66,13 +67,13 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
 
             $queryBuilder->createNamedParameter($language, \PDO::PARAM_STR, ':title');
 
-            $result = $queryBuilder
+            $queryBuilder
                 ->select('uid')
                 ->from('sys_language')
                 ->where(
                     $queryBuilder->expr()->eq('title', ':title')
-                )
-                ->executeQuery();
+                );
+            $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
             $row = $result->fetchAssociative();
 
             if (is_array($row)) {

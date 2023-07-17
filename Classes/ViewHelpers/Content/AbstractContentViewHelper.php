@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 
 use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -245,7 +246,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if ($limit) {
             $queryBuilder->setMaxResults($limit);
         }
-        $result = $queryBuilder->executeQuery();
+        $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
         return $result->fetchAllAssociative();
     }
 

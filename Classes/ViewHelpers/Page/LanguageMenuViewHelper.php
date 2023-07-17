@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -504,12 +505,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
-        $result = $queryBuilder->select('sys_language_uid')
+        $queryBuilder->select('sys_language_uid')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($parentField, $this->getPageUid())
-            )
-            ->executeQuery();
+            );
+        $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
         /** @var array $rows */
         $rows = $result->fetchAllAssociative();
 
