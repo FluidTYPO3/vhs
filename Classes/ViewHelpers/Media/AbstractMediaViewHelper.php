@@ -56,6 +56,10 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $src = $siteUrl . ltrim($src, '/');
         }
+        if (empty($src)) {
+            // Do not pass an empty $src to PathUtility, it requires non-empty strings on 10.4.
+            return '';
+        }
         return PathUtility::getAbsoluteWebPath($src);
     }
 
