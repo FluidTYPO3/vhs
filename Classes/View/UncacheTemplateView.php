@@ -27,6 +27,10 @@ class UncacheTemplateView extends TemplateView
         $section = $conf['section'] ?? null;
         $arguments = $conf['arguments'] ?? [];
         $parameters = $conf['controllerContext'] ?? null;
+        $extensionName = $parameters instanceof ExtbaseRequestParameters
+            ? $parameters->getControllerExtensionName()
+            : $parameters['extensionName'] ?? null;
+
 
         if (empty($partial)) {
             return '';
@@ -85,8 +89,9 @@ class UncacheTemplateView extends TemplateView
         $this->prepareContextsForUncachedRendering($renderingContext);
         if (!empty($conf['partialRootPaths'])) {
             $renderingContext->getTemplatePaths()->setPartialRootPaths($conf['partialRootPaths']);
-        } elseif ($parameters['extensionName'] ?? false) {
-            $renderingContext->getTemplatePaths()->fillDefaultsByPackageName($parameters['extensionName']);
+        } elseif ($extensionName) {
+            $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+            $renderingContext->getTemplatePaths()->fillDefaultsByPackageName($extensionKey);
         }
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
