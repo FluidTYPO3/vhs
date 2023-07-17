@@ -11,6 +11,8 @@ class DoctrineQueryProxy
         if (method_exists($queryBuilder, 'executeQuery')) {
             return $queryBuilder->executeQuery();
         }
-        return $queryBuilder->execute();
+        /** @var Result $result */
+        $result = $queryBuilder->execute();
+        return $result;
     }
 }
