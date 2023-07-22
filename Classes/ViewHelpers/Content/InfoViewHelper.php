@@ -17,7 +17,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ViewHelper to access data of the current content element record.
@@ -72,7 +74,25 @@ class InfoViewHelper extends AbstractViewHelper
         if (0 === $contentUid) {
             /** @var ContentObjectRenderer $cObj */
             $cObj = $this->configurationManager->getContentObject();
-            $record = $cObj->data;
+            if ($cObj->getCurrentTable() !== 'tt_content') {
+                throw new Exception(
+                    'v:content.info must have contentUid argument outside tt_content context',
+                    1690035521
+                );
+            }
+            if (!empty($cObj->data)) {
+                $record = $cObj->data;
+            } else {
+                $tsfe = $cObj->getTypoScriptFrontendController();
+                if (!$tsfe instanceof TypoScriptFrontendController) {
+                    throw new Exception(
+                        'v:content.info must have contentUid argument when no TypoScriptFrontendController exists',
+                        1690035521
+                    );
+                }
+                $recordReference = $tsfe->currentRecord;
+                $contentUid = (int) substr($recordReference, strpos($recordReference, ':') + 1);
+            }
         }
 
         /** @var string $field */
