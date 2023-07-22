@@ -83,7 +83,7 @@ class InfoViewHelper extends AbstractViewHelper
             if (!empty($cObj->data)) {
                 $record = $cObj->data;
             } else {
-                $tsfe = $cObj->getTypoScriptFrontendController();
+                $tsfe = $GLOBALS['TSFE'] ?? null;
                 if (!$tsfe instanceof TypoScriptFrontendController) {
                     throw new Exception(
                         'v:content.info must have contentUid argument when no TypoScriptFrontendController exists',
