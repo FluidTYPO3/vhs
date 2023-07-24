@@ -10,9 +10,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\View\UncacheContentObject;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\View\UncacheTemplateView;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -93,6 +94,7 @@ class UncacheViewHelper extends AbstractViewHelper
         }
 
         $conf = [
+            'userFunc' => UncacheTemplateView::class . '->callUserFunction',
             'partial' => $arguments['partial'],
             'section' => $arguments['section'],
             'arguments' => $partialArguments,
@@ -103,14 +105,16 @@ class UncacheViewHelper extends AbstractViewHelper
             $conf['partialRootPaths'] = $renderingContext->getTemplatePaths()->getPartialRootPaths();
         }
 
-        $GLOBALS['TSFE']->config['INTincScript'][$substKey] = [
-            'type' => 'POSTUSERFUNC',
-            'cObj' => serialize(GeneralUtility::makeInstance(UncacheContentObject::class, $GLOBALS['TSFE']->cObj)),
-            'postUserFunc' => 'render',
-            'conf' => $conf,
-            'content' => $content
-        ];
+        /** @var ContentObjectRenderer $contentObjectRenderer */
+        $contentObjectRenderer = $GLOBALS['TSFE']->cObj;
 
+        $content = $contentObjectRenderer->cObjGetSingle(
+            'COA_INT',
+            [
+                '10' => 'USER',
+                '10.' => $conf,
+            ]
+        );
         return $content;
     }
 }

@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 class UncacheTemplateView extends TemplateView
 {
-    public function callUserFunction(string $postUserFunc, array $conf, string $content): string
+    public function callUserFunction(string $postUserFunc, array $conf): string
     {
         $partial = $conf['partial'] ?? null;
         $section = $conf['section'] ?? null;
@@ -30,7 +30,6 @@ class UncacheTemplateView extends TemplateView
         $extensionName = $parameters instanceof ExtbaseRequestParameters
             ? $parameters->getControllerExtensionName()
             : $parameters['extensionName'] ?? null;
-
 
         if (empty($partial)) {
             return '';
