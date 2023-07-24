@@ -657,12 +657,11 @@ class AssetService implements SingletonInterface
     protected function extractAssetContent($asset): ?string
     {
         $assetSettings = $this->extractAssetSettings($asset);
-        $fileRelativePathAndFilename = $assetSettings['path'];
-        $fileRelativePath = dirname($assetSettings['path'] ?? '');
-        $absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
-        $isExternal = $assetSettings['external'] ?? false;
-        $isFluidTemplate = $assetSettings['fluid'] ?? false;
+        $fileRelativePathAndFilename = $assetSettings['path'] ?? null;
         if (!empty($fileRelativePathAndFilename)) {
+            $isExternal = $assetSettings['external'] ?? false;
+            $isFluidTemplate = $assetSettings['fluid'] ?? false;
+            $absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
             if (!$isExternal && !file_exists($absolutePathAndFilename)) {
                 throw new \RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
             }
@@ -675,6 +674,7 @@ class AssetService implements SingletonInterface
             $content = $this->buildAsset($asset);
         }
         if ($content !== null && 'css' === $assetSettings['type'] && ($assetSettings['rewrite'] ?? false)) {
+            $fileRelativePath = dirname($assetSettings['path'] ?? '');
             $content = $this->detectAndCopyFileReferences($content, $fileRelativePath);
         }
         return $content;
