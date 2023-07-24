@@ -173,7 +173,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             throw new Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
         }
 
-        $GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
+        if (property_exists($GLOBALS['TSFE'], 'lastImageInfo')) {
+            $GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
+        }
 
         if ($this->hasArgument('canvasWidth') && $this->hasArgument('canvasHeight')) {
             /** @var int $canvasWidth */
@@ -216,7 +218,9 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             $this->mediaSource = rawurldecode($this->imageInfo[3]);
         }
 
-        $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
+        if (property_exists($GLOBALS['TSFE'], 'imagesOnPage')) {
+            $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
+        }
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
     }
