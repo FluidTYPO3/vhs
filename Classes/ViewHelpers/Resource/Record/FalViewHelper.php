@@ -120,6 +120,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $sqlRecordUid = $record['t3ver_oid'];
         } elseif (isset($record['_LOCALIZED_UID'])) {
             $sqlRecordUid = $record['_LOCALIZED_UID'];
+        } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+            $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
         } else {
             $sqlRecordUid = $record[$this->idField];
         }
@@ -139,6 +141,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 $sqlRecordUid = $record['t3ver_oid'];
             } elseif (isset($record['_LOCALIZED_UID'])) {
                 $sqlRecordUid = $record['_LOCALIZED_UID'];
+            } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+                $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
             } else {
                 $sqlRecordUid = $record[$this->idField];
             }
