@@ -116,10 +116,12 @@ trait SlideViewHelperTrait
             $storagePageUid = (integer) array_shift($storagePageUids);
             $recordsFromPageUid = $this->getSlideRecordsFromPage($storagePageUid, $limitRemaining);
             $numberOfReturnedRecords = count($recordsFromPageUid);
-            if ($numberOfReturnedRecords > $limitRemaining && $limitRemaining !== 0) {
+            if ($numberOfReturnedRecords > $limitRemaining && $limitRemaining !== null) {
                 $recordsFromPageUid = array_slice($recordsFromPageUid, 0, $limitRemaining);
             }
-            $limitRemaining =- count($recordsFromPageUid);
+            if ($limitRemaining !== null) {
+                $limitRemaining =- count($recordsFromPageUid);
+            }
             $records = array_merge($records, $recordsFromPageUid);
             if (count($records) > 0 && 0 === $slideCollect) {
                 // stop collecting because argument said so and we've gotten at least one record now.
