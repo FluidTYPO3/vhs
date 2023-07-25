@@ -17,6 +17,9 @@ services:
   FluidTYPO3\Vhs\Service\AssetService:
     public: true
 
+  FluidTYPO3\Vhs\Service\PageService:
+    public: true
+
   TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder:
     autowire: true
     public: true
