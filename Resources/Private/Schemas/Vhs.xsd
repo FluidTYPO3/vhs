@@ -1493,7 +1493,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1595,7 +1595,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1671,7 +1671,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1757,7 +1757,7 @@ It can be rendered as follows:
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -9572,7 +9572,7 @@ If you simply want to render a content element, try `<v:content.render>`.
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
