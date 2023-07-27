@@ -102,16 +102,21 @@ class SortViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $candidate = !empty($arguments['as']) ? $arguments['subject'] : $renderChildrenClosure();
+        /** @var string|null $as */
+        $as = $arguments['as'] ?? null;
+        $candidate = $arguments['subject'] ?? $renderChildrenClosure();
         if ($candidate instanceof ObjectStorage) {
             $sorted = static::sortObjectStorage($candidate, $arguments);
+        } elseif (!is_iterable($candidate)) {
+            throw new Exception(
+                'v:iterator.sort requires an "iterable" object or array, as "subject" argument or as child node.',
+                1690469444
+            );
         } else {
             $subject = static::arrayFromArrayOrTraversableOrCSVStatic($candidate);
             $sorted = static::sortArray($subject, $arguments);
         }
 
-        /** @var string|null $as */
-        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $sorted,
             $as,
