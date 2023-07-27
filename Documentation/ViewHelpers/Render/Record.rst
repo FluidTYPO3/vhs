@@ -72,7 +72,7 @@ pageUid
 :aspect:`Required`
    false
 :aspect:`Description`
-   If set, selects only content from this page UID
+   If set, selects only content from this page UID. Ignored when "contentUids" is specified.
 
 .. _render.record_contentuids:
 
