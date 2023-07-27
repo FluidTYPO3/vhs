@@ -58,7 +58,13 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             'sorting'
         );
         $this->registerArgument('sortDirection', 'string', 'Optional sort direction of content elements', false, 'ASC');
-        $this->registerArgument('pageUid', 'integer', 'If set, selects only content from this page UID', false, 0);
+        $this->registerArgument(
+            'pageUid',
+            'integer',
+            'If set, selects only content from this page UID. Ignored when "contentUids" is specified.',
+            false,
+            0
+        );
         $this->registerArgument(
             'contentUids',
             'array',
@@ -90,10 +96,10 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     {
         /** @var int $limit */
         $limit = $this->arguments['limit'];
-
-        $pageUid = $this->getPageUid();
         /** @var int $slide */
         $slide = $this->arguments['slide'];
+
+        $pageUid = $this->getPageUid();
 
         if ((integer) $slide === 0) {
             $contentRecords = $this->getSlideRecordsFromPage($pageUid, $limit);
@@ -167,8 +173,16 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected function getPageUid(): int
     {
+        /** @var array|null $contentUids */
+        $contentUids = $this->arguments['contentUids'] ?? null;
+
+        if (!empty($contentUids)) {
+            return 0;
+        }
+
         /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
+
         $pageUid = (integer) $pageUid;
         if (1 > $pageUid) {
             $pageUid = (integer) ($GLOBALS['TSFE']->page['content_from_pid'] ?? 0);
