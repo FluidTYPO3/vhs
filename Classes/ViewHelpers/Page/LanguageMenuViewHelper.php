@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
