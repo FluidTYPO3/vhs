@@ -88,7 +88,7 @@ class Asset implements AssetInterface
     public function __construct()
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $this->configurationManager = $configurationManager;
     }
 

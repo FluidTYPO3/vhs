@@ -166,7 +166,7 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
     protected static function getContentObject(): ContentObjectRenderer
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         /** @var ContentObjectRenderer $contentObject */
         $contentObject = $configurationManager->getContentObject();
         return $contentObject;

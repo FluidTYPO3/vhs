@@ -105,7 +105,7 @@ class TyposcriptViewHelper extends AbstractViewHelper
     protected static function getConfigurationManager()
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         return $configurationManager;
     }
 }

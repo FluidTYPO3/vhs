@@ -5,7 +5,7 @@ use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\Service\AssetService;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -13,21 +13,19 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class AssetServiceTest extends AbstractTestCase
 {
-    private ?ConfigurationManager $configurationManager = null;
+    private ?ConfigurationManagerInterface $configurationManager = null;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        GeneralUtility::setSingletonInstance(ConfigurationManager::class, $this->configurationManager);
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $this->configurationManager);
 
         parent::__construct($name, $data, $dataName);
     }
 
     protected function setUp(): void
     {
-        $this->singletonInstances[ConfigurationManager::class] = $this->configurationManager;
+        $this->singletonInstances[ConfigurationManagerInterface::class] = $this->configurationManager;
 
         // Required for TYPO3v10
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] = 'en_US';

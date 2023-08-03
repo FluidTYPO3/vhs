@@ -156,7 +156,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
     protected static function getConfigurationManager(): ConfigurationManagerInterface
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         return $configurationManager;
     }
 

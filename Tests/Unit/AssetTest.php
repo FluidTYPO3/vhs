@@ -14,7 +14,6 @@ use PHPUnit\Framework\Constraint\IsType;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
@@ -40,11 +39,11 @@ class AssetTest extends AbstractTestCase
         $packageManager->method('isPackageActive')->willReturn(true);
         $packageManager->method('getPackage')->willReturn($package);
 
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
 
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
 
-        GeneralUtility::setSingletonInstance(ConfigurationManager::class, $this->configurationManager);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $this->configurationManager);
 
         $asset = new Asset();
         GeneralUtility::addInstance(Asset::class, $asset);
