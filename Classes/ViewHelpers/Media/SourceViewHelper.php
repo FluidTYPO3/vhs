@@ -139,7 +139,12 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
-        $src = $this->preprocessSourceUri(rawurldecode($result[3] ?? ''));
+        if ($result['processedFile'] ?? false) {
+            $imageUrl = $result['processedFile']->getPublicUrl();
+        } else {
+            $imageUrl = $result[3] ?? '';
+        }
+        $src = $this->preprocessSourceUri(rawurldecode($imageUrl));
 
         /** @var string|null $media */
         $media = $this->arguments['media'];

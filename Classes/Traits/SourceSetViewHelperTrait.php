@@ -47,7 +47,12 @@ trait SourceSetViewHelperTrait
         foreach ($srcsets as $width) {
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference, null, $crop);
 
-            $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
+            if ($srcsetVariant['processedFile'] ?? false) {
+                $imageUrl = $srcsetVariant['processedFile']->getPublicUrl();
+            } else {
+                $imageUrl = $srcsetVariant[3] ?? '';
+            }
+            $srcsetVariantSrc = rawurldecode($imageUrl);
             $srcsetVariantSrc = static::preprocessSourceUri(
                 str_replace('%2F', '/', rawurlencode($srcsetVariantSrc)),
                 $this->arguments
