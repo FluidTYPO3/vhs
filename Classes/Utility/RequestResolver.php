@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\Utility;
 
 /*
@@ -9,17 +10,14 @@ namespace FluidTYPO3\Vhs\Utility;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 class RequestResolver
 {
-    /**
-     * @return Request&RequestInterface
-     */
     public static function resolveRequestFromRenderingContext(
         RenderingContextInterface $renderingContext
-    ): RequestInterface {
+    ): ServerRequestInterface {
         $request = null;
         if (method_exists($renderingContext, 'getRequest')) {
             $request = $renderingContext->getRequest();
