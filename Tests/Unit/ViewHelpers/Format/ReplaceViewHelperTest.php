@@ -11,23 +11,28 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
-/**
- * Class ReplaceViewHelperTest
- */
 class ReplaceViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function canReplace()
+    public function testCanReplace(): void
     {
         $arguments = [
             'content' => 'foobar',
             'substring' => 'foo',
-            'replacement' => ''
+            'replacement' => '',
         ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('bar', $test);
     }
 
+    public function testReturnsCountWhenAsked(): void
+    {
+        $arguments = [
+            'content' => 'foobar',
+            'substring' => 'foo',
+            'replacement' => '',
+            'returnCount' => true,
+        ];
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame(1, $test);
+    }
 }

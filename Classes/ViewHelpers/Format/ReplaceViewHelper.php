@@ -24,12 +24,17 @@ class ReplaceViewHelper extends AbstractViewHelper
         $this->registerArgument('content', 'string', 'Content in which to perform replacement');
         $this->registerArgument('substring', 'string', 'Substring to replace', true);
         $this->registerArgument('replacement', 'string', 'Replacement to insert', false, '');
-        $this->registerArgument('count', 'integer', 'Maximum number of times to perform replacement');
+        $this->registerArgument(
+            'returnCount',
+            'bool',
+            'If TRUE, returns the number of replacements that were performed instead of returning output string. ' .
+            'See also `v:count.substring`.'
+        );
         $this->registerArgument('caseSensitive', 'boolean', 'If true, perform case-sensitive replacement', false, true);
     }
 
     /**
-     * @return mixed
+     * @return string|int
      */
     public static function renderStatic(
         array $arguments,
@@ -38,13 +43,17 @@ class ReplaceViewHelper extends AbstractViewHelper
     ) {
         $content = $renderChildrenClosure();
         /** @var string $substring */
-        $substring = $arguments['substring'];
+        $substring = (string) $arguments['substring'];
         /** @var string $replacement */
-        $replacement = $arguments['replacement'];
-        /** @var int $count */
-        $count = $arguments['count'];
+        $replacement = (string) $arguments['replacement'];
+        /** @var int|null $count */
+        $count = 0;
         $caseSensitive = (boolean) $arguments['caseSensitive'];
         $function = $caseSensitive ? 'str_replace' : 'str_ireplace';
-        return $function($substring, $replacement, $content, $count);
+        $replaced = $function($substring, $replacement, $content, $count);
+        if ($arguments['returnCount'] ?? false) {
+            return $count;
+        }
+        return $replaced;
     }
 }
