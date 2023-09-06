@@ -24,6 +24,17 @@ class ReplaceViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('bar', $test);
     }
 
+    public function testCanReplaceWithArrays(): void
+    {
+        $arguments = [
+            'content' => ['foobar', 'foobaz', 'fizbaz'],
+            'substring' => ['foo', 'baz'],
+            'replacement' => ['x', 'x'],
+        ];
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame(['xbar', 'xx', 'fizx'], $test);
+    }
+
     public function testReturnsCountWhenAsked(): void
     {
         $arguments = [
