@@ -2975,9 +2975,9 @@ ViewHelper makes advanced chained inline processing possible:
           <xsd:documentation><![CDATA[Replacement to insert]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="count" default="NULL">
+      <xsd:attribute type="xsd:anySimpleType" name="returnCount" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Maximum number of times to perform replacement]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If TRUE, returns the number of replacements that were performed instead of returning output string. See also `v:count.substring`.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="caseSensitive" default="true">
