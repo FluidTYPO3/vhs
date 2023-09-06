@@ -52,18 +52,18 @@ replacement
 :aspect:`Description`
    Replacement to insert
 
-.. _format.replace_count:
+.. _format.replace_returncount:
 
-count
------
+returnCount
+-----------
 
 :aspect:`DataType`
-   integer
+   mixed
 
 :aspect:`Required`
    false
 :aspect:`Description`
-   Maximum number of times to perform replacement
+   If TRUE, returns the number of replacements that were performed instead of returning output string. See also `v:count.substring`.
 
 .. _format.replace_casesensitive:
 
