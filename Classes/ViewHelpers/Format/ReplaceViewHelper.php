@@ -41,7 +41,7 @@ class ReplaceViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = $renderChildrenClosure();
+        $content = (string) $renderChildrenClosure();
         /** @var string $substring */
         $substring = (string) $arguments['substring'];
         /** @var string $replacement */
