@@ -2954,6 +2954,17 @@ ViewHelper makes advanced chained inline processing possible:
   <xsd:element name="format.replace">
     <xsd:annotation>
       <xsd:documentation><![CDATA[Replaces $substring in $content with $replacement.
+
+Supports array as input substring/replacements and content.
+
+When input substring/replacement is an array, both must be
+the same length and must contain only strings.
+
+When input content is an array, the search/replace is done
+on every value in the input content array and the return
+value will be an array of equal size as the input content
+array but with all values search/replaced. All values in the
+input content array must be strings.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2962,17 +2973,17 @@ ViewHelper makes advanced chained inline processing possible:
       </xsd:sequence>
       <xsd:attribute type="xsd:string" name="content" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Content in which to perform replacement]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Content in which to perform replacement. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="substring" default="NULL" use="required">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Substring to replace]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Substring to replace. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="replacement" default="''">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Replacement to insert]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Replacement to insert. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="returnCount" default="NULL">
