@@ -23,12 +23,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  */
 class BrowseViewHelper extends AbstractMenuViewHelper
 {
-    /**
-     * @var array
-     */
-    protected $backups = ['menu'];
-
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('labelFirst', 'string', 'Label for the "first" link', false, 'first');
@@ -84,9 +79,9 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         $defaultUid = $GLOBALS['TSFE']->id;
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
         $pageUid = (integer) (null !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $defaultUid);
-        $currentUid = (integer) ($this->arguments['currentPageUid'] ? $this->arguments['currentPageUid'] : $defaultUid);
+        $currentUid = (integer) ($this->arguments['currentPageUid'] ?: $defaultUid);
         $currentPage = $this->pageService->getPage($currentUid, $showAccessProtected);
-        $parentUid = (integer) (null !== $this->arguments['pageUid'] ? $pageUid : $currentPage['pid']);
+        $parentUid = (integer) (null !== $this->arguments['pageUid'] ? $pageUid : ($currentPage['pid'] ?? 0));
         $parentPage = $this->pageService->getPage($parentUid, $showAccessProtected);
         $menuData = $this->getMenu($parentUid);
         if (empty($menuData)) {
@@ -107,67 +102,64 @@ class BrowseViewHelper extends AbstractMenuViewHelper
                 if ($i > 0) {
                     $prevUid = $pageUids[$i - 1];
                 }
-                if ($i < $uidCount) {
-                    $nextUid = $pageUids[$i + 1];
-                }
+                $nextUid = $pageUids[$i + 1] ?? null;
                 break;
             }
         }
         $pages = [];
-        if (true === (boolean) $this->arguments['renderFirst']) {
+        if ($this->arguments['renderFirst']) {
             $pages['first'] = $menuData[$firstUid];
         }
         if (null !== $prevUid) {
             $pages['prev'] = $menuData[$prevUid];
         }
-        if (true === (boolean) $this->arguments['renderUp']) {
+        if ($this->arguments['renderUp']) {
             $pages['up'] = $parentPage;
         }
         if (null !== $nextUid) {
             $pages['next'] = $menuData[$nextUid];
         }
-        if (true === (boolean) $this->arguments['renderLast']) {
+        if ($this->arguments['renderLast']) {
             $pages['last'] = $menuData[$lastUid];
         }
         $menuItems = $this->parseMenu($pages);
         $menu = [];
-        if (true === isset($pages['first'])) {
+        if (isset($pages['first'])) {
             $menu['first'] = $menuItems['first'];
             $menu['first']['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menuItems['first']);
         }
-        if (true === isset($pages['prev'])) {
+        if (isset($pages['prev'])) {
             $menu['prev'] = $menuItems['prev'];
             $menu['prev']['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menuItems['prev']);
         }
-        if (true === isset($pages['up'])) {
+        if (isset($pages['up'])) {
             $menu['up'] = $menuItems['up'];
             $menu['up']['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menuItems['up']);
         }
-        if (true === isset($pages['next'])) {
+        if (isset($pages['next'])) {
             $menu['next'] = $menuItems['next'];
             $menu['next']['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menuItems['next']);
         }
-        if (true === isset($pages['last'])) {
+        if (isset($pages['last'])) {
             $menu['last'] = $menuItems['last'];
             $menu['last']['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menuItems['last']);
         }
+        $variableProvider = $this->renderingContext->getVariableProvider();
         $this->backupVariables();
-        $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $menu);
+        /** @var string $as */
+        $as = $this->arguments['as'];
+        $variableProvider->add($as, $menu);
         $output = $this->renderContent($menu);
-        $this->renderingContext->getVariableProvider()->remove($this->arguments['as']);
+        $variableProvider->remove($as);
         $this->restoreVariables();
         return $output;
     }
 
-    /**
-     * @param string $labelName
-     * @param array $pageRecord
-     * @return string
-     */
-    protected function getCustomLabelOrPageTitle($labelName, $pageRecord)
+    protected function getCustomLabelOrPageTitle(string $labelName, array $pageRecord): string
     {
+        /** @var string $title */
         $title = $this->arguments[$labelName];
-        if (true === (boolean) $this->arguments['usePageTitles']) {
+        if ($this->arguments['usePageTitles']) {
             $title = $this->getItemTitle($pageRecord);
         }
 

@@ -24,13 +24,6 @@ class HeaderViewHelperTest extends AbstractViewHelperTestCase
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($GLOBALS['TSFE']);
-    }
-
     public function testRender()
     {
         $this->assertEmpty($this->executeViewHelper());

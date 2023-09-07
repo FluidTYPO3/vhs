@@ -53,7 +53,7 @@ string
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    String to check
 

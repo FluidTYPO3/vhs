@@ -20,7 +20,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class DeferredViewHelper extends AbstractMenuViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument(
@@ -33,11 +33,12 @@ class DeferredViewHelper extends AbstractMenuViewHelper
 
     /**
      * @return string
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     * @throws Exception
      */
     public function render()
     {
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        /** @var string $as */
         $as = $this->arguments['as'];
         if (!$viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredArray')) {
             return '';
@@ -49,22 +50,25 @@ class DeferredViewHelper extends AbstractMenuViewHelper
             $content = $viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'deferredString');
             $this->unsetDeferredVariableStorage();
             return is_scalar($content) ? (string) $content : '';
-        } elseif (true === empty($as)) {
+        } elseif (empty($as)) {
             throw new Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
         }
-        if (true === $this->renderingContext->getVariableProvider()->exists($as)) {
-            $backupVariable = $this->renderingContext->getVariableProvider()->get($as);
-            $this->renderingContext->getVariableProvider()->remove($as);
+
+        $variableProvider = $this->renderingContext->getVariableProvider();
+
+        if ($variableProvider->exists($as)) {
+            $backupVariable = $variableProvider->get($as);
+            $variableProvider->remove($as);
         }
-        $this->renderingContext->getVariableProvider()->add(
+        $variableProvider->add(
             $as,
             $viewHelperVariableContainer->get(AbstractMenuViewHelper::class, 'deferredArray')
         );
         $this->unsetDeferredVariableStorage();
         $content = $this->renderChildren();
-        $this->renderingContext->getVariableProvider()->remove($as);
-        if (true === isset($backupVariable)) {
-            $this->renderingContext->getVariableProvider()->add($as, $backupVariable);
+        $variableProvider->remove($as);
+        if (isset($backupVariable)) {
+            $variableProvider->add($as, $backupVariable);
         }
 
         return is_scalar($content) ? (string) $content : '';

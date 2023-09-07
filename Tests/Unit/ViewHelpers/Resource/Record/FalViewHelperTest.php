@@ -8,21 +8,28 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyQueryBuilder;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 
-/**
- * Class FalViewHelperTest
- */
 class FalViewHelperTest extends AbstractViewHelperTestCase
 {
     protected function setUp(): void
     {
-        $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
-        $this->singletonInstances[FileRepository::class] = $this->getMockBuilder(FileRepository::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)
+            ->setMethods(['getFileReferenceObject'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->singletonInstances[FileRepository::class] = $this->getMockBuilder(FileRepository::class)
+            ->setMethods(['findByRelation'])
+            ->disableOriginalConstructor()
+            ->getMock();
 
         parent::setUp();
     }
@@ -31,5 +38,78 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
     {
         $output = $this->executeViewHelper(['table' => 'pages', 'field' => 'media']);
         $this->assertSame([], $output);
+    }
+
+    public function testGetResource(): void
+    {
+        $storage = $this->getMockBuilder(ResourceStorage::class)
+            ->setMethods(['getFileInfo'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $storage->method('getFileInfo')->willReturn(['foo' => 'bar']);
+
+        $file = $this->getMockBuilder(File::class)
+            ->setMethods(['getProperties', 'getStorage', 'toArray'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $file->method('getStorage')->willReturn($storage);
+        $file->method('getProperties')->willReturn(['baz' => 'value']);
+        $file->method('toArray')->willReturn([]);
+
+        $fileReference = $this->getMockBuilder(FileReference::class)
+            ->setMethods(['getOriginalFile', 'getProperties'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $fileReference->method('getOriginalFile')->willReturn($file);
+        $fileReference->method('getProperties')->willReturn(['x' => 'y']);
+
+        $subject = new FalViewHelper();
+        $output = $subject->getResource($fileReference);
+
+        self::assertSame(['baz' => 'value', 'foo' => 'bar', 'x' => 'y'], $output);
+    }
+
+    public function testGetResourcesWhenPageContext(): void
+    {
+        $this->singletonInstances[FileRepository::class]->method('findByRelation')->willReturn([]);
+
+        $GLOBALS['TSFE'] = (object) ['sys_page' => 'foobar'];
+
+        $arguments = ['table' => 'pages', 'field' => 'void'];
+        $record = ['uid' => 1];
+        $subject = new FalViewHelper();
+        $subject->setArguments($arguments);
+        $output = $subject->getResources($record);
+        self::assertSame([], $output);
+    }
+
+    /**
+     * @dataProvider getGetResourcesInNonPageContextTestValues
+     */
+    public function testGetResourcesInNonPageContext(int $workspaceUid): void
+    {
+        $file = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
+
+        $this->singletonInstances[ResourceFactory::class]->method('getFileReferenceObject')->willReturn($file);
+
+        $mockQueryBuilder = new DummyQueryBuilder($this);
+        $mockQueryBuilder->result->method('fetchAllAssociative')->willReturn([['uid' => 1]]);
+
+        $GLOBALS['BE_USER'] = (object) ['workspaceRec' => ['uid' => $workspaceUid]];
+
+        $arguments = ['table' => 'tt_content', 'field' => 'void', 'asObjects' => true];
+        $record = ['uid' => 1];
+        $subject = new FalViewHelper();
+        $subject->setArguments($arguments);
+        $output = $subject->getResources($record);
+        self::assertSame([$file], $output);
+    }
+
+    public function getGetResourcesInNonPageContextTestValues(): array
+    {
+        return [
+            'without active workspace' => [0],
+            'with active workspace' => [1],
+        ];
     }
 }

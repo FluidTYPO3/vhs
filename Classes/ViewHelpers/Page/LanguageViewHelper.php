@@ -9,10 +9,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -34,12 +34,7 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected static $pageService;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('languages', 'mixed', 'The languages (either CSV, array or implementing Traversable)');
         $this->registerArgument('pageUid', 'integer', 'The page uid to check', false, 0);
@@ -53,9 +48,6 @@ class LanguageViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -63,20 +55,24 @@ class LanguageViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
 
+        /** @var array|string|\Traversable $languages */
         $languages = $arguments['languages'];
-        if (true === $languages instanceof \Traversable) {
+        if ($languages instanceof \Traversable) {
             $languages = iterator_to_array($languages);
-        } elseif (true === is_string($languages)) {
+        } elseif (is_string($languages)) {
             $languages = GeneralUtility::trimExplode(',', $languages, true);
         } else {
             $languages = (array) $languages;
         }
 
-        $pageUid = intval($arguments['pageUid']);
+        /** @var int $pageUid */
+        $pageUid = $arguments['pageUid'];
+        $pageUid = (integer) $pageUid;
+        /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
 
         if (0 === $pageUid) {
@@ -94,30 +90,25 @@ class LanguageViewHelper extends AbstractViewHelper
             $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
         $languageUid = 0;
-        if (false === $pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
+        if (!$pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
             $languageUid = $currentLanguageUid;
         } elseif (0 !== $currentLanguageUid) {
-            if (true === $pageService->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
+            if ($pageService->hidePageForLanguageUid($pageUid, 0, $normalWhenNoLanguage)) {
                 return '';
             }
         }
 
-        if (false === empty($languages[$languageUid])) {
+        if (!empty($languages[$languageUid])) {
             return $languages[$languageUid];
         }
 
         return $languageUid;
     }
 
-    /**
-     * @return PageService
-     */
-    protected static function getPageService()
+    protected static function getPageService(): PageService
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var PageService $pageService */
-        $pageService = $objectManager->get(PageService::class);
+        $pageService = GeneralUtility::makeInstance(PageService::class);
         return static::$pageService = $pageService;
     }
 }

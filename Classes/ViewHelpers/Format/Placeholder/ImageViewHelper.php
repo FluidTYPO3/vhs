@@ -22,12 +22,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'img';
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -43,27 +38,32 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
+        /** @var int $width */
+        $width = $this->arguments['width'];
+        /** @var string|null $text */
         $text = $this->arguments['text'];
         if (null === $text) {
+            /** @var string $text */
             $text = $this->renderChildren();
         }
+        /** @var int $height */
         $height = $this->arguments['height'] != $this->arguments['width'] ? $this->arguments['height'] : null;
-        $addHeight = false === empty($height) ? 'x' . $height : null;
+        $addHeight = !empty($height) ? 'x' . $height : null;
         $url = [
             'https://via.placeholder.com',
             $this->arguments['width'] . $addHeight,
             $this->arguments['backgroundColor'],
             $this->arguments['textColor'],
         ];
-        if (false === empty($text)) {
-            array_push($url, '?text=' . urlencode($text));
+        if (!empty($text)) {
+            $url[] = '?text=' . urlencode($text);
         }
         $imageUrl = implode('/', $url);
         $this->tag->forceClosingTag(false);
         $this->tag->addAttribute('src', $imageUrl);
         $this->tag->addAttribute('alt', $imageUrl);
-        $this->tag->addAttribute('width', $this->arguments['width']);
-        $this->tag->addAttribute('height', false === empty($height) ? $height : $this->arguments['width']);
+        $this->tag->addAttribute('width', (string) $width);
+        $this->tag->addAttribute('height', (string) (!empty($height) ? $height : $width));
         return $this->tag->render();
     }
 }

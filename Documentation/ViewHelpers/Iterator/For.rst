@@ -36,7 +36,7 @@ to
    integer
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Number that the index needs to reach before stopping
 

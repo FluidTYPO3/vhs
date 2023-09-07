@@ -21,10 +21,7 @@ class RoundViewHelper extends AbstractSingleMathViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('decimals', 'integer', 'Number of decimals', false, 0);
@@ -32,7 +29,6 @@ class RoundViewHelper extends AbstractSingleMathViewHelper
 
     /**
      * @param float|integer|string|iterable|array $a
-     * @param array $arguments
      * @return float|array
      */
     protected static function calculateAction($a, array $arguments = [])

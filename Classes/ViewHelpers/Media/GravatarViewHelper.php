@@ -37,11 +37,8 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
     /**
      * Initialize arguments.
      * Size argument has no default value to prevent the creation of an unnecessary URI parameter.
-     *
-     * @return void
-     * @api
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -69,16 +66,17 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
+        /** @var string $email */
         $email = $this->arguments['email'];
         $size = $this->checkArgument('size');
         $imageSet = $this->checkArgument('imageSet');
         $maximumRating = $this->checkArgument('maximumRating');
         $secure = (boolean) $this->arguments['secure'];
 
-        $url = (true === $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL);
+        $url = $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL;
         $url .= md5(strtolower(trim($email)));
         $query = http_build_query(['s' => $size, 'd' => $imageSet, 'r' => $maximumRating]);
-        $url .= (false === empty($query) ? '?' . $query : '');
+        $url .= !empty($query) ? '?' . $query : '';
         $this->tag->addAttribute('src', $url);
         $this->tag->forceClosingTag(true);
 
@@ -88,12 +86,10 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
     /**
      * Check if an argument is passed
      *
-     * @param string $argument
-     *
      * @return mixed
      */
-    private function checkArgument($argument)
+    private function checkArgument(string $argument)
     {
-        return true === isset($this->arguments[$argument]) ? $this->arguments[$argument] : null;
+        return $this->arguments[$argument] ?? null;
     }
 }

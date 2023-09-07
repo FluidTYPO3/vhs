@@ -104,10 +104,7 @@ class ExtractViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'content',
@@ -137,9 +134,6 @@ class ExtractViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -147,7 +141,9 @@ class ExtractViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var array $content */
         $content = $arguments['content'] ?? $renderChildrenClosure();
+        /** @var string $key */
         $key = $arguments['key'];
         $recursive = (boolean) $arguments['recursive'];
         $single = (boolean) $arguments['single'];
@@ -155,7 +151,7 @@ class ExtractViewHelper extends AbstractViewHelper
             // extraction from Iterators could potentially use a getter method which throws
             // exceptions - although this would be bad practice. Catch the exception here
             // and turn it into a WARNING log message so that output does not break.
-            if (true === (boolean) $recursive) {
+            if ($recursive) {
                 $result = static::recursivelyExtractKey($content, $key);
             } else {
                 $result = static::extractByKey($content, $key);
@@ -171,7 +167,7 @@ class ExtractViewHelper extends AbstractViewHelper
             $result = [];
         }
 
-        if (true === (boolean) $single && $result instanceof \Traversable) {
+        if ($single && ($result instanceof \Traversable || is_array($result))) {
             return reset($result);
         }
 
@@ -182,11 +178,10 @@ class ExtractViewHelper extends AbstractViewHelper
      * Extract by key
      *
      * @param mixed $iterator
-     * @param string $key
      * @return mixed NULL or whatever we found at $key
      * @throws \Exception
      */
-    protected static function extractByKey($iterator, $key)
+    protected static function extractByKey($iterator, string $key)
     {
         if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
@@ -201,11 +196,10 @@ class ExtractViewHelper extends AbstractViewHelper
      * Recursively extract the key
      *
      * @param mixed $iterator
-     * @param string $key
      * @return array
      * @throws \Exception
      */
-    protected static function recursivelyExtractKey($iterator, $key)
+    protected static function recursivelyExtractKey($iterator, string $key)
     {
         if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1515498714);
@@ -218,7 +212,7 @@ class ExtractViewHelper extends AbstractViewHelper
             $result = ObjectAccess::getPropertyPath($v, $key);
             if (null !== $result) {
                 $content[] = $result;
-            } elseif (true === is_array($v) || true === $v instanceof \Traversable) {
+            } elseif (is_array($v) || $v instanceof \Traversable) {
                 $content[] = static::recursivelyExtractKey($v, $key);
             }
         }
@@ -230,19 +224,15 @@ class ExtractViewHelper extends AbstractViewHelper
 
     /**
      * Flatten the result structure, to iterate it cleanly in fluid
-     *
-     * @param array $content
-     * @param array $flattened
-     * @return array
      */
-    protected static function flattenArray(array $content, $flattened = null)
+    protected static function flattenArray(array $content, array $flattened = []): array
     {
         if (empty($content)) {
             return $content;
         }
 
         foreach ($content as $sub) {
-            if (true === is_array($sub)) {
+            if (is_array($sub)) {
                 $flattened = static::flattenArray($sub, $flattened);
             } else {
                 $flattened[] = $sub;

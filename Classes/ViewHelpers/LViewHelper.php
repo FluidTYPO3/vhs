@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -45,12 +46,7 @@ class LViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('key', 'string', 'Translation Key');
         $this->registerArgument(
@@ -77,25 +73,31 @@ class LViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var RenderingContext $renderingContext */
+        /** @var string|null $default */
         $default = $arguments['default'];
         $htmlEscape = (boolean) $arguments['htmlEscape'];
+        /** @var string|null $extensionName */
         $extensionName = $arguments['extensionName'];
+        /** @var array|null $translationArguments */
         $translationArguments = $arguments['arguments'];
+        /** @var string $id */
         $id = $renderChildrenClosure();
-        if (true === empty($default)) {
+        if (empty($default)) {
             $default = $id;
         }
-        if (true === empty($extensionName)) {
-            $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+        if (empty($extensionName)) {
+            $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+                ->getControllerExtensionName();
         }
-        $value = LocalizationUtility::translate($id, $extensionName, $translationArguments);
-        if (true === empty($value)) {
+        /** @var string|null $value */
+        $value = LocalizationUtility::translate((string) $id, $extensionName, $translationArguments);
+        if (empty($value)) {
             $value = $default;
-            if (true === is_array($translationArguments)) {
+            if (!empty($translationArguments)) {
                 $value = vsprintf($value, $translationArguments);
             }
-        } elseif (true === $htmlEscape) {
-            $value = htmlspecialchars($value);
+        } elseif ($htmlEscape) {
+            $value = htmlspecialchars((string) $value);
         }
         return $value;
     }

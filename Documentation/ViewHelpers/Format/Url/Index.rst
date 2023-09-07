@@ -5,7 +5,7 @@ url
 ===
 
 
-* 3 ViewHelpers documented
+* 2 ViewHelpers documented
 
 .. toctree::
    :titlesonly:
@@ -13,7 +13,6 @@ url
 
    Decode
    Encode
-   SanitizeString
 
 
 

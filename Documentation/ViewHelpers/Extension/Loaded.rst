@@ -64,6 +64,6 @@ extensionName
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Name of extension that must be loaded in order to evaluate as TRUE, UpperCamelCase

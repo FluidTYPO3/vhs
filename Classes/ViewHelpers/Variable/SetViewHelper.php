@@ -66,10 +66,7 @@ class SetViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'mixed', 'Value to set');
         $this->registerArgument('name', 'string', 'Name of variable to assign');
@@ -83,11 +80,13 @@ class SetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $name */
         $name = $arguments['name'];
+        /** @var mixed $value */
         $value = $renderChildrenClosure();
         $variableProvider = $renderingContext->getVariableProvider();
         if (false === strpos($name, '.')) {
-            if (true === $variableProvider->exists($name)) {
+            if ($variableProvider->exists($name)) {
                 $variableProvider->remove($name);
             }
             $variableProvider->add($name, $value);
@@ -95,7 +94,7 @@ class SetViewHelper extends AbstractViewHelper
             $parts = explode('.', $name);
             $objectName = array_shift($parts);
             $path = implode('.', $parts);
-            if (false === $variableProvider->exists($objectName)) {
+            if (!$variableProvider->exists($objectName)) {
                 return null;
             }
             $object = $variableProvider->get($objectName);

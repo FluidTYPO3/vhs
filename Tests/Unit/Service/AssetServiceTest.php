@@ -4,16 +4,34 @@ namespace FluidTYPO3\Vhs\Tests\Unit\Service;
 use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\Service\AssetService;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Class AssetServiceTest
  */
 class AssetServiceTest extends AbstractTestCase
 {
+    private ?ConfigurationManagerInterface $configurationManager = null;
+
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    {
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $this->configurationManager);
+
+        parent::__construct($name, $data, $dataName);
+    }
+
+    protected function setUp(): void
+    {
+        $this->singletonInstances[ConfigurationManagerInterface::class] = $this->configurationManager;
+
+        // Required for TYPO3v10
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] = 'en_US';
+
+        parent::setUp();
+    }
 
     /**
      * @dataProvider getBuildAllTestValues
@@ -24,10 +42,16 @@ class AssetServiceTest extends AbstractTestCase
     public function testBuildAll(array $assets, $cached, $expectedFiles)
     {
         $GLOBALS['VhsAssets'] = $assets;
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $GLOBALS['TSFE']->content = 'content';
-        $instance = $this->getMockBuilder(AssetService::class)->setMethods(['writeFile', 'getSettings', 'resolveAbsolutePathForFile'])->getMock();
-        $instance->expects($this->exactly($expectedFiles))->method('writeFile')->with($this->anything(), $this->anything());
+        $instance = $this->getMockBuilder(AssetService::class)
+            ->setMethods(['writeFile', 'getSettings', 'resolveAbsolutePathForFile'])
+            ->getMock();
+        $instance->expects($this->exactly($expectedFiles))
+            ->method('writeFile')
+            ->with($this->anything(), $this->anything());
         $instance->method('getSettings')->willReturn([]);
         $instance->method('resolveAbsolutePathForFile')->willReturnArgument(0);
         if (true === $cached) {
@@ -97,26 +121,11 @@ class AssetServiceTest extends AbstractTestCase
         $file = 'Tests/Fixtures/Files/dummy.js';
         $method = (new \ReflectionClass(AssetService::class))->getMethod('getFileIntegrity');
         $instance = $this->getMockBuilder(AssetService::class)->setMethods(['writeFile'])->getMock();
-        $instance->method('writeFile')->willReturn(null);
 
         $method->setAccessible(true);
         foreach ($expectedIntegrities as $settingLevel => $expectedIntegrity) {
             $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] = $settingLevel;
             $this->assertEquals($expectedIntegrity, $method->invokeArgs($instance, [$file]));
         }
-
-        unset($GLOBALS['TSFE']);
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [TagBuilder::class, new TagBuilder()],
-                [ConfigurationManagerInterface::class, $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()],
-            ]
-        );
-        return $instance;
     }
 }

@@ -47,19 +47,13 @@ class LinesViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('string', 'string', 'String to count, if not provided as tag content');
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return integer
      */
     public static function renderStatic(

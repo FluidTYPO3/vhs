@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -96,16 +95,5 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
     public function returnsExpectedDefaultValue()
     {
         $this->assertTrue($this->executeViewHelper(['type' => 'boolean', 'default' => true]));
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [ObjectStorage::class, new ObjectStorage()],
-            ]
-        );
-        return $instance;
     }
 }

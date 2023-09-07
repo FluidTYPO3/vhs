@@ -8,11 +8,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -24,16 +27,19 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
+     * @var FrontendUserRepository
      */
     protected $frontendUserRepository;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
-     * @return void
-     */
-    public function injectFrontendUserRepository(FrontendUserRepository $frontendUserRepository)
+    public function __construct()
     {
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.0', '>=')
+            && !ExtensionManagementUtility::isLoaded('feuserextrafields')
+        ) {
+            throw new \Exception('On TYPO3v12, v:security.* requires EXT:feuserextrafields', 1670521759);
+        }
+        /** @var FrontendUserRepository $frontendUserRepository */
+        $frontendUserRepository = GeneralUtility::makeInstance(FrontendUserRepository::class);
         $this->frontendUserRepository = $frontendUserRepository;
         $query = $this->frontendUserRepository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -42,10 +48,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         $this->frontendUserRepository->setDefaultQuerySettings($querySettings);
     }
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -131,10 +134,8 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var static $proxy */
-        $proxy = $objectManager->get(static::class);
+        $proxy = GeneralUtility::makeInstance(static::class);
         $proxy->setArguments((array) $arguments);
         return $proxy->evaluateArguments();
     }
@@ -142,12 +143,19 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 
     /**
      * Returns TRUE if all conditions from arguments are satisfied. The
-     * type of evaluation (AND or OR) can be set using argument "evaluationType"
-     *
-     * @return boolean
+     * type of evaluation (AND or OR) can be set using argument "evaluationType".
      */
-    public function evaluateArguments()
+    public function evaluateArguments(): bool
     {
+        /** @var FrontendUser|null $frontendUser */
+        $frontendUser = $this->arguments['frontendUser'] ?? null;
+
+        /** @var ObjectStorage|null $frontendUsers */
+        $frontendUsers = $this->arguments['frontendUsers'] ?? null;
+
+        /** @var BackendUser|null $backendUser */
+        $backendUser = $this->arguments['backendUser'] ?? null;
+
         $evaluationType = $this->arguments['evaluationType'];
         $evaluations = [];
         if ($this->arguments['anyFrontendUser'] ?? false) {
@@ -156,13 +164,11 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         if ($this->arguments['anyFrontendUserGroup'] ?? false) {
             $evaluations['anyFrontendUserGroup'] = intval($this->assertFrontendUserGroupLoggedIn());
         }
-        if (isset($this->arguments['frontendUser'])) {
-            $evaluations['frontendUser'] =
-                intval($this->assertFrontendUserLoggedIn($this->arguments['frontendUser']));
+        if ($frontendUser) {
+            $evaluations['frontendUser'] = intval($this->assertFrontendUserLoggedIn($frontendUser));
         }
-        if (isset($this->arguments['frontendUsers'])) {
-            $evaluations['frontendUsers'] =
-                intval($this->assertFrontendUsersLoggedIn($this->arguments['frontendUsers']));
+        if ($frontendUsers) {
+            $evaluations['frontendUsers'] = intval($this->assertFrontendUsersLoggedIn($frontendUsers));
         }
         if (isset($this->arguments['frontendUserGroup'])) {
             $evaluations['frontendUserGroup'] =
@@ -179,10 +185,10 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
             $evaluations['anyBackendUserGroup'] = intval($this->assertBackendUserGroupLoggedIn());
         }
         if (isset($this->arguments['backendUser'])) {
-            $evaluations['backendUser'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUser']));
+            $evaluations['backendUser'] = intval($this->assertBackendUserLoggedIn($backendUser));
         }
         if (isset($this->arguments['backendUsers'])) {
-            $evaluations['backendUsers'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUsers']));
+            $evaluations['backendUsers'] = intval($this->assertBackendUserLoggedIn($backendUser));
         }
         if (isset($this->arguments['backendUserGroup'])) {
             $evaluations['backendUserGroup'] =
@@ -196,45 +202,40 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
             $evaluations['admin'] = intval($this->assertAdminLoggedIn());
         }
         $sum = array_sum($evaluations);
-        return (boolean) ('AND' === $evaluationType ? count($evaluations) === $sum : $sum > 0);
+        return 'AND' === $evaluationType ? count($evaluations) === $sum : $sum > 0;
     }
 
     /**
      * Returns TRUE only if a FrontendUser is currently logged in. Use argument
      * to return TRUE only if the FrontendUser logged in must be that specific user.
      *
-     * @param FrontendUser $frontendUser
-     * @return boolean
-     * @api
+     * @param int|FrontendUser|null $frontendUser
      */
-    public function assertFrontendUserLoggedIn(FrontendUser $frontendUser = null)
+    public function assertFrontendUserLoggedIn($frontendUser = null): bool
     {
         $currentFrontendUser = $this->getCurrentFrontendUser();
-        if (false === $currentFrontendUser instanceof FrontendUser) {
+        if (!$currentFrontendUser instanceof FrontendUser) {
             return false;
         }
-        if (true === $frontendUser instanceof FrontendUser && true === $currentFrontendUser instanceof FrontendUser) {
+        if ($frontendUser instanceof FrontendUser) {
             if ($currentFrontendUser->getUid() === $frontendUser->getUid()) {
                 return true;
             } else {
                 return false;
             }
         }
-        return (boolean) (true === is_object($currentFrontendUser));
+        return is_object($currentFrontendUser);
     }
 
     /**
      * Returns TRUE only if currently logged in frontend user is in list.
-     *
-     * @param ObjectStorage<FrontendUser> $frontendUsers
-     * @return boolean
-     * @api
      */
-    public function assertFrontendUsersLoggedIn(ObjectStorage $frontendUsers = null)
+    public function assertFrontendUsersLoggedIn(ObjectStorage $frontendUsers = null): bool
     {
         if ($frontendUsers === null) {
             return false;
         }
+        /** @var FrontendUser[] $frontendUsers */
         foreach ($frontendUsers as $frontendUser) {
             if ($this->assertFrontendUserLoggedIn($frontendUser)) {
                 return true;
@@ -247,46 +248,40 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      * Returns TRUE if a FrontendUserGroup (specific given argument, else not) is logged in
      *
      * @param mixed $groups One \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup or ObjectStorage containing same
-     * @return boolean
-     * @api
      */
-    public function assertFrontendUserGroupLoggedIn($groups = null)
+    public function assertFrontendUserGroupLoggedIn($groups = null): bool
     {
         $currentFrontendUser = $this->getCurrentFrontendUser();
-        if (false === $currentFrontendUser instanceof FrontendUser) {
+        if (!$currentFrontendUser instanceof FrontendUser) {
             return false;
         }
         $currentFrontendUserGroups = $currentFrontendUser->getUsergroup();
-        if (null === $groups) {
-            return (boolean) (0 < $currentFrontendUserGroups->count());
-        } elseif (true === $groups instanceof FrontendUserGroup) {
+        if (!$groups) {
+            return (0 < $currentFrontendUserGroups->count());
+        } elseif ($groups instanceof FrontendUserGroup) {
             return $currentFrontendUserGroups->contains($groups);
-        } elseif (true === $groups instanceof ObjectStorage) {
+        } elseif ($groups instanceof ObjectStorage) {
             $currentFrontendUserGroupsClone = clone $currentFrontendUserGroups;
             $currentFrontendUserGroupsClone->removeAll($groups);
             return ($currentFrontendUserGroups->count() !== $currentFrontendUserGroupsClone->count());
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
      * Returns TRUE only if a backend user is currently logged in. If used,
      * argument specifies that the logged in user must be that specific user
      *
-     * @param integer $backendUser
-     * @return boolean
-     * @api
+     * @param int|BackendUser|null $backendUser
      */
-    public function assertBackendUserLoggedIn($backendUser = null)
+    public function assertBackendUserLoggedIn($backendUser = null): bool
     {
+        if ($backendUser instanceof BackendUser) {
+            $backendUser = $backendUser->getUid();
+        }
         $currentBackendUser = $this->getCurrentBackendUser();
         if (null !== $backendUser) {
-            if ((integer) $currentBackendUser['uid'] === (integer) $backendUser) {
-                return true;
-            } else {
-                return false;
-            }
+            return ((integer) ($currentBackendUser['uid'] ?? 0) === $backendUser);
         }
         return is_array($currentBackendUser);
     }
@@ -297,25 +292,23 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      * the array/CSV $groups
      *
      * @param mixed $groups Array of group uids or CSV of group uids or one group uid
-     * @return boolean
-     * @api
      */
-    public function assertBackendUserGroupLoggedIn($groups = null)
+    public function assertBackendUserGroupLoggedIn($groups = null): bool
     {
-        if (false === $this->assertBackendUserLoggedIn()) {
+        if (!$this->assertBackendUserLoggedIn()) {
             return false;
         }
         $currentBackendUser = $this->getCurrentBackendUser();
-        $currentUserGroups = trim($currentBackendUser['usergroup'], ',');
+        $currentUserGroups = trim($currentBackendUser['usergroup'] ?? '', ',');
         /** @var array $userGroups */
         $userGroups = !empty($currentUserGroups) ? explode(',', $currentUserGroups) : [];
         if (0 === count($userGroups)) {
             return false;
         }
-        if (true === is_string($groups)) {
+        if (is_string($groups)) {
             $groups = trim($groups, ',');
             /** @var array $groups */
-            $groups = false === empty($groups) ? explode(',', $groups) : [];
+            $groups = !empty($groups) ? explode(',', $groups) : [];
         }
         /** @var array $groups */
         if (count($groups) > 0) {
@@ -326,29 +319,23 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 
     /**
      * Returns TRUE only if there is a current user logged in and this user
-     * is an admin class backend user
-     *
-     * @return boolean
-     * @api
+     * is an admin class backend user.
      */
-    public function assertAdminLoggedIn()
+    public function assertAdminLoggedIn(): bool
     {
-        if (false === $this->assertBackendUserLoggedIn()) {
+        if (!$this->assertBackendUserLoggedIn()) {
             return false;
         }
         $currentBackendUser = $this->getCurrentBackendUser();
-        return (boolean) $currentBackendUser['admin'];
+        return is_array($currentBackendUser) && (boolean) ($currentBackendUser['admin'] ?? false);
     }
 
     /**
-     * Gets the currently logged in Frontend User
-     *
-     * @return FrontendUser|null
-     * @api
+     * Gets the currently logged in Frontend User.
      */
-    public function getCurrentFrontendUser()
+    public function getCurrentFrontendUser(): ?FrontendUser
     {
-        if (true === empty($GLOBALS['TSFE']->loginUser)) {
+        if (empty($GLOBALS['TSFE']->loginUser)) {
             return null;
         }
         /** @var TypoScriptFrontendController $tsfe */
@@ -363,11 +350,8 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     /**
      * Returns a be_user record as lowerCamelCase indexed array if a BE user is
      * currently logged in.
-     *
-     * @return array
-     * @api
      */
-    public function getCurrentBackendUser()
+    public function getCurrentBackendUser(): ?array
     {
         return $GLOBALS['BE_USER']->user;
     }
@@ -382,21 +366,20 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      * If then attribute is not set and no ThenViewHelper and no ElseViewHelper is found, all child nodes are rendered
      *
      * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
-     * @api
      */
     protected function renderThenChild()
     {
-        if (true === $this->isFrontendContext()) {
+        if ($this->isFrontendContext()) {
             $GLOBALS['TSFE']->no_cache = 1;
         }
         return parent::renderThenChild();
     }
 
     /**
-     * @return boolean
+     * @codeCoverageIgnore
      */
-    protected function isFrontendContext()
+    protected function isFrontendContext(): bool
     {
-        return 'FE' === TYPO3_MODE;
+        return ContextUtility::isFrontend();
     }
 }

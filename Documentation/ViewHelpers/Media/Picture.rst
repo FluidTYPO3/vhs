@@ -80,7 +80,7 @@ src
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Path to the image or FileReference.
 
@@ -106,7 +106,7 @@ alt
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Text for the alt attribute.
 

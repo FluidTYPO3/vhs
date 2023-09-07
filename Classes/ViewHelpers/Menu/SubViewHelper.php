@@ -22,7 +22,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  */
 class SubViewHelper extends AbstractMenuViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'pageUid',
@@ -33,13 +33,14 @@ class SubViewHelper extends AbstractMenuViewHelper
     }
 
     /**
-     * @return NULL|string
+     * @return null|string
      */
     public function render()
     {
+        /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
         $parentInstance = $this->retrieveReconfiguredParentMenuInstance($pageUid);
-        if (null === $parentInstance) {
+        if (!$parentInstance) {
             return null;
         }
         $parentArguments = $parentInstance->getMenuArguments();
@@ -49,13 +50,13 @@ class SubViewHelper extends AbstractMenuViewHelper
         // rendered - which is expected for example if using a page setting to render a different page in menus.
         // This means that the following check although it appears redundant, it is in fact not.
         $isCurrent = $this->pageService->isCurrent($pageUid);
-        $isExpanded = (boolean) (true === (boolean) $parentArguments['expandAll']);
-        $shouldRender = (boolean) (true === $isActive || true === $isCurrent || true === $isExpanded);
-        if (false === $shouldRender) {
+        $isExpanded = (boolean) $parentArguments['expandAll'];
+        $shouldRender = $isActive || $isCurrent || $isExpanded;
+        if (!$shouldRender) {
             return null;
         }
         // retrieve the set of template variables which were in play when the parent menu VH started rendering.
-        /** @var iterable $variables */
+        /** @var array<string, mixed> $variables */
         $variables = $this->renderingContext->getViewHelperVariableContainer()->get(
             AbstractMenuViewHelper::class,
             'variables'
@@ -65,7 +66,6 @@ class SubViewHelper extends AbstractMenuViewHelper
         // restore the previous set of variables after they most likely have changed during the render() above.
         $variableProvider = $this->renderingContext->getVariableProvider();
         foreach ($variables as $name => $value) {
-            /** @var string $name */
             if ($variableProvider->exists($name)) {
                 $variableProvider->remove($name);
                 $variableProvider->add($name, $value);

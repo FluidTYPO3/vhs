@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -31,12 +32,7 @@ class OrViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'mixed', 'Input to either use, if not empty');
         $this->registerArgument('alternative', 'mixed', 'Alternative if content is empty, can use LLL: shortcut');
@@ -62,7 +58,10 @@ class OrViewHelper extends AbstractViewHelper
     protected static function getAlternativeValue(array $arguments, RenderingContextInterface $renderingContext)
     {
         /** @var RenderingContext $renderingContext */
-        $alternative = $arguments['alternative'];
+        $alternative = $arguments['alternative'] ?? null;
+        if ($alternative === null) {
+            return null;
+        }
         $arguments = (array) $arguments['arguments'];
         if (0 === count($arguments)) {
             $arguments = null;
@@ -72,13 +71,14 @@ class OrViewHelper extends AbstractViewHelper
         } elseif (0 === strpos($alternative, 'LLL:')) {
             $extensionName = $arguments['extensionName'] ?? null;
             if (null === $extensionName) {
-                $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+                $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+                    ->getControllerExtensionName();
             }
             $translated = LocalizationUtility::translate(substr($alternative, 4), $extensionName ?: 'core', $arguments);
             if (null !== $translated) {
                 $alternative = $translated;
             }
         }
-        return null !== $arguments && false === empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
+        return null !== $arguments && !empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
     }
 }

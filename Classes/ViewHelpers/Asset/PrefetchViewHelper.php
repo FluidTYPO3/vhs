@@ -40,22 +40,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * ```
  *
  * See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
- *
- * @package Vhs
- * @subpackage ViewHelpers\Asset
  */
 class PrefetchViewHelper extends AbstractAssetViewHelper
 {
+    protected string $type = 'link';
 
-    /**
-     * @var string
-     */
-    protected $type = 'link';
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -88,7 +78,6 @@ class PrefetchViewHelper extends AbstractAssetViewHelper
         );
     }
 
-
     /**
      * @return void
      */
@@ -103,17 +92,15 @@ class PrefetchViewHelper extends AbstractAssetViewHelper
         $this->finalize();
     }
 
-    /**
-     * @return string
-     */
-    public function build()
+    public function build(): string
     {
+        /** @var array|string $domains */
         $domains = $this->arguments['domains'];
-        if (false === is_array($domains)) {
+        if (!is_array($domains)) {
             $domains = GeneralUtility::trimExplode(',', $domains, true);
         }
         $headerCode = '';
-        if (true === (boolean) $this->arguments['force']) {
+        if ($this->arguments['force']) {
             $headerCode .= '<meta http-equiv="x-dns-prefetch-control" content="off">' . LF;
         }
         foreach ($domains as $domain) {

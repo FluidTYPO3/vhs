@@ -16,7 +16,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractLoopViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var boolean
      */
@@ -27,44 +26,32 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('iteration', 'string', 'Variable name to insert result into, suppresses output');
     }
 
     /**
-     * @param integer $i
-     * @param integer $from
-     * @param integer $to
-     * @param integer $step
-     * @param string $iterationArgument
-     * @param RenderingContextInterface $renderingContext
-     * @param \Closure $renderChildrenClosure
      * @return string
      */
     protected static function renderIteration(
-        $i,
-        $from,
-        $to,
-        $step,
-        $iterationArgument,
+        int $i,
+        int $from,
+        int $to,
+        int $step,
+        ?string $iterationArgument,
         RenderingContextInterface $renderingContext,
         \Closure $renderChildrenClosure
     ) {
-        if (false === empty($iterationArgument)) {
+        if (!empty($iterationArgument)) {
             $variableProvider = $renderingContext->getVariableProvider();
             $cycle = (integer) (($i - $from) / $step) + 1;
             $iteration = [
                 'index' => $i,
                 'cycle' => $cycle,
-                'isOdd' => 0 === $cycle % 2 ? false : true,
-                'isEven' => 0 === $cycle % 2 ? true : false,
-                'isFirst' => $i === $from ? true : false,
+                'isOdd' => 0 === $cycle % 2,
+                'isEven' => 0 === $cycle % 2,
+                'isFirst' => $i === $from,
                 'isLast' => static::isLast($i, $from, $to, $step)
             ];
             $variableProvider->add($iterationArgument, $iteration);
@@ -77,14 +64,7 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
         return $content;
     }
 
-    /**
-     * @param integer $i
-     * @param integer $from
-     * @param integer $to
-     * @param integer $step
-     * @return boolean
-     */
-    protected static function isLast($i, $from, $to, $step)
+    protected static function isLast(int $i, int $from, int $to, int $step): bool
     {
         if ($from === $to) {
             $isLast = true;

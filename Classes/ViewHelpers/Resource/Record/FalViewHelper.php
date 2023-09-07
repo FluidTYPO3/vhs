@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -49,12 +49,12 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class FalViewHelper extends AbstractRecordResourceViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+     * @var ResourceFactory
      */
     protected $resourceFactory;
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\FileRepository
+     * @var FileRepository
      */
     protected $fileRepository;
 
@@ -76,7 +76,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         $this->fileRepository = $fileRepository;
     }
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -102,14 +102,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     }
 
     /**
-     * Fetch a fileReference from the file repository
-     *
-     * @param string $table name of the table to get the file reference for
-     * @param string $field name of the field referencing a file
      * @param array|integer $uidOrRecord Database row
-     * @return array
      */
-    protected function getFileReferences($table, $field, $uidOrRecord)
+    protected function getFileReferences(string $table, string $field, $uidOrRecord): array
     {
         if (is_array($uidOrRecord)) {
             $record = $uidOrRecord;
@@ -124,6 +119,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $sqlRecordUid = $record['t3ver_oid'];
         } elseif (isset($record['_LOCALIZED_UID'])) {
             $sqlRecordUid = $record['_LOCALIZED_UID'];
+        } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+            $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
         } else {
             $sqlRecordUid = $record[$this->idField];
         }
@@ -131,13 +128,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         return $fileObjects;
     }
 
-    /**
-     * @param array $record
-     * @return array
-     */
-    public function getResources($record)
+    public function getResources(array $record): array
     {
-        if (!is_array($record) || empty($record)) {
+        if (empty($record)) {
             return [];
         }
         if (!empty($GLOBALS['TSFE']->sys_page)) {
@@ -147,6 +140,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 $sqlRecordUid = $record['t3ver_oid'];
             } elseif (isset($record['_LOCALIZED_UID'])) {
                 $sqlRecordUid = $record['_LOCALIZED_UID'];
+            } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+                $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
             } else {
                 $sqlRecordUid = $record[$this->idField];
             }
@@ -207,11 +202,12 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     );
             }
 
+            $queryBuilder->orderBy('sorting_foreign');
+
             // Execute
-            /** @var Statement $statement */
-            $statement = $queryBuilder->orderBy('sorting_foreign')->execute();
+            $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
             /** @var array[] $references */
-            $references = $statement->fetchAll();
+            $references = $statement->fetchAllAssociative();
 
             $fileReferences = [];
 

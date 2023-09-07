@@ -10,17 +10,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Form;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
-use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
-/**
- * Class HasValidatorViewHelperTest
- */
 class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
 {
 
@@ -28,24 +23,22 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
     {
         $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
         $this->singletonInstances[FileRepository::class] = $this->getMockBuilder(FileRepository::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
+            ->setMethods(['__destruct'])
+            ->disableOriginalConstructor()
+            ->getMock();
 
         parent::setUp();
     }
 
     protected function getInstanceOfFoo()
     {
-        if (version_compare(TYPO3_version, '9.3', '>=')) {
-            return new Foo();
-        }
-        return new LegacyFoo();
+        return new Foo();
     }
 
     protected function getNestedPathToFoo()
     {
-        if (version_compare(TYPO3_version, '9.3', '>=')) {
-            return 'foo';
-        }
-        return 'legacyFoo';
+        return 'foo';
     }
 
     public function testRenderElseWithSingleProperty()
@@ -87,16 +80,5 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [ReflectionService::class, $this->getMockBuilder(ReflectionService::class)->setMethods(['__destruct'])->disableOriginalConstructor()->getMock()],
-            ]
-        );
-        return $instance;
     }
 }

@@ -31,12 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class LoadedViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(

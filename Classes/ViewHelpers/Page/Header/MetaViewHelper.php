@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -24,16 +25,11 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
     use PageRendererTrait;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $tagName = 'meta';
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('name', 'string', 'Name property of meta tag');
@@ -52,9 +48,10 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
+        /** @var string|null $content */
         $content = $this->arguments['content'];
         if (!empty($content)) {
             $pageRenderer = static::getPageRenderer();

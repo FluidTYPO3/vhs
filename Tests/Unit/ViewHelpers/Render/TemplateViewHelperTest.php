@@ -10,7 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -26,6 +26,7 @@ class TemplateViewHelperTest extends AbstractViewHelperTestCase
     {
         $this->view = $this->getMockBuilder(StandaloneView::class)->disableOriginalConstructor()->getMock();
         $this->view->method('render')->willThrowException(new InvalidTemplateResourceException('test'));
+        GeneralUtility::addInstance(StandaloneView::class, $this->view);
 
         parent::setUp();
     }
@@ -34,16 +35,5 @@ class TemplateViewHelperTest extends AbstractViewHelperTestCase
     {
         $this->expectException(InvalidTemplateResourceException::class);
         $this->executeViewHelper(['variables' => []]);
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [StandaloneView::class, $this->view],
-            ]
-        );
-        return $instance;
     }
 }

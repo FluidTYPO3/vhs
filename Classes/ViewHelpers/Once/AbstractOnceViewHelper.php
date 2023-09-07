@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
@@ -35,12 +36,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      */
     protected static $currentRenderingContext;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -67,9 +63,6 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -92,38 +85,25 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
             return false;
         }
         static::removeIfExpired($arguments);
-        return static::assertShouldSkip($arguments) === false;
+        $shouldSkip = static::assertShouldSkip($arguments) === false;
+        static::storeIdentifier($arguments);
+        return $shouldSkip;
     }
 
-    /**
-     * @param array $arguments
-     * @return string
-     */
-    protected static function getIdentifier(array $arguments)
+    protected static function getIdentifier(array $arguments): string
     {
-        if (true === isset($arguments['identifier'])) {
-            return $arguments['identifier'];
-        }
-        return static::class;
+        return $arguments['identifier'] ?? static::class;
     }
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function storeIdentifier(array $arguments)
+    protected static function storeIdentifier(array $arguments): void
     {
         $identifier = static::getIdentifier($arguments);
-        if (false === isset(static::$identifiers[$identifier])) {
+        if (!isset(static::$identifiers[$identifier])) {
             static::$identifiers[$identifier] = time();
         }
     }
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function removeIfExpired(array $arguments)
+    protected static function removeIfExpired(array $arguments): void
     {
         $id = static::getIdentifier($arguments);
         if (isset(static::$identifiers[$id]) && static::$identifiers[$id] <= time() - $arguments['ttl']) {
@@ -131,14 +111,10 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
         }
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    protected static function assertShouldSkip(array $arguments)
+    protected static function assertShouldSkip(array $arguments): bool
     {
         $identifier = static::getIdentifier($arguments);
-        return (true === isset(static::$identifiers[$identifier]));
+        return isset(static::$identifiers[$identifier]);
     }
 
     /**
@@ -151,11 +127,10 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      * If then attribute is not set and no ThenViewHelper and no ElseViewHelper is found, all child nodes are rendered
      *
      * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
-     * @api
      */
     protected function renderThenChild()
     {
-        if (TYPO3_MODE === 'FE') {
+        if (ContextUtility::isFrontend()) {
             $GLOBALS['TSFE']->no_cache = 1;
         }
         return parent::renderThenChild();

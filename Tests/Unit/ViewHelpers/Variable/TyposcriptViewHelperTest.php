@@ -11,8 +11,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use PHPUnit\Framework\Constraint\IsType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Class TyposcriptViewHelperTest
@@ -36,6 +36,9 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
                 ],
             ]
         );
+
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $this->configurationManager);
+
         parent::setUp();
     }
 
@@ -69,16 +72,5 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
     public function canGetPathUsingTagContent()
     {
         $this->assertNotEmpty($this->executeViewHelperUsingTagContent('config.tx_extbase.features'));
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [ConfigurationManagerInterface::class, $this->configurationManager],
-            ]
-        );
-        return $instance;
     }
 }

@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Asset;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
@@ -24,19 +23,9 @@ class PrefetchViewHelperTest extends AbstractViewHelperTestCase
     public function buildReturnsMetaTag()
     {
         $instance = $this->buildViewHelperInstance(['domains' => 'test.com,test2.com', 'force' => true]);
+        $this->setInaccessiblePropertyValue($instance, 'tagBuilder', new TagBuilder());
         $instance->render();
         $result = $instance->build();
         $this->assertStringStartsWith('<meta', $result);
-    }
-
-    protected function createObjectManagerInstance(): ObjectManagerInterface
-    {
-        $instance = parent::createObjectManagerInstance();
-        $instance->method('get')->willReturnMap(
-            [
-                [TagBuilder::class, new TagBuilder()],
-            ]
-        );
-        return $instance;
     }
 }

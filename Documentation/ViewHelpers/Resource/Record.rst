@@ -22,7 +22,7 @@ table
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    The table to lookup records.
 
@@ -35,7 +35,7 @@ field
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    The field of the table associated to resources.
 

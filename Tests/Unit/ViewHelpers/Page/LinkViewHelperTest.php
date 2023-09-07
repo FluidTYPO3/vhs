@@ -9,14 +9,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyTypoScriptFrontendController;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
-/**
- * @protection on
- * @package Vhs
- */
 class LinkViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
@@ -30,6 +28,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
     public function setUp(): void
     {
         parent::setUp();
+
         $this->pageService = $this->getMockBuilder(PageService::class)->setMethods(
             [
                 'getPage',
@@ -40,20 +39,16 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
             ]
         )->getMock();
         $this->pageService->expects($this->any())->method('getShortcutTargetPage')->willReturnArgument(0);
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['TSFE'] = new DummyTypoScriptFrontendController();
+
+        $uriBuilder = $this->getMockBuilder(UriBuilder::class)
+            ->setMethods(['buildFrontendUri', 'build', 'setUseCacheHash'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        GeneralUtility::addInstance(UriBuilder::class, $uriBuilder);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($GLOBALS['TSFE']);
-    }
-
-    /**
-     * @return AbstractViewHelper
-     */
-    protected function createInstance()
+    protected function createInstance(): LinkViewHelper
     {
         $instance = parent::createInstance();
         $instance->injectPageService($this->pageService);
@@ -77,7 +72,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
     public function generatesNullLinkOnZeroPageUid()
     {
         $arguments = ['pageUid' => 0];
-        $this->pageService->expects($this->once())->method('getPage')->willReturn(null);
+        $this->pageService->expects($this->once())->method('getPage')->willReturn([]);
         $result = $this->executeViewHelper($arguments, [], null, 'Vhs');
         $this->assertNull($result);
     }

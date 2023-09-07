@@ -259,7 +259,7 @@ domains
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Domain DNS names to prefetch. By default will add all sys_domain record DNS names
 

@@ -36,7 +36,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTestCase
     public function getIdentifierTestValues()
     {
         return [
-            [null, 'index_Standard__'],
+            [null, 'action_Controller__Vhs'],
             ['test', 'test'],
             ['test2', 'test2'],
         ];

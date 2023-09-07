@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Statement;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -23,12 +23,12 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     use SlideViewHelperTrait;
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer
      */
     protected $contentObject;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -37,11 +37,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
         /** @var ContentObjectRenderer $contentObject */
@@ -49,12 +45,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $this->contentObject = $contentObject;
     }
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('column', 'integer', 'Column position number (colPos) of the column to render');
         $this->registerArgument(
@@ -66,7 +57,13 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             'sorting'
         );
         $this->registerArgument('sortDirection', 'string', 'Optional sort direction of content elements', false, 'ASC');
-        $this->registerArgument('pageUid', 'integer', 'If set, selects only content from this page UID', false, 0);
+        $this->registerArgument(
+            'pageUid',
+            'integer',
+            'If set, selects only content from this page UID. Ignored when "contentUids" is specified.',
+            false,
+            0
+        );
         $this->registerArgument(
             'contentUids',
             'array',
@@ -94,40 +91,36 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $this->registerSlideArguments();
     }
 
-    /**
-     * Get content records based on column and pid
-     *
-     * @return array
-     */
-    protected function getContentRecords()
+    protected function getContentRecords(): array
     {
+        /** @var int $limit */
         $limit = $this->arguments['limit'];
+        /** @var int $slide */
+        $slide = $this->arguments['slide'];
 
         $pageUid = $this->getPageUid();
 
-        if ((integer) $this->arguments['slide'] === 0) {
+        if ((integer) $slide === 0) {
             $contentRecords = $this->getSlideRecordsFromPage($pageUid, $limit);
         } else {
             $contentRecords = $this->getSlideRecords($pageUid, $limit);
         }
 
-        if (true === (boolean) $this->arguments['render']) {
+        if ($this->arguments['render']) {
             $contentRecords = $this->getRenderedRecords($contentRecords);
         }
 
         return $contentRecords;
     }
 
-    /**
-     * @param integer $pageUid
-     * @param integer $limit
-     * @return array[]
-     */
-    protected function getSlideRecordsFromPage($pageUid, $limit)
+    protected function getSlideRecordsFromPage(int $pageUid, ?int $limit): array
     {
+        /** @var string $direction */
+        $direction = $this->arguments['sortDirection'];
+        /** @var string $order */
         $order = $this->arguments['order'];
-        if (false === empty($order)) {
-            $sortDirection = strtoupper(trim($this->arguments['sortDirection']));
+        if (!empty($order)) {
+            $sortDirection = strtoupper(trim($direction));
             if ('ASC' !== $sortDirection && 'DESC' !== $sortDirection) {
                 $sortDirection = 'ASC';
             }
@@ -135,7 +128,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         }
 
         $contentUids = $this->arguments['contentUids'];
-        if (true === is_array($contentUids) && !empty($contentUids)) {
+        if (is_array($contentUids) && !empty($contentUids)) {
             return $GLOBALS['TSFE']->cObj->getRecords(
                 'tt_content',
                 [
@@ -144,7 +137,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
                     'max' => $limit,
                     // Note: pidInList must not use $pageUid which defaults to current PID. Use argument-passed pageUid!
                     // A value of zero here removes the "pid" from the condition generated by ContentObjectRenderer.
-                    'pidInList' => (integer)$this->arguments['pageUid'],
+                    'pidInList' => (integer)$pageUid,
                     'includeRecordsWithoutDefaultTranslation' => !$this->arguments['hideUntranslated']
                 ]
             );
@@ -154,7 +147,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         if (is_numeric($this->arguments['column'])) {
             $conditions = sprintf('colPos = %d', (integer) $this->arguments['column']);
         }
-        if (true === (boolean) $this->arguments['sectionIndexOnly']) {
+        if ($this->arguments['sectionIndexOnly']) {
             $conditions .= ' AND sectionIndex = 1';
         }
 
@@ -176,12 +169,20 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      * Gets the configured, or the current page UID if
      * none is configured in arguments and no content_from_pid
      * value exists in the current page record's attributes.
-     *
-     * @return integer
      */
-    protected function getPageUid()
+    protected function getPageUid(): int
     {
-        $pageUid = (integer) $this->arguments['pageUid'];
+        /** @var array|null $contentUids */
+        $contentUids = $this->arguments['contentUids'] ?? null;
+
+        if (!empty($contentUids)) {
+            return 0;
+        }
+
+        /** @var int $pageUid */
+        $pageUid = $this->arguments['pageUid'];
+
+        $pageUid = (integer) $pageUid;
         if (1 > $pageUid) {
             $pageUid = (integer) ($GLOBALS['TSFE']->page['content_from_pid'] ?? 0);
         }
@@ -194,20 +195,19 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     /**
      * This function renders an array of tt_content record into an array of rendered content
      * it returns a list of elements rendered by typoscript RECORD function
-     *
-     * @param array $rows database rows of records (each item is a tt_content table record)
-     * @return array
      */
-    protected function getRenderedRecords(array $rows)
+    protected function getRenderedRecords(array $rows): array
     {
-        if (false === empty($this->arguments['loadRegister'])) {
-            $this->contentObject->cObjGetSingle('LOAD_REGISTER', $this->arguments['loadRegister']);
+        /** @var array $loadRegister */
+        $loadRegister = $this->arguments['loadRegister'];
+        if (!empty($loadRegister)) {
+            $this->contentObject->cObjGetSingle('LOAD_REGISTER', $loadRegister);
         }
         $elements = [];
         foreach ($rows as $row) {
-            array_push($elements, static::renderRecord($row));
+            $elements[] = static::renderRecord($row);
         }
-        if (false === empty($this->arguments['loadRegister'])) {
+        if (!empty($loadRegister)) {
             $this->contentObject->cObjGetSingle('RESTORE_REGISTER', []);
         }
         return $elements;
@@ -218,11 +218,8 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      * element by typoscript RENDER function. We keep track of already
      * rendered records to avoid rendering the same record twice inside the
      * same nested stack of content elements.
-     *
-     * @param array $row
-     * @return string|NULL
      */
-    protected static function renderRecord(array $row)
+    protected static function renderRecord(array $row): ?string
     {
         if (0 < ($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']] ?? 0)) {
             return null;
@@ -235,26 +232,23 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
         $parent = $GLOBALS['TSFE']->currentRecord;
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It's should not be allowed to do this again then!!
-        if (false === empty($parent)) {
-            ++$GLOBALS['TSFE']->recordRegister[$parent];
+        if (!empty($parent)) {
+            if (isset($GLOBALS['TSFE']->recordRegister[$parent])) {
+                ++$GLOBALS['TSFE']->recordRegister[$parent];
+            } else {
+                $GLOBALS['TSFE']->recordRegister[$parent] = 1;
+            }
         }
         $html = $GLOBALS['TSFE']->cObj->cObjGetSingle('RECORDS', $conf);
 
         $GLOBALS['TSFE']->currentRecord = $parent;
-        if (false === empty($parent)) {
+        if (!empty($parent)) {
             --$GLOBALS['TSFE']->recordRegister[$parent];
         }
         return $html;
     }
 
-    /**
-     * @param string $fields
-     * @param string $condition
-     * @param string $order
-     * @param integer $limit
-     * @return array
-     */
-    protected function executeSelectQuery($fields, $condition, $order, $limit)
+    protected function executeSelectQuery(string $fields, string $condition, string $order, int $limit): array
     {
         $queryBuilder = (new ConnectionPool())->getConnectionForTable('tt_content')->createQueryBuilder();
         $queryBuilder->select($fields)->from('tt_content')->where($condition);
@@ -263,19 +257,13 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $queryBuilder->orderBy($orderings[0], $orderings[1]);
         }
         if ($limit) {
-            $queryBuilder->setMaxResults((integer) $limit);
+            $queryBuilder->setMaxResults($limit);
         }
-        /** @var Statement $result */
-        $result = $queryBuilder->execute();
-        return $result->fetchAll();
+        $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+        return $result->fetchAllAssociative();
     }
 
-    /**
-     * @param string $fields
-     * @param string $condition
-     * @return string
-     */
-    protected function generateSelectQuery($fields, $condition)
+    protected function generateSelectQuery(string $fields, string $condition): string
     {
         $queryBuilder = (new ConnectionPool())->getConnectionForTable('tt_content')->createQueryBuilder();
         $queryBuilder->select($fields)->from('tt_content')->where($condition);

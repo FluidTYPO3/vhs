@@ -52,6 +52,6 @@ value
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Value to check

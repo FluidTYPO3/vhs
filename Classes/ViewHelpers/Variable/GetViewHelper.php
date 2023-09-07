@@ -56,10 +56,7 @@ class GetViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('name', 'string', 'Name of variable to retrieve');
         $this->registerArgument(
@@ -82,16 +79,16 @@ class GetViewHelper extends AbstractViewHelper
         $name = $arguments['name'];
         $useRawKeys = $arguments['useRawKeys'];
         if (false === strpos($name, '.')) {
-            if (true === $variableProvider->exists($name)) {
+            if ($variableProvider->exists($name)) {
                 return $variableProvider->get($name);
             }
         } else {
             $segments = explode('.', $name);
             $lastSegment = array_shift($segments);
             $templateVariableRootName = $lastSegment;
-            if (true === $variableProvider->exists($templateVariableRootName)) {
+            if ($variableProvider->exists($templateVariableRootName)) {
                 $templateVariableRoot = $variableProvider->get($templateVariableRootName);
-                if (true === $useRawKeys) {
+                if ($useRawKeys) {
                     return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
                 }
                 try {

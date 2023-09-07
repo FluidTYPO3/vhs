@@ -19,10 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PdfThumbnailViewHelper extends ImageViewHelper
 {
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('path', 'string', 'DEPRECATED: Use src instead');
@@ -70,13 +67,19 @@ class PdfThumbnailViewHelper extends ImageViewHelper
      */
     public function render()
     {
-        $src = GeneralUtility::getFileAbsFileName($this->arguments['src']);
-        if (false === file_exists($src)) {
+        /** @var string $srcArgument */
+        $srcArgument = $this->arguments['src'];
+        $src = GeneralUtility::getFileAbsFileName($srcArgument);
+        if (!file_exists($src)) {
             return '';
         }
+        /** @var int $density */
         $density = $this->arguments['density'];
+        /** @var int $rotate */
         $rotate = $this->arguments['rotate'];
-        $page = (integer) $this->arguments['page'];
+        /** @var int $page */
+        $page = $this->arguments['page'];
+        /** @var string|null $background */
         $background = $this->arguments['background'];
         $forceOverwrite = (boolean) $this->arguments['forceOverwrite'];
         $filename = basename($src);
@@ -88,7 +91,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         } else {
             $colorspace = 'RGB';
         }
-        $tempPath = (version_compare(TYPO3_version, '8.0', '>=')) ? 'typo3temp/assets/' : 'typo3temp/';
+        $tempPath = 'typo3temp/assets/';
         $path = GeneralUtility::getFileAbsFileName(
             $tempPath
             . 'vhs-pdf-'
@@ -99,7 +102,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
             . filemtime($src)
             . '.png'
         );
-        if (false === file_exists($path) || true === $forceOverwrite) {
+        if (!file_exists($path) || $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
             if (0 < (integer) $density) {
                 $arguments .= ' -density ' . $density;

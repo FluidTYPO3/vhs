@@ -31,20 +31,12 @@ class FieldNameViewHelper extends AbstractViewHelper
      */
     protected $persistenceManager;
 
-    /**
-     * @param PersistenceManagerInterface $persistenceManager
-     * @return void
-     */
-    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
     }
 
-    /**
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('name', 'string', 'Name of the form field to generate the HMAC for.');
         $this->registerArgument(
@@ -60,20 +52,24 @@ class FieldNameViewHelper extends AbstractViewHelper
      */
     public function render()
     {
+        /** @var string $property */
+        $property = $this->arguments['property'];
+
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($this->isObjectAccessorMode()) {
             $formObjectName = $viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName');
             if (!empty($formObjectName)) {
-                $propertySegments = explode('.', $this->arguments['property']);
+                $propertySegments = explode('.', $property);
                 $propertyPath = '';
                 foreach ($propertySegments as $segment) {
                     $propertyPath .= '[' . $segment . ']';
                 }
                 $name = $formObjectName . $propertyPath;
             } else {
-                $name = $this->arguments['property'];
+                $name = $property;
             }
         } else {
+            /** @var string $name */
             $name = $this->arguments['name'];
         }
         if (null === $name || '' === $name) {
@@ -103,10 +99,7 @@ class FieldNameViewHelper extends AbstractViewHelper
         return $name;
     }
 
-    /**
-     * @return boolean
-     */
-    protected function isObjectAccessorMode()
+    protected function isObjectAccessorMode(): bool
     {
         return (
             $this->hasArgument('property')

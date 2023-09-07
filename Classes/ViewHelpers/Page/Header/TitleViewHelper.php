@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -48,12 +49,7 @@ class TitleViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
     use PageRendererTrait;
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('title', 'string', 'Title tag content');
         $this->registerArgument(
@@ -67,9 +63,6 @@ class TitleViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -77,17 +70,21 @@ class TitleViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return;
         }
-        if (false === empty($arguments['title'])) {
+        if (!empty($arguments['title'])) {
+            /** @var string $title */
             $title = $arguments['title'];
         } else {
+            /** @var string $title */
             $title = $renderChildrenClosure();
         }
-        $title = trim(preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
+        /** @var string $whitespace */
+        $whitespace = $arguments['whitespaceString'];
+        $title = trim((string) preg_replace('/\s+/u', $whitespace, $title), $whitespace);
         static::getPageRenderer()->setTitle($title);
-        if (true === $arguments['setIndexedDocTitle']) {
+        if ($arguments['setIndexedDocTitle']) {
             $GLOBALS['TSFE']->indexedDocTitle = $title;
         }
     }

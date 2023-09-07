@@ -80,7 +80,7 @@ pageUid
 :aspect:`Required`
    false
 :aspect:`Description`
-   If set, selects only content from this page UID
+   If set, selects only content from this page UID. Ignored when "contentUids" is specified.
 
 .. _content.render_contentuids:
 
@@ -174,7 +174,7 @@ slide
 :aspect:`Required`
    false
 :aspect:`Description`
-   Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used
+   Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.
 
 .. _content.render_slidecollect:
 
@@ -200,7 +200,7 @@ slideCollectReverse
 :aspect:`Required`
    false
 :aspect:`Description`
-   Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))
+   Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.
 
 .. _content.render_as:
 

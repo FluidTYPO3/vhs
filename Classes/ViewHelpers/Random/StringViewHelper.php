@@ -28,10 +28,7 @@ class StringViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('length', 'integer', 'Length of string to generate');
         $this->registerArgument('minimumLength', 'integer', 'Minimum length of string if random length', false, 32);
@@ -47,14 +44,22 @@ class StringViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var int $length */
         $length = $arguments['length'];
-        $minimumLength = (integer) $arguments['minimumLength'];
-        $maximumLength = (integer) $arguments['maximumLength'];
+
+        /** @var int $minimumLength */
+        $minimumLength = $arguments['minimumLength'];
+        $minimumLength = (integer) $minimumLength;
+        /** @var int $maximumLength */
+        $maximumLength = $arguments['maximumLength'];
+        $maximumLength = (integer) $maximumLength;
         /** @var string $characters */
         $characters = $arguments['characters'];
         if ($minimumLength != $maximumLength) {
+            /** @var int<1, max> $length */
             $length = random_int($minimumLength, $maximumLength);
         } else {
+            /** @var int<1, max> $length */
             $length = $length !== null ? $length : $minimumLength;
         }
         $string = '';

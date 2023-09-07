@@ -12,9 +12,7 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -34,8 +32,6 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['resolvePackagePath'])
             ->disableOriginalConstructor()
@@ -47,13 +43,24 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
         );
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
 
+        $mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['parseFunc'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockContentObject->method('parseFunc')->willReturn('foobar');
+        $this->singletonInstances[ConfigurationManagerInterface::class] = $this->getMockBuilder(ConfigurationManagerInterface::class)
+            ->getMockForAbstractClass();
+        $this->singletonInstances[ConfigurationManagerInterface::class]->method('getContentObject')
+            ->willReturn($mockContentObject);
+
         $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = [];
+
+        parent::setUp();
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-        AccessibleExtensionManagementUtility::setPackageManager(null);
         unset($GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']);
     }
 
@@ -74,21 +81,9 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
      */
     public function supportsHtmlArgument()
     {
-        $mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)->setMethods(['parseFunc'])->getMock();
-        $mockContentObject->expects($this->once())->method('parseFunc')->willReturn('foobar');
-        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
-        $configurationManager->method('getContentObject')->willReturn($mockContentObject);
-        $objectManager = $this->getMockBuilder(ObjectManager::class)->setMethods(['get'])->disableOriginalConstructor()->getMock();
-        $objectManager->method('get')->willReturn($configurationManager);
-
-        $singletons = GeneralUtility::getSingletonInstances();
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
-
         $arguments = $this->arguments;
         $arguments['html'] = true;
         $test = $this->executeViewHelper($arguments);
-
-        GeneralUtility::resetSingletonInstances($singletons);
 
         $this->assertNotEmpty($test);
     }

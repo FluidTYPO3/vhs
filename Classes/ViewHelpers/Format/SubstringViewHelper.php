@@ -21,10 +21,7 @@ class SubstringViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content string to substring');
         $this->registerArgument('start', 'integer', 'Positive or negative offset', false, 0);
@@ -34,9 +31,6 @@ class SubstringViewHelper extends AbstractViewHelper
     /**
      * Substrings a string or string-compatible value
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -45,7 +39,9 @@ class SubstringViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
-        $start = (integer) $arguments['start'];
+        /** @var int $start */
+        $start = $arguments['start'];
+        /** @var int $length */
         $length = $arguments['length'];
         if (null !== $length) {
             if ($length < 0) {

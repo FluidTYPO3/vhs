@@ -86,10 +86,7 @@ class ColumnViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
         $this->registerArgument(
@@ -106,9 +103,6 @@ class ColumnViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -116,13 +110,19 @@ class ColumnViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $as */
+        $as = $arguments['as'];
+        /** @var string|null $key */
+        $key = $arguments['columnKey'];
+        /** @var string|null $indexKey */
+        $indexKey = $arguments['indexKey'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
-        $output = array_column($subject, $arguments['columnKey'], $arguments['indexKey']);
+        $output = array_column($subject, $key, $indexKey);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -23,20 +24,12 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('extensionName', 'string', 'Name, in UpperCamelCase, of the extension to be checked');
     }
 
-    /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    protected static function getExtensionKey(array $arguments, RenderingContextInterface $renderingContext)
+    protected static function getExtensionKey(array $arguments, RenderingContextInterface $renderingContext): string
     {
         /** @var string $extensionName */
         $extensionName = static::getExtensionName($arguments, $renderingContext);
@@ -44,9 +37,6 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @throws \RuntimeException
      * @return mixed
      */
     protected static function getExtensionName(array $arguments, RenderingContextInterface $renderingContext)
@@ -55,8 +45,8 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
         if (isset($arguments['extensionName']) && !empty($arguments['extensionName'])) {
             return $arguments['extensionName'];
         }
-        $request = $renderingContext->getControllerContext()->getRequest();
-        $extensionName = $request->getControllerExtensionName();
+        $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+            ->getControllerExtensionName();
         if (empty($extensionName)) {
             throw new \RuntimeException(
                 'Unable to read extension name from ControllerContext and value not manually specified',

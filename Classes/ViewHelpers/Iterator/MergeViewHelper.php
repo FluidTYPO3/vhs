@@ -29,10 +29,7 @@ class MergeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'a',
@@ -50,9 +47,6 @@ class MergeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return array
      */
     public static function renderStatic(
@@ -61,7 +55,7 @@ class MergeViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $a = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['a'] ?? $renderChildrenClosure());
-        $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b'], $arguments['useKeys']);
+        $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b'], (bool) $arguments['useKeys']);
         return static::mergeArraysStatic($a, $b);
     }
 }

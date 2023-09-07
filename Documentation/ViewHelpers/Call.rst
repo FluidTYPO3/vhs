@@ -51,7 +51,7 @@ method
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Name of method to call on instance
 

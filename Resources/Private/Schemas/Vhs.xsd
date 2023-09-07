@@ -37,7 +37,6 @@ features shared by every Asset type:
 > Note: there are no static TypoScript templates for VHS but
 > you will find a complete list in the README.md file in the
 > root of the extension folder.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -152,7 +151,6 @@ by the `build()` method.
 ```
 
 See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -262,7 +260,6 @@ See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
 
 Allows inserting a `<script>` Asset. Settings specify
 where to insert the Asset and how to treat it.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -362,7 +359,6 @@ where to insert the Asset and how to treat it.
 
 Allows inserting a `<link>` or `<style>` Asset. Settings
 specify where to insert the Asset and how to treat it.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -871,11 +867,6 @@ in menus set $showHiddenInMenu to TRUE.
           <xsd:documentation><![CDATA[Include pages hidden in menu]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showHiddenInMenu" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED: Use includeHiddenInMenu]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="condition.page.isChildPage">
@@ -1119,7 +1110,6 @@ provided value is array.
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is a boolean.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -1503,7 +1493,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1538,7 +1528,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -1548,7 +1538,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -1605,7 +1595,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1640,7 +1630,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -1650,7 +1640,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -1681,7 +1671,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1716,7 +1706,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -1726,7 +1716,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -1767,7 +1757,7 @@ It can be rendered as follows:
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1802,7 +1792,7 @@ It can be rendered as follows:
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -1812,7 +1802,7 @@ It can be rendered as follows:
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -2149,7 +2139,6 @@ The class itself can contain any number of protected
 properties, but only those which have a getter method
 can be accessed by Fluid and as therefore we only dump
 those properties which you **can in fact access**.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2676,12 +2665,17 @@ result in fatal JavaScript errors in the client browser.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="recursionMarker" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Any value - string, integer, boolean, object or NULL - inserted instead of recursive instances of objects]]></xsd:documentation>
+          <xsd:documentation><![CDATA[String or null - inserted instead of recursive instances of objects]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="dateTimeFormat" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[A date() format for DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="pretty" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, outputs JSON with JSON_PRETTY_PRINT]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -2960,6 +2954,17 @@ ViewHelper makes advanced chained inline processing possible:
   <xsd:element name="format.replace">
     <xsd:annotation>
       <xsd:documentation><![CDATA[Replaces $substring in $content with $replacement.
+
+Supports array as input substring/replacements and content.
+
+When input substring/replacement is an array, both must be
+the same length and must contain only strings.
+
+When input content is an array, the search/replace is done
+on every value in the input content array and the return
+value will be an array of equal size as the input content
+array but with all values search/replaced. All values in the
+input content array must be strings.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2968,22 +2973,22 @@ ViewHelper makes advanced chained inline processing possible:
       </xsd:sequence>
       <xsd:attribute type="xsd:string" name="content" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Content in which to perform replacement]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Content in which to perform replacement. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="substring" default="NULL" use="required">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Substring to replace]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Substring to replace. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="replacement" default="''">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Replacement to insert]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Replacement to insert. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="count" default="NULL">
+      <xsd:attribute type="xsd:anySimpleType" name="returnCount" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Maximum number of times to perform replacement]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If TRUE, returns the number of replacements that were performed instead of returning output string. See also `v:count.substring`.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="caseSensitive" default="true">
@@ -3138,28 +3143,6 @@ of individual chars to strip off, default is all whitespaces).
       <xsd:attribute type="xsd:string" name="content" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Content to encode for URI]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="format.url.sanitizeString">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[Sanitizes a string
-
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:string" name="string" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[The string to sanitize.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="customMap" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Associative array of additional characters to replace or use to override built-in mappings.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -5235,6 +5218,11 @@ http://scottjehl.github.io/picturefill/
           <xsd:documentation><![CDATA[Information generated by the backend's graphical cropping UI]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="class" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
@@ -5490,6 +5478,11 @@ pages the first page is rendered by default unless specified.
       <xsd:attribute type="xsd:string" name="crop" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Information generated by the backend's graphical cropping UI]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="class" default="NULL">
@@ -6580,11 +6573,6 @@ with each page record.
           <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional parameter for wrapping the link with the uid of the page]]></xsd:documentation>
@@ -6864,11 +6852,6 @@ with each page record.
       <xsd:attribute type="xsd:string" name="classCurrent" default="'current'">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
@@ -7197,11 +7180,6 @@ contain the content of this ViewHelper.
           <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional parameter for wrapping the link with the uid of the page]]></xsd:documentation>
@@ -7474,11 +7452,6 @@ with each page record.
       <xsd:attribute type="xsd:string" name="classCurrent" default="'current'">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
@@ -7758,11 +7731,6 @@ with each page record.
       <xsd:attribute type="xsd:string" name="classCurrent" default="'current'">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
@@ -8293,11 +8261,6 @@ well as the "then" and "else" arguments.
           <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Optional parameter for wrapping the link with the uid of the page]]></xsd:documentation>
@@ -8388,7 +8351,6 @@ well as the "then" and "else" arguments.
   <xsd:element name="page.footer">
     <xsd:annotation>
       <xsd:documentation><![CDATA[ViewHelper used to place header blocks in document footer
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -8475,7 +8437,6 @@ well as the "then" and "else" arguments.
   <xsd:element name="page.header">
     <xsd:annotation>
       <xsd:documentation><![CDATA[ViewHelper used to place header blocks in document header
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -9213,11 +9174,6 @@ Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
           <xsd:documentation><![CDATA[The anchor to be added to the URI]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkAccessRestrictedPages" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED: Use showAccessProtected instead.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="absolute" default="false">
         <xsd:annotation>
           <xsd:documentation><![CDATA[When TRUE, the URI of the rendered link is absolute]]></xsd:documentation>
@@ -9241,1513 +9197,6 @@ Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
       <xsd:attribute type="xsd:string" name="pageTitleAs" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[When rendering child content, supplies page title as variable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="page.menu">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Page: Menu ViewHelper
-
-ViewHelper for rendering TYPO3 menus in Fluid
-
-Supports both automatic, tag-based rendering (which
-defaults to `ul > li` with options to set both the
-parent and child tag names. When using manual rendering
-a range of support CSS classes are available along
-with each page record.
-
-DEPRECATED: use v:menu instead
-
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:anySimpleType" name="additionalAttributes" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="data" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceClosingTag" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, forces the created tag to use a closing tag. If FALSE, allows self-closing tags.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="hideIfEmpty" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Hide the tag completely if there is no tag content]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contenteditable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the contents of the element are editable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contextmenu" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="draggable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element is draggable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dropzone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="translate" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="spellcheck" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="hidden" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showAccessProtected" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE links to access protected pages are always rendered regardless of user login status]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessProtected" default="'protected'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessGranted" default="'access-granted'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected but access is actually granted]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutUid" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutTarget" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional param for using shortcut target instead of shortcut itself for current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutData" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Shortcut to set useShortcutTarget and useShortcutData simultaneously]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagName" default="'ul'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for enclosing container]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagNameChildren" default="'li'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for child nodes surrounding links. If set to "a" enables non-wrapping mode.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="entryLevel" default="0">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional entryLevel TS equivalent of the menu]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="levels" default="1">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="expandAll" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and $levels > 1 then expands all (not just the active) menu items which have submenus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classFirst" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the first menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classLast" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the last menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classActive" default="'active'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to active links]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classCurrent" default="'current'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional parameter for wrapping the link with the uid of the page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showHiddenInMenu" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Include pages that are set to be hidden in menus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not display the current page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap the current page in a link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkActive" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap with links the titles of pages that are active in the rootline]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="titleFields" default="'nav_title,title'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeAnchorTitle" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, includes the page title as title attribute on the anchor.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeSpacers" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Wether or not to include menu spacers in the page select query]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="deferred" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="as" default="'menu'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu pages as an array in a variable named after this value and renders the tag content. If the tag content is empty automatic rendering is triggered.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="rootLineAs" default="'rootLine'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="excludePages" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceAbsoluteUrl" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, the menu will be rendered with absolute URLs]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="doktypes" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED: Please use typical doktypes for starting points like shortcuts.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="divider" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional divider to insert between each menu item. Note that this does not mix well with automatic rendering due to the use of an ul > li structure]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="pageUid" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional parent page UID to use as top level of menu. If left out will be detected from rootLine using $entryLevel]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="page.menu.browse">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Page: Browse Menu ViewHelper
-
-ViewHelper for rendering TYPO3 browse menus in Fluid
-
-Renders links to browse inside a menu branch including
-first, previous, next, last and up to the parent page.
-Supports both automatic, tag-based rendering (which
-defaults to `ul > li` with options to set both the
-parent and child tag names. When using manual rendering
-a range of support CSS classes are available along
-with each page record.
-
-DEPRECATED: use v:menu.browse instead
-
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:anySimpleType" name="additionalAttributes" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="data" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceClosingTag" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, forces the created tag to use a closing tag. If FALSE, allows self-closing tags.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="hideIfEmpty" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Hide the tag completely if there is no tag content]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contenteditable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the contents of the element are editable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contextmenu" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="draggable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element is draggable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dropzone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="translate" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="spellcheck" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="hidden" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showAccessProtected" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE links to access protected pages are always rendered regardless of user login status]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessProtected" default="'protected'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessGranted" default="'access-granted'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected but access is actually granted]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutUid" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutTarget" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional param for using shortcut target instead of shortcut itself for current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutData" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Shortcut to set useShortcutTarget and useShortcutData simultaneously]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagName" default="'ul'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for enclosing container]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagNameChildren" default="'li'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for child nodes surrounding links. If set to "a" enables non-wrapping mode.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="entryLevel" default="0">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional entryLevel TS equivalent of the menu]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="levels" default="1">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="expandAll" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and $levels > 1 then expands all (not just the active) menu items which have submenus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classFirst" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the first menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classLast" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the last menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classActive" default="'active'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to active links]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classCurrent" default="'current'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional parameter for wrapping the link with the uid of the page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showHiddenInMenu" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Include pages that are set to be hidden in menus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not display the current page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap the current page in a link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkActive" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap with links the titles of pages that are active in the rootline]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="titleFields" default="'nav_title,title'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeAnchorTitle" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, includes the page title as title attribute on the anchor.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeSpacers" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Wether or not to include menu spacers in the page select query]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="deferred" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="as" default="'menu'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu pages as an array in a variable named after this value and renders the tag content. If the tag content is empty automatic rendering is triggered.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="rootLineAs" default="'rootLine'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="excludePages" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceAbsoluteUrl" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, the menu will be rendered with absolute URLs]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="doktypes" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED: Please use typical doktypes for starting points like shortcuts.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="divider" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional divider to insert between each menu item. Note that this does not mix well with automatic rendering due to the use of an ul > li structure]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="labelFirst" default="'first'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Label for the "first" link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="labelLast" default="'last'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Label for the "last" link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="labelPrevious" default="'previous'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Label for the "previous" link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="labelNext" default="'next'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Label for the "next" link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="labelUp" default="'up'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Label for the "up" link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="renderFirst" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE the "first" link will not be rendered]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="renderLast" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE the "last" link will not be rendered]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="renderUp" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE the "up" link will not be rendered]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="usePageTitles" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to TRUE, uses target page titles instead of "next", "previous" etc. labels]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="pageUid" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional parent page UID to use as top level of menu. If unspecified, current page UID is used]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="currentPageUid" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional page UID to use as current page. If unspecified, current page UID from globals is used]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="page.menu.deferred">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Page: Deferred menu rendering ViewHelper
-
-Place this ViewHelper inside any other ViewHelper which
-has been configured with the `deferred` attribute set to
-TRUE - this will cause the output of the parent to only
-contain the content of this ViewHelper.
-
-DEPRECATED: use v:menu.deferred instead
-
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:anySimpleType" name="additionalAttributes" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="data" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceClosingTag" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, forces the created tag to use a closing tag. If FALSE, allows self-closing tags.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="hideIfEmpty" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Hide the tag completely if there is no tag content]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contenteditable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the contents of the element are editable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contextmenu" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="draggable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element is draggable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dropzone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="translate" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="spellcheck" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="hidden" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showAccessProtected" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE links to access protected pages are always rendered regardless of user login status]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessProtected" default="'protected'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessGranted" default="'access-granted'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected but access is actually granted]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutUid" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutTarget" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional param for using shortcut target instead of shortcut itself for current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutData" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Shortcut to set useShortcutTarget and useShortcutData simultaneously]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagName" default="'ul'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for enclosing container]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagNameChildren" default="'li'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for child nodes surrounding links. If set to "a" enables non-wrapping mode.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="entryLevel" default="0">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional entryLevel TS equivalent of the menu]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="levels" default="1">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="expandAll" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and $levels > 1 then expands all (not just the active) menu items which have submenus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classFirst" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the first menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classLast" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the last menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classActive" default="'active'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to active links]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classCurrent" default="'current'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional parameter for wrapping the link with the uid of the page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showHiddenInMenu" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Include pages that are set to be hidden in menus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not display the current page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap the current page in a link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkActive" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap with links the titles of pages that are active in the rootline]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="titleFields" default="'nav_title,title'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeAnchorTitle" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, includes the page title as title attribute on the anchor.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeSpacers" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Wether or not to include menu spacers in the page select query]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="deferred" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="as" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu pages as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="rootLineAs" default="'rootLine'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="excludePages" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceAbsoluteUrl" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, the menu will be rendered with absolute URLs]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="doktypes" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED: Please use typical doktypes for starting points like shortcuts.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="divider" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional divider to insert between each menu item. Note that this does not mix well with automatic rendering due to the use of an ul > li structure]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="page.menu.directory">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Page: Directory Menu ViewHelper
-
-ViewHelper for rendering TYPO3 list menus in Fluid
-
-Supports both automatic, tag-based rendering (which
-defaults to `ul > li` with options to set both the
-parent and child tag names. When using manual rendering
-a range of support CSS classes are available along
-with each page record.
-
-DEPRECATED: use v:menu.directory instead
-
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:anySimpleType" name="additionalAttributes" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="data" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceClosingTag" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, forces the created tag to use a closing tag. If FALSE, allows self-closing tags.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="hideIfEmpty" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Hide the tag completely if there is no tag content]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contenteditable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the contents of the element are editable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contextmenu" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="draggable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element is draggable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dropzone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="translate" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="spellcheck" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="hidden" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showAccessProtected" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE links to access protected pages are always rendered regardless of user login status]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessProtected" default="'protected'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessGranted" default="'access-granted'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected but access is actually granted]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutUid" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutTarget" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional param for using shortcut target instead of shortcut itself for current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutData" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Shortcut to set useShortcutTarget and useShortcutData simultaneously]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagName" default="'ul'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for enclosing container]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagNameChildren" default="'li'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for child nodes surrounding links. If set to "a" enables non-wrapping mode.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="entryLevel" default="0">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional entryLevel TS equivalent of the menu]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="levels" default="1">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="expandAll" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and $levels > 1 then expands all (not just the active) menu items which have submenus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classFirst" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the first menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classLast" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the last menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classActive" default="'active'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to active links]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classCurrent" default="'current'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional parameter for wrapping the link with the uid of the page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showHiddenInMenu" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Include pages that are set to be hidden in menus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not display the current page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap the current page in a link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkActive" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap with links the titles of pages that are active in the rootline]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="titleFields" default="'nav_title,title'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeAnchorTitle" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, includes the page title as title attribute on the anchor.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeSpacers" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Wether or not to include menu spacers in the page select query]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="deferred" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="as" default="'menu'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu pages as an array in a variable named after this value and renders the tag content. If the tag content is empty automatic rendering is triggered.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="rootLineAs" default="'rootLine'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="excludePages" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceAbsoluteUrl" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, the menu will be rendered with absolute URLs]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="doktypes" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED: Please use typical doktypes for starting points like shortcuts.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="divider" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional divider to insert between each menu item. Note that this does not mix well with automatic rendering due to the use of an ul > li structure]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="pages" default="NULL" use="required">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Parent page UIDs of subpages to include in the menu. Can be CSV, array or an object implementing Traversable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="page.menu.list">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Page: List Menu ViewHelper
-
-ViewHelper for rendering TYPO3 list menus in Fluid
-
-Supports both automatic, tag-based rendering (which
-defaults to `ul > li` with options to set both the
-parent and child tag names. When using manual rendering
-a range of support CSS classes are available along
-with each page record.
-
-DEPRECATED: use v:menu.list instead
-
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:anySimpleType" name="additionalAttributes" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="data" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceClosingTag" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, forces the created tag to use a closing tag. If FALSE, allows self-closing tags.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="hideIfEmpty" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Hide the tag completely if there is no tag content]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contenteditable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the contents of the element are editable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="contextmenu" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[The value of the id attribute on the menu with which to associate the element as a context menu.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="draggable" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element is draggable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dropzone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies what types of content can be dropped on the element, and instructs the UA about which actions to take with content when it is dropped on the element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="translate" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether an elements attribute values and contents of its children are to be translated when the page is localized, or whether to leave them unchanged.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="spellcheck" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies whether the element represents an element whose contents are subject to spell checking and grammar checking.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="hidden" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies that the element represents an element that is not yet, or is no longer, relevant.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showAccessProtected" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE links to access protected pages are always rendered regardless of user login status]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessProtected" default="'protected'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classAccessGranted" default="'access-granted'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which are access protected but access is actually granted]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutUid" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, substitutes the link UID of a shortcut with the target page UID (and thus avoiding redirects) but does not change other data - which is done by using useShortcutData.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutTarget" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional param for using shortcut target instead of shortcut itself for current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="useShortcutData" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Shortcut to set useShortcutTarget and useShortcutData simultaneously]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagName" default="'ul'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for enclosing container]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="tagNameChildren" default="'li'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tag name to use for child nodes surrounding links. If set to "a" enables non-wrapping mode.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="entryLevel" default="0">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional entryLevel TS equivalent of the menu]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="levels" default="1">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Number of levels to render - setting this to a number higher than 1 (one) will expand menu items that are active, to a depth of $levels starting from $entryLevel]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="expandAll" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and $levels > 1 then expands all (not just the active) menu items which have submenus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classFirst" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the first menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classLast" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name for the last menu elment]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classActive" default="'active'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to active links]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classCurrent" default="'current'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to current link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="classHasSubpages" default="'sub'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional class name to add to links which have subpages]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="substElementUid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional parameter for wrapping the link with the uid of the page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showHiddenInMenu" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Include pages that are set to be hidden in menus]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="showCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not display the current page]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkCurrent" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap the current page in a link]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="linkActive" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, does not wrap with links the titles of pages that are active in the rootline]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="titleFields" default="'nav_title,title'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of fields to use as link label - default is "nav_title,title", change to for example "tx_myext_somefield,subtitle,nav_title,title". The first field that contains text will be used. Field value resolved AFTER page field overlays.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeAnchorTitle" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, includes the page title as title attribute on the anchor.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="includeSpacers" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Wether or not to include menu spacers in the page select query]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="deferred" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, does not output the tag content UNLESS a v:page.menu.deferred child ViewHelper is both used and triggered. This allows you to create advanced conditions while still using automatic rendering]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="as" default="'menu'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu pages as an array in a variable named after this value and renders the tag content. If the tag content is empty automatic rendering is triggered.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="rootLineAs" default="'rootLine'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If used, stores the menu root line as an array in a variable named according to this value and renders the tag content - which means automatic rendering is disabled if this attribute is used]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="excludePages" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Page UIDs to exclude from the menu. Can be CSV, array or an object implementing Traversable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="forceAbsoluteUrl" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, the menu will be rendered with absolute URLs]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="doktypes" default="''">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED: Please use typical doktypes for starting points like shortcuts.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="divider" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional divider to insert between each menu item. Note that this does not mix well with automatic rendering due to the use of an ul > li structure]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="pages" default="NULL" use="required">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Page UIDs to include in the menu. Can be CSV, array or an object implementing Traversable.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="page.menu.sub">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Page: Auto Sub Menu ViewHelper
-
-Recycles the parent menu ViewHelper instance, resetting the
-page UID used as starting point and repeating rendering of
-the exact same tag content.
-
-Used in custom menu rendering to indicate where a submenu is
-to be rendered; accepts only a single argument called `pageUid`
-which defines the new starting page UID that is used in the
-recycled parent menu instance.
-
-DEPRECATED: use v:menu.sub instead
-
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:anySimpleType" name="pageUid" default="NULL" use="required">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Page UID to be overridden in the recycled rendering of the parent instance, if one exists]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -10840,7 +9289,7 @@ resource ViewHelpers do if you only pass uid.
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -10850,7 +9299,7 @@ resource ViewHelpers do if you only pass uid.
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>
@@ -11134,7 +9583,7 @@ If you simply want to render a content element, try `<v:content.render>`.
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -11169,7 +9618,7 @@ If you simply want to render a content element, try `<v:content.render>`.
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slide" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Enables Record Sliding - amount of levels which shall get walked up the rootline, including the current page. For infinite sliding (till the rootpage) set to -1. Only the first PID which has at minimum one record is used.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="slideCollect" default="0">
@@ -11179,7 +9628,7 @@ If you simply want to render a content element, try `<v:content.render>`.
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="slideCollectReverse" default="false">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag))]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Normally when collecting records the elements from the actual page get shown on the top and those from the parent pages below those. You can invert this behaviour (actual page elements at bottom) by setting this flag.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
@@ -11357,6 +9806,11 @@ Arguments must be serializable and will be cached.
           <xsd:documentation><![CDATA[Arguments to pass to the partial.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="persistPartialPaths" default="true">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Normally, v:render.uncache will persist the partialRootPaths array that was active when the ViewHelperwas called, so the exact paths will be reused when rendering the uncached portion of the page output. This is done to ensure that even if you manually added some partial paths through some dynamic means (for example, based on a controller argument) then those paths would be used. However, in some cases this will be undesirable - namely when using a cache that is shared between multiple TYPO3 instances and each instance has a different path in the server's file system (e.g. load balanced setups). On such setups you should set persistPartialPaths="0" on this ViewHelper to prevent it from caching the resolved partialRootPaths. The ViewHelper will then instead use whichever partialRootPaths are configured for the extension that calls `v:render.uncache`. Note that when this is done, the special use case of dynamic or controller-overridden partialRootPaths is simply not supported.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="resource.collection">
@@ -11517,6 +9971,11 @@ http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Inde
       <xsd:attribute type="xsd:string" name="maxHeight" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Maximum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="class" default="NULL">
@@ -12018,7 +10477,6 @@ for usage with JavaScript.
 Creates one HTML tag of any type, with various properties
 like class and ID applied only if arguments are not empty,
 rather than apply them always - empty or not - if provided.
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -12263,7 +10721,6 @@ Except without the `f:else`.
     // ...but the "unless" counterpart supports anything as
     // condition instead of only checking "is content empty?"
 ```
-
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -12428,6 +10885,11 @@ or it's derivate if differing dimesions are provided.
       <xsd:attribute type="xsd:string" name="crop" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Information generated by the backend's graphical cropping UI]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>

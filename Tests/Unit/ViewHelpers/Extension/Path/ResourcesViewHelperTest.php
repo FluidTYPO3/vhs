@@ -46,12 +46,6 @@ class ResourcesViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        AccessibleExtensionManagementUtility::setPackageManager(null);
-    }
-
     /**
      * @test
      */
@@ -61,26 +55,5 @@ class ResourcesViewHelperTest extends AbstractViewHelperTestCase
         $extPath = ExtensionManagementUtility::extPath('vhs', 'Resources/Public/ext_icon.gif');
         $extPath = PathUtility::stripPathSitePrefix($extPath);
         $this->assertSame($extPath, $test);
-    }
-
-    /**
-     * @test
-     */
-    public function rendersUsingControllerContext()
-    {
-        $this->controllerContext->getRequest()->setControllerExtensionName('Vhs');
-        $test = $this->executeViewHelper(['path' => 'ext_icon.gif'], [], null, 'Vhs');
-        $extPath = ExtensionManagementUtility::extPath('vhs', 'Resources/Public/ext_icon.gif');
-        $extPath = PathUtility::stripPathSitePrefix($extPath);
-        $this->assertSame($extPath, $test);
-    }
-
-    /**
-     * @test
-     */
-    public function throwsErrorWhenUnableToDetectExtensionName()
-    {
-        $this->expectExceptionCode(1364167519);
-        $this->executeViewHelper([], [], null, null, 'FakePlugin');
     }
 }

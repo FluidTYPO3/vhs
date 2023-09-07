@@ -12,7 +12,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
@@ -39,7 +38,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  * want wo switch between these methods.
  *
  * Or if you have all settings in an array (with members named according to
- * the properties on this class:
+ * the properties on this class):
  *
  *     \FluidTYPO3\Vhs\Asset::createFromSettings($settings)->finalize();
  *
@@ -63,121 +62,43 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 class Asset implements AssetInterface
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
-    /**
-     * @var array
-     */
-    protected $dependencies = [];
+    protected array $dependencies = [];
+    protected string $type = '';
+    protected string $name = '';
+    protected ?string $content = null;
+    protected ?string $path = null;
+    protected bool $namedChunks = false;
+    protected bool $movable = true;
+    protected bool $removed = false;
+    protected bool $fluid = false;
+    protected array $variables = [];
+    protected array $settings = [];
+    protected bool $external = false;
+    protected bool $standalone = false;
+    protected bool $async = false;
+    protected bool $defer = false;
+    protected bool $rewrite = true;
+    private static ?array $settingsCache = null;
 
-    /**
-     * @var string
-     */
-    protected $type = null;
-
-    /**
-     * @var string
-     */
-    protected $name = null;
-
-    /**
-     * @var string
-     */
-    protected $content = null;
-
-    /**
-     * @var string|null
-     */
-    protected $path = null;
-
-    /**
-     * @var boolean
-     */
-    protected $namedChunks = false;
-
-    /**
-     * @var boolean
-     */
-    protected $movable = true;
-
-    /**
-     * @var boolean
-     */
-    protected $removed = false;
-
-    /**
-     * @var boolean
-     */
-    protected $fluid = false;
-
-    /**
-     * @var array
-     */
-    protected $variables = [];
-
-    /**
-     * @var array
-     */
-    protected $settings = [];
-
-    /**
-     * @var boolean
-     */
-    protected $external = false;
-
-    /**
-     * @var boolean
-     */
-    protected $standalone = false;
-
-    /**
-     * @var boolean
-     */
-    protected $async = false;
-
-    /**
-     * @var boolean
-     */
-    protected $defer = false;
-
-    /**
-     * @var boolean
-     */
-    protected $rewrite = true;
-
-    /**
-     * @var array
-     */
-    private static $settingsCache = null;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function __construct()
     {
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * @return Asset
-     */
-    public static function getInstance()
+    public static function getInstance(): self
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var Asset $asset */
-        $asset = $objectManager->get(Asset::class);
+        $asset = GeneralUtility::makeInstance(Asset::class);
         return $asset;
     }
 
-    /**
-     * @param array $settings
-     * @return Asset
-     */
-    public static function createFromSettings(array $settings)
+    public static function createFromSettings(array $settings): self
     {
         $asset = static::getInstance();
         foreach ($settings as $propertyName => $value) {
@@ -186,23 +107,16 @@ class Asset implements AssetInterface
         return $asset->finalize();
     }
 
-    /**
-     * @param string $filePathAndFilename
-     * @return Asset
-     */
-    public static function createFromFile($filePathAndFilename)
+    public static function createFromFile(string $filePathAndFilename): self
     {
         $asset = static::getInstance();
         $asset->setExternal(false);
+        $asset->setName((string) pathinfo($filePathAndFilename, PATHINFO_FILENAME));
         $asset->setPath($filePathAndFilename);
         return $asset->finalize();
     }
 
-    /**
-     * @param string $content
-     * @return Asset
-     */
-    public static function createFromContent($content)
+    public static function createFromContent(string $content): self
     {
         $asset = static::getInstance();
         $asset->setContent($content);
@@ -210,11 +124,7 @@ class Asset implements AssetInterface
         return $asset->finalize();
     }
 
-    /**
-     * @param string $url
-     * @return Asset
-     */
-    public static function createFromUrl($url)
+    public static function createFromUrl(string $url): self
     {
         $asset = static::getInstance();
         $asset->setStandalone(true);
@@ -223,12 +133,7 @@ class Asset implements AssetInterface
         return $asset->finalize();
     }
 
-    /**
-     * Render method
-     *
-     * @return mixed
-     */
-    public function render()
+    public function render(): ?string
     {
         return $this->build();
     }
@@ -237,7 +142,7 @@ class Asset implements AssetInterface
      * Build this asset. Override this method in the specific
      * implementation of an Asset in order to:
      *
-     * - if necessary compile the Asset (LESS, SASS, CoffeeScript etc)
+     * - if necessary compile the Asset (LESS, SASS, CoffeeScript etc.)
      * - make a final rendering decision based on arguments
      *
      * Note that within this function the ViewHelper and TemplateVariable
@@ -245,77 +150,58 @@ class Asset implements AssetInterface
      * and RenderingContext and you should therefore also never call
      * renderChildren from within this function. Anything else goes; CLI
      * commands to build, caching implementations - you name it.
-     *
-     * @return mixed
      */
-    public function build()
+    public function build(): ?string
     {
         $path = $this->getPath();
-        if (true === empty($path)) {
+        if (empty($path)) {
             return $this->getContent();
         }
         $content = file_get_contents($path);
-        return $content;
+        return $content ?: null;
     }
 
-    /**
-     * @return Asset
-     */
-    public function finalize()
+    public function finalize(): self
     {
         $name = $this->getName();
-        if (true === empty($name)) {
+        if (empty($name)) {
             $name = md5($this->standalone . '//' . $this->type . '//' . $this->path . '//' . $this->content);
             if ($this->fluid) {
                 $name .= '_' . md5(serialize($this->variables));
             }
         }
-        if (false === isset($GLOBALS['VhsAssets']) || false === is_array($GLOBALS['VhsAssets'])) {
+        if (!isset($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets'])) {
             $GLOBALS['VhsAssets'] = [];
         }
         $GLOBALS['VhsAssets'][$name] = $this;
         return $this;
     }
 
-    /**
-     * @return Asset
-     */
-    public function remove()
+    public function remove(): self
     {
         return $this->setRemoved(true);
     }
 
-    /**
-     * @return array
-     */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return $this->dependencies;
     }
 
-    /**
-     * @param array $dependencies
-     * @return Asset
-     */
-    public function setDependencies($dependencies)
+    public function setDependencies(array $dependencies): self
     {
         $this->dependencies = $dependencies;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
+        if (empty($this->type) && !empty($this->path)) {
+            return pathinfo($this->path, PATHINFO_EXTENSION);
+        }
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     * @return Asset
-     */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
         if ('css' == strtolower($type)) {
@@ -324,152 +210,96 @@ class Asset implements AssetInterface
         return $this;
     }
 
-    /**
-     * @param boolean $external
-     * @return Asset
-     */
-    public function setExternal($external)
+    public function setExternal(bool $external): self
     {
         $this->external = $external;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getExternal()
+    public function getExternal(): bool
     {
         return $this->external;
     }
 
-    /**
-     * @param boolean $rewrite
-     * @return Asset
-     */
-    public function setRewrite($rewrite)
+    public function setRewrite(bool $rewrite): self
     {
         $this->rewrite = $rewrite;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getRewrite()
+    public function getRewrite(): bool
     {
         return $this->rewrite;
     }
 
-    /**
-     * @param boolean $standalone
-     * @return Asset
-     */
-    public function setStandalone($standalone)
+    public function setStandalone(bool $standalone): self
     {
         $this->standalone = $standalone;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getStandalone()
+    public function getStandalone(): bool
     {
         return $this->standalone;
     }
 
-    /**
-     * @param boolean $async
-     * @return Asset
-     */
-    public function setAsync($async)
+    public function setAsync(bool $async): self
     {
         $this->async = $async;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getAsync()
+    public function getAsync(): bool
     {
         return $this->async;
     }
 
-    /**
-     * @param boolean $defer
-     * @return Asset
-     */
-    public function setDefer($defer)
+    public function setDefer(bool $defer): self
     {
         $this->defer = $defer;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getDefer()
+    public function getDefer(): bool
     {
         return $this->defer;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return Asset
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getContent()
+    public function getContent(): ?string
     {
         if ($this->path === null) {
             return $this->content;
         }
         $path = (0 === strpos($this->path, '/') ? $this->path : GeneralUtility::getFileAbsFileName($this->path));
-        if (empty($this->content) && null !== $this->path && file_exists($path)) {
+        if (empty($this->content) && !empty($this->path) && file_exists($path)) {
             return (string) file_get_contents($path);
         }
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     * @return Asset
-     */
-    public function setContent($content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPath()
+    public function getPath(): ?string
     {
         return $this->path;
     }
 
-    /**
-     * @param string|null $path
-     * @return Asset
-     */
-    public function setPath($path)
+    public function setPath(?string $path): self
     {
         if (null === $path) {
             $this->path = null;
@@ -478,65 +308,44 @@ class Asset implements AssetInterface
         if (false === strpos($path, '://') && 0 !== strpos($path, '/')) {
             $path = GeneralUtility::getFileAbsFileName($path);
         }
-        if (null === $this->type) {
+        if ($this->type) {
             $this->setType(pathinfo($path, PATHINFO_EXTENSION));
         }
-        if (null === $this->name) {
+        if (empty($this->name)) {
             $this->setName(pathinfo($path, PATHINFO_FILENAME));
         }
         $this->path = $path;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getNamedChunks()
+    public function getNamedChunks(): bool
     {
         return $this->namedChunks;
     }
 
-    /**
-     * @param boolean $namedChunks
-     * @return Asset
-     */
-    public function setNamedChunks($namedChunks)
+    public function setNamedChunks(bool $namedChunks): self
     {
         $this->namedChunks = $namedChunks;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getFluid()
+    public function getFluid(): bool
     {
         return $this->fluid;
     }
 
-    /**
-     * @param boolean $fluid
-     * @return Asset
-     */
-    public function setFluid($fluid)
+    public function setFluid(bool $fluid): self
     {
         $this->fluid = $fluid;
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getVariables()
+    public function getVariables(): array
     {
         return $this->variables;
     }
 
-    /**
-     * @param array $variables
-     * @return Asset
-     */
-    public function setVariables($variables)
+    public function setVariables(array $variables): self
     {
         $this->variables = $variables;
         return $this;
@@ -546,10 +355,8 @@ class Asset implements AssetInterface
      * Returns the settings used by this particular Asset
      * during inclusion. Public access allows later inspection
      * of the TypoScript values which were applied to the Asset.
-     *
-     * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         if (null === self::$settingsCache) {
             $allTypoScript = $this->configurationManager->getConfiguration(
@@ -562,7 +369,7 @@ class Asset implements AssetInterface
         $settings = (array) self::$settingsCache;
         $properties = get_class_vars(get_class($this));
         $skipProperties = ['settingsCache', 'configurationManager'];
-        foreach (array_keys($properties) as $index => $propertyName) {
+        foreach (array_keys($properties) as $propertyName) {
             if (in_array($propertyName, $skipProperties, true)) {
                 unset($properties[$propertyName]);
                 continue;
@@ -570,60 +377,43 @@ class Asset implements AssetInterface
             $properties[$propertyName] = $this->$propertyName;
         }
 
+        if (empty($properties['type']) && !empty($properties['path'])) {
+            $properties['type'] = pathinfo($properties['path'], PATHINFO_EXTENSION);
+        }
+
         ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);
         ArrayUtility::mergeRecursiveWithOverrule($settings, $properties);
         return $settings;
     }
 
-    /**
-     * @param array $settings
-     * @return Asset
-     */
-    public function setSettings($settings)
+    public function setSettings(array $settings): self
     {
         $this->settings = $settings;
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getAssetSettings()
+    public function getAssetSettings(): array
     {
         return $this->getSettings();
     }
 
-    /**
-     * @return boolean
-     */
-    public function getMovable()
+    public function getMovable(): bool
     {
         return $this->movable;
     }
 
-    /**
-     * @param boolean $movable
-     * @return $this
-     */
-    public function setMovable($movable)
+    public function setMovable(bool $movable): self
     {
         $this->movable = $movable;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getRemoved()
+    public function getRemoved(): bool
     {
         return $this->removed;
     }
 
-    /**
-     * @param boolean $removed
-     * @return Asset
-     */
-    public function setRemoved($removed)
+    public function setRemoved(bool $removed): self
     {
         $this->removed = $removed;
         return $this;
@@ -632,10 +422,8 @@ class Asset implements AssetInterface
     /**
      * Allows public access to debug this particular Asset
      * instance later, when including the Asset in the page.
-     *
-     * @return array
      */
-    public function getDebugInformation()
+    public function getDebugInformation(): array
     {
         return $this->getSettings();
     }
@@ -644,10 +432,8 @@ class Asset implements AssetInterface
      * Returns TRUE of settings specify that the source of this
      * Asset should be rendered as if it were a Fluid template,
      * using variables from the "arguments" attribute
-     *
-     * @return boolean
      */
-    public function assertFluidEnabled()
+    public function assertFluidEnabled(): bool
     {
         return $this->getFluid();
     }
@@ -656,10 +442,8 @@ class Asset implements AssetInterface
      * Returns TRUE if settings specify that the name of each Asset
      * should be placed above the built content when placed in merged
      * Asset cache files.
-     *
-     * @return boolean
      */
-    public function assertAddNameCommentWithChunk()
+    public function assertAddNameCommentWithChunk(): bool
     {
         return $this->getNamedChunks();
     }
@@ -667,28 +451,20 @@ class Asset implements AssetInterface
     /**
      * Returns TRUE if the current Asset should be debugged as commanded
      * by settings in TypoScript an/ord ViewHelper attributes.
-     *
-     * @return boolean
      */
-    public function assertDebugEnabled()
+    public function assertDebugEnabled(): bool
     {
         $settings = $this->getSettings();
         $enabled = (bool) ($settings['debug'] ?? false);
         return $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function assertAllowedInFooter()
+    public function assertAllowedInFooter(): bool
     {
         return $this->getMovable();
     }
 
-    /**
-     * @return boolean
-     */
-    public function assertHasBeenRemoved()
+    public function assertHasBeenRemoved(): bool
     {
         return $this->getRemoved();
     }

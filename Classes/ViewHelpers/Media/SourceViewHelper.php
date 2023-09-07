@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -46,11 +47,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     protected $configurationManager;
 
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
         /** @var ContentObjectRenderer $contentObject */
@@ -58,13 +55,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->contentObject = $contentObject;
     }
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -116,9 +107,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $imageSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_SRC);
         $treatIdAsRerefence = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
-        if ('BE' === TYPO3_MODE) {
-            $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
-        }
+        $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         $setup = [
             'width' => $this->arguments['width'],
@@ -130,10 +119,12 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             'treatIdAsReference' => $treatIdAsRerefence,
             'params' => '',
         ];
+        /** @var int $quality */
         $quality = $this->arguments['quality'];
+        /** @var string $format */
         $format = $this->arguments['format'];
 
-        if (false === empty($format)) {
+        if (!empty($format)) {
             $setup['ext'] = $format;
         }
         if (0 < intval($quality)) {
@@ -141,22 +132,27 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             $setup['params'] .= ' -quality ' . $quality;
         }
 
-        if (is_string($imageSource) && 'BE' === TYPO3_MODE && '../' === mb_substr($imageSource, 0, 3)) {
+        if (is_string($imageSource) && ContextUtility::isBackend() && '../' === mb_substr($imageSource, 0, 3)) {
             $imageSource = mb_substr($imageSource, 3);
         }
         $result = $this->contentObject->getImgResource($imageSource, $setup);
 
-        $tsfeBackup = null;
-        if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
+        FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
+
+        if ($result['processedFile'] ?? false) {
+            $imageUrl = $result['processedFile']->getPublicUrl();
+        } else {
+            $imageUrl = $result[3] ?? '';
         }
+        $src = $this->preprocessSourceUri(rawurldecode($imageUrl));
 
-        $src = $this->preprocessSourceUri(rawurldecode($result[3] ?? ''));
+        /** @var string|null $media */
+        $media = $this->arguments['media'];
 
-        if (null === $this->arguments['media']) {
+        if (null === $media) {
             $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
         } else {
-            $this->tag->addAttribute('media', $this->arguments['media']);
+            $this->tag->addAttribute('media', $media);
         }
 
         $this->tag->addAttribute('srcset', $src);
@@ -165,19 +161,16 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Turns a relative source URI into an absolute URL
-     * if required
-     *
-     * @param string $src
-     * @return string
+     * if required.
      */
-    public function preprocessSourceUri($src)
+    public function preprocessSourceUri(string $src): string
     {
-        if (false === empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
             $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-        } elseif ('BE' === TYPO3_MODE || false === (boolean) $this->arguments['relative']) {
+        } elseif (ContextUtility::isBackend() || !$this->arguments['relative']) {
             if (GeneralUtility::isValidUrl($src)) {
                 $src = ltrim($src, '/');
-            } elseif (TYPO3_MODE === 'FE') {
+            } elseif (ContextUtility::isFrontend()) {
                 $src = $GLOBALS['TSFE']->absRefPrefix . ltrim($src, '/');
             } else {
                 /** @var string $siteUrl */

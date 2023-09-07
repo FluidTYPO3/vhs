@@ -10,7 +10,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class AssetInclusion implements MiddlewareInterface
@@ -24,10 +23,8 @@ class AssetInclusion implements MiddlewareInterface
         $contents = $body->getContents();
         $contentsBefore = $contents;
 
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var AssetService $assetService */
-        $assetService = $objectManager->get(AssetService::class);
+        $assetService = GeneralUtility::makeInstance(AssetService::class);
         $assetService->buildAllUncached([], $GLOBALS['TSFE'], $contents);
 
         if ($contentsBefore === $contents) {

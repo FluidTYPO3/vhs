@@ -11,7 +11,7 @@ $EM_CONF['vhs'] = array (
   'conflicts' => '',
   'priority' => '',
   'module' => '',
-  'state' => 'stable',
+  'state' => 'beta',
   'internal' => '',
   'uploadfolder' => 0,
   'createDirs' => '',
@@ -23,8 +23,8 @@ $EM_CONF['vhs'] = array (
   array (
     'depends' =>
     array (
-      'php' => '7.4.0-8.1.99',
-      'typo3' => '8.7.0-11.5.99',
+      'php' => '7.4.0-8.2.99',
+      'typo3' => '10.4.0-11.5.99',
     ),
     'conflicts' =>
     array (

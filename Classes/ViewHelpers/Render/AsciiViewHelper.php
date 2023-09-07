@@ -55,10 +55,7 @@ class AsciiViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('ascii', 'mixed', 'ASCII character to render');
     }
@@ -72,10 +69,10 @@ class AsciiViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $ascii = $renderChildrenClosure();
-        if (true === is_numeric($ascii)) {
+        if (is_numeric($ascii)) {
             return chr((integer) $ascii);
         }
-        if (true === is_array($ascii) || true === $ascii instanceof \Traversable) {
+        if (is_array($ascii) || $ascii instanceof \Traversable) {
             $string = '';
             foreach ($ascii as $characterNumber) {
                 $string .= chr($characterNumber);

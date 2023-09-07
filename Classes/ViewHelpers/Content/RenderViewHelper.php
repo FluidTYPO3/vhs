@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 
 /**
  * ViewHelper used to render content elements in Fluid templates.
@@ -25,13 +26,9 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerAsArgument();
@@ -44,12 +41,12 @@ class RenderViewHelper extends AbstractContentViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
 
         $content = $this->getContentRecords();
-        if (false === $this->hasArgument('as')) {
+        if (!$this->hasArgument('as')) {
             return implode(LF, $content);
         }
 
