@@ -11,20 +11,20 @@ $EM_CONF['vhs'] = array (
   'conflicts' => '',
   'priority' => '',
   'module' => '',
-  'state' => 'beta',
+  'state' => 'stable',
   'internal' => '',
   'uploadfolder' => 0,
   'createDirs' => '',
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '6.1.3',
+  'version' => '7.0.0',
   'constraints' =>
   array (
     'depends' =>
     array (
       'php' => '7.4.0-8.2.99',
-      'typo3' => '10.4.0-11.5.99',
+      'typo3' => '10.4.0-12.4.99',
     ),
     'conflicts' =>
     array (
