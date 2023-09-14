@@ -120,7 +120,7 @@ trait SlideViewHelperTrait
                 $recordsFromPageUid = array_slice($recordsFromPageUid, 0, $limitRemaining);
             }
             if ($limitRemaining !== null) {
-                $limitRemaining =- count($recordsFromPageUid);
+                $limitRemaining -= count($recordsFromPageUid);
             }
             $records = array_merge($records, $recordsFromPageUid);
             if (count($records) > 0 && 0 === $slideCollect) {
