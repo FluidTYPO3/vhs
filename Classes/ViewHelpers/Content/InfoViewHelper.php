@@ -115,8 +115,7 @@ class InfoViewHelper extends AbstractViewHelper
                     $queryBuilder->expr()->eq('uid', ':uid')
                 );
             $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-            /** @var array|null $record */
-            $record = $result->fetchAssociative();
+            $record = DoctrineQueryProxy::fetchAssociative($result);
 
             // Add the page overlay
             if (class_exists(LanguageAspect::class)) {

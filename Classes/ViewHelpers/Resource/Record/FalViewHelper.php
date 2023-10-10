@@ -207,7 +207,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             // Execute
             $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
             /** @var array[] $references */
-            $references = $statement->fetchAllAssociative();
+            $references = DoctrineQueryProxy::fetchAllAssociative($statement);
 
             $fileReferences = [];
 

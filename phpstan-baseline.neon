@@ -1,6 +1,14 @@
 parameters:
     ignoreErrors:
         -
+            message: "#Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement\\|Doctrine\\\\DBAL\\\\Result\\:\\:fetch\\(\\)\\.$#"
+            count: 1
+            path: Classes/Utility/DoctrineQueryProxy.php
+        -
+            message: "#Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement\\|Doctrine\\\\DBAL\\\\Result\\:\\:fetchAll\\(\\)\\.$#"
+            count: 1
+            path: Classes/Utility/DoctrineQueryProxy.php
+        -
             message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_groupAccess\\.$#"
             count: 1
             path: Classes/Service/PageService.php

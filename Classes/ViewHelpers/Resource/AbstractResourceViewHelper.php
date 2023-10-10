@@ -114,7 +114,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                     $queryBuilder->expr()->in('uid_local', ':categories')
                 );
             $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-            $rows = $statement->fetchAllAssociative();
+            $rows = DoctrineQueryProxy::fetchAllAssociative($statement);
 
             /** @var int[] $fileUids */
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));
