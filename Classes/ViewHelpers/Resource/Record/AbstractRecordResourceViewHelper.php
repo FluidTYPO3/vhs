@@ -159,8 +159,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
                 $queryBuilder->expr()->eq($idField, ':id')
             );
         $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-        /** @var array|null $result */
-        $result = $statement->fetchAssociative() ?: null;
+        $result = DoctrineQueryProxy::fetchAssociative($statement);
         return $result;
     }
 

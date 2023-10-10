@@ -19,6 +19,7 @@ parameters:
         - "#^Class TYPO3\\\\CMS\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextFactory not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Repository\\\\FrontendUserRepository not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\(Frontend|Backend)User(Group)? not found\\.$#"
+        - "#(unknown class|invalid( return)? type) Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Frontend\\\\Event\\\\AfterCacheableContentIsGeneratedEvent#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ControllerContext#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Response#"

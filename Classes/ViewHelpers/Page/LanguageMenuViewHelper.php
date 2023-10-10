@@ -510,8 +510,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                 $queryBuilder->expr()->eq($parentField, $this->getPageUid())
             );
         $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-        /** @var array $rows */
-        $rows = $result->fetchAllAssociative();
+        $rows = DoctrineQueryProxy::fetchAllAssociative($result);
 
         return array_column($rows, 'sys_language_uid');
     }

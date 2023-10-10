@@ -260,7 +260,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $queryBuilder->setMaxResults($limit);
         }
         $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-        return $result->fetchAllAssociative();
+        return DoctrineQueryProxy::fetchAllAssociative($result);
     }
 
     protected function generateSelectQuery(string $fields, string $condition): string
