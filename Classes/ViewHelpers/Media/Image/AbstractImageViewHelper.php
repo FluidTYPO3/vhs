@@ -183,13 +183,16 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             /** @var int $canvasHeight */
             $canvasHeight = $this->arguments['canvasHeight'];
             /** @var string $canvasColor */
-            $canvasColor = $this->arguments['canvasColor'];
+            $canvasColor = $this->arguments['canvasColor'] ?? '';
             $canvasColor = str_replace('#', '', $canvasColor);
             $originalFilename = $this->imageInfo[3];
             $originalExtension = mb_substr($originalFilename, -3);
             $tempPath = 'typo3temp/assets/';
-            $destinationFilename = $tempPath . 'vhs-canvas-' .
-                md5($originalFilename.$canvasColor.$canvasWidth.$canvasHeight) . '.' . $originalExtension;
+            $destinationFilename = $tempPath .
+                'vhs-canvas-' .
+                md5($originalFilename . $canvasColor . $canvasWidth . $canvasHeight) .
+                '.' .
+                $originalExtension;
             $destinationFilepath = GeneralUtility::getFileAbsFileName($destinationFilename);
             $transparency = '';
             if ($this->hasArgument('transparencyColor')) {
