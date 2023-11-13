@@ -48,7 +48,7 @@ class TidyViewHelper extends AbstractViewHelper
                 return $content;
             }
             $tidy->cleanRepair();
-            return $tidy;
+            return $tidy->root()->value;
         }
         throw new \RuntimeException(
             'TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.',
