@@ -51,7 +51,7 @@ class PageService implements SingletonInterface
             }
 
             static::$cachedMenus[$cacheKey] = array_filter(
-                $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints, true, !$disableGroupAccessCheck),
+                $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints, true, $disableGroupAccessCheck),
                 function ($page) use ($includeNotInMenu) {
                     return (!($page['nav_hide'] ?? false) || $includeNotInMenu)
                         && !$this->hidePageForLanguageUid($page);

@@ -73,7 +73,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
                     $queryBuilder->expr()->eq('title', ':title')
                 );
             $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-            $row = $result->fetchAssociative();
+            $row = DoctrineQueryProxy::fetchAssociative($result);
 
             if (is_array($row)) {
                 /** @var int $languageUid */
