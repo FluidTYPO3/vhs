@@ -29,7 +29,7 @@ trait SourceSetViewHelperTrait
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
-        /** @var string $format */
+        /** @var string|null $format */
         $format = $this->arguments['format'];
         /** @var int $quality */
         $quality = $this->arguments['quality'];
@@ -88,7 +88,7 @@ trait SourceSetViewHelperTrait
     public function getImgResource(
         string $src,
         int $width,
-        string $format,
+        ?string $format,
         int $quality,
         bool $treatIdAsReference,
         ?string $params = null,
