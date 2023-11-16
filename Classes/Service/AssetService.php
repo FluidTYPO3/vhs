@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -67,6 +68,13 @@ class AssetService implements SingletonInterface
                     if (!isset($typoScriptAsset['name'])) {
                         $typoScriptAsset['name'] = $name;
                     }
+                    if (isset($typoScriptAsset['dependencies']) && !is_array($typoScriptAsset['dependencies'])) {
+                        $typoScriptAsset['dependencies'] = GeneralUtility::trimExplode(
+                            ',',
+                            (string) $typoScriptAsset['dependencies'],
+                            true
+                        );
+                    }
                     Asset::createFromSettings($typoScriptAsset);
                 }
             }
@@ -105,6 +113,11 @@ class AssetService implements SingletonInterface
         }
 
         $this->buildAll($parameters, $caller, false, $content);
+    }
+
+    public function isAlreadyDefined(string $assetName): bool
+    {
+        return isset($GLOBALS['VhsAssets'][$assetName]) || in_array($assetName, self::$cachedDependencies, true);
     }
 
     /**
@@ -232,21 +245,17 @@ class AssetService implements SingletonInterface
                             if ($rewrite) {
                                 $chunks[] = $this->writeCachedMergedFileAndReturnTag([$name => $asset], $type);
                             } else {
-                                $integrity = $this->getFileIntegrity($path);
-                                $path = mb_substr($path, mb_strlen(CoreUtility::getSitePath()));
-                                $path = $this->prefixPath($path);
                                 $chunks[] = $this->generateTagForAssetType(
                                     $type,
                                     null,
                                     $path,
-                                    $integrity,
+                                    $this->getFileIntegrity($path),
                                     $assetSettings
                                 );
                             }
                         }
                     }
                 }
-                unset($integrity);
             }
             if (0 < count($chunk)) {
                 $mergedFileTag = $this->writeCachedMergedFileAndReturnTag($chunk, $type);
@@ -329,6 +338,13 @@ class AssetService implements SingletonInterface
         $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
         if (null === $file && empty($content)) {
             $content = '<!-- Empty tag content -->';
+        }
+        if (empty($type) && !empty($file)) {
+            $type = pathinfo($file, PATHINFO_EXTENSION);
+        }
+        if ($file !== null) {
+            $file = PathUtility::getAbsoluteWebPath($file);
+            $file = $this->prefixPath($file);
         }
         switch ($type) {
             case 'js':
@@ -419,8 +435,10 @@ class AssetService implements SingletonInterface
             if (isset($settings['assetGroup'][$groupName])) {
                 $localSettings = $this->mergeArrays($localSettings, (array) $settings['assetGroup'][$groupName]);
             }
-            if ($asset instanceof Asset) {
-                $asset->setSettings($localSettings);
+            if ($asset instanceof AssetInterface) {
+                if (method_exists($asset, 'setSettings')) {
+                    $asset->setSettings($localSettings);
+                }
                 $filtered[$name] = $asset;
             } else {
                 $filtered[$name] = Asset::createFromSettings($assetSettings);
@@ -509,9 +527,7 @@ class AssetService implements SingletonInterface
     {
         $settings = $this->getSettings();
         $prefixPath = $settings['prependPath'] ?? '';
-        if (!empty($GLOBALS['TSFE']->absRefPrefix) && empty($prefixPath)) {
-            $fileRelativePathAndFilename = $GLOBALS['TSFE']->absRefPrefix . $fileRelativePathAndFilename;
-        } elseif (!empty($prefixPath)) {
+        if (!empty($prefixPath)) {
             $fileRelativePathAndFilename = $prefixPath . $fileRelativePathAndFilename;
         }
         return $fileRelativePathAndFilename;
@@ -557,7 +573,8 @@ class AssetService implements SingletonInterface
             if (false === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
                 $checksum = md5($originalDirectory . $match);
                 if (0 < preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
-                    list(, $path, $suffix) = $items;
+                    $path = $items[1];
+                    $suffix = $items[2] ?? '';
                 } else {
                     $path = $match;
                     $suffix = '';
@@ -640,12 +657,11 @@ class AssetService implements SingletonInterface
     protected function extractAssetContent($asset): ?string
     {
         $assetSettings = $this->extractAssetSettings($asset);
-        $fileRelativePathAndFilename = $assetSettings['path'];
-        $fileRelativePath = dirname($assetSettings['path']);
-        $absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
-        $isExternal = $assetSettings['external'] ?? false;
-        $isFluidTemplate = $assetSettings['fluid'] ?? false;
+        $fileRelativePathAndFilename = $assetSettings['path'] ?? null;
         if (!empty($fileRelativePathAndFilename)) {
+            $isExternal = $assetSettings['external'] ?? false;
+            $isFluidTemplate = $assetSettings['fluid'] ?? false;
+            $absolutePathAndFilename = GeneralUtility::getFileAbsFileName($fileRelativePathAndFilename);
             if (!$isExternal && !file_exists($absolutePathAndFilename)) {
                 throw new \RuntimeException('Asset "' . $absolutePathAndFilename . '" does not exist.');
             }
@@ -658,6 +674,7 @@ class AssetService implements SingletonInterface
             $content = $this->buildAsset($asset);
         }
         if ($content !== null && 'css' === $assetSettings['type'] && ($assetSettings['rewrite'] ?? false)) {
+            $fileRelativePath = dirname($assetSettings['path'] ?? '');
             $content = $this->detectAndCopyFileReferences($content, $fileRelativePath);
         }
         return $content;
@@ -704,7 +721,7 @@ class AssetService implements SingletonInterface
         return $array1;
     }
 
-    protected function getFileIntegrity(string $file): string
+    protected function getFileIntegrity(string $file): ?string
     {
         $typoScript = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'] ?? null;
         if (isset($typoScript['assets.']['tagsAddSubresourceIntegrity'])) {
@@ -713,7 +730,7 @@ class AssetService implements SingletonInterface
                 && $typoScript['assets.']['tagsAddSubresourceIntegrity'] < 4
             ) {
                 if (!file_exists($file)) {
-                    return '';
+                    return null;
                 }
 
                 /** @var TypoScriptFrontendController $typoScriptFrontendController */
@@ -742,19 +759,24 @@ class AssetService implements SingletonInterface
                             (string) openssl_digest((string) file_get_contents($file), $integrityMethod, true)
                         );
                     } else {
-                        return ''; // Sadly, no integrity generation possible
+                        return null; // Sadly, no integrity generation possible
                     }
                     $this->writeFile($integrityFile, $integrity);
                 }
                 return sprintf('%s-%s', $integrityMethod, $integrity ?: (string) file_get_contents($integrityFile));
             }
         }
-        return '';
+        return null;
     }
 
     private function getTempPath(): string
     {
-        return 'typo3temp/assets/';
+        $publicDirectory = CoreUtility::getSitePath();
+        $directory = 'typo3temp/assets/vhs/';
+        if (!file_exists($publicDirectory . $directory)) {
+            GeneralUtility::mkdir($publicDirectory . $directory);
+        }
+        return $directory;
     }
 
     protected function resolveAbsolutePathForFile(string $filename): string

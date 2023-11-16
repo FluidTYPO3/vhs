@@ -51,7 +51,9 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
         if (null === $value && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
-        return static::calculate($value, $arguments['b'], $arguments);
+        /** @var int|float|array|null $b */
+        $b = $arguments['b'];
+        return static::calculate($value, $b, $arguments);
     }
 
     /**

@@ -75,16 +75,20 @@ class TemplateViewHelper extends AbstractRenderViewHelper
      */
     public function render()
     {
+        /** @var string|null $file */
         $file = $this->arguments['file'];
         if (null === $file) {
+            /** @var string|null $file */
             $file = $this->renderChildren();
         }
-        $file = GeneralUtility::getFileAbsFileName($file);
+
+        $file = GeneralUtility::getFileAbsFileName((string) $file);
         $view = static::getPreparedView();
         $view->setTemplatePathAndFilename($file);
         if (is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
         }
+        /** @var string|null $format */
         $format = $this->arguments['format'];
         if (null !== $format) {
             $view->setFormat($format);

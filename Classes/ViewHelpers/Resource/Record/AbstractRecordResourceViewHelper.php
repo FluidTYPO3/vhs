@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -97,6 +97,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     public function getTable(): string
     {
+        /** @var string|null $table */
         $table = $this->arguments['table'] ?? null;
         if (null === $table) {
             $table = $this->table;
@@ -114,6 +115,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     public function getField(): string
     {
+        /** @var string|null $field */
         $field = $this->arguments['field'] ?? null;
         if (null === $field) {
             $field = $this->field;
@@ -150,16 +152,14 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        /** @var Result $statement */
-        $statement = $queryBuilder
+        $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($idField, ':id')
-            )
-            ->execute();
-        /** @var array|null $result */
-        $result = $statement->fetchAssociative() ?: null;
+            );
+        $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+        $result = DoctrineQueryProxy::fetchAssociative($statement);
         return $result;
     }
 
@@ -175,7 +175,9 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
      */
     public function render()
     {
+        /** @var array|null $record */
         $record = $this->arguments['record'] ?? null;
+        /** @var int|null $uid */
         $uid = $this->arguments['uid'] ?? null;
 
         if (null === $record) {
@@ -197,7 +199,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         // ViewHelperExceptions which render as an inline text error message.
         $content = null;
         try {
-            $resources = $this->getResources($record);
+            $resources = $this->getResources((array) $record);
             $content = $this->renderChildrenWithVariableOrReturnInput($resources);
         } catch (\Exception $error) {
             // we are doing the pokemon-thing and catching the very top level

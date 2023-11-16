@@ -73,9 +73,12 @@ class FilesViewHelper extends AbstractViewHelper
     ) {
         $path = (string) $renderChildrenClosure();
 
+        /** @var string $extensionList */
         $extensionList = $arguments['extensionList'];
-        $prependPath = $arguments['prependPath'];
+        $prependPath = (bool) $arguments['prependPath'];
+        /** @var string $order */
         $order = $arguments['order'];
+        /** @var string $excludePattern */
         $excludePattern = $arguments['excludePattern'];
 
         $files = GeneralUtility::getFilesInDir($path, $extensionList, $prependPath, $order, $excludePattern);

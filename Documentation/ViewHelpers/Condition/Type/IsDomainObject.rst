@@ -53,7 +53,7 @@ value
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Value to check
 

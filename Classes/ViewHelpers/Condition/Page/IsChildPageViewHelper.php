@@ -35,10 +35,12 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
      */
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
+        /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
-        $respectSiteRoot = $arguments['respectSiteRoot'];
+        $respectSiteRoot = (boolean) $arguments['respectSiteRoot'];
 
-        if (empty($pageUid) || 0 === intval($pageUid)) {
+        if (empty($pageUid)) {
+            /** @var int $pageUid */
             $pageUid = $GLOBALS['TSFE']->id;
         }
         /** @var PageService $pageService */

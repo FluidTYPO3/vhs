@@ -77,10 +77,13 @@ trait SlideViewHelperTrait
 
     protected function getSlideRecords(int $pageUid, ?int $limit = null): array
     {
+        /** @var int|null $limit */
         $limit = $limit ?? $this->arguments['limit'];
-        $slide = (integer) $this->arguments['slide'];
+        /** @var int $slide */
+        $slide = $this->arguments['slide'];
         $slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
-        $slideCollect = (integer) $this->arguments['slideCollect'];
+        /** @var int $slideCollect */
+        $slideCollect = $this->arguments['slideCollect'];
 
         if ($slideCollect && !$slide) {
             $slide = $slideCollect;
@@ -113,12 +116,14 @@ trait SlideViewHelperTrait
             $storagePageUid = (integer) array_shift($storagePageUids);
             $recordsFromPageUid = $this->getSlideRecordsFromPage($storagePageUid, $limitRemaining);
             $numberOfReturnedRecords = count($recordsFromPageUid);
-            if ($numberOfReturnedRecords > $limitRemaining) {
+            if ($numberOfReturnedRecords > $limitRemaining && $limitRemaining !== null) {
                 $recordsFromPageUid = array_slice($recordsFromPageUid, 0, $limitRemaining);
             }
-            $limitRemaining =- count($recordsFromPageUid);
+            if ($limitRemaining !== null) {
+                $limitRemaining -= count($recordsFromPageUid);
+            }
             $records = array_merge($records, $recordsFromPageUid);
-            if (0 === $slideCollect) {
+            if (count($records) > 0 && 0 === $slideCollect) {
                 // stop collecting because argument said so and we've gotten at least one record now.
                 break;
             }

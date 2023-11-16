@@ -55,7 +55,7 @@ language
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Language to check
 

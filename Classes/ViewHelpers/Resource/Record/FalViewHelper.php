@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Result;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -119,6 +119,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $sqlRecordUid = $record['t3ver_oid'];
         } elseif (isset($record['_LOCALIZED_UID'])) {
             $sqlRecordUid = $record['_LOCALIZED_UID'];
+        } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+            $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
         } else {
             $sqlRecordUid = $record[$this->idField];
         }
@@ -138,6 +140,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 $sqlRecordUid = $record['t3ver_oid'];
             } elseif (isset($record['_LOCALIZED_UID'])) {
                 $sqlRecordUid = $record['_LOCALIZED_UID'];
+            } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+                $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
             } else {
                 $sqlRecordUid = $record[$this->idField];
             }
@@ -198,11 +202,12 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     );
             }
 
+            $queryBuilder->orderBy('sorting_foreign');
+
             // Execute
-            /** @var Result $statement */
-            $statement = $queryBuilder->orderBy('sorting_foreign')->execute();
+            $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
             /** @var array[] $references */
-            $references = $statement->fetchAllAssociative();
+            $references = DoctrineQueryProxy::fetchAllAssociative($statement);
 
             $fileReferences = [];
 

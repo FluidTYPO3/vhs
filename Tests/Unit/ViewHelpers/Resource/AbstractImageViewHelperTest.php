@@ -131,6 +131,17 @@ class AbstractImageViewHelperTest extends AbstractTestCase
         return $this->subject->preprocessImages([$file], $onlyProperties);
     }
 
+    public function testProcessImageDoesNotThrowExceptionWithInvalidImageIfGracefulEnabled(): void
+    {
+        $files = [
+            $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock(),
+        ];
+        $this->contentObjectRenderer->method('getImgResource')->willReturn(null);
+        $this->subject->setArguments(['graceful' => true]);
+        $output = $this->subject->preprocessImages($files);
+        self::assertSame([], $output);
+    }
+
     public function testPreProcessSourceUriWithPrependPath(): void
     {
         $GLOBALS['TSFE'] = (object) [

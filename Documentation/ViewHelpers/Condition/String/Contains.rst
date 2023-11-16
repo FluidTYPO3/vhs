@@ -52,7 +52,7 @@ haystack
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Haystack
 
@@ -65,6 +65,6 @@ needle
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Need

@@ -95,20 +95,29 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         }
         $defaultSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
 
+        /** @var string $alt */
+        $alt = $this->arguments['alt'];
+
         $defaultImage = new TagBuilder('img');
         $defaultImage->addAttribute('src', is_scalar($defaultSource) ? (string) $defaultSource : '');
-        $defaultImage->addAttribute('alt', $this->arguments['alt']);
+        $defaultImage->addAttribute('alt', $alt);
 
-        if (!empty($this->arguments['class'])) {
-            $defaultImage->addAttribute('class', $this->arguments['class']);
+        /** @var string|null $class */
+        $class = $this->arguments['class'];
+        if (!empty($class)) {
+            $defaultImage->addAttribute('class', $class);
         }
 
-        if (!empty($this->arguments['title'])) {
-            $defaultImage->addAttribute('title', $this->arguments['title']);
+        /** @var string|null $title */
+        $title = $this->arguments['title'];
+        if (!empty($title)) {
+            $defaultImage->addAttribute('title', $title);
         }
 
-        if (in_array($this->arguments['loading'] ?? '', ['lazy', 'eager', 'auto'], true)) {
-            $defaultImage->addAttribute('loading', $this->arguments['loading']);
+        /** @var string|null $loading */
+        $loading = $this->arguments['loading'];
+        if (in_array($loading ?? '', ['lazy', 'eager', 'auto'], true)) {
+            $defaultImage->addAttribute('loading', $loading);
         }
 
         $content .= $defaultImage->render();

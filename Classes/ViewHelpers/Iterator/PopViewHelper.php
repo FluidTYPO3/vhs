@@ -45,12 +45,14 @@ class PopViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $as */
+        $as = $arguments['as'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
         return static::renderChildrenWithVariableOrReturnInputStatic(
             array_pop($subject),
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

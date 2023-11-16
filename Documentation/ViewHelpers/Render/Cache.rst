@@ -65,7 +65,7 @@ identity
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Identity for cached entry
 

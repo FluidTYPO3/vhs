@@ -141,7 +141,9 @@ class ExtractViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var array $content */
         $content = $arguments['content'] ?? $renderChildrenClosure();
+        /** @var string $key */
         $key = $arguments['key'];
         $recursive = (boolean) $arguments['recursive'];
         $single = (boolean) $arguments['single'];
@@ -165,7 +167,7 @@ class ExtractViewHelper extends AbstractViewHelper
             $result = [];
         }
 
-        if ($single && $result instanceof \Traversable) {
+        if ($single && ($result instanceof \Traversable || is_array($result))) {
             return reset($result);
         }
 

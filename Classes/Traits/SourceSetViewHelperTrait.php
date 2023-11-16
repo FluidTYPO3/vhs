@@ -29,11 +29,15 @@ trait SourceSetViewHelperTrait
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
+        /** @var string|null $format */
         $format = $this->arguments['format'];
+        /** @var int $quality */
         $quality = $this->arguments['quality'];
+        /** @var string|null $crop */
         $crop = $this->arguments['crop'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
         if ($treatIdAsReference) {
+            /** @var string $src */
             $src = $this->arguments['src'];
         }
 
@@ -43,7 +47,12 @@ trait SourceSetViewHelperTrait
         foreach ($srcsets as $width) {
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference, null, $crop);
 
-            $srcsetVariantSrc = rawurldecode($srcsetVariant[3]);
+            if ($srcsetVariant['processedFile'] ?? false) {
+                $imageUrl = $srcsetVariant['processedFile']->getPublicUrl();
+            } else {
+                $imageUrl = $srcsetVariant[3] ?? '';
+            }
+            $srcsetVariantSrc = rawurldecode($imageUrl);
             $srcsetVariantSrc = static::preprocessSourceUri(
                 str_replace('%2F', '/', rawurlencode($srcsetVariantSrc)),
                 $this->arguments
@@ -79,7 +88,7 @@ trait SourceSetViewHelperTrait
     public function getImgResource(
         string $src,
         int $width,
-        string $format,
+        ?string $format,
         int $quality,
         bool $treatIdAsReference,
         ?string $params = null,

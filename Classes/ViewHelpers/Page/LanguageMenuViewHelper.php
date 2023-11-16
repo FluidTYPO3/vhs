@@ -8,9 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -133,7 +133,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         /** @var ContentObjectRenderer $contentObject */
         $contentObject = $GLOBALS['TSFE']->cObj;
         $this->cObj = $contentObject;
-        $this->tagName = $this->arguments['tagName'];
+        $this->tagName = is_scalar($this->arguments['tagName']) ? (string) $this->arguments['tagName'] : 'ul';
         $this->tag->setTagName($this->tagName);
 
         if (class_exists(SiteFinder::class)) {
@@ -141,10 +141,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $this->defaultLangUid = $this->site->getDefaultLanguage()->getLanguageId();
         }
         $this->languageMenu = $this->parseLanguageMenu();
-        $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $this->languageMenu);
+        /** @var string $as */
+        $as = $this->arguments['as'];
+        $this->renderingContext->getVariableProvider()->add($as, $this->languageMenu);
+        /** @var string|null $content */
         $content = $this->renderChildren();
         $content = is_scalar($content) ? (string) $content : '';
-        $this->renderingContext->getVariableProvider()->remove($this->arguments['as']);
+        $this->renderingContext->getVariableProvider()->remove($as);
         if (0 === mb_strlen(trim($content))) {
             $content = $this->autoRender();
         }
@@ -202,13 +205,17 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getLanguageFlag(string $iso, string $label): string
     {
-        if ('' !== $this->arguments['flagPath']) {
-            $path = trim($this->arguments['flagPath']);
+        /** @var string $flagPath */
+        $flagPath = $this->arguments['flagPath'];
+        /** @var string $flagImageType */
+        $flagImageType = $this->arguments['flagImageType'];
+        if ('' !== $flagPath) {
+            $path = trim($flagPath);
         } else {
             $path = CoreUtility::getLanguageFlagIconPath();
         }
 
-        $imgType = trim($this->arguments['flagImageType']);
+        $imgType = trim($flagImageType);
         $conf = [
             'file' => $path . strtoupper($iso) . '.' . $imgType,
             'altText' => $label,
@@ -241,7 +248,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getLayout(array $language): string
     {
-        $flagImage = false !== stripos($this->arguments['layout'], 'flag') ? $language['flagCode'] : '';
+        /** @var string $layout */
+        $layout = $this->arguments['layout'];
+        /** @var string $flagCode */
+        $flagCode = $language['flagCode'];
+        $flagImage = false !== stripos($layout, 'flag') ? $flagCode : '';
+        /** @var string $label */
         $label = $language['label'];
         switch ($this->arguments['layout']) {
             case 'flag':
@@ -272,16 +284,21 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function parseLanguageMenu(): array
     {
+        /** @var array $languages */
+        $languages = $this->arguments['languages'];
+        /** @var string|null $orderArgument */
+        $orderArgument = $this->arguments['order'];
         /** @var iterable $order */
-        $order = $this->arguments['order'] ? GeneralUtility::trimExplode(',', $this->arguments['order']) : '';
-        /** @var array $labelOverwrite */
+        $order = $orderArgument ? GeneralUtility::trimExplode(',', $orderArgument) : '';
+        /** @var string $labelOverwrite */
         $labelOverwrite = $this->arguments['labelOverwrite'];
         if (!empty($labelOverwrite)) {
-            $labelOverwrite = GeneralUtility::trimExplode(',', $this->arguments['labelOverwrite']);
+            /** @var array $labelOverwrite */
+            $labelOverwrite = GeneralUtility::trimExplode(',', $labelOverwrite);
         }
 
         // first gather languages into this array so we can reorder it later
-        $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($this->arguments['languages'] ?? []);
+        $limitLanguages = static::arrayFromArrayOrTraversableOrCSVStatic($languages ?? []);
         $limitLanguages = array_filter($limitLanguages);
         $tempArray = $this->getLanguagesFromSiteConfiguration($limitLanguages);
 
@@ -425,7 +442,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getLanguageUrl($languageId): string
     {
-        $excludedVars = trim((string) $this->arguments['excludeQueryVars']);
+        /** @var string $excludeVarsArgument */
+        $excludeVarsArgument = $this->arguments['excludeQueryVars'];
+        $excludedVars = trim((string) $excludeVarsArgument);
         $config = [
             'parameter' => $this->getPageUid(),
             'returnLast' => 'url',
@@ -447,7 +466,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getPageUid(): int
     {
-        $pageUid = (integer) $this->arguments['pageUid'];
+        /** @var int $pageUid */
+        $pageUid = $this->arguments['pageUid'];
+        $pageUid = (integer) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
@@ -483,15 +504,13 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
-        /** @var Result $result */
-        $result = $queryBuilder->select('sys_language_uid')
+        $queryBuilder->select('sys_language_uid')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($parentField, $this->getPageUid())
-            )
-            ->execute();
-        /** @var array $rows */
-        $rows = $result->fetchAllAssociative();
+            );
+        $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+        $rows = DoctrineQueryProxy::fetchAllAssociative($result);
 
         return array_column($rows, 'sys_language_uid');
     }

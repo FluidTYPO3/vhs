@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Result;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -42,7 +42,9 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         if (!is_array($arguments)) {
             return false;
         }
+        /** @var string $language */
         $language = $arguments['language'];
+        /** @var string $defaultTitle */
         $defaultTitle = $arguments['defaultTitle'];
 
         if (class_exists(LanguageAspect::class)) {
@@ -64,18 +66,18 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
 
             $queryBuilder->createNamedParameter($language, \PDO::PARAM_STR, ':title');
 
-            /** @var Result $result */
-            $result = $queryBuilder
+            $queryBuilder
                 ->select('uid')
                 ->from('sys_language')
                 ->where(
                     $queryBuilder->expr()->eq('title', ':title')
-                )
-                ->execute();
-            $row = $result->fetchAssociative();
+                );
+            $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+            $row = DoctrineQueryProxy::fetchAssociative($result);
 
             if (is_array($row)) {
-                $languageUid = intval($row['uid']);
+                /** @var int $languageUid */
+                $languageUid = $row['uid'];
             } else {
                 if ((string) $language === $defaultTitle) {
                     $languageUid = $currentLanguageUid;

@@ -70,6 +70,7 @@ class GravatarViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $email */
         $email = $arguments['email'];
         $size = $arguments['size'];
         $imageSet = $arguments['imageSet'];

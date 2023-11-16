@@ -95,20 +95,26 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
+        /** @var string $videoId */
         $videoId = $this->arguments['videoId'];
-        $width   = $this->arguments['width'];
-        $height  = $this->arguments['height'];
+        /** @var int $width */
+        $width = $this->arguments['width'];
+        /** @var int $height */
+        $height = $this->arguments['height'];
 
         $src = static::VIMEO_BASEURL . $videoId . '?';
 
+        /** @var string $color */
+        $color = $this->arguments['color'];
+
         $queryParams = [
-            'title='     . (integer) $this->arguments['title'],
-            'byline='    . (integer) $this->arguments['byline'],
-            'portrait='  . (integer) $this->arguments['portrait'],
-            'color='     . str_replace('#', '', $this->arguments['color']),
-            'autoplay='  . (integer) $this->arguments['autoplay'],
-            'loop='      . (integer) $this->arguments['loop'],
-            'api='       . (integer) $this->arguments['api'],
+            'title='     . (bool) $this->arguments['title'],
+            'byline='    . (bool) $this->arguments['byline'],
+            'portrait='  . (bool) $this->arguments['portrait'],
+            'color='     . str_replace('#', '', $color),
+            'autoplay='  . (bool) $this->arguments['autoplay'],
+            'loop='      . (bool) $this->arguments['loop'],
+            'api='       . (bool) $this->arguments['api'],
             'player_id=' . $this->arguments['playerId'],
         ];
 
@@ -116,8 +122,8 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
 
         $this->tag->forceClosingTag(true);
         $this->tag->addAttribute('src', $src);
-        $this->tag->addAttribute('width', $width);
-        $this->tag->addAttribute('height', $height);
+        $this->tag->addAttribute('width', (string) $width);
+        $this->tag->addAttribute('height', (string) $height);
         $this->tag->addAttribute('frameborder', '0');
         $this->tag->addAttribute('webkitAllowFullScreen', 'webkitAllowFullScreen');
         $this->tag->addAttribute('mozAllowFullScreen', 'mozAllowFullScreen');

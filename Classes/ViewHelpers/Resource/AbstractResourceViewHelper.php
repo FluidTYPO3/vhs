@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Driver\Result;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -104,8 +104,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             );
             $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
 
-            /** @var Result $statement */
-            $statement = $queryBuilder
+            $queryBuilder
                 ->select('uid_foreign')
                 ->from('sys_category_record_mm')
                 ->where(
@@ -113,9 +112,9 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
                 )
                 ->andWhere(
                     $queryBuilder->expr()->in('uid_local', ':categories')
-                )
-                ->execute();
-            $rows = $statement->fetchAllAssociative();
+                );
+            $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+            $rows = DoctrineQueryProxy::fetchAllAssociative($statement);
 
             /** @var int[] $fileUids */
             $fileUids = array_unique(array_column($rows, 'uid_foreign'));

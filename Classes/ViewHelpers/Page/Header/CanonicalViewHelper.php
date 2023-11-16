@@ -55,11 +55,14 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
             return '';
         }
 
-        $pageUid = (integer) $this->arguments['pageUid'];
+        /** @var int $pageUid */
+        $pageUid = $this->arguments['pageUid'];
+        $pageUid = (integer) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
+        /** @var string $queryStringMethod */
         $queryStringMethod = $this->arguments['queryStringMethod'];
         if (!in_array($queryStringMethod, ['GET', 'POST', 'GET,POST'], true)) {
             throw new \InvalidArgumentException(

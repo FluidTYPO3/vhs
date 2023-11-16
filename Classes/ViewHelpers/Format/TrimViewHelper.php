@@ -36,6 +36,7 @@ class TrimViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $characters */
         $characters = $arguments['characters'];
         $content = $renderChildrenClosure();
         if (!empty($characters)) {

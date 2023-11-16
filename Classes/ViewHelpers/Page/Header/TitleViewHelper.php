@@ -74,11 +74,15 @@ class TitleViewHelper extends AbstractViewHelper
             return;
         }
         if (!empty($arguments['title'])) {
+            /** @var string $title */
             $title = $arguments['title'];
         } else {
+            /** @var string $title */
             $title = $renderChildrenClosure();
         }
-        $title = trim(preg_replace('/\s+/', $arguments['whitespaceString'], $title), $arguments['whitespaceString']);
+        /** @var string $whitespace */
+        $whitespace = $arguments['whitespaceString'];
+        $title = trim((string) preg_replace('/\s+/u', $whitespace, $title), $whitespace);
         static::getPageRenderer()->setTitle($title);
         if ($arguments['setIndexedDocTitle']) {
             $GLOBALS['TSFE']->indexedDocTitle = $title;

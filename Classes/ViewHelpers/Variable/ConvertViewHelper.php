@@ -62,7 +62,7 @@ class ConvertViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $value = $renderChildrenClosure();
-        $type = $arguments['type'];
+        $type = is_scalar($arguments['type']) ? (string) $arguments['type'] : null;
         if (gettype($value) === $type) {
             return $value;
         }
@@ -78,7 +78,7 @@ class ConvertViewHelper extends AbstractViewHelper
                 $value = iterator_to_array($value, false);
             } elseif ('array' === $type) {
                 $value = [$value];
-            } else {
+            } elseif (is_string($type)) {
                 settype($value, $type);
             }
         } else {

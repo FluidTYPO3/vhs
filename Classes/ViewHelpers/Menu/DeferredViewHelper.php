@@ -38,6 +38,7 @@ class DeferredViewHelper extends AbstractMenuViewHelper
     public function render()
     {
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        /** @var string $as */
         $as = $this->arguments['as'];
         if (!$viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredArray')) {
             return '';

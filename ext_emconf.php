@@ -18,35 +18,35 @@ $EM_CONF['vhs'] = array (
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '6.1.3',
-  'constraints' =>
+  'version' => '7.0.1',
+  'constraints' => 
   array (
-    'depends' =>
+    'depends' => 
     array (
       'php' => '7.4.0-8.2.99',
-      'typo3' => '10.4.0-11.5.99',
+      'typo3' => '10.4.0-12.4.99',
     ),
-    'conflicts' =>
+    'conflicts' => 
     array (
     ),
-    'suggests' =>
+    'suggests' => 
     array (
     ),
   ),
-  'suggests' =>
+  'suggests' => 
   array (
   ),
   '_md5_values_when_last_written' => '',
-  'autoload' =>
+  'autoload' => 
   array (
-    'psr-4' =>
+    'psr-4' => 
     array (
       'FluidTYPO3\\Vhs\\' => 'Classes/',
     ),
   ),
-  'autoload-dev' =>
+  'autoload-dev' => 
   array (
-    'psr-4' =>
+    'psr-4' => 
     array (
       'FluidTYPO3\\Vhs\\Tests\\' => 'Tests/',
     ),

@@ -80,6 +80,7 @@ class AlternateViewHelper extends AbstractViewHelper
             return '';
         }
 
+        /** @var array<int, string>|string $languages */
         $languages = $this->arguments['languages'];
         if ($languages instanceof \Traversable) {
             $languages = iterator_to_array($languages);
@@ -89,13 +90,16 @@ class AlternateViewHelper extends AbstractViewHelper
             $languages = (array) $languages;
         }
 
-        $pageUid = (integer) $this->arguments['pageUid'];
+        /** @var int $pageUid */
+        $pageUid = $this->arguments['pageUid'];
+        $pageUid = (integer) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
+        /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
-        $addQueryString = $this->arguments['addQueryString'];
+        $addQueryString = (boolean) $this->arguments['addQueryString'];
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

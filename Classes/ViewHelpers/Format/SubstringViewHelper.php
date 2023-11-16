@@ -39,7 +39,9 @@ class SubstringViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
-        $start = (integer) $arguments['start'];
+        /** @var int $start */
+        $start = $arguments['start'];
+        /** @var int $length */
         $length = $arguments['length'];
         if (null !== $length) {
             if ($length < 0) {

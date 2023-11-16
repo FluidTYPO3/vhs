@@ -38,9 +38,13 @@ class ForViewHelper extends AbstractLoopViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $to = (integer) $arguments['to'];
-        $from = (integer) $arguments['from'];
-        $step = (integer) $arguments['step'];
+        /** @var int $to */
+        $to = $arguments['to'];
+        /** @var int $from */
+        $from = $arguments['from'];
+        /** @var int $step */
+        $step = $arguments['step'];
+        /** @var string|null $iteration */
         $iteration = $arguments['iteration'];
         $content = '';
         $variableProvider = $renderingContext->getVariableProvider();
@@ -55,7 +59,7 @@ class ForViewHelper extends AbstractLoopViewHelper
             throw new \RuntimeException('"step" must be smaller than 0 if "from" is greater than "to".', 1383268415);
         }
 
-        if ($variableProvider->exists($iteration)) {
+        if ($iteration !== null && $variableProvider->exists($iteration)) {
             $backupVariable = $variableProvider->get($iteration);
             $variableProvider->remove($iteration);
         }
@@ -96,7 +100,7 @@ class ForViewHelper extends AbstractLoopViewHelper
             }
         }
 
-        if (isset($backupVariable)) {
+        if ($iteration !== null && isset($backupVariable)) {
             $variableProvider->add($iteration, $backupVariable);
         }
 

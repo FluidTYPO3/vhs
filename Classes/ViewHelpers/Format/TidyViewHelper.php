@@ -40,6 +40,7 @@ class TidyViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
+        /** @var string $encoding */
         $encoding = $arguments['encoding'];
         if (class_exists('tidy')) {
             $tidy = tidy_parse_string($content, [], $encoding);
@@ -47,7 +48,7 @@ class TidyViewHelper extends AbstractViewHelper
                 return $content;
             }
             $tidy->cleanRepair();
-            return $tidy;
+            return $tidy->root()->value;
         }
         throw new \RuntimeException(
             'TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.',

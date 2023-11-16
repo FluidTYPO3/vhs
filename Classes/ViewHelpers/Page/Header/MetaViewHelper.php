@@ -51,6 +51,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
         if (ContextUtility::isBackend()) {
             return '';
         }
+        /** @var string|null $content */
         $content = $this->arguments['content'];
         if (!empty($content)) {
             $pageRenderer = static::getPageRenderer();

@@ -58,11 +58,13 @@ class InfoViewHelper extends AbstractViewHelper
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);
         $pageRepository = $pageService->getPageRepository();
-        $pageUid = (integer) $arguments['pageUid'];
+        /** @var int $pageUid */
+        $pageUid = $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = $pageRepository->getPage_noCheck($pageUid);
+        $page = $pageRepository->getPage_noCheck((integer) $pageUid);
+        /** @var string|null $field */
         $field = $arguments['field'];
         $content = null;
         if (empty($field)) {
@@ -71,9 +73,11 @@ class InfoViewHelper extends AbstractViewHelper
             $content = $page[$field];
         }
 
+        /** @var string|null $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $content,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

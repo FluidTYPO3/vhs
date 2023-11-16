@@ -75,6 +75,7 @@ class EncodeViewHelper extends AbstractViewHelper
             'string',
             'A date() format for DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)'
         );
+        $this->registerArgument('pretty', 'bool', 'If TRUE, outputs JSON with JSON_PRETTY_PRINT', false, false);
     }
 
     /**
@@ -88,10 +89,24 @@ class EncodeViewHelper extends AbstractViewHelper
         $value = $renderChildrenClosure();
         $useTraversableKeys = (boolean) $arguments['useTraversableKeys'];
         $preventRecursion = (boolean) $arguments['preventRecursion'];
+        /** @var string $recursionMarker */
         $recursionMarker = $arguments['recursionMarker'] ?? '**recursion**';
+        /** @var string|null $dateTimeFormat */
         $dateTimeFormat = $arguments['dateTimeFormat'];
+        $options = JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG;
+        if ($arguments['pretty']) {
+            $options |= JSON_PRETTY_PRINT;
+        }
+
         static::$encounteredClasses = [];
-        $json = static::encodeValue($value, $useTraversableKeys, $preventRecursion, $recursionMarker, $dateTimeFormat);
+        $json = static::encodeValue(
+            $value,
+            $useTraversableKeys,
+            $preventRecursion,
+            $recursionMarker,
+            $dateTimeFormat,
+            $options
+        );
         return $json;
     }
 
@@ -104,7 +119,8 @@ class EncodeViewHelper extends AbstractViewHelper
         bool $useTraversableKeys,
         bool $preventRecursion,
         ?string $recursionMarker,
-        ?string $dateTimeFormat
+        ?string $dateTimeFormat,
+        int $options
     ) {
         if ($value instanceof \Traversable) {
             // Note: also converts ObjectStorage to \Vendor\Extname\Domain\Model\ObjectType[] which are each converted
@@ -121,7 +137,7 @@ class EncodeViewHelper extends AbstractViewHelper
             $value = static::recursiveArrayOfDomainObjectsToArray($value, $preventRecursion, $recursionMarker);
             $value = static::recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
         }
-        $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG);
+        $json = json_encode($value, $options);
         if (JSON_ERROR_NONE !== json_last_error()) {
             ErrorUtility::throwViewHelperException('The provided argument cannot be converted into JSON.', 1358440181);
         }

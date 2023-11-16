@@ -1,6 +1,22 @@
 parameters:
     ignoreErrors:
         -
+            message: "#Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement\\|Doctrine\\\\DBAL\\\\Result\\:\\:fetch\\(\\)\\.$#"
+            count: 1
+            path: Classes/Utility/DoctrineQueryProxy.php
+        -
+            message: "#Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement\\|Doctrine\\\\DBAL\\\\Result\\:\\:fetchAll\\(\\)\\.$#"
+            count: 1
+            path: Classes/Utility/DoctrineQueryProxy.php
+        -
+            message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_groupAccess\\.$#"
+            count: 1
+            path: Classes/Service/PageService.php
+        -
+            message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:getMenu\\(\\) invoked with 6 parameters, 1\\-5 required\\.$#"
+            count: 1
+            path: Classes/Service/PageService.php
+        -
             message: "#^Parameter \\#2 \\$conf of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:parseFunc\\(\\) expects non-empty-array<string, mixed>\\|null, array\\{\\} given\\.$#"
             count: 1
             path: Classes/ViewHelpers/Format/Placeholder/LipsumViewHelper.php

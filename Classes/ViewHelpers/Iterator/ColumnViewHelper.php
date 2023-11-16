@@ -110,13 +110,19 @@ class ColumnViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $as */
+        $as = $arguments['as'];
+        /** @var string|null $key */
+        $key = $arguments['columnKey'];
+        /** @var string|null $indexKey */
+        $indexKey = $arguments['indexKey'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
         );
-        $output = array_column($subject, $arguments['columnKey'], $arguments['indexKey']);
+        $output = array_column($subject, $key, $indexKey);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

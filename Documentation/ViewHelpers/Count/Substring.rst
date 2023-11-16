@@ -54,6 +54,6 @@ string
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Substring to count occurrences of

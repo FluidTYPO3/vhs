@@ -84,8 +84,10 @@ class Asset implements AssetInterface
     protected bool $rewrite = true;
     private static ?array $settingsCache = null;
 
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    public function __construct()
     {
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $this->configurationManager = $configurationManager;
     }
 
@@ -193,6 +195,9 @@ class Asset implements AssetInterface
 
     public function getType(): string
     {
+        if (empty($this->type) && !empty($this->path)) {
+            return pathinfo($this->path, PATHINFO_EXTENSION);
+        }
         return $this->type;
     }
 
@@ -370,6 +375,10 @@ class Asset implements AssetInterface
                 continue;
             }
             $properties[$propertyName] = $this->$propertyName;
+        }
+
+        if (empty($properties['type']) && !empty($properties['path'])) {
+            $properties['type'] = pathinfo($properties['path'], PATHINFO_EXTENSION);
         }
 
         ArrayUtility::mergeRecursiveWithOverrule($settings, $this->settings);

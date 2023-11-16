@@ -94,6 +94,7 @@ class PrefetchViewHelper extends AbstractAssetViewHelper
 
     public function build(): string
     {
+        /** @var array|string $domains */
         $domains = $this->arguments['domains'];
         if (!is_array($domains)) {
             $domains = GeneralUtility::trimExplode(',', $domains, true);

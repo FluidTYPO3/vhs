@@ -1493,7 +1493,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1595,7 +1595,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1671,7 +1671,7 @@ Renders the value of a PHP constant
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -1757,7 +1757,7 @@ It can be rendered as follows:
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -2673,6 +2673,11 @@ result in fatal JavaScript errors in the client browser.
           <xsd:documentation><![CDATA[A date() format for DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="pretty" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[If TRUE, outputs JSON with JSON_PRETTY_PRINT]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="format.markdown">
@@ -2949,6 +2954,17 @@ ViewHelper makes advanced chained inline processing possible:
   <xsd:element name="format.replace">
     <xsd:annotation>
       <xsd:documentation><![CDATA[Replaces $substring in $content with $replacement.
+
+Supports array as input substring/replacements and content.
+
+When input substring/replacement is an array, both must be
+the same length and must contain only strings.
+
+When input content is an array, the search/replace is done
+on every value in the input content array and the return
+value will be an array of equal size as the input content
+array but with all values search/replaced. All values in the
+input content array must be strings.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2957,22 +2973,22 @@ ViewHelper makes advanced chained inline processing possible:
       </xsd:sequence>
       <xsd:attribute type="xsd:string" name="content" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Content in which to perform replacement]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Content in which to perform replacement. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="substring" default="NULL" use="required">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Substring to replace]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Substring to replace. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="replacement" default="''">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Replacement to insert]]></xsd:documentation>
+          <xsd:documentation><![CDATA[Replacement to insert. Array supported.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="count" default="NULL">
+      <xsd:attribute type="xsd:anySimpleType" name="returnCount" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[Maximum number of times to perform replacement]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If TRUE, returns the number of replacements that were performed instead of returning output string. See also `v:count.substring`.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="caseSensitive" default="true">
@@ -5202,6 +5218,11 @@ http://scottjehl.github.io/picturefill/
           <xsd:documentation><![CDATA[Information generated by the backend's graphical cropping UI]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="class" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
@@ -5457,6 +5478,11 @@ pages the first page is rendered by default unless specified.
       <xsd:attribute type="xsd:string" name="crop" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Information generated by the backend's graphical cropping UI]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="class" default="NULL">
@@ -9557,7 +9583,7 @@ If you simply want to render a content element, try `<v:content.render>`.
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If set, selects only content from this page UID]]></xsd:documentation>
+          <xsd:documentation><![CDATA[If set, selects only content from this page UID. Ignored when "contentUids" is specified.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="contentUids" default="NULL">
@@ -9780,6 +9806,11 @@ Arguments must be serializable and will be cached.
           <xsd:documentation><![CDATA[Arguments to pass to the partial.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="persistPartialPaths" default="true">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Normally, v:render.uncache will persist the partialRootPaths array that was active when the ViewHelperwas called, so the exact paths will be reused when rendering the uncached portion of the page output. This is done to ensure that even if you manually added some partial paths through some dynamic means (for example, based on a controller argument) then those paths would be used. However, in some cases this will be undesirable - namely when using a cache that is shared between multiple TYPO3 instances and each instance has a different path in the server's file system (e.g. load balanced setups). On such setups you should set persistPartialPaths="0" on this ViewHelper to prevent it from caching the resolved partialRootPaths. The ViewHelper will then instead use whichever partialRootPaths are configured for the extension that calls `v:render.uncache`. Note that when this is done, the special use case of dynamic or controller-overridden partialRootPaths is simply not supported.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="resource.collection">
@@ -9940,6 +9971,11 @@ http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Inde
       <xsd:attribute type="xsd:string" name="maxHeight" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Maximum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="class" default="NULL">
@@ -10849,6 +10885,11 @@ or it's derivate if differing dimesions are provided.
       <xsd:attribute type="xsd:string" name="crop" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Information generated by the backend's graphical cropping UI]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:anySimpleType" name="graceful" default="false">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
     </xsd:complexType>

@@ -29,9 +29,13 @@ class LoopViewHelper extends AbstractLoopViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $count = (integer) $arguments['count'];
-        $minimum = (integer) $arguments['minimum'];
-        $maximum = (integer) $arguments['maximum'];
+        /** @var int $count */
+        $count = $arguments['count'];
+        /** @var int $minimum */
+        $minimum = $arguments['minimum'];
+        /** @var int $maximum */
+        $maximum = $arguments['maximum'];
+        /** @var string|null $iteration */
         $iteration = $arguments['iteration'];
         $content = '';
         $variableProvider = $renderingContext->getVariableProvider();
@@ -42,7 +46,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
             $count = $maximum;
         }
 
-        if ($variableProvider->exists($iteration)) {
+        if ($iteration !== null && $variableProvider->exists($iteration)) {
             $backupVariable = $variableProvider->get($iteration);
             $variableProvider->remove($iteration);
         }
@@ -59,7 +63,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
             );
         }
 
-        if (isset($backupVariable)) {
+        if ($iteration !== null && isset($backupVariable)) {
             $variableProvider->add($iteration, $backupVariable);
         }
 

@@ -45,17 +45,21 @@ class SplitViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if ((integer) $arguments['length'] === 0) {
+        /** @var int<1, max> $length */
+        $length = $arguments['length'];
+        if ((integer) $length === 0) {
             // Difference from PHP str_split: return an empty array if (potentially dynamically defined) length
             // argument is zero for some reason. PHP would throw a warning; Fluid would logically just return empty.
             return [];
         }
+        /** @var string|null $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             str_split(
-                empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
-                $arguments['length']
+                empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
+                $length
             ),
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

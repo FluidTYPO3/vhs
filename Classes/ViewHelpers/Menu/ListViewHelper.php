@@ -52,9 +52,11 @@ class ListViewHelper extends AbstractMenuViewHelper
         $menu = $this->parseMenu($menuData);
         $this->backupVariables();
         $variableProvider = $this->renderingContext->getVariableProvider();
-        $variableProvider->add($this->arguments['as'], $menu);
+        /** @var string $as */
+        $as = $this->arguments['as'];
+        $variableProvider->add($as, $menu);
         $output = $this->renderContent($menu);
-        $variableProvider->remove($this->arguments['as']);
+        $variableProvider->remove($as);
         $this->restoreVariables();
 
         return $output;

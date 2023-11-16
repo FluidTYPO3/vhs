@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -55,6 +54,7 @@ class LipsumViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $lipsum */
         $lipsum = $arguments['lipsum'];
         if (mb_strlen($lipsum) === 0) {
             $lipsum = static::getDefaultLoremIpsum();
@@ -65,18 +65,23 @@ class LipsumViewHelper extends AbstractViewHelper
             // argument is most likely a file reference.
             $sourceFile = GeneralUtility::getFileAbsFileName($lipsum);
             if (file_exists($sourceFile)) {
+                /** @var string $lipsum */
                 $lipsum = file_get_contents($sourceFile);
             } else {
                 return 'Vhs LipsumViewHelper was asked to load Lorem Ipsum from a file which does not exist. ' .
                     'The file was: ' . $sourceFile;
             }
         }
-        $lipsum = preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
+        $lipsum = (string) preg_replace('/[\\r\\n]{1,}/i', "\n", $lipsum);
+        /** @var int $skew */
+        $skew = $arguments['skew'];
+        /** @var int $paragraphsCount */
+        $paragraphsCount = $arguments['paragraphs'];
         $paragraphs = explode("\n", $lipsum);
-        $paragraphs = array_slice($paragraphs, 0, intval($arguments['paragraphs']));
+        $paragraphs = array_slice($paragraphs, 0, $paragraphsCount);
         foreach ($paragraphs as $index => $paragraph) {
             $length = $arguments['wordsPerParagraph']
-                + rand(0 - intval($arguments['skew']), intval($arguments['skew']));
+                + rand(0 - $skew, $skew);
             $words = explode(' ', $paragraph);
             $paragraphs[$index] = implode(' ', array_slice($words, 0, $length));
         }
@@ -160,7 +165,7 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
     protected static function getContentObject(): ContentObjectRenderer
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         /** @var ContentObjectRenderer $contentObject */
         $contentObject = $configurationManager->getContentObject();
         return $contentObject;

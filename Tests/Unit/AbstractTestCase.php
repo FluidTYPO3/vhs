@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit;
 
 use FluidTYPO3\Flux\Form;
 use FluidTYPO3\Flux\Form\Field\Custom;
-use FluidTYPO3\Flux\Service\FluxService;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -240,19 +239,6 @@ abstract class AbstractTestCase extends TestCase
     protected function getAbsoluteFixtureTemplatePathAndFilename($shorthandTemplatePath)
     {
         return realpath(str_replace('EXT:vhs/', './', $shorthandTemplatePath));
-    }
-
-    /**
-     * @param array $methods
-     * @return FluxService
-     */
-    protected function createFluxServiceInstance($methods = array('dummy'))
-    {
-        /** @var FluxService $fluxService */
-        $fluxService = $this->getMockBuilder(FluxService::class)->setMethods($methods)->disableOriginalConstructor()->getMock();
-        $configurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
-        $fluxService->injectConfigurationManager($configurationManager);
-        return $fluxService;
     }
 
     /**

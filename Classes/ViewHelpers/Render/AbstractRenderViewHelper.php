@@ -95,7 +95,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         try {
             $content = $view->render();
         } catch (\Exception $error) {
-            if (!$arguments['graceful']) {
+            if (!($arguments['graceful'] ?? false)) {
                 throw $error;
             }
             $content = $error->getMessage() . ' (' . $error->getCode() . ')';

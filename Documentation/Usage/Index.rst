@@ -25,7 +25,7 @@ JavaScript, etc.) in Fluid templates, PHP, and TypoScript. The traditional way
 of including such assets in Fluid or elsewhere was that they were all used and
 controlled differently and, probably worst of all, they were not all integration
 friendly as assets could be modified with TypoScript. VHS Assets solves all
-these problems.
+of these drawbacks.
 
 Asset examples
 ~~~~~~~~~~~~~~
@@ -78,7 +78,7 @@ which is a short form of:
       path = fileadmin/demo.js
    }
 
-In summary: regardless of where and how you use VHS Assets, they always use the
+In summary: Regardless of where and how you use VHS Assets, they always use the
 same attributes, they always behave the same, support the same features (such as
 dependency on other assets regardless of inclusion order and addressing assets
 by a group name to affect multiple assets - and even rendering JavaScript and
@@ -140,7 +140,7 @@ Secondary domain name for resources
 
 You can configure VHS to write path prepends in two ways, one of which allows
 you to create a so-called "cookie-free domain" on which requests will contain
-fewer headers. Normally, setting `config.absRefPrefix` causes your resources'
+fewer headers. Normally, defining `config.absRefPrefix` causes your resources'
 paths to be prefixed with a domain, but using this approach will always prepend
 a domain name which cannot be "cookie-free". VHS allows an alternative setting
 for path prefix, which can be set to a secondary domain name (pointing to the
@@ -153,8 +153,8 @@ written with this prefix prepended:
 
 The setting affects *every* relative path resource ViewHelper (NB: this does not
 include links!) in VHS, which is why it is not placed inside the "asset" scope.
-If you need to output this prefix path in templates you can use the `v:page.staticPrefix`
-ViewHelper - it accepts no arguments and only outputs the setting if it is set.
+If you need to output this prefix path in templates, you can use the `v:page.staticPrefix`
+ViewHelper - It accepts no arguments and only outputs the setting if it is set.
 For example, using `f:image` will not prefix the image path but manually
 creating an `<img />` tag and using `f:uri.image` as `src` argument will allow
 you to prefix the path.

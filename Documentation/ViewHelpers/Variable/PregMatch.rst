@@ -38,7 +38,7 @@ pattern
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Regex pattern to match against
 

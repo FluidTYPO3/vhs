@@ -10,9 +10,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
 
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\View\UncacheContentObject;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\View\UncacheTemplateView;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -37,6 +38,22 @@ class UncacheViewHelper extends AbstractViewHelper
         $this->registerArgument('partial', 'string', 'Reference to a partial.', true);
         $this->registerArgument('section', 'string', 'Name of section inside the partial to render.');
         $this->registerArgument('arguments', 'array', 'Arguments to pass to the partial.');
+        $this->registerArgument(
+            'persistPartialPaths',
+            'bool',
+            'Normally, v:render.uncache will persist the partialRootPaths array that was active when the ViewHelper' .
+            'was called, so the exact paths will be reused when rendering the uncached portion of the page output. ' .
+            'This is done to ensure that even if you manually added some partial paths through some dynamic means (' .
+            'for example, based on a controller argument) then those paths would be used. However, in some cases ' .
+            'this will be undesirable - namely when using a cache that is shared between multiple TYPO3 instances ' .
+            'and each instance has a different path in the server\'s file system (e.g. load balanced setups). ' .
+            'On such setups you should set persistPartialPaths="0" on this ViewHelper to prevent it from caching ' .
+            'the resolved partialRootPaths. The ViewHelper will then instead use whichever partialRootPaths are ' .
+            'configured for the extension that calls `v:render.uncache`. Note that when this is done, the special ' .
+            'use case of dynamic or controller-overridden partialRootPaths is simply not supported.',
+            false,
+            true
+        );
     }
 
     /**
@@ -51,7 +68,7 @@ class UncacheViewHelper extends AbstractViewHelper
         $templateVariableContainer = $renderingContext->getVariableProvider();
         $partialArguments = $arguments['arguments'];
         if (!is_array($partialArguments)) {
-            $partialArguments = [];
+            $partialArguments = (array) $partialArguments;
         }
         if (!isset($partialArguments['settings']) && $templateVariableContainer->exists('settings')) {
             $partialArguments['settings'] = $templateVariableContainer->get('settings');
@@ -76,20 +93,28 @@ class UncacheViewHelper extends AbstractViewHelper
             ];
         }
 
-        $GLOBALS['TSFE']->config['INTincScript'][$substKey] = [
-            'type' => 'POSTUSERFUNC',
-            'cObj' => serialize(GeneralUtility::makeInstance(UncacheContentObject::class, $GLOBALS['TSFE']->cObj)),
-            'postUserFunc' => 'render',
-            'conf' => [
-                'partial' => $arguments['partial'],
-                'section' => $arguments['section'],
-                'arguments' => $partialArguments,
-                'partialRootPaths' => $renderingContext->getTemplatePaths()->getPartialRootPaths(),
-                'controllerContext' => $extbaseParameters,
-            ],
-            'content' => $content
+        $conf = [
+            'userFunc' => UncacheTemplateView::class . '->callUserFunction',
+            'partial' => $arguments['partial'],
+            'section' => $arguments['section'],
+            'arguments' => $partialArguments,
+            'controllerContext' => $extbaseParameters,
         ];
 
+        if ($arguments['persistPartialPaths'] ?? true) {
+            $conf['partialRootPaths'] = $renderingContext->getTemplatePaths()->getPartialRootPaths();
+        }
+
+        /** @var ContentObjectRenderer $contentObjectRenderer */
+        $contentObjectRenderer = $GLOBALS['TSFE']->cObj;
+
+        $content = $contentObjectRenderer->cObjGetSingle(
+            'COA_INT',
+            [
+                '10' => 'USER',
+                '10.' => $conf,
+            ]
+        );
         return $content;
     }
 }

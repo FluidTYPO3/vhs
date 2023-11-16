@@ -8,15 +8,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Doctrine\DBAL\Result;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ViewHelper to access data of the current content element record.
@@ -64,15 +66,35 @@ class InfoViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $contentUid = (integer) $this->arguments['contentUid'];
+        /** @var int $contentUid */
+        $contentUid = $this->arguments['contentUid'];
         $record = false;
 
         if (0 === $contentUid) {
             /** @var ContentObjectRenderer $cObj */
             $cObj = $this->configurationManager->getContentObject();
-            $record = $cObj->data;
+            if ($cObj->getCurrentTable() !== 'tt_content') {
+                throw new Exception(
+                    'v:content.info must have contentUid argument outside tt_content context',
+                    1690035521
+                );
+            }
+            if (!empty($cObj->data)) {
+                $record = $cObj->data;
+            } else {
+                $tsfe = $GLOBALS['TSFE'] ?? null;
+                if (!$tsfe instanceof TypoScriptFrontendController) {
+                    throw new Exception(
+                        'v:content.info must have contentUid argument when no TypoScriptFrontendController exists',
+                        1690035521
+                    );
+                }
+                $recordReference = $tsfe->currentRecord;
+                $contentUid = (int) substr($recordReference, strpos($recordReference, ':') + 1);
+            }
         }
 
+        /** @var string $field */
         $field = $this->arguments['field'];
         $selectFields = $field;
 
@@ -86,16 +108,14 @@ class InfoViewHelper extends AbstractViewHelper
             $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
             $queryBuilder->createNamedParameter($contentUid, \PDO::PARAM_INT, ':uid');
 
-            /** @var Result $result */
-            $result = $queryBuilder
+            $queryBuilder
                 ->select($selectFields)
                 ->from('tt_content')
                 ->where(
                     $queryBuilder->expr()->eq('uid', ':uid')
-                )
-                ->execute();
-            /** @var array|null $record */
-            $record = $result->fetchAssociative();
+                );
+            $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+            $record = DoctrineQueryProxy::fetchAssociative($result);
 
             // Add the page overlay
             if (class_exists(LanguageAspect::class)) {

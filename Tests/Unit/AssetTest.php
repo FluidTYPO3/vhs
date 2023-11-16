@@ -43,8 +43,9 @@ class AssetTest extends AbstractTestCase
 
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
 
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $this->configurationManager);
+
         $asset = new Asset();
-        $asset->injectConfigurationManager($this->configurationManager);
         GeneralUtility::addInstance(Asset::class, $asset);
 
         parent::setUp();

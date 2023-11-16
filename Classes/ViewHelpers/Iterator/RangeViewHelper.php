@@ -57,9 +57,17 @@ class RangeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var int $low */
+        $low = $arguments['low'];
+        /** @var int $high */
+        $high = $arguments['high'];
+        /** @var int $step */
+        $step = $arguments['step'];
+        /** @var string|null $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
-            range($arguments['low'], $arguments['high'], $arguments['step']),
-            $arguments['as'],
+            range($low, $high, $step),
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

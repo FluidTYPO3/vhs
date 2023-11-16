@@ -62,25 +62,25 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Render method
-     *
      * @return string
      */
     public function render()
     {
         $spotifyUri = $this->arguments['spotifyUri'];
-        $width      = (integer) $this->arguments['width'];
-        $height     = (integer) $this->arguments['height'];
+        /** @var int $width */
+        $width = $this->arguments['width'];
+        /** @var int $height */
+        $height = $this->arguments['height'];
+        /** @var string $theme */
+        $theme = $this->arguments['theme'];
+        /** @var string $view */
+        $view = $this->arguments['view'];
 
-        if (in_array($this->arguments['theme'], ['black', 'white'])) {
-            $theme = $this->arguments['theme'];
-        } else {
+        if (!in_array($theme, ['black', 'white'])) {
             $theme = 'black';
         }
 
-        if (in_array($this->arguments['view'], ['coverart', 'list'])) {
-            $view = $this->arguments['view'];
-        } else {
+        if (!in_array($view, ['coverart', 'list'])) {
             $view = 'list';
         }
 

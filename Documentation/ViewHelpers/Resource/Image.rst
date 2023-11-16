@@ -198,6 +198,19 @@ maxHeight
 :aspect:`Description`
    Maximum height of the image. Numeric value in pixels or simple calculations. See imgResource.width for possible options.
 
+.. _resource.image_graceful:
+
+graceful
+--------
+
+:aspect:`DataType`
+   mixed
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.
+
 .. _resource.image_class:
 
 class

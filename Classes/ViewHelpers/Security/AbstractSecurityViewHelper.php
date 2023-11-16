@@ -149,6 +149,15 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function evaluateArguments(): bool
     {
+        /** @var FrontendUser|null $frontendUser */
+        $frontendUser = $this->arguments['frontendUser'] ?? null;
+
+        /** @var ObjectStorage|null $frontendUsers */
+        $frontendUsers = $this->arguments['frontendUsers'] ?? null;
+
+        /** @var BackendUser|null $backendUser */
+        $backendUser = $this->arguments['backendUser'] ?? null;
+
         $evaluationType = $this->arguments['evaluationType'];
         $evaluations = [];
         if ($this->arguments['anyFrontendUser'] ?? false) {
@@ -157,13 +166,11 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         if ($this->arguments['anyFrontendUserGroup'] ?? false) {
             $evaluations['anyFrontendUserGroup'] = intval($this->assertFrontendUserGroupLoggedIn());
         }
-        if (isset($this->arguments['frontendUser'])) {
-            $evaluations['frontendUser'] =
-                intval($this->assertFrontendUserLoggedIn($this->arguments['frontendUser']));
+        if ($frontendUser) {
+            $evaluations['frontendUser'] = intval($this->assertFrontendUserLoggedIn($frontendUser));
         }
-        if (isset($this->arguments['frontendUsers'])) {
-            $evaluations['frontendUsers'] =
-                intval($this->assertFrontendUsersLoggedIn($this->arguments['frontendUsers']));
+        if ($frontendUsers) {
+            $evaluations['frontendUsers'] = intval($this->assertFrontendUsersLoggedIn($frontendUsers));
         }
         if (isset($this->arguments['frontendUserGroup'])) {
             $evaluations['frontendUserGroup'] =
@@ -180,10 +187,10 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
             $evaluations['anyBackendUserGroup'] = intval($this->assertBackendUserGroupLoggedIn());
         }
         if (isset($this->arguments['backendUser'])) {
-            $evaluations['backendUser'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUser']));
+            $evaluations['backendUser'] = intval($this->assertBackendUserLoggedIn($backendUser));
         }
         if (isset($this->arguments['backendUsers'])) {
-            $evaluations['backendUsers'] = intval($this->assertBackendUserLoggedIn($this->arguments['backendUsers']));
+            $evaluations['backendUsers'] = intval($this->assertBackendUserLoggedIn($backendUser));
         }
         if (isset($this->arguments['backendUserGroup'])) {
             $evaluations['backendUserGroup'] =

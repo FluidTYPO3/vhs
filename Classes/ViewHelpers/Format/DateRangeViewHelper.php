@@ -125,19 +125,23 @@ class DateRangeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $start */
         $start = $renderChildrenClosure();
         if (empty($arguments['start'])) {
             $start = 'now';
         }
         $startDateTime = static::enforceDateTime($start);
 
+        /** @var string|null $end */
+        $end = $arguments['end'];
         $endDateTime = null;
-        if (!empty($arguments['end'])) {
-            $endDateTime = static::enforceDateTime($arguments['end']);
+        if (!empty($end)) {
+            $endDateTime = static::enforceDateTime($end);
         }
 
         $intervalFormat = null;
         if (!empty($arguments['intervalFormat'])) {
+            /** @var string $intervalFormat */
             $intervalFormat = $arguments['intervalFormat'];
         }
 
@@ -169,13 +173,18 @@ class DateRangeViewHelper extends AbstractViewHelper
         $return = $arguments['return'];
         if (null === $return) {
             $spaceGlue = (boolean) $arguments['spaceGlue'];
-            $glue = strval($arguments['glue']);
+            /** @var string $glue */
+            $glue = $arguments['glue'];
+            /** @var string $startFormat */
             $startFormat = $arguments['format'] ?? '';
+            /** @var string $endFormat */
             $endFormat = $arguments['format'] ?? '';
             if (!empty($arguments['startFormat'])) {
+                /** @var string $startFormat */
                 $startFormat = $arguments['startFormat'];
             }
             if (!empty($arguments['endFormat'])) {
+                /** @var string $endFormat */
                 $endFormat = $arguments['endFormat'];
             }
             $output = static::formatDate($startDateTime, $startFormat);

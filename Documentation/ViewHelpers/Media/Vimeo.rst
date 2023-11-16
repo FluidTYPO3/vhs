@@ -181,7 +181,7 @@ videoId
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Vimeo ID of the video to embed.
 

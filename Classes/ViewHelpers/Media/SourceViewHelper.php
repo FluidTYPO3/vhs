@@ -119,7 +119,9 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             'treatIdAsReference' => $treatIdAsRerefence,
             'params' => '',
         ];
+        /** @var int $quality */
         $quality = $this->arguments['quality'];
+        /** @var string $format */
         $format = $this->arguments['format'];
 
         if (!empty($format)) {
@@ -137,12 +139,20 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
-        $src = $this->preprocessSourceUri(rawurldecode($result[3] ?? ''));
+        if ($result['processedFile'] ?? false) {
+            $imageUrl = $result['processedFile']->getPublicUrl();
+        } else {
+            $imageUrl = $result[3] ?? '';
+        }
+        $src = $this->preprocessSourceUri(rawurldecode($imageUrl));
 
-        if (null === $this->arguments['media']) {
+        /** @var string|null $media */
+        $media = $this->arguments['media'];
+
+        if (null === $media) {
             $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE, $src);
         } else {
-            $this->tag->addAttribute('media', $this->arguments['media']);
+            $this->tag->addAttribute('media', $media);
         }
 
         $this->tag->addAttribute('srcset', $src);

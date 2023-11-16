@@ -38,7 +38,7 @@ pattern
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Regex pattern to match against
 
@@ -51,7 +51,7 @@ replacement
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    String to replace matches with
 

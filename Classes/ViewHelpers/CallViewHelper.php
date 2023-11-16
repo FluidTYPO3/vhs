@@ -58,8 +58,11 @@ class CallViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var object $object */
         $object = $renderChildrenClosure();
+        /** @var string $method */
         $method = $arguments['method'];
+        /** @var array $methodArguments */
         $methodArguments = $arguments['arguments'];
         if (!is_object($object)) {
             throw new \RuntimeException(

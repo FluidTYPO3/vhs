@@ -12,7 +12,6 @@ use FluidTYPO3\Vhs\Utility\DispatcherProxy;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -72,9 +71,13 @@ class RequestViewHelper extends AbstractRenderViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var RenderingContext $renderingContext */
+        /** @var string|null $action */
         $action = $arguments['action'];
+        /** @var string|null $controller */
         $controller = $arguments['controller'];
+        /** @var string|null $extensionName */
         $extensionName = $arguments['extensionName'];
+        /** @var string|null $pluginName */
         $pluginName = $arguments['pluginName'];
         $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
@@ -133,8 +136,10 @@ class RequestViewHelper extends AbstractRenderViewHelper
             if (!$arguments['graceful']) {
                 throw $error;
             }
-            if (!empty($arguments['onError'])) {
-                return sprintf((string) $arguments['onError'], $error->getMessage(), $error->getCode());
+            /** @var string|null $onError */
+            $onError = $arguments['onError'];
+            if ($onError !== null) {
+                return sprintf($onError, $error->getMessage(), $error->getCode());
             }
             return $error->getMessage() . ' (' . $error->getCode() . ')';
         }
@@ -150,7 +155,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
     protected static function getConfigurationManager(): ConfigurationManagerInterface
     {
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         return $configurationManager;
     }
 
@@ -160,8 +165,8 @@ class RequestViewHelper extends AbstractRenderViewHelper
      */
     protected static function loadDefaultValues(
         RenderingContextInterface $renderingContext,
-        string $extensionName,
-        string $pluginName,
+        ?string $extensionName,
+        ?string $pluginName,
         ?string $controllerName,
         ?string $actionName,
         array $arguments
@@ -189,8 +194,12 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $parameters = GeneralUtility::makeInstance(ExtbaseRequestParameters::class);
 
             $parameters->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
-            $parameters->setPluginName($pluginName);
-            $parameters->setControllerExtensionName($extensionName);
+            if ($pluginName !== null) {
+                $parameters->setPluginName($pluginName);
+            }
+            if ($extensionName !== null) {
+                $parameters->setControllerExtensionName($extensionName);
+            }
             $parameters->setControllerName($controllerName ?? $controllerClassToAliasMapping[$firstControllerName]);
             $parameters->setControllerActionName($actionName ?? $defaultActionName);
 
@@ -211,11 +220,11 @@ class RequestViewHelper extends AbstractRenderViewHelper
             $request->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);
         }
 
-        if (method_exists($request, 'setPluginName')) {
+        if ($pluginName !== null && method_exists($request, 'setPluginName')) {
             $request->setPluginName($pluginName);
         }
 
-        if (method_exists($request, 'setControllerExtensionName')) {
+        if ($extensionName !== null && method_exists($request, 'setControllerExtensionName')) {
             $request->setControllerExtensionName($extensionName);
         }
 
