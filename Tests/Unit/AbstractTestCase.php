@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -73,7 +74,9 @@ abstract class AbstractTestCase extends TestCase
         );
 
         $GLOBALS['EXEC_TIME'] = time();
-        $GLOBALS['LANG'] = (object) ['csConvObj' => new CharsetConverter()];
+        if (!isset($GLOBALS['LANG'])) {
+            $GLOBALS['LANG'] = (object) ['csConvObj' => new CharsetConverter()];
+        }
         $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] = false;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = false;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['preProcessors'] = [];
