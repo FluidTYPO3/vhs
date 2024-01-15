@@ -282,7 +282,7 @@ abstract class AbstractTestCase extends TestCase
         }
 
         if (class_exists(Locales::class)) {
-            $locale = new Locale();
+            $locale = $this->getMockBuilder(Locale::class)->disableOriginalConstructor()->getMock();
             $locales = $this->getMockBuilder(Locales::class)
                 ->onlyMethods(['createLocaleFromRequest'])
                 ->disableOriginalConstructor()
