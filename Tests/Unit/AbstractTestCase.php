@@ -18,6 +18,9 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3Fluid\Fluid\Core\Parser\Interceptor\Escape;
@@ -256,5 +259,39 @@ abstract class AbstractTestCase extends TestCase
     {
         $instanceClassName = $this->createInstanceClassName();
         return new $instanceClassName();
+    }
+
+    protected function mockForLocalizationUtilityCalls(array $returnValeMap): void
+    {
+        $languageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+
+        $this->singletonInstances[LocalizationFactory::class] = $this->getMockBuilder(LocalizationFactory::class)
+            ->setMethods(['getParsedData'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->singletonInstances[LocalizationFactory::class]->method('getParsedData')->willReturn([]);
+
+        if (class_exists(LanguageServiceFactory::class)) {
+            $languageServiceFactory = $this->getMockBuilder(LanguageServiceFactory::class)
+                ->onlyMethods(['create'])
+                ->disableOriginalConstructor()
+                ->getMock();
+            $languageServiceFactory->method('create')->willReturn($languageService);
+
+            GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactory);
+        }
+
+        if (class_exists(Locales::class)) {
+            $locale = new Locale();
+            $locales = $this->getMockBuilder(Locales::class)
+                ->onlyMethods(['createLocaleFromRequest'])
+                ->disableOriginalConstructor()
+                ->getMock();
+            $locales->method('createLocaleFromRequest')->willReturn($locale);
+
+            $this->singletonInstances[Locales::class] = $locales;
+        }
+
+        $GLOBALS['LANG'] = $languageService;
     }
 }
