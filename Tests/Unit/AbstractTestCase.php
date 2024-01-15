@@ -282,12 +282,19 @@ abstract class AbstractTestCase extends TestCase
         }
 
         if (class_exists(Locales::class)) {
+            if (method_exists(Locales::class, 'createLocaleFromRequest')) {
+                $methods = ['createLocaleFromRequest'];
+            } else {
+                $methods = ['getLanguages'];
+            }
             $locale = $this->getMockBuilder(Locale::class)->disableOriginalConstructor()->getMock();
             $locales = $this->getMockBuilder(Locales::class)
-                ->onlyMethods(['createLocaleFromRequest'])
+                ->onlyMethods($methods)
                 ->disableOriginalConstructor()
                 ->getMock();
-            $locales->method('createLocaleFromRequest')->willReturn($locale);
+            if (method_exists(Locales::class, 'createLocaleFromRequest')) {
+                $locales->method('createLocaleFromRequest')->willReturn($locale);
+            }
 
             $this->singletonInstances[Locales::class] = $locales;
         }
