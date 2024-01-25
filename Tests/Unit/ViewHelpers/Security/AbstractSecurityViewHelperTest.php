@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Security\AbstractSecurityViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
@@ -368,9 +369,12 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             ->setMethods(['getCurrentBackendUser'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $instance->expects($this->atLeastOnce())->method('getCurrentBackendUser')->willReturn($currentUser);
-        $result = $instance->assertAdminLoggedIn();
-        $this->assertEquals($expected, $result);
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '<')) {
+            $instance->expects($this->atLeastOnce())->method('getCurrentBackendUser')->willReturn($currentUser);
+            $result = $instance->assertAdminLoggedIn();
+            $this->assertEquals($expected, $result);
+        }
+        // no test for TYPO3 11.5 and above, as the aspects implementation is tested by the core
     }
 
     public function getAssertAdminLoggedInTestValues(): array
