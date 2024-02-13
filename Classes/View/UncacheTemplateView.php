@@ -35,7 +35,8 @@ class UncacheTemplateView extends TemplateView
             return '';
         }
 
-        if (class_exists(ExtbaseRequestParameters::class)) {
+        if ($parameters instanceof ExtbaseRequestParameters) {
+            // Typo3 v11+ within extbase extension
             $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
 
             if (method_exists($renderingContext, 'setRequest')) {
@@ -44,46 +45,48 @@ class UncacheTemplateView extends TemplateView
                 );
             }
         } else {
-            /** @var ControllerContext $controllerContext */
-            $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
-            /** @var Request $request */
-            $request = GeneralUtility::makeInstance(Request::class);
-            $controllerContext->setRequest($request);
+            if (class_exists(RenderingContextFactory::class)) {
+              // Typo3 v11+
+              $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
+              if (method_exists($renderingContext, 'setRequest')) {
+                  $renderingContext->setRequest($GLOBALS['TYPO3_REQUEST']);
+              }
+            } else {
+                // Typo3 v10
+                /** @var ControllerContext $controllerContext */
+                $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
+                /** @var Request $request */
+                $request = GeneralUtility::makeInstance(Request::class);
+                $controllerContext->setRequest($request);
 
-            /** @var UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $uriBuilder->setRequest($request);
-            $controllerContext->setUriBuilder($uriBuilder);
-
-            if ($parameters) {
-                if (method_exists($request, 'setControllerActionName')) {
-                    $request->setControllerActionName($parameters['actionName']);
+                /** @var UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                $uriBuilder->setRequest($request);
+                $controllerContext->setUriBuilder($uriBuilder);
+                if ($parameters) {
+                    if (method_exists($request, 'setControllerActionName')) {
+                        $request->setControllerActionName($parameters['actionName']);
+                    }
+                    if (method_exists($request, 'setControllerExtensionName')) {
+                        $request->setControllerExtensionName($parameters['extensionName']);
+                    }
+                    if (method_exists($request, 'setControllerName')) {
+                        $request->setControllerName($parameters['controllerName']);
+                    }
+                    if (method_exists($request, 'setControllerObjectName')) {
+                        $request->setControllerObjectName($parameters['controllerObjectName']);
+                    }
+                    if (method_exists($request, 'setPluginName')) {
+                        $request->setPluginName($parameters['pluginName']);
+                    }
+                    if (method_exists($request, 'setFormat')) {
+                        $request->setFormat($parameters['format']);
+                    }
                 }
-
-                if (method_exists($request, 'setControllerExtensionName')) {
-                    $request->setControllerExtensionName($parameters['extensionName']);
-                }
-
-                if (method_exists($request, 'setControllerName')) {
-                    $request->setControllerName($parameters['controllerName']);
-                }
-
-                if (method_exists($request, 'setControllerObjectName')) {
-                    $request->setControllerObjectName($parameters['controllerObjectName']);
-                }
-
-                if (method_exists($request, 'setPluginName')) {
-                    $request->setPluginName($parameters['pluginName']);
-                }
-
-                if (method_exists($request, 'setFormat')) {
-                    $request->setFormat($parameters['format']);
-                }
+                /** @var RenderingContext $renderingContext */
+                $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
+                $renderingContext->setControllerContext($controllerContext);
             }
-
-            /** @var RenderingContext $renderingContext */
-            $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
-            $renderingContext->setControllerContext($controllerContext);
         }
 
         $this->prepareContextsForUncachedRendering($renderingContext);
