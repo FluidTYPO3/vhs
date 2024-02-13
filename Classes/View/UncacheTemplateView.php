@@ -83,6 +83,7 @@ class UncacheTemplateView extends TemplateView
 
             /** @var RenderingContext $renderingContext */
             $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
+            $renderingContext->setControllerContext($controllerContext);
         }
 
         $this->prepareContextsForUncachedRendering($renderingContext);
