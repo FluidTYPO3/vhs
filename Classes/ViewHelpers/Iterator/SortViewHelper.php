@@ -165,7 +165,7 @@ class SortViewHelper extends AbstractViewHelper
     /**
      * Sort an ObjectStorage instance
      *
-     * @param ObjectStorage $storage
+     * @param ObjectStorage<object> $storage
      * @param array $arguments
      * @return ObjectStorage
      */
