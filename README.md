@@ -15,8 +15,8 @@ natively provided by TYPO3's [Fluid templating engine](https://docs.typo3.org/ot
 These include advanced formatters, mathematical calculators, special conditions,
 and iterators and array calculators and processors.
 
-|                  | URL                                                 |
-|------------------|-----------------------------------------------------|
-| **Repository:**  | https://github.com/FluidTYPO3/vhs                   |
-| **Read online:** | https://viewhelpers.fluidtypo3.org/fluidtypo3/vhs/  |
-| **TER:**         | https://extensions.typo3.org/extension/vhs          |
+|                  | URL                                                            |
+|------------------|----------------------------------------------------------------|
+| **Repository:**  | https://github.com/FluidTYPO3/vhs                              |
+| **Read online:** | https://docs.typo3.org/p/fluidtypo3/vhs/main/en-us/Index.html  |
+| **TER:**         | https://extensions.typo3.org/extension/vhs                     |
