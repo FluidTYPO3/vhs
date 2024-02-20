@@ -46,11 +46,11 @@ class UncacheTemplateView extends TemplateView
             }
         } else {
             if (class_exists(RenderingContextFactory::class)) {
-              // Typo3 v11+
-              $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
-              if (method_exists($renderingContext, 'setRequest')) {
-                  $renderingContext->setRequest($GLOBALS['TYPO3_REQUEST']);
-              }
+                // Typo3 v11+
+                $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
+                if (method_exists($renderingContext, 'setRequest')) {
+                    $renderingContext->setRequest($GLOBALS['TYPO3_REQUEST']);
+                }
             } else {
                 // Typo3 v10
                 /** @var ControllerContext $controllerContext */
