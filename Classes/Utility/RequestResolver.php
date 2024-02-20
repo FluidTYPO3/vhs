@@ -9,21 +9,23 @@ namespace FluidTYPO3\Vhs\Utility;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 class RequestResolver
 {
     /**
-     * @return Request&RequestInterface
+     * @return Request|ServerRequest
      */
     public static function resolveRequestFromRenderingContext(
         RenderingContextInterface $renderingContext
-    ): RequestInterface {
+    ) {
         $request = null;
         if (method_exists($renderingContext, 'getRequest')) {
+            /** @var Request|ServerRequest */
             $request = $renderingContext->getRequest();
         } elseif (method_exists($renderingContext, 'getControllerContext')) {
+            /** @var Request */
             $request = $renderingContext->getControllerContext()->getRequest();
         }
         if (!$request) {
