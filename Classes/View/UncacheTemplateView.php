@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\View;
 
 /*
@@ -40,7 +41,7 @@ class UncacheTemplateView extends TemplateView
 
             if (method_exists($renderingContext, 'setRequest')) {
                 $renderingContext->setRequest(
-                    new Request($GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters))
+                    $GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters)
                 );
             }
         } else {
