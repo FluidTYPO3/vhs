@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Service;
 
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -79,9 +80,13 @@ class PageService implements SingletonInterface
         if (null === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        /** @var RootlineUtility $rootLineUtility */
-        $rootLineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid);
-        $rootline = $rootLineUtility->get();
+        try {
+            /** @var RootlineUtility $rootLineUtility */
+            $rootLineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid);
+            $rootline = $rootLineUtility->get();
+        } catch (PageNotFoundException $e) {
+            return [];
+        }
         if ($reverse) {
             $rootline = array_reverse($rootline);
         }
