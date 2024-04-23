@@ -38,16 +38,20 @@ class ForViewHelper extends AbstractLoopViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var int $to */
+        /** @var int|string $to */
         $to = $arguments['to'];
-        /** @var int $from */
+        /** @var int|string $from */
         $from = $arguments['from'];
-        /** @var int $step */
+        /** @var int|string $step */
         $step = $arguments['step'];
         /** @var string|null $iteration */
         $iteration = $arguments['iteration'];
         $content = '';
         $variableProvider = $renderingContext->getVariableProvider();
+
+        $to = (integer) $to;
+        $from = (integer) $from;
+        $step = (integer) $step;
 
         if (0 === $step) {
             throw new \RuntimeException('"step" may not be 0.', 1383267698);
