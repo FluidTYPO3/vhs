@@ -84,6 +84,7 @@ class TemplateViewHelper extends AbstractRenderViewHelper
 
         $file = GeneralUtility::getFileAbsFileName((string) $file);
         $view = static::getPreparedView();
+        $view->setRequest($this->renderingContext->getRequest());
         $view->setTemplatePathAndFilename($file);
         if (is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
