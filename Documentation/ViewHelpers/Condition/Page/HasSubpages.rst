@@ -97,16 +97,3 @@ includeHiddenInMenu
    false
 :aspect:`Description`
    Include pages hidden in menu
-
-.. _condition.page.hassubpages_showhiddeninmenu:
-
-showHiddenInMenu
-----------------
-
-:aspect:`DataType`
-   boolean
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   DEPRECATED: Use includeHiddenInMenu

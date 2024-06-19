@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
 /**
@@ -15,11 +16,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {
-
-    /**
-     * Initialize ViewHelper arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument('limit', 'integer', 'Optional limit number of content elements to render', false, 1);
@@ -28,14 +25,15 @@ class RenderViewHelper extends AbstractContentViewHelper
     /**
      * Render method
      *
-     * @return mixed
+     * @return string|array
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
         // Remove limit for getContentRecords()
+        /** @var int $limit */
         $limit = $this->arguments['limit'];
         $this->arguments['limit'] = null;
         // Just using getContentRecords with a limit of 1 would not support
@@ -43,10 +41,10 @@ class RenderViewHelper extends AbstractContentViewHelper
         // was found. As a potential optimization, $render could be overrided
         // so all the content records that end up unused do not get rendered.
         $contentRecords = $this->getContentRecords();
-        if (false === empty($contentRecords)) {
+        if (!empty($contentRecords)) {
             shuffle($contentRecords);
             $contentRecords = array_slice($contentRecords, 0, $limit);
-            if (true === (boolean) $this->arguments['render']) {
+            if ($this->arguments['render']) {
                 $contentRecords = implode(LF, $contentRecords);
             }
         }

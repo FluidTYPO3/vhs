@@ -23,10 +23,7 @@ class ResourcesViewHelper extends AbstractExtensionViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -37,16 +34,19 @@ class ResourcesViewHelper extends AbstractExtensionViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
-        $path = true === empty($arguments['path']) ? '' : $arguments['path'];
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $path = empty($arguments['path']) ? '' : $arguments['path'];
 
-        $extPath = ExtensionManagementUtility::extPath(static::getExtensionKey($arguments, $renderingContext), 'Resources/Public/' . $path);
+        $extPath = ExtensionManagementUtility::extPath(
+            static::getExtensionKey($arguments, $renderingContext),
+            'Resources/Public/' . $path
+        );
         return PathUtility::stripPathSitePrefix($extPath);
     }
 }

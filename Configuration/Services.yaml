@@ -1,0 +1,33 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  FluidTYPO3\Vhs\ViewHelpers\:
+    resource: '../Classes/ViewHelpers/*'
+    public: true
+
+  FluidTYPO3\Vhs\:
+    resource: '../Classes/*'
+
+  FluidTYPO3\Vhs\Utility\DispatcherProxy:
+    public: true
+
+  FluidTYPO3\Vhs\Service\AssetService:
+    public: true
+
+  FluidTYPO3\Vhs\Service\PageService:
+    public: true
+
+  TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder:
+    autowire: true
+    public: true
+    shared: false
+
+  FluidTYPO3\Vhs\Events\AfterCacheableContentIsGeneratedEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'vhs-insertVhsAssetHeaderAndFooterCode'
+        method: 'insertVhsAssetHeaderAndFooterCode'
+        event: TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent

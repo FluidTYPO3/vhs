@@ -10,19 +10,18 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Returns the all alternate urls.
  */
 class AlternateViewHelper extends AbstractViewHelper
 {
-
     use PageRendererTrait;
 
     /**
@@ -31,34 +30,23 @@ class AlternateViewHelper extends AbstractViewHelper
     protected $pageService;
 
     /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
+     * @var TagBuilder
      */
     protected $tagBuilder;
 
-    /**
-     * @param PageService $pageService
-     */
-    public function injectPageService(PageService $pageService)
+    public function injectPageService(PageService $pageService): void
     {
         $this->pageService = $pageService;
     }
 
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    public function __construct()
     {
-        $this->objectManager = $objectManager;
-        $this->tagBuilder = $this->objectManager->get(TagBuilder::class);
+        /** @var TagBuilder $tagBuilder */
+        $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
+        $this->tagBuilder = $tagBuilder;
     }
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'languages',
@@ -88,29 +76,34 @@ class AlternateViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
-            return null;
+        if (ContextUtility::isBackend()) {
+            return '';
         }
 
+        /** @var array<int, string>|string $languages */
         $languages = $this->arguments['languages'];
-        if (true === $languages instanceof \Traversable) {
+        if ($languages instanceof \Traversable) {
             $languages = iterator_to_array($languages);
-        } elseif (true === is_string($languages)) {
+        } elseif (is_string($languages)) {
             $languages = GeneralUtility::trimExplode(',', $languages, true);
         } else {
             $languages = (array) $languages;
         }
 
-        $pageUid = (integer) $this->arguments['pageUid'];
+        /** @var int $pageUid */
+        $pageUid = $this->arguments['pageUid'];
+        $pageUid = (integer) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
+        /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
-        $addQueryString = $this->arguments['addQueryString'];
+        $addQueryString = (boolean) $this->arguments['addQueryString'];
 
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
         $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setCreateAbsoluteUri(true)
@@ -122,33 +115,32 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $usePageRenderer = (1 !== (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']);
+        $usePageRenderer = (1 !== (integer) ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'] ?? 0));
         $output = '';
 
         foreach ($languages as $languageUid => $languageName) {
-            if (false === $this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
+            if (!$this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
                 $uri = $uriBuilder->setArguments(['L' => $languageUid])->build();
                 $this->tagBuilder->addAttribute('href', $uri);
                 $this->tagBuilder->addAttribute('hreflang', $languageName);
 
                 $renderedTag = $this->tagBuilder->render();
-                if (true === $usePageRenderer) {
+                if ($usePageRenderer) {
                     if (method_exists($pageRenderer, 'addMetaTag')) {
                         $pageRenderer->addMetaTag($renderedTag);
                     } else {
                         $pageRenderer->addHeaderData($renderedTag);
                     }
-
                 } else {
                     $output .= $renderedTag . LF;
                 }
             }
         }
 
-        if (false === $usePageRenderer) {
+        if (!$usePageRenderer) {
             return trim($output);
         }
 
-        return null;
+        return '';
     }
 }

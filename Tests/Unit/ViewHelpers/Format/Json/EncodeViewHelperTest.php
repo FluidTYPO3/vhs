@@ -9,23 +9,35 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
  */
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
-use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * Class EncodeViewHelperTest
  */
-class EncodeViewHelperTest extends AbstractViewHelperTest
+class EncodeViewHelperTest extends AbstractViewHelperTestCase
 {
+    private int $defaultOptions = 0;
+
+    protected function setUp(): void
+    {
+        if (!function_exists('json_encode')) {
+            self::markTestSkipped('Skipped: no ext-json PHP module is not installed');
+        }
+        $this->defaultOptions = JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG;
+        $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
+            ->setMethods(['__destruct'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        parent::setUp();
+    }
 
     protected function getInstanceOfFoo()
     {
-        if (version_compare(ExtensionManagementUtility::getExtensionVersion('fluid'), 9.3, '>=')) {
-            return new Foo();
-        }
-        return new LegacyFoo();
+        return new Foo();
     }
 
     /**
@@ -35,7 +47,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     {
         $dateTime = \DateTime::createFromFormat('U', 86400);
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $dateTime, false, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $dateTime, false, true, null, null, $this->defaultOptions);
         $this->assertEquals(86400000, $test);
     }
 
@@ -48,7 +60,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
         $object = $this->getInstanceOfFoo();
         $object->setFoo($object);
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null, $this->defaultOptions);
         $this->assertEquals('{"bar":"baz","children":[],"foo":null,"name":null,"pid":null,"uid":null}', $test);
     }
 
@@ -73,9 +85,9 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function encodesTraversable()
     {
-        $traversable = $this->objectManager->get(ObjectStorage::class);
+        $traversable = new ObjectStorage();
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null);
+        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null, $this->defaultOptions);
         $this->assertEquals('[]', $test);
     }
 
@@ -116,7 +128,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsNumberOnTopLevel()
     {
-        $this->assertEquals('1.0', $this->executeViewHelper(['value' => 1.0]));
+        $this->assertSame(json_encode(1.0), $this->executeViewHelper(['value' => 1.0]));
     }
 
     /**
@@ -133,7 +145,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTest
     public function returnsExpectedStringForProvidedArguments()
     {
 
-        $storage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+        $storage = new ObjectStorage();
         $fixture = [
             'foo' => 'bar',
             'bar' => true,

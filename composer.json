@@ -21,7 +21,8 @@
     "config": {
         "preferred-install": "dist",
         "allow-plugins": {
-            "typo3/cms-composer-installers": true
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true
         }
     },
     "minimum-stability": "dev",
@@ -39,32 +40,32 @@
     },
     "require": {
         "php": "^7.4.0 || ^8",
-        "typo3/cms-core": "^8.7 || ^9 || ^10 || ^11 || dev-master",
-        "typo3/cms-extbase": "^8.7 || ^9 || ^10 || ^11 || dev-master",
-        "typo3/cms-fluid": "^8.7 || ^9 || ^10 || ^11 || dev-master",
-        "typo3/cms-frontend": "^8.7 || ^9 || ^10 || ^11 || dev-master",
-        "typo3/cms-backend": "^8.7 || ^9 || ^10 || ^11 || dev-master"
+        "ext-mbstring": "*",
+        "typo3/cms-core": "^10 || ^11 || ^12 || dev-master",
+        "typo3/cms-extbase": "^10 || ^11 || ^12 || dev-master",
+        "typo3/cms-fluid": "^10 || ^11 || ^12 || dev-master",
+        "typo3/cms-frontend": "^10 || ^11 || ^12 || dev-master",
+        "typo3/cms-backend": "^10 || ^11 || ^12 || dev-master"
     },
     "replace": {
         "typo3-ter/vhs": "self.version"
     },
     "require-dev": {
-        "fluidtypo3/development": "^4.0"
+        "phpstan/phpstan": "^1.8",
+        "phpunit/phpunit": "^5.7 || ^9.5",
+        "php-coveralls/php-coveralls": "^2.5",
+        "squizlabs/php_codesniffer": "^3.7",
+        "mikey179/vfsstream": "^1.6",
+        "fluidtypo3/development": "^5"
     },
     "suggest": {
-        "ext-tidy": "Allows to make use of the tidy ViewHelper"
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "mkdir -p build/web/typo3conf/ext/",
-            "[ -L build/web/typo3conf/ext/vhs ] || ln -snvf ../../../../. build/web/typo3conf/ext/vhs"
-        ]
+        "ext-tidy": "Allows to make use of the tidy ViewHelper v:format.tidy",
+        "ext-zlib": "Enable use of v:format.placeholder.lipsum with default lipsum text",
+        "ext-json": "Enable use of v:format.json.encode and v:format.json.decode"
     },
     "extra": {
         "typo3/cms": {
-          "cms-package-dir": "{$vendor-dir}/typo3/cms",
-          "extension-key": "vhs",
-          "web-dir": "build/web"
+          "extension-key": "vhs"
         }
     }
 }

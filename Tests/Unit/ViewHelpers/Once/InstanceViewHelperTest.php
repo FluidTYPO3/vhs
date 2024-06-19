@@ -9,16 +9,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
  * Class InstanceViewHelperTest
  */
-class InstanceViewHelperTest extends AbstractViewHelperTest
+class InstanceViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @dataProvider getIdentifierTestValues
      * @param string|NULL $identifierArgument
@@ -28,17 +25,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTest
     {
         $instance = $this->createInstance();
         $instance->setArguments(['identifier' => $identifierArgument]);
-        $renderingContext = new RenderingContext();
-        $controllerContext = new ControllerContext();
-        $request = new Request();
-        $request->setControllerActionName('p1');
-        $request->setControllerName('p2');
-        $request->setPluginName('p3');
-        $request->setControllerExtensionName('p4');
-        $controllerContext->setRequest($request);
-        $renderingContext->setControllerContext($controllerContext);
-        $instance->setRenderingContext($renderingContext);
-        $instance::renderStatic(['identifier' => $identifierArgument], function() { return ''; }, $renderingContext);
+        $instance::renderStatic(['identifier' => $identifierArgument], function() { return ''; }, $this->renderingContext);
         $result = $this->callInaccessibleMethod($instance, 'getIdentifier', ['identifier' => $identifierArgument]);
         $this->assertEquals($expectedIdentifier, $result);
     }
@@ -49,7 +36,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTest
     public function getIdentifierTestValues()
     {
         return [
-            [null, 'p1_p2_p3_p4'],
+            [null, 'action_Controller__Vhs'],
             ['test', 'test'],
             ['test2', 'test2'],
         ];

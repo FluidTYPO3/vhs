@@ -57,17 +57,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TemplateViewHelper extends AbstractRenderViewHelper
 {
-
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported', false);
-        $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering', false);
-        $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered', false);
+        parent::initializeArguments();
+        $this->registerArgument('file', 'string', 'Path to template file, EXT:myext/... paths supported');
+        $this->registerArgument('variables', 'array', 'Optional array of template variables for rendering');
+        $this->registerArgument('format', 'string', 'Optional format of the template(s) being rendered');
         $this->registerArgument(
             'paths',
             'array',
-            'Optional array of arrays of layout and partial root paths, EXT:mypath/... paths supported',
-            false
+            'Optional array of arrays of layout and partial root paths, EXT:mypath/... paths supported'
         );
     }
 
@@ -76,16 +75,20 @@ class TemplateViewHelper extends AbstractRenderViewHelper
      */
     public function render()
     {
+        /** @var string|null $file */
         $file = $this->arguments['file'];
         if (null === $file) {
+            /** @var string|null $file */
             $file = $this->renderChildren();
         }
-        $file = GeneralUtility::getFileAbsFileName($file);
+
+        $file = GeneralUtility::getFileAbsFileName((string) $file);
         $view = static::getPreparedView();
         $view->setTemplatePathAndFilename($file);
         if (is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
         }
+        /** @var string|null $format */
         $format = $this->arguments['format'];
         if (null !== $format) {
             $view->setFormat($format);

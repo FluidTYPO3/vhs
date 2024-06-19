@@ -511,22 +511,6 @@ classCurrent
 :aspect:`Description`
    Optional class name to add to current link
 
-.. _menu.directory_classhassubpages:
-
-classHasSubpages
-----------------
-
-:aspect:`DataType`
-   string
-
-:aspect:`Default`
-   'sub'
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Optional class name to add to links which have subpages
-
 .. _menu.directory_substelementuid:
 
 substElementUid
@@ -752,6 +736,6 @@ pages
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Parent page UIDs of subpages to include in the menu. Can be CSV, array or an object implementing Traversable.

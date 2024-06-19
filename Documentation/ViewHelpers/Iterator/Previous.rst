@@ -48,7 +48,7 @@ needle
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Needle to search for in haystack
 
@@ -61,7 +61,7 @@ haystack
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Haystack in which to look for needle
 

@@ -26,18 +26,12 @@ class DateTimeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return integer
-     */
-    protected static function getTimestamp()
+    protected static function getTimestamp(): int
     {
         return time();
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -45,6 +39,6 @@ class DateTimeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return \DateTime::createFromFormat('U', static::getTimestamp());
+        return \DateTime::createFromFormat('U', (string) static::getTimestamp());
     }
 }

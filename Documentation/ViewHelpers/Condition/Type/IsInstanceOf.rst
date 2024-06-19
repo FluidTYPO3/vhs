@@ -52,7 +52,7 @@ value
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Value to check
 
@@ -65,6 +65,6 @@ class
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    ClassName to check against

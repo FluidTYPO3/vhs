@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -47,14 +48,13 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class FalViewHelper extends AbstractRecordResourceViewHelper
 {
-
     /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+     * @var ResourceFactory
      */
     protected $resourceFactory;
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\FileRepository
+     * @var FileRepository
      */
     protected $fileRepository;
 
@@ -68,11 +68,15 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function __construct()
     {
-        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        /** @var ResourceFactory $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->resourceFactory = $resourceFactory;
+        /** @var FileRepository $fileRepository */
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $this->fileRepository = $fileRepository;
     }
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -98,14 +102,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     }
 
     /**
-     * Fetch a fileReference from the file repository
-     *
-     * @param string $table name of the table to get the file reference for
-     * @param string $field name of the field referencing a file
      * @param array|integer $uidOrRecord Database row
-     * @return array
      */
-    protected function getFileReferences($table, $field, $uidOrRecord)
+    protected function getFileReferences(string $table, string $field, $uidOrRecord): array
     {
         if (is_array($uidOrRecord)) {
             $record = $uidOrRecord;
@@ -120,6 +119,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             $sqlRecordUid = $record['t3ver_oid'];
         } elseif (isset($record['_LOCALIZED_UID'])) {
             $sqlRecordUid = $record['_LOCALIZED_UID'];
+        } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+            $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
         } else {
             $sqlRecordUid = $record[$this->idField];
         }
@@ -127,13 +128,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         return $fileObjects;
     }
 
-    /**
-     * @param array $record
-     * @return array
-     */
-    public function getResources($record)
+    public function getResources(array $record): array
     {
-        if (!is_array($record)) {
+        if (empty($record)) {
             return [];
         }
         if (!empty($GLOBALS['TSFE']->sys_page)) {
@@ -143,12 +140,16 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 $sqlRecordUid = $record['t3ver_oid'];
             } elseif (isset($record['_LOCALIZED_UID'])) {
                 $sqlRecordUid = $record['_LOCALIZED_UID'];
+            } elseif (isset($record['_PAGES_OVERLAY_UID'])) {
+                $sqlRecordUid = $record['_PAGES_OVERLAY_UID'];
             } else {
                 $sqlRecordUid = $record[$this->idField];
             }
 
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
 
             $queryBuilder->createNamedParameter($this->getTable(), \PDO::PARAM_STR, ':tablenames');
             $queryBuilder->createNamedParameter($sqlRecordUid, \PDO::PARAM_INT, ':uid_foreign');
@@ -161,14 +162,18 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     $queryBuilder->expr()->eq('tablenames', ':tablenames')
                 )
                 ->andWhere(
-                    $queryBuilder->expr()->eq('uid_foreign', ':uid_foreign' )
+                    $queryBuilder->expr()->eq('uid_foreign', ':uid_foreign')
                 )
                 ->andWhere(
                     $queryBuilder->expr()->eq('fieldname', ':fieldname')
                 );
 
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
-                $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->workspaceRec['uid'], \PDO::PARAM_INT, ':t3ver_wsid');
+                $queryBuilder->createNamedParameter(
+                    $GLOBALS['BE_USER']->workspaceRec['uid'],
+                    \PDO::PARAM_INT,
+                    ':t3ver_wsid'
+                );
                 $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->eq('deleted', 0)
@@ -197,11 +202,12 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     );
             }
 
+            $queryBuilder->orderBy('sorting_foreign');
+
             // Execute
-            $references = $queryBuilder
-                ->orderBy('sorting_foreign')
-                ->execute()
-                ->fetchAll();
+            $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+            /** @var array[] $references */
+            $references = DoctrineQueryProxy::fetchAllAssociative($statement);
 
             $fileReferences = [];
 
@@ -209,7 +215,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 try {
                     // Just passing the reference uid, the factory is doing workspace
                     // overlays automatically depending on the current environment
-                    $fileReferences[] = $this->resourceFactory->getFileReferenceObject($reference['uid']);
+                    $fileReferences[] = $this->resourceFactory->getFileReferenceObject($reference['uid'] ?? 0);
                 } catch (ResourceDoesNotExistException $exception) {
                     // No handling, just omit the invalid reference uid
                     continue;

@@ -373,19 +373,6 @@ section
 :aspect:`Description`
    The anchor to be added to the URI
 
-.. _page.link_linkaccessrestrictedpages:
-
-linkAccessRestrictedPages
--------------------------
-
-:aspect:`DataType`
-   boolean
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   DEPRECATED: Use showAccessProtected instead.
-
 .. _page.link_absolute:
 
 absolute

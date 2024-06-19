@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
@@ -17,9 +18,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Class ExtractViewHelperTest
  */
-class ExtractViewHelperTest extends AbstractViewHelperTest
+class ExtractViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @var ExtractViewHelper
      */
@@ -80,6 +80,9 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
      */
     public function nestedStructures()
     {
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
         $structures = [
             // structure, key, expected
             'simple indexed_search searchWords array' => [
@@ -171,6 +174,21 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
     }
 
     /**
+     * @test
+     * @dataProvider simpleStructures
+     */
+    public function extractByKeyExtractsKeyByPathWithSingle($structure, $key, $expected)
+    {
+        if (is_array($expected)) {
+            $expected = reset($expected);
+        }
+        $this->assertEquals(
+            $expected,
+            $this->executeViewHelper(['content' => $structure, 'key' => $key, 'recursive' => false, 'single' => true])
+        );
+    }
+
+    /**
      * @return array
      */
     public function simpleStructures()
@@ -181,6 +199,11 @@ class ExtractViewHelperTest extends AbstractViewHelperTest
                 ['myKey' => 'myValue'],
                 'myKey',
                 'myValue'
+            ],
+            'flat associative array with array as value' => [
+                ['myKey' => ['foo' => 'myValue']],
+                'myKey',
+                ['foo' => 'myValue'],
             ],
             'deeper associative array' => [
                 [

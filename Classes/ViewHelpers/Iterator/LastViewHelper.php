@@ -29,20 +29,12 @@ class LastViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle');
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -50,6 +42,7 @@ class LastViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return array_pop(static::arrayFromArrayOrTraversableOrCSVStatic($arguments['haystack'] ?? $renderChildrenClosure()));
+        $subject = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['haystack'] ?? $renderChildrenClosure());
+        return array_pop($subject);
     }
 }

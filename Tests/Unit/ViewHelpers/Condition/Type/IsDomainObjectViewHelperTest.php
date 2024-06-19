@@ -9,19 +9,22 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 
 /**
  * Class IsDomainObjectViewHelperTest
  */
-class IsDomainObjectViewHelperTest extends AbstractViewHelperTest
+class IsDomainObjectViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      */
     public function rendersThenChildIfConditionMatched()
     {
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
         $arguments = [
             'then' => 'then',
             'else' => 'else',
@@ -29,9 +32,6 @@ class IsDomainObjectViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('then', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 
     /**
@@ -46,8 +46,5 @@ class IsDomainObjectViewHelperTest extends AbstractViewHelperTest
         ];
         $result = $this->executeViewHelper($arguments);
         $this->assertEquals('else', $result);
-
-        $staticResult = $this->executeViewHelperStatic($arguments);
-        $this->assertEquals($result, $staticResult, 'The regular viewHelper output doesn\'t match the static output!');
     }
 }

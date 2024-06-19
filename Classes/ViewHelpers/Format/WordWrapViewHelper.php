@@ -24,10 +24,7 @@ class WordWrapViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'string', 'Text to wrap');
         $this->registerArgument('limit', 'integer', 'Maximum length of resulting parts after wrapping', false, 80);
@@ -36,9 +33,6 @@ class WordWrapViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -46,13 +40,21 @@ class WordWrapViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $subject */
         $subject = $renderChildrenClosure();
-        $limit = (integer) $arguments['limit'];
+        /** @var int $limit */
+        $limit = $arguments['limit'];
+        /** @var non-empty-string $break */
         $break = $arguments['break'];
+        /** @var string $glue */
         $glue = $arguments['glue'];
+        /** @var string $subject */
         $subject = preg_replace('/ +/', ' ', $subject);
         $subject = str_replace(["\r\n", "\r"], PHP_EOL, $subject);
-        $subject = wordwrap($subject, $limit, $break, false);
+        if (is_array($subject)) {
+            return $subject;
+        }
+        $subject = wordwrap($subject, $limit, $break);
         $output = '';
         foreach (explode($break, $subject) as $line) {
             if (mb_strlen($line) <= $limit) {
@@ -64,7 +66,7 @@ class WordWrapViewHelper extends AbstractViewHelper
                 $temp .= mb_substr($line, 0, $limit - 1);
                 $line = mb_substr($line, $limit - 1);
             }
-            if (false === empty($temp)) {
+            if (!empty($temp)) {
                 $output .= $temp . $glue . $line . $glue;
             } else {
                 $output .= $line . $glue;

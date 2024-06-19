@@ -13,17 +13,16 @@ use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference as ExtbaseFileReference;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Media\Image view helpers.
  */
 abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 {
-
     /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+     * @var ResourceFactory
      */
     protected $resourceFactory;
 
@@ -37,16 +36,12 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
      */
     public function __construct()
     {
-        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        /** @var ResourceFactory $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->resourceFactory = $resourceFactory;
     }
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'src',
@@ -70,40 +65,38 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @throws Exception
-     * @return array
-     */
-    public function getInfo()
+    public function getInfo(): array
     {
+        /** @var string|int|CoreFileReference|ExtbaseFileReference|null $src */
         $src = $this->arguments['src'];
         $treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
 
         if (null === $src) {
+            /** @var string|int|CoreFileReference|ExtbaseFileReference|null $src */
             $src = $this->renderChildren();
             if (null === $src) {
                 return [];
             }
         }
 
-        if (is_object($src) && ($src instanceof CoreFileReference || $src instanceof ExtbaseFileReference)) {
+        if ($src instanceof CoreFileReference || $src instanceof ExtbaseFileReference) {
             $src = $src->getUid();
             $treatIdAsUid = false;
             $treatIdAsReference = true;
         }
 
-        if (true === $treatIdAsUid || true === $treatIdAsReference) {
+        if ($treatIdAsUid || $treatIdAsReference) {
             $id = (integer) $src;
             $info = [];
-            if (true === $treatIdAsUid) {
+            if ($treatIdAsUid) {
                 $info = $this->getInfoByUid($id);
-            } elseif (true === $treatIdAsReference) {
+            } elseif ($treatIdAsReference) {
                 $info = $this->getInfoByReference($id);
             }
         } else {
-            $file = GeneralUtility::getFileAbsFileName($src);
-            if (false === file_exists($file) || true === is_dir($file)) {
+            $file = GeneralUtility::getFileAbsFileName((string) $src);
+            if (!file_exists($file) || is_dir($file)) {
                 throw new Exception(
                     'Cannot determine info for "' . $file . '". File does not exist or is a directory.',
                     1357066532
@@ -111,31 +104,23 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
             }
             $imageSize = getimagesize($file);
             $info = [
-                'width'  => $imageSize[0],
-                'height' => $imageSize[1],
-                'type'   => $imageSize['mime'],
+                'width'  => $imageSize[0] ?? '',
+                'height' => $imageSize[1] ?? '',
+                'type'   => $imageSize['mime'] ?? '',
             ];
         }
 
         return $info;
     }
 
-    /**
-     * @param integer $id
-     * @return array
-     */
-    public function getInfoByReference($id)
+    public function getInfoByReference(int $id): array
     {
         $fileReference = $this->resourceFactory->getFileReferenceObject($id);
         $file = $fileReference->getOriginalFile();
         return ResourceUtility::getFileArray($file);
     }
 
-    /**
-     * @param integer $uid
-     * @return array
-     */
-    public function getInfoByUid($uid)
+    public function getInfoByUid(int $uid): array
     {
         $file = $this->resourceFactory->getFileObject($uid);
         return ResourceUtility::getFileArray($file);

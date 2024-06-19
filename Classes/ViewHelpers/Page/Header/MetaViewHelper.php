@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -20,21 +21,15 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class MetaViewHelper extends AbstractTagBasedViewHelper
 {
-
     use TagViewHelperTrait;
     use PageRendererTrait;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $tagName = 'meta';
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('name', 'string', 'Name property of meta tag');
@@ -49,21 +44,23 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
     /**
      * Render method
      *
-     * @return void
+     * @return string
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
-            return;
+        if (ContextUtility::isBackend()) {
+            return '';
         }
+        /** @var string|null $content */
         $content = $this->arguments['content'];
         if (!empty($content)) {
             $pageRenderer = static::getPageRenderer();
-            if (!method_exists($pageRenderer, 'setMetaTag')) {
+            if (method_exists($pageRenderer, 'addMetaTag')) {
                 $pageRenderer->addMetaTag($this->renderTag($this->tagName, null, ['content' => $content]));
-            } else {
+            } elseif (method_exists($pageRenderer, 'setMetaTag')) {
                 $properties = [];
                 $type = 'name';
+                /** @var string $name */
                 $name = $this->tag->getAttribute('name');
                 if (!empty($this->tag->getAttribute('property'))) {
                     $type = 'property';
@@ -80,5 +77,6 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
                 $pageRenderer->setMetaTag($type, $name, $content, $properties);
             }
         }
+        return '';
     }
 }

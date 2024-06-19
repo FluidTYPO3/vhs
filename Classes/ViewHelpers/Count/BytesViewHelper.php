@@ -47,20 +47,20 @@ class BytesViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('string', 'string', 'String to count, if not provided as tag content');
-        $this->registerArgument('encoding', 'string', 'Character set encoding of string, e.g. UTF-8 or ISO-8859-1', false, 'UTF-8');
+        $this->registerArgument(
+            'encoding',
+            'string',
+            'Character set encoding of string, e.g. UTF-8 or ISO-8859-1',
+            false,
+            'UTF-8'
+        );
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return integer
      */
     public static function renderStatic(
@@ -68,6 +68,8 @@ class BytesViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return mb_strlen($renderChildrenClosure(), $arguments['encoding']);
+        /** @var string $encoding */
+        $encoding = $arguments['encoding'];
+        return (integer) mb_strlen($renderChildrenClosure(), $encoding);
     }
 }

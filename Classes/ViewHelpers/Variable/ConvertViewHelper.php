@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -25,7 +24,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 class ConvertViewHelper extends AbstractViewHelper
 {
-
     use CompileWithContentArgumentAndRenderStatic;
 
     /**
@@ -38,10 +36,7 @@ class ConvertViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'mixed', 'Value to convert into a different type');
         $this->registerArgument(
@@ -54,16 +49,11 @@ class ConvertViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'default',
             'mixed',
-            'Optional default value to assign to the converted variable in case it is NULL.',
-            false,
-            null
+            'Optional default value to assign to the converted variable in case it is NULL.'
         );
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -72,29 +62,27 @@ class ConvertViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $value = $renderChildrenClosure();
-        $type = $arguments['type'];
+        $type = is_scalar($arguments['type']) ? (string) $arguments['type'] : null;
         if (gettype($value) === $type) {
             return $value;
         }
         if (null !== $value) {
             if ('ObjectStorage' === $type && 'array' === gettype($value)) {
-                /** @var ObjectManager $objectManager */
-                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
                 /** @var ObjectStorage $storage */
-                $storage = $objectManager->get(ObjectStorage::class);
+                $storage = GeneralUtility::makeInstance(ObjectStorage::class);
                 foreach ($value as $item) {
                     $storage->attach($item);
                 }
                 $value = $storage;
-            } elseif ('array' === $type && true === $value instanceof \Traversable) {
+            } elseif ('array' === $type && $value instanceof \Traversable) {
                 $value = iterator_to_array($value, false);
             } elseif ('array' === $type) {
                 $value = [$value];
-            } else {
+            } elseif (is_string($type)) {
                 settype($value, $type);
             }
         } else {
-            if (true === isset($arguments['default'])) {
+            if (isset($arguments['default'])) {
                 $default = $arguments['default'];
                 if (gettype($default) !== $type) {
                     throw new \RuntimeException(
@@ -121,8 +109,7 @@ class ConvertViewHelper extends AbstractViewHelper
                         $value = [];
                         break;
                     case 'ObjectStorage':
-                        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-                        $value = $objectManager->get(ObjectStorage::class);
+                        $value = GeneralUtility::makeInstance(ObjectStorage::class);
                         break;
                     default:
                         throw new \RuntimeException('Provided argument "type" is not valid', 1364542884);

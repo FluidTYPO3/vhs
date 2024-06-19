@@ -118,7 +118,7 @@ key
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    The name of the key from which you wish to extract the value
 

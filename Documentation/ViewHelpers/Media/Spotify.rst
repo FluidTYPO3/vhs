@@ -178,7 +178,7 @@ spotifyUri
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Spotify URI to create the play button for. Right click any song, album or playlist in Spotify and select Copy Spotify URI.
 

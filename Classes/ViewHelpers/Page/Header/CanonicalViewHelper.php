@@ -9,6 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  */
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -16,7 +19,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class CanonicalViewHelper extends AbstractTagBasedViewHelper
 {
-
     use PageRendererTrait;
 
     /**
@@ -24,10 +26,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'link';
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -48,19 +47,22 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ContextUtility::isBackend()) {
             return '';
         }
 
-        $pageUid = (integer) $this->arguments['pageUid'];
+        /** @var int $pageUid */
+        $pageUid = $this->arguments['pageUid'];
+        $pageUid = (integer) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
+        /** @var string $queryStringMethod */
         $queryStringMethod = $this->arguments['queryStringMethod'];
         if (!in_array($queryStringMethod, ['GET', 'POST', 'GET,POST'], true)) {
             throw new \InvalidArgumentException(
@@ -69,18 +71,25 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
             );
         }
 
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
-        $uri = $uriBuilder->reset()
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
+        $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
-            ->setUseCacheHash(true)
             ->setCreateAbsoluteUri(true)
             ->setAddQueryString(true)
-            ->setAddQueryStringMethod($queryStringMethod)
-            ->setArgumentsToBeExcludedFromQueryString(['id'])
-            ->build();
+            ->setArgumentsToBeExcludedFromQueryString(['id']);
+        if (method_exists($uriBuilder, 'setAddQueryStringMethod')) {
+            $uriBuilder->setAddQueryStringMethod($queryStringMethod);
+        }
+        if (method_exists($uriBuilder, 'setUseCacheHash')) {
+            $uriBuilder->setUseCacheHash(true);
+        }
 
-        if (true === empty($uri)) {
-            return null;
+        $uri = $uriBuilder->build();
+
+        if (empty($uri)) {
+            return '';
         }
 
         $uri = $GLOBALS['TSFE']->baseUrlWrap($uri);
@@ -95,5 +104,6 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
         }
 
         static::getPageRenderer()->addHeaderData($renderedTag);
+        return '';
     }
 }

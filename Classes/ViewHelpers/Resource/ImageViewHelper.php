@@ -15,7 +15,6 @@ use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
  */
 class ImageViewHelper extends AbstractImageViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -26,58 +25,44 @@ class ImageViewHelper extends AbstractImageViewHelper
      */
     protected $tagName = 'img';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute(
             'usemap',
             'string',
-            'A hash-name reference to a map element with which to associate the image.',
-            false,
-            null
+            'A hash-name reference to a map element with which to associate the image.'
         );
         $this->registerTagAttribute(
             'ismap',
             'string',
-            'Specifies that its img element provides access to a server-side image map.',
-            false,
-            null
+            'Specifies that its img element provides access to a server-side image map.'
         );
         $this->registerTagAttribute(
             'alt',
             'string',
-            'Equivalent content for those who cannot process images or who have image loading disabled.',
-            false,
-            null
+            'Equivalent content for those who cannot process images or who have image loading disabled.'
         );
         $this->registerArgument(
             'as',
             'string',
             'If specified, a template variable with this name containing the requested data will be inserted ' .
-            'instead of returning it.',
-            false,
-            null
+            'instead of returning it.'
         );
     }
 
     /**
      * Render method
      *
-     * @return string
+     * @return mixed
      */
     public function render()
     {
-        $files = $this->getFiles();
+        $files = (array) $this->getFiles();
 
         $images = $this->preprocessImages($files, true);
-        if (true === empty($images)) {
+        if (empty($images)) {
             return null;
         }
 
@@ -89,7 +74,7 @@ class ImageViewHelper extends AbstractImageViewHelper
             $width = $image['info'][0];
             $height = $image['info'][1];
             $alt = $this->arguments['alt'];
-            if (true === empty($alt)) {
+            if (empty($alt)) {
                 $alt = $image['file']['alternative'];
             }
 
@@ -110,7 +95,7 @@ class ImageViewHelper extends AbstractImageViewHelper
             ];
         }
         $as = $this->arguments['as'];
-        if (true === empty($as)) {
+        if (empty($as)) {
             return implode('', $tags);
         }
         return $this->renderChildrenWithVariableOrReturnInput($info);

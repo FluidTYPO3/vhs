@@ -8,25 +8,47 @@ namespace FluidTYPO3\Vhs\Tests\Unit;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Development\AbstractTestCase;
 use FluidTYPO3\Vhs\Asset;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
+use PHPUnit\Framework\Constraint\IsType;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
  * Class AssetTest
  */
 class AssetTest extends AbstractTestCase
 {
+    private ?ConfigurationManagerInterface $configurationManager;
 
     /**
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $GLOBALS['VhsAssets'] = [];
+
+        $package = $this->getMockBuilder(Package::class)->setMethods(['dummy'])->disableOriginalConstructor()->getMock();
+
+        $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->setMethods(['getPackage', 'isPackageActive'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $packageManager->method('isPackageActive')->willReturn(true);
+        $packageManager->method('getPackage')->willReturn($package);
+
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+
+        AccessibleExtensionManagementUtility::setPackageManager($packageManager);
+
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $this->configurationManager);
+
+        $asset = new Asset();
+        GeneralUtility::addInstance(Asset::class, $asset);
+
+        parent::setUp();
     }
 
     /**
@@ -47,19 +69,6 @@ class AssetTest extends AbstractTestCase
     {
         $asset = Asset::getInstance();
         $this->assertInstanceOf(Asset::class, $asset);
-    }
-
-    /**
-     * @test
-     */
-    public function canCreateAssetInstanceFromStaticFileFactoryWithRelativeFileAndTranslatesRelativeToAbsolutePath()
-    {
-        $file = 'Tests/Fixtures/Files/dummy.js';
-        $expected = $this->getAbsoluteAssetFixturePath();
-        $asset = Asset::createFromFile($file);
-        $this->assertInstanceOf(Asset::class, $asset);
-        $this->assertStringEndsWith($file, $asset->getPath());
-        $this->assertNotEquals($file, $asset->getPath());
     }
 
     /**
@@ -105,10 +114,27 @@ class AssetTest extends AbstractTestCase
     public function supportsChainingInAllSettersWithFakeNullArgument()
     {
         $asset = Asset::getInstance();
-        $settableProperties = ObjectAccess::getSettablePropertyNames($asset);
-        foreach ($settableProperties as $propertyName) {
+        $settableProperties = $asset->getSettings();
+        foreach ($settableProperties as $propertyName => $_) {
             $setter = 'set' . ucfirst($propertyName);
-            $asset = $asset->$setter(null);
+            $methodReflection = new \ReflectionMethod(Asset::class, $setter);
+            $parameter = $methodReflection->getParameters()[0];
+            if ($parameter->allowsNull()) {
+                $value = null;
+            } else {
+                switch ($parameter->getType()->getName()) {
+                    case 'bool':
+                        $value = true;
+                        break;
+                    case 'string':
+                        $value = 'string';
+                        break;
+                    case 'array':
+                        $value = [];
+                        break;
+                }
+            }
+            $asset = $asset->$setter($value);
             $this->assertInstanceOf(Asset::class, $asset, 'The ' . $setter . ' method does not support chaining');
         }
     }
@@ -134,7 +160,7 @@ class AssetTest extends AbstractTestCase
         $asset->remove();
         $this->assertSame(true, $asset->getRemoved());
         $this->assertSame(true, $asset->assertHasBeenRemoved());
-        $constraint = new \PHPUnit_Framework_Constraint_IsType('array');
+        $constraint = new IsType(IsType::TYPE_ARRAY);
         $this->assertThat($asset->getSettings(), $constraint);
     }
 
@@ -186,7 +212,7 @@ class AssetTest extends AbstractTestCase
     {
         $file = $this->getAbsoluteAssetFixturePath();
         $asset = Asset::createFromFile($file);
-        $constraint = new \PHPUnit_Framework_Constraint_IsType('boolean');
+        $constraint = new IsType(IsType::TYPE_BOOL);
         $this->assertThat($asset->getRemoved(), $constraint);
         $this->assertThat($asset->assertAddNameCommentWithChunk(), $constraint);
         $this->assertThat($asset->assertAllowedInFooter(), $constraint);
@@ -202,23 +228,22 @@ class AssetTest extends AbstractTestCase
     {
         $file = $this->getAbsoluteAssetFixturePath();
         $asset = Asset::createFromFile($file);
-        $gettableProperties = ObjectAccess::getGettablePropertyNames($asset);
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $gettableProperties = array_keys($asset->getSettings());
         foreach ($gettableProperties as $propertyName) {
-            if (false === property_exists(Asset::class, $propertyName)) {
+            if (!property_exists(Asset::class, $propertyName)) {
                 continue;
             }
-            $propertyValue = ObjectAccess::getProperty($asset, $propertyName);
-            /** @var \ReflectionProperty $propertyReflection */
-            $propertyReflection = $objectManager->get(\ReflectionProperty::class, Asset::class, $propertyName);
-            $docComment = $propertyReflection->getDocComment();
-            $matches = [];
-            preg_match('/@var ([a-z\\\\0-9_]+)/i', $docComment, $matches);
-            $expectedDataType = $matches[1];
-            $constraint = new \PHPUnit_Framework_Constraint_IsType($expectedDataType);
+            $getter = 'get' . ucfirst($propertyName);
+            $propertyValue = $asset->$getter();
+            $methodReflection = new \ReflectionMethod(Asset::class, $getter);
+            $returnType = $methodReflection->getReturnType();
+            if ($returnType->allowsNull()) {
+                continue;
+            }
+            $constraint = new IsType($returnType);
             $this->assertThat($propertyValue, $constraint);
         }
-        $constraint = new \PHPUnit_Framework_Constraint_IsType('array');
+        $constraint = new IsType(IsType::TYPE_ARRAY);
         $this->assertThat($asset->getDebugInformation(), $constraint);
         $this->assertThat($asset->getAssetSettings(), $constraint);
         $this->assertGreaterThan(0, count($asset->getAssetSettings()));
@@ -234,7 +259,7 @@ class AssetTest extends AbstractTestCase
     {
         $file = $this->getAbsoluteAssetFixturePath();
         $asset = Asset::createFromFile($file);
-        $constraint = new \PHPUnit_Framework_Constraint_IsType('string');
+        $constraint = new IsType(IsType::TYPE_STRING);
         $this->assertThat($asset->render(), $constraint);
         $this->assertNotEmpty($asset->render());
         $this->assertThat($asset->build(), $constraint);
@@ -258,7 +283,7 @@ class AssetTest extends AbstractTestCase
      */
     protected function getRelativeAssetFixturePath()
     {
-        $file = ExtensionManagementUtility::siteRelPath('vhs') . 'Tests/Fixtures/Files/dummy.js';
+        $file = 'Tests/Fixtures/Files/dummy.js';
         return $file;
     }
 
@@ -267,7 +292,7 @@ class AssetTest extends AbstractTestCase
      */
     protected function getAbsoluteAssetFixturePath()
     {
-        $file = ExtensionManagementUtility::extPath('vhs', 'Tests/Fixtures/Files/dummy.js');
+        $file = realpath('Tests/Fixtures/Files/dummy.js');
         return $file;
     }
 }

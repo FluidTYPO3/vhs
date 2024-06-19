@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -51,7 +52,6 @@ class CacheViewHelper extends AbstractRenderViewHelper
     use CompileWithContentArgumentAndRenderStatic;
 
     const ID_PREFIX = 'vhs-render-cache-viewhelper';
-
     const ID_SEPARATOR = '-';
 
     /**
@@ -59,10 +59,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content to be cached');
         $this->registerArgument('identity', 'string', 'Identity for cached entry', true);
@@ -70,9 +67,6 @@ class CacheViewHelper extends AbstractRenderViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -80,11 +74,12 @@ class CacheViewHelper extends AbstractRenderViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $identity */
         $identity = $arguments['identity'];
-        if (false === ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
-            if (true === $identity instanceof DomainObjectInterface) {
+        if (!ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
+            if ($identity instanceof DomainObjectInterface) {
                 $identity = get_class($identity) . static::ID_SEPARATOR . $identity->getUid();
-            } elseif (true === method_exists($identity, '__toString')) {
+            } elseif (method_exists($identity, '__toString')) {
                 $identity = (string) $identity;
             } else {
                 throw new \RuntimeException(
@@ -97,7 +92,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
         // Hash the cache-key to circumvent disallowed chars
         $identity = sha1($identity);
 
-        if (true === static::has($identity)) {
+        if (static::has($identity)) {
             return static::retrieve($identity);
         }
         $content = $renderChildrenClosure();
@@ -105,30 +100,23 @@ class CacheViewHelper extends AbstractRenderViewHelper
         return $content;
     }
 
-    /**
-     * @param string $id
-     * @return boolean
-     */
-    protected static function has($id)
+    protected static function has(string $id): bool
     {
-        return (boolean) static::getCache()->has(static::ID_PREFIX . static::ID_SEPARATOR . $id);
+        return static::getCache()->has(static::ID_PREFIX . static::ID_SEPARATOR . $id);
     }
 
     /**
      * @param mixed $value
-     * @param string $id
-     * @return void
      */
-    protected static function store($value, $id)
+    protected static function store($value, string $id): void
     {
         static::getCache()->set(static::ID_PREFIX . static::ID_SEPARATOR . $id, $value);
     }
 
     /**
-     * @param string $id
      * @return mixed
      */
-    protected static function retrieve($id)
+    protected static function retrieve(string $id)
     {
         $cache = static::getCache();
         if ($cache->has(static::ID_PREFIX . static::ID_SEPARATOR . $id)) {
@@ -137,11 +125,10 @@ class CacheViewHelper extends AbstractRenderViewHelper
         return null;
     }
 
-    /**
-     * @return mixed
-     */
-    protected static function getCache()
+    protected static function getCache(): FrontendInterface
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('vhs_main');
+        /** @var CacheManager $cacheManager */
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        return $cacheManager->getCache('vhs_main');
     }
 }

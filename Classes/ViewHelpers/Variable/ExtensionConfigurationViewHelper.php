@@ -8,8 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -36,10 +38,7 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
      */
     protected static $configurations = [];
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'extensionKey',
@@ -54,9 +53,6 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -64,11 +60,15 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var RenderingContext $renderingContext */
+        /** @var string|null $extensionKey */
         $extensionKey = $arguments['extensionKey'];
+        /** @var string $path */
         $path = $arguments['path'];
 
         if (null === $extensionKey) {
-            $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+            $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+                ->getControllerExtensionName();
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
         }
 

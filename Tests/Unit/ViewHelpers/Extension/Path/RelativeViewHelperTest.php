@@ -8,15 +8,34 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Extension\Path;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class RelativeViewHelperTest
  */
-class RelativeViewHelperTest extends AbstractViewHelperTest
+class RelativeViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $package = $this->getMockBuilder(Package::class)->setMethods(['getPackagePath'])->disableOriginalConstructor()->getMock();
+        $package->method('getPackagePath')->willReturn('');
+
+        $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->setMethods(['getPackage', 'isPackageActive'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $packageManager->method('getPackage')->willReturn($package);
+        $packageManager->method('isPackageActive')->willReturn(true);
+        AccessibleExtensionManagementUtility::setPackageManager($packageManager);
+    }
 
     /**
      * @test
@@ -29,27 +48,5 @@ class RelativeViewHelperTest extends AbstractViewHelperTest
         $extPath = PathUtility::stripPathSitePrefix($extPath);
 
         $this->assertSame($extPath, $test);
-    }
-
-    /**
-     * @test
-     */
-    public function rendersUsingControllerContext()
-    {
-        $test = $this->executeViewHelper([], [], null, 'Vhs');
-
-        $extPath = ExtensionManagementUtility::extPath('vhs');
-        $extPath = PathUtility::stripPathSitePrefix($extPath);
-
-        $this->assertSame($extPath, $test);
-    }
-
-    /**
-     * @test
-     */
-    public function throwsErrorWhenUnableToDetectExtensionName()
-    {
-        $this->setExpectedException('RuntimeException', null, 1364167519);
-        $this->executeViewHelper([], [], null, null, 'FakePlugin');
     }
 }

@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -57,10 +56,7 @@ class GetViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('name', 'string', 'Name of variable to retrieve');
         $this->registerArgument(
@@ -71,9 +67,6 @@ class GetViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -81,31 +74,33 @@ class GetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $variableProvider = $renderingContext->getVariableProvider();
+        /** @var string $name */
         $name = $arguments['name'];
         $useRawKeys = $arguments['useRawKeys'];
         if (false === strpos($name, '.')) {
-            if (true === $variableProvider->exists($name)) {
+            if ($variableProvider->exists($name)) {
                 return $variableProvider->get($name);
             }
         } else {
             $segments = explode('.', $name);
             $lastSegment = array_shift($segments);
             $templateVariableRootName = $lastSegment;
-            if (true === $variableProvider->exists($templateVariableRootName)) {
+            if ($variableProvider->exists($templateVariableRootName)) {
                 $templateVariableRoot = $variableProvider->get($templateVariableRootName);
-                if (true === $useRawKeys) {
+                if ($useRawKeys) {
                     return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
                 }
                 try {
                     $value = $templateVariableRoot;
                     foreach ($segments as $segment) {
-                        if (true === ctype_digit($segment)) {
+                        if (is_numeric($segment) && (int) $segment == $segment) {
                             $segment = intval($segment);
                             $index = 0;
                             $found = false;
                                 // Note: this loop approach is not a stupid solution. If you doubt this,
                                 // attempt to feth a number at a numeric index from ObjectStorage ;)
+                            /** @var iterable $value */
                             foreach ($value as $possibleValue) {
                                 if ($index === $segment) {
                                     $value = $possibleValue;

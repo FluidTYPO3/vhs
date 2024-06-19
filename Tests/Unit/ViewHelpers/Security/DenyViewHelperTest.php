@@ -9,10 +9,31 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use FluidTYPO3\Vhs\ViewHelpers\Security\DenyViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
-/**
- * Class DenyViewHelperTest
- */
-class DenyViewHelperTest extends AbstractViewHelperTest
+class DenyViewHelperTest extends AbstractViewHelperTestCase
 {
+    public function testInvertsDecision(): void
+    {
+        $GLOBALS['BE_USER'] = (object) [
+            'user' => ['uid' => 1],
+        ];
+        $viewHelper = $this->getMockBuilder(DenyViewHelper::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $arguments = $this->buildViewHelperArguments($viewHelper, ['anyBackendUser' => true]);
+        $this->createViewHelperNode($viewHelper, $arguments, [$this->createNode('Text', 'protected')]);
+        $viewHelper->setArguments($arguments);
+
+        $viewHelper->setRenderingContext(
+            $this->getMockBuilder(RenderingContextInterface::class)->getMockForAbstractClass()
+        );
+
+        GeneralUtility::addInstance(get_class($viewHelper), $viewHelper);
+        self::assertSame('', $viewHelper->render());
+    }
 }

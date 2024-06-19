@@ -18,10 +18,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsInstanceOfViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('value', 'mixed', 'value to check', true);
@@ -34,6 +31,6 @@ class IsInstanceOfViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === $arguments['value'] instanceof $arguments['class'];
+        return is_array($arguments) && $arguments['value'] instanceof $arguments['class'];
     }
 }

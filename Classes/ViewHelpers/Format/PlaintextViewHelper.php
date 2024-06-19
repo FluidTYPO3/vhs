@@ -25,10 +25,7 @@ class PlaintextViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content to trim each line of text within');
     }
@@ -36,13 +33,13 @@ class PlaintextViewHelper extends AbstractViewHelper
     /**
      * Trims content, then trims each line of content
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $content = $renderChildrenClosure();
         $content = trim($content);
         $lines = explode("\n", $content);

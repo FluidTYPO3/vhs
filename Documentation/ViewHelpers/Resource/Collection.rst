@@ -33,6 +33,6 @@ uid
    integer
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    UID of the collection to be rendered

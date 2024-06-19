@@ -9,14 +9,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
 /**
  * Class RandomViewHelperTest
  */
-class RandomViewHelperTest extends AbstractViewHelperTest
+class RandomViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      * @dataProvider getRenderTestValues

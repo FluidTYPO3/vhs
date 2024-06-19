@@ -15,7 +15,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class SpotifyViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * Play button base url
      */
@@ -26,13 +25,7 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'iframe';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -69,29 +62,29 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Render method
-     *
      * @return string
      */
     public function render()
     {
         $spotifyUri = $this->arguments['spotifyUri'];
-        $width      = (integer) $this->arguments['width'];
-        $height     = (integer) $this->arguments['height'];
+        /** @var int $width */
+        $width = $this->arguments['width'];
+        /** @var int $height */
+        $height = $this->arguments['height'];
+        /** @var string $theme */
+        $theme = $this->arguments['theme'];
+        /** @var string $view */
+        $view = $this->arguments['view'];
 
-        if (true === in_array($this->arguments['theme'], ['black', 'white'])) {
-            $theme = $this->arguments['theme'];
-        } else {
+        if (!in_array($theme, ['black', 'white'])) {
             $theme = 'black';
         }
 
-        if (true === in_array($this->arguments['view'], ['coverart', 'list'])) {
-            $view = $this->arguments['view'];
-        } else {
+        if (!in_array($view, ['coverart', 'list'])) {
             $view = 'list';
         }
 
-        if (true === (boolean) $this->arguments['compact']) {
+        if ($this->arguments['compact']) {
             $height = 80;
         }
 
@@ -99,10 +92,10 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
 
         $this->tag->forceClosingTag(true);
         $this->tag->addAttribute('src', $src);
-        $this->tag->addAttribute('width', $width);
-        $this->tag->addAttribute('height', $height);
+        $this->tag->addAttribute('width', (string) $width);
+        $this->tag->addAttribute('height', (string) $height);
         $this->tag->addAttribute('allowtransparancy', 'true');
-        $this->tag->addAttribute('frameborder', 0);
+        $this->tag->addAttribute('frameborder', '0');
 
         return $this->tag->render();
     }

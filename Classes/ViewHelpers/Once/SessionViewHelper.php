@@ -26,9 +26,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class SessionViewHelper extends AbstractOnceViewHelper
 {
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -42,41 +39,29 @@ class SessionViewHelper extends AbstractOnceViewHelper
         return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function storeIdentifier(array $arguments)
+    protected static function storeIdentifier(array $arguments): void
     {
         $identifier = static::getIdentifier($arguments);
-        $index = static::class;
-        if (false === is_array($_SESSION[$index])) {
+        $index = self::class;
+        if (!is_array($_SESSION[$index] ?? false)) {
             $_SESSION[$index] = [];
         }
         $_SESSION[$index][$identifier] = time();
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    protected static function assertShouldSkip(array $arguments)
+    protected static function assertShouldSkip(array $arguments): bool
     {
         $identifier = static::getIdentifier($arguments);
-        $index = static::class;
-        return (boolean) (true === isset($_SESSION[$index][$identifier]));
+        $index = self::class;
+        return isset($_SESSION[$index][$identifier]);
     }
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function removeIfExpired(array $arguments)
+    protected static function removeIfExpired(array $arguments): void
     {
         $id = static::getIdentifier($arguments);
-        $index = static::class;
-        $existsInSession = (boolean) (true === isset($_SESSION[$index]) && true === isset($_SESSION[$index][$id]));
-        if (true === $existsInSession && time() - $arguments['ttl'] >= $_SESSION[$index][$id]) {
+        $index = self::class;
+        $existsInSession = isset($_SESSION[$index], $_SESSION[$index][$id]);
+        if ($existsInSession && time() - $arguments['ttl'] >= $_SESSION[$index][$id]) {
             unset($_SESSION[$index][$id]);
         }
     }

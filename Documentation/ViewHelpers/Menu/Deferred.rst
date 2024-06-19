@@ -508,22 +508,6 @@ classCurrent
 :aspect:`Description`
    Optional class name to add to current link
 
-.. _menu.deferred_classhassubpages:
-
-classHasSubpages
-----------------
-
-:aspect:`DataType`
-   string
-
-:aspect:`Default`
-   'sub'
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Optional class name to add to links which have subpages
-
 .. _menu.deferred_substelementuid:
 
 substElementUid

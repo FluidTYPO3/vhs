@@ -31,10 +31,7 @@ class ChunkViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'mixed', 'The subject Traversable/Array instance to shift');
         $this->registerArgument('count', 'integer', 'Number of items/chunk or if fixed then number of chunks', true);
@@ -56,9 +53,6 @@ class ChunkViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return array|mixed
      */
     public static function renderStatic(
@@ -66,21 +60,25 @@ class ChunkViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $count = (integer) $arguments['count'];
+        /** @var string|null $as */
+        $as = $arguments['as'];
+        /** @var int $count */
+        $count = $arguments['count'];
         $fixed = (boolean) $arguments['fixed'];
         $preserveKeys = (boolean) $arguments['preserveKeys'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
-            empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
+            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
             $preserveKeys
         );
         $output = [];
         if (0 >= $count) {
             return $output;
         }
-        if (true === (boolean) $fixed) {
+        if ($fixed) {
             $subjectSize = count($subject);
             if (0 < $subjectSize) {
-                $chunkSize = ceil($subjectSize / $count);
+                /** @var int<1, max> $chunkSize */
+                $chunkSize = (integer) ceil($subjectSize / $count);
                 $output = array_chunk($subject, $chunkSize, $preserveKeys);
             }
             // Fill the resulting array with empty items to get the desired element count
@@ -94,7 +92,7 @@ class ChunkViewHelper extends AbstractViewHelper
 
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

@@ -21,7 +21,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class FieldNameViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var boolean
      */
@@ -32,19 +31,12 @@ class FieldNameViewHelper extends AbstractViewHelper
      */
     protected $persistenceManager;
 
-    /**
-     * @param PersistenceManagerInterface $persistenceManager
-     */
-    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
     }
 
-    /**
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('name', 'string', 'Name of the form field to generate the HMAC for.');
         $this->registerArgument(
@@ -60,29 +52,34 @@ class FieldNameViewHelper extends AbstractViewHelper
      */
     public function render()
     {
+        /** @var string $property */
+        $property = $this->arguments['property'];
+
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($this->isObjectAccessorMode()) {
-            $formObjectName = $this->renderingContext->getViewHelperVariableContainer()->get(FormViewHelper::class, 'formObjectName');
+            $formObjectName = $viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName');
             if (!empty($formObjectName)) {
-                $propertySegments = explode('.', $this->arguments['property']);
+                $propertySegments = explode('.', $property);
                 $propertyPath = '';
                 foreach ($propertySegments as $segment) {
                     $propertyPath .= '[' . $segment . ']';
                 }
                 $name = $formObjectName . $propertyPath;
             } else {
-                $name = $this->arguments['property'];
+                $name = $property;
             }
         } else {
+            /** @var string $name */
             $name = $this->arguments['name'];
         }
         if (null === $name || '' === $name) {
             return '';
         }
-        if (!$this->renderingContext->getViewHelperVariableContainer()->exists(FormViewHelper::class, 'fieldNamePrefix')) {
+        if (!$viewHelperVariableContainer->exists(FormViewHelper::class, 'fieldNamePrefix')) {
             return $name;
         }
-        $fieldNamePrefix = (string) $this->renderingContext->getViewHelperVariableContainer()->get(FormViewHelper::class, 'fieldNamePrefix');
-        if ('' === $fieldNamePrefix) {
+        $fieldNamePrefix = $viewHelperVariableContainer->get(FormViewHelper::class, 'fieldNamePrefix');
+        if (!is_string($fieldNamePrefix) || $fieldNamePrefix === '') {
             return $name;
         }
         $fieldNameSegments = explode('[', $name, 2);
@@ -90,24 +87,26 @@ class FieldNameViewHelper extends AbstractViewHelper
         if (1 < count($fieldNameSegments)) {
             $name .= '[' . $fieldNameSegments[1];
         }
-        if ($this->renderingContext->getViewHelperVariableContainer()->exists(FormViewHelper::class, 'formFieldNames')) {
-            $formFieldNames = $this->renderingContext->getViewHelperVariableContainer()->get(FormViewHelper::class, 'formFieldNames');
+
+        if ($viewHelperVariableContainer->exists(FormViewHelper::class, 'formFieldNames')) {
+            /** @var array $formFieldNames */
+            $formFieldNames = $viewHelperVariableContainer->get(FormViewHelper::class, 'formFieldNames');
         } else {
             $formFieldNames = [];
         }
         $formFieldNames[] = $name;
-        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(FormViewHelper::class, 'formFieldNames', $formFieldNames);
+        $viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'formFieldNames', $formFieldNames);
         return $name;
     }
 
-    /**
-     * @return boolean
-     */
-    protected function isObjectAccessorMode()
+    protected function isObjectAccessorMode(): bool
     {
         return (
             $this->hasArgument('property')
-            && $this->renderingContext->getViewHelperVariableContainer()->exists(FormViewHelper::class, 'formObjectName')
+            && $this->renderingContext->getViewHelperVariableContainer()->exists(
+                FormViewHelper::class,
+                'formObjectName'
+            )
         );
     }
 }

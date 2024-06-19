@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+
 /**
  * Once: Instance
  *
@@ -26,17 +28,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  */
 class InstanceViewHelper extends AbstractOnceViewHelper
 {
-
-    /**
-     * @param array $arguments
-     * @return string
-     */
-    protected static function getIdentifier(array $arguments)
+    protected static function getIdentifier(array $arguments): string
     {
-        if (true === isset($arguments['identifier']) && null !== $arguments['identifier']) {
+        if (isset($arguments['identifier']) && $arguments['identifier']) {
             return $arguments['identifier'];
         }
-        $request = static::$currentRenderingContext->getControllerContext()->getRequest();
+
+        $request = RequestResolver::resolveRequestFromRenderingContext(static::$currentRenderingContext);
+
         $identifier = implode('_', [
             $request->getControllerActionName(),
             $request->getControllerName(),
@@ -46,24 +45,16 @@ class InstanceViewHelper extends AbstractOnceViewHelper
         return $identifier;
     }
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function storeIdentifier(array $arguments)
+    protected static function storeIdentifier(array $arguments): void
     {
         $identifier = static::getIdentifier($arguments);
-        if (false === is_array($GLOBALS[static::class])) {
+        if (!isset($GLOBALS[static::class])) {
             $GLOBALS[static::class] = [];
         }
         $GLOBALS[static::class][$identifier] = true;
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    protected static function assertShouldSkip(array $arguments)
+    protected static function assertShouldSkip(array $arguments): bool
     {
         $identifier = static::getIdentifier($arguments);
         return isset($GLOBALS[static::class][$identifier]);

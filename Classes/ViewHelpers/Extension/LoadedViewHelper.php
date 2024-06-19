@@ -31,10 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class LoadedViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -49,15 +46,19 @@ class LoadedViewHelper extends AbstractConditionViewHelper
      * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers
      * to adjust functionality.
      *
-     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for
+     * @param array|null $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for
      *                         flexiblity in overriding this method.
      * @return bool
      */
     protected static function evaluateCondition($arguments = null)
     {
+        if (!is_array($arguments)) {
+            return false;
+        }
+        /** @var string $extensionName */
         $extensionName = $arguments['extensionName'];
         $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
         $isLoaded = ExtensionManagementUtility::isLoaded($extensionKey);
-        return true === $isLoaded;
+        return $isLoaded;
     }
 }

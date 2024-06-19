@@ -9,15 +9,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyTypoScriptFrontendController;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
-/**
- * @protection on
- * @package Vhs
- */
-class LinkViewHelperTest extends AbstractViewHelperTest
+class LinkViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @var PageService
      */
@@ -26,9 +25,10 @@ class LinkViewHelperTest extends AbstractViewHelperTest
     /**
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
+
         $this->pageService = $this->getMockBuilder(PageService::class)->setMethods(
             [
                 'getPage',
@@ -39,20 +39,18 @@ class LinkViewHelperTest extends AbstractViewHelperTest
             ]
         )->getMock();
         $this->pageService->expects($this->any())->method('getShortcutTargetPage')->willReturnArgument(0);
-        #$GLOBALS['TSFE'] = (object) array('sys_page' => $this->pageService);
-        #$GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)->setMethods('exec_SELECTgetSingleRow')->getMock();
-        #$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->willReturn(null);
+        $GLOBALS['TSFE'] = new DummyTypoScriptFrontendController();
+
+        $uriBuilder = $this->getMockBuilder(UriBuilder::class)
+            ->setMethods(['buildFrontendUri', 'build', 'setUseCacheHash'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        GeneralUtility::addInstance(UriBuilder::class, $uriBuilder);
     }
 
-    /**
-     * @return AbstractViewHelper
-     */
-    protected function createInstance()
+    protected function createInstance(): LinkViewHelper
     {
-        $className = $this->getViewHelperClassName();
-        /** @var AbstractViewHelper $instance */
-        $instance = $this->objectManager->get($className);
-        $instance->initialize();
+        $instance = parent::createInstance();
         $instance->injectPageService($this->pageService);
         return $instance;
     }
@@ -74,7 +72,7 @@ class LinkViewHelperTest extends AbstractViewHelperTest
     public function generatesNullLinkOnZeroPageUid()
     {
         $arguments = ['pageUid' => 0];
-        $this->pageService->expects($this->once())->method('getPage')->willReturn(null);
+        $this->pageService->expects($this->once())->method('getPage')->willReturn([]);
         $result = $this->executeViewHelper($arguments, [], null, 'Vhs');
         $this->assertNull($result);
     }

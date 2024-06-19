@@ -18,10 +18,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsNumericViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('value', 'mixed', 'value to check', true);
@@ -33,6 +30,6 @@ class IsNumericViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return true === is_numeric($arguments['value']);
+        return is_array($arguments) && is_numeric($arguments['value']);
     }
 }

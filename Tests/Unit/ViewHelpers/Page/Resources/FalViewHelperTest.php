@@ -9,11 +9,20 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Class FalViewHelperTest
  */
-class FalViewHelperTest extends AbstractViewHelperTest
+class FalViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected function setUp(): void
+    {
+        $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[FileRepository::class] = $this->getMockBuilder(FileRepository::class)->disableOriginalConstructor()->getMock();
 
+        parent::setUp();
+    }
 }

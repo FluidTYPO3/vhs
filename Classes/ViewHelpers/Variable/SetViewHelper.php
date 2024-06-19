@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -67,28 +66,27 @@ class SetViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'mixed', 'Value to set');
         $this->registerArgument('name', 'string', 'Name of variable to assign');
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        /** @var string $name */
         $name = $arguments['name'];
+        /** @var mixed $value */
         $value = $renderChildrenClosure();
-        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $variableProvider = $renderingContext->getVariableProvider();
         if (false === strpos($name, '.')) {
-            if (true === $variableProvider->exists($name)) {
+            if ($variableProvider->exists($name)) {
                 $variableProvider->remove($name);
             }
             $variableProvider->add($name, $value);
@@ -96,7 +94,7 @@ class SetViewHelper extends AbstractViewHelper
             $parts = explode('.', $name);
             $objectName = array_shift($parts);
             $path = implode('.', $parts);
-            if (false === $variableProvider->exists($objectName)) {
+            if (!$variableProvider->exists($objectName)) {
                 return null;
             }
             $object = $variableProvider->get($objectName);

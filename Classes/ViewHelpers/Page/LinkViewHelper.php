@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -43,10 +44,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $pageService;
 
-    /**
-     * @param PageService $pageService
-     */
-    public function injectPageService(PageService $pageService)
+    public function injectPageService(PageService $pageService): void
     {
         $this->pageService = $pageService;
     }
@@ -56,22 +54,16 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerPageRecordArguments();
-        $this->registerTagAttribute('target', 'string', 'Target of link', false);
+        $this->registerTagAttribute('target', 'string', 'Target of link');
         $this->registerTagAttribute(
             'rel',
             'string',
-            'Specifies the relationship between the current document and the linked document',
-            false
+            'Specifies the relationship between the current document and the linked document'
         );
         $this->registerArgument(
             'pageUid',
@@ -98,12 +90,12 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument(
             'noCacheHash',
             'boolean',
-            'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this. Has no effect on TYPO3v11 and above.',
+            'When TRUE supresses the cHash query parameter created by TypoLink. You should not need this. '
+            . 'Has no effect on TYPO3v11 and above.',
             false,
             false
         );
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
-        $this->registerArgument('linkAccessRestrictedPages', 'boolean', 'DEPRECATED: Use showAccessProtected instead.');
         $this->registerArgument(
             'absolute',
             'boolean',
@@ -143,16 +135,19 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render method
-     * @return NULL|string
+     * @return string|null
      */
     public function render()
     {
         // Check if link wizard link
+        /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
+        /** @var array $additionalParameters */
         $additionalParameters = (array) $this->arguments['additionalParams'];
-        if (false === is_numeric($pageUid)) {
-            GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)
-                ->warning("pageUid must be numeric, got " . $pageUid);
+        if (!is_numeric($pageUid)) {
+            /** @var LogManager $logManager */
+            $logManager = GeneralUtility::makeInstance(LogManager::class);
+            $logManager->getLogger(__CLASS__)->warning("pageUid must be numeric, got " . $pageUid);
             return null;
         }
 
@@ -163,11 +158,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
-
-        //TODO: Remove handling of deprecated argument
-        if ($this->hasArgument('linkAccessRestrictedPages')) {
-            $showAccessProtected = (boolean) $this->arguments['linkAccessRestrictedPages'];
-        }
 
         $page = $this->pageService->getPage($pageUid, $showAccessProtected);
         if (empty($page)) {
@@ -186,13 +176,17 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         // Do not render the link, if the page should be hidden
         if (class_exists(LanguageAspect::class)) {
-            $currentLanguageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+            /** @var Context $context */
+            $context = GeneralUtility::makeInstance(Context::class);
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $context->getAspect('language');
+            $currentLanguageUid = $languageAspect->getId();
         } else {
             $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
 
         $hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
-        if (true === $hidePage) {
+        if ($hidePage) {
             return null;
         }
 
@@ -222,16 +216,30 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
         $additionalCssClasses = implode(' ', $class);
 
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        /** @var int $pageType */
+        $pageType = $this->arguments['pageType'];
+        /** @var bool $noCache */
+        $noCache = $this->arguments['noCache'];
+        /** @var string $section */
+        $section = $this->arguments['section'];
+        /** @var bool $absolute */
+        $absolute = $this->arguments['absolute'];
+        /** @var bool $addQueryString */
+        $addQueryString = $this->arguments['addQueryString'];
+        /** @var array $excludedArguments */
+        $excludedArguments = (array) $this->arguments['argumentsToBeExcludedFromQueryString'];
+
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
-            ->setTargetPageType($this->arguments['pageType'])
-            ->setNoCache($this->arguments['noCache'])
-            ->setSection($this->arguments['section'])
+            ->setTargetPageType($pageType)
+            ->setNoCache($noCache)
+            ->setSection($section)
             ->setArguments($additionalParameters)
-            ->setCreateAbsoluteUri($this->arguments['absolute'])
-            ->setAddQueryString($this->arguments['addQueryString'])
-            ->setArgumentsToBeExcludedFromQueryString((array) $this->arguments['argumentsToBeExcludedFromQueryString'])
+            ->setCreateAbsoluteUri($absolute)
+            ->setAddQueryString($addQueryString)
+            ->setArgumentsToBeExcludedFromQueryString($excludedArguments)
             ->setLinkAccessRestrictedPages($showAccessProtected);
 
         if (method_exists($uriBuilder, 'setUseCacheHash')) {
@@ -246,17 +254,15 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         } else {
             $this->tag->removeAttribute('class');
         }
-        $this->tag->setContent($title);
+        $this->tag->setContent(is_scalar($title) ? (string) $title : '');
         return $this->tag->render();
     }
 
-    /**
-     * @param array $record
-     * @return string
-     */
-    private function getTitleValue($record)
+    private function getTitleValue(array $record): string
     {
-        $titleFieldList = GeneralUtility::trimExplode(',', $this->arguments['titleFields']);
+        /** @var string $titleFields */
+        $titleFields = $this->arguments['titleFields'];
+        $titleFieldList = GeneralUtility::trimExplode(',', $titleFields);
         foreach ($titleFieldList as $titleFieldName) {
             if (!empty($record[$titleFieldName])) {
                 return $record[$titleFieldName];

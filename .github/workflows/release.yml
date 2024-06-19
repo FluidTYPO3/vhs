@@ -1,0 +1,31 @@
+on:
+  push:
+    tags:
+      - "**"
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, json
+          ini-values: date.timezone="Europe/Copenhagen", opcache.fast_shutdown=0
+          tools: composer:v2.2
+      - name: "create working directory"
+        run: "mkdir tailor"
+      - name: "Install Tailor"
+        working-directory: tailor
+        run: "composer require typo3/tailor"
+      - name: "Upload to TER"
+        working-directory: tailor
+        run: "./vendor/bin/tailor ter:publish $TAG $EXTENSION_KEY --artefact $ARTEFECT_URL --comment \"$MESSAGE\""
+        env:
+          TYPO3_API_USERNAME: ${{ secrets.TER_USERNAME }}
+          TYPO3_API_TOKEN: ${{ secrets.TER_TOKEN }}
+          TAG: ${{ github.ref_name }}
+          EXTENSION_KEY: vhs
+          ARTEFECT_URL: "https://github.com/${{ github.repository }}/archive/${{ github.ref }}.zip"
+          MESSAGE: "Automatic release built from GitHub. See the CHANGELOG.md file that is shipped with this release for details."

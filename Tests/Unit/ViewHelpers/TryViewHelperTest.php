@@ -8,15 +8,11 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
-
 /**
  * Class TryViewHelperTest
  */
-class TryViewHelperTest extends AbstractViewHelperTest
+class TryViewHelperTest extends AbstractViewHelperTestCase
 {
-
     public function testRender()
     {
         $this->assertEmpty($this->executeViewHelper());
@@ -24,12 +20,8 @@ class TryViewHelperTest extends AbstractViewHelperTest
 
     public function testRenderWithException()
     {
-        $renderingContext = new RenderingContext();
-        if (method_exists($renderingContext, 'injectTemplateVariableContainer')) {
-            $renderingContext->injectTemplateVariableContainer(new TemplateVariableContainer());
-        }
         $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderElseChild', 'renderChildren'])->getMock();
-        $instance->setRenderingContext($renderingContext);
+        $instance->setRenderingContext($this->renderingContext);
         $instance->setArguments([]);
         $instance->expects($this->once())->method('renderChildren')->willThrowException(new \RuntimeException('testerror'));
         $instance->expects($this->once())->method('renderElseChild')->willReturn('testerror');

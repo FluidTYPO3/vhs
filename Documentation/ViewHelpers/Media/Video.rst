@@ -69,7 +69,7 @@ src
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Path to the media resource(s). Can contain single or multiple paths for videos/audio (either CSV, array or implementing Traversable).
 
@@ -332,7 +332,7 @@ width
    integer
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Sets the width of the video player in pixels.
 
@@ -345,7 +345,7 @@ height
    integer
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Sets the height of the video player in pixels.
 

@@ -8,15 +8,43 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Extension\Path;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class ResourcesViewHelperTest
  */
-class ResourcesViewHelperTest extends AbstractViewHelperTest
+class ResourcesViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $package = $this->getMockBuilder(Package::class)->setMethods(['getPackagePath'])->disableOriginalConstructor()->getMock();
+        $package->method('getPackagePath')->willReturn('');
+
+        $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->setMethods(['resolvePackagePath', 'isPackageActive', 'getPackage'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $packageManager->method('resolvePackagePath')->willReturnMap(
+            [
+                ['vhs', ''],
+            ]
+        );
+        $packageManager->method('isPackageActive')->willReturnMap(
+            [
+                ['vhs', true],
+                ['FakePlugin', false],
+            ]
+        );
+        $packageManager->method('getPackage')->willReturn($package);
+        AccessibleExtensionManagementUtility::setPackageManager($packageManager);
+    }
 
     /**
      * @test
@@ -27,25 +55,5 @@ class ResourcesViewHelperTest extends AbstractViewHelperTest
         $extPath = ExtensionManagementUtility::extPath('vhs', 'Resources/Public/ext_icon.gif');
         $extPath = PathUtility::stripPathSitePrefix($extPath);
         $this->assertSame($extPath, $test);
-    }
-
-    /**
-     * @test
-     */
-    public function rendersUsingControllerContext()
-    {
-        $test = $this->executeViewHelper(['path' => 'ext_icon.gif'], [], null, 'Vhs');
-        $extPath = ExtensionManagementUtility::extPath('vhs', 'Resources/Public/ext_icon.gif');
-        $extPath = PathUtility::stripPathSitePrefix($extPath);
-        $this->assertSame($extPath, $test);
-    }
-
-    /**
-     * @test
-     */
-    public function throwsErrorWhenUnableToDetectExtensionName()
-    {
-        $this->setExpectedException('RuntimeException', null, 1364167519);
-        $this->executeViewHelper([], [], null, null, 'FakePlugin');
     }
 }

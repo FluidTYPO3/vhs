@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\Utility;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+
 /**
  * Error Utility
  *
@@ -15,15 +17,8 @@ namespace FluidTYPO3\Vhs\Utility;
  */
 class ErrorUtility
 {
-    /**
-     * @param null|string $message
-     * @param null|integer $code
-     */
-    public static function throwViewHelperException($message = null, $code = null)
+    public static function throwViewHelperException(?string $message = null, ?int $code = null): void
     {
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception($message, $code);
-        }
-        throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception($message, $code);
+        throw new Exception((string) $message, (integer) $code);
     }
 }

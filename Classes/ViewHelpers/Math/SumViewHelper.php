@@ -27,10 +27,7 @@ class SumViewHelper extends AbstractMultipleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation');
@@ -39,20 +36,24 @@ class SumViewHelper extends AbstractMultipleMathViewHelper
     /**
      * @param mixed $a
      * @param mixed $b
-     * @param array $arguments
      * @return mixed
      */
     protected static function calculateAction($a, $b, array $arguments)
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
-        if (false === $aIsIterable && $b === null && (boolean) $arguments['fail']) {
+        if (!$aIsIterable && $b === null && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "b" was not supplied', 1237823699);
         }
-        if (true === $aIsIterable) {
+        if ($aIsIterable) {
             if (null === $b) {
                 $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
                 return array_sum($a);
             }
+            /**
+             * @var string|integer $index
+             * @var mixed $value
+             * @var array $a
+             */
             foreach ($a as $index => $value) {
                 $a[$index] = static::calculateAction($value, $b, $arguments);
             }

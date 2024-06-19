@@ -29,9 +29,6 @@ class RequestViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

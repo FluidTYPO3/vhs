@@ -16,7 +16,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class Bar extends AbstractEntity
 {
-
     /**
      * @var string
      */
@@ -26,11 +25,6 @@ class Bar extends AbstractEntity
      * @var \FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo
      */
     protected $foo;
-
-    /**
-     * @var \FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\LegacyFoo
-     */
-    protected $legacyFoo;
 
     /**
      * @var ObjectStorage<\FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar>
@@ -77,22 +71,6 @@ class Bar extends AbstractEntity
     public function setFoo(Foo $foo)
     {
         $this->foo = $foo;
-    }
-
-    /**
-     * @return Foo
-     */
-    public function getLegacyFoo()
-    {
-        return $this->legacyFoo;
-    }
-
-    /**
-     * @param Foo $legacyFoo
-     */
-    public function setLegacyFoo(LegacyFoo $legacyFoo)
-    {
-        $this->legacyFoo = $legacyFoo;
     }
 
     /**

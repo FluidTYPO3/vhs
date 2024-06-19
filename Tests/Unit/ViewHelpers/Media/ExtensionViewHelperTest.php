@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\ViewHelpers\Media;
+namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Media;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -8,16 +8,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Class ExtensionViewHelperTest
  */
-class ExtensionViewHelperTest extends AbstractViewHelperTest
+class ExtensionViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @var string
      */
@@ -26,10 +27,20 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
     /**
      * Setup
      */
-    public function setUp()
+    public function setUp(): void
     {
+        $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
         parent::setUp();
-        $this->fixturesPath = 'EXT:vhs/Tests/Fixtures/Files';
+        $this->fixturesPath = 'Tests/Fixtures/Files';
+        $packageManager = $this->getMockBuilder(PackageManager::class)->setMethods(['resolvePackagePath'])->disableOriginalConstructor()->getMock();
+        $packageManager->method('resolvePackagePath')->willReturnMap(
+            [
+                ['EXT:vhs/Tests/Fixtures/Files/foo.txt', 'Tests/Fixtures/Files/foo.txt'],
+                ['EXT:vhs/Tests/Fixtures/Files/noext', 'Tests/Fixtures/Files/noext'],
+                ['EXT:vhs/Tests/Fixtures/Files', 'Tests/Fixtures/Files'],
+            ]
+        );
+        AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
     /**
@@ -37,14 +48,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmptyStringForEmptyArguments()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
-        $viewHelper->setArguments([]);
-        $this->assertEquals('', $viewHelper->render());
+        $this->assertEquals('', $this->executeViewHelper());
     }
 
     /**
@@ -52,14 +56,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsExpectedExtensionForProvidedPath()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/foo.txt'));
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->setArguments([]);
-        $this->assertEquals('txt', $viewHelper->render());
+        $this->assertEquals('txt', $this->executeViewHelperUsingTagContent($this->fixturesPath . '/foo.txt'));
     }
 
     /**
@@ -67,13 +64,6 @@ class ExtensionViewHelperTest extends AbstractViewHelperTest
      */
     public function returnsEmptyStringForFileWithoutExtension()
     {
-        $viewHelper = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
-        $viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($this->fixturesPath . '/noext'));
-        if (method_exists($viewHelper, 'injectReflectionService')) {
-            $viewHelper->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        }
-        $viewHelper->setRenderingContext($this->objectManager->get(RenderingContext::class));
-        $viewHelper->setArguments([]);
-        $this->assertEquals('', $viewHelper->render());
+        $this->assertEquals('', $this->executeViewHelperUsingTagContent($this->fixturesPath . '/noext'));
     }
 }

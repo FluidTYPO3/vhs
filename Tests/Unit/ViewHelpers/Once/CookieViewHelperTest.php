@@ -8,19 +8,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
-/**
- * Class CookieViewHelperTest
- */
-class CookieViewHelperTest extends AbstractViewHelperTest
+class CookieViewHelperTest extends AbstractViewHelperTestCase
 {
-
-    /**
-     * @return void
-     */
-    public function testAssertShouldSkip()
-    {
-        $this->assertEmpty($this->executeViewHelper(['identifier' => 'test']));
-    }
 }

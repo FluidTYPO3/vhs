@@ -46,13 +46,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *     // ...but the "unless" counterpart supports anything as
  *     // condition instead of only checking "is content empty?"
  * ```
- *
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class UnlessViewHelper extends AbstractConditionViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         if (!isset($this->argumentDefinitions['condition'])) {
@@ -63,7 +60,7 @@ class UnlessViewHelper extends AbstractConditionViewHelper
     /**
      * Rendering with inversion and ignoring any f:then / f:else children.
      *
-     * @return string|NULL
+     * @return mixed|null
      */
     public function render()
     {
@@ -76,9 +73,6 @@ class UnlessViewHelper extends AbstractConditionViewHelper
     /**
      * Static rendering with inversion and ignoring any f:then / f:else children.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(

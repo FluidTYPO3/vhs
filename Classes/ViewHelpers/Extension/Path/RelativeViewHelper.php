@@ -24,13 +24,13 @@ class RelativeViewHelper extends AbstractExtensionViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $extPath = ExtensionManagementUtility::extPath(static::getExtensionKey($arguments, $renderingContext));
         return PathUtility::stripPathSitePrefix($extPath);
     }

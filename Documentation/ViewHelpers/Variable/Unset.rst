@@ -46,6 +46,6 @@ name
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Name of variable in variable container

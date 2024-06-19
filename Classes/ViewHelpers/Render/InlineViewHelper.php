@@ -32,12 +32,7 @@ class InlineViewHelper extends AbstractRenderViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Template code to render as Fluid (usually from a variable)');
         $this->registerArgument(
@@ -50,6 +45,9 @@ class InlineViewHelper extends AbstractRenderViewHelper
         parent::initializeArguments();
     }
 
+    /**
+     * @return string
+     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,

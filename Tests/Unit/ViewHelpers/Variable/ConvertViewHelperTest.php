@@ -10,14 +10,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
+use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Class ConvertViewHelperTest
  */
-class ConvertViewHelperTest extends AbstractViewHelperTest
+class ConvertViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @param mixed $value
      * @param string $type
@@ -67,7 +67,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsRuntimeExceptionIfTypeOfDefaultValueIsUnsupported()
     {
-        $this->setExpectedException('RuntimeException', null, 1364542576);
+        $this->expectExceptionCode(1364542576);
         $this->executeViewHelper(['type' => 'foobar', 'value' => null, 'default' => '1']);
     }
 
@@ -76,7 +76,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsRuntimeExceptionIfTypeIsUnsupportedAndNoDefaultProvided()
     {
-        $this->setExpectedException('RuntimeException', null, 1364542884);
+        $this->expectExceptionCode(1364542884);
         $this->executeViewHelper(['type' => 'unsupported', 'value' => null]);
     }
 
@@ -85,7 +85,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTest
      */
     public function throwsRuntimeExceptionIfTypeOfDefaultIsNotSameAsType()
     {
-        $this->setExpectedException('RuntimeException', null, 1364542576);
+        $this->expectExceptionCode(1364542576);
         $this->executeViewHelper(['type' => 'ObjectStorage', 'value' => null, 'default' => '1']);
     }
 

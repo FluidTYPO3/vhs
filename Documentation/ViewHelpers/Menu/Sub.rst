@@ -32,6 +32,6 @@ pageUid
    mixed
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Page UID to be overridden in the recycled rendering of the parent instance, if one exists

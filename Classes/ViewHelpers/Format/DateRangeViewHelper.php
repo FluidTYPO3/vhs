@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  */
 
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
@@ -73,10 +72,7 @@ class DateRangeViewHelper extends AbstractViewHelper
      */
     protected $escapingInterceptorEnabled = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'start',
@@ -122,27 +118,30 @@ class DateRangeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
-     * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        /** @var string|null $start */
         $start = $renderChildrenClosure();
         if (empty($arguments['start'])) {
             $start = 'now';
         }
         $startDateTime = static::enforceDateTime($start);
 
-        if (true === isset($arguments['end']) && false === empty($arguments['end'])) {
-            $endDateTime = static::enforceDateTime($arguments['end']);
-        } else {
-            $endDateTime = null;
+        /** @var string|null $end */
+        $end = $arguments['end'];
+        $endDateTime = null;
+        if (!empty($end)) {
+            $endDateTime = static::enforceDateTime($end);
         }
 
-        if (true === isset($arguments['intervalFormat']) && false === empty($arguments['intervalFormat'])) {
+        $intervalFormat = null;
+        if (!empty($arguments['intervalFormat'])) {
+            /** @var string $intervalFormat */
             $intervalFormat = $arguments['intervalFormat'];
         }
 
@@ -150,7 +149,8 @@ class DateRangeViewHelper extends AbstractViewHelper
             ErrorUtility::throwViewHelperException('Either end or intervalFormat has to be provided.', 1369573110);
         }
 
-        if (true === isset($intervalFormat) && null !== $intervalFormat) {
+        $interval = null;
+        if ($intervalFormat !== null) {
             try {
                 $interval = new \DateInterval($intervalFormat);
             } catch (\Exception $exception) {
@@ -159,7 +159,7 @@ class DateRangeViewHelper extends AbstractViewHelper
                     1369573111
                 );
             }
-        } else {
+        } elseif ($endDateTime instanceof \DateTime) {
             $interval = $endDateTime->diff($startDateTime);
         }
 
@@ -169,74 +169,80 @@ class DateRangeViewHelper extends AbstractViewHelper
             $endDateTime->add($interval);
         }
 
+        $output = null;
         $return = $arguments['return'];
         if (null === $return) {
             $spaceGlue = (boolean) $arguments['spaceGlue'];
-            $glue = strval($arguments['glue']);
-            $startFormat = $arguments['format'];
-            $endFormat = $arguments['format'];
-            if (null !== $arguments['startFormat'] && false === empty($arguments['startFormat'])) {
+            /** @var string $glue */
+            $glue = $arguments['glue'];
+            /** @var string $startFormat */
+            $startFormat = $arguments['format'] ?? '';
+            /** @var string $endFormat */
+            $endFormat = $arguments['format'] ?? '';
+            if (!empty($arguments['startFormat'])) {
+                /** @var string $startFormat */
                 $startFormat = $arguments['startFormat'];
             }
-            if (null !== $arguments['endFormat'] && false === empty($arguments['endFormat'])) {
+            if (!empty($arguments['endFormat'])) {
+                /** @var string $endFormat */
                 $endFormat = $arguments['endFormat'];
             }
             $output = static::formatDate($startDateTime, $startFormat);
             $output .= true === $spaceGlue ? ' ' : '';
             $output .= $glue;
             $output .= true === $spaceGlue ? ' ' : '';
-            $output .= static::formatDate($endDateTime, $endFormat);
+            $output .= static::formatDate($endDateTime ?? new \DateTime('now'), $endFormat);
         } elseif ('DateTime' === $return) {
             $output = $endDateTime;
-        } elseif (true === is_string($return)) {
+        } elseif (is_string($return) && $interval instanceof \DateInterval) {
             if (false === strpos($return, '%')) {
                 $return = '%' . $return;
             }
             $output = $interval->format($return);
-        } elseif (true === is_array($return)) {
+        } elseif (is_array($return) && $interval instanceof \DateInterval) {
             $output = [];
             foreach ($return as $format) {
                 if (false === strpos($format, '%')) {
                     $format = '%' . $format;
                 }
-                array_push($output, $interval->format($format));
+                $output[] = $interval->format($format);
             }
         }
         return $output;
     }
 
     /**
-     * @param mixed $date
-     * @return \DateTime
+     * @param \DateTime|scalar|null $date
      */
-    protected static function enforceDateTime($date)
+    protected static function enforceDateTime($date): \DateTime
     {
-        if (false === $date instanceof \DateTime) {
+        if (!$date instanceof \DateTime) {
             try {
-                if (true === is_integer($date)) {
+                $input = $date;
+                if (is_integer($date)) {
                     $date = new \DateTime('@' . $date);
+                } elseif (is_scalar($date)) {
+                    $date = new \DateTime((string) $date);
                 } else {
-                    $date = new \DateTime($date);
+                    $date = new \DateTime('now');
                 }
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             } catch (\Exception $exception) {
-                ErrorUtility::throwViewHelperException('"' . $date . '" could not be parsed by \DateTime constructor.', 1369573112);
+                ErrorUtility::throwViewHelperException(
+                    '"' . (string) $input . '" could not be parsed by \DateTime constructor.',
+                    1369573112
+                );
             }
         }
+        /** @var \DateTime $date */
         return $date;
     }
 
-    /**
-     * @param \DateTime $date
-     * @param string $format
-     * @return string
-     */
-    protected static function formatDate($date, $format = 'Y-m-d')
+    protected static function formatDate(\DateTime $date, string $format = 'Y-m-d'): string
     {
         if (false !== strpos($format, '%')) {
-            return strftime($format, $date->format('U'));
-        } else {
-            return $date->format($format);
+            return (string) strftime($format, (integer) $date->format('U'));
         }
+        return $date->format($format);
     }
 }

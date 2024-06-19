@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -29,10 +28,7 @@ class RootlineViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerAsArgument();
@@ -40,9 +36,6 @@ class RootlineViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -50,23 +43,25 @@ class RootlineViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $pageUid = (integer) $arguments['pageUid'];
+        /** @var int $pageUid */
+        $pageUid = $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
+        /** @var string $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             static::getPageService()->getRootLine($pageUid),
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );
     }
 
-    /**
-     * @return PageService
-     */
-    protected static function getPageService()
+    protected static function getPageService(): PageService
     {
-        return GeneralUtility::makeInstance(ObjectManager::class)->get(PageService::class);
+        /** @var PageService $pageService */
+        $pageService = GeneralUtility::makeInstance(PageService::class);
+        return $pageService;
     }
 }

@@ -91,7 +91,7 @@ recursionMarker
 :aspect:`Required`
    false
 :aspect:`Description`
-   Any value - string, integer, boolean, object or NULL - inserted instead of recursive instances of objects
+   String or null - inserted instead of recursive instances of objects
 
 .. _format.json.encode_datetimeformat:
 
@@ -105,3 +105,16 @@ dateTimeFormat
    false
 :aspect:`Description`
    A date() format for DateTime values to JSON-compatible values. NULL means JS UNIXTIME (time()*1000)
+
+.. _format.json.encode_pretty:
+
+pretty
+------
+
+:aspect:`DataType`
+   mixed
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   If TRUE, outputs JSON with JSON_PRETTY_PRINT

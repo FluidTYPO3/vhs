@@ -27,10 +27,7 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
     use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument('b', 'mixed', 'Optional: Second number or Iterator/Traversable/Array for calculation');
@@ -39,14 +36,13 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
     /**
      * @param mixed $a
      * @param mixed $b
-     * @param array $arguments
      * @return mixed
      */
     protected static function calculateAction($a, $b, array $arguments)
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         $bIsIterable = static::assertIsArrayOrIterator($b);
-        if (true === $aIsIterable) {
+        if ($aIsIterable) {
             $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
             if ($b === null) {
                 return array_sum($a) / count($a);
@@ -55,7 +51,7 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
                 $b = static::arrayFromArrayOrTraversableOrCSVStatic($b);
             }
             foreach ($a as $index => $value) {
-                $bSide = $bIsIterable ? $b[$index] : $b;
+                $bSide = is_array($b) ? $b[$index] : $b;
                 $a[$index] = static::calculateAction($value, $bSide, $arguments);
             }
             return $a;

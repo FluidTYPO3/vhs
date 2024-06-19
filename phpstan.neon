@@ -1,0 +1,65 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 9
+    reportUnmatchedIgnoredErrors: false
+    checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ControllerContext not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response not found\\.$#"
+        - "#[cC]lass TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Request not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Core\\\\Context\\\\Context not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Lang\\\\LanguageService not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ExtbaseRequestParameters not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextFactory not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Repository\\\\FrontendUserRepository not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\(Frontend|Backend)User(Group)? not found\\.$#"
+        - "#(unknown class|invalid( return)? type) Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Frontend\\\\Event\\\\AfterCacheableContentIsGeneratedEvent#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ControllerContext#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Response#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ExtbaseRequestParameters#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Core\\\\Type\\\\Bitmask\\\\PageTranslationVisibility#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Core\\\\Site\\\\Site#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextFactory#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Repository\\\\FrontendUserRepository#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\FrontendUser(Group)?#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\BackendUser(Group)?#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\View\\\\ViewInterface#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Context\\\\Context#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Context\\\\LanguageAspect#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\Site#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Core\\\\Environment#"
+        - "#unknown class TYPO3\\\\CMS\\\\Lang\\\\LanguageService#"
+        - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Collection\\\\RecordCollectionRepository#"
+        - "#unknown class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Request#"
+        - "#unknown class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface#"
+        - "#invalid return type TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository#"
+        - "#invalid return type TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface#"
+        - "#invalid type TYPO3\\\\CMS\\\\Core\\\\Collection\\\\RecordCollectionRepository#"
+        - "#no value type specified in iterable type#"
+        - "#^Strict comparison using === between 'CLI' and 'BE' will always evaluate to false\\.$#"
+        - "#^Strict comparison using === between 'CLI' and 'FE' will always evaluate to false\\.$#"
+        - "#^Strict comparison using === between 'FE' and 'CLI' will always evaluate to false\\.$#"
+        - "#^Strict comparison using === between 'BE' and 'CLI' will always evaluate to false\\.$#"
+        - "#^Parameter \\#2 \\$sectionName of method TYPO3Fluid\\\\Fluid\\\\View\\\\AbstractTemplateView\\:\\:renderPartial\\(\\) expects string, string\\|null given\\.$#"
+        - "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:SYSLOG_SEVERITY_#"
+        - "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:getApplicationContext\\(\\)\\.$#"
+        - "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:sysLog\\(\\)\\.$#"
+        - "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService\\:\\:init\\(\\)\\.$#"
+        - "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder\\:\\:setUseCacheHash\\(\\) invoked with 1 parameter, 0 required\\.$#"
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    paths:
+        - Classes
+        - Configuration
+    excludePaths:
+        - Classes/Middleware/AssetInclusion.php
+        - Configuration/RequestMiddlewares.php

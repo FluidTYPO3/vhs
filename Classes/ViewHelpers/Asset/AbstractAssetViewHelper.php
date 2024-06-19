@@ -13,7 +13,6 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
@@ -34,7 +33,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  */
 abstract class AbstractAssetViewHelper extends AbstractViewHelper implements AssetInterface
 {
-
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -53,34 +51,14 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     protected $assetService;
 
     /**
-     * @var array
-     */
-    protected static $settingsCache = null;
-
-    /**
-     * @var array
-     */
-    private $assetSettingsCache;
-
-    /**
-     * @var array
-     */
-    protected $localSettings;
-
-    /**
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
+     * @var TagBuilder
      */
     protected $tagBuilder;
+
+    protected static ?array $settingsCache = null;
+    private ?array $assetSettingsCache = null;
+    protected ?array $localSettings = null;
+    protected ?string $content = null;
 
     /**
      * Example types: raw, meta, css, js.
@@ -92,41 +70,26 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      *
      * @var string
      */
-    protected $type = 'raw';
+    protected string $type = 'raw';
 
+    public function __construct()
+    {
+        /** @var TagBuilder $tagBuilder */
+        $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
+        $this->tagBuilder = $tagBuilder;
+    }
 
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * @param AssetService $assetService
-     * @return void
-     */
-    public function injectAssetService(AssetService $assetService)
+    public function injectAssetService(AssetService $assetService): void
     {
         $this->assetService = $assetService;
     }
 
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-        $this->tagBuilder = $this->objectManager->get(TagBuilder::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content to insert in header/footer');
         $this->registerArgument('path', 'string', 'If not using tag content, specify path to file here');
@@ -230,7 +193,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      */
     public function __toString()
     {
-        return $this->build();
+        return (string) $this->build();
     }
 
     /**
@@ -259,21 +222,19 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      * and RenderingContext and you should therefore also never call
      * renderChildren from within this function. Anything else goes; CLI
      * commands to build, caching implementations - you name it.
-     *
-     * @return mixed
      */
-    public function build()
+    public function build(): ?string
     {
-        if (false === isset($this->arguments['path']) || true === empty($this->arguments['path'])) {
+        /** @var string|null $path */
+        $path = $this->arguments['path'];
+        if (empty($path ?? false)) {
             return $this->content;
         }
-        if (true === isset($this->arguments['external']) && true === (boolean) $this->arguments['external']) {
-            $path = $this->arguments['path'];
-        } else {
-            $path = GeneralUtility::getFileAbsFileName($this->arguments['path']);
+        if (!($this->arguments['external'] ?? false)) {
+            $path = GeneralUtility::getFileAbsFileName($path);
         }
         $content = file_get_contents($path);
-        return $content;
+        return $content ?: null;
     }
 
     /**
@@ -281,10 +242,8 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      * disabled and an identically named Asset already exists.
      *
      * Performed from every Asset's render() for it to work.
-     *
-     * @return void
      */
-    protected function finalize()
+    protected function finalize(): void
     {
         $this->assetSettingsCache = null;
         $this->localSettings = null;
@@ -293,25 +252,20 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         }
         $name = $this->getName();
         $overwrite = $this->getOverwrite();
-        $slotFree = !isset($GLOBALS['VhsAssets'][$name]);
-        if (!($overwrite || $slotFree)) {
+        if (!$overwrite && $this->assetService->isAlreadyDefined($name)) {
             return;
         }
-        $this->content = $this->getContent();
+        $this->content = (string) $this->getContent();
         $this->tagBuilder->setContent($this->content);
         $this->debug();
         $GLOBALS['VhsAssets'][$name] = clone $this;
     }
 
-    /**
-     * @return mixed
-     */
-    protected function debug()
+    protected function debug(): ?string
     {
         $settings = $this->getSettings();
         $debugOutputEnabled = $this->assertDebugEnabled();
-        $useDebugUtility = !isset($settings['useDebugUtility'])
-            || (isset($settings['useDebugUtility']) && $settings['useDebugUtility']);
+        $useDebugUtility = (bool) ($settings['useDebugUtility'] ?? true);
         $debugInformation = $this->getDebugInformation();
         if ($debugOutputEnabled) {
             if ($useDebugUtility) {
@@ -321,12 +275,10 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
                 return var_export($debugInformation, true);
             }
         }
+        return null;
     }
 
-    /**
-     * @return array
-     */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         $assetSettings = $this->getAssetSettings();
         if (isset($assetSettings['dependencies'])) {
@@ -335,27 +287,18 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         return [];
     }
 
-    /**
-     * @return boolean
-     */
-    protected function getOverwrite()
+    protected function getOverwrite(): bool
     {
         $assetSettings = $this->getAssetSettings();
         return (isset($assetSettings['overwrite']) && $assetSettings['overwrite']);
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         $assetSettings = $this->getAssetSettings();
         if (isset($assetSettings['name']) && !empty($assetSettings['name'])) {
@@ -366,19 +309,13 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         return $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getGroup()
+    public function getGroup(): string
     {
         $assetSettings = $this->getAssetSettings();
         return $assetSettings['group'];
     }
 
-    /**
-     * @return string
-     */
-    protected function getContent()
+    protected function getContent(): ?string
     {
         $assetSettings = $this->getAssetSettings();
         if (isset($assetSettings['content']) && !empty($assetSettings['content'])) {
@@ -389,18 +326,12 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         return $content;
     }
 
-    /**
-     * @return string
-     */
-    protected function getTagWithContent()
+    protected function getTagWithContent(): string
     {
         return $this->tagBuilder->render();
     }
 
-    /**
-     * @return array
-     */
-    public function getVariables()
+    public function getVariables(): array
     {
         $assetSettings = $this->getAssetSettings();
         if (isset($assetSettings['variables']) && is_array($assetSettings['variables'])) {
@@ -413,10 +344,8 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
      * Returns the settings used by this particular Asset
      * during inclusion. Public access allows later inspection
      * of the TypoScript values which were applied to the Asset.
-     *
-     * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         if (null === static::$settingsCache) {
             $allTypoScript = $this->configurationManager->getConfiguration(
@@ -439,20 +368,12 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         return $settings;
     }
 
-    /**
-     * @param array|\ArrayAccess $settings
-     */
-    public function setSettings($settings)
+    public function setSettings(array $settings): void
     {
-        if (is_array($settings) || $settings instanceof \ArrayAccess) {
-            $this->localSettings = $settings;
-        }
+        $this->localSettings = $settings;
     }
 
-    /**
-     * @return array
-     */
-    public function getAssetSettings()
+    public function getAssetSettings(): array
     {
         if (is_array($this->assetSettingsCache)) {
             return $this->assetSettingsCache;
@@ -464,7 +385,7 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
         $settings = $this->getSettings();
         $assetSettings = $this->arguments;
         $assetSettings['type'] = $this->getType();
-        if (isset($settings['asset']) && true === is_array($settings['asset'])) {
+        if (isset($settings['asset']) && is_array($settings['asset'])) {
             $assetSettings = $this->mergeArrays($assetSettings, $settings['asset']);
         }
         if (isset($settings['assetGroup'][$groupName]) && is_array($settings['assetGroup'][$groupName])) {
@@ -484,10 +405,8 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     /**
      * Allows public access to debug this particular Asset
      * instance later, when including the Asset in the page.
-     *
-     * @return array
      */
-    public function getDebugInformation()
+    public function getDebugInformation(): array
     {
         return [
             'class' => get_class($this),
@@ -498,27 +417,20 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     /**
      * Returns TRUE of settings specify that the source of this
      * Asset should be rendered as if it were a Fluid template,
-     * using variables from the "arguments" attribute
-     *
-     * @return boolean
+     * using variables from the "arguments" attribute.
      */
-    public function assertFluidEnabled()
+    public function assertFluidEnabled(): bool
     {
         $settings = $this->getAssetSettings();
-        if (true === (isset($settings['fluid']) && $settings['fluid'] > 0)) {
-            return true;
-        }
-        return false;
+        return ($settings['fluid'] ?? 0) > 0;
     }
 
     /**
      * Returns TRUE if settings specify that the name of each Asset
      * should be placed above the built content when placed in merged
      * Asset cache files.
-     *
-     * @return boolean
      */
-    public function assertAddNameCommentWithChunk()
+    public function assertAddNameCommentWithChunk(): bool
     {
         $settings = $this->getAssetSettings();
         return ((isset($settings['namedChunks']) && $settings['namedChunks']) || !isset($settings['namedChunks']));
@@ -527,48 +439,34 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
     /**
      * Returns TRUE if the current Asset should be debugged as commanded
      * by settings in TypoScript an/ord ViewHelper attributes.
-     *
-     * @return boolean
      */
-    public function assertDebugEnabled()
+    public function assertDebugEnabled(): bool
     {
         $settings = $this->getSettings();
-        if (isset($settings['debug']) && $settings['debug']) {
+        if ($settings['debug'] ?? false) {
             return true;
         }
         $settings = $this->getAssetSettings();
-        if (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0) {
-            return true;
-        }
-        return false;
+        return $settings['asset']['debug'] ?? false;
     }
 
-    /**
-     * @return boolean
-     */
-    public function assertAllowedInFooter()
+    public function assertAllowedInFooter(): bool
     {
         $settings = $this->getAssetSettings();
-        return (isset($settings['movable']) && $settings['movable']);
+        return $settings['movable'] ?? false;
     }
 
-    /**
-     * @return boolean
-     */
-    public function assertHasBeenRemoved()
+    public function assertHasBeenRemoved(): bool
     {
         $groupName = $this->arguments['group'];
         $settings = $this->getSettings();
         $dependencies = $this->getDependencies();
-        array_push($dependencies, $this->getName());
+        $dependencies[] = $this->getName();
         foreach ($dependencies as $name) {
-            if (isset($settings['asset'][$name]['remove']) && $settings['asset'][$name]['remove'] > 0) {
+            if ($settings['asset'][$name]['remove'] ?? false) {
                 return true;
             }
         }
-        if (isset($settings['assetGroup'][$groupName]['remove']) && $settings['assetGroup'][$groupName]['remove'] > 0) {
-            return true;
-        }
-        return false;
+        return $settings['assetGroup'][$groupName]['remove'] ?? false;
     }
 }

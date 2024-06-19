@@ -11,10 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as LegacyFluidObjectAccessorNode;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as LegacyFluidViewHelperNode;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode as StandaloneFluidObjectAccessorNode;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode as StandaloneFluidViewHelperNode;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -68,23 +67,18 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * properties, but only those which have a getter method
  * can be accessed by Fluid and as therefore we only dump
  * those properties which you **can in fact access**.
- *
- * @package Vhs
- * @subpackage ViewHelpers
  */
 class DebugViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var ViewHelperNode[]
      */
-    protected $childViewHelperNodes = [];
+    protected array $childViewHelperNodes = [];
 
     /**
      * @var ObjectAccessorNode[]
      */
-    protected $childObjectAccessorNodes = [];
-
+    protected array $childObjectAccessorNodes = [];
 
     /**
      * @var boolean
@@ -108,10 +102,10 @@ class DebugViewHelper extends AbstractViewHelper
             $givenArguments = $viewHelperNode->getArguments();
             $viewHelperReflection = new \ReflectionClass($viewHelper);
             $viewHelperDescription = $viewHelperReflection->getDocComment();
-            $viewHelperDescription = htmlentities($viewHelperDescription);
+            $viewHelperDescription = htmlentities((string) $viewHelperDescription);
             $viewHelperDescription = '[CLASS DOC]' . LF . $viewHelperDescription . LF;
             $renderMethodDescription = $viewHelperReflection->getMethod('render')->getDocComment();
-            $renderMethodDescription = htmlentities($renderMethodDescription);
+            $renderMethodDescription = htmlentities((string) $renderMethodDescription);
             $renderMethodDescription = implode(LF, array_map('trim', explode(LF, $renderMethodDescription)));
             $renderMethodDescription = '[RENDER METHOD DOC]' . LF . $renderMethodDescription . LF;
             $argumentDefinitions = [];
@@ -125,10 +119,10 @@ class DebugViewHelper extends AbstractViewHelper
                 DebuggerUtility::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, true, false, true),
                 $renderMethodDescription
             ];
-            array_push($nodes, implode(LF, $sections));
+            $nodes[] = implode(LF, $sections);
         }
         if (0 < count($this->childObjectAccessorNodes)) {
-            array_push($nodes, '[VARIABLE ACCESSORS]');
+            $nodes[] = '[VARIABLE ACCESSORS]';
             $templateVariables = $this->renderingContext->getVariableProvider()->getAll();
             foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
                 $path = $objectAccessorNode->getObjectPath();
@@ -147,7 +141,7 @@ class DebugViewHelper extends AbstractViewHelper
                     'Path: {' . $path . '}',
                     'Value type: ' . $type,
                 ];
-                if (true === is_object($value)) {
+                if (is_object($value)) {
                     $sections[] = 'Accessible properties on {' . $path . '}:';
                     $gettable = ObjectAccess::getGettablePropertyNames($value);
                     unset($gettable[0]);
@@ -165,7 +159,7 @@ class DebugViewHelper extends AbstractViewHelper
                         true
                     );
                 }
-                array_push($nodes, implode(LF, $sections));
+                $nodes[] = implode(LF, $sections);
             }
         }
         return '<pre>' . implode(LF . LF, $nodes) . '</pre>';
@@ -174,17 +168,15 @@ class DebugViewHelper extends AbstractViewHelper
     /**
      * Sets the direct child nodes of the current syntax tree node.
      *
-     * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode[] $childNodes
-     * @return void
+     * @param NodeInterface[] $childNodes
      */
-    public function setChildNodes(array $childNodes)
+    public function setChildNodes(array $childNodes): void
     {
         foreach ($childNodes as $childNode) {
-            if (true === $childNode instanceof LegacyFluidViewHelperNode || $childNode instanceof StandaloneFluidViewHelperNode) {
-                array_push($this->childViewHelperNodes, $childNode);
-            }
-            if (true === $childNode instanceof LegacyFluidObjectAccessorNode || $childNode instanceof StandaloneFluidObjectAccessorNode) {
-                array_push($this->childObjectAccessorNodes, $childNode);
+            if ($childNode instanceof ViewHelperNode) {
+                $this->childViewHelperNodes[] = $childNode;
+            } elseif ($childNode instanceof ObjectAccessorNode) {
+                $this->childObjectAccessorNodes[] = $childNode;
             }
         }
     }

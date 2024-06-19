@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -19,21 +20,15 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {
-
     use TagViewHelperTrait;
     use PageRendererTrait;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $tagName = 'link';
 
-    /**
-     * Arguments initialization
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('rel', 'string', 'Property: rel');
@@ -46,13 +41,14 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     /**
      * Render method
      *
-     * @return void
+     * @return string
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
-            return;
+        if (ContextUtility::isBackend()) {
+            return '';
         }
         static::getPageRenderer()->addHeaderData($this->renderTag($this->tagName));
+        return '';
     }
 }

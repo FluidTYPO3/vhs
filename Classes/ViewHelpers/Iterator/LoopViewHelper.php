@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -16,12 +15,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class LoopViewHelper extends AbstractLoopViewHelper
 {
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 
@@ -35,12 +29,16 @@ class LoopViewHelper extends AbstractLoopViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $count = (integer) $arguments['count'];
-        $minimum = (integer) $arguments['minimum'];
-        $maximum = (integer) $arguments['maximum'];
+        /** @var int $count */
+        $count = $arguments['count'];
+        /** @var int $minimum */
+        $minimum = $arguments['minimum'];
+        /** @var int $maximum */
+        $maximum = $arguments['maximum'];
+        /** @var string|null $iteration */
         $iteration = $arguments['iteration'];
         $content = '';
-        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $variableProvider = $renderingContext->getVariableProvider();
 
         if ($count < $minimum) {
             $count = $minimum;
@@ -48,30 +46,31 @@ class LoopViewHelper extends AbstractLoopViewHelper
             $count = $maximum;
         }
 
-        if (true === $variableProvider->exists($iteration)) {
+        if ($iteration !== null && $variableProvider->exists($iteration)) {
             $backupVariable = $variableProvider->get($iteration);
             $variableProvider->remove($iteration);
         }
 
         for ($i = 0; $i < $count; $i++) {
-            $content .= static::renderIteration($i, 0, $count, 1, $iteration, $renderingContext, $renderChildrenClosure);
+            $content .= static::renderIteration(
+                $i,
+                0,
+                $count,
+                1,
+                $iteration,
+                $renderingContext,
+                $renderChildrenClosure
+            );
         }
 
-        if (true === isset($backupVariable)) {
+        if ($iteration !== null && isset($backupVariable)) {
             $variableProvider->add($iteration, $backupVariable);
         }
 
         return $content;
     }
 
-    /**
-     * @param integer $i
-     * @param integer $from
-     * @param integer $to
-     * @param integer $step
-     * @return boolean
-     */
-    protected static function isLast($i, $from, $to, $step)
+    protected static function isLast(int $i, int $from, int $to, int $step): bool
     {
         return ($i + $step >= $to);
     }

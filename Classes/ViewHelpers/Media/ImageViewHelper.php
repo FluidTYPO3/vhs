@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
 use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Renders an image tag for the given resource including all valid
@@ -37,7 +38,6 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
  */
 class ImageViewHelper extends AbstractImageViewHelper
 {
-
     use SourceSetViewHelperTrait;
 
     /**
@@ -48,13 +48,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      */
     protected $tagName = 'img';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -92,7 +86,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      * Render method
      *
      * @return string
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     * @throws Exception
      */
     public function render()
     {
@@ -100,12 +94,9 @@ class ImageViewHelper extends AbstractImageViewHelper
         return $this->renderTag();
     }
 
-    /**
-     * @return string
-     */
-    public function renderTag()
+    public function renderTag(): string
     {
-        if (false === empty($this->arguments['srcset'])) {
+        if (!empty($this->arguments['srcset'])) {
             $srcSetVariants = $this->addSourceSet($this->tag, $this->mediaSource);
         }
 
@@ -113,28 +104,28 @@ class ImageViewHelper extends AbstractImageViewHelper
             $width = $this->arguments['canvasWidth'];
             $height = $this->arguments['canvasHeight'];
             $src = $this->mediaSource;
-        } elseif (false === empty($srcSetVariants) && false === empty($this->arguments['srcsetDefault'])) {
+        } elseif (!empty($srcSetVariants) && !empty($this->arguments['srcsetDefault'])) {
             $srcSetVariantDefault = $srcSetVariants[$this->arguments['srcsetDefault']];
             $src = $srcSetVariantDefault['src'];
             $width = $srcSetVariantDefault['width'];
             $height = $srcSetVariantDefault['height'];
         } else {
             $src = static::preprocessSourceUri($this->mediaSource, $this->arguments);
-            $width = $this->imageInfo[0];
-            $height = $this->imageInfo[1];
+            $width = $this->imageInfo[0] ?? '';
+            $height = $this->imageInfo[1] ?? '';
         }
-
 
         $this->tag->addAttribute('width', $width);
         $this->tag->addAttribute('height', $height);
         $this->tag->addAttribute('src', $src);
 
+        /** @var string|null $alt */
+        $alt = $this->arguments['alt'];
         // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
-        if (empty($this->arguments['alt'])) {
-            $this->tag->addAttribute('alt', '');
-        }
-        if (true === empty($this->arguments['title'])) {
-            $this->tag->addAttribute('title', $this->arguments['alt']);
+        $this->tag->addAttribute('alt', (string) $alt);
+
+        if (empty($this->arguments['title'])) {
+            $this->tag->addAttribute('title', $alt);
         }
         return $this->tag->render();
     }

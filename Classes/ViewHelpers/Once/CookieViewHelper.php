@@ -25,48 +25,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  */
 class CookieViewHelper extends AbstractOnceViewHelper
 {
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function storeIdentifier(array $arguments)
+    protected static function storeIdentifier(array $arguments): void
     {
         $identifier = static::getIdentifier($arguments);
         $domain = $arguments['lockToDomain'] ? $_SERVER['HTTP_HOST'] : null;
-        setcookie($identifier, '1', time() + $arguments['ttl'], null, $domain);
+        setcookie($identifier, '1', time() + $arguments['ttl'], '', $domain);
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    protected static function assertShouldSkip(array $arguments)
+    protected static function assertShouldSkip(array $arguments): bool
     {
         $identifier = static::getIdentifier($arguments);
-        return (true === isset($_COOKIE[$identifier]));
-    }
-
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function removeIfExpired(array $arguments)
-    {
-        $identifier = static::getIdentifier($arguments);
-        $existsInCookie = (boolean) (true === isset($_COOKIE[$identifier]));
-        if (true === $existsInCookie) {
-            static::removeCookie($arguments);
-        }
-    }
-
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    protected static function removeCookie(array $arguments)
-    {
-        $identifier = static::getIdentifier($arguments);
-        unset($_SESSION[$identifier], $_COOKIE[$identifier]);
-        setcookie($identifier, null, time() - 1);
+        return isset($_COOKIE[$identifier]);
     }
 }

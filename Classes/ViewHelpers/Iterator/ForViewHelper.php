@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -17,10 +16,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ForViewHelper extends AbstractLoopViewHelper
 {
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('to', 'integer', 'Number that the index needs to reach before stopping', true);
@@ -35,9 +31,6 @@ class ForViewHelper extends AbstractLoopViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -45,12 +38,20 @@ class ForViewHelper extends AbstractLoopViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $to = (integer) $arguments['to'];
-        $from = (integer) $arguments['from'];
-        $step = (integer) $arguments['step'];
+        /** @var int|string $to */
+        $to = $arguments['to'];
+        /** @var int|string $from */
+        $from = $arguments['from'];
+        /** @var int|string $step */
+        $step = $arguments['step'];
+        /** @var string|null $iteration */
         $iteration = $arguments['iteration'];
         $content = '';
-        $variableProvider = ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext);
+        $variableProvider = $renderingContext->getVariableProvider();
+
+        $to = (integer) $to;
+        $from = (integer) $from;
+        $step = (integer) $step;
 
         if (0 === $step) {
             throw new \RuntimeException('"step" may not be 0.', 1383267698);
@@ -62,24 +63,48 @@ class ForViewHelper extends AbstractLoopViewHelper
             throw new \RuntimeException('"step" must be smaller than 0 if "from" is greater than "to".', 1383268415);
         }
 
-        if (true === $variableProvider->exists($iteration)) {
+        if ($iteration !== null && $variableProvider->exists($iteration)) {
             $backupVariable = $variableProvider->get($iteration);
             $variableProvider->remove($iteration);
         }
 
         if ($from === $to) {
-            $content = static::renderIteration($from, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+            $content = static::renderIteration(
+                $from,
+                $from,
+                $to,
+                $step,
+                $iteration,
+                $renderingContext,
+                $renderChildrenClosure
+            );
         } elseif ($from < $to) {
             for ($i = $from; $i <= $to; $i += $step) {
-                $content .= static::renderIteration($i, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+                $content .= static::renderIteration(
+                    $i,
+                    $from,
+                    $to,
+                    $step,
+                    $iteration,
+                    $renderingContext,
+                    $renderChildrenClosure
+                );
             }
         } else {
             for ($i = $from; $i >= $to; $i += $step) {
-                $content .= static::renderIteration($i, $from, $to, $step, $iteration, $renderingContext, $renderChildrenClosure);
+                $content .= static::renderIteration(
+                    $i,
+                    $from,
+                    $to,
+                    $step,
+                    $iteration,
+                    $renderingContext,
+                    $renderChildrenClosure
+                );
             }
         }
 
-        if (true === isset($backupVariable)) {
+        if ($iteration !== null && isset($backupVariable)) {
             $variableProvider->add($iteration, $backupVariable);
         }
 

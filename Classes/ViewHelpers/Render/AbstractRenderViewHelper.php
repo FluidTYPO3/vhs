@@ -8,15 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\ViewHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * ### Base class for all rendering ViewHelpers.
@@ -26,14 +23,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractRenderViewHelper extends AbstractViewHelper
 {
-
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -42,38 +33,18 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'onError',
             'string',
             'Optional error message to display if error occur while rendering. If NULL, lets the error Exception ' .
-            'pass trough (and break rendering)',
-            false,
-            null
+            'pass trough (and break rendering)'
         );
         $this->registerArgument(
             'graceful',
@@ -84,49 +55,47 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @param array $arguments
-     * @return array
-     */
-    protected static function getPreparedNamespaces(array $arguments)
+    protected static function getPreparedNamespaces(array $arguments): array
     {
         $namespaces = [];
         foreach ((array) $arguments['namespaces'] as $namespaceIdentifier => $namespace) {
             $addedOverriddenNamespace = '{namespace ' . $namespaceIdentifier . '=' . $namespace . '}';
-            array_push($namespaces, $addedOverriddenNamespace);
+            $namespaces[] = $addedOverriddenNamespace;
         }
         return $namespaces;
     }
 
-    /**
-     * @param RenderingContextInterface $renderingContext
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
-     */
-    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext)
+    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): StandaloneView
     {
         $view = static::getPreparedView();
+        $newRenderingContext = $view->getRenderingContext();
         if (method_exists($renderingContext, 'getControllerContext')) {
             $controllerContext = clone $renderingContext->getControllerContext();
-            $view->setControllerContext($controllerContext);
+
             $view->setFormat($controllerContext->getRequest()->getFormat());
-            $view->getRenderingContext()->setViewHelperVariableContainer($renderingContext->getViewHelperVariableContainer());
+            $newRenderingContext->setViewHelperVariableContainer(
+                $renderingContext->getViewHelperVariableContainer()
+            );
+            if (method_exists($newRenderingContext, 'setControllerContext')) {
+                $newRenderingContext->setControllerContext($controllerContext);
+            }
+        } elseif (method_exists($renderingContext, 'getRequest') && method_exists($newRenderingContext, 'setRequest')) {
+            $newRenderingContext->setRequest($renderingContext->getRequest());
         }
-        $view->assignMultiple(ViewHelperUtility::getVariableProviderFromRenderingContext($renderingContext)->getAll());
+        $variables = (array) $renderingContext->getVariableProvider()->getAll();
+        $view->assignMultiple($variables);
         return $view;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
-     * @param array $arguments
-     * @throws \Exception
-     * @return string
+     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface|ViewInterface $view
      */
-    protected static function renderView(ViewInterface $view, array $arguments)
+    protected static function renderView($view, array $arguments): string
     {
         try {
             $content = $view->render();
         } catch (\Exception $error) {
-            if (!$arguments['graceful']) {
+            if (!($arguments['graceful'] ?? false)) {
                 throw $error;
             }
             $content = $error->getMessage() . ' (' . $error->getCode() . ')';
@@ -134,19 +103,10 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return $content;
     }
 
-    /**
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
-     */
-    protected static function getPreparedView()
+    protected static function getPreparedView(): StandaloneView
     {
-        return static::getObjectManager()->get(StandaloneView::class);
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    protected static function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        return $view;
     }
 }

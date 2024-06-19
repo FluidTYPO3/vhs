@@ -10,9 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -32,10 +30,7 @@ class InfoViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerAsArgument();
         $this->registerArgument(
@@ -53,9 +48,6 @@ class InfoViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -63,23 +55,29 @@ class InfoViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $pageRepository = GeneralUtility::makeInstance(PageService::class)->getPageRepository();
-        $pageUid = (integer) $arguments['pageUid'];
+        /** @var PageService $pageService */
+        $pageService = GeneralUtility::makeInstance(PageService::class);
+        $pageRepository = $pageService->getPageRepository();
+        /** @var int $pageUid */
+        $pageUid = $arguments['pageUid'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = $pageRepository->getPage_noCheck($pageUid);
+        $page = $pageRepository->getPage_noCheck((integer) $pageUid);
+        /** @var string|null $field */
         $field = $arguments['field'];
         $content = null;
-        if (true === empty($field)) {
+        if (empty($field)) {
             $content = $page;
-        } elseif (true === is_array($page) && true === isset($page[$field])) {
+        } elseif (is_array($page) && isset($page[$field])) {
             $content = $page[$field];
         }
 
+        /** @var string|null $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $content,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

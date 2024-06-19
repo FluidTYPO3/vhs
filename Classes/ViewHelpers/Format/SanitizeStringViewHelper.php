@@ -43,12 +43,7 @@ class SanitizeStringViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    /**
-     * Basic character map
-     *
-     * @var array
-     */
-    protected static $characterMap = [
+    protected static array $characterMap = [
         '¹' => 1, '²' => 2, '³' => 3, '°' => 0, '€' => 'eur', 'æ' => 'ae', 'ǽ' => 'ae', 'À' => 'A',
         'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Å' => 'AA', 'Ǻ' => 'A', 'Ă' => 'A', 'Ǎ' => 'A', 'Æ' => 'AE',
         'Ǽ' => 'AE', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'å' => 'aa', 'ǻ' => 'a', 'ă' => 'a',
@@ -112,12 +107,7 @@ class SanitizeStringViewHelper extends AbstractViewHelper
         'Ỵ' => 'Y', 'Ỷ' => 'Y', 'Ỹ' => 'Y',
     ];
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('string', 'string', 'The string to sanitize.');
         $this->registerArgument(
@@ -128,9 +118,6 @@ class SanitizeStringViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -146,7 +133,7 @@ class SanitizeStringViewHelper extends AbstractViewHelper
 
         $characterMap = static::$characterMap;
         $customMap = $arguments['customMap'];
-        if (true === is_array($customMap) && 0 < count($customMap)) {
+        if (is_array($customMap) && 0 < count($customMap)) {
             $characterMap = array_merge($characterMap, $customMap);
         }
         $specialCharsSearch = array_keys($characterMap);
@@ -155,6 +142,6 @@ class SanitizeStringViewHelper extends AbstractViewHelper
         $string = strtolower($string);
         $pattern = '/([^a-z0-9\-]){1,}/';
         $string = preg_replace($pattern, '-', $string);
-        return trim($string, '-');
+        return trim((string) $string, '-');
     }
 }

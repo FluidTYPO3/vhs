@@ -41,7 +41,7 @@ type
    string
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
    Data type to convert the value into. Can be one of "string", "integer", "float", "boolean", "array" or "ObjectStorage".
 

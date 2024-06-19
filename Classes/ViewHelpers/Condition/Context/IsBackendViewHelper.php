@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -39,6 +40,6 @@ class IsBackendViewHelper extends AbstractConditionViewHelper
 {
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
-        return ('BE' === TYPO3_MODE);
+        return ContextUtility::isBackend();
     }
 }

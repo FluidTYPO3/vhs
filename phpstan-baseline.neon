@@ -1,0 +1,118 @@
+parameters:
+    ignoreErrors:
+        -
+            message: "#Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement\\|Doctrine\\\\DBAL\\\\Result\\:\\:fetch\\(\\)\\.$#"
+            count: 1
+            path: Classes/Utility/DoctrineQueryProxy.php
+        -
+            message: "#Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement\\|Doctrine\\\\DBAL\\\\Result\\:\\:fetchAll\\(\\)\\.$#"
+            count: 1
+            path: Classes/Utility/DoctrineQueryProxy.php
+        -
+            message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_groupAccess\\.$#"
+            count: 1
+            path: Classes/Service/PageService.php
+        -
+            message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:getMenu\\(\\) invoked with 6 parameters, 1\\-5 required\\.$#"
+            count: 1
+            path: Classes/Service/PageService.php
+        -
+            message: "#^Parameter \\#2 \\$conf of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:parseFunc\\(\\) expects non-empty-array<string, mixed>\\|null, array\\{\\} given\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Format/Placeholder/LipsumViewHelper.php
+        -
+            message: "#^Parameter \\#3 \\$ref of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:parseFunc\\(\\) expects non-empty-string\\|null, string given\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Format/Placeholder/LipsumViewHelper.php
+        -
+            message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:hideIfNotTranslated\\(\\)\\.$#"
+            count: 1
+            path: Classes/Service/PageService.php
+        -
+            message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:hideIfDefaultLanguage\\(\\)\\.$#"
+            count: 1
+            path: Classes/Service/PageService.php
+        -
+            message: "#^Parameter \\#2 \\$response of method FluidTYPO3\\\\Vhs\\\\Utility\\\\DispatcherProxy\\:\\:dispatch\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Response\\|null, \\(TYPO3\\\\CMS\\\\Core\\\\Http\\\\Response&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response\\)\\|\\(TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response\\)\\|null given\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Render/RequestViewHelper.php
+        -
+            message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: Classes/Utility/DispatcherProxy.php
+        -
+            message: "#^Parameter \\#1 \\$controllerClassName of class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request constructor expects string, Psr\\\\Http\\\\Message\\\\ServerRequestInterface given\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Render/RequestViewHelper.php
+        -
+            message: "#^Parameter \\#2 \\$response of method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:dispatch\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface, TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Response\\|null given\\.$#"
+            count: 1
+            path: Classes/Utility/DispatcherProxy.php
+        -
+            message: "#Right side of \\|\\| is always true\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Resource/AbstractResourceViewHelper.php
+        -
+            message: "#^Unreachable statement \\- code above always terminates\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Resource/AbstractResourceViewHelper.php
+        -
+            message: "#^If condition is always false\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Resource/AbstractImageViewHelper.php
+        -
+            message: "#^If condition is always true\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Render/RequestViewHelper.php
+        -
+            message: "#^Parameter \\#2 \\$response of method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:dispatch\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Response\\|TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface given\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Render/RequestViewHelper.php
+        -
+            message: "#^Call to method getPageOverlay\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Page/Resources/FalViewHelper.php
+        -
+            message: "#^If condition is always false\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Page/LanguageMenuViewHelper.php
+        -
+            message: "#^Result of \\&\\& is always false\\.$#"
+            count: 2
+            path: Classes/ViewHelpers/Media/SourceViewHelper.php
+        -
+            message: "#^Ternary operator condition is always true\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Media/PdfThumbnailViewHelper.php
+        -
+            message: "#^Ternary operator condition is always true\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Media/Image/AbstractImageViewHelper.php
+        -
+            message: "#^Result of \\&\\& is always false\\.$#"
+            count: 2
+            path: Classes/ViewHelpers/Media/Image/AbstractImageViewHelper.php
+        -
+            message: "#^If condition is always false\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Media/Image/AbstractImageViewHelper.php
+        -
+            message: "#^Result of \\&\\& is always false\\.$#"
+            count: 1
+            path: Classes/Traits/SourceSetViewHelperTrait.php
+        -
+            message: "#^Unreachable statement \\- code above always terminates\\.$#"
+            count: 2
+            path: Classes/Utility/FrontendSimulationUtility.php
+        -
+            message: "#^Cannot call method getValidators\\(\\) on array\\.$#"
+            count: 2
+            path: Classes/ViewHelpers/Condition/Form/HasValidatorViewHelper.php
+        -
+            message: "#^Call to protected method init\\(\\) of class TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\.$#"
+            count: 2
+            path: Classes/Service/PageService.php
+        -
+            message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 2
+            path: Classes/ViewHelpers/Render/RequestViewHelper.php

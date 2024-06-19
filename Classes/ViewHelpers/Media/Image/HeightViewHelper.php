@@ -13,13 +13,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 class HeightViewHelper extends AbstractImageInfoViewHelper
 {
-
     /**
      * @return int
      */
     public function render()
     {
         $info = $this->getInfo();
-        return (true === isset($info['height']) ? $info['height'] : 0);
+        return $info['height'] ?? 0;
     }
 }

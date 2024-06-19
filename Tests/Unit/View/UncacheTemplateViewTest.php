@@ -8,37 +8,49 @@ namespace FluidTYPO3\Vhs\Tests\Unit\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Development\AbstractTestCase;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
+use TYPO3\CMS\Backend\Controller\BackendController;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 
-/**
- * Class UncacheTemplateViewTest
- */
 class UncacheTemplateViewTest extends AbstractTestCase
 {
+    private ?RenderingContext $renderingContext = null;
+
+    protected function setUp(): void
+    {
+        $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->renderingContext->setTemplatePaths(
+            $this->getMockBuilder(TemplatePaths::class)->disableOriginalConstructor()->getMock()
+        );
+        GeneralUtility::addInstance(RenderingContext::class, $this->renderingContext);
+        $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequest::class)
+            ->setMethods(['getAttribute', 'withAttribute'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $GLOBALS['TYPO3_REQUEST']->method('withAttribute')->willReturnSelf();
+        if (class_exists(ExtbaseRequestParameters::class)) {
+            $GLOBALS['TYPO3_REQUEST']->method('getAttribute')->willReturn(new ExtbaseRequestParameters());
+        }
+        parent::setUp();
+    }
 
     /**
      * @test
      */
     public function callUserFunctionReturnsEarlyIfPartialEmpty()
     {
-        $request = new Request();
-
-        $context = $this->getMockBuilder(ControllerContext::class)->getMock();
-
-        $uriBuilder = $this->getMockBuilder(UriBuilder::class)->getMock();
-
-        $objectManager = $this->getMockBuilder(ObjectManager::class)->setMethods(['get'])->getMock();
-        $objectManager->expects(self::at(0))->method('get')->with(ControllerContext::class)->willReturn($context);
-        $objectManager->expects(self::at(1))->method('get')->with(Request::class)->willReturn($request);
-        $objectManager->expects(self::at(2))->method('get')->with(UriBuilder::class)->willReturn($uriBuilder);
-
-        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['prepareContextsForUncachedRendering'])->getMock();
-        $mock->injectObjectManager($objectManager);
+        $mock = $this->getMockBuilder($this->getClassName())
+            ->setMethods(['prepareContextsForUncachedRendering', 'createRenderingContextWithRenderingContextFactory'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->method('createRenderingContextWithRenderingContextFactory')->willReturn($this->renderingContext);
 
         $configuration = ['partial' => ''];
         $mock->expects($this->never())->method('prepareContextsForUncachedRendering');
@@ -50,26 +62,32 @@ class UncacheTemplateViewTest extends AbstractTestCase
      */
     public function callUserFunctionReturnsCallsExpectedMethodSequence()
     {
-        $request = new Request();
+        $mock = $this->getMockBuilder($this->getClassName())
+            ->setMethods(
+                [
+                    'setRenderingContext',
+                    'renderPartialUncached',
+                    'createRenderingContextWithRenderingContextFactory'
+                ]
+            )
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->method('createRenderingContextWithRenderingContextFactory')->willReturn($this->renderingContext);
 
-        $context = $this->getMockBuilder(ControllerContext::class)->getMock();
-
-        $uriBuilder = $this->getMockBuilder(UriBuilder::class)->getMock();
-
-        $renderingContext = $this->getMockBuilder(RenderingContext::class)->disableOriginalConstructor()->getMock();
-
-        $objectManager = $this->getMockBuilder(ObjectManager::class)->setMethods(['get'])->getMock();
-        $objectManager->expects(self::at(0))->method('get')->with(ControllerContext::class)->willReturn($context);
-        $objectManager->expects(self::at(1))->method('get')->with(Request::class)->willReturn($request);
-        $objectManager->expects(self::at(2))->method('get')->with(UriBuilder::class)->willReturn($uriBuilder);
-        $objectManager->expects(self::at(3))->method('get')->with(RenderingContext::class)->willReturn($renderingContext);
-
-        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['prepareContextsForUncachedRendering', 'setControllerContext', 'renderPartialUncached'])->getMock();
-        $mock->injectObjectManager($objectManager);
-
-        $configuration = ['partial' => 'dummy', 'section' => 'dummy', 'controllerContext' => []];
-        $mock->expects($this->once())->method('prepareContextsForUncachedRendering');
-        $mock->expects($this->once())->method('setControllerContext');
+        $configuration = [
+            'partial' => 'dummy',
+            'section' => 'dummy',
+            'controllerContext' => [
+                'actionName' => 'test',
+                'extensionName' => 'vhs',
+                'controllerName' => 'test',
+                'controllerObjectName' => BackendController::class,
+                'pluginName' => 'foo',
+                'format' => 'html',
+            ],
+            'partialRootPaths' => ['foo']
+        ];
+        $mock->expects($this->once())->method('setRenderingContext');
         $mock->expects($this->once())->method('renderPartialUncached');
         $mock->callUserFunction('', $configuration, '');
     }
@@ -79,12 +97,12 @@ class UncacheTemplateViewTest extends AbstractTestCase
      */
     public function prepareContextsForUncachedRenderingCallsExpectedMethodSequence()
     {
-        $controllerContext = new ControllerContext();
-        $renderingContext = $this->getMockBuilder(RenderingContext::class)->setMethods(['setControllerContext'])->getMock();
-        $renderingContext->expects($this->once())->method('setControllerContext')->with($controllerContext);
-        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['setRenderingContext'])->getMock();
-        $mock->expects($this->once())->method('setRenderingContext')->with($renderingContext);
-        $this->callInaccessibleMethod($mock, 'prepareContextsForUncachedRendering', $renderingContext, $controllerContext);
+        $mock = $this->getMockBuilder($this->getClassName())
+            ->setMethods(['setRenderingContext'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->expects($this->once())->method('setRenderingContext')->with($this->renderingContext);
+        $this->callInaccessibleMethod($mock, 'prepareContextsForUncachedRendering', $this->renderingContext);
     }
 
     /**
@@ -92,10 +110,12 @@ class UncacheTemplateViewTest extends AbstractTestCase
      */
     public function renderPartialUncachedDelegatesToRenderPartial()
     {
-        $renderingContext = new RenderingContext();
-        $mock = $this->getMockBuilder($this->getClassName())->setMethods(['renderPartial'])->getMock();
+        $mock = $this->getMockBuilder($this->getClassName())
+            ->setMethods(['renderPartial'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $mock->expects($this->once())->method('renderPartial')->will($this->returnValue('test'));
-        $result = $this->callInaccessibleMethod($mock, 'renderPartialUncached', $renderingContext, 'dummy');
+        $result = $this->callInaccessibleMethod($mock, 'renderPartialUncached', $this->renderingContext, 'dummy');
         $this->assertEquals('test', $result);
     }
 

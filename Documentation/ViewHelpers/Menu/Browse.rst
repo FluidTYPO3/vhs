@@ -513,22 +513,6 @@ classCurrent
 :aspect:`Description`
    Optional class name to add to current link
 
-.. _menu.browse_classhassubpages:
-
-classHasSubpages
-----------------
-
-:aspect:`DataType`
-   string
-
-:aspect:`Default`
-   'sub'
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Optional class name to add to links which have subpages
-
 .. _menu.browse_substelementuid:
 
 substElementUid

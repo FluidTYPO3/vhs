@@ -9,9 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders a picture element with different images/sources for specific
@@ -48,13 +48,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'picture';
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('src', 'mixed', 'Path to the image or FileReference.', true);
@@ -68,7 +62,11 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('alt', 'string', 'Text for the alt attribute.', true);
         $this->registerArgument('title', 'string', 'Text for the title attribute.');
         $this->registerArgument('class', 'string', 'CSS class(es) to set.');
-        $this->registerArgument('loading', 'string', 'Native lazy-loading for images. Can be "lazy", "eager" or "auto"', false);
+        $this->registerArgument(
+            'loading',
+            'string',
+            'Native lazy-loading for images. Can be "lazy", "eager" or "auto"'
+        );
     }
 
     /**
@@ -80,36 +78,46 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
     {
         $src = $this->arguments['src'];
         $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
-        if (is_object($src) && $src instanceof FileReference) {
+        if ($src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsReference = true;
         }
 
-        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
-        $this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
+        $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
         $content = $this->renderChildren();
-        $this->renderingContext->getViewHelperVariableContainer()->remove(static::SCOPE, static::SCOPE_VARIABLE_SRC);
-        $this->renderingContext->getViewHelperVariableContainer()->remove(static::SCOPE, static::SCOPE_VARIABLE_ID);
+        $viewHelperVariableContainer->remove(static::SCOPE, static::SCOPE_VARIABLE_SRC);
+        $viewHelperVariableContainer->remove(static::SCOPE, static::SCOPE_VARIABLE_ID);
 
-        if (false === $this->renderingContext->getViewHelperVariableContainer()->exists(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
+        if (!$viewHelperVariableContainer->exists(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
             throw new Exception('Please add a source without a media query as a default.', 1438116616);
         }
-        $defaultSource = $this->renderingContext->getViewHelperVariableContainer()->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
+        $defaultSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
+
+        /** @var string $alt */
+        $alt = $this->arguments['alt'];
 
         $defaultImage = new TagBuilder('img');
-        $defaultImage->addAttribute('src', $defaultSource);
-        $defaultImage->addAttribute('alt', $this->arguments['alt']);
+        $defaultImage->addAttribute('src', is_scalar($defaultSource) ? (string) $defaultSource : '');
+        $defaultImage->addAttribute('alt', $alt);
 
-        if (false === empty($this->arguments['class'])) {
-            $defaultImage->addAttribute('class', $this->arguments['class']);
+        /** @var string|null $class */
+        $class = $this->arguments['class'];
+        if (!empty($class)) {
+            $defaultImage->addAttribute('class', $class);
         }
 
-        if (false === empty($this->arguments['title'])) {
-            $defaultImage->addAttribute('title', $this->arguments['title']);
+        /** @var string|null $title */
+        $title = $this->arguments['title'];
+        if (!empty($title)) {
+            $defaultImage->addAttribute('title', $title);
         }
 
-        if (in_array($this->arguments['loading'] ?? '', ['lazy', 'eager', 'auto'], true)) {
-            $defaultImage->addAttribute('loading', $this->arguments['loading']);
+        /** @var string|null $loading */
+        $loading = $this->arguments['loading'];
+        if (in_array($loading ?? '', ['lazy', 'eager', 'auto'], true)) {
+            $defaultImage->addAttribute('loading', $loading);
         }
 
         $content .= $defaultImage->render();

@@ -9,9 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -31,25 +31,19 @@ class SizeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('path', 'string', 'Path to the file to determine size for.');
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return integer
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $path = $renderChildrenClosure();
 
         if (null === $path) {
@@ -58,7 +52,7 @@ class SizeViewHelper extends AbstractViewHelper
 
         $file = GeneralUtility::getFileAbsFileName($path);
 
-        if (false === file_exists($file) || true === is_dir($file)) {
+        if (!file_exists($file) || is_dir($file)) {
             throw new Exception(
                 'Cannot determine size of "' . $file . '". File does not exist or is a directory.',
                 1356953963

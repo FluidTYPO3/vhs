@@ -24,16 +24,13 @@ use TYPO3Fluid\Fluid\Core\Variables\VariableProviderInterface;
  */
 trait TemplateVariableViewHelperTrait
 {
-
     /**
      * Default initialisation of arguments - will be used
      * if the implementing ViewHelper does not itself define
      * this method. The default behavior is to only register
      * the "as" argument.
-     *
-     * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerAsArgument();
     }
@@ -41,10 +38,8 @@ trait TemplateVariableViewHelperTrait
     /**
      * Registers the "as" argument for use with the
      * implementing ViewHelper.
-     *
-     * @return void
      */
-    protected function registerAsArgument()
+    protected function registerAsArgument(): void
     {
         $this->registerArgument(
             'as',
@@ -54,14 +49,13 @@ trait TemplateVariableViewHelperTrait
     }
 
     /**
-     * @param string $variable
-     *
+     * @param mixed $variable
      * @return mixed
      */
     protected function renderChildrenWithVariableOrReturnInput($variable = null)
     {
         $as = $this->arguments['as'];
-        if (true === empty($as)) {
+        if (empty($as)) {
             return $variable;
         } else {
             $variables = [$as => $variable];
@@ -72,18 +66,15 @@ trait TemplateVariableViewHelperTrait
 
     /**
      * @param mixed $variable
-     * @param string $as
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @param \Closure $renderChildrenClosure
      * @return mixed
      */
     protected static function renderChildrenWithVariableOrReturnInputStatic(
         $variable,
-        $as,
+        ?string $as,
         RenderingContextInterface $renderingContext,
         \Closure $renderChildrenClosure
     ) {
-        if (true === empty($as)) {
+        if (empty($as)) {
             return $variable;
         } else {
             $variables = [$as => $variable];
@@ -102,7 +93,6 @@ trait TemplateVariableViewHelperTrait
      * of each existing variable, restoring it after rendering.
      * Returns the output of the renderChildren() method on $viewHelper.
      *
-     * @param array $variables
      * @return mixed
      */
     protected function renderChildrenWithVariables(array $variables)
@@ -120,32 +110,26 @@ trait TemplateVariableViewHelperTrait
      * of each existing variable, restoring it after rendering.
      * Returns the output of the renderChildren() method on $viewHelper.
      *
-     * @param array $variables
-     * @param VariableProviderInterface $templateVariableContainer
-     * @param \Closure $renderChildrenClosure
      * @return mixed
      */
     protected static function renderChildrenWithVariablesStatic(
         array $variables,
-        $templateVariableContainer,
-        $renderChildrenClosure
+        VariableProviderInterface $templateVariableContainer,
+        \Closure $renderChildrenClosure
     ) {
-        $backups = static::backupVariables($variables, $templateVariableContainer);
+        $backups = self::backupVariables($variables, $templateVariableContainer);
         $content = $renderChildrenClosure();
-        static::restoreVariables($variables, $backups, $templateVariableContainer);
+        self::restoreVariables($variables, $backups, $templateVariableContainer);
         return $content;
     }
 
-    /**
-     * @param array $variables
-     * @param VariableProviderInterface $templateVariableContainer
-     * @return array
-     */
-    private static function backupVariables(array $variables, $templateVariableContainer)
-    {
+    private static function backupVariables(
+        array $variables,
+        VariableProviderInterface $templateVariableContainer
+    ): array {
         $backups = [];
         foreach ($variables as $variableName => $variableValue) {
-            if (true === $templateVariableContainer->exists($variableName)) {
+            if ($templateVariableContainer->exists($variableName)) {
                 $backups[$variableName] = $templateVariableContainer->get($variableName);
                 $templateVariableContainer->remove($variableName);
             }
@@ -154,18 +138,15 @@ trait TemplateVariableViewHelperTrait
         return $backups;
     }
 
-    /**
-     * @param array $variables
-     * @param array $backups
-     * @param VariableProviderInterface $templateVariableContainer
-     * @return void
-     */
-    private static function restoreVariables(array $variables, array $backups, $templateVariableContainer)
-    {
+    private static function restoreVariables(
+        array $variables,
+        array $backups,
+        VariableProviderInterface $templateVariableContainer
+    ): void {
         foreach ($variables as $variableName => $variableValue) {
             $templateVariableContainer->remove($variableName);
-            if (true === isset($backups[$variableName])) {
-                $templateVariableContainer->add($variableName, $variableValue);
+            if (isset($backups[$variableName])) {
+                $templateVariableContainer->add($variableName, $backups[$variableName]);
             }
         }
     }

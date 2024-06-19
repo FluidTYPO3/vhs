@@ -72,21 +72,13 @@ class UniqueViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'mixed', 'The input array/Traversable to process');
         $this->registerAsArgument();
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -94,11 +86,15 @@ class UniqueViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $array = static::arrayFromArrayOrTraversableOrCSVStatic(empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']);
+        /** @var string|null $as */
+        $as = $arguments['as'];
+        $array = static::arrayFromArrayOrTraversableOrCSVStatic(
+            empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject']
+        );
         $array = array_unique($array);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $array,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

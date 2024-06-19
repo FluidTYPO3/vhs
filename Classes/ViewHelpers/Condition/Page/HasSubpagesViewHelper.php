@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -27,28 +26,20 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
     /**
      * @var PageService
      */
-    static protected $pageService;
+    protected static $pageService;
 
-    /**
-     * @param PageService $pageService
-     * @return void
-     */
-    public static function setPageService(PageService $pageService)
+    public static function setPageService(PageService $pageService): void
     {
         static::$pageService = $pageService;
     }
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('pageUid', 'integer', 'Parent page to check');
         $this->registerArgument('includeHidden', 'boolean', 'DEPRECATED: Include hidden pages', false, false);
         $this->registerArgument('includeAccessProtected', 'boolean', 'Include access protected pages', false, false);
         $this->registerArgument('includeHiddenInMenu', 'boolean', 'Include pages hidden in menu', false, false);
-        $this->registerArgument('showHiddenInMenu', 'boolean', 'DEPRECATED: Use includeHiddenInMenu');
     }
 
     /**
@@ -57,22 +48,21 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        $pageUid = $arguments['pageUid'];
-        //TODO: remove fallback with removal of deprecated argument
-        if (null !== $arguments['showHiddenInMenu']) {
-            $includeHiddenInMenu = (boolean) $arguments['showHiddenInMenu'];
-        } else {
-            $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
+        if (!is_array($arguments)) {
+            return false;
         }
+        $pageUid = $arguments['pageUid'];
+        $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
         $includeAccessProtected = (boolean) $arguments['includeAccessProtected'];
 
-        if (null === $pageUid || true === empty($pageUid) || 0 === (integer) $pageUid) {
+        if (empty($pageUid) || 0 === (integer) $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
         if (static::$pageService === null) {
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            static::$pageService = $objectManager->get(PageService::class);
+            /** @var PageService $pageService */
+            $pageService = GeneralUtility::makeInstance(PageService::class);
+            static::$pageService = $pageService;
         }
 
         $menu = static::$pageService->getMenu($pageUid, [], $includeHiddenInMenu, false, $includeAccessProtected);

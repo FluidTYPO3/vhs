@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -16,6 +17,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -23,26 +25,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface
 {
-
     use TemplateVariableViewHelperTrait;
 
-    /**
-     * @var string
-     */
-    protected $table;
+    protected string $table = '';
+    protected string $field = '';
+    protected string $idField = 'uid';
 
     /**
-     * @var string
-     */
-    protected $field;
-
-    /**
-     * @var string
-     */
-    protected $idField = 'uid';
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
@@ -51,46 +41,30 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
      */
     protected $escapeOutput = false;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * Initialize arguments.
-     *
-     * @return void
-     * @api
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('table', 'string', 'The table to lookup records.', true);
         $this->registerArgument('field', 'string', 'The field of the table associated to resources.', true);
         $this->registerArgument(
             'record',
             'array',
-            'The actual record. Alternatively you can use the "uid" argument.',
-            false,
-            null
+            'The actual record. Alternatively you can use the "uid" argument.'
         );
         $this->registerArgument(
             'uid',
             'integer',
-            'The uid of the record. Alternatively you can use the "record" argument.',
-            false,
-            null
+            'The uid of the record. Alternatively you can use the "record" argument.'
         );
         $this->registerArgument(
             'as',
             'string',
             'If specified, a template variable with this name containing the requested data will be inserted ' .
-            'instead of returning it.',
-            false,
-            null
+            'instead of returning it.'
         );
     }
 
@@ -103,100 +77,97 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         return $identity;
     }
 
-    /**
-     * @param array $record
-     * @return array
-     */
-    public function getResources($record)
+    public function getResources(array $record): array
     {
         $field = $this->getField();
 
-        if (false === isset($record[$field])) {
-            ErrorUtility::throwViewHelperException('The "field" argument was not found on the selected record.', 1384612728);
+        if (!isset($record[$field])) {
+            ErrorUtility::throwViewHelperException(
+                'The "field" argument was not found on the selected record.',
+                1384612728
+            );
         }
 
-        if (true === empty($record[$field])) {
+        if (empty($record[$field])) {
             return [];
         }
 
         return GeneralUtility::trimExplode(',', $record[$field]);
     }
 
-    /**
-     * @return string
-     */
-    public function getTable()
+    public function getTable(): string
     {
-        $table = $this->arguments['table'];
+        /** @var string|null $table */
+        $table = $this->arguments['table'] ?? null;
         if (null === $table) {
             $table = $this->table;
         }
 
-        if (true === empty($table) || false === is_string($table)) {
-            ErrorUtility::throwViewHelperException('The "table" argument must be specified and must be a string.', 1384611336);
+        if (empty($table) || !is_string($table)) {
+            ErrorUtility::throwViewHelperException(
+                'The "table" argument must be specified and must be a string.',
+                1384611336
+            );
         }
 
         return $table;
     }
 
-    /**
-     * @return string
-     */
-    public function getField()
+    public function getField(): string
     {
-        $field = $this->arguments['field'];
+        /** @var string|null $field */
+        $field = $this->arguments['field'] ?? null;
         if (null === $field) {
             $field = $this->field;
         }
 
-        if (true === empty($field) || false === is_string($field)) {
-            ErrorUtility::throwViewHelperException('The "field" argument must be specified and must be a string.', 1384611355);
+        if (empty($field) || !is_string($field)) {
+            ErrorUtility::throwViewHelperException(
+                'The "field" argument must be specified and must be a string.',
+                1384611355
+            );
         }
 
         return $field;
     }
 
-    /**
-     * @param mixed $id
-     * @return array|null
-     */
-    public function getRecord($id)
+    public function getRecord(int $id): ?array
     {
         $table = $this->getTable();
         $idField = $this->idField;
 
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
 
-        if (class_exists('\\TYPO3\\CMS\\Frontend\\Aspect\\PreviewAspect')) {
-            //TYPO3 version >= 10
-            $context = GeneralUtility::makeInstance(Context::class);
-            $fePreview = ($context->hasAspect('frontend.preview')) ? $context->getPropertyFromAspect('frontend.preview', 'isPreview') : false;
-        } else {
-            $fePreview = (bool)(isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fePreview);
-        }
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        $fePreview = $context->hasAspect('frontend.preview')
+            && $context->getPropertyFromAspect('frontend.preview', 'isPreview');
+
         if ($fePreview) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
 
-        return $queryBuilder
+        $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq($idField, ':id')
-            )
-            ->execute()
-            ->fetch() ?: null;
+            );
+        $statement = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+        $result = DoctrineQueryProxy::fetchAssociative($statement);
+        return $result;
     }
 
-    /**
-     * @return array
-     */
-    public function getActiveRecord()
+    public function getActiveRecord(): array
     {
-        return $this->configurationManager->getContentObject()->data;
+        /** @var ContentObjectRenderer $contentObject */
+        $contentObject = $this->configurationManager->getContentObject();
+        return $contentObject->data;
     }
 
     /**
@@ -204,8 +175,10 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
      */
     public function render()
     {
-        $record = $this->arguments['record'];
-        $uid = $this->arguments['uid'];
+        /** @var array|null $record */
+        $record = $this->arguments['record'] ?? null;
+        /** @var int|null $uid */
+        $uid = $this->arguments['uid'] ?? null;
 
         if (null === $record) {
             if (null === $uid) {
@@ -216,13 +189,18 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         }
 
         if (null === $record) {
-            ErrorUtility::throwViewHelperException('No record was found. The "record" or "uid" argument must be specified.', 1384611413);
+            ErrorUtility::throwViewHelperException(
+                'No record was found. The "record" or "uid" argument must be specified.',
+                1384611413
+            );
         }
 
         // attempt to load resources. If any Exceptions happen, transform them to
         // ViewHelperExceptions which render as an inline text error message.
+        $content = null;
         try {
-            $resources = $this->getResources($record);
+            $resources = $this->getResources((array) $record);
+            $content = $this->renderChildrenWithVariableOrReturnInput($resources);
         } catch (\Exception $error) {
             // we are doing the pokemon-thing and catching the very top level
             // of Exception because the range of Exceptions that are possibly
@@ -231,6 +209,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             // we are forced to "catch them all" - but we also output them.
             ErrorUtility::throwViewHelperException($error->getMessage(), $error->getCode());
         }
-        return $this->renderChildrenWithVariableOrReturnInput($resources);
+        return $content;
     }
 }

@@ -11,9 +11,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 /**
  * Class TagViewHelperTest
  */
-class TagViewHelperTest extends AbstractViewHelperTest
+class TagViewHelperTest extends AbstractViewHelperTestCase
 {
-
     /**
      * @test
      * @dataProvider getRenderTagTestValues

@@ -31,19 +31,13 @@ class KeysViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'mixed', 'Input to work on - Array/Traversable/...');
         $this->registerAsArgument();
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -51,11 +45,17 @@ class KeysViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $as */
+        $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(
             array_keys(
-                static::arrayFromArrayOrTraversableOrCSVStatic(empty($arguments['as']) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'])
+                static::arrayFromArrayOrTraversableOrCSVStatic(
+                    empty($as)
+                        ? ($arguments['subject'] ?? $renderChildrenClosure())
+                        : $arguments['subject']
+                )
             ),
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

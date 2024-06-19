@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
@@ -65,23 +64,12 @@ class TyposcriptViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected static $configurationManager;
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('path', 'string', 'Path to TypoScript value or configuration array');
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -89,8 +77,9 @@ class TyposcriptViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string|null $path */
         $path = $renderChildrenClosure();
-        if (true === empty($path)) {
+        if (empty($path)) {
             return null;
         }
         $all = static::getConfigurationManager()->getConfiguration(
@@ -99,9 +88,9 @@ class TyposcriptViewHelper extends AbstractViewHelper
         $segments = explode('.', $path);
         $value = $all;
         foreach ($segments as $path) {
-            $value = (true === isset($value[$path . '.']) ? $value[$path . '.'] : $value[$path]);
+            $value = $value[$path . '.'] ?? $value[$path] ?? null;
         }
-        if (true === is_array($value)) {
+        if (is_array($value)) {
             $value = GeneralUtility::removeDotsFromTS($value);
         }
         return $value;
@@ -110,16 +99,12 @@ class TyposcriptViewHelper extends AbstractViewHelper
     /**
      * Returns instance of the configuration manager
      *
-     * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @return ConfigurationManagerInterface
      */
     protected static function getConfigurationManager()
     {
-        if (null !== static::$configurationManager) {
-            return static::$configurationManager;
-        }
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-        static::$configurationManager = $configurationManager;
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         return $configurationManager;
     }
 }

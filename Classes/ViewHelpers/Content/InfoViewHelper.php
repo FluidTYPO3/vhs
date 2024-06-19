@@ -9,20 +9,22 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ViewHelper to access data of the current content element record.
  */
 class InfoViewHelper extends AbstractViewHelper
 {
-
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -31,23 +33,16 @@ class InfoViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface An instance of the Configuration Manager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerAsArgument();
         $this->registerArgument(
@@ -71,37 +66,64 @@ class InfoViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $contentUid = (integer) $this->arguments['contentUid'];
+        /** @var int $contentUid */
+        $contentUid = $this->arguments['contentUid'];
+        $record = false;
+
         if (0 === $contentUid) {
+            /** @var ContentObjectRenderer $cObj */
             $cObj = $this->configurationManager->getContentObject();
-            $record = $cObj->data;
+            if ($cObj->getCurrentTable() !== 'tt_content') {
+                throw new Exception(
+                    'v:content.info must have contentUid argument outside tt_content context',
+                    1690035521
+                );
+            }
+            if (!empty($cObj->data)) {
+                $record = $cObj->data;
+            } else {
+                $tsfe = $GLOBALS['TSFE'] ?? null;
+                if (!$tsfe instanceof TypoScriptFrontendController) {
+                    throw new Exception(
+                        'v:content.info must have contentUid argument when no TypoScriptFrontendController exists',
+                        1690035521
+                    );
+                }
+                $recordReference = $tsfe->currentRecord;
+                $contentUid = (int) substr($recordReference, strpos($recordReference, ':') + 1);
+            }
         }
 
+        /** @var string $field */
         $field = $this->arguments['field'];
+        $selectFields = $field;
 
-        if (false === isset($record) && 0 !== $contentUid) {
-            if (null !== $field && true === isset($GLOBALS['TCA']['tt_content']['columns'][$field])) {
-                $selectFields = $field;
-            } else {
+        if (!$record && 0 !== $contentUid) {
+            if (!isset($GLOBALS['TCA']['tt_content']['columns'][$field])) {
                 $selectFields = '*';
             }
 
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
             $queryBuilder->createNamedParameter($contentUid, \PDO::PARAM_INT, ':uid');
 
-            $record = $queryBuilder
+            $queryBuilder
                 ->select($selectFields)
                 ->from('tt_content')
                 ->where(
                     $queryBuilder->expr()->eq('uid', ':uid')
-                )
-                ->execute()
-                ->fetch();
+                );
+            $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+            $record = DoctrineQueryProxy::fetchAssociative($result);
 
             // Add the page overlay
             if (class_exists(LanguageAspect::class)) {
-                $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+                /** @var Context $context */
+                $context = GeneralUtility::makeInstance(Context::class);
+                /** @var LanguageAspect $languageAspect */
+                $languageAspect = $context->getAspect('language');
+                $languageUid = $languageAspect->getId();
             } else {
                 $languageUid = $GLOBALS['TSFE']->sys_language_uid;
             }
@@ -116,7 +138,7 @@ class InfoViewHelper extends AbstractViewHelper
             }
         }
 
-        if (false === $record && false === isset($record)) {
+        if ($record === false) {
             throw new \Exception(
                 sprintf('Either record with uid %d or field %s do not exist.', $contentUid, $selectFields),
                 1358679983
@@ -127,7 +149,7 @@ class InfoViewHelper extends AbstractViewHelper
         $content = null;
         if (null === $field) {
             $content = $record;
-        } elseif (true === isset($record[$field])) {
+        } elseif (isset($record[$field])) {
             $content = $record[$field];
         }
 

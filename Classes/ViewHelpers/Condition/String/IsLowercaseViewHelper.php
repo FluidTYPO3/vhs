@@ -19,10 +19,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsLowercaseViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('string', 'string', 'string to check', true);
@@ -35,11 +32,14 @@ class IsLowercaseViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        if (true === $arguments['fullString']) {
+        if (!is_array($arguments)) {
+            return false;
+        }
+        if ($arguments['fullString']) {
             $result = ctype_lower($arguments['string']);
         } else {
             $result = ctype_lower(substr($arguments['string'], 0, 1));
         }
-        return true === $result;
+        return $result;
     }
 }

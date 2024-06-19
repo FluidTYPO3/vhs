@@ -33,12 +33,7 @@ class ExplodeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'String to be exploded by glue');
         $this->registerArgument(
@@ -61,9 +56,6 @@ class ExplodeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(
@@ -71,13 +63,21 @@ class ExplodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = !empty($arguments['as']) ? $arguments['content'] : ($arguments['content'] ?? $renderChildrenClosure());
+        /** @var string $content */
+        $content = $arguments['content'];
+        /** @var string|null $as */
+        $as = $arguments['as'];
+        if (empty($as)) {
+            $content = $content ?? $renderChildrenClosure();
+        }
+        /** @var string&non-empty-string $glue */
         $glue = $arguments['glue'];
-        $limit = isset($arguments['limit']) ? $arguments['limit'] : PHP_INT_MAX;
-        $output = explode($glue, $content, $limit);
+        /** @var int $limit */
+        $limit = $arguments['limit'] ?? PHP_INT_MAX;
+        $output = explode($glue, (string) $content, $limit);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
-            $arguments['as'],
+            $as,
             $renderingContext,
             $renderChildrenClosure
         );

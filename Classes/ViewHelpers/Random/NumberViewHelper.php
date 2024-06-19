@@ -28,10 +28,7 @@ class NumberViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'minimum',
@@ -64,9 +61,6 @@ class NumberViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return integer|float
      */
     public static function renderStatic(
@@ -74,18 +68,23 @@ class NumberViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var int $minimum */
         $minimum = $arguments['minimum'];
+        /** @var int $maximum */
         $maximum = $arguments['maximum'];
+        /** @var int $minimumDecimals */
         $minimumDecimals = $arguments['minimumDecimals'];
+        /** @var int $maximumDecimals */
         $maximumDecimals = $arguments['maximumDecimals'];
         $natural = random_int($minimum, $maximum);
         if (0 === (integer) $minimumDecimals && 0 === (integer) $maximumDecimals) {
             return $natural;
         }
+        /** @var array $decimals */
         $decimals = array_fill(0, random_int($minimumDecimals, $maximumDecimals), 0);
         $decimals = array_map(function () {
             return random_int(0, 9);
         }, $decimals);
-        return $natural . '.' . implode('', $decimals);
+        return (float) ($natural . '.' . implode('', $decimals));
     }
 }

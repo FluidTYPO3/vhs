@@ -8,7 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
@@ -30,12 +32,7 @@ class OrViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('content', 'mixed', 'Input to either use, if not empty');
         $this->registerArgument('alternative', 'mixed', 'Alternative if content is empty, can use LLL: shortcut');
@@ -44,13 +41,13 @@ class OrViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $content = $renderChildrenClosure() ?: static::getAlternativeValue($arguments, $renderingContext);
         return $content;
     }
@@ -60,7 +57,11 @@ class OrViewHelper extends AbstractViewHelper
      */
     protected static function getAlternativeValue(array $arguments, RenderingContextInterface $renderingContext)
     {
-        $alternative = $arguments['alternative'];
+        /** @var RenderingContext $renderingContext */
+        $alternative = $arguments['alternative'] ?? null;
+        if ($alternative === null) {
+            return null;
+        }
         $arguments = (array) $arguments['arguments'];
         if (0 === count($arguments)) {
             $arguments = null;
@@ -68,15 +69,16 @@ class OrViewHelper extends AbstractViewHelper
         if (0 === strpos($alternative, 'LLL:EXT:')) {
             $alternative = LocalizationUtility::translate($alternative, null, $arguments);
         } elseif (0 === strpos($alternative, 'LLL:')) {
-            $extensionName = $arguments['extensionName'];
+            $extensionName = $arguments['extensionName'] ?? null;
             if (null === $extensionName) {
-                $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+                $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
+                    ->getControllerExtensionName();
             }
             $translated = LocalizationUtility::translate(substr($alternative, 4), $extensionName ?: 'core', $arguments);
             if (null !== $translated) {
                 $alternative = $translated;
             }
         }
-        return null !== $arguments && false === empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
+        return null !== $arguments && !empty($alternative) ? vsprintf($alternative, $arguments) : $alternative;
     }
 }

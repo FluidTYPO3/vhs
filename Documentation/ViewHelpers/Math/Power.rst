@@ -28,6 +28,19 @@ a
 :aspect:`Description`
    First number for calculation
 
+.. _math.power_b:
+
+b
+-
+
+:aspect:`DataType`
+   mixed
+
+:aspect:`Required`
+   true
+:aspect:`Description`
+   Second number or Iterator/Traversable/Array for calculation
+
 .. _math.power_fail:
 
 fail
@@ -40,16 +53,3 @@ fail
    false
 :aspect:`Description`
    If TRUE, throws an Exception if argument "a" is not specified and no child content or inline argument is found. Usually okay to use a NULL value (as integer zero).
-
-.. _math.power_b:
-
-b
--
-
-:aspect:`DataType`
-   mixed
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Second number or Iterator/Traversable/Array for calculation

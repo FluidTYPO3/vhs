@@ -32,10 +32,7 @@ class CaseViewHelper extends AbstractViewHelper
     const CASE_LOWERCAMELCASE = 'lowerCamelCase';
     const CASE_UNDERSCORED = 'lowercase_underscored';
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('string', 'string', 'String to case format');
         $this->registerArgument('case', 'string', 'Case to convert to');
@@ -43,19 +40,17 @@ class CaseViewHelper extends AbstractViewHelper
 
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $string = $renderChildrenClosure();
         $case = $arguments['case'];
 
-        if ('BE' === TYPO3_MODE) {
-            $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
-        }
+        $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         switch ($case) {
             case static::CASE_LOWER:
@@ -91,9 +86,9 @@ class CaseViewHelper extends AbstractViewHelper
             default:
                 break;
         }
-        if ('BE' === TYPO3_MODE) {
-            FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
-        }
+
+        FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
+
         return $string;
     }
 }
