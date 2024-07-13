@@ -1,10 +1,11 @@
+:navigation-title: iterator.extract
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-extract:
 
-================
-iterator.extract
-================
+====================================================
+iterator.extract ViewHelper `<vhs:iterator.extract>`
+====================================================
 
 
 Iterator / Extract VieWHelper
@@ -91,6 +92,9 @@ one records. Always extracts the first value and then stops. Equivalent of chang
 ::
 
     {someRecords -> v:iterator.extract(key: 'uid', single: TRUE)}
+
+
+.. _fluidtypo3-vhs-iterator-extract_arguments:
 
 Arguments
 =========

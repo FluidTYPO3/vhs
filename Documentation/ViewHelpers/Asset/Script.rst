@@ -1,10 +1,11 @@
+:navigation-title: asset.script
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-asset-script:
 
-============
-asset.script
-============
+============================================
+asset.script ViewHelper `<vhs:asset.script>`
+============================================
 
 
 Basic Script ViewHelper
@@ -12,6 +13,9 @@ Basic Script ViewHelper
 
 Allows inserting a `<script>` Asset. Settings specify
 where to insert the Asset and how to treat it.
+
+
+.. _fluidtypo3-vhs-asset-script_arguments:
 
 Arguments
 =========

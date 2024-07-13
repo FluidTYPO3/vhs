@@ -1,10 +1,11 @@
+:navigation-title: math.median
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-median:
 
-===========
-math.median
-===========
+==========================================
+math.median ViewHelper `<vhs:math.median>`
+==========================================
 
 
 Math: Median
@@ -13,6 +14,9 @@ Gets the median value from an array of numbers. If there
 is an odd number of numbers the middle value is returned.
 If there is an even number of numbers an average of the
 two middle numbers is returned.
+
+
+.. _fluidtypo3-vhs-math-median_arguments:
 
 Arguments
 =========

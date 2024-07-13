@@ -1,15 +1,19 @@
+:navigation-title: math.power
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-power:
 
-==========
-math.power
-==========
+========================================
+math.power ViewHelper `<vhs:math.power>`
+========================================
 
 
 Math: Power
 
 Performs pow($a, $b) where $a is the base and $b is the exponent.
+
+
+.. _fluidtypo3-vhs-math-power_arguments:
 
 Arguments
 =========

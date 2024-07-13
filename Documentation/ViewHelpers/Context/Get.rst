@@ -1,10 +1,11 @@
+:navigation-title: context.get
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-context-get:
 
-===========
-context.get
-===========
+==========================================
+context.get ViewHelper `<vhs:context.get>`
+==========================================
 
 
 Context: Get
@@ -23,6 +24,9 @@ The context TYPO3 CMS runs in is specified through the environment variable TYPO
 It can be set by .htaccess or in the server configuration
 
 See: http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context
+
+
+.. _fluidtypo3-vhs-context-get_arguments:
 
 Arguments
 =========

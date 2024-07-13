@@ -1,10 +1,11 @@
+:navigation-title: condition.variable.isNull
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-variable-isnull:
 
-=========================
-condition.variable.isNull
-=========================
+======================================================================
+condition.variable.isNull ViewHelper `<vhs:condition.variable.isNull>`
+======================================================================
 
 
 Condition: Value is NULL
@@ -12,6 +13,9 @@ Condition: Value is NULL
 
 Condition ViewHelper which renders the `then` child if provided
 value is NULL.
+
+
+.. _fluidtypo3-vhs-condition-variable-isnull_arguments:
 
 Arguments
 =========

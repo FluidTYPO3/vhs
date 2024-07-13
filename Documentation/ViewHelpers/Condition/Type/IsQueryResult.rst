@@ -1,10 +1,11 @@
+:navigation-title: condition.type.isQueryResult
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isqueryresult:
 
-============================
-condition.type.isQueryResult
-============================
+============================================================================
+condition.type.isQueryResult ViewHelper `<vhs:condition.type.isQueryResult>`
+============================================================================
 
 
 Condition: Value is a query result
@@ -12,6 +13,9 @@ Condition: Value is a query result
 
 Condition ViewHelper which renders the `then` child if provided
 value is an extbase query result.
+
+
+.. _fluidtypo3-vhs-condition-type-isqueryresult_arguments:
 
 Arguments
 =========

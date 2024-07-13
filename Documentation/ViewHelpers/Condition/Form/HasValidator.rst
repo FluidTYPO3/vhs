@@ -1,10 +1,11 @@
+:navigation-title: condition.form.hasValidator
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-form-hasvalidator:
 
-===========================
-condition.form.hasValidator
-===========================
+==========================================================================
+condition.form.hasValidator ViewHelper `<vhs:condition.form.hasValidator>`
+==========================================================================
 
 
 Form: Field Has Validator?
@@ -12,6 +13,9 @@ Form: Field Has Validator?
 
 Takes a property (dotted path supported) and renders the
 then-child if the property at the given path has any
+
+
+.. _fluidtypo3-vhs-condition-form-hasvalidator_arguments:
 
 Arguments
 =========

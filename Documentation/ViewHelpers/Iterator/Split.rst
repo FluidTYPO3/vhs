@@ -1,14 +1,18 @@
+:navigation-title: iterator.split
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-split:
 
-==============
-iterator.split
-==============
+================================================
+iterator.split ViewHelper `<vhs:iterator.split>`
+================================================
 
 
 Converts a string to an array with $length number of bytes
 per new array element. Wrapper for PHP's `str_split`.
+
+
+.. _fluidtypo3-vhs-iterator-split_arguments:
 
 Arguments
 =========

@@ -1,10 +1,11 @@
+:navigation-title: condition.type.isFloat
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isfloat:
 
-======================
-condition.type.isFloat
-======================
+================================================================
+condition.type.isFloat ViewHelper `<vhs:condition.type.isFloat>`
+================================================================
 
 
 Condition: Type of value is float
@@ -12,6 +13,9 @@ Condition: Type of value is float
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is float.
+
+
+.. _fluidtypo3-vhs-condition-type-isfloat_arguments:
 
 Arguments
 =========

@@ -1,10 +1,11 @@
+:navigation-title: iterator.filter
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-filter:
 
-===============
-iterator.filter
-===============
+==================================================
+iterator.filter ViewHelper `<vhs:iterator.filter>`
+==================================================
 
 
 Iterator: Filter ViewHelper
@@ -16,6 +17,9 @@ If `propertyName` is set, the ViewHelper will try to extract this
 property from each member of the array.
 
 Iterators and ObjectStorage etc. are supported.
+
+
+.. _fluidtypo3-vhs-iterator-filter_arguments:
 
 Arguments
 =========

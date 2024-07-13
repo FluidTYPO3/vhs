@@ -1,15 +1,19 @@
+:navigation-title: format.placeholder.image
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-placeholder-image:
 
-========================
-format.placeholder.image
-========================
+====================================================================
+format.placeholder.image ViewHelper `<vhs:format.placeholder.image>`
+====================================================================
 
 
 Placeholder Image ViewHelper
 
 Inserts a placeholder image from http://placehold.it
+
+
+.. _fluidtypo3-vhs-format-placeholder-image_arguments:
 
 Arguments
 =========

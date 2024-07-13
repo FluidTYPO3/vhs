@@ -1,13 +1,17 @@
+:navigation-title: iterator.intersect
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-intersect:
 
-==================
-iterator.intersect
-==================
+========================================================
+iterator.intersect ViewHelper `<vhs:iterator.intersect>`
+========================================================
 
 
 Intersects arrays/Traversables $a and $b into an array.
+
+
+.. _fluidtypo3-vhs-iterator-intersect_arguments:
 
 Arguments
 =========

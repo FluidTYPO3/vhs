@@ -1,15 +1,19 @@
+:navigation-title: math.square
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-square:
 
-===========
-math.square
-===========
+==========================================
+math.square ViewHelper `<vhs:math.square>`
+==========================================
 
 
 Math: Square
 
 Performs $a ^ 2.
+
+
+.. _fluidtypo3-vhs-math-square_arguments:
 
 Arguments
 =========

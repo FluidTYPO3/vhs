@@ -1,10 +1,11 @@
+:navigation-title: resource.record.fal
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-resource-record-fal:
 
-===================
-resource.record.fal
-===================
+==========================================================
+resource.record.fal ViewHelper `<vhs:resource.record.fal>`
+==========================================================
 
 
 Resolve FAL relations and return file records.
@@ -32,6 +33,9 @@ Then use `<f:image>` to render it:
     </f:if>
 
 Use the `uid` attribute if you don't have a `record`.
+
+
+.. _fluidtypo3-vhs-resource-record-fal_arguments:
 
 Arguments
 =========
@@ -108,7 +112,7 @@ asObjects
 ---------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

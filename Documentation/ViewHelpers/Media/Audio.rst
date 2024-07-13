@@ -1,10 +1,11 @@
+:navigation-title: media.audio
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-audio:
 
-===========
-media.audio
-===========
+==========================================
+media.audio ViewHelper `<vhs:media.audio>`
+==========================================
 
 
 Renders HTML code to embed a HTML5 audio player. NOTICE: This is
@@ -16,6 +17,9 @@ case provide array keys 'src' and 'type'. Providing an array of
 sources (even for a single source) is preferred as you can set
 the correct mime type of the audio which is otherwise guessed
 from the filename's extension.
+
+
+.. _fluidtypo3-vhs-media-audio_arguments:
 
 Arguments
 =========

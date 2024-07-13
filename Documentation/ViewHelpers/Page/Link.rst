@@ -1,10 +1,11 @@
+:navigation-title: page.link
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-link:
 
-=========
-page.link
-=========
+======================================
+page.link ViewHelper `<vhs:page.link>`
+======================================
 
 
 Page: Link ViewHelper
@@ -21,6 +22,9 @@ if the requested page is not translated in the current language.
 
     Automatic linktext: <v:page.link pageUid="UID" />
     Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
+
+
+.. _fluidtypo3-vhs-page-link_arguments:
 
 Arguments
 =========

@@ -1,15 +1,19 @@
+:navigation-title: format.hide
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-hide:
 
-===========
-format.hide
-===========
+==========================================
+format.hide ViewHelper `<vhs:format.hide>`
+==========================================
 
 
 Hides output from browser, but still renders tag content
 which means any ViewHelper inside the tag content still
 gets processed.
+
+
+.. _fluidtypo3-vhs-format-hide_arguments:
 
 Arguments
 =========

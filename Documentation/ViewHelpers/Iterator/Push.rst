@@ -1,10 +1,11 @@
+:navigation-title: iterator.push
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-push:
 
-=============
-iterator.push
-=============
+==============================================
+iterator.push ViewHelper `<vhs:iterator.push>`
+==============================================
 
 
 Adds one variable to the end of the array and returns the result.
@@ -16,6 +17,9 @@ Example:
     <f:for each="{array -> v:iterator.push(add: additionalObject, key: 'newkey')}" as="combined">
     ...
     </f:for>
+
+
+.. _fluidtypo3-vhs-iterator-push_arguments:
 
 Arguments
 =========

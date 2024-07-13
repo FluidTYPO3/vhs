@@ -1,10 +1,11 @@
+:navigation-title: format.append
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-append:
 
-=============
-format.append
-=============
+==============================================
+format.append ViewHelper `<vhs:format.append>`
+==============================================
 
 
 Format: Append string content
@@ -35,6 +36,9 @@ Makes no sense used as tag based ViewHelper:
 In other words: use this only when you do not have the option of
 simply using {subject}{add}, i.e. in complex inline statements used
 as attribute values on other ViewHelpers (where tag usage is undesirable).
+
+
+.. _fluidtypo3-vhs-format-append_arguments:
 
 Arguments
 =========

@@ -1,10 +1,11 @@
+:navigation-title: render.cache
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-render-cache:
 
-============
-render.cache
-============
+============================================
+render.cache ViewHelper `<vhs:render.cache>`
+============================================
 
 
 Cache Rendering ViewHelper
@@ -38,6 +39,9 @@ Do not use on form elements, it will invalidate the checksum.
 Do not use around ViewHelpers which add header data or which
 interact with the PageRenderer or other "live" objects; this
 includes many of the VHS ViewHelpers!
+
+
+.. _fluidtypo3-vhs-render-cache_arguments:
 
 Arguments
 =========

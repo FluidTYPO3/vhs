@@ -1,10 +1,11 @@
+:navigation-title: media.video
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-video:
 
-===========
-media.video
-===========
+==========================================
+media.video ViewHelper `<vhs:media.video>`
+==========================================
 
 
 Renders HTML code to embed a HTML5 video player. NOTICE: This is
@@ -16,6 +17,9 @@ case provide array keys 'src' and 'type'. Providing an array of
 sources (even for a single source) is preferred as you can set
 the correct mime type of the video which is otherwise guessed
 from the filename's extension.
+
+
+.. _fluidtypo3-vhs-media-video_arguments:
 
 Arguments
 =========

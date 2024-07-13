@@ -1,10 +1,11 @@
+:navigation-title: once.session
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-once-session:
 
-============
-once.session
-============
+============================================
+once.session ViewHelper `<vhs:once.session>`
+============================================
 
 
 Once: Session
@@ -18,6 +19,9 @@ specific type of ViewHelper (session, cookie etc).
 In addition the ViewHelper is a ConditionViewHelper, which
 means you can utilize the f:then and f:else child nodes as
 well as the "then" and "else" arguments.
+
+
+.. _fluidtypo3-vhs-once-session_arguments:
 
 Arguments
 =========

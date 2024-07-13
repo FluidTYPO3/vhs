@@ -1,10 +1,11 @@
+:navigation-title: format.dateRange
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-daterange:
 
-================
-format.dateRange
-================
+====================================================
+format.dateRange ViewHelper `<vhs:format.dateRange>`
+====================================================
 
 
 Date range calculation/formatting ViewHelper
@@ -58,6 +59,9 @@ Which if "myDateDisplay" is a string such as "Deadline: %d week(s) and
     value return modes, are also nicely consumable by the "math" suite
     of ViewHelpers, for example `v:math.division` would be able to divide
     number of days by two, three etc. to further divide the date range.
+
+
+.. _fluidtypo3-vhs-format-daterange_arguments:
 
 Arguments
 =========

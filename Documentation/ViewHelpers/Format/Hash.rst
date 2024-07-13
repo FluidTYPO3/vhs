@@ -1,13 +1,17 @@
+:navigation-title: format.hash
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-hash:
 
-===========
-format.hash
-===========
+==========================================
+format.hash ViewHelper `<vhs:format.hash>`
+==========================================
 
 
 Hashes a string.
+
+
+.. _fluidtypo3-vhs-format-hash_arguments:
 
 Arguments
 =========

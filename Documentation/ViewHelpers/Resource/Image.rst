@@ -1,13 +1,17 @@
+:navigation-title: resource.image
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-resource-image:
 
-==============
-resource.image
-==============
+================================================
+resource.image ViewHelper `<vhs:resource.image>`
+================================================
 
 
 ViewHelper to output or assign a image from FAL.
+
+
+.. _fluidtypo3-vhs-resource-image_arguments:
 
 Arguments
 =========
@@ -204,7 +208,7 @@ graceful
 --------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

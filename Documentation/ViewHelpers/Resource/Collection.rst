@@ -1,10 +1,11 @@
+:navigation-title: resource.collection
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-resource-collection:
 
-===================
-resource.collection
-===================
+==========================================================
+resource.collection ViewHelper `<vhs:resource.collection>`
+==========================================================
 
 
 Collection ViewHelper
@@ -19,6 +20,9 @@ Example
 ::
 
     {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
+
+
+.. _fluidtypo3-vhs-resource-collection_arguments:
 
 Arguments
 =========

@@ -1,10 +1,11 @@
+:navigation-title: condition.context.isFrontend
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-context-isfrontend:
 
-============================
-condition.context.isFrontend
-============================
+============================================================================
+condition.context.isFrontend ViewHelper `<vhs:condition.context.isFrontend>`
+============================================================================
 
 
 Condition: Is context Frontend?
@@ -31,6 +32,9 @@ Examples
            Maybe BE, maybe CLI.
         </f:else>
     </v:condition.context.isFrontend>
+
+
+.. _fluidtypo3-vhs-condition-context-isfrontend_arguments:
 
 Arguments
 =========

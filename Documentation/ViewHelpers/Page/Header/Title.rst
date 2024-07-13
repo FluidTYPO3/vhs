@@ -1,10 +1,11 @@
+:navigation-title: page.header.title
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-header-title:
 
-=================
-page.header.title
-=================
+======================================================
+page.header.title ViewHelper `<vhs:page.header.title>`
+======================================================
 
 
 ViewHelper used to override page title
@@ -37,6 +38,9 @@ to detect unless you already know exactly where to look.
 Enforcing use of the core behavior is the only way to ensure
 that this ViewHelper can coexist with other extensions in
 a fully controllable way.
+
+
+.. _fluidtypo3-vhs-page-header-title_arguments:
 
 Arguments
 =========

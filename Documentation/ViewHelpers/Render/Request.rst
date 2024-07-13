@@ -1,10 +1,11 @@
+:navigation-title: render.request
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-render-request:
 
-==============
-render.request
-==============
+================================================
+render.request ViewHelper `<vhs:render.request>`
+================================================
 
 
 Render: Request
@@ -16,6 +17,9 @@ Controller and action with the desired arguments.
 Note: arguments must not be wrapped with the prefix used
 in GET/POST parameters but must be provided as if the
 arguments were sent directly to the Controller action.
+
+
+.. _fluidtypo3-vhs-render-request_arguments:
 
 Arguments
 =========

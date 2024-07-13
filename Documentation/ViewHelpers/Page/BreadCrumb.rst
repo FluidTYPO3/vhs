@@ -1,13 +1,17 @@
+:navigation-title: page.breadCrumb
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-breadcrumb:
 
-===============
-page.breadCrumb
-===============
+==================================================
+page.breadCrumb ViewHelper `<vhs:page.breadCrumb>`
+==================================================
 
 
 ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual.
+
+
+.. _fluidtypo3-vhs-page-breadcrumb_arguments:
 
 Arguments
 =========

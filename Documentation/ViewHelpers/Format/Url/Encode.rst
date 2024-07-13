@@ -1,13 +1,17 @@
+:navigation-title: format.url.encode
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-url-encode:
 
-=================
-format.url.encode
-=================
+======================================================
+format.url.encode ViewHelper `<vhs:format.url.encode>`
+======================================================
 
 
 Urlencodes the provided string
+
+
+.. _fluidtypo3-vhs-format-url-encode_arguments:
 
 Arguments
 =========

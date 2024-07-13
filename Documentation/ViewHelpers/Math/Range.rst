@@ -1,10 +1,11 @@
+:navigation-title: math.range
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-range:
 
-==========
-math.range
-==========
+========================================
+math.range ViewHelper `<vhs:math.range>`
+========================================
 
 
 Math: Range
@@ -12,6 +13,9 @@ Math: Range
 Gets the lowest and highest number from an array of numbers.
 Returns an array of [low, high]. For individual low/high
 values please use v:math.maximum and v:math.minimum.
+
+
+.. _fluidtypo3-vhs-math-range_arguments:
 
 Arguments
 =========

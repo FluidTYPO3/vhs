@@ -1,13 +1,17 @@
+:navigation-title: iterator.chunk
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-chunk:
 
-==============
-iterator.chunk
-==============
+================================================
+iterator.chunk ViewHelper `<vhs:iterator.chunk>`
+================================================
 
 
 Creates chunks from an input Array/Traversable with option to allocate items to a fixed number of chunks
+
+
+.. _fluidtypo3-vhs-iterator-chunk_arguments:
 
 Arguments
 =========

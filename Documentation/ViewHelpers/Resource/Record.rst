@@ -1,13 +1,17 @@
+:navigation-title: resource.record
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-resource-record:
 
-===============
-resource.record
-===============
+==================================================
+resource.record ViewHelper `<vhs:resource.record>`
+==================================================
 
 
 Generic FAL resource ViewHelper
+
+
+.. _fluidtypo3-vhs-resource-record_arguments:
 
 Arguments
 =========

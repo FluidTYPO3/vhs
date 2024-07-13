@@ -1,13 +1,17 @@
+:navigation-title: content.info
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-content-info:
 
-============
-content.info
-============
+============================================
+content.info ViewHelper `<vhs:content.info>`
+============================================
 
 
 ViewHelper to access data of the current content element record.
+
+
+.. _fluidtypo3-vhs-content-info_arguments:
 
 Arguments
 =========

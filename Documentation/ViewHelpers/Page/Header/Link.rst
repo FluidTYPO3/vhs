@@ -1,15 +1,19 @@
+:navigation-title: page.header.link
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-header-link:
 
-================
-page.header.link
-================
+====================================================
+page.header.link ViewHelper `<vhs:page.header.link>`
+====================================================
 
 
 ViewHelper used to render a link tag in the `<head>` section of the page.
 If you use the ViewHelper in a plugin, the plugin and its action have to
 be cached!
+
+
+.. _fluidtypo3-vhs-page-header-link_arguments:
 
 Arguments
 =========

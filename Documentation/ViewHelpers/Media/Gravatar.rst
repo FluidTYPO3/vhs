@@ -1,13 +1,17 @@
+:navigation-title: media.gravatar
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-gravatar:
 
-==============
-media.gravatar
-==============
+================================================
+media.gravatar ViewHelper `<vhs:media.gravatar>`
+================================================
 
 
 Renders Gravatar <img/> tag.
+
+
+.. _fluidtypo3-vhs-media-gravatar_arguments:
 
 Arguments
 =========

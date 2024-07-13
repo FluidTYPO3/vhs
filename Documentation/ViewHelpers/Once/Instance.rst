@@ -1,10 +1,11 @@
+:navigation-title: once.instance
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-once-instance:
 
-=============
-once.instance
-=============
+==============================================
+once.instance ViewHelper `<vhs:once.instance>`
+==============================================
 
 
 Once: Instance
@@ -21,6 +22,9 @@ specific type of ViewHelper (session, cookie etc).
 In addition the ViewHelper is a ConditionViewHelper, which
 means you can utilize the f:then and f:else child nodes as
 well as the "then" and "else" arguments.
+
+
+.. _fluidtypo3-vhs-once-instance_arguments:
 
 Arguments
 =========

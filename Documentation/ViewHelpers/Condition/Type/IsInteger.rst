@@ -1,10 +1,11 @@
+:navigation-title: condition.type.isInteger
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isinteger:
 
-========================
-condition.type.isInteger
-========================
+====================================================================
+condition.type.isInteger ViewHelper `<vhs:condition.type.isInteger>`
+====================================================================
 
 
 Condition: Type of value is integer
@@ -12,6 +13,9 @@ Condition: Type of value is integer
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is integer.
+
+
+.. _fluidtypo3-vhs-condition-type-isinteger_arguments:
 
 Arguments
 =========

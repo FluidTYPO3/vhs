@@ -1,10 +1,11 @@
+:navigation-title: format.replace
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-replace:
 
-==============
-format.replace
-==============
+================================================
+format.replace ViewHelper `<vhs:format.replace>`
+================================================
 
 
 Replaces $substring in $content with $replacement.
@@ -19,6 +20,9 @@ on every value in the input content array and the return
 value will be an array of equal size as the input content
 array but with all values search/replaced. All values in the
 input content array must be strings.
+
+
+.. _fluidtypo3-vhs-format-replace_arguments:
 
 Arguments
 =========
@@ -69,7 +73,7 @@ returnCount
 -----------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

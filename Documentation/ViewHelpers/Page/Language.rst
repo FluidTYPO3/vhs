@@ -1,13 +1,17 @@
+:navigation-title: page.language
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-language:
 
-=============
-page.language
-=============
+==============================================
+page.language ViewHelper `<vhs:page.language>`
+==============================================
 
 
 Returns the current language from languages depending on l18n settings.
+
+
+.. _fluidtypo3-vhs-page-language_arguments:
 
 Arguments
 =========

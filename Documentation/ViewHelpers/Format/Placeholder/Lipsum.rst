@@ -1,15 +1,19 @@
+:navigation-title: format.placeholder.lipsum
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-placeholder-lipsum:
 
-=========================
-format.placeholder.lipsum
-=========================
+======================================================================
+format.placeholder.lipsum ViewHelper `<vhs:format.placeholder.lipsum>`
+======================================================================
 
 
 Lipsum ViewHelper
 
 Renders Lorem Ipsum text according to provided arguments.
+
+
+.. _fluidtypo3-vhs-format-placeholder-lipsum_arguments:
 
 Arguments
 =========

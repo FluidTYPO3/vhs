@@ -1,10 +1,11 @@
+:navigation-title: tag
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-tag:
 
-===
-tag
-===
+==========================
+tag ViewHelper `<vhs:tag>`
+==========================
 
 
 Tag building ViewHelper
@@ -13,6 +14,9 @@ Tag building ViewHelper
 Creates one HTML tag of any type, with various properties
 like class and ID applied only if arguments are not empty,
 rather than apply them always - empty or not - if provided.
+
+
+.. _fluidtypo3-vhs-tag_arguments:
 
 Arguments
 =========

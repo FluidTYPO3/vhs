@@ -1,13 +1,17 @@
+:navigation-title: content.random.render
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-content-random-render:
 
-=====================
-content.random.render
-=====================
+==============================================================
+content.random.render ViewHelper `<vhs:content.random.render>`
+==============================================================
 
 
 ViewHelper for rendering a random content element in Fluid page templates.
+
+
+.. _fluidtypo3-vhs-content-random-render_arguments:
 
 Arguments
 =========

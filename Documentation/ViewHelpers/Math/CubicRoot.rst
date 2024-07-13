@@ -1,15 +1,19 @@
+:navigation-title: math.cubicRoot
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-cubicroot:
 
-==============
-math.cubicRoot
-==============
+================================================
+math.cubicRoot ViewHelper `<vhs:math.cubicRoot>`
+================================================
 
 
 Math: CubicRoot
 
 Performs pow($a, 1/3) - cubic or third root.
+
+
+.. _fluidtypo3-vhs-math-cubicroot_arguments:
 
 Arguments
 =========

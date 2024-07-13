@@ -1,10 +1,11 @@
+:navigation-title: variable.get
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-variable-get:
 
-============
-variable.get
-============
+============================================
+variable.get ViewHelper `<vhs:variable.get>`
+============================================
 
 
 Variable: Get
@@ -45,6 +46,9 @@ the Nth element - which is the default behavior.
     occurrences of QueryResult and ObjectStorage variables
     in templates is the very reason why `useRawKeys` by
     default is set to `FALSE`.
+
+
+.. _fluidtypo3-vhs-variable-get_arguments:
 
 Arguments
 =========

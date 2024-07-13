@@ -1,10 +1,11 @@
+:navigation-title: condition.type.isString
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-type-isstring:
 
-=======================
-condition.type.isString
-=======================
+==================================================================
+condition.type.isString ViewHelper `<vhs:condition.type.isString>`
+==================================================================
 
 
 Condition: Type of value is string
@@ -12,6 +13,9 @@ Condition: Type of value is string
 
 Condition ViewHelper which renders the `then` child if type of
 provided value is string.
+
+
+.. _fluidtypo3-vhs-condition-type-isstring_arguments:
 
 Arguments
 =========

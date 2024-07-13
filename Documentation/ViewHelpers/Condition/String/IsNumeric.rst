@@ -1,10 +1,11 @@
+:navigation-title: condition.string.isNumeric
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-string-isnumeric:
 
-==========================
-condition.string.isNumeric
-==========================
+========================================================================
+condition.string.isNumeric ViewHelper `<vhs:condition.string.isNumeric>`
+========================================================================
 
 
 Condition: Value is numeric
@@ -12,6 +13,9 @@ Condition: Value is numeric
 
 Condition ViewHelper which renders the `then` child if provided
 value is numeric.
+
+
+.. _fluidtypo3-vhs-condition-string-isnumeric_arguments:
 
 Arguments
 =========

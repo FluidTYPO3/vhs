@@ -1,10 +1,11 @@
+:navigation-title: condition.page.hasSubpages
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-page-hassubpages:
 
-==========================
-condition.page.hasSubpages
-==========================
+========================================================================
+condition.page.hasSubpages ViewHelper `<vhs:condition.page.hasSubpages>`
+========================================================================
 
 
 Condition: Page has subpages
@@ -15,6 +16,9 @@ current page or page with provided UID has subpages. By default
 disabled subpages are considered non existent which can be overridden
 by setting $includeHidden to TRUE. To include pages that are hidden
 in menus set $showHiddenInMenu to TRUE.
+
+
+.. _fluidtypo3-vhs-condition-page-hassubpages_arguments:
 
 Arguments
 =========

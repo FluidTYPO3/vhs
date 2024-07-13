@@ -1,10 +1,11 @@
+:navigation-title: media.image
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-image:
 
-===========
-media.image
-===========
+==========================================
+media.image ViewHelper `<vhs:media.image>`
+==========================================
 
 
 Renders an image tag for the given resource including all valid
@@ -31,6 +32,9 @@ Browser Support
 
 To have the widest Browser-Support you should consider using a polyfill like:
 http://scottjehl.github.io/picturefill
+
+
+.. _fluidtypo3-vhs-media-image_arguments:
 
 Arguments
 =========
@@ -295,7 +299,7 @@ graceful
 --------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

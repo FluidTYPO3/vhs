@@ -1,10 +1,11 @@
+:navigation-title: math.ceil
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-ceil:
 
-=========
-math.ceil
-=========
+======================================
+math.ceil ViewHelper `<vhs:math.ceil>`
+======================================
 
 
 Math: Ceil
@@ -12,6 +13,9 @@ Math: Ceil
 Ceiling on $a which can be either an array-accessible
 value (Iterator+ArrayAccess || array) or a raw numeric
 value.
+
+
+.. _fluidtypo3-vhs-math-ceil_arguments:
 
 Arguments
 =========

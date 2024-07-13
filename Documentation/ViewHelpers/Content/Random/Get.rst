@@ -1,13 +1,17 @@
+:navigation-title: content.random.get
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-content-random-get:
 
-==================
-content.random.get
-==================
+========================================================
+content.random.get ViewHelper `<vhs:content.random.get>`
+========================================================
 
 
 ViewHelper for fetching a random content element in Fluid page templates.
+
+
+.. _fluidtypo3-vhs-content-random-get_arguments:
 
 Arguments
 =========

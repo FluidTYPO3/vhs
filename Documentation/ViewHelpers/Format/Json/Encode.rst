@@ -1,10 +1,11 @@
+:navigation-title: format.json.encode
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-json-encode:
 
-==================
-format.json.encode
-==================
+========================================================
+format.json.encode ViewHelper `<vhs:format.json.encode>`
+========================================================
 
 
 JSON Encoding ViewHelper
@@ -33,6 +34,9 @@ using the output of such conversion in JavaScript please make sure you
 check the type before assuming that every member of a converted 1:n
 or m:n recursive relation is in fact a JavaScript. Not doing so may
 result in fatal JavaScript errors in the client browser.
+
+
+.. _fluidtypo3-vhs-format-json-encode_arguments:
 
 Arguments
 =========
@@ -112,7 +116,7 @@ pretty
 ------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

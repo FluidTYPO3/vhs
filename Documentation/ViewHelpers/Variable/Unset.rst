@@ -1,10 +1,11 @@
+:navigation-title: variable.unset
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-variable-unset:
 
-==============
-variable.unset
-==============
+================================================
+variable.unset ViewHelper `<vhs:variable.unset>`
+================================================
 
 
 Variable: Unset
@@ -32,6 +33,9 @@ to remove members of for example arrays:
 
     <!-- DOES NOT WORK! -->
     <v:variable.unset name="myObject.propertyName" />
+
+
+.. _fluidtypo3-vhs-variable-unset_arguments:
 
 Arguments
 =========

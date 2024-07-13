@@ -1,10 +1,11 @@
+:navigation-title: variable.set
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-variable-set:
 
-============
-variable.set
-============
+============================================
+variable.set ViewHelper `<vhs:variable.set>`
+============================================
 
 
 Variable: Set
@@ -50,6 +51,9 @@ value on that object.
 
 Using as `{value -> v:variable.set(name: 'myVar')}` makes `{myVar}` contain
 `{value}`.
+
+
+.. _fluidtypo3-vhs-variable-set_arguments:
 
 Arguments
 =========

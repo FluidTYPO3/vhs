@@ -1,10 +1,11 @@
+:navigation-title: once.standard
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-once-standard:
 
-=============
-once.standard
-=============
+==============================================
+once.standard ViewHelper `<vhs:once.standard>`
+==============================================
 
 
 Once: Standard
@@ -19,6 +20,9 @@ specific type of ViewHelper (session, cookie etc).
 In addition the ViewHelper is a ConditionViewHelper, which
 means you can utilize the f:then and f:else child nodes as
 well as the "then" and "else" arguments.
+
+
+.. _fluidtypo3-vhs-once-standard_arguments:
 
 Arguments
 =========
