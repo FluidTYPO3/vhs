@@ -86,8 +86,7 @@ class LViewHelper extends AbstractViewHelper
             $default = $id;
         }
         if (empty($extensionName)) {
-            $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
-                ->getControllerExtensionName();
+            $extensionName = RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
         }
         /** @var string|null $value */
         $value = LocalizationUtility::translate((string) $id, $extensionName, $translationArguments);

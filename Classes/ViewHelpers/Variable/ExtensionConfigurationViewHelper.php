@@ -14,6 +14,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -67,9 +68,17 @@ class ExtensionConfigurationViewHelper extends AbstractViewHelper
         $path = $arguments['path'];
 
         if (null === $extensionKey) {
-            $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
-                ->getControllerExtensionName();
-            $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+            $extensionName = RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
+            if ($extensionName) {
+                $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+            }
+        }
+
+        if (!$extensionKey) {
+            throw new Exception(
+                'Could not resolve extension key from request. Please pass argument "extensionKey".',
+                1721314563
+            );
         }
 
         if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey]) &&

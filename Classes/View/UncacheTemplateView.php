@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -35,12 +36,13 @@ class UncacheTemplateView extends TemplateView
             return '';
         }
 
-        if (class_exists(ExtbaseRequestParameters::class)) {
+        if (class_exists(RenderingContextFactory::class)) {
             $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
-
             if (method_exists($renderingContext, 'setRequest')) {
                 $renderingContext->setRequest(
-                    new Request($GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters))
+                    $parameters instanceof ExtbaseRequestParameters
+                        ? $GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters)
+                        : $GLOBALS['TYPO3_REQUEST']
                 );
             }
         } else {
