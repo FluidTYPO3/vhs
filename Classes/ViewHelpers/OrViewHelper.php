@@ -71,8 +71,7 @@ class OrViewHelper extends AbstractViewHelper
         } elseif (0 === strpos($alternative, 'LLL:')) {
             $extensionName = $arguments['extensionName'] ?? null;
             if (null === $extensionName) {
-                $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
-                    ->getControllerExtensionName();
+                $extensionName = RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
             }
             $translated = LocalizationUtility::translate(substr($alternative, 4), $extensionName ?: 'core', $arguments);
             if (null !== $translated) {

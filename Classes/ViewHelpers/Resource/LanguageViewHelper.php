@@ -85,13 +85,13 @@ class LanguageViewHelper extends AbstractViewHelper
      * Gets the extension name from defined argument or
      * tries to resolve it from the controller context if not set.
      */
-    protected function getResolvedExtensionName(): string
+    protected function getResolvedExtensionName(): ?string
     {
         /** @var string|null $extensionName */
         $extensionName = $this->arguments['extensionName'];
 
-        return $extensionName ?? RequestResolver::resolveRequestFromRenderingContext($this->renderingContext)
-            ->getControllerExtensionName();
+        return $extensionName
+            ?? RequestResolver::resolveControllerExtensionNameFromRenderingContext($this->renderingContext);
     }
 
     /**
@@ -104,8 +104,7 @@ class LanguageViewHelper extends AbstractViewHelper
         $path = $this->arguments['path'];
         $absoluteFileName = GeneralUtility::getFileAbsFileName($path);
 
-        if (!file_exists($absoluteFileName)) {
-            $extensionName = $this->getResolvedExtensionName();
+        if (!file_exists($absoluteFileName) && ($extensionName = $this->getResolvedExtensionName())) {
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
             $absoluteFileName = ExtensionManagementUtility::extPath($extensionKey, $path);
         }
