@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\TextNode;
 
 class ReplaceViewHelperTest extends AbstractViewHelperTestCase
 {
@@ -21,6 +22,16 @@ class ReplaceViewHelperTest extends AbstractViewHelperTestCase
             'replacement' => '',
         ];
         $test = $this->executeViewHelper($arguments);
+        $this->assertSame('bar', $test);
+    }
+
+    public function testCanReplaceWithChildContent(): void
+    {
+        $arguments = [
+            'substring' => 'foo',
+            'replacement' => '',
+        ];
+        $test = $this->executeViewHelper($arguments, [], new TextNode('foobar'));
         $this->assertSame('bar', $test);
     }
 
