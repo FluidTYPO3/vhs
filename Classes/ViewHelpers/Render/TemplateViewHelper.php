@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -84,7 +85,9 @@ class TemplateViewHelper extends AbstractRenderViewHelper
 
         $file = GeneralUtility::getFileAbsFileName((string) $file);
         $view = static::getPreparedView();
-        $view->setRequest($this->renderingContext->getRequest());
+        if (method_exists($view, 'setRequest')) {
+            $view->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
+        }
         $view->setTemplatePathAndFilename($file);
         if (is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
