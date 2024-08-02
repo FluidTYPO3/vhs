@@ -22,9 +22,9 @@ class TryViewHelperTest extends AbstractViewHelperTestCase
 
     public function testRenderStaticWithException(): void
     {
-        $arguments['__then'] = fn () => throw new \Exception('test');
-        $arguments['__else'] = fn () => 'else case';
-        $output = TryViewHelper::renderStatic($arguments, fn () => '', $this->renderingContext);
+        $arguments['__then'] = function() { throw new \Exception('test'); };
+        $arguments['__else'] = function() { return 'else case'; };
+        $output = TryViewHelper::renderStatic($arguments, function() { return ''; }, $this->renderingContext);
         self::assertSame('else case', $output);
     }
 
