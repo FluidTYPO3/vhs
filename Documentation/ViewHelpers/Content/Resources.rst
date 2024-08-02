@@ -1,15 +1,19 @@
+:navigation-title: content.resources
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-content-resources:
 
-=================
-content.resources
-=================
+======================================================
+content.resources ViewHelper `<vhs:content.resources>`
+======================================================
 
 
 Resources ViewHelper
 
 Loads FAL records associated with records of arbitrary types.
+
+
+.. _fluidtypo3-vhs-content-resources_arguments:
 
 Arguments
 =========

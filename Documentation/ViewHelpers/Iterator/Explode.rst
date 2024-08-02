@@ -1,15 +1,19 @@
+:navigation-title: iterator.explode
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-explode:
 
-================
-iterator.explode
-================
+====================================================
+iterator.explode ViewHelper `<vhs:iterator.explode>`
+====================================================
 
 
 Explode ViewHelper
 
 Explodes a string by $glue.
+
+
+.. _fluidtypo3-vhs-iterator-explode_arguments:
 
 Arguments
 =========

@@ -1,10 +1,11 @@
+:navigation-title: media.picture
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-picture:
 
-=============
-media.picture
-=============
+==============================================
+media.picture ViewHelper `<vhs:media.picture>`
+==============================================
 
 
 Renders a picture element with different images/sources for specific
@@ -27,6 +28,9 @@ Browser Support
 
 To have the widest Browser-Support you should consider using a polyfill like:
 http://scottjehl.github.io/picturefill
+
+
+.. _fluidtypo3-vhs-media-picture_arguments:
 
 Arguments
 =========

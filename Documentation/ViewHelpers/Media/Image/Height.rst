@@ -1,13 +1,17 @@
+:navigation-title: media.image.height
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-image-height:
 
-==================
-media.image.height
-==================
+========================================================
+media.image.height ViewHelper `<vhs:media.image.height>`
+========================================================
 
 
 Returns the height of the provided image file in pixels.
+
+
+.. _fluidtypo3-vhs-media-image-height_arguments:
 
 Arguments
 =========

@@ -118,18 +118,19 @@ class ContainsViewHelper extends AbstractConditionViewHelper
 
     /**
      * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage $haystack
-     * @param integer|DomainObjectInterface $needle
+     * @param string|int|DomainObjectInterface $needle
      * @return boolean|integer
      */
     protected static function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle)
     {
         $index = 0;
-        if ($needle instanceof AbstractDomainObject) {
-            $needle = $needle->getUid();
+        if ($needle instanceof DomainObjectInterface) {
+            $needle = (integer) $needle->getUid();
         }
+
         /** @var DomainObjectInterface $candidate */
         foreach ($haystack as $candidate) {
-            if ($candidate->getUid() === $needle) {
+            if ($candidate->getUid() === (integer) $needle) {
                 return $index;
             }
             $index++;
@@ -155,7 +156,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
             return $result;
         } else {
             foreach ($haystack as $index => $straw) {
-                if ((integer) $straw->getUid() === $needle->getUid()) {
+                if ((integer) $straw->getUid() === (integer) $needle->getUid()) {
                     return $index;
                 }
             }

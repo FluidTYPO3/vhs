@@ -1,13 +1,17 @@
+:navigation-title: media.image.mimetype
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-image-mimetype:
 
-====================
-media.image.mimetype
-====================
+============================================================
+media.image.mimetype ViewHelper `<vhs:media.image.mimetype>`
+============================================================
 
 
 Returns the mimetype of the provided image file.
+
+
+.. _fluidtypo3-vhs-media-image-mimetype_arguments:
 
 Arguments
 =========

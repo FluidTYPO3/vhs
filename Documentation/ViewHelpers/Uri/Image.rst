@@ -1,10 +1,11 @@
+:navigation-title: uri.image
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-uri-image:
 
-=========
-uri.image
-=========
+======================================
+uri.image ViewHelper `<vhs:uri.image>`
+======================================
 
 
 Uri: Image
@@ -12,6 +13,9 @@ Uri: Image
 
 Returns the relative or absolute URI for the image resource
 or it's derivate if differing dimesions are provided.
+
+
+.. _fluidtypo3-vhs-uri-image_arguments:
 
 Arguments
 =========
@@ -276,7 +280,7 @@ graceful
 --------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

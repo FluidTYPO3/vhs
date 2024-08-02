@@ -1,10 +1,11 @@
+:navigation-title: condition.context.isBackend
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-context-isbackend:
 
-===========================
-condition.context.isBackend
-===========================
+==========================================================================
+condition.context.isBackend ViewHelper `<vhs:condition.context.isBackend>`
+==========================================================================
 
 
 Condition: Is context Backend?
@@ -31,6 +32,9 @@ Examples
            Maybe FE, maybe CLI.
         </f:else>
     </v:condition.context.isBackend>
+
+
+.. _fluidtypo3-vhs-condition-context-isbackend_arguments:
 
 Arguments
 =========

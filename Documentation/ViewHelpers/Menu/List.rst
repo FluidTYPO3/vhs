@@ -1,10 +1,11 @@
+:navigation-title: menu.list
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-menu-list:
 
-=========
-menu.list
-=========
+======================================
+menu.list ViewHelper `<vhs:menu.list>`
+======================================
 
 
 Page: List Menu ViewHelper
@@ -17,6 +18,9 @@ defaults to `ul > li` with options to set both the
 parent and child tag names. When using manual rendering
 a range of support CSS classes are available along
 with each page record.
+
+
+.. _fluidtypo3-vhs-menu-list_arguments:
 
 Arguments
 =========

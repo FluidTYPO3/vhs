@@ -1,10 +1,11 @@
+:navigation-title: l
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-l:
 
-=
-l
-=
+======================
+l ViewHelper `<vhs:l>`
+======================
 
 
 L (localisation) ViewHelper
@@ -24,6 +25,9 @@ Examples
     <v:l>some.label</v:l>
     <v:l key="some.label" />
     <v:l arguments="{0: 'foo', 1: 'bar'}">some.label</v:l>
+
+
+.. _fluidtypo3-vhs-l_arguments:
 
 Arguments
 =========

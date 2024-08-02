@@ -1,13 +1,17 @@
+:navigation-title: content.get
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-content-get:
 
-===========
-content.get
-===========
+==========================================
+content.get ViewHelper `<vhs:content.get>`
+==========================================
 
 
 ViewHelper used to render get content elements in Fluid templates
+
+
+.. _fluidtypo3-vhs-content-get_arguments:
 
 Arguments
 =========

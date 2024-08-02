@@ -1,13 +1,17 @@
+:navigation-title: iterator.next
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-next:
 
-=============
-iterator.next
-=============
+==============================================
+iterator.next ViewHelper `<vhs:iterator.next>`
+==============================================
 
 
 Returns next element in array $haystack from position of $needle.
+
+
+.. _fluidtypo3-vhs-iterator-next_arguments:
 
 Arguments
 =========

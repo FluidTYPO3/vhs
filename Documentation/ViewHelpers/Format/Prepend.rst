@@ -1,10 +1,11 @@
+:navigation-title: format.prepend
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-prepend:
 
-==============
-format.prepend
-==============
+================================================
+format.prepend ViewHelper `<vhs:format.prepend>`
+================================================
 
 
 Format: Prepend string content
@@ -22,6 +23,9 @@ ViewHelper makes advanced chained inline processing possible:
         -> v:format.prepend(add: '@')
         -> v:format.date(format: 'Y-m-d H:i')}
     <!-- You don't have to break the syntax into lines; done here for display only -->
+
+
+.. _fluidtypo3-vhs-format-prepend_arguments:
 
 Arguments
 =========

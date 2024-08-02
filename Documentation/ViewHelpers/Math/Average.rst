@@ -1,10 +1,11 @@
+:navigation-title: math.average
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-average:
 
-============
-math.average
-============
+============================================
+math.average ViewHelper `<vhs:math.average>`
+============================================
 
 
 Math: Average
@@ -16,6 +17,9 @@ each member of $a is averaged agained $b. If $a is an array
 this array is averaged to one number. If $a is a number and
 $b is not provided or NULL, $a is gracefully returned as an
 average value of itself.
+
+
+.. _fluidtypo3-vhs-math-average_arguments:
 
 Arguments
 =========

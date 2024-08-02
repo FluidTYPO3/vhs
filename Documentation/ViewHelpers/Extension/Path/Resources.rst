@@ -1,16 +1,20 @@
+:navigation-title: extension.path.resources
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-extension-path-resources:
 
-========================
-extension.path.resources
-========================
+====================================================================
+extension.path.resources ViewHelper `<vhs:extension.path.resources>`
+====================================================================
 
 
 Path: Relative Extension Resource Path
 ======================================
 
 Site Relative path to Extension Resources/Public folder.
+
+
+.. _fluidtypo3-vhs-extension-path-resources_arguments:
 
 Arguments
 =========

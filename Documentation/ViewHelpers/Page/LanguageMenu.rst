@@ -1,14 +1,18 @@
+:navigation-title: page.languageMenu
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-languagemenu:
 
-=================
-page.languageMenu
-=================
+======================================================
+page.languageMenu ViewHelper `<vhs:page.languageMenu>`
+======================================================
 
 
 ViewHelper for rendering TYPO3 menus in Fluid
 Require the extension static_info_table.
+
+
+.. _fluidtypo3-vhs-page-languagemenu_arguments:
 
 Arguments
 =========

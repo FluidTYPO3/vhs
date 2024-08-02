@@ -100,7 +100,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
             }
             $content = $error->getMessage() . ' (' . $error->getCode() . ')';
         }
-        return $content;
+        return (string) $content;
     }
 
     protected static function getPreparedView(): StandaloneView

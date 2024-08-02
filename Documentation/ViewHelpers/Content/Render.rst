@@ -1,10 +1,11 @@
+:navigation-title: content.render
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-content-render:
 
-==============
-content.render
-==============
+================================================
+content.render ViewHelper `<vhs:content.render>`
+================================================
 
 
 ViewHelper used to render content elements in Fluid templates.
@@ -19,6 +20,9 @@ It can be rendered as follows:
 ::
 
     <v:content.render contentUids="{0: settings.element.uid}"/>
+
+
+.. _fluidtypo3-vhs-content-render_arguments:
 
 Arguments
 =========

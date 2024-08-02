@@ -365,16 +365,17 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
      */
     public function testAssertAdminLoggedIn(?array $currentUser, bool $expected): void
     {
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '>=')) {
+            $this->markTestSkipped('Aspects implementation is tested by the core');
+        }
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->setMethods(['getCurrentBackendUser'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '<')) {
-            $instance->expects($this->atLeastOnce())->method('getCurrentBackendUser')->willReturn($currentUser);
-            $result = $instance->assertAdminLoggedIn();
-            $this->assertEquals($expected, $result);
-        }
-        // no test for TYPO3 11.5 and above, as the aspects implementation is tested by the core
+
+        $instance->expects($this->atLeastOnce())->method('getCurrentBackendUser')->willReturn($currentUser);
+        $result = $instance->assertAdminLoggedIn();
+        $this->assertEquals($expected, $result);
     }
 
     public function getAssertAdminLoggedInTestValues(): array

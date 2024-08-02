@@ -1,13 +1,17 @@
+:navigation-title: iterator.previous
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-previous:
 
-=================
-iterator.previous
-=================
+======================================================
+iterator.previous ViewHelper `<vhs:iterator.previous>`
+======================================================
 
 
 Returns previous element in array $haystack from position of $needle.
+
+
+.. _fluidtypo3-vhs-iterator-previous_arguments:
 
 Arguments
 =========

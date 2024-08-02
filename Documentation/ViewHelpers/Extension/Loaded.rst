@@ -1,10 +1,11 @@
+:navigation-title: extension.loaded
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-extension-loaded:
 
-================
-extension.loaded
-================
+====================================================
+extension.loaded ViewHelper `<vhs:extension.loaded>`
+====================================================
 
 
 Extension: Loaded (Condition) ViewHelper
@@ -24,6 +25,9 @@ Example:
     <v:extension.loaded extensionName="news">
         ...
     </v:extension.loaded>
+
+
+.. _fluidtypo3-vhs-extension-loaded_arguments:
 
 Arguments
 =========

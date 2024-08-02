@@ -1,10 +1,11 @@
+:navigation-title: extension.icon
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-extension-icon:
 
-==============
-extension.icon
-==============
+================================================
+extension.icon ViewHelper `<vhs:extension.icon>`
+================================================
 
 
 Extension: Icon ViewHelper
@@ -12,6 +13,9 @@ Extension: Icon ViewHelper
 
 Outputs the icon of the extension key. Supports both
 extension key and extension name arguments.
+
+
+.. _fluidtypo3-vhs-extension-icon_arguments:
 
 Arguments
 =========

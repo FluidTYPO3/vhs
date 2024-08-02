@@ -1,10 +1,11 @@
+:navigation-title: random.string
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-random-string:
 
-=============
-random.string
-=============
+==============================================
+random.string ViewHelper `<vhs:random.string>`
+==============================================
 
 
 Random: String Generator
@@ -13,6 +14,9 @@ Random: String Generator
 Use either `minimumLength` / `maximumLength` or just `length`.
 
 Specify the characters which can be randomized using `characters`.
+
+
+.. _fluidtypo3-vhs-random-string_arguments:
 
 Arguments
 =========

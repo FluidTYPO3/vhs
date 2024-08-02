@@ -1,15 +1,19 @@
+:navigation-title: page.info
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-info:
 
-=========
-page.info
-=========
+======================================
+page.info ViewHelper `<vhs:page.info>`
+======================================
 
 
 ViewHelper to access data of the current page record.
 
 Does not work in the TYPO3 backend.
+
+
+.. _fluidtypo3-vhs-page-info_arguments:
 
 Arguments
 =========

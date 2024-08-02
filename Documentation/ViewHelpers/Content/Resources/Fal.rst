@@ -1,10 +1,11 @@
+:navigation-title: content.resources.fal
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-content-resources-fal:
 
-=====================
-content.resources.fal
-=====================
+==============================================================
+content.resources.fal ViewHelper `<vhs:content.resources.fal>`
+==============================================================
 
 
 Content FAL relations ViewHelper
@@ -36,6 +37,9 @@ you have to pass the `record` attribute:
 ::
 
     {v:content.resources.fal(field: 'settings.image', record: record)}
+
+
+.. _fluidtypo3-vhs-content-resources-fal_arguments:
 
 Arguments
 =========
@@ -118,7 +122,7 @@ asObjects
 ---------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

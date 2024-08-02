@@ -1,10 +1,11 @@
+:navigation-title: menu.sub
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-menu-sub:
 
-========
-menu.sub
-========
+====================================
+menu.sub ViewHelper `<vhs:menu.sub>`
+====================================
 
 
 Page: Auto Sub Menu ViewHelper
@@ -18,6 +19,9 @@ Used in custom menu rendering to indicate where a submenu is
 to be rendered; accepts only a single argument called `pageUid`
 which defines the new starting page UID that is used in the
 recycled parent menu instance.
+
+
+.. _fluidtypo3-vhs-menu-sub_arguments:
 
 Arguments
 =========

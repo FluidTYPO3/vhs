@@ -1,16 +1,20 @@
+:navigation-title: page.header.meta
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-header-meta:
 
-================
-page.header.meta
-================
+====================================================
+page.header.meta ViewHelper `<vhs:page.header.meta>`
+====================================================
 
 
 ViewHelper used to render a meta tag
 
 If you use the ViewHelper in a plugin it has to be USER
 not USER_INT, what means it has to be cached!
+
+
+.. _fluidtypo3-vhs-page-header-meta_arguments:
 
 Arguments
 =========

@@ -1,10 +1,11 @@
+:navigation-title: asset.style
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-asset-style:
 
-===========
-asset.style
-===========
+==========================================
+asset.style ViewHelper `<vhs:asset.style>`
+==========================================
 
 
 Basic Style ViewHelper
@@ -12,6 +13,9 @@ Basic Style ViewHelper
 
 Allows inserting a `<link>` or `<style>` Asset. Settings
 specify where to insert the Asset and how to treat it.
+
+
+.. _fluidtypo3-vhs-asset-style_arguments:
 
 Arguments
 =========

@@ -1,13 +1,17 @@
+:navigation-title: iterator.random
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-random:
 
-===============
-iterator.random
-===============
+==================================================
+iterator.random ViewHelper `<vhs:iterator.random>`
+==================================================
 
 
 Returns random element from array.
+
+
+.. _fluidtypo3-vhs-iterator-random_arguments:
 
 Arguments
 =========

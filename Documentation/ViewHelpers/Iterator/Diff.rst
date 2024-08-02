@@ -1,13 +1,17 @@
+:navigation-title: iterator.diff
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-diff:
 
-=============
-iterator.diff
-=============
+==============================================
+iterator.diff ViewHelper `<vhs:iterator.diff>`
+==============================================
 
 
 Computes the difference of arrays.
+
+
+.. _fluidtypo3-vhs-iterator-diff_arguments:
 
 Arguments
 =========

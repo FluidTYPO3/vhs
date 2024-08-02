@@ -1,10 +1,11 @@
+:navigation-title: form.fieldName
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-form-fieldname:
 
-==============
-form.fieldName
-==============
+================================================
+form.fieldName ViewHelper `<vhs:form.fieldName>`
+================================================
 
 
 Form Field Name View Helper
@@ -12,6 +13,9 @@ Form Field Name View Helper
 This viewhelper returns the properly prefixed name of the given
 form field and generates the corresponding HMAC to allow posting
 of dynamically added fields.
+
+
+.. _fluidtypo3-vhs-form-fieldname_arguments:
 
 Arguments
 =========

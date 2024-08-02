@@ -1,13 +1,17 @@
+:navigation-title: media.exists
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-exists:
 
-============
-media.exists
-============
+============================================
+media.exists ViewHelper `<vhs:media.exists>`
+============================================
 
 
 File/Directory Exists Condition ViewHelper.
+
+
+.. _fluidtypo3-vhs-media-exists_arguments:
 
 Arguments
 =========

@@ -153,7 +153,7 @@ class AssetService implements SingletonInterface
             if ($asset instanceof AssetInterface) {
                 $variables = $asset->getVariables();
             } else {
-                $variables = $asset['variables'] ?? [];
+                $variables = (array) ($asset['variables'] ?? []);
             }
 
             if (0 < count($variables)) {

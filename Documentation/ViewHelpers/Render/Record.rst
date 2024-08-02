@@ -1,16 +1,20 @@
+:navigation-title: render.record
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-render-record:
 
-=============
-render.record
-=============
+==============================================
+render.record ViewHelper `<vhs:render.record>`
+==============================================
 
 
 ViewHelper used to render raw content records typically fetched
 with `<v:content.get(column: '0', render: FALSE) />`.
 
 If you simply want to render a content element, try `<v:content.render>`.
+
+
+.. _fluidtypo3-vhs-render-record_arguments:
 
 Arguments
 =========

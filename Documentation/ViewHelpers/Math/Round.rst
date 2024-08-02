@@ -1,10 +1,11 @@
+:navigation-title: math.round
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-round:
 
-==========
-math.round
-==========
+========================================
+math.round ViewHelper `<vhs:math.round>`
+========================================
 
 
 Math: Round
@@ -12,6 +13,9 @@ Math: Round
 Rounds off $a which can be either an array-accessible
 value (Iterator+ArrayAccess || array) or a raw numeric
 value.
+
+
+.. _fluidtypo3-vhs-math-round_arguments:
 
 Arguments
 =========

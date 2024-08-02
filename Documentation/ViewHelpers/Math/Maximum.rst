@@ -1,16 +1,20 @@
+:navigation-title: math.maximum
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-maximum:
 
-============
-math.maximum
-============
+============================================
+math.maximum ViewHelper `<vhs:math.maximum>`
+============================================
 
 
 Math: Maximum
 
 Gets the highest number in array $a or the highest
 number of numbers $a and $b.
+
+
+.. _fluidtypo3-vhs-math-maximum_arguments:
 
 Arguments
 =========

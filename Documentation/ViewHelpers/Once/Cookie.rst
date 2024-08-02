@@ -1,10 +1,11 @@
+:navigation-title: once.cookie
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-once-cookie:
 
-===========
-once.cookie
-===========
+==========================================
+once.cookie ViewHelper `<vhs:once.cookie>`
+==========================================
 
 
 Once: Cookie
@@ -20,6 +21,9 @@ specific type of ViewHelper (session, cookie etc).
 In addition the ViewHelper is a ConditionViewHelper, which
 means you can utilize the f:then and f:else child nodes as
 well as the "then" and "else" arguments.
+
+
+.. _fluidtypo3-vhs-once-cookie_arguments:
 
 Arguments
 =========

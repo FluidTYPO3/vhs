@@ -5,6 +5,7 @@
 [![Total Downloads](https://poser.pugx.org/fluidtypo3/vhs/d/total?style=flat-square)](https://packagist.org/packages/fluidtypo3/vhs)
 [![Monthly Downloads](https://poser.pugx.org/fluidtypo3/vhs/d/monthly?style=flat-square)](https://packagist.org/packages/fluidtypo3/vhs)
 [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/vhs/development.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/vhs)
+[![Performance profiling sponsored by Blackfire](https://img.shields.io/badge/performance_profiling_sponsored_by-blackfire-red?style=flat-square)](https://blackfire.io/)
 
 <img src="https://fluidtypo3.org/logo.svgz" width="100%" />
 

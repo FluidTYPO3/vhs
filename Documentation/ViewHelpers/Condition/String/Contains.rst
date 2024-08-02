@@ -1,10 +1,11 @@
+:navigation-title: condition.string.contains
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-string-contains:
 
-=========================
-condition.string.contains
-=========================
+======================================================================
+condition.string.contains ViewHelper `<vhs:condition.string.contains>`
+======================================================================
 
 
 Condition: String contains substring
@@ -12,6 +13,9 @@ Condition: String contains substring
 
 Condition ViewHelper which renders the `then` child if provided
 string $haystack contains provided string $needle.
+
+
+.. _fluidtypo3-vhs-condition-string-contains_arguments:
 
 Arguments
 =========

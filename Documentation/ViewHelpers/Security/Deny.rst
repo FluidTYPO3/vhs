@@ -1,10 +1,11 @@
+:navigation-title: security.deny
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-security-deny:
 
-=============
-security.deny
-=============
+==============================================
+security.deny ViewHelper `<vhs:security.deny>`
+==============================================
 
 
 Security: Deny
@@ -15,6 +16,9 @@ The ViewHelper is a condition based ViewHelper which means it
 supports the `f:then` and `f:else` child nodes.
 
 Is the mirror opposite of `v:security.allow`.
+
+
+.. _fluidtypo3-vhs-security-deny_arguments:
 
 Arguments
 =========

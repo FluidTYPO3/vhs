@@ -1,10 +1,11 @@
+:navigation-title: math.product
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-product:
 
-============
-math.product
-============
+============================================
+math.product ViewHelper `<vhs:math.product>`
+============================================
 
 
 Math: Product (multiplication)
@@ -16,6 +17,9 @@ If $a is an array and $b is not provided then array_product is
 used to return a single numeric value. If both $a and $b are
 arrays, each member of $a is multiplied against the corresponding
 member in $b compared using index.
+
+
+.. _fluidtypo3-vhs-math-product_arguments:
 
 Arguments
 =========

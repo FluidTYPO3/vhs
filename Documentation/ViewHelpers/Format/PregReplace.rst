@@ -1,16 +1,20 @@
+:navigation-title: format.pregReplace
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-pregreplace:
 
-==================
-format.pregReplace
-==================
+========================================================
+format.pregReplace ViewHelper `<vhs:format.pregReplace>`
+========================================================
 
 
 PregReplace regular expression ViewHelper
 =========================================
 
 Implementation of `preg_replace` for Fluid.
+
+
+.. _fluidtypo3-vhs-format-pregreplace_arguments:
 
 Arguments
 =========

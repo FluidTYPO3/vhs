@@ -1,14 +1,18 @@
+:navigation-title: iterator.indexOf
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-indexof:
 
-================
-iterator.indexOf
-================
+====================================================
+iterator.indexOf ViewHelper `<vhs:iterator.indexOf>`
+====================================================
 
 
 Searches $haystack for index of $needle, returns -1 if $needle
 is not in $haystack.
+
+
+.. _fluidtypo3-vhs-iterator-indexof_arguments:
 
 Arguments
 =========

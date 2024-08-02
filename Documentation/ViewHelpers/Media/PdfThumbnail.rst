@@ -1,16 +1,20 @@
+:navigation-title: media.pdfThumbnail
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-pdfthumbnail:
 
-==================
-media.pdfThumbnail
-==================
+========================================================
+media.pdfThumbnail ViewHelper `<vhs:media.pdfThumbnail>`
+========================================================
 
 
 Converts the provided PDF file into a PNG thumbnail and renders
 the according image tag using Fluid's standard image ViewHelper
 thus implementing its arguments. For PDF documents with multiple
 pages the first page is rendered by default unless specified.
+
+
+.. _fluidtypo3-vhs-media-pdfthumbnail_arguments:
 
 Arguments
 =========
@@ -275,7 +279,7 @@ graceful
 --------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

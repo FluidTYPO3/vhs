@@ -1,10 +1,11 @@
+:navigation-title: iterator.sort
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-sort:
 
-=============
-iterator.sort
-=============
+==============================================
+iterator.sort ViewHelper `<vhs:iterator.sort>`
+==============================================
 
 
 Sorts an instance of ObjectStorage, an Iterator implementation,
@@ -17,6 +18,9 @@ Can be used inline, i.e.:
     <f:for each="{dataset -> v:iterator.sort(sortBy: 'name')}" as="item">
         // iterating data which is ONLY sorted while rendering this particular loop
     </f:for>
+
+
+.. _fluidtypo3-vhs-iterator-sort_arguments:
 
 Arguments
 =========

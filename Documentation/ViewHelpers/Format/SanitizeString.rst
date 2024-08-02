@@ -1,10 +1,11 @@
+:navigation-title: format.sanitizeString
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-format-sanitizestring:
 
-=====================
-format.sanitizeString
-=====================
+==============================================================
+format.sanitizeString ViewHelper `<vhs:format.sanitizeString>`
+==============================================================
 
 
 URL text segment sanitizer. Sanitizes the content into a
@@ -32,6 +33,9 @@ item being referenced). The sanitized urls are also ideal
 to use for AJAX based detail views - and in almot all cases
 the sanitized string will be 100% identical to the one used
 by Realurl when translating using table lookups.
+
+
+.. _fluidtypo3-vhs-format-sanitizestring_arguments:
 
 Arguments
 =========

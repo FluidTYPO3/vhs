@@ -45,8 +45,7 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
         if (isset($arguments['extensionName']) && !empty($arguments['extensionName'])) {
             return $arguments['extensionName'];
         }
-        $extensionName = RequestResolver::resolveRequestFromRenderingContext($renderingContext)
-            ->getControllerExtensionName();
+        $extensionName = RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
         if (empty($extensionName)) {
             throw new \RuntimeException(
                 'Unable to read extension name from ControllerContext and value not manually specified',

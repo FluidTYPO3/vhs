@@ -1,16 +1,20 @@
+:navigation-title: render.uncache
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-render-uncache:
 
-==============
-render.uncache
-==============
+================================================
+render.uncache ViewHelper `<vhs:render.uncache>`
+================================================
 
 
 Uncaches partials. Use like ``f:render``.
 The partial will then be rendered each time.
 Please be aware that this will impact render time.
 Arguments must be serializable and will be cached.
+
+
+.. _fluidtypo3-vhs-render-uncache_arguments:
 
 Arguments
 =========
@@ -61,7 +65,7 @@ persistPartialPaths
 -------------------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Default`
    true

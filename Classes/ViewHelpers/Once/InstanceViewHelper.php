@@ -34,13 +34,11 @@ class InstanceViewHelper extends AbstractOnceViewHelper
             return $arguments['identifier'];
         }
 
-        $request = RequestResolver::resolveRequestFromRenderingContext(static::$currentRenderingContext);
-
         $identifier = implode('_', [
-            $request->getControllerActionName(),
-            $request->getControllerName(),
-            $request->getPluginName(),
-            $request->getControllerExtensionName()
+            RequestResolver::resolveControllerActionNameFromRenderingContext(static::$currentRenderingContext),
+            RequestResolver::resolveControllerNameFromRenderingContext(static::$currentRenderingContext),
+            RequestResolver::resolvePluginNameFromRenderingContext(static::$currentRenderingContext),
+            RequestResolver::resolveControllerExtensionNameFromRenderingContext(static::$currentRenderingContext),
         ]);
         return $identifier;
     }

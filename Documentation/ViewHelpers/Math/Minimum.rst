@@ -1,16 +1,20 @@
+:navigation-title: math.minimum
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-math-minimum:
 
-============
-math.minimum
-============
+============================================
+math.minimum ViewHelper `<vhs:math.minimum>`
+============================================
 
 
 Math: Minimum
 
 Gets the lowest number in array $a or the lowest
 number of numbers $a and $b.
+
+
+.. _fluidtypo3-vhs-math-minimum_arguments:
 
 Arguments
 =========

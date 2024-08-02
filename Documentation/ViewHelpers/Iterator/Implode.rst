@@ -1,15 +1,19 @@
+:navigation-title: iterator.implode
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-iterator-implode:
 
-================
-iterator.implode
-================
+====================================================
+iterator.implode ViewHelper `<vhs:iterator.implode>`
+====================================================
 
 
 Implode ViewHelper
 
 Implodes an array or array-convertible object by $glue.
+
+
+.. _fluidtypo3-vhs-iterator-implode_arguments:
 
 Arguments
 =========

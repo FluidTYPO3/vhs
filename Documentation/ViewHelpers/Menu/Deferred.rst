@@ -1,10 +1,11 @@
+:navigation-title: menu.deferred
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-menu-deferred:
 
-=============
-menu.deferred
-=============
+==============================================
+menu.deferred ViewHelper `<vhs:menu.deferred>`
+==============================================
 
 
 Page: Deferred menu rendering ViewHelper
@@ -14,6 +15,9 @@ Place this ViewHelper inside any other ViewHelper which
 has been configured with the `deferred` attribute set to
 TRUE - this will cause the output of the parent to only
 contain the content of this ViewHelper.
+
+
+.. _fluidtypo3-vhs-menu-deferred_arguments:
 
 Arguments
 =========

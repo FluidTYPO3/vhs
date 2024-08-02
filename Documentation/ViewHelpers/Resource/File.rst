@@ -1,13 +1,17 @@
+:navigation-title: resource.file
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-resource-file:
 
-=============
-resource.file
-=============
+==============================================
+resource.file ViewHelper `<vhs:resource.file>`
+==============================================
 
 
 ViewHelper to output or assign FAL sys_file records.
+
+
+.. _fluidtypo3-vhs-resource-file_arguments:
 
 Arguments
 =========

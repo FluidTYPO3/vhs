@@ -1,10 +1,11 @@
+:navigation-title: condition.variable.isset
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-condition-variable-isset:
 
-========================
-condition.variable.isset
-========================
+====================================================================
+condition.variable.isset ViewHelper `<vhs:condition.variable.isset>`
+====================================================================
 
 
 Variable: Isset
@@ -27,6 +28,9 @@ Combines well with dynamic variable names:
     {foo -> v:condition.variable.isset(name: bar)}
 
 ONLY WORKS ON TYPO3v8+!
+
+
+.. _fluidtypo3-vhs-condition-variable-isset_arguments:
 
 Arguments
 =========

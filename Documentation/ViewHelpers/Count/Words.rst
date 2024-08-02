@@ -1,10 +1,11 @@
+:navigation-title: count.words
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-count-words:
 
-===========
-count.words
-===========
+==========================================
+count.words ViewHelper `<vhs:count.words>`
+==========================================
 
 
 Counts words in a string.
@@ -27,6 +28,9 @@ Usage examples
 ::
 
     {v:count.words(string: myString)}
+
+
+.. _fluidtypo3-vhs-count-words_arguments:
 
 Arguments
 =========

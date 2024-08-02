@@ -1,10 +1,11 @@
+:navigation-title: count.substring
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-count-substring:
 
-===============
-count.substring
-===============
+==================================================
+count.substring ViewHelper `<vhs:count.substring>`
+==================================================
 
 
 Counts number of lines in a string.
@@ -27,6 +28,9 @@ Usage examples
 ::
 
     {v:count.substring(string: myString, haystack: haystack)}
+
+
+.. _fluidtypo3-vhs-count-substring_arguments:
 
 Arguments
 =========

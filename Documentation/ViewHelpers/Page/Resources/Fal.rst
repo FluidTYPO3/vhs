@@ -1,10 +1,11 @@
+:navigation-title: page.resources.fal
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-resources-fal:
 
-==================
-page.resources.fal
-==================
+========================================================
+page.resources.fal ViewHelper `<vhs:page.resources.fal>`
+========================================================
 
 
 Page FAL resource ViewHelper.
@@ -14,6 +15,9 @@ Instead, use the "record" argument and pass the entire record.
 This bypasses visibility restrictions that normally apply when you attempt
 to load a record by UID through TYPO3's PageRepository, which is what the
 resource ViewHelpers do if you only pass uid.
+
+
+.. _fluidtypo3-vhs-page-resources-fal_arguments:
 
 Arguments
 =========
@@ -96,7 +100,7 @@ asObjects
 ---------
 
 :aspect:`DataType`
-   mixed
+   boolean
 
 :aspect:`Required`
    false

@@ -1,13 +1,17 @@
+:navigation-title: page.header.canonical
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-page-header-canonical:
 
-=====================
-page.header.canonical
-=====================
+==============================================================
+page.header.canonical ViewHelper `<vhs:page.header.canonical>`
+==============================================================
 
 
 Returns the current canonical url in a link tag.
+
+
+.. _fluidtypo3-vhs-page-header-canonical_arguments:
 
 Arguments
 =========

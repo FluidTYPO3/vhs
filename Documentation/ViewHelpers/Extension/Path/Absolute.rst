@@ -1,16 +1,20 @@
+:navigation-title: extension.path.absolute
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-extension-path-absolute:
 
-=======================
-extension.path.absolute
-=======================
+==================================================================
+extension.path.absolute ViewHelper `<vhs:extension.path.absolute>`
+==================================================================
 
 
 Path: Absolute Extension Folder Path
 ====================================
 
 Returns the absolute path to an extension folder.
+
+
+.. _fluidtypo3-vhs-extension-path-absolute_arguments:
 
 Arguments
 =========

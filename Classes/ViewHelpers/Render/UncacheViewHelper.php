@@ -84,12 +84,12 @@ class UncacheViewHelper extends AbstractViewHelper
             $extbaseParameters = $request->getAttribute('extbase');
         } else {
             $extbaseParameters = [
-                'actionName' => $request->getControllerActionName(),
-                'extensionName' => $request->getControllerExtensionName(),
-                'controllerName' => $request->getControllerName(),
-                'controllerObjectName' => $request->getControllerObjectName(),
-                'pluginName' => $request->getPluginName(),
-                'format' => $request->getFormat(),
+                'actionName' => RequestResolver::resolveControllerActionNameFromRequest($request),
+                'extensionName' => RequestResolver::resolveControllerExtensionNameFromRequest($request),
+                'controllerName' => RequestResolver::resolveControllerNameFromRequest($request),
+                'controllerObjectName' => RequestResolver::resolveControllerObjectNameFromRequest($request),
+                'pluginName' => RequestResolver::resolvePluginNameFromRequest($request),
+                'format' => RequestResolver::resolveFormatFromRequest($request),
             ];
         }
 

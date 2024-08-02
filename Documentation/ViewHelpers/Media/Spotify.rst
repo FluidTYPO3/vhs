@@ -1,13 +1,17 @@
+:navigation-title: media.spotify
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-media-spotify:
 
-=============
-media.spotify
-=============
+==============================================
+media.spotify ViewHelper `<vhs:media.spotify>`
+==============================================
 
 
 Renders HTML code to embed a Spotify play button.
+
+
+.. _fluidtypo3-vhs-media-spotify_arguments:
 
 Arguments
 =========

@@ -1,10 +1,11 @@
+:navigation-title: random.number
 .. include:: /Includes.rst.txt
 
 .. _fluidtypo3-vhs-random-number:
 
-=============
-random.number
-=============
+==============================================
+random.number ViewHelper `<vhs:random.number>`
+==============================================
 
 
 Random: Number Generator
@@ -13,6 +14,9 @@ Random: Number Generator
 Generates a random number. The default minimum number is
 set to 100000 in order to generate a longer integer string
 representation. Decimal values can be generated as well.
+
+
+.. _fluidtypo3-vhs-random-number_arguments:
 
 Arguments
 =========

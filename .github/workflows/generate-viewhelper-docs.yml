@@ -30,6 +30,7 @@ jobs:
         with:
           repository: 'TYPO3-Documentation/fluid-documentation-generator'
           fetch-depth: 0
+          ref: '3.0.0'
           path: generator
 
       - name: Generate ViewHelper RST documentation
