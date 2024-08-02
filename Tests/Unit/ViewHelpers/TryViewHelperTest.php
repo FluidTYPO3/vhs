@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\ViewHelpers\TryViewHelper;
+
 /**
  * Class TryViewHelperTest
  */
@@ -18,7 +20,15 @@ class TryViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEmpty($this->executeViewHelper());
     }
 
-    public function testRenderWithException()
+    public function testRenderStaticWithException(): void
+    {
+        $arguments['__then'] = function() { throw new \Exception('test'); };
+        $arguments['__else'] = function() { return 'else case'; };
+        $output = TryViewHelper::renderStatic($arguments, function() { return ''; }, $this->renderingContext);
+        self::assertSame('else case', $output);
+    }
+
+    public function testRenderWithException(): void
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderElseChild', 'renderChildren'])->getMock();
         $instance->setRenderingContext($this->renderingContext);
