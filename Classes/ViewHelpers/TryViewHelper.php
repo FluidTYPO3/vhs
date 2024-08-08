@@ -106,9 +106,13 @@ class TryViewHelper extends AbstractConditionViewHelper
             $content = $arguments['__then']();
         } catch (\Exception $error) {
             $variableProvider = $renderingContext->getVariableProvider();
-            $variableProvider->add('exception', $error);
-            $content = $arguments['__else']();
-            $variableProvider->remove('exception');
+            if (isset($arguments['__else'])) {
+                $variableProvider->add('exception', $error);
+                $content = $arguments['__else']();
+                $variableProvider->remove('exception');
+            } else {
+                $content = $arguments['else'] ?? null;
+            }
         }
         return $content;
     }
