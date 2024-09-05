@@ -10,6 +10,8 @@ content.get ViewHelper `<vhs:content.get>`
 
 ViewHelper used to render get content elements in Fluid templates
 
+Does not work in the TYPO3 backend.
+
 
 .. _fluidtypo3-vhs-content-get_arguments:
 

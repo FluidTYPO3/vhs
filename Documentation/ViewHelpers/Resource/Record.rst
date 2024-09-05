@@ -8,7 +8,11 @@ resource.record ViewHelper `<vhs:resource.record>`
 ==================================================
 
 
-Generic FAL resource ViewHelper
+Generic FAL resource ViewHelper.
+
+.. warning::
+   This view helper must only be used with FAL resources.
+   It is **not** meant to be used as generic data loading view helper.
 
 
 .. _fluidtypo3-vhs-resource-record_arguments:
