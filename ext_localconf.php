@@ -34,10 +34,7 @@
     }
 
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['v'] = ['FluidTYPO3\\Vhs\\ViewHelpers'];
-
-    // add navigtion hide to fix menu viewHelpers (e.g. breadcrumb)
-    $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']) ? '' : ',') . 'nav_hide,shortcut,shortcut_mode';
-
+    
     // add and urltype to fix the rendering of external url doktypes
     if (isset($GLOBALS['TCA']['pages']['columns']['urltype'])) {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',url,urltype';
