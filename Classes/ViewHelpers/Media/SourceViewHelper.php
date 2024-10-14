@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
+use FluidTYPO3\Vhs\Utility\TsfeUtility;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -165,8 +166,9 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     public function preprocessSourceUri(string $src): string
     {
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
-            $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
+        $typoscript = (new TsfeUtility())->getTyposcriptSetupArray();
+        if (!empty($typoscript['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+            $src = $typoscript['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
         } elseif (ContextUtility::isBackend() || !$this->arguments['relative']) {
             if (GeneralUtility::isValidUrl($src)) {
                 $src = ltrim($src, '/');

@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  */
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
+use FluidTYPO3\Vhs\Utility\TsfeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -49,8 +50,10 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
         if (substr($src, 0, 1) !== '/' && substr($src, 0, 4) !== 'http') {
             $src = $GLOBALS['TSFE']->absRefPrefix . $src;
         }
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
-            $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
+        $typoscript = (new TsfeUtility())->getTyposcriptSetupArray();
+
+        if (!empty($typoscript['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+            $src =$typoscript['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
         } elseif (ContextUtility::isBackend() || !$arguments['relative']) {
             /** @var string $siteUrl */
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
