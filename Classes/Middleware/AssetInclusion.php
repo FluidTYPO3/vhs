@@ -24,7 +24,7 @@ class AssetInclusion implements MiddlewareInterface
 
         /** @var AssetService $assetService */
         $assetService = GeneralUtility::makeInstance(AssetService::class);
-        $assetService->buildAllUncached([], $GLOBALS['TSFE'], $contents);
+        $assetService->buildAllUncached([], $request->getAttribute('frontend.controller', null) ?? $GLOBALS['TSFE'], $contents);
 
         if ($contentsBefore === $contents) {
             // Content is unchanged, return the original response since there is no need to modify it, or the
