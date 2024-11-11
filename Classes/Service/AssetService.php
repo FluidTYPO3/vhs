@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\Service;
 
 use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\TsfeUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -42,10 +43,16 @@ class AssetService implements SingletonInterface
     protected static ?array $settingsCache = null;
     protected static array $cachedDependencies = [];
     protected static bool $cacheCleared = false;
+    protected TsfeUtility $tsfeUtility;
 
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
+    }
+
+    public function __construct()
+    {
+        $this->tsfeUtility = new TsfeUtility();
     }
 
     public function usePageCache(object $caller, bool $shouldUsePageCache): bool
@@ -61,7 +68,7 @@ class AssetService implements SingletonInterface
         }
 
         $settings = $this->getSettings();
-        $buildTypoScriptAssets = (!static::$typoScriptAssetsBuilt && ($cached || $GLOBALS['TSFE']->no_cache));
+        $buildTypoScriptAssets = (!static::$typoScriptAssetsBuilt && ($cached || $this->tsfeUtility->isNoCache()));
         if ($buildTypoScriptAssets && isset($settings['asset']) && is_array($settings['asset'])) {
             foreach ($settings['asset'] as $name => $typoScriptAsset) {
                 if (!isset($GLOBALS['VhsAssets'][$name]) && is_array($typoScriptAsset)) {
@@ -272,8 +279,11 @@ class AssetService implements SingletonInterface
         sort($keys);
         $assetName = implode('-', $keys);
         unset($keys);
-        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename'])) {
-            if ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename']) {
+
+        $typoscript = $this->tsfeUtility->getTyposcriptSetupArray();
+
+        if (isset($typoscript['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename'])) {
+            if ($typoscript['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename']) {
                 $assetName = md5($assetName);
             }
         }
@@ -282,8 +292,8 @@ class AssetService implements SingletonInterface
         if (!file_exists($fileAbsolutePathAndFilename)
             || 0 === filemtime($fileAbsolutePathAndFilename)
             || isset($GLOBALS['BE_USER'])
-            || ($GLOBALS['TSFE']->no_cache ?? false)
-            || ($GLOBALS['TSFE']->page['no_cache'] ?? false)
+            || $this->isNoCache()
+            || ($this->getPageRecordFromRequest()['no_cache'] ?? false)
         ) {
             foreach ($assets as $name => $asset) {
                 $assetSettings = $this->extractAssetSettings($asset);
@@ -346,6 +356,9 @@ class AssetService implements SingletonInterface
             $file = PathUtility::getAbsoluteWebPath($file);
             $file = $this->prefixPath($file);
         }
+
+        $typoscript = $this->tsfeUtility->getTyposcriptSetupArray();
+
         switch ($type) {
             case 'js':
                 $tagBuilder->setTagName('script');
@@ -357,7 +370,7 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('src', (string) $file);
                 }
                 if (!empty($integrity)) {
-                    if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                    if (!empty($typoscript['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
                     $tagBuilder->addAttribute('integrity', $integrity);
@@ -385,7 +398,7 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('href', $file);
                 }
                 if (!empty($integrity)) {
-                    if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                    if (!empty($typoscript['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
                     $tagBuilder->addAttribute('integrity', $integrity);
@@ -723,7 +736,7 @@ class AssetService implements SingletonInterface
 
     protected function getFileIntegrity(string $file): ?string
     {
-        $typoScript = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'] ?? null;
+        $typoScript = $this->tsfeUtility->getTyposcriptSetupArray()['plugin.']['tx_vhs.'] ?? null;
         if (isset($typoScript['assets.']['tagsAddSubresourceIntegrity'])) {
             // Note: 3 predefined hashing strategies (the ones suggestes in the rfc sheet)
             if (0 < $typoScript['assets.']['tagsAddSubresourceIntegrity']
@@ -732,9 +745,6 @@ class AssetService implements SingletonInterface
                 if (!file_exists($file)) {
                     return null;
                 }
-
-                /** @var TypoScriptFrontendController $typoScriptFrontendController */
-                $typoScriptFrontendController = $GLOBALS['TSFE'];
 
                 $integrity = null;
                 $integrityMethod = ['sha256','sha384','sha512'][
@@ -749,8 +759,8 @@ class AssetService implements SingletonInterface
                 if (!file_exists($integrityFile)
                     || 0 === filemtime($integrityFile)
                     || isset($GLOBALS['BE_USER'])
-                    || $typoScriptFrontendController->no_cache
-                    || $typoScriptFrontendController->page['no_cache']
+                    || $this->isNoCache()
+                    || $this->getPageRecordFromRequest()['no_cache']
                 ) {
                     if (extension_loaded('hash') && function_exists('hash_file')) {
                         $integrity = base64_encode((string) hash_file($integrityMethod, $file, true));

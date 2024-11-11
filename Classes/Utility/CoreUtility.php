@@ -40,4 +40,14 @@ class CoreUtility
     {
         return VersionNumberUtility::getCurrentTypo3Version();
     }
+
+    public static function getTypo3Version(): string
+    {
+        return (new \TYPO3\CMS\Core\Information\Typo3Version())->getVersion();
+    }
+
+    public static function getTypo3MajorVersion(): int
+    {
+        return (new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion();
+    }
 }

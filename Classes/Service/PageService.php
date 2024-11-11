@@ -9,6 +9,8 @@ namespace FluidTYPO3\Vhs\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\TsfeUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -17,6 +19,7 @@ use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Page Service
@@ -32,6 +35,12 @@ class PageService implements SingletonInterface
 
     protected static array $cachedPages = [];
     protected static array $cachedMenus = [];
+    protected TsfeUtility $tsfeUtility;
+
+    public function __construct()
+    {
+        $this->tsfeUtility = new TsfeUtility();
+    }
 
     public function getMenu(
         int $pageUid,
@@ -77,7 +86,7 @@ class PageService implements SingletonInterface
         bool $reverse = false
     ): array {
         if (null === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+            $pageUid = $this->tsfeUtility->getPageId();
         }
         /** @var RootlineUtility $rootLineUtility */
         $rootLineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid);
@@ -127,11 +136,11 @@ class PageService implements SingletonInterface
             $pageUid = $page['uid'];
             $pageRecord = $page;
         } else {
-            $pageUid = (0 === (integer) $page) ? $GLOBALS['TSFE']->id : (integer) $page;
+            $pageUid = (0 === (integer)$page) ? $this->tsfeUtility->getPageId() : (integer)$page;
             $pageRecord = $this->getPage($pageUid);
         }
         if (-1 === $languageUid) {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+            $languageUid = $this->tsfeUtility->getPageRecordFromRequest()['sys_language_uid'];
             if (class_exists(LanguageAspect::class)) {
                 /** @var Context $context */
                 $context = GeneralUtility::makeInstance(Context::class);
@@ -181,6 +190,14 @@ class PageService implements SingletonInterface
             'forceAbsoluteUrl' => $forceAbsoluteUrl,
         ];
 
+        if (CoreUtility::getTypo3MajorVersion() > 12) {
+            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $request = $this->tsfeUtility->getRequest();
+            $cObj->setRequest($request);
+            $cObj->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+            return $cObj->createUrl($config);
+        }
+
         return $GLOBALS['TSFE']->cObj->typoLink('', $config);
     }
 
@@ -209,7 +226,7 @@ class PageService implements SingletonInterface
 
     public function isCurrent(int $pageUid): bool
     {
-        return ($pageUid === (integer) $GLOBALS['TSFE']->id);
+        return ($pageUid === $this->tsfeUtility->getPageId());
     }
 
     public function isActive(int $pageUid): bool

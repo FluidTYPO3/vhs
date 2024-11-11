@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use FluidTYPO3\Vhs\Utility\TsfeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -161,8 +162,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
      */
     public function preprocessSourceUri(string $source): string
     {
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
-            $source = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;
+        $typoscript = (new TsfeUtility())->getTyposcriptSetupArray());
+        if (!empty($typoscript['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+            $source = $typoscript['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;
         } elseif (ContextUtility::isBackend() || !$this->arguments['relative']) {
             /** @var string $siteUrl */
             $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
