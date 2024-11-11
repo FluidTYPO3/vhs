@@ -413,6 +413,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $total = count($pages);
         $processedPages = [];
         foreach ($pages as $index => $page) {
+            if (!is_array($page) || !isset($page['uid'])) {
+                continue;
+            }
             $count++;
             $class = [];
             $originalPageUid = $page['uid'];
