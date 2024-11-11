@@ -573,7 +573,7 @@ class AssetService implements SingletonInterface
             if (false === strpos($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
                 $checksum = md5($originalDirectory . $match);
                 if (0 < preg_match('/([^\?#]+)(.+)?/', $match, $items)) {
-                    $path = $items[1];
+                    $path = $items[1] ?? '';
                     $suffix = $items[2] ?? '';
                 } else {
                     $path = $match;

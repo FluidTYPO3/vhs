@@ -41,17 +41,17 @@
     "require": {
         "php": "^7.4.0 || ^8",
         "ext-mbstring": "*",
-        "typo3/cms-core": "^10 || ^11 || ^12 || dev-master",
-        "typo3/cms-extbase": "^10 || ^11 || ^12 || dev-master",
-        "typo3/cms-fluid": "^10 || ^11 || ^12 || dev-master",
-        "typo3/cms-frontend": "^10 || ^11 || ^12 || dev-master",
-        "typo3/cms-backend": "^10 || ^11 || ^12 || dev-master"
+        "typo3/cms-core": "^10 || ^11 || ^12 || dev-main",
+        "typo3/cms-extbase": "^10 || ^11 || ^12 || dev-main",
+        "typo3/cms-fluid": "^10 || ^11 || ^12 || dev-main",
+        "typo3/cms-frontend": "^10 || ^11 || ^12 || dev-main",
+        "typo3/cms-backend": "^10 || ^11 || ^12 || dev-main"
     },
     "replace": {
         "typo3-ter/vhs": "self.version"
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan": "1.12.1",
         "phpunit/phpunit": "^5.7 || ^9.5",
         "php-coveralls/php-coveralls": "^2.5",
         "squizlabs/php_codesniffer": "^3.7",

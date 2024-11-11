@@ -251,7 +251,8 @@ class PageService implements SingletonInterface
      */
     public function getShortcutTargetPage(array $page): ?array
     {
-        if ((integer) $page['doktype'] !== PageRepository::DOKTYPE_SHORTCUT) {
+        $dokType = (integer) ($page['doktype'] ?? PageRepository::DOKTYPE_DEFAULT);
+        if ($dokType !== PageRepository::DOKTYPE_SHORTCUT) {
             return null;
         }
         $originalPageUid = $page['uid'];

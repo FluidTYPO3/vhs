@@ -1470,6 +1470,8 @@ Renders the value of a PHP constant
   <xsd:element name="content.get">
     <xsd:annotation>
       <xsd:documentation><![CDATA[ViewHelper used to render get content elements in Fluid templates
+
+Does not work in the TYPO3 backend.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -10093,7 +10095,11 @@ but all the translated labels.
   </xsd:element>
   <xsd:element name="resource.record">
     <xsd:annotation>
-      <xsd:documentation><![CDATA[Generic FAL resource ViewHelper
+      <xsd:documentation><![CDATA[Generic FAL resource ViewHelper.
+
+.. warning::
+   This view helper must only be used with FAL resources.
+   It is **not** meant to be used as generic data loading view helper.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">

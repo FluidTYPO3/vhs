@@ -12,6 +12,8 @@ use FluidTYPO3\Vhs\Utility\ContextUtility;
 
 /**
  * ViewHelper used to render get content elements in Fluid templates
+ *
+ * Does not work in the TYPO3 backend.
  */
 class GetViewHelper extends AbstractContentViewHelper
 {

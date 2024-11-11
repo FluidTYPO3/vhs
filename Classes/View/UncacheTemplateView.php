@@ -118,6 +118,7 @@ class UncacheTemplateView extends TemplateView
             'parsedTemplate' => null,
             'renderingContext' => $renderingContext,
         ];
+        /** @var string $rendered */
         $rendered = $this->renderPartial($partial, $section, $arguments);
         array_pop($this->renderingStack);
         return $rendered;
