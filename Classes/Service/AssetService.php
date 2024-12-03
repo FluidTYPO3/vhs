@@ -712,7 +712,24 @@ class AssetService implements SingletonInterface
         $signalSlotDispatcher->dispatch(__CLASS__, static::ASSET_SIGNAL, [&$file, &$contents]);
         */
 
-        GeneralUtility::writeFile($file, $contents, true);
+        $tmpFile = @tempnam(dirname($file), basename($file));
+        if ($tmpFile === false) {
+            $error = error_get_last();
+            $details = $error !== null ? ": {$error['message']}" : ".";
+            throw new \RuntimeException(
+                "Failed to create temporary file for writing asset {$file}{$details}",
+                1733258066
+            );
+        }
+        GeneralUtility::writeFile($tmpFile, $contents, true);
+        if (@rename($tmpFile, $file) === false) {
+            $error = error_get_last();
+            $details = $error !== null ? ": {$error['message']}" : ".";
+            throw new \RuntimeException(
+                "Failed to move asset-backing file {$file} into final destination{$details}",
+                1733258156
+            );
+        }
     }
 
     protected function mergeArrays(array $array1, array $array2): array
