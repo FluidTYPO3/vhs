@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -425,9 +426,14 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                 $label = $this->arguments['defaultLanguageLabel'] ?? $label;
                 $flag = $this->arguments['defaultIsoFlag'] ?? $flag;
             }
+            if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '>=')) {
+                $isoCode = $language->getLocale()->getLanguageCode();
+            } else {
+                $isoCode = $language->getTwoLetterIsoCode();
+            }
             $result[$language->getLanguageId()] = [
                 'label' => $label,
-                'iso' => $language->getTwoLetterIsoCode(),
+                'iso' => $isoCode,
                 'flagIdentifier' => $flag
             ];
         }

@@ -1,6 +1,10 @@
 parameters:
     ignoreErrors:
         -
+            message: "#^Cannot call method getLanguageCode\\(\\) on string\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Page/LanguageMenuViewHelper.php
+        -
             message: "#Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement\\|Doctrine\\\\DBAL\\\\Result\\:\\:fetch\\(\\)\\.$#"
             count: 1
             path: Classes/Utility/DoctrineQueryProxy.php
