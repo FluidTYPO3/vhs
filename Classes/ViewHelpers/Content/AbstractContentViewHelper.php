@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  */
 
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -23,7 +24,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     use SlideViewHelperTrait;
 
     /**
-     * @var ContentObjectRenderer
+     * @var ContentObjectRenderer|null
      */
     protected $contentObject;
 
@@ -40,9 +41,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $this->configurationManager->getContentObject();
-        $this->contentObject = $contentObject;
+        $this->contentObject = ContentObjectFetcher::resolve($this->configurationManager);
     }
 
     public function initializeArguments(): void
@@ -200,14 +199,14 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     {
         /** @var array $loadRegister */
         $loadRegister = $this->arguments['loadRegister'];
-        if (!empty($loadRegister)) {
+        if (!empty($loadRegister) && $this->contentObject !== null) {
             $this->contentObject->cObjGetSingle('LOAD_REGISTER', $loadRegister);
         }
         $elements = [];
         foreach ($rows as $row) {
             $elements[] = static::renderRecord($row);
         }
-        if (!empty($loadRegister)) {
+        if (!empty($loadRegister) && $this->contentObject !== null) {
             $this->contentObject->cObjGetSingle('RESTORE_REGISTER', []);
         }
         return $elements;
