@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\DispatcherProxy;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use Psr\Http\Message\ServerRequestInterface;
@@ -81,8 +82,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
         $pluginName = $arguments['pluginName'];
         $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
-        /** @var ContentObjectRenderer $contentObjectBackup */
-        $contentObjectBackup = $configurationManager->getContentObject();
+        $contentObjectBackup = ContentObjectFetcher::resolve($configurationManager);
         $configurationBackup = $configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
@@ -102,7 +102,9 @@ class RequestViewHelper extends AbstractRenderViewHelper
                     ? static::$responseType
                     : \TYPO3\CMS\Core\Http\Response::class
             );
-            $configurationManager->setContentObject($temporaryContentObject);
+            if (method_exists($configurationManager, 'setContentObject')) {
+                $configurationManager->setContentObject($temporaryContentObject);
+            }
             $configurationManager->setConfiguration($targetConfiguration);
 
             $request = self::loadDefaultValues(
@@ -122,7 +124,9 @@ class RequestViewHelper extends AbstractRenderViewHelper
             if ($possibleResponse) {
                 $response = $possibleResponse;
             }
-            $configurationManager->setContentObject($contentObjectBackup);
+            if ($contentObjectBackup !== null && method_exists($configurationManager, 'setContentObject')) {
+                $configurationManager->setContentObject($contentObjectBackup);
+            }
             $configurationManager->setConfiguration($configurationBackup);
             if (method_exists($response, 'getBody')) {
                 $response->getBody()->rewind();

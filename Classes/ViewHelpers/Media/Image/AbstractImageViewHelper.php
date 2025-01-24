@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
@@ -44,9 +45,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
+        $contentObject = ContentObjectFetcher::resolve($configurationManager);
+        if ($contentObject === null) {
+            throw new \UnexpectedValueException(static::class . ' requires a cObj context, none was found', 1737756353);
+        }
         $this->configurationManager = $configurationManager;
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $this->configurationManager->getContentObject();
         $this->contentObject = $contentObject;
     }
 
