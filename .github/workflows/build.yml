@@ -134,7 +134,9 @@ jobs:
         run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
 
       - name: Upload test coverage
-        run: vendor/bin/php-coveralls -vvv
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/logs/clover.xml -v
         env:
           COVERALLS_PARALLEL: true
           COVERALLS_FLAG_NAME: typo3-${{ matrix.typo3 }}-php-${{ matrix.php }}

@@ -53,7 +53,6 @@
     "require-dev": {
         "phpstan/phpstan": "1.12.1",
         "phpunit/phpunit": "^5.7 || ^9.5",
-        "php-coveralls/php-coveralls": "^2.5",
         "squizlabs/php_codesniffer": "^3.7",
         "mikey179/vfsstream": "^1.6",
         "fluidtypo3/development": "^5"
