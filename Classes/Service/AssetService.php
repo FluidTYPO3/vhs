@@ -462,7 +462,7 @@ class AssetService implements SingletonInterface
             $name = array_shift($assetNames);
             $dependencies = $assetSettings['dependencies'];
             if (!is_array($dependencies)) {
-                $dependencies = GeneralUtility::trimExplode(',', $assetSettings['dependencies'], true);
+                $dependencies = GeneralUtility::trimExplode(',', $assetSettings['dependencies'] ?? '', true);
             }
             foreach ($dependencies as $dependency) {
                 if (array_key_exists($dependency, $assets)
