@@ -95,13 +95,16 @@ class PageService implements SingletonInterface
     ): string {
         $constraints = [];
 
-        $constraints[] = 'doktype NOT IN ('
-            . PageRepository::DOKTYPE_BE_USER_SECTION
-            . ','
-            . PageRepository::DOKTYPE_RECYCLER
-            . ','
-            . PageRepository::DOKTYPE_SYSFOLDER
-            . ')';
+        $types = [
+            PageRepository::DOKTYPE_BE_USER_SECTION,
+            PageRepository::DOKTYPE_SYSFOLDER
+        ];
+
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '<=')) {
+            $types[] = PageRepository::DOKTYPE_RECYCLER;
+        }
+
+        $constraints[] = 'doktype NOT IN (' . implode(',', $types) . ')';
 
         if ($includeNotInMenu === false) {
             $constraints[] = 'nav_hide = 0';
