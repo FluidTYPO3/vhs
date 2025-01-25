@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -151,7 +152,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
-        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
+        $queryBuilder->createNamedParameter($id, Connection::PARAM_INT, ':id');
 
         $queryBuilder
             ->select('*')

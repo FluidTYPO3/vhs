@@ -99,7 +99,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             $queryBuilder = $connectionPool->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
             $queryBuilder->createNamedParameter(
                 $this->getTablenameForSystemConfiguration(),
-                \PDO::PARAM_STR,
+                Connection::PARAM_STR,
                 ':tablenames'
             );
             $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');
