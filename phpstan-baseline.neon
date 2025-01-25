@@ -1,6 +1,18 @@
 parameters:
     ignoreErrors:
         -
+            message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\SiteLanguage\\:\\:getTwoLetterIsoCode\\(\\)\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Page/LanguageMenuViewHelper.php
+        -
+            message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\:\\:execute\\(\\)\\.$#"
+            count: 1
+            path: Classes/Utility/DoctrineQueryProxy.php
+        -
+            message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:DOKTYPE_RECYCLER\\.$#"
+            count: 1
+            path: Classes/Service/PageService.php
+        -
             message: "#^Cannot call method getLanguageCode\\(\\) on string\\.$#"
             count: 1
             path: Classes/ViewHelpers/Page/LanguageMenuViewHelper.php

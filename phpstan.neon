@@ -34,6 +34,7 @@ parameters:
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\FrontendUser(Group)?#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\BackendUser(Group)?#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\View\\\\ViewInterface#"
+        - "#(unknown class|invalid( return)? type) Doctrine\\\\DBAL\\\\FetchMode#"
         - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Context\\\\Context#"
         - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Context\\\\LanguageAspect#"
         - "#unknown class TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\Site#"
