@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -151,9 +152,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
 
-            $queryBuilder->createNamedParameter($this->getTable(), \PDO::PARAM_STR, ':tablenames');
-            $queryBuilder->createNamedParameter($sqlRecordUid, \PDO::PARAM_INT, ':uid_foreign');
-            $queryBuilder->createNamedParameter($this->getField(), \PDO::PARAM_STR, ':fieldname');
+            $queryBuilder->createNamedParameter($this->getTable(), Connection::PARAM_STR, ':tablenames');
+            $queryBuilder->createNamedParameter($sqlRecordUid, Connection::PARAM_INT, ':uid_foreign');
+            $queryBuilder->createNamedParameter($this->getField(), Connection::PARAM_STR, ':fieldname');
 
             $queryBuilder
                 ->select('uid')
@@ -171,7 +172,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $queryBuilder->createNamedParameter(
                     $GLOBALS['BE_USER']->workspaceRec['uid'],
-                    \PDO::PARAM_INT,
+                    Connection::PARAM_INT,
                     ':t3ver_wsid'
                 );
                 $queryBuilder

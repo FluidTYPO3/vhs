@@ -13,6 +13,7 @@ use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -110,7 +111,7 @@ class InfoViewHelper extends AbstractViewHelper
             /** @var ConnectionPool $connectionPool */
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
-            $queryBuilder->createNamedParameter($contentUid, \PDO::PARAM_INT, ':uid');
+            $queryBuilder->createNamedParameter($contentUid, Connection::PARAM_INT, ':uid');
 
             $queryBuilder
                 ->select($selectFields)

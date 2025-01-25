@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -61,7 +62,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_language');
 
-            $queryBuilder->createNamedParameter($language, \PDO::PARAM_STR, ':title');
+            $queryBuilder->createNamedParameter($language, Connection::PARAM_STR, ':title');
 
             $queryBuilder
                 ->select('uid')
