@@ -8,14 +8,18 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\View\UncacheContentObject;
 use FluidTYPO3\Vhs\View\UncacheTemplateView;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -105,8 +109,7 @@ class UncacheViewHelper extends AbstractViewHelper
             $conf['partialRootPaths'] = $renderingContext->getTemplatePaths()->getPartialRootPaths();
         }
 
-        /** @var ContentObjectRenderer $contentObjectRenderer */
-        $contentObjectRenderer = $GLOBALS['TSFE']->cObj;
+        $contentObjectRenderer = static::getContentObject();
 
         $content = $contentObjectRenderer->cObjGetSingle(
             'COA_INT',
@@ -116,5 +119,17 @@ class UncacheViewHelper extends AbstractViewHelper
             ]
         );
         return $content;
+    }
+
+    protected static function getContentObject(): ContentObjectRenderer
+    {
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        /** @var ContentObjectRenderer|null $contentObject */
+        $contentObject = ContentObjectFetcher::resolve($configurationManager);
+        if ($contentObject === null) {
+            throw new Exception('v:render.uncache requires a ContentObjectRenderer, none found', 1737808465);
+        }
+        return $contentObject;
     }
 }

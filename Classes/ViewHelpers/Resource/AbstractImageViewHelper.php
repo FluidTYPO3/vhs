@@ -8,12 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -27,17 +27,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
      */
     protected $configurationManager;
 
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $contentObject;
-
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $this->configurationManager->getContentObject();
-        $this->contentObject = $contentObject;
     }
 
     public function initializeArguments(): void
@@ -103,6 +95,11 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        if ($contentObject === null) {
+            throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737807859);
+        }
+
         $setup = [
             'width' => $this->arguments['width'] ?? null,
             'height' => $this->arguments['height'] ?? null,
@@ -116,7 +113,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         $images = [];
 
         foreach ($files as $file) {
-            $imageInfo = $this->contentObject->getImgResource($file->getUid(), $setup);
+            $imageInfo = $contentObject->getImgResource($file->getUid(), $setup);
 
             if (!is_array($imageInfo)) {
                 if ($this->arguments['graceful'] ?? false) {
