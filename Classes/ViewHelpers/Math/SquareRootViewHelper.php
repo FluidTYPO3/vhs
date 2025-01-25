@@ -8,7 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Math: SquareRoot

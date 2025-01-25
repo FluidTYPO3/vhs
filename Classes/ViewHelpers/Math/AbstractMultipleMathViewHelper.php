@@ -13,7 +13,7 @@ use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Base class: Math ViewHelpers operating on one number or an

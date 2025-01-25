@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
+use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -15,6 +17,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class VimeoViewHelper extends AbstractTagBasedViewHelper
 {
+    use ArgumentOverride;
+    use TagViewHelperCompatibility;
+
     /**
      * Base URL for Vimeo video player
      */
