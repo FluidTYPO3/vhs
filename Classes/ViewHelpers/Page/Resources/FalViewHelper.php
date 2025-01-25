@@ -52,7 +52,7 @@ class FalViewHelper extends ResourcesFalViewHelper
     public function getRecord(int $id): ?array
     {
         $record = parent::getRecord($id);
-        if (!$this->isDefaultLanguage()) {
+        if (!$this->isDefaultLanguage() && $record !== null) {
             /** @var PageService $pageService */
             $pageService = GeneralUtility::makeInstance(PageService::class);
             $pageRepository = $pageService->getPageRepository();
