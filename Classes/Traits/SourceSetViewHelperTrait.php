@@ -1,10 +1,12 @@
 <?php
 namespace FluidTYPO3\Vhs\Traits;
 
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /*
@@ -94,6 +96,11 @@ trait SourceSetViewHelperTrait
         ?string $params = null,
         ?string $crop = null
     ): array {
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        if ($contentObject === null) {
+            throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737808465);
+        }
+
         $setup = [
             'width' => $width,
             'treatIdAsReference' => $treatIdAsReference,
@@ -111,7 +118,7 @@ trait SourceSetViewHelperTrait
         if (ContextUtility::isBackend() && '../' === substr($src, 0, 3)) {
             $src = substr($src, 3);
         }
-        return (array) $this->contentObject->getImgResource($src, $setup);
+        return (array) $contentObject->getImgResource($src, $setup);
     }
 
     /**

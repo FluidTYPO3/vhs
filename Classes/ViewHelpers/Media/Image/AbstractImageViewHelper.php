@@ -17,7 +17,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -27,11 +26,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 {
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $contentObject;
-
     /**
      * @var ConfigurationManagerInterface
      */
@@ -45,12 +39,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
-        $contentObject = ContentObjectFetcher::resolve($configurationManager);
-        if ($contentObject === null) {
-            throw new \UnexpectedValueException(static::class . ' requires a cObj context, none was found', 1737756353);
-        }
         $this->configurationManager = $configurationManager;
-        $this->contentObject = $contentObject;
     }
 
     public function initializeArguments(): void
@@ -143,6 +132,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        if ($contentObject === null) {
+            throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737808465);
+        }
+
         $setup = [
             'width' => $width,
             'height' => $height,
@@ -165,7 +159,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if (ContextUtility::isBackend() && strpos($src, '../') === 0) {
             $src = mb_substr($src, 3);
         }
-        $this->imageInfo = $this->contentObject->getImgResource($src, $setup);
+        $this->imageInfo = $contentObject->getImgResource($src, $setup);
 
         if (!is_array($this->imageInfo)) {
             if ($this->arguments['graceful'] ?? false) {

@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
@@ -20,8 +21,10 @@ use TYPO3\CMS\Core\Site\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ViewHelper for rendering TYPO3 menus in Fluid
@@ -44,10 +47,17 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected $cObj;
 
+    protected ConfigurationManagerInterface $configurationManager;
+
     /**
      * @var Site|\TYPO3\CMS\Core\Site\Entity\Site
      */
     protected $site;
+
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
+    }
 
     public function initializeArguments(): void
     {
@@ -131,8 +141,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         if (!is_object($GLOBALS['TSFE']->sys_page)) {
             return '';
         }
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $GLOBALS['TSFE']->cObj;
+        /** @var ContentObjectRenderer|null $contentObject */
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        if ($contentObject === null) {
+            throw new Exception('v:page.languageMenu requires a ContentObjectRenderer, none found', 1737807859);
+        }
+
         $this->cObj = $contentObject;
         $this->tagName = is_scalar($this->arguments['tagName']) ? (string) $this->arguments['tagName'] : 'ul';
         $this->tag->setTagName($this->tagName);

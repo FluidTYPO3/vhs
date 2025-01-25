@@ -13,7 +13,6 @@ use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -22,11 +21,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 abstract class AbstractContentViewHelper extends AbstractViewHelper
 {
     use SlideViewHelperTrait;
-
-    /**
-     * @var ContentObjectRenderer|null
-     */
-    protected $contentObject;
 
     /**
      * @var ConfigurationManagerInterface
@@ -41,7 +35,6 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
-        $this->contentObject = ContentObjectFetcher::resolve($this->configurationManager);
     }
 
     public function initializeArguments(): void
@@ -197,17 +190,19 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected function getRenderedRecords(array $rows): array
     {
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+
         /** @var array $loadRegister */
         $loadRegister = $this->arguments['loadRegister'];
-        if (!empty($loadRegister) && $this->contentObject !== null) {
-            $this->contentObject->cObjGetSingle('LOAD_REGISTER', $loadRegister);
+        if (!empty($loadRegister) && $contentObject !== null) {
+            $contentObject->cObjGetSingle('LOAD_REGISTER', $loadRegister);
         }
         $elements = [];
         foreach ($rows as $row) {
             $elements[] = static::renderRecord($row);
         }
-        if (!empty($loadRegister) && $this->contentObject !== null) {
-            $this->contentObject->cObjGetSingle('RESTORE_REGISTER', []);
+        if (!empty($loadRegister) && $contentObject !== null) {
+            $contentObject->cObjGetSingle('RESTORE_REGISTER', []);
         }
         return $elements;
     }
