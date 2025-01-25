@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -133,12 +134,22 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         $result = $contentObject->getImgResource($imageSource, $setup);
+        if ($result instanceof ImageResource) {
+            $processedFile = $result->getProcessedFile();
+        } else {
+            $processedFile = $result['processedFile'] ?? null;
+        }
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
-        if ($result['processedFile'] ?? false) {
-            $imageUrl = $result['processedFile']->getPublicUrl();
+        if ($processedFile ?? false) {
+            /** @var string $imageUrl */
+            $imageUrl = $processedFile->getPublicUrl();
         } else {
+            if ($result instanceof ImageResource) {
+                $result = $result->getLegacyImageResourceInformation();
+            }
+            /** @var string $imageUrl */
             $imageUrl = $result[3] ?? '';
         }
         $src = $this->preprocessSourceUri(rawurldecode($imageUrl));

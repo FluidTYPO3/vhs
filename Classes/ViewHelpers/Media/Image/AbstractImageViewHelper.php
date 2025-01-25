@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -159,7 +160,12 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if (ContextUtility::isBackend() && strpos($src, '../') === 0) {
             $src = mb_substr($src, 3);
         }
-        $this->imageInfo = $contentObject->getImgResource($src, $setup);
+        $imageInfo = $contentObject->getImgResource($src, $setup);
+        if ($imageInfo instanceof ImageResource) {
+            $this->imageInfo = $imageInfo->getLegacyImageResourceInformation();
+        } else {
+            $this->imageInfo = $imageInfo;
+        }
 
         if (!is_array($this->imageInfo)) {
             if ($this->arguments['graceful'] ?? false) {
