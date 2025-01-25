@@ -45,9 +45,6 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        if (!is_array($arguments)) {
-            return false;
-        }
         /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
         $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];

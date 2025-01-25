@@ -24,6 +24,9 @@ class LoopViewHelper extends AbstractLoopViewHelper
         $this->registerArgument('maximum', 'integer', 'Maxiumum number of loops before stopping', false, PHP_INT_MAX);
     }
 
+    /**
+     * @return string
+     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,

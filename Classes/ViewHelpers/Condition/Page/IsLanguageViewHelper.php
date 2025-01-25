@@ -37,9 +37,6 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        if (!is_array($arguments)) {
-            return false;
-        }
         /** @var string $language */
         $language = $arguments['language'];
         /** @var string $defaultTitle */

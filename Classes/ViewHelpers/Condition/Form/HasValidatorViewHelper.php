@@ -49,16 +49,13 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        if (!is_array($arguments)) {
-            return false;
-        }
-
         /** @var ReflectionService $reflectionService */
         $reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
 
         /** @var string $property */
         $property = $arguments['property'];
         $validatorName = $arguments['validatorName'] ?? null;
+        /** @var array|object $object */
         $object = $arguments['object'] ?? null;
 
         $path = null;

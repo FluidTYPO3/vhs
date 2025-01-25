@@ -123,6 +123,7 @@ class DebugViewHelper extends AbstractViewHelper
         }
         if (0 < count($this->childObjectAccessorNodes)) {
             $nodes[] = '[VARIABLE ACCESSORS]';
+            /** @var array|object $templateVariables */
             $templateVariables = $this->renderingContext->getVariableProvider()->getAll();
             foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
                 $path = $objectAccessorNode->getObjectPath();
@@ -130,6 +131,9 @@ class DebugViewHelper extends AbstractViewHelper
                 try {
                     $value = ObjectAccess::getProperty($templateVariables, array_shift($segments));
                     foreach ($segments as $segment) {
+                        if (!is_array($value) && !is_object($value)) {
+                            break;
+                        }
                         $value = ObjectAccess::getProperty($value, $segment);
                     }
                     $type = gettype($value);

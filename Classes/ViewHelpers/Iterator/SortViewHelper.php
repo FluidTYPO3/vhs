@@ -188,7 +188,7 @@ class SortViewHelper extends AbstractViewHelper
     /**
      * Gets the value to use as sorting value from $object
      *
-     * @param mixed $object
+     * @param array|object $object
      * @param array $arguments
      * @return mixed
      */
