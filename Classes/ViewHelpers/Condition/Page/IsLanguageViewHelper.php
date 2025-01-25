@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -33,11 +34,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('defaultTitle', 'string', 'title of the default language', false, 'en');
     }
 
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         if (!is_array($arguments)) {
             return false;

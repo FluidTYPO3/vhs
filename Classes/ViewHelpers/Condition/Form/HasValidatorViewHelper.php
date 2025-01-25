@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -46,11 +47,7 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
         );
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         if (!is_array($arguments)) {
             return false;
@@ -59,6 +56,7 @@ class HasValidatorViewHelper extends AbstractConditionViewHelper
         /** @var ReflectionService $reflectionService */
         $reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
 
+        /** @var string $property */
         $property = $arguments['property'];
         $validatorName = $arguments['validatorName'] ?? null;
         $object = $arguments['object'] ?? null;
