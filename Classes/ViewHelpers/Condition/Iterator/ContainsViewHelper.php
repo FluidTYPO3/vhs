@@ -12,6 +12,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -40,14 +41,14 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         );
     }
 
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
+        /** @var array|DomainObjectInterface[]|QueryResult|ObjectStorage|iterable $haystack */
+        $haystack = $arguments['haystack'];
+        /** @var mixed $needle */
+        $needle = $arguments['needle'];
         return is_array($arguments)
-            && static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments) !== false;
+            && static::assertHaystackHasNeedle($haystack, $needle, $arguments) !== false;
     }
 
     /**
@@ -58,6 +59,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         if (0 > $index) {
             return null;
         }
+        /** @var array|DomainObjectInterface[]|QueryResult|ObjectStorage|iterable $haystack */
         $haystack = $arguments['haystack'];
         $asArray = [];
         if (is_array($haystack)) {
@@ -73,8 +75,8 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage $haystack
-     * @param integer|DomainObjectInterface $needle
+     * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage|iterable $haystack
+     * @param mixed $needle
      * @return boolean|integer
      */
     protected static function assertHaystackHasNeedle($haystack, $needle, array $arguments)
@@ -82,10 +84,13 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         if (is_array($haystack)) {
             return static::assertHaystackIsArrayAndHasNeedle($haystack, $needle, $arguments);
         } elseif ($haystack instanceof LazyObjectStorage) {
+            /** @var int|DomainObjectInterface $needle */
             return static::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
         } elseif ($haystack instanceof ObjectStorage) {
+            /** @var int|DomainObjectInterface $needle */
             return static::assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle);
         } elseif ($haystack instanceof QueryResult) {
+            /** @var int|DomainObjectInterface $needle */
             return static::assertHaystackIsQueryResultAndHasNeedle($haystack, $needle);
         } elseif (is_scalar($haystack) && is_scalar($needle)) {
             return strpos((string)$haystack, (string)$needle);
@@ -94,8 +99,8 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage $haystack
-     * @param string|int|DomainObjectInterface $needle
+     * @param QueryResult $haystack
+     * @param int|DomainObjectInterface $needle
      * @return boolean|integer
      */
     protected static function assertHaystackIsQueryResultAndHasNeedle($haystack, $needle)
@@ -116,8 +121,8 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage $haystack
-     * @param string|int|DomainObjectInterface $needle
+     * @param ObjectStorage $haystack
+     * @param int|DomainObjectInterface $needle
      * @return boolean|integer
      */
     protected static function assertHaystackIsObjectStorageAndHasNeedle($haystack, $needle)
@@ -138,8 +143,8 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param array&DomainObjectInterface[] $haystack
-     * @param integer|DomainObjectInterface $needle
+     * @param array $haystack
+     * @param mixed $needle
      * @param array $arguments
      * @return boolean|integer
      */

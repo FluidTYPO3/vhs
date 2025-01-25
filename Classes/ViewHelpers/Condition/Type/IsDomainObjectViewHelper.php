@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Type;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -27,11 +28,7 @@ class IsDomainObjectViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('fullString', 'string', 'need', false, false);
     }
 
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         return is_array($arguments) && $arguments['value'] instanceof AbstractDomainObject;
     }

@@ -10,27 +10,20 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Context;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use FluidTYPO3\Vhs\ViewHelpers\Condition\Context\IsFrontendViewHelper;
 use PHPUnit\Framework\Constraint\IsType;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
-/**
- * Class IsFrontendViewHelperTest
- */
 class IsFrontendViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function testIsFrontendContext()
+    public function testIsFrontendContext(): void
     {
         $instance = $this->createInstance();
-        $result = $this->callInaccessibleMethod($instance, 'evaluateCondition');
+        $result = IsFrontendViewHelper::verdict([], $this->getMockBuilder(RenderingContextInterface::class)->getMock());
         $this->assertThat($result, new IsType(IsType::TYPE_BOOL));
     }
 
-    /**
-     * @test
-     */
-    public function testRender()
+    public function testRender(): void
     {
         $arguments = ['then' => true, 'else' => false];
         $result = $this->executeViewHelper($arguments);

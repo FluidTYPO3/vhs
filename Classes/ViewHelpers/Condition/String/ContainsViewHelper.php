@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\String;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -25,12 +26,12 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('needle', 'string', 'need', true);
     }
 
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        return is_array($arguments) && false !== strpos((string) $arguments['haystack'], (string) $arguments['needle']);
+        /** @var string $haystack */
+        $haystack = $arguments['haystack'];
+        /** @var string $needle */
+        $needle = $arguments['needle'];
+        return is_array($arguments) && strpos((string) $haystack, (string) $needle) !== false;
     }
 }

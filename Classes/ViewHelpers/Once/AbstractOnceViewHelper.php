@@ -75,15 +75,8 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
         return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
 
-    /**
-     * @param array|null $arguments
-     * @return boolean
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        if ($arguments === null) {
-            return false;
-        }
         static::removeIfExpired($arguments);
         $shouldSkip = static::assertShouldSkip($arguments) === false;
         static::storeIdentifier($arguments);

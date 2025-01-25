@@ -64,7 +64,7 @@ class UnlessViewHelper extends AbstractConditionViewHelper
      */
     public function render()
     {
-        if (!static::evaluateCondition($this->arguments)) {
+        if (!static::verdict($this->arguments, $this->renderingContext)) {
             return $this->renderChildren();
         }
         return null;
@@ -80,7 +80,7 @@ class UnlessViewHelper extends AbstractConditionViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (!static::evaluateCondition($arguments)) {
+        if (!static::verdict($arguments, $renderingContext)) {
             return $renderChildrenClosure();
         }
         return null;

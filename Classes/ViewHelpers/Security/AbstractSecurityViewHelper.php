@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -130,11 +131,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         );
     }
 
-    /**
-     * @param array|null $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         /** @var static $proxy */
         $proxy = GeneralUtility::makeInstance(static::class);
