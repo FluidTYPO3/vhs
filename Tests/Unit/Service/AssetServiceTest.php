@@ -47,12 +47,21 @@ class AssetServiceTest extends AbstractTestCase
             ->getMock();
         $GLOBALS['TSFE']->content = 'content';
         $instance = $this->getMockBuilder(AssetService::class)
-            ->setMethods(['writeFile', 'getSettings', 'resolveAbsolutePathForFile'])
+            ->onlyMethods(
+                [
+                    'writeFile',
+                    'getSettings',
+                    'resolveAbsolutePathForFile',
+                    'getTypoScript',
+                    'readCacheDisabledInstructionFromContext'
+                ]
+            )
             ->getMock();
         $instance->expects($this->exactly($expectedFiles))
             ->method('writeFile')
             ->with($this->anything(), $this->anything());
         $instance->method('getSettings')->willReturn([]);
+        $instance->method('getTypoScript')->willReturn([]);
         $instance->method('resolveAbsolutePathForFile')->willReturnArgument(0);
         if (true === $cached) {
             $instance->buildAll([], $this, $cached);
@@ -118,13 +127,20 @@ class AssetServiceTest extends AbstractTestCase
            'sha384-aieE32yQSOy7uEhUkUvR9bVgfJgMsP+B9TthbxbjDDZ2hd4tjV5jMUoj9P8aeSHI',
            'sha512-0bz2YVKEoytikWIUFpo6lK/k2cVVngypgaItFoRvNfux/temtdCVxsu+HxmdRT8aNOeJxxREUphbkcAK8KpkWg==',
         ];
-        $file = 'Tests/Fixtures/Files/dummy.js';
-        $method = (new \ReflectionClass(AssetService::class))->getMethod('getFileIntegrity');
-        $instance = $this->getMockBuilder(AssetService::class)->setMethods(['writeFile'])->getMock();
 
-        $method->setAccessible(true);
+        $file = 'Tests/Fixtures/Files/dummy.js';
+
         foreach ($expectedIntegrities as $settingLevel => $expectedIntegrity) {
-            $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['tagsAddSubresourceIntegrity'] = $settingLevel;
+            $method = (new \ReflectionClass(AssetService::class))->getMethod('getFileIntegrity');
+            $instance = $this->getMockBuilder(AssetService::class)->onlyMethods(['writeFile', 'getTypoScript'])->getMock();
+            $instance->method('getTypoScript')->willReturn(
+                [
+                    'assets' => [
+                        'tagsAddSubresourceIntegrity' => $settingLevel,
+                    ],
+                ]
+            );
+            $method->setAccessible(true);
             $this->assertEquals($expectedIntegrity, $method->invokeArgs($instance, [$file]));
         }
     }

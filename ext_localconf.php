@@ -27,6 +27,7 @@
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['vhs_markdown'] = [
             'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
             'options' => [
+                // You should keep this value HIGHER than the lifetime of TYPO3's page caches at all times.
                 'defaultLifetime' => 804600
             ],
             'groups' => ['pages', 'all']

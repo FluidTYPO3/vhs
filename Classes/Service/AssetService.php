@@ -13,7 +13,9 @@ use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,6 +42,11 @@ class AssetService implements SingletonInterface
      */
     protected $configurationManager;
 
+    /**
+     * @var CacheManager
+     */
+    protected $cacheManager;
+
     protected static bool $typoScriptAssetsBuilt = false;
     protected static ?array $settingsCache = null;
     protected static array $cachedDependencies = [];
@@ -48,6 +55,11 @@ class AssetService implements SingletonInterface
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
+    }
+
+    public function injectCacheManager(CacheManager $cacheManager): void
+    {
+        $this->cacheManager = $cacheManager;
     }
 
     public function usePageCache(object $caller, bool $shouldUsePageCache): bool
@@ -63,7 +75,10 @@ class AssetService implements SingletonInterface
         }
 
         $settings = $this->getSettings();
-        $buildTypoScriptAssets = (!static::$typoScriptAssetsBuilt && ($cached || $GLOBALS['TSFE']->no_cache));
+        $buildTypoScriptAssets = (
+            !static::$typoScriptAssetsBuilt
+            && ($cached || $this->readCacheDisabledInstructionFromContext())
+        );
         if ($buildTypoScriptAssets && isset($settings['asset']) && is_array($settings['asset'])) {
             foreach ($settings['asset'] as $name => $typoScriptAsset) {
                 if (!isset($GLOBALS['VhsAssets'][$name]) && is_array($typoScriptAsset)) {
@@ -130,15 +145,53 @@ class AssetService implements SingletonInterface
     public function getSettings(): array
     {
         if (null === static::$settingsCache) {
-            $allTypoScript = $this->configurationManager->getConfiguration(
-                ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-            );
-            static::$settingsCache = GeneralUtility::removeDotsFromTS(
-                $allTypoScript['plugin.']['tx_vhs.']['settings.'] ?? []
-            );
+            static::$settingsCache = $this->getTypoScript()['settings'] ?? [];
         }
         $settings = (array) static::$settingsCache;
         return $settings;
+    }
+
+    protected function getTypoScript(): array
+    {
+        $cache = $this->cacheManager->getCache('vhs_main');
+        $pageUid = $this->readPageUidFromContext();
+        $cacheId = 'vhs_asset_ts_' . $pageUid;
+        $cacheTag = 'pageId_' . $pageUid;
+
+        try {
+            $allTypoScript = $this->configurationManager->getConfiguration(
+                ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+            );
+            $typoScript = GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.'] ?? []);
+            $cache->set($cacheId, $typoScript, [$cacheTag]);
+        } catch (\RuntimeException $exception) {
+            if ($exception->getCode() !== 1666513645) {
+                // Re-throw, but only if the exception is not the specific "Setup array has not been initialized" one.
+                throw $exception;
+            }
+
+            // Note: this case will only ever be entered on TYPO3v13 and above. Earlier versions will consistently
+            // produce the necessary TS array from ConfigurationManager - and will not raise the specified exception.
+
+            // We will only look in VHS's cache for a TS array if it wasn't already retrieved by ConfigurationManager.
+            // This is for performance reasons: the TS array may be relatively large and the cache may be DB-based.
+            // Whereas if the TS is already in ConfigurationManager, it costs nearly nothing to read. The TS is returned
+            // even if it is empty.
+            /** @var array|false $fromCache */
+            $fromCache = $cache->get($cacheId);
+            if (is_array($fromCache)) {
+                return $fromCache;
+            }
+
+            // Graceful: it's better to return empty settings than either adding massive code chunks dealing with
+            // custom TS reading or allowing an exception to be raised. Note that reaching this case means that the
+            // PAGE was cached, but VHS's cache for the page is empty. This can be caused by TTL skew. The solution is
+            // to flush all caches tagged with the page's ID, so the next request will correctly regenerate the entry.
+            $typoScript = [];
+            $this->cacheManager->flushCachesByTag($cacheTag);
+        }
+
+        return $typoScript;
     }
 
     /**
@@ -274,8 +327,9 @@ class AssetService implements SingletonInterface
         sort($keys);
         $assetName = implode('-', $keys);
         unset($keys);
-        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename'])) {
-            if ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['assets.']['mergedAssetsUseHashedFilename']) {
+        $typoScript = $this->getTypoScript();
+        if (isset($typoScript['assets']['mergedAssetsUseHashedFilename'])) {
+            if ($typoScript['assets']['mergedAssetsUseHashedFilename']) {
                 $assetName = md5($assetName);
             }
         }
@@ -284,8 +338,7 @@ class AssetService implements SingletonInterface
         if (!file_exists($fileAbsolutePathAndFilename)
             || 0 === filemtime($fileAbsolutePathAndFilename)
             || isset($GLOBALS['BE_USER'])
-            || ($GLOBALS['TSFE']->no_cache ?? false)
-            || ($GLOBALS['TSFE']->page['no_cache'] ?? false)
+            || $this->readCacheDisabledInstructionFromContext()
         ) {
             foreach ($assets as $name => $asset) {
                 $assetSettings = $this->extractAssetSettings($asset);
@@ -348,6 +401,7 @@ class AssetService implements SingletonInterface
             $file = PathUtility::getAbsoluteWebPath($file);
             $file = $this->prefixPath($file);
         }
+        $settings = $this->getTypoScript();
         switch ($type) {
             case 'js':
                 $tagBuilder->setTagName('script');
@@ -359,7 +413,7 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('src', (string) $file);
                 }
                 if (!empty($integrity)) {
-                    if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                    if (!empty($settings['prependPath'])) {
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
                     $tagBuilder->addAttribute('integrity', $integrity);
@@ -387,7 +441,7 @@ class AssetService implements SingletonInterface
                     $tagBuilder->addAttribute('href', $file);
                 }
                 if (!empty($integrity)) {
-                    if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
+                    if (!empty($settings['prependPath'])) {
                         $tagBuilder->addAttribute('crossorigin', 'anonymous');
                     }
                     $tagBuilder->addAttribute('integrity', $integrity);
@@ -742,11 +796,11 @@ class AssetService implements SingletonInterface
 
     protected function getFileIntegrity(string $file): ?string
     {
-        $typoScript = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.'] ?? null;
-        if (isset($typoScript['assets.']['tagsAddSubresourceIntegrity'])) {
+        $typoScript = $this->getTypoScript();
+        if (isset($typoScript['assets']['tagsAddSubresourceIntegrity'])) {
             // Note: 3 predefined hashing strategies (the ones suggestes in the rfc sheet)
-            if (0 < $typoScript['assets.']['tagsAddSubresourceIntegrity']
-                && $typoScript['assets.']['tagsAddSubresourceIntegrity'] < 4
+            if (0 < $typoScript['assets']['tagsAddSubresourceIntegrity']
+                && $typoScript['assets']['tagsAddSubresourceIntegrity'] < 4
             ) {
                 if (!file_exists($file)) {
                     return null;
@@ -754,7 +808,7 @@ class AssetService implements SingletonInterface
 
                 $integrity = null;
                 $integrityMethod = ['sha256','sha384','sha512'][
-                    $typoScript['assets.']['tagsAddSubresourceIntegrity'] - 1
+                    $typoScript['assets']['tagsAddSubresourceIntegrity'] - 1
                 ];
                 $integrityFile = sprintf(
                     $this->getTempPath() . 'vhs-assets-%s.%s',
@@ -797,6 +851,16 @@ class AssetService implements SingletonInterface
     protected function resolveAbsolutePathForFile(string $filename): string
     {
         return GeneralUtility::getFileAbsFileName($filename);
+    }
+
+    protected function readPageUidFromContext(): int
+    {
+        /** @var ServerRequestInterface $serverRequest */
+        $serverRequest = $GLOBALS['TYPO3_REQUEST'];
+
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $serverRequest->getAttribute('routing');
+        return $pageArguments->getPageId();
     }
 
     protected function readCacheDisabledInstructionFromContext(): bool
