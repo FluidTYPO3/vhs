@@ -5,6 +5,7 @@ namespace FluidTYPO3\Vhs\Tests\Fixtures\Classes;
 use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -63,7 +64,7 @@ class DummyQueryBuilder extends QueryBuilder
         return $this;
     }
 
-    public function setMaxResults(int $maxResults): QueryBuilder
+    public function setMaxResults(?int $maxResults = null): QueryBuilder
     {
         return $this;
     }
@@ -73,7 +74,7 @@ class DummyQueryBuilder extends QueryBuilder
         return $this->restrictions;
     }
 
-    public function createNamedParameter($value, int $type = \PDO::PARAM_STR, string $placeHolder = null): string
+    public function createNamedParameter($value, $type = Connection::PARAM_STR, string $placeHolder = null): string
     {
         return 'param';
     }
