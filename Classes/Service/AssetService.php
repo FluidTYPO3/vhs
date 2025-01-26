@@ -517,7 +517,7 @@ class AssetService implements SingletonInterface
         $view->setTemplateSource($contents);
         $view->assignMultiple($variables);
         $content = $view->render();
-        return $content;
+        return is_string($content) ? $content : '';
     }
 
     /**
