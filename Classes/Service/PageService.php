@@ -172,10 +172,22 @@ class PageService implements SingletonInterface
 
     public function getItemLink(array $page, bool $forceAbsoluteUrl = false): string
     {
+        $parameter = $page['uid'];
         if ((integer) $page['doktype'] === PageRepository::DOKTYPE_LINK) {
-            $parameter = $this->getPageRepository()->getExtURL($page);
-        } else {
-            $parameter = $page['uid'];
+            $redirectTo = $page['url'] ?? '';
+            if (!empty($redirectTo)) {
+                $uI = parse_url($redirectTo);
+                // If relative path, prefix Site URL
+                // If it's a valid email without protocol, add "mailto:"
+                if (!($uI['scheme'] ?? false)) {
+                    if (GeneralUtility::validEmail($redirectTo)) {
+                        $redirectTo = 'mailto:' . $redirectTo;
+                    } elseif ($redirectTo[0] !== '/') {
+                        $redirectTo = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
+                    }
+                }
+                $parameter = $redirectTo;
+            }
         }
         $config = [
             'parameter' => $parameter,
