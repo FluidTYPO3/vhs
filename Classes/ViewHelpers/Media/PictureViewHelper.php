@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -35,6 +36,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  */
 class PictureViewHelper extends AbstractTagBasedViewHelper
 {
+    use TagViewHelperCompatibility;
+
     const SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
     const SCOPE_VARIABLE_SRC = 'src';
     const SCOPE_VARIABLE_ID = 'treatIdAsReference';

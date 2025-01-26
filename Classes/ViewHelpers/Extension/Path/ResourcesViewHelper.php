@@ -12,7 +12,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Extension\AbstractExtensionViewHelper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 
 /**
  * ### Path: Relative Extension Resource Path

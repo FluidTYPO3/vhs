@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
@@ -16,6 +17,8 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
  */
 class BreadCrumbViewHelper extends AbstractMenuViewHelper
 {
+    use ArgumentOverride;
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();

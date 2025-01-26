@@ -10,7 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 
 /**
  * ### Variable: Unset
@@ -48,7 +48,7 @@ class UnsetViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return void
+     * @return null
      */
     public static function renderStatic(
         array $arguments,
@@ -61,5 +61,6 @@ class UnsetViewHelper extends AbstractViewHelper
         if ($variableProvider->exists($name)) {
             $variableProvider->remove($name);
         }
+        return null;
     }
 }

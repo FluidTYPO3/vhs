@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
 
 /**
@@ -15,6 +16,8 @@ use FluidTYPO3\Vhs\ViewHelpers\Resource\RecordViewHelper;
  */
 class ResourcesViewHelper extends RecordViewHelper
 {
+    use ArgumentOverride;
+
     const DEFAULT_TABLE = 'pages';
     const DEFAULT_FIELD = 'media';
 

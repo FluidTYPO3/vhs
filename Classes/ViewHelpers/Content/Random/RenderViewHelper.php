@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
 
@@ -16,6 +17,8 @@ use FluidTYPO3\Vhs\ViewHelpers\Content\AbstractContentViewHelper;
  */
 class RenderViewHelper extends AbstractContentViewHelper
 {
+    use ArgumentOverride;
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();

@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -20,6 +21,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class DeferredViewHelper extends AbstractMenuViewHelper
 {
+    use ArgumentOverride;
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();

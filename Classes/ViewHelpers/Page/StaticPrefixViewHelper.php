@@ -10,7 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 
 /**
  * ### Page: Static Prefix

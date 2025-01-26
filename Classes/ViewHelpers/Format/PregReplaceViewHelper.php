@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 
 /**
  * ### PregReplace regular expression ViewHelper

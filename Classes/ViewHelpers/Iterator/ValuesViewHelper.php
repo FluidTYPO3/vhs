@@ -26,6 +26,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  ***************************************************************/
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -37,6 +38,7 @@ class ValuesViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
+    use CompileWithRenderStatic;
 
     /**
      * @var boolean

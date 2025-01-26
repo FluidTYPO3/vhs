@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
@@ -33,6 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 {
     use ArrayConsumingViewHelperTrait;
+    use TagViewHelperCompatibility;
 
     protected array $languageMenu = [];
     protected int $defaultLangUid = 0;
