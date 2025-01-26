@@ -1,6 +1,22 @@
 parameters:
     ignoreErrors:
         -
+            message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\:\\:\\$no_cache\\.$#"
+            count: 1
+            path: Classes/Service/AssetService.php
+        -
+            message: "#^Call to an undefined static method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\AbstractConditionViewHelper\\:\\:renderStatic\\(\\)\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Once/AbstractOnceViewHelper.php
+        -
+            message: "#^Call to an undefined static method FluidTYPO3\\\\Vhs\\\\ViewHelpers\\\\Condition\\\\Form\\\\HasValidatorViewHelper\\:\\:renderStatic\\(\\)\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Condition/Form/IsRequiredViewHelper.php
+        -
+            message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\:\\:\\$fe_user\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Security/AbstractSecurityViewHelper.php
+        -
             message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\SiteLanguage\\:\\:getTwoLetterIsoCode\\(\\)\\.$#"
             count: 1
             path: Classes/ViewHelpers/Page/LanguageMenuViewHelper.php

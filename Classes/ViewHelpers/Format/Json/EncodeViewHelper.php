@@ -187,7 +187,7 @@ class EncodeViewHelper extends AbstractViewHelper
      * value type. The type is checked and another recursive call is used to
      * convert any nested objects.
      *
-     * @param DomainObjectInterface[]|\Traversable[] $domainObjects
+     * @param array|DomainObjectInterface[]|\Traversable[] $domainObjects
      * @return DomainObjectInterface[]|array[]|string[]|\Traversable[]|null[]
      */
     protected static function recursiveArrayOfDomainObjectsToArray(
@@ -233,6 +233,7 @@ class EncodeViewHelper extends AbstractViewHelper
         if ($preventRecursion && in_array($hash, static::$encounteredClasses)) {
             return $recursionMarker;
         }
+        /** @var array $converted */
         $converted = ObjectAccess::getGettableProperties($domainObject);
         static::$encounteredClasses[] = $hash;
         $converted = static::recursiveArrayOfDomainObjectsToArray($converted, $preventRecursion, $recursionMarker);
