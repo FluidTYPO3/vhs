@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Service;
 use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AssetInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -20,6 +21,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -750,9 +752,6 @@ class AssetService implements SingletonInterface
                     return null;
                 }
 
-                /** @var TypoScriptFrontendController $typoScriptFrontendController */
-                $typoScriptFrontendController = $GLOBALS['TSFE'];
-
                 $integrity = null;
                 $integrityMethod = ['sha256','sha384','sha512'][
                     $typoScript['assets.']['tagsAddSubresourceIntegrity'] - 1
@@ -766,8 +765,7 @@ class AssetService implements SingletonInterface
                 if (!file_exists($integrityFile)
                     || 0 === filemtime($integrityFile)
                     || isset($GLOBALS['BE_USER'])
-                    || $typoScriptFrontendController->no_cache
-                    || $typoScriptFrontendController->page['no_cache']
+                    || $this->readCacheDisabledInstructionFromContext()
                 ) {
                     if (extension_loaded('hash') && function_exists('hash_file')) {
                         $integrity = base64_encode((string) hash_file($integrityMethod, $file, true));
@@ -799,5 +797,24 @@ class AssetService implements SingletonInterface
     protected function resolveAbsolutePathForFile(string $filename): string
     {
         return GeneralUtility::getFileAbsFileName($filename);
+    }
+
+    protected function readCacheDisabledInstructionFromContext(): bool
+    {
+        $hasDisabledInstructionInRequest = false;
+
+        /** @var ServerRequestInterface $serverRequest */
+        $serverRequest = $GLOBALS['TYPO3_REQUEST'];
+        $instruction = $serverRequest->getAttribute('frontend.cache.instruction');
+        if ($instruction instanceof CacheInstruction) {
+            $hasDisabledInstructionInRequest = !$instruction->isCachingAllowed();
+        }
+
+        /** @var TypoScriptFrontendController $typoScriptFrontendController */
+        $typoScriptFrontendController = $GLOBALS['TSFE'];
+
+        return $hasDisabledInstructionInRequest
+            || $typoScriptFrontendController->no_cache
+            || (is_array($typoScriptFrontendController->page) && $typoScriptFrontendController->page['no_cache']);
     }
 }
