@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\FileRepositoryProxy;
 use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyQueryBuilder;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
@@ -15,7 +16,6 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 
 class FalViewHelperTest extends AbstractViewHelperTestCase
@@ -26,7 +26,7 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
             ->setMethods(['getFileReferenceObject'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->singletonInstances[FileRepository::class] = $this->getMockBuilder(FileRepository::class)
+        $this->singletonInstances[FileRepositoryProxy::class] = $this->getMockBuilder(FileRepositoryProxy::class)
             ->setMethods(['findByRelation'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -71,7 +71,7 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
 
     public function testGetResourcesWhenPageContext(): void
     {
-        $this->singletonInstances[FileRepository::class]->method('findByRelation')->willReturn([]);
+        $this->singletonInstances[FileRepositoryProxy::class]->method('findByRelation')->willReturn([]);
 
         $GLOBALS['TSFE'] = (object) ['sys_page' => 'foobar'];
 

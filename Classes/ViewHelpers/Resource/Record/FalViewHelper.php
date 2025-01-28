@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  */
 
 use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\FileRepositoryProxy;
 use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -55,7 +56,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
     protected $resourceFactory;
 
     /**
-     * @var FileRepository
+     * @var FileRepositoryProxy
      */
     protected $fileRepository;
 
@@ -72,8 +73,8 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         /** @var ResourceFactoryProxy $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactoryProxy::class);
         $this->resourceFactory = $resourceFactory;
-        /** @var FileRepository $fileRepository */
-        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        /** @var FileRepositoryProxy $fileRepository */
+        $fileRepository = GeneralUtility::makeInstance(FileRepositoryProxy::class);
         $this->fileRepository = $fileRepository;
     }
 

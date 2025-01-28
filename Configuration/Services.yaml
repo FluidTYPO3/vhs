@@ -20,6 +20,9 @@ services:
   FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy:
     public: true
 
+  FluidTYPO3\Vhs\Proxy\FileRepositoryProxy:
+    public: true
+
   FluidTYPO3\Vhs\Service\AssetService:
     public: true
 

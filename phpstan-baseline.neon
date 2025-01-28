@@ -1,6 +1,10 @@
 parameters:
     ignoreErrors:
         -
+            message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileRepository\\:\\:findByRelation\\(\\) invoked with 4 parameters, 3 required\\.$#"
+            count: 1
+            path: Classes/Proxy/FileRepositoryProxy.php
+        -
             message: "#^Parameter \\#2 \\$response of method FluidTYPO3\\\\Vhs\\\\Proxy\\\\DispatcherProxy\\:\\:dispatch\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Response\\|null, \\(TYPO3\\\\CMS\\\\Core\\\\Http\\\\Response\\&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response\\)\\|\\(TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface\\&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response\\)\\|null given\\.$#"
             count: 1
             path: Classes/ViewHelpers/Render/RequestViewHelper.php
