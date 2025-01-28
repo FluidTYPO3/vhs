@@ -4,7 +4,6 @@ namespace FluidTYPO3\Vhs\Tests\Fixtures\Classes;
 
 use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class DummySourceSetViewHelper
 {
