@@ -103,7 +103,7 @@ class SetViewHelper extends AbstractViewHelper
                 // Note: re-insert the variable to ensure unreferenced values like arrays also get updated
                 $variableProvider->remove($objectName);
                 $variableProvider->add($objectName, $object);
-            } catch (\Exception $error) {
+            } catch (\Exception | \Error $error) {
                 return null;
             }
         }
