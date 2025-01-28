@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Placeholder;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -48,10 +49,23 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $mockContentObject->method('parseFunc')->willReturn('foobar');
-        $this->singletonInstances[ConfigurationManagerInterface::class] = $this->getMockBuilder(ConfigurationManagerInterface::class)
-            ->getMockForAbstractClass();
-        $this->singletonInstances[ConfigurationManagerInterface::class]->method('getContentObject')
-            ->willReturn($mockContentObject);
+
+        if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
+            /** @var ConfigurationManagerInterface $configurationManager */
+            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+            $configurationManager->method('getContentObject')->willReturn($mockContentObject);
+        } else {
+            $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+            $request->method('getAttribute')->willReturn($mockContentObject);
+            /** @var ConfigurationManagerInterface $configurationManager */
+            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
+                ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
+                ->addMethods(['getRequest'])
+                ->getMock();
+            $configurationManager->method('getRequest')->willReturn($request);
+        }
+
+        $this->singletonInstances[ConfigurationManagerInterface::class] = $configurationManager;
 
         $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = [];
 
