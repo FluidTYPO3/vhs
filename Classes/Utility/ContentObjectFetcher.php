@@ -39,6 +39,9 @@ class ContentObjectFetcher
 
     protected static function resolveFromRequest(ServerRequestInterface $request): ?ContentObjectRenderer
     {
+        if (($cObject = $request->getAttribute('currentContentObject')) instanceof ContentObjectRenderer) {
+            return $cObject;
+        }
         /** @var TypoScriptFrontendController $controller */
         $controller = $request->getAttribute('frontend.controller');
         return $controller instanceof TypoScriptFrontendController ? $controller->cObj : null;
