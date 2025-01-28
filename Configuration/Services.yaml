@@ -11,7 +11,10 @@ services:
   FluidTYPO3\Vhs\:
     resource: '../Classes/*'
 
-  FluidTYPO3\Vhs\Utility\DispatcherProxy:
+  FluidTYPO3\Vhs\Proxy\DispatcherProxy:
+    public: true
+
+  FluidTYPO3\Vhs\Proxy\SiteFinderProxy:
     public: true
 
   FluidTYPO3\Vhs\Service\AssetService:

@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\SiteFinderProxy;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
@@ -19,7 +20,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -152,12 +152,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $this->cObj = $contentObject;
         $this->tagName = is_scalar($this->arguments['tagName']) ? (string) $this->arguments['tagName'] : 'ul';
         $this->tag->setTagName($this->tagName);
-
-        if (class_exists(SiteFinder::class)) {
-            $this->site = $this->getSite();
-            $this->defaultLangUid = $this->site->getDefaultLanguage()->getLanguageId();
-        }
+        $this->site = $this->getSite();
+        $this->defaultLangUid = $this->site->getDefaultLanguage()->getLanguageId();
         $this->languageMenu = $this->parseLanguageMenu();
+
         /** @var string $as */
         $as = $this->arguments['as'];
         $this->renderingContext->getVariableProvider()->add($as, $this->languageMenu);
@@ -505,8 +503,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getSite()
     {
-        /** @var SiteFinder $siteFinder */
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        /** @var SiteFinderProxy $siteFinder */
+        $siteFinder = GeneralUtility::makeInstance(SiteFinderProxy::class);
         return $siteFinder->getSiteByPageId($this->getPageUid());
     }
 

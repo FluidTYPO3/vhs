@@ -8,11 +8,11 @@ namespace FluidTYPO3\Vhs\Utility;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\SiteFinderProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -36,8 +36,8 @@ class FrontendSimulationUtility
 
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] ?? 'fe_user';
 
-        /** @var SiteFinder $siteFinder */
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        /** @var SiteFinderProxy $siteFinder */
+        $siteFinder = GeneralUtility::makeInstance(SiteFinderProxy::class);
         $sites = $siteFinder->getAllSites();
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
