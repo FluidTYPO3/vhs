@@ -134,13 +134,14 @@ class PageService implements SingletonInterface
             $pageRecord = $this->getPage($pageUid);
         }
         if (-1 === $languageUid) {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
             if (class_exists(LanguageAspect::class)) {
                 /** @var Context $context */
                 $context = GeneralUtility::makeInstance(Context::class);
                 /** @var LanguageAspect $languageAspect */
                 $languageAspect = $context->getAspect('language');
                 $languageUid = $languageAspect->getId();
+            } else {
+                $languageUid = $GLOBALS['TSFE']->sys_language_uid;
             }
         }
 
