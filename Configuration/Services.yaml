@@ -17,6 +17,9 @@ services:
   FluidTYPO3\Vhs\Proxy\SiteFinderProxy:
     public: true
 
+  FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy:
+    public: true
+
   FluidTYPO3\Vhs\Service\AssetService:
     public: true
 
