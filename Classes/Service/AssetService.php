@@ -878,7 +878,7 @@ class AssetService implements SingletonInterface
         $typoScriptFrontendController = $GLOBALS['TSFE'];
 
         return $hasDisabledInstructionInRequest
-            || $typoScriptFrontendController->no_cache
+            || (property_exists($typoScriptFrontendController, 'no_cache') && $typoScriptFrontendController->no_cache)
             || (
                 is_array($typoScriptFrontendController->page)
                 && ($typoScriptFrontendController->page['no_cache'] ?? false)
