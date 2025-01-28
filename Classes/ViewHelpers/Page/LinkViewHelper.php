@@ -251,7 +251,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         $uri = $uriBuilder->build();
         $this->tag->addAttribute('href', $uri);
-        $classes = trim($this->arguments['class'] . ' ' . $additionalCssClasses);
+        $classes = trim(($this->arguments['class'] ?? '') . ' ' . $additionalCssClasses);
         if (!empty($classes)) {
             $this->tag->addAttribute('class', $classes);
         } else {
