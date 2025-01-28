@@ -42,15 +42,11 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         /** @var string $defaultTitle */
         $defaultTitle = $arguments['defaultTitle'];
 
-        if (class_exists(LanguageAspect::class)) {
-            /** @var Context $context */
-            $context = GeneralUtility::makeInstance(Context::class);
-            /** @var LanguageAspect $languageAspect */
-            $languageAspect = $context->getAspect('language');
-            $currentLanguageUid = $languageAspect->getId();
-        } else {
-            $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-        }
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = $context->getAspect('language');
+        $currentLanguageUid = $languageAspect->getId();
 
         if (is_numeric($language)) {
             $languageUid = intval($language);
@@ -81,6 +77,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
                 }
             }
         }
+
         return $languageUid === $currentLanguageUid;
     }
 }

@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyViewHelperNode;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\DummyController;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ErrorHandler\ErrorHandlerInterface;
+use TYPO3Fluid\Fluid\Core\ErrorHandler\StandardErrorHandler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
@@ -111,10 +113,9 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->errorHandler = $this->getMockBuilder(ErrorHandlerInterface::class)->getMockForAbstractClass();
+        $this->errorHandler = new StandardErrorHandler();
         $this->templateParser = new TemplateParser();
         $this->templateParser->setRenderingContext($this->renderingContext);
-        $this->errorHandler->method('handleViewHelperError')->willThrowException(new Exception('dummy'));
         $this->renderingContext->method('getViewHelperResolver')->willReturn($this->viewHelperResolver);
 
         $this->renderingContext->method('getViewHelperVariableContainer')->willReturn(
@@ -202,9 +203,23 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         if (method_exists($instance, 'injectConfigurationManager')) {
             $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
             $cObject->start(['uid' => 123], 'tt_content');
-            /** @var ConfigurationManagerInterface $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
-            $configurationManager->method('getContentObject')->willReturn($cObject);
+
+            if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
+                /** @var ConfigurationManagerInterface $configurationManager */
+                $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+                $configurationManager->method('getContentObject')->willReturn($cObject);
+            } else {
+                $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+                $request->method('getAttribute')->willReturn($cObject);
+
+                /** @var ConfigurationManagerInterface $configurationManager */
+                $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
+                    ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
+                    ->addMethods(['getRequest'])
+                    ->getMock();
+                $configurationManager->method('getRequest')->willReturn($request);
+            }
+
             $instance->injectConfigurationManager($configurationManager);
         }
         $instance->setRenderingContext($this->renderingContext);

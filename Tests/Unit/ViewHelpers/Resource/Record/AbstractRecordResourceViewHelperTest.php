@@ -96,7 +96,7 @@ class AbstractRecordResourceViewHelperTest extends AbstractTestCase
     public function testRenderThrowsExceptionWithoutRecord(): void
     {
         $queryBuilder = new DummyQueryBuilder($this);
-        $queryBuilder->result->method('fetchAssociative')->willReturn(null);
+        $queryBuilder->result->method('fetchAssociative')->willReturn(false);
 
         self::expectExceptionCode(1384611413);
         $this->subject->setArguments(['uid' => 123, 'table' => 'table', 'field' => 'field']);
