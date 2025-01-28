@@ -9,9 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  */
 
 
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 
 /**
  * Renders Gravatar URI.
