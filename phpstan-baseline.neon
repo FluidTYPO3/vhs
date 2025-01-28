@@ -1,6 +1,14 @@
 parameters:
     ignoreErrors:
         -
+            message: "#^Parameter \\#2 \\$response of method FluidTYPO3\\\\Vhs\\\\Proxy\\\\DispatcherProxy\\:\\:dispatch\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Response\\|null, \\(TYPO3\\\\CMS\\\\Core\\\\Http\\\\Response\\&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response\\)\\|\\(TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface\\&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response\\)\\|null given\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Render/RequestViewHelper.php
+        -
+            message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: Classes/Proxy/DispatcherProxy.php
+        -
             message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\:\\:\\$no_cache\\.$#"
             count: 1
             path: Classes/Service/AssetService.php
