@@ -124,23 +124,23 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         }
         $menuItems = $this->parseMenu($pages);
         $menu = [];
-        if (isset($pages['first'])) {
+        if (isset($pages['first'], $menuItems['first'])) {
             $menu['first'] = $menuItems['first'];
             $menu['first']['linktext'] = $this->getCustomLabelOrPageTitle('labelFirst', $menuItems['first']);
         }
-        if (isset($pages['prev'])) {
+        if (isset($pages['prev'], $menuItems['prev'])) {
             $menu['prev'] = $menuItems['prev'];
             $menu['prev']['linktext'] = $this->getCustomLabelOrPageTitle('labelPrevious', $menuItems['prev']);
         }
-        if (isset($pages['up'])) {
+        if (isset($pages['up'], $menuItems['up'])) {
             $menu['up'] = $menuItems['up'];
             $menu['up']['linktext'] = $this->getCustomLabelOrPageTitle('labelUp', $menuItems['up']);
         }
-        if (isset($pages['next'])) {
+        if (isset($pages['next'], $menuItems['next'])) {
             $menu['next'] = $menuItems['next'];
             $menu['next']['linktext'] = $this->getCustomLabelOrPageTitle('labelNext', $menuItems['next']);
         }
-        if (isset($pages['last'])) {
+        if (isset($pages['last'], $menuItems['last'])) {
             $menu['last'] = $menuItems['last'];
             $menu['last']['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menuItems['last']);
         }
