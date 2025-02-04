@@ -22,16 +22,15 @@ class ContentObjectFetcher
             ? $configurationManager->getRequest()
             : ($GLOBALS['TYPO3_REQUEST'] ?? null)) ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
 
-        if ($request && $configurationManager === null) {
+        if ($request) {
             $contentObject = static::resolveFromRequest($request);
         }
 
-        if ($contentObject === null) {
-            if ($configurationManager !== null && method_exists($configurationManager, 'getContentObject')) {
-                $contentObject = $configurationManager->getContentObject();
-            } elseif ($request) {
-                $contentObject = static::resolveFromRequest($request);
-            }
+        if ($contentObject === null
+            && $configurationManager !== null
+            && method_exists($configurationManager, 'getContentObject')
+        ) {
+            $contentObject = $configurationManager->getContentObject();
         }
 
         return $contentObject;
