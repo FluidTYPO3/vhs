@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
 
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\AbstractImageViewHelper;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\File;
@@ -40,9 +41,20 @@ class AbstractImageViewHelperTest extends AbstractTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-            ->getMockForAbstractClass();
-        $configurationManager->method('getContentObject')->willReturn($this->contentObjectRenderer);
+        if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
+            /** @var ConfigurationManagerInterface $configurationManager */
+            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+            $configurationManager->method('getContentObject')->willReturn($this->contentObjectRenderer);
+        } else {
+            $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+            $request->method('getAttribute')->willReturn($this->contentObjectRenderer);
+            /** @var ConfigurationManagerInterface $configurationManager */
+            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
+                ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
+                ->addMethods(['getRequest'])
+                ->getMock();
+            $configurationManager->method('getRequest')->willReturn($request);
+        }
 
         $this->subject->injectConfigurationManager($configurationManager);
 

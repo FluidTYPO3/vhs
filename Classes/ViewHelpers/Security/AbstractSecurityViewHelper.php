@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  */
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -21,6 +22,7 @@ use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -130,11 +132,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         );
     }
 
-    /**
-     * @param array|null $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         /** @var static $proxy */
         $proxy = GeneralUtility::makeInstance(static::class);
@@ -349,10 +347,20 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         if (empty($GLOBALS['TSFE']->loginUser)) {
             return null;
         }
-        /** @var TypoScriptFrontendController $tsfe */
-        $tsfe = $GLOBALS['TSFE'];
-        /** @var FrontendUserAuthentication $frontendUserAuthentication */
-        $frontendUserAuthentication = $tsfe->fe_user;
+
+        $frontendUserAuthentication = null;
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+            /** @var FrontendUserAuthentication|null $frontendUserAuthentication */
+            $frontendUserAuthentication = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+        }
+
+        if ($frontendUserAuthentication === null) {
+            /** @var TypoScriptFrontendController $tsfe */
+            $tsfe = $GLOBALS['TSFE'];
+            /** @var FrontendUserAuthentication $frontendUserAuthentication */
+            $frontendUserAuthentication = $tsfe->fe_user;
+        }
+
         /** @var FrontendUser|null $frontendUser */
         $frontendUser = $this->frontendUserRepository->findByUid($frontendUserAuthentication->user['uid'] ?? 0);
         return $frontendUser;

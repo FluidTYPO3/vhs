@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,6 +36,7 @@ class SortViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
+    use CompileWithRenderStatic;
 
     /**
      * @var boolean
@@ -188,7 +190,7 @@ class SortViewHelper extends AbstractViewHelper
     /**
      * Gets the value to use as sorting value from $object
      *
-     * @param mixed $object
+     * @param array|object $object
      * @param array $arguments
      * @return mixed
      */

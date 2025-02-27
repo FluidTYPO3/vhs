@@ -8,10 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ### Variable: Get
@@ -87,6 +87,7 @@ class GetViewHelper extends AbstractViewHelper
             $lastSegment = array_shift($segments);
             $templateVariableRootName = $lastSegment;
             if ($variableProvider->exists($templateVariableRootName)) {
+                /** @var array|object $templateVariableRoot */
                 $templateVariableRoot = $variableProvider->get($templateVariableRootName);
                 if ($useRawKeys) {
                     return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
@@ -103,6 +104,7 @@ class GetViewHelper extends AbstractViewHelper
                             /** @var iterable $value */
                             foreach ($value as $possibleValue) {
                                 if ($index === $segment) {
+                                    /** @var array|object $value */
                                     $value = $possibleValue;
                                     $found = true;
                                     break;
@@ -114,6 +116,7 @@ class GetViewHelper extends AbstractViewHelper
                             }
                             continue;
                         }
+                        /** @var array|object $value */
                         $value = ObjectAccess::getProperty($value, $segment);
                     }
                     return $value;

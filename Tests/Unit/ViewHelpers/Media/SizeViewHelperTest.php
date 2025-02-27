@@ -8,9 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Class SizeViewHelperTest
@@ -27,7 +27,7 @@ class SizeViewHelperTest extends AbstractViewHelperTestCase
      */
     public function setUp(): void
     {
-        $this->singletonInstances[ResourceFactory::class] = $this->getMockBuilder(ResourceFactory::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)->disableOriginalConstructor()->getMock();
         parent::setUp();
         $this->fixturesPath = realpath(__DIR__ . '/../../../../Tests/Fixtures/Files');
     }

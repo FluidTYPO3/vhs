@@ -8,8 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Math: Average
@@ -26,6 +27,7 @@ class AverageViewHelper extends AbstractMultipleMathViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
+    use ArgumentOverride;
 
     public function initializeArguments(): void
     {

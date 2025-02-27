@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+
 /**
  * ### Security: Deny
  *
@@ -19,14 +21,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  */
 class DenyViewHelper extends AbstractSecurityViewHelper
 {
-    /**
-     * Overridden condition evaluation - full negation of verdict
-     *
-     * @param array|null $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        return !parent::evaluateCondition($arguments);
+        return !parent::verdict($arguments, $renderingContext);
     }
 }

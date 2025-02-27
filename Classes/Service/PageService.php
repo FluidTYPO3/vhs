@@ -95,13 +95,16 @@ class PageService implements SingletonInterface
     ): string {
         $constraints = [];
 
-        $constraints[] = 'doktype NOT IN ('
-            . PageRepository::DOKTYPE_BE_USER_SECTION
-            . ','
-            . PageRepository::DOKTYPE_RECYCLER
-            . ','
-            . PageRepository::DOKTYPE_SYSFOLDER
-            . ')';
+        $types = [
+            PageRepository::DOKTYPE_BE_USER_SECTION,
+            PageRepository::DOKTYPE_SYSFOLDER
+        ];
+
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '<=')) {
+            $types[] = PageRepository::DOKTYPE_RECYCLER;
+        }
+
+        $constraints[] = 'doktype NOT IN (' . implode(',', $types) . ')';
 
         if ($includeNotInMenu === false) {
             $constraints[] = 'nav_hide = 0';
@@ -131,13 +134,14 @@ class PageService implements SingletonInterface
             $pageRecord = $this->getPage($pageUid);
         }
         if (-1 === $languageUid) {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
             if (class_exists(LanguageAspect::class)) {
                 /** @var Context $context */
                 $context = GeneralUtility::makeInstance(Context::class);
                 /** @var LanguageAspect $languageAspect */
                 $languageAspect = $context->getAspect('language');
                 $languageUid = $languageAspect->getId();
+            } else {
+                $languageUid = $GLOBALS['TSFE']->sys_language_uid;
             }
         }
 
@@ -169,10 +173,22 @@ class PageService implements SingletonInterface
 
     public function getItemLink(array $page, bool $forceAbsoluteUrl = false): string
     {
+        $parameter = $page['uid'];
         if ((integer) $page['doktype'] === PageRepository::DOKTYPE_LINK) {
-            $parameter = $this->getPageRepository()->getExtURL($page);
-        } else {
-            $parameter = $page['uid'];
+            $redirectTo = $page['url'] ?? '';
+            if (!empty($redirectTo)) {
+                $uI = parse_url($redirectTo);
+                // If relative path, prefix Site URL
+                // If it's a valid email without protocol, add "mailto:"
+                if (!($uI['scheme'] ?? false)) {
+                    if (GeneralUtility::validEmail($redirectTo)) {
+                        $redirectTo = 'mailto:' . $redirectTo;
+                    } elseif ($redirectTo[0] !== '/') {
+                        $redirectTo = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
+                    }
+                }
+                $parameter = $redirectTo;
+            }
         }
         $config = [
             'parameter' => $parameter,

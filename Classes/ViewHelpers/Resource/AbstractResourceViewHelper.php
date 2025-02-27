@@ -8,13 +8,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
+use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -23,6 +24,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
 {
+    use TagViewHelperCompatibility;
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -90,8 +93,8 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         $files = [];
-        /** @var ResourceFactory $resourceFactory */
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        /** @var ResourceFactoryProxy $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactoryProxy::class);
 
         if (!empty($categories)) {
             /** @var ConnectionPool $connectionPool */
@@ -99,7 +102,7 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
             $queryBuilder = $connectionPool->getQueryBuilderForTable($this->getTablenameForSystemConfiguration());
             $queryBuilder->createNamedParameter(
                 $this->getTablenameForSystemConfiguration(),
-                \PDO::PARAM_STR,
+                Connection::PARAM_STR,
                 ':tablenames'
             );
             $queryBuilder->createNamedParameter($categories, Connection::PARAM_STR_ARRAY, ':categories');

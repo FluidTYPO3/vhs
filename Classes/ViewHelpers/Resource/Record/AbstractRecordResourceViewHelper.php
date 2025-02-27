@@ -8,17 +8,19 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Record Resource ViewHelpers
@@ -150,7 +152,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
-        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT, ':id');
+        $queryBuilder->createNamedParameter($id, Connection::PARAM_INT, ':id');
 
         $queryBuilder
             ->select('*')
@@ -165,8 +167,10 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     public function getActiveRecord(): array
     {
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $this->configurationManager->getContentObject();
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        if ($contentObject === null) {
+            throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737807859);
+        }
         return $contentObject->data;
     }
 

@@ -8,10 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Variable: Set
@@ -103,7 +103,7 @@ class SetViewHelper extends AbstractViewHelper
                 // Note: re-insert the variable to ensure unreferenced values like arrays also get updated
                 $variableProvider->remove($objectName);
                 $variableProvider->add($objectName, $object);
-            } catch (\Exception $error) {
+            } catch (\Exception | \Error $error) {
                 return null;
             }
         }

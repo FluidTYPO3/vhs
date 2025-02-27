@@ -93,6 +93,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     protected static function renderView($view, array $arguments): string
     {
         try {
+            /** @var string|null $content */
             $content = $view->render();
         } catch (\Exception $error) {
             if (!($arguments['graceful'] ?? false)) {

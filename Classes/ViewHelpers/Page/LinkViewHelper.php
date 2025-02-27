@@ -10,7 +10,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -35,9 +37,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {
-
     use PageRecordViewHelperTrait;
     use TemplateVariableViewHelperTrait;
+    use TagViewHelperCompatibility;
 
     /**
      * @var PageService
@@ -231,6 +233,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($pageType)
@@ -248,7 +251,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         $uri = $uriBuilder->build();
         $this->tag->addAttribute('href', $uri);
-        $classes = trim($this->arguments['class'] . ' ' . $additionalCssClasses);
+        $classes = trim(($this->arguments['class'] ?? '') . ' ' . $additionalCssClasses);
         if (!empty($classes)) {
             $this->tag->addAttribute('class', $classes);
         } else {

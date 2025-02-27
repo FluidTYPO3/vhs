@@ -8,12 +8,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Lipsum ViewHelper
@@ -166,8 +168,11 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
     {
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $configurationManager->getContentObject();
+        /** @var ContentObjectRenderer|null $contentObject */
+        $contentObject = ContentObjectFetcher::resolve($configurationManager);
+        if ($contentObject === null) {
+            throw new Exception('v:format.placeholder.lipsum requires a ContentObjectRenderer, none found', 1737807859);
+        }
         return $contentObject;
     }
 }

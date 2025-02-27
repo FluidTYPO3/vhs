@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Utility;
+namespace FluidTYPO3\Vhs\Proxy;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.

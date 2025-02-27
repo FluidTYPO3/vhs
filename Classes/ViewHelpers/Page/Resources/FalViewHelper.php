@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
 use TYPO3\CMS\Core\Context\Context;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FalViewHelper extends ResourcesFalViewHelper
 {
     use SlideViewHelperTrait;
+    use ArgumentOverride;
 
     const DEFAULT_TABLE = 'pages';
     const DEFAULT_FIELD = 'media';
@@ -52,7 +54,7 @@ class FalViewHelper extends ResourcesFalViewHelper
     public function getRecord(int $id): ?array
     {
         $record = parent::getRecord($id);
-        if (!$this->isDefaultLanguage()) {
+        if (!$this->isDefaultLanguage() && $record !== null) {
             /** @var PageService $pageService */
             $pageService = GeneralUtility::makeInstance(PageService::class);
             $pageRepository = $pageService->getPageRepository();

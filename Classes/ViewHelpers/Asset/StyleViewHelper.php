@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
+
 /**
  * ### Basic Style ViewHelper
  *
@@ -16,6 +18,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  */
 class StyleViewHelper extends AbstractAssetViewHelper
 {
+    use ArgumentOverride;
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();

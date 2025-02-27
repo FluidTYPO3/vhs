@@ -8,19 +8,24 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\SiteFinderProxy;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
-use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ViewHelper for rendering TYPO3 menus in Fluid
@@ -29,6 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 {
     use ArrayConsumingViewHelperTrait;
+    use TagViewHelperCompatibility;
 
     protected array $languageMenu = [];
     protected int $defaultLangUid = 0;
@@ -43,10 +49,17 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected $cObj;
 
+    protected ConfigurationManagerInterface $configurationManager;
+
     /**
      * @var Site|\TYPO3\CMS\Core\Site\Entity\Site
      */
     protected $site;
+
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
+    }
 
     public function initializeArguments(): void
     {
@@ -130,17 +143,19 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         if (!is_object($GLOBALS['TSFE']->sys_page)) {
             return '';
         }
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $GLOBALS['TSFE']->cObj;
+        /** @var ContentObjectRenderer|null $contentObject */
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        if ($contentObject === null) {
+            throw new Exception('v:page.languageMenu requires a ContentObjectRenderer, none found', 1737807859);
+        }
+
         $this->cObj = $contentObject;
         $this->tagName = is_scalar($this->arguments['tagName']) ? (string) $this->arguments['tagName'] : 'ul';
         $this->tag->setTagName($this->tagName);
-
-        if (class_exists(SiteFinder::class)) {
-            $this->site = $this->getSite();
-            $this->defaultLangUid = $this->site->getDefaultLanguage()->getLanguageId();
-        }
+        $this->site = $this->getSite();
+        $this->defaultLangUid = $this->site->getDefaultLanguage()->getLanguageId();
         $this->languageMenu = $this->parseLanguageMenu();
+
         /** @var string $as */
         $as = $this->arguments['as'];
         $this->renderingContext->getVariableProvider()->add($as, $this->languageMenu);
@@ -425,9 +440,14 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                 $label = $this->arguments['defaultLanguageLabel'] ?? $label;
                 $flag = $this->arguments['defaultIsoFlag'] ?? $flag;
             }
+            if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '>=')) {
+                $isoCode = $language->getLocale()->getLanguageCode();
+            } else {
+                $isoCode = $language->getTwoLetterIsoCode();
+            }
             $result[$language->getLanguageId()] = [
                 'label' => $label,
-                'iso' => $language->getTwoLetterIsoCode(),
+                'iso' => $isoCode,
                 'flagIdentifier' => $flag
             ];
         }
@@ -483,8 +503,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getSite()
     {
-        /** @var SiteFinder $siteFinder */
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        /** @var SiteFinderProxy $siteFinder */
+        $siteFinder = GeneralUtility::makeInstance(SiteFinderProxy::class);
         return $siteFinder->getSiteByPageId($this->getPageUid());
     }
 

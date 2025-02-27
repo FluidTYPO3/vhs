@@ -8,14 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\FileRepositoryProxy;
+use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -49,12 +50,12 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class FalViewHelper extends AbstractRecordResourceViewHelper
 {
     /**
-     * @var ResourceFactory
+     * @var ResourceFactoryProxy
      */
     protected $resourceFactory;
 
     /**
-     * @var FileRepository
+     * @var FileRepositoryProxy
      */
     protected $fileRepository;
 
@@ -68,11 +69,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
      */
     public function __construct()
     {
-        /** @var ResourceFactory $resourceFactory */
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        /** @var ResourceFactoryProxy $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactoryProxy::class);
         $this->resourceFactory = $resourceFactory;
-        /** @var FileRepository $fileRepository */
-        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        /** @var FileRepositoryProxy $fileRepository */
+        $fileRepository = GeneralUtility::makeInstance(FileRepositoryProxy::class);
         $this->fileRepository = $fileRepository;
     }
 
@@ -151,9 +152,9 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
 
-            $queryBuilder->createNamedParameter($this->getTable(), \PDO::PARAM_STR, ':tablenames');
-            $queryBuilder->createNamedParameter($sqlRecordUid, \PDO::PARAM_INT, ':uid_foreign');
-            $queryBuilder->createNamedParameter($this->getField(), \PDO::PARAM_STR, ':fieldname');
+            $queryBuilder->createNamedParameter($this->getTable(), Connection::PARAM_STR, ':tablenames');
+            $queryBuilder->createNamedParameter($sqlRecordUid, Connection::PARAM_INT, ':uid_foreign');
+            $queryBuilder->createNamedParameter($this->getField(), Connection::PARAM_STR, ':fieldname');
 
             $queryBuilder
                 ->select('uid')
@@ -171,7 +172,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $queryBuilder->createNamedParameter(
                     $GLOBALS['BE_USER']->workspaceRec['uid'],
-                    \PDO::PARAM_INT,
+                    Connection::PARAM_INT,
                     ':t3ver_wsid'
                 );
                 $queryBuilder

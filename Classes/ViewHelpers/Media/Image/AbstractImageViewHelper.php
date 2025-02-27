@@ -8,15 +8,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -26,11 +27,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 {
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $contentObject;
-
     /**
      * @var ConfigurationManagerInterface
      */
@@ -45,9 +41,6 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $this->configurationManager->getContentObject();
-        $this->contentObject = $contentObject;
     }
 
     public function initializeArguments(): void
@@ -140,6 +133,11 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        if ($contentObject === null) {
+            throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737808465);
+        }
+
         $setup = [
             'width' => $width,
             'height' => $height,
@@ -162,7 +160,12 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if (ContextUtility::isBackend() && strpos($src, '../') === 0) {
             $src = mb_substr($src, 3);
         }
-        $this->imageInfo = $this->contentObject->getImgResource($src, $setup);
+        $imageInfo = $contentObject->getImgResource($src, $setup);
+        if ($imageInfo instanceof ImageResource) {
+            $this->imageInfo = $imageInfo->getLegacyImageResourceInformation();
+        } else {
+            $this->imageInfo = $imageInfo;
+        }
 
         if (!is_array($this->imageInfo)) {
             if ($this->arguments['graceful'] ?? false) {

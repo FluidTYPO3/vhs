@@ -8,10 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### Date range calculation/formatting ViewHelper
@@ -153,7 +153,7 @@ class DateRangeViewHelper extends AbstractViewHelper
         if ($intervalFormat !== null) {
             try {
                 $interval = new \DateInterval($intervalFormat);
-            } catch (\Exception $exception) {
+            } catch (\Exception | \Error $exception) {
                 ErrorUtility::throwViewHelperException(
                     '"' . $intervalFormat . '" could not be parsed by \DateInterval constructor.',
                     1369573111
@@ -227,7 +227,7 @@ class DateRangeViewHelper extends AbstractViewHelper
                     $date = new \DateTime('now');
                 }
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            } catch (\Exception $exception) {
+            } catch (\Exception | \Error $exception) {
                 ErrorUtility::throwViewHelperException(
                     '"' . (string) $input . '" could not be parsed by \DateTime constructor.',
                     1369573112

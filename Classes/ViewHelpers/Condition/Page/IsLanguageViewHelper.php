@@ -8,11 +8,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -33,29 +35,18 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('defaultTitle', 'string', 'title of the default language', false, 'en');
     }
 
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        if (!is_array($arguments)) {
-            return false;
-        }
         /** @var string $language */
         $language = $arguments['language'];
         /** @var string $defaultTitle */
         $defaultTitle = $arguments['defaultTitle'];
 
-        if (class_exists(LanguageAspect::class)) {
-            /** @var Context $context */
-            $context = GeneralUtility::makeInstance(Context::class);
-            /** @var LanguageAspect $languageAspect */
-            $languageAspect = $context->getAspect('language');
-            $currentLanguageUid = $languageAspect->getId();
-        } else {
-            $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-        }
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = $context->getAspect('language');
+        $currentLanguageUid = $languageAspect->getId();
 
         if (is_numeric($language)) {
             $languageUid = intval($language);
@@ -64,7 +55,7 @@ class IsLanguageViewHelper extends AbstractConditionViewHelper
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_language');
 
-            $queryBuilder->createNamedParameter($language, \PDO::PARAM_STR, ':title');
+            $queryBuilder->createNamedParameter($language, Connection::PARAM_STR, ':title');
 
             $queryBuilder
                 ->select('uid')

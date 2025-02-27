@@ -8,12 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ### JSON Encoding ViewHelper
@@ -187,7 +187,7 @@ class EncodeViewHelper extends AbstractViewHelper
      * value type. The type is checked and another recursive call is used to
      * convert any nested objects.
      *
-     * @param DomainObjectInterface[]|\Traversable[] $domainObjects
+     * @param array|DomainObjectInterface[]|\Traversable[] $domainObjects
      * @return DomainObjectInterface[]|array[]|string[]|\Traversable[]|null[]
      */
     protected static function recursiveArrayOfDomainObjectsToArray(
@@ -233,6 +233,7 @@ class EncodeViewHelper extends AbstractViewHelper
         if ($preventRecursion && in_array($hash, static::$encounteredClasses)) {
             return $recursionMarker;
         }
+        /** @var array $converted */
         $converted = ObjectAccess::getGettableProperties($domainObject);
         static::$encounteredClasses[] = $hash;
         $converted = static::recursiveArrayOfDomainObjectsToArray($converted, $preventRecursion, $recursionMarker);

@@ -8,14 +8,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Used in conjuntion with the `v:media.PictureViewHelper`.
@@ -24,6 +27,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class SourceViewHelper extends AbstractTagBasedViewHelper
 {
+    use TagViewHelperCompatibility;
+
     const SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
     const SCOPE_VARIABLE_SRC = 'src';
     const SCOPE_VARIABLE_ID = 'treatIdAsReference';
@@ -36,12 +41,6 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      * @api
      */
     protected $tagName = 'source';
-
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $contentObject;
-
     /**
      * @var ConfigurationManagerInterface
      */
@@ -50,9 +49,6 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObject = $this->configurationManager->getContentObject();
-        $this->contentObject = $contentObject;
     }
 
     public function initializeArguments(): void
@@ -135,13 +131,28 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         if (is_string($imageSource) && ContextUtility::isBackend() && '../' === mb_substr($imageSource, 0, 3)) {
             $imageSource = mb_substr($imageSource, 3);
         }
-        $result = $this->contentObject->getImgResource($imageSource, $setup);
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        if ($contentObject === null) {
+            throw new Exception('v:media.source requires a ContentObjectRenderer, none found', 1737807859);
+        }
+
+        $result = $contentObject->getImgResource($imageSource, $setup);
+        if ($result instanceof ImageResource) {
+            $processedFile = $result->getProcessedFile();
+        } else {
+            $processedFile = $result['processedFile'] ?? null;
+        }
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
-        if ($result['processedFile'] ?? false) {
-            $imageUrl = $result['processedFile']->getPublicUrl();
+        if ($processedFile ?? false) {
+            /** @var string $imageUrl */
+            $imageUrl = $processedFile->getPublicUrl();
         } else {
+            if ($result instanceof ImageResource) {
+                $result = $result->getLegacyImageResourceInformation();
+            }
+            /** @var string $imageUrl */
             $imageUrl = $result[3] ?? '';
         }
         $src = $this->preprocessSourceUri(rawurldecode($imageUrl));

@@ -2,6 +2,7 @@ vendor
 .idea
 .phpunit.result.cache
 composer.lock
+preflight
 /build
 /Documentation-GENERATED-temp/
 /index.php

@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -42,15 +43,9 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('includeHiddenInMenu', 'boolean', 'Include pages hidden in menu', false, false);
     }
 
-    /**
-     * @param array $arguments
-     * @return boolean
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        if (!is_array($arguments)) {
-            return false;
-        }
+        /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
         $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
         $includeAccessProtected = (boolean) $arguments['includeAccessProtected'];

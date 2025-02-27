@@ -8,14 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use FluidTYPO3\Vhs\Utility\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -71,8 +72,12 @@ class InfoViewHelper extends AbstractViewHelper
         $record = false;
 
         if (0 === $contentUid) {
-            /** @var ContentObjectRenderer $cObj */
-            $cObj = $this->configurationManager->getContentObject();
+            $cObj = ContentObjectFetcher::resolve($this->configurationManager);
+
+            if ($cObj === null) {
+                throw new Exception('v:content.info requires a ContentObjectRenderer, none found', 1737807859);
+            }
+
             if ($cObj->getCurrentTable() !== 'tt_content') {
                 throw new Exception(
                     'v:content.info must have contentUid argument outside tt_content context',
@@ -106,7 +111,7 @@ class InfoViewHelper extends AbstractViewHelper
             /** @var ConnectionPool $connectionPool */
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
-            $queryBuilder->createNamedParameter($contentUid, \PDO::PARAM_INT, ':uid');
+            $queryBuilder->createNamedParameter($contentUid, Connection::PARAM_INT, ':uid');
 
             $queryBuilder
                 ->select($selectFields)

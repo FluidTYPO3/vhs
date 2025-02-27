@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -42,19 +43,8 @@ class LoadedViewHelper extends AbstractConditionViewHelper
         );
     }
 
-    /**
-     * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers
-     * to adjust functionality.
-     *
-     * @param array|null $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for
-     *                         flexiblity in overriding this method.
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        if (!is_array($arguments)) {
-            return false;
-        }
         /** @var string $extensionName */
         $extensionName = $arguments['extensionName'];
         $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);

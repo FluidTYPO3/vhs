@@ -8,13 +8,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\Utility;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\SiteFinderProxy;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -37,7 +37,7 @@ class FrontendSimulationUtilityTest extends AbstractTestCase
             ->getMock();
         $site->method('getDefaultLanguage')->willReturn($siteLanguage);
 
-        $siteFinder = $this->getMockBuilder(SiteFinder::class)
+        $siteFinder = $this->getMockBuilder(SiteFinderProxy::class)
             ->setMethods(['getAllSites'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -47,7 +47,7 @@ class FrontendSimulationUtilityTest extends AbstractTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinder);
+        GeneralUtility::addInstance(SiteFinderProxy::class, $siteFinder);
         GeneralUtility::addInstance(FrontendUserAuthentication::class, $frontendUserAuthentication);
         GeneralUtility::addInstance(
             TypoScriptFrontendController::class,

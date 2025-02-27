@@ -34,7 +34,7 @@ class PageServiceTest extends AbstractTestCase
         $pageRepository = $this->createPageRepositoryMock(['getPage', 'getMenu', 'getPageOverlay']);
         $pageRepository->method('getPage')->willReturn(['uid' => 2]);
         $pageRepository->method('getMenu')->willReturn([['uid' => 2]]);
-        $pageRepository->method('getPageOverlay')->willReturn(null);
+        $pageRepository->method('getPageOverlay')->willReturn([]);
 
         $subject = $this->getMockBuilder(PageService::class)
             ->setMethods(['getPageRepository'])

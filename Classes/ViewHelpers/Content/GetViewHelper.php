@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 
 /**
@@ -17,6 +18,8 @@ use FluidTYPO3\Vhs\Utility\ContextUtility;
  */
 class GetViewHelper extends AbstractContentViewHelper
 {
+    use ArgumentOverride;
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();

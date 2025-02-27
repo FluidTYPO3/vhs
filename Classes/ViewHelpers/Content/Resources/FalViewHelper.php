@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Traits\ArgumentOverride;
+
 /**
  * Content FAL relations ViewHelper
  *
@@ -39,6 +41,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content\Resources;
  */
 class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper
 {
+    use ArgumentOverride;
+
     const DEFAULT_TABLE = 'tt_content';
     const DEFAULT_FIELD = 'image';
 

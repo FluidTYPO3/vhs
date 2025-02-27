@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\String;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -26,19 +27,15 @@ class IsLowercaseViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('fullString', 'string', 'need', false, false);
     }
 
-    /**
-     * @param array $arguments
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        if (!is_array($arguments)) {
-            return false;
-        }
-        if ($arguments['fullString']) {
-            $result = ctype_lower($arguments['string']);
+        $fullString = (bool) $arguments['fullString'];
+        /** @var string $subject */
+        $subject = $arguments['string'];
+        if ($fullString) {
+            $result = ctype_lower((string) $subject);
         } else {
-            $result = ctype_lower(substr($arguments['string'], 0, 1));
+            $result = ctype_lower(substr((string) $subject, 0, 1));
         }
         return $result;
     }

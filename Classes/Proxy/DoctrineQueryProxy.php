@@ -1,5 +1,5 @@
 <?php
-namespace FluidTYPO3\Vhs\Utility;
+namespace FluidTYPO3\Vhs\Proxy;
 
 use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\DBAL\FetchMode;
