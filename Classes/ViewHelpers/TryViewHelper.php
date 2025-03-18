@@ -103,7 +103,11 @@ class TryViewHelper extends AbstractConditionViewHelper
         RenderingContextInterface $renderingContext
     ) {
         try {
-            $content = $arguments['__then']();
+            if (isset($arguments['__then'])) {
+                $content = $arguments['__then']();
+            } else {
+                $content = '';
+            }
         } catch (\Exception $error) {
             $variableProvider = $renderingContext->getVariableProvider();
             if (isset($arguments['__else'])) {
