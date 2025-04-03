@@ -230,7 +230,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
     /**
      * Returns TRUE only if currently logged in frontend user is in list.
      */
-    public function assertFrontendUsersLoggedIn(ObjectStorage $frontendUsers = null): bool
+    public function assertFrontendUsersLoggedIn(?ObjectStorage $frontendUsers = null): bool
     {
         if ($frontendUsers === null) {
             return false;

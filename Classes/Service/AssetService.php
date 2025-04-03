@@ -16,6 +16,7 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Routing\RouteResultInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -858,8 +859,11 @@ class AssetService implements SingletonInterface
         /** @var ServerRequestInterface $serverRequest */
         $serverRequest = $GLOBALS['TYPO3_REQUEST'];
 
-        /** @var PageArguments $pageArguments */
+        /** @var RouteResultInterface $pageArguments */
         $pageArguments = $serverRequest->getAttribute('routing');
+        if (!$pageArguments instanceof PageArguments) {
+            return 0;
+        }
         return $pageArguments->getPageId();
     }
 
