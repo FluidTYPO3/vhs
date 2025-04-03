@@ -1,7 +1,8 @@
-Latest release: 7.1.0 (2025/02/27 12:18:18)
+Latest release: 7.1.1 (2025/04/03 14:03:03)
 
 All previous release change logs:
 
+* [7.1.1 (2025/04/03)](Documentation/Changelog/7.1.1.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/7.1.0...7.1.1)
 * [7.1.0 (2025/02/27)](Documentation/Changelog/7.1.0.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/7.0.7...7.1.0)
 * [7.0.7 (2024/11/11)](Documentation/Changelog/7.0.7.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/7.0.6...7.0.7)
 * [7.0.6 (2024/08/08)](Documentation/Changelog/7.0.6.md) [Full list of changes](https://github.com/FluidTYPO3/vhs/compare/7.0.5...7.0.6)
