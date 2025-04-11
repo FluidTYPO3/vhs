@@ -61,6 +61,7 @@ parameters:
         - "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:sysLog\\(\\)\\.$#"
         - "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService\\:\\:init\\(\\)\\.$#"
         - "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder\\:\\:setUseCacheHash\\(\\) invoked with 1 parameter, 0 required\\.$#"
+        - "#^Cannot call method evaluateChildNodes\\(\\) on TYPO3Fluid\\\\Fluid\\\\Core\\\\Parser\\\\SyntaxTree\\\\ViewHelperNode\\|null\\.$#"
     bootstrapFiles:
         - phpstan-bootstrap.php
     paths:
