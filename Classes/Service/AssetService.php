@@ -49,7 +49,7 @@ class AssetService implements SingletonInterface
     protected $cacheManager;
 
     protected static bool $typoScriptAssetsBuilt = false;
-    protected static ?array $settingsCache = null;
+    protected static ?array $typoScriptCache = null;
     protected static array $cachedDependencies = [];
     protected static bool $cacheCleared = false;
 
@@ -145,15 +145,15 @@ class AssetService implements SingletonInterface
      */
     public function getSettings(): array
     {
-        if (null === static::$settingsCache) {
-            static::$settingsCache = $this->getTypoScript()['settings'] ?? [];
-        }
-        $settings = (array) static::$settingsCache;
-        return $settings;
+        return $this->getTypoScript()['settings'] ?? [];
     }
 
     protected function getTypoScript(): array
     {
+        if (static::$typoScriptCache !== null) {
+            return static::$typoScriptCache;
+        }
+
         $cache = $this->cacheManager->getCache('vhs_main');
         $pageUid = $this->readPageUidFromContext();
         $cacheId = 'vhs_asset_ts_' . $pageUid;
@@ -192,6 +192,7 @@ class AssetService implements SingletonInterface
             $this->cacheManager->flushCachesByTag($cacheTag);
         }
 
+        static::$typoScriptCache = $typoScript;
         return $typoScript;
     }
 
