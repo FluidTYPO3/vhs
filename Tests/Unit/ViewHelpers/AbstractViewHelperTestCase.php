@@ -311,6 +311,7 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         array $childNNodes = []
     ): ViewHelperNode {
         $node = new DummyViewHelperNode($instance);
+        $node->setArguments($arguments);
 
         foreach ($childNNodes as $childNNode) {
             $node->addChildNode($childNNode);
