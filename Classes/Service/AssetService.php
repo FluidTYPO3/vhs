@@ -752,7 +752,7 @@ class AssetService implements SingletonInterface
         foreach ($assetCacheFiles as $assetCacheFile) {
             if (!@touch($assetCacheFile, 0)) {
                 $content = (string) file_get_contents($assetCacheFile);
-                $temporaryAssetCacheFile = (string) tempnam(dirname($assetCacheFile), basename($assetCacheFile) . '.');
+                $temporaryAssetCacheFile = (string) GeneralUtility::tempnam(basename($assetCacheFile) . '.');
                 $this->writeFile($temporaryAssetCacheFile, $content);
                 rename($temporaryAssetCacheFile, $assetCacheFile);
                 touch($assetCacheFile, 0);
