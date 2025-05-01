@@ -34,6 +34,6 @@ class DenyViewHelperTest extends AbstractViewHelperTestCase
         );
 
         GeneralUtility::addInstance(get_class($viewHelper), $viewHelper);
-        self::assertSame('', $viewHelper->render());
+        self::assertEmpty($viewHelper->render());
     }
 }

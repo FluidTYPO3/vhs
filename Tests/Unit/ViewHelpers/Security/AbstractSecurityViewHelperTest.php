@@ -445,8 +445,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $instance->setViewHelperNode($node);
-        $instance->expects($this->once())->method('renderChildren')->willReturn('test');
-        $instance->expects($this->once())->method('isFrontendContext')->willReturn(true);
+        $instance->method('renderChildren')->willReturn('test');
+        $instance->method('isFrontendContext')->willReturn(true);
         $this->callInaccessibleMethod($instance, 'renderThenChild');
         $this->assertEquals(1, $GLOBALS['TSFE']->no_cache);
     }

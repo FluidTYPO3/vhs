@@ -17,4 +17,9 @@ class DummyViewHelperNode extends ViewHelperNode
     {
         $this->uninitializedViewHelper = $viewHelper;
     }
+
+    public function setArguments(array $arguments): void
+    {
+        $this->arguments = $arguments;
+    }
 }
