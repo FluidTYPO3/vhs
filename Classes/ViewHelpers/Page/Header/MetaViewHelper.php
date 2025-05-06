@@ -61,17 +61,21 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
                 $properties = [];
                 $type = 'name';
                 /** @var string $name */
-                $name = $this->tag->getAttribute('name');
-                if (!empty($this->tag->getAttribute('property'))) {
+                $name = $this->tag->getAttribute('name') ?? $this->arguments['name'];
+                if (!empty($this->tag->getAttribute('property') ?? $this->arguments['property'] ?? null)) {
                     $type = 'property';
-                    $name = $this->tag->getAttribute('property');
-                } elseif (!empty($this->tag->getAttribute('http-equiv'))) {
+                    /** @var string $name */
+                    $name = $this->tag->getAttribute('property') ?? $this->arguments['property'];
+                } elseif (!empty($this->tag->getAttribute('http-equiv') ?? $this->arguments['http-equiv'] ?? null)) {
                     $type = 'http-equiv';
-                    $name = $this->tag->getAttribute('http-equiv');
+                    /** @var string $name */
+                    $name = $this->tag->getAttribute('http-equiv') ?? $this->arguments['http-equiv'];
                 }
                 foreach (['http-equiv', 'property', 'scheme', 'lang', 'dir'] as $propertyName) {
-                    if (!empty($this->tag->getAttribute($propertyName))) {
-                        $properties[$propertyName] = $this->tag->getAttribute($propertyName);
+                    if (!empty($this->tag->getAttribute($propertyName) ?? $this->arguments[$propertyName] ?? null)) {
+                        $properties[$propertyName] = $this->tag->getAttribute($propertyName)
+                            ?? $this->arguments[$propertyName]
+                            ?? null;
                     }
                 }
                 $pageRenderer->setMetaTag($type, $name, $content, $properties);
