@@ -301,7 +301,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                     /** @var string|null $className */
                     $className = $this->arguments['class'];
                     $renderedSubMenu = $this->autoRender($subMenu, $level + 1);
-                    $parentTagId = $this->tag->getAttribute('id');
+                    /** @var string|null $parentTagId */
+                    $parentTagId = $this->tag->getAttribute('id') ?? $this->arguments['id'] ?? null;
                     if (!empty($parentTagId)) {
                         $this->tag->addAttribute('id', $parentTagId . '-lvl-' . $level);
                     }
