@@ -8,24 +8,23 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class HeaderViewHelperTest
  */
 class HeaderViewHelperTest extends AbstractViewHelperTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-    }
-
     public function testRender()
     {
+        $singletons = GeneralUtility::getSingletonInstances();
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock()
+        );
         $this->assertEmpty($this->executeViewHelper());
+        GeneralUtility::resetSingletonInstances($singletons);
     }
 }
