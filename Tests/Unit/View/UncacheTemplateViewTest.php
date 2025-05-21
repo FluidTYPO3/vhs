@@ -111,7 +111,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
     public function renderPartialUncachedDelegatesToRenderPartial()
     {
         $mock = $this->getMockBuilder($this->getClassName())
-            ->setMethods(['renderPartial'])
+            ->setMethods(['renderPartial', 'getCurrentParsedTemplate'])
             ->disableOriginalConstructor()
             ->getMock();
         $mock->expects($this->once())->method('renderPartial')->will($this->returnValue('test'));

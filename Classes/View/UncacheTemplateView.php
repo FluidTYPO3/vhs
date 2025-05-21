@@ -114,7 +114,7 @@ class UncacheTemplateView extends TemplateView
     ): string {
         $this->renderingStack[] = [
             'type' => static::RENDERING_TEMPLATE,
-            'parsedTemplate' => null,
+            'parsedTemplate' => $this->getCurrentParsedTemplate(),
             'renderingContext' => $renderingContext,
         ];
         /** @var string $rendered */
