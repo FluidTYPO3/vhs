@@ -752,9 +752,7 @@ class AssetService implements SingletonInterface
         foreach ($assetCacheFiles as $assetCacheFile) {
             if (!@touch($assetCacheFile, 0)) {
                 $content = (string) file_get_contents($assetCacheFile);
-                $temporaryAssetCacheFile = (string) GeneralUtility::tempnam(basename($assetCacheFile) . '.');
-                $this->writeFile($temporaryAssetCacheFile, $content);
-                rename($temporaryAssetCacheFile, $assetCacheFile);
+                $this->writeFile($assetCacheFile, $content);
                 touch($assetCacheFile, 0);
             }
         }
@@ -778,6 +776,13 @@ class AssetService implements SingletonInterface
                 1733258066
             );
         }
+        if (realpath(dirname($file)) !== dirname($tmpFile)) {
+            throw new \RuntimeException(
+                "Failed to write file {$file}: No new files can be created in directory",
+                1750681587
+            );
+        }
+        $tmpFile = dirname($file) . '/' . basename($tmpFile);
         GeneralUtility::writeFile($tmpFile, $contents, true);
         if (@rename($tmpFile, $file) === false) {
             $error = error_get_last();
