@@ -27,11 +27,7 @@ class IsLanguageViewHelperTest extends AbstractViewHelperTestCase
 {
     protected function setUp(): void
     {
-        $language = $this->getMockBuilder(LanguageAspect::class)
-            ->onlyMethods(['getId'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $language->method('getId')->willReturn(123);
+        $language = new LanguageAspect(123);
 
         $context = $this->getMockBuilder(Context::class)
             ->onlyMethods(['getAspect'])
