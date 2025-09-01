@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
 use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Variable\Register: Set

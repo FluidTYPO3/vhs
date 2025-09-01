@@ -10,7 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Hides output from browser, but still renders tag content
