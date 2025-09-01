@@ -14,7 +14,7 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### ViewHelper Debug ViewHelper (sic)

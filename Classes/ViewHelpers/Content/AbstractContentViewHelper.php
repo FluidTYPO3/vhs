@@ -13,7 +13,7 @@ use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: Content ViewHelpers

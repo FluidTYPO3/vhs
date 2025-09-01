@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  */
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Abstract class with basic functionality for loop view helpers.

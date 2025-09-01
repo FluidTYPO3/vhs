@@ -10,7 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
 
 use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Wordwrap: Wrap a string at provided character count
