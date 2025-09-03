@@ -49,7 +49,8 @@ class AssetService implements SingletonInterface
     protected $cacheManager;
 
     protected static bool $typoScriptAssetsBuilt = false;
-    protected static ?array $settingsCache = null;
+    protected static ?array $typoScriptCache = null;
+    protected static bool $currentlyBuildingCacheable = true;
     protected static array $cachedDependencies = [];
     protected static bool $cacheCleared = false;
 
@@ -71,51 +72,60 @@ class AssetService implements SingletonInterface
 
     public function buildAll(array $parameters, object $caller, bool $cached = true, ?string &$content = null): void
     {
-        if ($content === null) {
-            $content = &$caller->content;
+        $wasBuildingCacheableBefore = static::$currentlyBuildingCacheable;
+        if ($caller instanceof TypoScriptFrontendController && $caller->isINTincScript()) {
+            static::$currentlyBuildingCacheable = false;
         }
+        try {
+            if ($content === null) {
+                $content = &$caller->content;
+            }
 
-        $settings = $this->getSettings();
-        $buildTypoScriptAssets = (
-            !static::$typoScriptAssetsBuilt
-            && ($cached || $this->readCacheDisabledInstructionFromContext())
-        );
-        if ($buildTypoScriptAssets && isset($settings['asset']) && is_array($settings['asset'])) {
-            foreach ($settings['asset'] as $name => $typoScriptAsset) {
-                if (!isset($GLOBALS['VhsAssets'][$name]) && is_array($typoScriptAsset)) {
-                    if (!isset($typoScriptAsset['name'])) {
-                        $typoScriptAsset['name'] = $name;
+            $settings = $this->getSettings();
+            $buildTypoScriptAssets = (
+                !static::$typoScriptAssetsBuilt
+                && ($cached || $this->readCacheDisabledInstructionFromContext())
+            );
+            if ($buildTypoScriptAssets && isset($settings['asset']) && is_array($settings['asset'])) {
+                foreach ($settings['asset'] as $name => $typoScriptAsset) {
+                    if (!isset($GLOBALS['VhsAssets'][$name]) && is_array($typoScriptAsset)) {
+                        if (!isset($typoScriptAsset['name'])) {
+                            $typoScriptAsset['name'] = $name;
+                        }
+                        if (isset($typoScriptAsset['dependencies']) && !is_array($typoScriptAsset['dependencies'])) {
+                            $typoScriptAsset['dependencies'] = GeneralUtility::trimExplode(
+                                ',',
+                                (string) $typoScriptAsset['dependencies'],
+                                true
+                            );
+                        }
+                        Asset::createFromSettings($typoScriptAsset);
                     }
-                    if (isset($typoScriptAsset['dependencies']) && !is_array($typoScriptAsset['dependencies'])) {
-                        $typoScriptAsset['dependencies'] = GeneralUtility::trimExplode(
-                            ',',
-                            (string) $typoScriptAsset['dependencies'],
-                            true
-                        );
-                    }
-                    Asset::createFromSettings($typoScriptAsset);
+                }
+                static::$typoScriptAssetsBuilt = true;
+            }
+            if (empty($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets'])) {
+                return;
+            }
+            $assets = $GLOBALS['VhsAssets'];
+            $assets = $this->sortAssetsByDependency($assets);
+            $assets = $this->manipulateAssetsByTypoScriptSettings($assets);
+            $buildDebugRequested = (isset($settings['asset']['debugBuild']) && $settings['asset']['debugBuild'] > 0);
+            $assetDebugRequested = (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0);
+            $useDebugUtility =
+                (isset($settings['asset']['useDebugUtility']) && $settings['asset']['useDebugUtility'] > 0)
+                || !isset($settings['asset']['useDebugUtility']);
+            if ($buildDebugRequested || $assetDebugRequested) {
+                if ($useDebugUtility) {
+                    DebuggerUtility::var_dump($assets);
+                } else {
+                    echo var_export($assets, true);
                 }
             }
-            static::$typoScriptAssetsBuilt = true;
+            $this->placeAssetsInHeaderAndFooter($assets, $cached, $content);
+        } finally {
+            static::$currentlyBuildingCacheable = $wasBuildingCacheableBefore;
         }
-        if (empty($GLOBALS['VhsAssets']) || !is_array($GLOBALS['VhsAssets'])) {
-            return;
-        }
-        $assets = $GLOBALS['VhsAssets'];
-        $assets = $this->sortAssetsByDependency($assets);
-        $assets = $this->manipulateAssetsByTypoScriptSettings($assets);
-        $buildDebugRequested = (isset($settings['asset']['debugBuild']) && $settings['asset']['debugBuild'] > 0);
-        $assetDebugRequested = (isset($settings['asset']['debug']) && $settings['asset']['debug'] > 0);
-        $useDebugUtility = (isset($settings['asset']['useDebugUtility']) && $settings['asset']['useDebugUtility'] > 0)
-            || !isset($settings['asset']['useDebugUtility']);
-        if ($buildDebugRequested || $assetDebugRequested) {
-            if ($useDebugUtility) {
-                DebuggerUtility::var_dump($assets);
-            } else {
-                echo var_export($assets, true);
-            }
-        }
-        $this->placeAssetsInHeaderAndFooter($assets, $cached, $content);
     }
 
     public function buildAllUncached(array $parameters, object $caller, ?string &$content = null): void
@@ -145,31 +155,43 @@ class AssetService implements SingletonInterface
      */
     public function getSettings(): array
     {
-        if (null === static::$settingsCache) {
-            static::$settingsCache = $this->getTypoScript()['settings'] ?? [];
-        }
-        $settings = (array) static::$settingsCache;
-        return $settings;
+        return $this->getTypoScript()['settings'] ?? [];
     }
 
     protected function getTypoScript(): array
     {
-        $cache = $this->cacheManager->getCache('vhs_main');
-        $pageUid = $this->readPageUidFromContext();
-        $cacheId = 'vhs_asset_ts_' . $pageUid;
-        $cacheTag = 'pageId_' . $pageUid;
+        if (static::$typoScriptCache !== null) {
+            return static::$typoScriptCache;
+        }
 
         try {
             $allTypoScript = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
             $typoScript = GeneralUtility::removeDotsFromTS($allTypoScript['plugin.']['tx_vhs.'] ?? []);
-            $cache->set($cacheId, $typoScript, [$cacheTag]);
+
+            // If we are rendering cached content we need to persist the
+            // TypoScript for future requests that should be answered from
+            // cache. Newer TYPO3 versions no longer load TypoScript when
+            // answering requests from cache, triggering the \RuntimeException
+            // "Setup array has not been initialized" above.
+            if (static::$currentlyBuildingCacheable) {
+                $pageUid = $this->readPageUidFromContext();
+                $cache = $this->cacheManager->getCache('vhs_main');
+                $cacheId = 'vhs_asset_ts_' . $pageUid;
+                $cacheTag = 'pageId_' . $pageUid;
+                $cache->set($cacheId, $typoScript, [$cacheTag]);
+            }
         } catch (\RuntimeException $exception) {
             if ($exception->getCode() !== 1666513645) {
                 // Re-throw, but only if the exception is not the specific "Setup array has not been initialized" one.
                 throw $exception;
             }
+
+            $pageUid = $this->readPageUidFromContext();
+            $cache = $this->cacheManager->getCache('vhs_main');
+            $cacheId = 'vhs_asset_ts_' . $pageUid;
+            $cacheTag = 'pageId_' . $pageUid;
 
             // Note: this case will only ever be entered on TYPO3v13 and above. Earlier versions will consistently
             // produce the necessary TS array from ConfigurationManager - and will not raise the specified exception.
@@ -181,6 +203,7 @@ class AssetService implements SingletonInterface
             /** @var array|false $fromCache */
             $fromCache = $cache->get($cacheId);
             if (is_array($fromCache)) {
+                static::$typoScriptCache = $fromCache;
                 return $fromCache;
             }
 
@@ -192,6 +215,7 @@ class AssetService implements SingletonInterface
             $this->cacheManager->flushCachesByTag($cacheTag);
         }
 
+        static::$typoScriptCache = $typoScript;
         return $typoScript;
     }
 
