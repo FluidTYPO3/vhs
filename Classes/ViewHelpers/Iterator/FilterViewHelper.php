@@ -11,7 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Iterator: Filter ViewHelper

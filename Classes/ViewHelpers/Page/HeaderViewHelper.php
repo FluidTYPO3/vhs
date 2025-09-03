@@ -10,6 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ViewHelper used to place header blocks in document header
@@ -26,12 +28,9 @@ class HeaderViewHelper extends AbstractAssetViewHelper
         if (ContextUtility::isBackend()) {
             return;
         }
-        $content = $this->getContent();
-        $name = $this->getName();
-        $overwrite = $this->getOverwrite();
-        if (isset($GLOBALS['TSFE']->additionalHeaderData[$name]) && !$overwrite) {
-            return;
-        }
-        $GLOBALS['TSFE']->additionalHeaderData[$name] = $content;
+
+        /** @var PageRenderer $pageRenderer */
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addHeaderData((string) $this->getContent());
     }
 }
