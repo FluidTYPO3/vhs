@@ -49,7 +49,9 @@ from this and imagine that a plain Exception happens on errors.
         <!-- assume that the variable {badJson} contains the string "DontDecodeMe"
              which if course is invalid JSON and cannot be decoded. The default
              behavior is to simply output a simple "cannot decode" string. -->
-        <v:variable.set name="decodedBadJson" value="{badJson -> v:format.json.decode()}" />
+        <f:then>
+            <v:variable.set name="decodedBadJson" value="{badJson -> v:format.json.decode()}" />
+        </f:then>
         Displayed only if the JSON decode worked. Much more code and many more
         ViewHelpers can go here. Now, imagine that this block spans so much code
         that potentially there could come an Exception from many additional places

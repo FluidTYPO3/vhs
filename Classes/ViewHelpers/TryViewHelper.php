@@ -50,7 +50,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *     <!-- assume that the variable {badJson} contains the string "DontDecodeMe"
  *          which if course is invalid JSON and cannot be decoded. The default
  *          behavior is to simply output a simple "cannot decode" string. -->
- *     <v:variable.set name="decodedBadJson" value="{badJson -> v:format.json.decode()}" />
+ *     <f:then>
+ *         <v:variable.set name="decodedBadJson" value="{badJson -> v:format.json.decode()}" />
+ *     </f:then>
  *     Displayed only if the JSON decode worked. Much more code and many more
  *     ViewHelpers can go here. Now, imagine that this block spans so much code
  *     that potentially there could come an Exception from many additional places
@@ -103,7 +105,11 @@ class TryViewHelper extends AbstractConditionViewHelper
         RenderingContextInterface $renderingContext
     ) {
         try {
-            $content = $arguments['__then']();
+            if (isset($arguments['__then'])) {
+                $content = $arguments['__then']();
+            } else {
+                $content = '';
+            }
         } catch (\Exception $error) {
             $variableProvider = $renderingContext->getVariableProvider();
             if (isset($arguments['__else'])) {
@@ -123,7 +129,7 @@ class TryViewHelper extends AbstractConditionViewHelper
     public function render()
     {
         try {
-            $content = $this->renderChildren();
+            $content = $this->renderThenChild();
         } catch (\Exception $error) {
             $this->renderingContext->getVariableProvider()->add('exception', $error);
             $content = $this->renderElseChild();
