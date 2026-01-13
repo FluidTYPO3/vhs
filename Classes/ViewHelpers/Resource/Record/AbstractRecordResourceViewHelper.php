@@ -211,7 +211,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             // thrown by the getResources() method in subclasses are not
             // extended from a shared base class like RuntimeException. Thus,
             // we are forced to "catch them all" - but we also output them.
-            ErrorUtility::throwViewHelperException($error->getMessage(), $error->getCode());
+            ErrorUtility::throwViewHelperException($error->getMessage(), $error->getCode(), $error);
         }
         return $content;
     }

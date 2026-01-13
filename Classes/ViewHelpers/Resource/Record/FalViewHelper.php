@@ -169,7 +169,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     $queryBuilder->expr()->eq('fieldname', ':fieldname')
                 );
 
-            if ($GLOBALS['BE_USER']->workspaceRec['uid']) {
+            if ($GLOBALS['BE_USER'] && $GLOBALS['BE_USER']->workspaceRec['uid']) {
                 $queryBuilder->createNamedParameter(
                     $GLOBALS['BE_USER']->workspaceRec['uid'],
                     Connection::PARAM_INT,
