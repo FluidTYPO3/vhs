@@ -13,6 +13,9 @@ use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 /**
  * Content FAL relations ViewHelper
  *
+ * Since vhs 7.1.0, the "record" argument is required.
+ *
+ *
  * ### Render a single image in a content element
  *
  * We assume that the flux content element has an IRRE file field
@@ -21,7 +24,7 @@ use FluidTYPO3\Vhs\Traits\ArgumentOverride;
  * The file data can be loaded and displayed with:
  *
  * ```
- * {v:content.resources.fal(field: 'settings.image')
+ * {v:content.resources.fal(field: 'settings.image', record: record)
  *   -> v:iterator.first()
  *   -> v:variable.set(name: 'image')}
  * <f:if condition="{image}">
