@@ -82,7 +82,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
         $pluginName = $arguments['pluginName'];
         $requestArguments = is_array($arguments['arguments']) ? $arguments['arguments'] : [];
         $configurationManager = static::getConfigurationManager();
-        $contentObjectBackup = ContentObjectFetcher::resolve($configurationManager);
+        $contentObjectBackup = ContentObjectFetcher::resolve($configurationManager, $renderingContext);
         $configurationBackup = $configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );

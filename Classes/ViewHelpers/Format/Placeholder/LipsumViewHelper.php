@@ -91,7 +91,7 @@ class LipsumViewHelper extends AbstractViewHelper
         $lipsum = implode("\n", $paragraphs);
         if ($arguments['html']) {
             $tsParserPath = $arguments['parseFuncTSPath'] ? '< ' . $arguments['parseFuncTSPath'] : null;
-            $lipsum = static::getContentObject()->parseFunc($lipsum, [], (string) $tsParserPath);
+            $lipsum = static::getContentObject($renderingContext)->parseFunc($lipsum, [], (string) $tsParserPath);
         }
         return $lipsum;
     }
@@ -164,12 +164,12 @@ fKlBugvORmsyOJaRIQ8yH3I1EG2Y/+/6jqtrg4/xnazRv4v3i04aA==';
         return $safeLipsum;
     }
 
-    protected static function getContentObject(): ContentObjectRenderer
+    protected static function getContentObject(RenderingContextInterface $renderingContext): ContentObjectRenderer
     {
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         /** @var ContentObjectRenderer|null $contentObject */
-        $contentObject = ContentObjectFetcher::resolve($configurationManager);
+        $contentObject = ContentObjectFetcher::resolve($configurationManager, $renderingContext);
         if ($contentObject === null) {
             throw new Exception('v:format.placeholder.lipsum requires a ContentObjectRenderer, none found', 1737807859);
         }

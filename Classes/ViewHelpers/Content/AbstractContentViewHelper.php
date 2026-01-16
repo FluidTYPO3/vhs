@@ -190,7 +190,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected function getRenderedRecords(array $rows): array
     {
-        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager, $this->renderingContext);
 
         /** @var array $loadRegister */
         $loadRegister = $this->arguments['loadRegister'];

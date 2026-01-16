@@ -109,7 +109,7 @@ class UncacheViewHelper extends AbstractViewHelper
             $conf['partialRootPaths'] = $renderingContext->getTemplatePaths()->getPartialRootPaths();
         }
 
-        $contentObjectRenderer = static::getContentObject();
+        $contentObjectRenderer = static::getContentObject($renderingContext);
 
         $content = $contentObjectRenderer->cObjGetSingle(
             'COA_INT',
@@ -121,12 +121,12 @@ class UncacheViewHelper extends AbstractViewHelper
         return $content;
     }
 
-    protected static function getContentObject(): ContentObjectRenderer
+    protected static function getContentObject(RenderingContextInterface $renderingContext): ContentObjectRenderer
     {
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         /** @var ContentObjectRenderer|null $contentObject */
-        $contentObject = ContentObjectFetcher::resolve($configurationManager);
+        $contentObject = ContentObjectFetcher::resolve($configurationManager, $renderingContext);
         if ($contentObject === null) {
             throw new Exception('v:render.uncache requires a ContentObjectRenderer, none found', 1737808465);
         }

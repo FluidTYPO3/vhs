@@ -12,16 +12,17 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 class ContentObjectFetcher
 {
-    public static function resolve(?ConfigurationManagerInterface $configurationManager = null): ?ContentObjectRenderer
-    {
-        $contentObject = null;
-        $request = ($configurationManager !== null && method_exists($configurationManager, 'getRequest')
-            ? $configurationManager->getRequest()
-            : ($GLOBALS['TYPO3_REQUEST'] ?? null)) ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
+    public static function resolve(
+        ?ConfigurationManagerInterface $configurationManager = null,
+        ?RenderingContextInterface $renderingContext = null
+    ): ?ContentObjectRenderer {
 
+        $contentObject = null;
+        $request = static::getRequest($configurationManager, $renderingContext);
         if ($request) {
             $contentObject = static::resolveFromRequest($request);
         }
@@ -44,5 +45,34 @@ class ContentObjectFetcher
         /** @var TypoScriptFrontendController $controller */
         $controller = $request->getAttribute('frontend.controller');
         return $controller instanceof TypoScriptFrontendController ? $controller->cObj : null;
+    }
+
+    protected static function getRequest(
+        ?ConfigurationManagerInterface $configurationManager = null,
+        ?RenderingContextInterface $renderingContext = null
+    ): ?ServerRequestInterface {
+
+        if ($renderingContext !== null) {
+            //TYPO3 v13+
+            if (method_exists($renderingContext, 'getAttribute')
+                && method_exists($renderingContext, 'hasAttribute')
+                && $renderingContext->hasAttribute(ServerRequestInterface::class)
+            ) {
+                return $renderingContext->getAttribute(ServerRequestInterface::class);
+            }
+
+            //TYPO3 v12
+            if (method_exists($renderingContext, 'getRequest')) {
+                return $renderingContext->getRequest();
+            }
+        }
+
+        if ($configurationManager !== null) {
+            if (method_exists($configurationManager, 'getRequest')) {
+                return $configurationManager->getRequest();
+            }
+        }
+
+        return $GLOBALS['TYPO3_REQUEST'] ?? null;
     }
 }

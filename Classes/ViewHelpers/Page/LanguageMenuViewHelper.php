@@ -144,7 +144,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             return '';
         }
         /** @var ContentObjectRenderer|null $contentObject */
-        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager, $this->renderingContext);
         if ($contentObject === null) {
             throw new Exception('v:page.languageMenu requires a ContentObjectRenderer, none found', 1737807859);
         }

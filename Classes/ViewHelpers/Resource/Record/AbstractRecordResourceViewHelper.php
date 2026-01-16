@@ -167,7 +167,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
 
     public function getActiveRecord(): array
     {
-        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager, $this->renderingContext);
         if ($contentObject === null) {
             throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737807859);
         }

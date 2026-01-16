@@ -131,7 +131,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         if (is_string($imageSource) && ContextUtility::isBackend() && '../' === mb_substr($imageSource, 0, 3)) {
             $imageSource = mb_substr($imageSource, 3);
         }
-        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager, $this->renderingContext);
         if ($contentObject === null) {
             throw new Exception('v:media.source requires a ContentObjectRenderer, none found', 1737807859);
         }

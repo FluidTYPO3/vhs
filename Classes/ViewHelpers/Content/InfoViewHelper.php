@@ -72,7 +72,7 @@ class InfoViewHelper extends AbstractViewHelper
         $record = false;
 
         if (0 === $contentUid) {
-            $cObj = ContentObjectFetcher::resolve($this->configurationManager);
+            $cObj = ContentObjectFetcher::resolve($this->configurationManager, $this->renderingContext);
 
             if ($cObj === null) {
                 throw new Exception('v:content.info requires a ContentObjectRenderer, none found', 1737807859);

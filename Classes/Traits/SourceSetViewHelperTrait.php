@@ -96,7 +96,7 @@ trait SourceSetViewHelperTrait
         ?string $params = null,
         ?string $crop = null
     ): array {
-        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
+        $contentObject = ContentObjectFetcher::resolve($this->configurationManager, $this->renderingContext);
         if ($contentObject === null) {
             throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737808465);
         }
