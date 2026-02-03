@@ -23,11 +23,21 @@ class RequestResolver
     public static function resolveRequestFromRenderingContext(RenderingContextInterface $renderingContext)
     {
         $request = null;
-        if ($renderingContext instanceof RenderingContext && method_exists($renderingContext, 'getRequest')) {
+        if (
+            method_exists($renderingContext, 'getAttribute') &&
+            method_exists($renderingContext, 'hasAttribute') &&
+            $renderingContext->hasAttribute(ServerRequestInterface::class)
+        ) {
+            // TYPO3 13+
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        } elseif ($renderingContext instanceof RenderingContext && method_exists($renderingContext, 'getRequest')) {
+            // TYPO3 11-12
             $request = $renderingContext->getRequest();
         } elseif (method_exists($renderingContext, 'getControllerContext')) {
+            // TYPO3 < 11
             $request = $renderingContext->getControllerContext()->getRequest();
         }
+
         if (!$request) {
             throw new \UnexpectedValueException('Unable to resolve request from RenderingContext', 1673191812);
         }
