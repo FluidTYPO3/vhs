@@ -233,7 +233,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
+        $uriBuilder->setRequest(RequestResolver::resolveExtbaseRequestFromRenderingContext($this->renderingContext));
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($pageType)

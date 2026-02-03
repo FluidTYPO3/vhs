@@ -10,7 +10,9 @@ namespace FluidTYPO3\Vhs\Utility;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 class RequestResolver
@@ -21,13 +23,24 @@ class RequestResolver
     public static function resolveRequestFromRenderingContext(RenderingContextInterface $renderingContext)
     {
         $request = null;
-        if (method_exists($renderingContext, 'getRequest')) {
+        if ($renderingContext instanceof RenderingContext && method_exists($renderingContext, 'getRequest')) {
             $request = $renderingContext->getRequest();
         } elseif (method_exists($renderingContext, 'getControllerContext')) {
             $request = $renderingContext->getControllerContext()->getRequest();
         }
         if (!$request) {
             throw new \UnexpectedValueException('Unable to resolve request from RenderingContext', 1673191812);
+        }
+        return $request;
+    }
+
+    public static function resolveExtbaseRequestFromRenderingContext(RenderingContextInterface $renderingContext): RequestInterface
+    {
+        $request = self::resolveRequestFromRenderingContext($renderingContext);
+
+        // make sure to always return an extbase request object
+        if ($request instanceof ServerRequestInterface && !$request instanceof RequestInterface) {
+            return new Request($request->withAttribute('extbase', new ExtbaseRequestParameters()));
         }
         return $request;
     }
