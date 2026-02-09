@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
 use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
@@ -72,7 +73,15 @@ class InfoViewHelper extends AbstractViewHelper
         $record = false;
 
         if (0 === $contentUid) {
-            $cObj = ContentObjectFetcher::resolve($this->configurationManager);
+            if (is_null($this->renderingContext)
+                || (method_exists($this->renderingContext, 'getRequest')
+                    && is_null($cObj = $this->renderingContext->getRequest()->getAttribute('currentContentObject')))
+                || (!method_exists($this->renderingContext, 'getRequest')
+                    && method_exists($this->renderingContext, 'hasAttribute')
+                    && (!$this->renderingContext->hasAttribute(ServerRequestInterface::class)
+                        || is_null($cObj = $this->renderingContext->getAttribute(ServerRequestInterface::class))))) {
+                $cObj = ContentObjectFetcher::resolve($this->configurationManager);
+            }
 
             if ($cObj === null) {
                 throw new Exception('v:content.info requires a ContentObjectRenderer, none found', 1737807859);
