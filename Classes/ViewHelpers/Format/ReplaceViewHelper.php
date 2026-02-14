@@ -65,7 +65,7 @@ class ReplaceViewHelper extends AbstractViewHelper
         $replacement = is_scalar($replacement) ? (string) $replacement : (array) $replacement;
 
         $count = 0;
-        $caseSensitive = (boolean) $arguments['caseSensitive'];
+        $caseSensitive = (bool) $arguments['caseSensitive'];
         $function = $caseSensitive ? 'str_replace' : 'str_ireplace';
         $replaced = $function($substring, $replacement, $content, $count);
         if ($arguments['returnCount'] ?? false) {

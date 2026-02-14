@@ -63,7 +63,7 @@ class InfoViewHelper extends AbstractViewHelper
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = $pageRepository->getPage_noCheck((integer) $pageUid);
+        $page = $pageRepository->getPage_noCheck((int) $pageUid);
         /** @var string|null $field */
         $field = $arguments['field'];
         $content = null;

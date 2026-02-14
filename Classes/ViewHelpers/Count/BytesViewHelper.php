@@ -70,6 +70,6 @@ class BytesViewHelper extends AbstractViewHelper
     ) {
         /** @var string $encoding */
         $encoding = $arguments['encoding'];
-        return (integer) mb_strlen($renderChildrenClosure(), $encoding);
+        return (int) mb_strlen($renderChildrenClosure(), $encoding);
     }
 }

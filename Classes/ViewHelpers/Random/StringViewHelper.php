@@ -49,10 +49,10 @@ class StringViewHelper extends AbstractViewHelper
 
         /** @var int $minimumLength */
         $minimumLength = $arguments['minimumLength'];
-        $minimumLength = (integer) $minimumLength;
+        $minimumLength = (int) $minimumLength;
         /** @var int $maximumLength */
         $maximumLength = $arguments['maximumLength'];
-        $maximumLength = (integer) $maximumLength;
+        $maximumLength = (int) $maximumLength;
         /** @var string $characters */
         $characters = $arguments['characters'];
         if ($minimumLength != $maximumLength) {

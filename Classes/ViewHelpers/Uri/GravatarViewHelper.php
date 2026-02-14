@@ -75,7 +75,7 @@ class GravatarViewHelper extends AbstractViewHelper
         $size = $arguments['size'];
         $imageSet = $arguments['imageSet'];
         $maximumRating = $arguments['maximumRating'];
-        $secure = (boolean) $arguments['secure'];
+        $secure = (bool) $arguments['secure'];
 
         $url = $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL;
         $url .= md5(strtolower(trim($email)));

@@ -113,7 +113,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
          * @var DomainObjectInterface $candidate
          */
         foreach ($haystack as $index => $candidate) {
-            if ($candidate->getUid() === (integer) $needle) {
+            if ($candidate->getUid() === (int) $needle) {
                 return $index;
             }
         }
@@ -129,12 +129,12 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     {
         $index = 0;
         if ($needle instanceof DomainObjectInterface) {
-            $needle = (integer) $needle->getUid();
+            $needle = (int) $needle->getUid();
         }
 
         /** @var DomainObjectInterface $candidate */
         foreach ($haystack as $candidate) {
-            if ($candidate->getUid() === (integer) $needle) {
+            if ($candidate->getUid() === (int) $needle) {
                 return $index;
             }
             $index++;
@@ -160,7 +160,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
             return $result;
         } else {
             foreach ($haystack as $index => $straw) {
-                if ((integer) $straw->getUid() === (integer) $needle->getUid()) {
+                if ((int) $straw->getUid() === (int) $needle->getUid()) {
                     return $index;
                 }
             }

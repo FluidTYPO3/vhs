@@ -77,7 +77,7 @@ class NumberViewHelper extends AbstractViewHelper
         /** @var int $maximumDecimals */
         $maximumDecimals = $arguments['maximumDecimals'];
         $natural = random_int($minimum, $maximum);
-        if (0 === (integer) $minimumDecimals && 0 === (integer) $maximumDecimals) {
+        if (0 === (int) $minimumDecimals && 0 === (int) $maximumDecimals) {
             return $natural;
         }
         /** @var array $decimals */

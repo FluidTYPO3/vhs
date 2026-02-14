@@ -116,7 +116,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
             }
         }
 
-        if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
+        if (isset($record['t3ver_oid']) && (int) $record['t3ver_oid'] !== 0) {
             $sqlRecordUid = $record['t3ver_oid'];
         } elseif (isset($record['_LOCALIZED_UID'])) {
             $sqlRecordUid = $record['_LOCALIZED_UID'];
@@ -137,7 +137,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         if (!empty($GLOBALS['TSFE']->sys_page)) {
             $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $record);
         } else {
-            if (isset($record['t3ver_oid']) && (integer) $record['t3ver_oid'] !== 0) {
+            if (isset($record['t3ver_oid']) && (int) $record['t3ver_oid'] !== 0) {
                 $sqlRecordUid = $record['t3ver_oid'];
             } elseif (isset($record['_LOCALIZED_UID'])) {
                 $sqlRecordUid = $record['_LOCALIZED_UID'];

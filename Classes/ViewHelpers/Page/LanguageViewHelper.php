@@ -71,7 +71,7 @@ class LanguageViewHelper extends AbstractViewHelper
 
         /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
-        $pageUid = (integer) $pageUid;
+        $pageUid = (int) $pageUid;
         /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
 

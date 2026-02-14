@@ -69,8 +69,8 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
     {
         /** @var string|int|CoreFileReference|ExtbaseFileReference|null $src */
         $src = $this->arguments['src'];
-        $treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
-        $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+        $treatIdAsUid = (bool) $this->arguments['treatIdAsUid'];
+        $treatIdAsReference = (bool) $this->arguments['treatIdAsReference'];
 
         if (null === $src) {
             /** @var string|int|CoreFileReference|ExtbaseFileReference|null $src */
@@ -87,7 +87,7 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
         }
 
         if ($treatIdAsUid || $treatIdAsReference) {
-            $id = (integer) $src;
+            $id = (int) $src;
             $info = [];
             if ($treatIdAsUid) {
                 $info = $this->getInfoByUid($id);

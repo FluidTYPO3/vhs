@@ -279,9 +279,9 @@ class AssetService implements SingletonInterface
             $chunk = [];
             foreach ($spooledAssets as $name => $asset) {
                 $assetSettings = $this->extractAssetSettings($asset);
-                $standalone = (boolean) $assetSettings['standalone'];
-                $external = (boolean) $assetSettings['external'];
-                $rewrite = (boolean) $assetSettings['rewrite'];
+                $standalone = (bool) $assetSettings['standalone'];
+                $external = (bool) $assetSettings['external'];
+                $rewrite = (bool) $assetSettings['rewrite'];
                 $path = $assetSettings['path'];
                 if (!$standalone) {
                     $chunk[$name] = $asset;
@@ -674,7 +674,7 @@ class AssetService implements SingletonInterface
         if ($asset instanceof AssetInterface) {
             return $asset->assertAllowedInFooter();
         }
-        return (boolean) ($asset['movable'] ?? true);
+        return (bool) ($asset['movable'] ?? true);
     }
 
     /**

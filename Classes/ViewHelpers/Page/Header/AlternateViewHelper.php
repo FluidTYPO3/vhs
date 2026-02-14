@@ -93,14 +93,14 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
-        $pageUid = (integer) $pageUid;
+        $pageUid = (int) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
         /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
-        $addQueryString = (boolean) $this->arguments['addQueryString'];
+        $addQueryString = (bool) $this->arguments['addQueryString'];
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -117,7 +117,7 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $usePageRenderer = (1 !== (integer) ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'] ?? 0));
+        $usePageRenderer = (1 !== (int) ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'] ?? 0));
         $output = '';
 
         foreach ($languages as $languageUid => $languageName) {

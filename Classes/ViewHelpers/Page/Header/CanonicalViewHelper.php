@@ -60,7 +60,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
 
         /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
-        $pageUid = (integer) $pageUid;
+        $pageUid = (int) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
@@ -103,7 +103,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
 
         $renderedTag = $this->tag->render();
 
-        if (1 === (integer) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']) {
+        if (1 === (int) $GLOBALS['TSFE']->config['config']['disableAllHeaderCode']) {
             return $renderedTag;
         }
 

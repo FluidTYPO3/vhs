@@ -148,8 +148,8 @@ class ExtractViewHelper extends AbstractViewHelper
         $content = $arguments['content'] ?? $renderChildrenClosure();
         /** @var string $key */
         $key = $arguments['key'];
-        $recursive = (boolean) $arguments['recursive'];
-        $single = (boolean) $arguments['single'];
+        $recursive = (bool) $arguments['recursive'];
+        $single = (bool) $arguments['single'];
         try {
             // extraction from Iterators could potentially use a getter method which throws
             // exceptions - although this would be bad practice. Catch the exception here

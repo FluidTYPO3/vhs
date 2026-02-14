@@ -59,8 +59,8 @@ class MarkdownViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $trim = (boolean) $arguments['trim'];
-        $htmlentities = (boolean) $arguments['htmlentities'];
+        $trim = (bool) $arguments['trim'];
+        $htmlentities = (bool) $arguments['htmlentities'];
         $text = $renderChildrenClosure();
         if (null === $text) {
             return null;

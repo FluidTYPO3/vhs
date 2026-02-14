@@ -31,6 +31,6 @@ class FloorViewHelper extends AbstractSingleMathViewHelper
             return array_map('floor', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
         /** @var integer|float $a */
-        return (integer) floor($a);
+        return (int) floor($a);
     }
 }

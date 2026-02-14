@@ -77,9 +77,9 @@ class FilterViewHelper extends AbstractViewHelper
         $filter = $arguments['filter'];
         /** @var string $propertyName */
         $propertyName = $arguments['propertyName'];
-        $preserveKeys = (boolean) $arguments['preserveKeys'];
-        $invert = (boolean) $arguments['invert'];
-        $nullFilter = (boolean) $arguments['nullFilter'];
+        $preserveKeys = (bool) $arguments['preserveKeys'];
+        $invert = (bool) $arguments['invert'];
+        $nullFilter = (bool) $arguments['nullFilter'];
 
         if (!is_array($subject) && !$subject instanceof \Traversable) {
             return [];

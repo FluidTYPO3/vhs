@@ -42,7 +42,7 @@ class PageService implements SingletonInterface
     ): array {
         $pageRepository = $this->getPageRepository();
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
-        $cacheKey = md5($pageUid . $pageConstraints . (integer) $disableGroupAccessCheck);
+        $cacheKey = md5($pageUid . $pageConstraints . (int) $disableGroupAccessCheck);
         if (!isset(static::$cachedMenus[$cacheKey])) {
             if ($disableGroupAccessCheck
                 && version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.1', '<=')
@@ -64,7 +64,7 @@ class PageService implements SingletonInterface
 
     public function getPage(int $pageUid, bool $disableGroupAccessCheck = false): array
     {
-        $cacheKey = md5($pageUid . (integer) $disableGroupAccessCheck);
+        $cacheKey = md5($pageUid . (int) $disableGroupAccessCheck);
         if (!isset(static::$cachedPages[$cacheKey])) {
             static::$cachedPages[$cacheKey] = $this->getPageRepository()->getPage($pageUid, $disableGroupAccessCheck);
         }
@@ -130,7 +130,7 @@ class PageService implements SingletonInterface
             $pageUid = $page['uid'];
             $pageRecord = $page;
         } else {
-            $pageUid = (0 === (integer) $page) ? $GLOBALS['TSFE']->id : (integer) $page;
+            $pageUid = (0 === (int) $page) ? $GLOBALS['TSFE']->id : (int) $page;
             $pageRecord = $this->getPage($pageUid);
         }
         if (-1 === $languageUid) {
@@ -155,8 +155,8 @@ class PageService implements SingletonInterface
             $hideIfNotTranslated = $visibilityBitSet->shouldHideTranslationIfNoTranslatedRecordExists();
             $hideIfDefaultLanguage = $visibilityBitSet->shouldBeHiddenInDefaultLanguage();
         } else {
-            $hideIfNotTranslated = (boolean) GeneralUtility::hideIfNotTranslated($l18nCfg);
-            $hideIfDefaultLanguage = (boolean) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
+            $hideIfNotTranslated = (bool) GeneralUtility::hideIfNotTranslated($l18nCfg);
+            $hideIfDefaultLanguage = (bool) GeneralUtility::hideIfDefaultLanguage($l18nCfg);
         }
 
         $pageOverlay = [];
@@ -174,7 +174,7 @@ class PageService implements SingletonInterface
     public function getItemLink(array $page, bool $forceAbsoluteUrl = false): string
     {
         $parameter = $page['uid'];
-        if ((integer) $page['doktype'] === PageRepository::DOKTYPE_LINK) {
+        if ((int) $page['doktype'] === PageRepository::DOKTYPE_LINK) {
             $redirectTo = $page['url'] ?? '';
             if (!empty($redirectTo)) {
                 $uI = parse_url($redirectTo);
@@ -202,7 +202,7 @@ class PageService implements SingletonInterface
 
     public function isAccessProtected(array $page): bool
     {
-        return (0 !== (integer) $page['fe_group']);
+        return (0 !== (int) $page['fe_group']);
     }
 
     public function isAccessGranted(array $page): bool
@@ -225,14 +225,14 @@ class PageService implements SingletonInterface
 
     public function isCurrent(int $pageUid): bool
     {
-        return ($pageUid === (integer) $GLOBALS['TSFE']->id);
+        return ($pageUid === (int) $GLOBALS['TSFE']->id);
     }
 
     public function isActive(int $pageUid): bool
     {
         $rootLineData = $this->getRootLine();
         foreach ($rootLineData as $page) {
-            if ((integer) $page['uid'] === $pageUid) {
+            if ((int) $page['uid'] === $pageUid) {
                 return true;
             }
         }
@@ -242,9 +242,9 @@ class PageService implements SingletonInterface
 
     public function shouldUseShortcutTarget(array $arguments): bool
     {
-        $useShortcutTarget = (boolean) $arguments['useShortcutData'];
+        $useShortcutTarget = (bool) $arguments['useShortcutData'];
         if (array_key_exists('useShortcutTarget', $arguments)) {
-            $useShortcutTarget = (boolean) $arguments['useShortcutTarget'];
+            $useShortcutTarget = (bool) $arguments['useShortcutTarget'];
         }
 
         return $useShortcutTarget;
@@ -252,9 +252,9 @@ class PageService implements SingletonInterface
 
     public function shouldUseShortcutUid(array $arguments): bool
     {
-        $useShortcutUid = (boolean) $arguments['useShortcutData'];
+        $useShortcutUid = (bool) $arguments['useShortcutData'];
         if (array_key_exists('useShortcutUid', $arguments)) {
-            $useShortcutUid = (boolean) $arguments['useShortcutUid'];
+            $useShortcutUid = (bool) $arguments['useShortcutUid'];
         }
 
         return $useShortcutUid;
@@ -267,7 +267,7 @@ class PageService implements SingletonInterface
      */
     public function getShortcutTargetPage(array $page): ?array
     {
-        $dokType = (integer) ($page['doktype'] ?? PageRepository::DOKTYPE_DEFAULT);
+        $dokType = (int) ($page['doktype'] ?? PageRepository::DOKTYPE_DEFAULT);
         if ($dokType !== PageRepository::DOKTYPE_SHORTCUT) {
             return null;
         }

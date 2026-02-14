@@ -232,7 +232,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function renderContent(array $menu): string
     {
-        $deferredRendering = (boolean) $this->arguments['deferred'];
+        $deferredRendering = (bool) $this->arguments['deferred'];
         if (0 === count($menu) && !$deferredRendering) {
             return '';
         }
@@ -279,9 +279,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         $html = [];
         /** @var int $levels */
         $levels = $this->arguments['levels'];
-        $levels = (integer) $levels;
-        $showCurrent = (boolean) $this->arguments['showCurrent'];
-        $expandAll = (boolean) $this->arguments['expandAll'];
+        $levels = (int) $levels;
+        $showCurrent = (bool) $this->arguments['showCurrent'];
+        $expandAll = (bool) $this->arguments['expandAll'];
         $itemsRendered = 0;
         $numberOfItems = count($menu);
         foreach ($menu as $page) {
@@ -338,11 +338,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
     protected function renderItemLink(array $page): string
     {
         $isSpacer = $page['doktype'] === PageRepository::DOKTYPE_SPACER;
-        $isCurrent = (boolean) $page['current'];
-        $isActive = (boolean) $page['active'];
-        $linkCurrent = (boolean) $this->arguments['linkCurrent'];
-        $linkActive = (boolean) $this->arguments['linkActive'];
-        $includeAnchorTitle = (boolean) $this->arguments['includeAnchorTitle'];
+        $isCurrent = (bool) $page['current'];
+        $isActive = (bool) $page['active'];
+        $linkCurrent = (bool) $this->arguments['linkCurrent'];
+        $linkActive = (bool) $this->arguments['linkActive'];
+        $includeAnchorTitle = (bool) $this->arguments['includeAnchorTitle'];
         $target = (!empty($page['target'])) ? ' target="' . $page['target'] . '"' : '';
         $class = (trim($page['class']) !== '') ? ' class="' . trim($page['class']) . '"' : '';
         if ($isSpacer || ($isCurrent && !$linkCurrent) || ($isActive && !$linkActive)) {
@@ -394,9 +394,9 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         if ($pageUid === null) {
             return [];
         }
-        $showHiddenInMenu = (boolean) $this->arguments['showHiddenInMenu'];
-        $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
-        $includeSpacers = (boolean) $this->arguments['includeSpacers'];
+        $showHiddenInMenu = (bool) $this->arguments['showHiddenInMenu'];
+        $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
+        $includeSpacers = (bool) $this->arguments['includeSpacers'];
         $excludePages = $this->processPagesArgument($this->arguments['excludePages']);
 
         return $this->pageService->getMenu(
@@ -420,7 +420,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             $count++;
             $class = [];
             $originalPageUid = $page['uid'];
-            $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+            $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
             if ($showAccessProtected) {
                 $pages[$index]['accessProtected'] = $this->pageService->isAccessProtected($page);
                 if ($pages[$index]['accessProtected']) {
@@ -464,7 +464,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             }
             $pages[$index]['class'] = implode(' ', $class);
             $pages[$index]['linktext'] = $this->getItemTitle($pages[$index]);
-            $forceAbsoluteUrl = (boolean) $this->arguments['forceAbsoluteUrl'];
+            $forceAbsoluteUrl = (bool) $this->arguments['forceAbsoluteUrl'];
             $pages[$index]['link'] = $this->pageService->getItemLink($pages[$index], $forceAbsoluteUrl);
             $processedPages[$index] = $pages[$index];
         }
