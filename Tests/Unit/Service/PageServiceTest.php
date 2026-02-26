@@ -4,6 +4,8 @@ namespace FluidTYPO3\Vhs\Tests\Unit\Service;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -88,19 +90,36 @@ class PageServiceTest extends AbstractTestCase
     {
         $subject = new PageService();
         $GLOBALS['TSFE'] = (object) ['fe_user' => $user];
+        $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequestInterface::class)
+            ->onlyMethods(['getAttribute'])
+            ->getMockForAbstractClass();
+        $GLOBALS['TYPO3_REQUEST']->method('getAttribute')->willReturn($user);
         self::assertSame($expected, $subject->isAccessGranted($page));
     }
 
     public function getIsAccessGrantedTestValues(): array
     {
-        $noUser = $this->getMockBuilder(FrontendUserAuthentication::class)->disableOriginalConstructor()->getMock();
-        $pseudoUser = $this->getMockBuilder(FrontendUserAuthentication::class)->disableOriginalConstructor()->getMock();
-        $groupUser = $this->getMockBuilder(FrontendUserAuthentication::class)->disableOriginalConstructor()->getMock();
+        $noUser = $this->getMockBuilder(FrontendUserAuthentication::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $noUser->method('getUserId')->willReturn(null);
+
+        $pseudoUser = $this->getMockBuilder(FrontendUserAuthentication::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pseudoUser->method('getUserId')->willReturn(null);
+
+        $groupUser = $this->getMockBuilder(FrontendUserAuthentication::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $groupUser->method('getUserId')->willReturn(1);
         $groupUser->groupData = ['uid' => [3, 4]];
         $groupUser->user = [];
+
         $anyGroupUser = $this->getMockBuilder(FrontendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $anyGroupUser->method('getUserId')->willReturn(null);
         $anyGroupUser->groupData = ['uid' => [3, 4]];
 
         return [

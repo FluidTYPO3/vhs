@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -17,6 +18,7 @@ use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * Page Service
@@ -216,8 +218,17 @@ class PageService implements SingletonInterface
         $hide = (in_array(-1, $groups));
         $show = (in_array(-2, $groups));
 
-        $userIsLoggedIn = (is_array($GLOBALS['TSFE']->fe_user->user));
-        $userGroups = $GLOBALS['TSFE']->fe_user->groupData['uid'];
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '13.0', '<')) {
+            $userIsLoggedIn = (is_array($GLOBALS['TSFE']->fe_user->user));
+            $userGroups = $GLOBALS['TSFE']->fe_user->groupData['uid'];
+        } else {
+            /** @var ServerRequestInterface $serverRequest */
+            $serverRequest = $GLOBALS['TYPO3_REQUEST'];
+            /** @var FrontendUserAuthentication $frontendUserAuthentication */
+            $frontendUserAuthentication = $serverRequest->getAttribute('frontend.user');
+            $userIsLoggedIn = ($frontendUserAuthentication->getUserId() ?? 0) > 0;
+            $userGroups = $frontendUserAuthentication->groupData['uid'];
+        }
         $userIsInGrantedGroups = (0 < count(array_intersect($userGroups, $groups)));
 
         return (!$userIsLoggedIn && $hide) || ($userIsLoggedIn && $show) || ($userIsLoggedIn && $userIsInGrantedGroups);
