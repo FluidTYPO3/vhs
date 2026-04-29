@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -77,8 +78,17 @@ class PageService implements SingletonInterface
         bool $reverse = false
     ): array {
         if (null === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+            if (isset($GLOBALS['TSFE'])) {
+                $pageUid = $GLOBALS['TSFE']->id;
+            } else {
+                $pageUid = $this->getRequest()->getQueryParams()['id'] ?? null;
+            }
         }
+
+        if (!$pageUid) {
+            throw new \UnexpectedValueException('PageService::getRootLine requires a page UID', 1774448248);
+        }
+
         /** @var RootlineUtility $rootLineUtility */
         $rootLineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid);
         $rootline = $rootLineUtility->get();
@@ -312,5 +322,10 @@ class PageService implements SingletonInterface
             $instance = GeneralUtility::makeInstance(PageRepository::class);
         }
         return $instance;
+    }
+
+    private function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
