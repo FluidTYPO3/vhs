@@ -18,7 +18,7 @@ $EM_CONF['vhs'] = array (
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '7.2.0',
+  'version' => '7.2.1',
   'constraints' => 
   array (
     'depends' => 
