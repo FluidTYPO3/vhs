@@ -87,8 +87,8 @@ class EncodeViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $value = $renderChildrenClosure();
-        $useTraversableKeys = (boolean) $arguments['useTraversableKeys'];
-        $preventRecursion = (boolean) $arguments['preventRecursion'];
+        $useTraversableKeys = (bool) $arguments['useTraversableKeys'];
+        $preventRecursion = (bool) $arguments['preventRecursion'];
         /** @var string $recursionMarker */
         $recursionMarker = $arguments['recursionMarker'] ?? '**recursion**';
         /** @var string|null $dateTimeFormat */

@@ -42,9 +42,9 @@ class MedianViewHelper extends AbstractSingleMathViewHelper
                  * not everybody knows, let's make it explicit for everybody
                  * wondering.
                  */
-                return $a[(integer) $midpoint];
+                return $a[(int) $midpoint];
             }
-            $candidates = array_slice($a, (integer) (floor($midpoint) - 1), 2);
+            $candidates = array_slice($a, (int) (floor($midpoint) - 1), 2);
             return array_sum($candidates) / 2;
         }
         return $a;

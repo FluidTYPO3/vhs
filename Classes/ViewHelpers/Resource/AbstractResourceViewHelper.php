@@ -63,8 +63,8 @@ abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
     {
         $identifier = $this->arrayForMixedArgument($identifier, 'identifier');
         $categories = $this->arrayForMixedArgument($categories, 'categories');
-        $treatIdAsUid = (boolean) $this->arguments['treatIdAsUid'];
-        $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+        $treatIdAsUid = (bool) $this->arguments['treatIdAsUid'];
+        $treatIdAsReference = (bool) $this->arguments['treatIdAsReference'];
 
         if ($treatIdAsUid && $treatIdAsReference) {
             throw new \RuntimeException(

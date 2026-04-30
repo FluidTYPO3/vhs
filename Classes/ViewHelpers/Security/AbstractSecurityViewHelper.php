@@ -281,7 +281,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         }
         $currentBackendUser = $this->getCurrentBackendUser();
         if (null !== $backendUser) {
-            return ((integer) ($currentBackendUser['uid'] ?? 0) === $backendUser);
+            return ((int) ($currentBackendUser['uid'] ?? 0) === $backendUser);
         }
         return is_array($currentBackendUser);
     }
@@ -328,7 +328,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
                 return false;
             }
             $currentBackendUser = $this->getCurrentBackendUser();
-            return is_array($currentBackendUser) && (boolean) ($currentBackendUser['admin'] ?? false);
+            return is_array($currentBackendUser) && (bool) ($currentBackendUser['admin'] ?? false);
         }
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);

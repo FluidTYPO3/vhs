@@ -31,6 +31,6 @@ class CeilViewHelper extends AbstractSingleMathViewHelper
             return array_map('ceil', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
         /** @var integer|float $a */
-        return (integer) ceil($a);
+        return (int) ceil($a);
     }
 }

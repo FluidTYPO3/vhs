@@ -70,7 +70,7 @@ class AsciiViewHelper extends AbstractViewHelper
     ) {
         $ascii = $renderChildrenClosure();
         if (is_numeric($ascii)) {
-            return chr((integer) $ascii);
+            return chr((int) $ascii);
         }
         if (is_array($ascii) || $ascii instanceof \Traversable) {
             $string = '';

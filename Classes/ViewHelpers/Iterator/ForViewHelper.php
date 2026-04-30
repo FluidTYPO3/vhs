@@ -49,9 +49,9 @@ class ForViewHelper extends AbstractLoopViewHelper
         $content = '';
         $variableProvider = $renderingContext->getVariableProvider();
 
-        $to = (integer) $to;
-        $from = (integer) $from;
-        $step = (integer) $step;
+        $to = (int) $to;
+        $from = (int) $from;
+        $step = (int) $step;
 
         if (0 === $step) {
             throw new \RuntimeException('"step" may not be 0.', 1383267698);

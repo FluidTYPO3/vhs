@@ -37,7 +37,7 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
     {
         /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
-        $respectSiteRoot = (boolean) $arguments['respectSiteRoot'];
+        $respectSiteRoot = (bool) $arguments['respectSiteRoot'];
 
         if (empty($pageUid)) {
             /** @var int $pageUid */

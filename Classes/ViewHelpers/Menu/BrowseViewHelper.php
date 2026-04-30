@@ -77,11 +77,11 @@ class BrowseViewHelper extends AbstractMenuViewHelper
     public function render()
     {
         $defaultUid = $GLOBALS['TSFE']->id;
-        $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
-        $pageUid = (integer) (null !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $defaultUid);
-        $currentUid = (integer) ($this->arguments['currentPageUid'] ?: $defaultUid);
+        $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
+        $pageUid = (int) (null !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $defaultUid);
+        $currentUid = (int) ($this->arguments['currentPageUid'] ?: $defaultUid);
         $currentPage = $this->pageService->getPage($currentUid, $showAccessProtected);
-        $parentUid = (integer) (null !== $this->arguments['pageUid'] ? $pageUid : ($currentPage['pid'] ?? 0));
+        $parentUid = (int) (null !== $this->arguments['pageUid'] ? $pageUid : ($currentPage['pid'] ?? 0));
         $parentPage = $this->pageService->getPage($parentUid, $showAccessProtected);
         $menuData = $this->getMenu($parentUid);
         if (empty($menuData)) {
@@ -98,7 +98,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         $nextUid = null;
         $prevUid = null;
         for ($i = 0; $i < $uidCount; $i++) {
-            if ((integer) $pageUids[$i] === $currentUid) {
+            if ((int) $pageUids[$i] === $currentUid) {
                 if ($i > 0) {
                     $prevUid = $pageUids[$i - 1];
                 }

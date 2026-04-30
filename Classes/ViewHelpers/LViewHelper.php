@@ -75,7 +75,7 @@ class LViewHelper extends AbstractViewHelper
         /** @var RenderingContext $renderingContext */
         /** @var string|null $default */
         $default = $arguments['default'];
-        $htmlEscape = (boolean) $arguments['htmlEscape'];
+        $htmlEscape = (bool) $arguments['htmlEscape'];
         /** @var string|null $extensionName */
         $extensionName = $arguments['extensionName'];
         /** @var array|null $translationArguments */

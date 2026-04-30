@@ -41,7 +41,7 @@ class ListViewHelper extends AbstractMenuViewHelper
         if (0 === count($pages)) {
             return null;
         }
-        $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+        $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
         $menuData = [];
         foreach ($pages as $pageUid) {
             $row = $this->pageService->getPage($pageUid, $showAccessProtected);

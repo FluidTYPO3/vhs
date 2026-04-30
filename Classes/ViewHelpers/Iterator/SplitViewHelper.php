@@ -49,7 +49,7 @@ class SplitViewHelper extends AbstractViewHelper
     ) {
         /** @var int<1, max> $length */
         $length = $arguments['length'];
-        if ((integer) $length === 0) {
+        if ((int) $length === 0) {
             // Difference from PHP str_split: return an empty array if (potentially dynamically defined) length
             // argument is zero for some reason. PHP would throw a warning; Fluid would logically just return empty.
             return [];

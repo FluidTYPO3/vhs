@@ -37,7 +37,7 @@ trait SourceSetViewHelperTrait
         $quality = $this->arguments['quality'];
         /** @var string|null $crop */
         $crop = $this->arguments['crop'];
-        $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+        $treatIdAsReference = (bool) $this->arguments['treatIdAsReference'];
         if ($treatIdAsReference) {
             /** @var string $src */
             $src = $this->arguments['src'];

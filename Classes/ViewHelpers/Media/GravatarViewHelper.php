@@ -74,7 +74,7 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
         $size = $this->checkArgument('size');
         $imageSet = $this->checkArgument('imageSet');
         $maximumRating = $this->checkArgument('maximumRating');
-        $secure = (boolean) $this->arguments['secure'];
+        $secure = (bool) $this->arguments['secure'];
 
         $url = $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL;
         $url .= md5(strtolower(trim($email)));

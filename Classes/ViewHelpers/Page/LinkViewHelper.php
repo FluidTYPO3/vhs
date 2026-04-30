@@ -154,12 +154,12 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         // Get page via pageUid argument or current id
-        $pageUid = (integer) $pageUid;
+        $pageUid = (int) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
-        $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+        $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
 
         $page = $this->pageService->getPage($pageUid, $showAccessProtected);
         if (empty($page)) {

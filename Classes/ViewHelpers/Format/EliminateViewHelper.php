@@ -88,11 +88,11 @@ class EliminateViewHelper extends AbstractViewHelper
             $content = static::eliminateCharacters(
                 $content,
                 $arguments['characters'],
-                (boolean) $arguments['caseSensitive']
+                (bool) $arguments['caseSensitive']
             );
         }
         if (isset($arguments['strings'])) {
-            $content = static::eliminateStrings($content, $arguments['strings'], (boolean) $arguments['caseSensitive']);
+            $content = static::eliminateStrings($content, $arguments['strings'], (bool) $arguments['caseSensitive']);
         }
         if ($arguments['whitespace']) {
             $content = static::eliminateWhitespace($content);
@@ -113,10 +113,10 @@ class EliminateViewHelper extends AbstractViewHelper
             $content = static::eliminateDigits($content);
         }
         if ($arguments['letters']) {
-            $content = static::eliminateLetters($content, (boolean) $arguments['caseSensitive']);
+            $content = static::eliminateLetters($content, (bool) $arguments['caseSensitive']);
         }
         if ($arguments['nonAscii']) {
-            $content = static::eliminateNonAscii($content, (boolean) $arguments['caseSensitive']);
+            $content = static::eliminateNonAscii($content, (bool) $arguments['caseSensitive']);
         }
         return $content;
     }

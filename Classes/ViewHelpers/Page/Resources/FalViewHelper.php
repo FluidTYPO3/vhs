@@ -104,7 +104,7 @@ class FalViewHelper extends ResourcesFalViewHelper
             $languageUid = $GLOBALS['TSFE']->sys_language_uid;
         }
 
-        return (integer) $languageUid;
+        return (int) $languageUid;
     }
 
     /**

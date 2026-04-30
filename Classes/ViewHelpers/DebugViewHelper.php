@@ -59,7 +59,7 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  * Path: {domainObject}
  * Value type: object
  * Accessible properties on {domainObject}:
- *    {form.uid} (integer)
+ *    {form.uid} (int)
  *    {form.title} (string)
  * ```
  *

@@ -45,7 +45,7 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
     ) {
         if (!empty($iterationArgument)) {
             $variableProvider = $renderingContext->getVariableProvider();
-            $cycle = (integer) (($i - $from) / $step) + 1;
+            $cycle = (int) (($i - $from) / $step) + 1;
             $iteration = [
                 'index' => $i,
                 'cycle' => $cycle,

@@ -120,7 +120,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         $format = $this->arguments['format'];
         /** @var int $quality */
         $quality = $this->arguments['quality'];
-        $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+        $treatIdAsReference = (bool) $this->arguments['treatIdAsReference'];
         $crop = $this->arguments['crop'];
 
         if ($src instanceof FileReference) {
@@ -151,7 +151,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if (!empty($format)) {
             $setup['ext'] = $format;
         }
-        if (0 < (integer) $quality) {
+        if (0 < (int) $quality) {
             /** @var int $quality */
             $quality = MathUtility::forceIntegerInRange($quality, 10, 100, 75);
             $setup['params'] = '-quality ' . $quality;

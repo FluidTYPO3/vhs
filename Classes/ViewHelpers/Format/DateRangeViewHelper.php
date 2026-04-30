@@ -172,7 +172,7 @@ class DateRangeViewHelper extends AbstractViewHelper
         $output = null;
         $return = $arguments['return'];
         if (null === $return) {
-            $spaceGlue = (boolean) $arguments['spaceGlue'];
+            $spaceGlue = (bool) $arguments['spaceGlue'];
             /** @var string $glue */
             $glue = $arguments['glue'];
             /** @var string $startFormat */
@@ -241,7 +241,7 @@ class DateRangeViewHelper extends AbstractViewHelper
     protected static function formatDate(\DateTime $date, string $format = 'Y-m-d'): string
     {
         if (false !== strpos($format, '%')) {
-            return (string) strftime($format, (integer) $date->format('U'));
+            return (string) strftime($format, (int) $date->format('U'));
         }
         return $date->format($format);
     }

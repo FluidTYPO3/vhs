@@ -80,7 +80,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         $src = $this->arguments['src'];
-        $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+        $treatIdAsReference = (bool) $this->arguments['treatIdAsReference'];
         if ($src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsReference = true;

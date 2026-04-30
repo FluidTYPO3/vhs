@@ -66,8 +66,8 @@ class ChunkViewHelper extends AbstractViewHelper
         $as = $arguments['as'];
         /** @var int $count */
         $count = $arguments['count'];
-        $fixed = (boolean) $arguments['fixed'];
-        $preserveKeys = (boolean) $arguments['preserveKeys'];
+        $fixed = (bool) $arguments['fixed'];
+        $preserveKeys = (bool) $arguments['preserveKeys'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
             empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
             $preserveKeys
@@ -80,7 +80,7 @@ class ChunkViewHelper extends AbstractViewHelper
             $subjectSize = count($subject);
             if (0 < $subjectSize) {
                 /** @var int<1, max> $chunkSize */
-                $chunkSize = (integer) ceil($subjectSize / $count);
+                $chunkSize = (int) ceil($subjectSize / $count);
                 $output = array_chunk($subject, $chunkSize, $preserveKeys);
             }
             // Fill the resulting array with empty items to get the desired element count
