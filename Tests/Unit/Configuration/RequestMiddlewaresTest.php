@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Configuration;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -12,9 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 
 class RequestMiddlewaresTest extends AbstractTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function assetInclusionMiddlewareRunsInsideCoreCspMiddleware()
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs']['disableAssetHandling'] = false;

@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource\Record;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -88,9 +89,7 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame([], $output);
     }
 
-    /**
-     * @dataProvider getGetResourcesInNonPageContextTestValues
-     */
+    #[DataProvider('getGetResourcesInNonPageContextTestValues')]
     public function testGetResourcesInNonPageContext(int $workspaceUid): void
     {
         $file = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();

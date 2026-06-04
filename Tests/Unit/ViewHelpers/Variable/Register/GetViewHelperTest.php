@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable\Register;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,9 +19,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  */
 class GetViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionWithoutRegisterStack(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
@@ -30,9 +29,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
         $this->executeViewHelper(['name' => 'name']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullWithoutRequest(): void
     {
         unset($GLOBALS['TYPO3_REQUEST']);
@@ -41,9 +38,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
         self::assertNull($this->executeViewHelper(['name' => 'missing']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfRegisterDoesNotExist(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRegister();
@@ -52,9 +47,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals(null, $this->executeViewHelper(['name' => $name]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsValueIfRegisterExists(): void
     {
         $name = uniqid();
@@ -64,9 +57,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($value, $this->executeViewHelper(['name' => $name]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function readsRegisterStackFromRenderingContextRequest(): void
     {
         $name = uniqid();

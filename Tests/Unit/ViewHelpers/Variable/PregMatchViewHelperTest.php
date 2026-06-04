@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class PregMatchViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canMatchValues(): void
     {
         $arguments = [
@@ -30,9 +29,7 @@ class PregMatchViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame(1, count($test));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canTakeSubjectFromRenderChildren(): void
     {
         $arguments = [

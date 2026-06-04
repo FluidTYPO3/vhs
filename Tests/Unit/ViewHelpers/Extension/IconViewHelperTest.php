@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Extension;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -39,9 +40,7 @@ class IconViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersUsingArgument(): void
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs']);

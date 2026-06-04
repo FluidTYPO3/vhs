@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -34,9 +35,7 @@ class RecordViewHelperTest extends AbstractViewHelperTestCase
         $this->renderingContext = $this->createRenderingContextWithRequest($GLOBALS['TYPO3_REQUEST']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requiresUid(): void
     {
         $record = ['hasnouid' => 1];
@@ -44,9 +43,7 @@ class RecordViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function delegatesToRenderRecord(): void
     {
         $record = ['uid' => 1];

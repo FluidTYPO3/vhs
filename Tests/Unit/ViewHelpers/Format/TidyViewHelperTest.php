@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,9 +19,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class TidyViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsErrorWhenNoTidyIsInstalled(): void
     {
         if (!class_exists('tidy')) {
@@ -38,9 +37,7 @@ class TidyViewHelperTest extends AbstractViewHelperTestCase
         self::assertNotSame('test', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canTidySource(): void
     {
         if (!class_exists('tidy')) {

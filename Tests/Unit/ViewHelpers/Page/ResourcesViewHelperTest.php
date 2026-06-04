@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class ResourcesViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function testRenderFailsWithoutFieldArgument(): void
     {
         $this->expectViewHelperException();

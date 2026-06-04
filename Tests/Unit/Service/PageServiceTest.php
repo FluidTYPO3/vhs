@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Service;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
@@ -187,9 +188,7 @@ class PageServiceTest extends AbstractTestCase
         self::assertSame([['uid' => 20, 'nav_hide' => 0, 'cache' => 'after-reset']], $subject->getMenu(1));
     }
 
-    /**
-     * @dataProvider getGetRootLineTestValues
-     */
+    #[DataProvider('getGetRootLineTestValues')]
     public function testGetRootLine(?int $pageUid, bool $reverse): void
     {
         $subject = new PageService();
@@ -225,9 +224,7 @@ class PageServiceTest extends AbstractTestCase
         self::assertFalse($subject->isAccessProtected(['fe_group' => 0]));
     }
 
-    /**
-     * @dataProvider getIsAccessGrantedTestValues
-     */
+    #[DataProvider('getIsAccessGrantedTestValues')]
     public function testIsAccessGranted(bool $expected, array $page, FrontendUserAuthentication $user): void
     {
         $subject = new PageService();
@@ -327,8 +324,8 @@ class PageServiceTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider getGetShortcutTargetPageTestValues
      */
+        #[DataProvider('getGetShortcutTargetPageTestValues')]
     public function testGetShortcutTargetPage(
         ?array $expected,
         array $page,

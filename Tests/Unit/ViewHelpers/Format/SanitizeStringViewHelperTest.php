@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,11 +19,11 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 class SanitizeStringViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getInputsAndExpectedOutputs
      * @param string $input
      * @param string $expectedOutput
      */
+    #[Test]
+    #[DataProvider('getInputsAndExpectedOutputs')]
     public function sanitizesString(string $input, string $expectedOutput): void
     {
         $result = $this->executeViewHelper(['string' => $input]);

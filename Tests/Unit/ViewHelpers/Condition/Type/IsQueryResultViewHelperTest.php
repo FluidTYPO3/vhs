@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
  */
 class IsQueryResultViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersThenChildIfConditionMatched(): void
     {
         $queryResult = $this->getMockBuilder(QueryResult::class)
@@ -34,9 +33,7 @@ class IsQueryResultViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('then', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersElseChildIfConditionNotMatched(): void
     {
         $arguments = [

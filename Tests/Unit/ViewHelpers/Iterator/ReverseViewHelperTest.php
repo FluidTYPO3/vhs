@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,11 +20,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 class ReverseViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getRenderTestValues
      * @param array $arguments
      * @param mixed $expectedValue
      */
+    #[Test]
+    #[DataProvider('getRenderTestValues')]
     public function testRender(array $arguments, mixed $expectedValue): void
     {
         if (($arguments['subject'] ?? null) === 'queryResult') {
@@ -57,10 +59,10 @@ class ReverseViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getErrorTestValues
      * @param mixed $subject
      */
+    #[Test]
+    #[DataProvider('getErrorTestValues')]
     public function testThrowsErrorsOnInvalidSubjectType(mixed $subject): void
     {
         $this->expectViewHelperException();

@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\View;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -41,9 +42,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
         parent::setUp();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callUserFunctionReturnsEarlyIfPartialEmpty()
     {
         $mock = $this->getMockBuilder($this->getClassName())
@@ -57,9 +56,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
         $mock->callUserFunction('', $configuration, '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callUserFunctionReturnsCallsExpectedMethodSequence()
     {
         $mock = $this->getMockBuilder($this->getClassName())
@@ -92,9 +89,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
         $mock->callUserFunction('', $configuration, '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareContextsForUncachedRenderingCallsExpectedMethodSequence()
     {
         $mock = $this->getMockBuilder($this->getClassName())
@@ -105,9 +100,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
         $this->callInaccessibleMethod($mock, 'prepareContextsForUncachedRendering', $this->renderingContext);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPartialUncachedDelegatesToRenderPartial()
     {
         $mock = $this->getMockBuilder($this->getClassName())

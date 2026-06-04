@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class IntersectViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectTest(): void
     {
         $array1 = ['a' => 'green', 'red', 'blue'];
@@ -28,9 +27,7 @@ class IntersectViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals(['a' => 'green', 0 => 'red'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectTestWithTagContent(): void
     {
         $array1 = ['a' => 'green', 'red', 'blue'];

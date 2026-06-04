@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Events;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,9 +19,7 @@ use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 
 class AfterCacheableContentIsGeneratedEventListenerTest extends AbstractTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function skipsAssetInjectionWhenAssetHandlingIsDisabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs']['disableAssetHandling'] = true;
@@ -37,9 +36,7 @@ class AfterCacheableContentIsGeneratedEventListenerTest extends AbstractTestCase
         $this->assertEventContent('content', $event);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function skipsAssetInjectionWhenLegacyAssetHandlingFlagIsDisabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling'] = '1';

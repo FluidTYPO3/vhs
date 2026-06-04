@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Form;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,13 +19,13 @@ use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 class FieldNameViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @dataProvider getRenderTestValues
      * @param array $arguments
      * @param string|NULL $prefix
      * @param string|NULL $objectName
      * @param array|NULL $names
      * @param string $expected
      */
+    #[DataProvider('getRenderTestValues')]
     public function testRender(array $arguments, $prefix, $objectName, $names, $expected)
     {
         $instance = $this->buildViewHelperInstance($arguments, [], null, 'Vhs');

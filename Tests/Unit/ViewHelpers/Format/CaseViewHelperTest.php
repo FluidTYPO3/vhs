@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,12 +20,12 @@ use FluidTYPO3\Vhs\ViewHelpers\Format\CaseViewHelper;
 class CaseViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getInputsAndExpectedOutputs
      * @param string $input
      * @param string $case
      * @param string $expectedOutput
      */
+    #[Test]
+    #[DataProvider('getInputsAndExpectedOutputs')]
     public function convertsToExpectedFormat(string $input, string $case, string $expectedOutput): void
     {
         $result = $this->executeViewHelper(['string' => $input, 'case' => $case]);

@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Service;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\Service\AssetService;
@@ -35,11 +37,11 @@ class AssetServiceTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider getBuildAllTestValues
      * @param array $assets
      * @param boolean $cached
      * @param integer $expectedFiles
      */
+    #[DataProvider('getBuildAllTestValues')]
     public function testBuildAll(array $assets, $cached, $expectedFiles)
     {
         $request = new ServerRequest('https://example.local');
@@ -105,9 +107,7 @@ class AssetServiceTest extends AbstractTestCase
         return $assets;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testIntegrityCalculation()
     {
         // Note: Maybe test this dynamic. This command could be useful:
@@ -146,9 +146,7 @@ class AssetServiceTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSettingsKeepsRuntimeCacheSeparatedByRequestPageContext()
     {
         $request1 = (new ServerRequest('https://example.local/page-1'))
@@ -171,9 +169,7 @@ class AssetServiceTest extends AbstractTestCase
         $this->assertSame(['request' => 'first'], $instance->getSettings($request1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enableFooterRelocationSettingWithoutRelocateToFooterKeepsAssetsInFooter()
     {
         $request = new ServerRequest('https://example.local');
@@ -211,9 +207,7 @@ class AssetServiceTest extends AbstractTestCase
         $this->assertStringContainsString('footer-asset</body>', $content);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inlineJavaScriptTagConsumesCspNonceWhenEnabled()
     {
         [$tag, $nonce] = $this->generateAssetTagWithNonce(
@@ -228,9 +222,7 @@ class AssetServiceTest extends AbstractTestCase
         $this->assertSame(0, $nonce->countStatic(Directive::ScriptSrcElem));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inlineStyleTagConsumesCspNonceWhenEnabled()
     {
         [$tag, $nonce] = $this->generateAssetTagWithNonce('css', 'body { color: #000; }', null, ['csp' => true]);
@@ -240,9 +232,7 @@ class AssetServiceTest extends AbstractTestCase
         $this->assertSame(0, $nonce->countStatic(Directive::StyleSrcElem));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inlineTagsDoNotConsumeCspNonceByDefault()
     {
         [$tag, $nonce] = $this->generateAssetTagWithNonce('js', 'alert(1);');
@@ -252,9 +242,7 @@ class AssetServiceTest extends AbstractTestCase
         $this->assertSame(0, $nonce->countStatic(Directive::ScriptSrcElem));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileTagsConsumeStaticCspNonceByDefault()
     {
         [$tag, $nonce] = $this->generateAssetTagWithNonce('js', null, 'fileadmin/test.js');
@@ -264,9 +252,7 @@ class AssetServiceTest extends AbstractTestCase
         $this->assertSame(1, $nonce->countStatic(Directive::ScriptSrcElem));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fluidAssetRenderingReceivesActiveRequest()
     {
         $activeRequest = new ServerRequest('https://inner.example/request-222');

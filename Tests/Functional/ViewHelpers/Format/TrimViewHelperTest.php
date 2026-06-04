@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace FluidTYPO3\Vhs\Tests\Functional\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,7 +12,6 @@ namespace FluidTYPO3\Vhs\Tests\Functional\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;

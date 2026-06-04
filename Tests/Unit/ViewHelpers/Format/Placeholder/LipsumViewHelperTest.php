@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Placeholder;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -80,8 +81,8 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @test
      */
+            #[Test]
     public function supportsParagraphCount(): void
     {
         $arguments = $this->arguments;
@@ -93,9 +94,7 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
         $this->assertLessThan(strlen($secondRender), strlen($firstRender));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function supportsHtmlArgument(): void
     {
         $arguments = $this->arguments;
@@ -105,9 +104,7 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNotEmpty($test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detectsFileByShortPath(): void
     {
         $arguments = $this->arguments;
@@ -116,9 +113,7 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNotEmpty($test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canFallBackWhenUsingFileAndFileDoesNotExist(): void
     {
         $arguments = $this->arguments;

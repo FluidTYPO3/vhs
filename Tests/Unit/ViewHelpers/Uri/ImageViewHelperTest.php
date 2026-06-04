@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Uri;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -19,9 +20,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
  */
 class ImageViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function callsExpectedMethodSequence(): void
     {
         /** @var class-string<ImageViewHelper> $viewHelperClassName */

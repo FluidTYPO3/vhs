@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,9 +19,7 @@ use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
  */
 class SetViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetVariable(): void
     {
         $variables = ['test' => true];
@@ -29,9 +28,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         $this->assertFalse($this->getTemplateVariableContainer()->get('test'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetVariableInExistingArrayValue(): void
     {
         $variables = ['test' => ['test' => true]];
@@ -40,18 +37,14 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         $this->assertFalse($this->getTemplateVariableContainer()->get('test.test'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ignoresNestedVariableIfRootDoesNotExist(): void
     {
         $result = $this->executeViewHelper(['name' => 'doesnotexist.test', 'value' => false]);
         $this->assertNull($this->getTemplateVariableContainer()->get('test.test'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ignoresNestedVariableIfRootDoesNotAllowSetting(): void
     {
         $domainObject = new Foo();
@@ -60,9 +53,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ignoresNestedVariableIfRootPropertyNameIsInvalid(): void
     {
         $variables = ['test' => 'test'];
@@ -70,9 +61,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetVariableWithValueFromTagContent(): void
     {
         $variables = ['test' => true];

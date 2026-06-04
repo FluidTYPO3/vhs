@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Traits;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -14,9 +15,7 @@ use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 
 class SlideViewHelperTraitTest extends AbstractTestCase
 {
-    /**
-     * @dataProvider getGetSlideRecordsTestValues
-     */
+    #[DataProvider('getGetSlideRecordsTestValues')]
     public function testGetSlideRecords(
         int $expectedSize,
         array $rootLine,

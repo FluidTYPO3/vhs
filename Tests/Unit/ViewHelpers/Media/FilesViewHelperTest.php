@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Media;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -44,25 +45,19 @@ class FilesViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmtpyArrayWhenArgumentsAreNotSet(): void
     {
         $this->assertEquals([], $this->executeViewHelper());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyArrayWhenPathIsInaccessible(): void
     {
         $this->assertEquals([], $this->executeViewHelperUsingTagContent('/this/path/hopefully/does/not/exist'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsPopulatedArrayOfAllFoundFiles(): void
     {
         $actualFiles = glob($this->fixturesPath . '/*');
@@ -73,9 +68,7 @@ class FilesViewHelperTest extends AbstractViewHelperTestCase
         $this->assertCount($actualFilesCount, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsPopulatedArrayOfFilteredFiles(): void
     {
         $actualFiles = glob($this->fixturesPath . '/*.txt');

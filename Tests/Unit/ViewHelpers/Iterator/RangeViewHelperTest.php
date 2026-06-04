@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -19,8 +20,8 @@ class RangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @param array $arguments
      * @param array $expected
-     * @dataProvider getRenderTestValues
      */
+    #[DataProvider('getRenderTestValues')]
     public function testRender(array $arguments, array $expected): void
     {
         $this->assertSame($this->executeViewHelper($arguments), $expected);

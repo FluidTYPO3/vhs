@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -12,9 +13,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 class IsBooleanViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersThenChildIfConditionMatched(): void
     {
         $arguments = [
@@ -26,9 +25,7 @@ class IsBooleanViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('then', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersElseChildIfConditionNotMatched(): void
     {
         $arguments = [

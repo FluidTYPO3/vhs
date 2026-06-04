@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Uri;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -21,9 +22,7 @@ class GravatarViewHelperTest extends AbstractViewHelperTestCase
         'secure' => false,
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatesExpectedUriForEmailAddress(): void
     {
         $expectedSource = 'http://www.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007';

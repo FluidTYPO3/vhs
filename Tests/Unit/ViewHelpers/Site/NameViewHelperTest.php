@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Site;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -19,9 +20,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 class NameViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersSiteNameWithoutRequest(): void
     {
         unset($GLOBALS['TYPO3_REQUEST']);
@@ -34,9 +33,7 @@ class NameViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('requestless', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersSiteName(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'test';
@@ -45,9 +42,7 @@ class NameViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('test', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersCurrentLanguageWebsiteTitle(): void
     {
         $language = $this->getMockBuilder(SiteLanguage::class)
@@ -61,9 +56,7 @@ class NameViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame('Language title', $this->executeViewHelper());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersCurrentLanguageWebsiteTitleFromRenderingContextRequest(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute(
@@ -80,9 +73,7 @@ class NameViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame('Inner title', $this->executeViewHelper());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersSiteWebsiteTitle(): void
     {
         $site = new Site('test', 1, [

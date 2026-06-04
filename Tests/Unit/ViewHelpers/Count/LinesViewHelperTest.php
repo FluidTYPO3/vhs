@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Count;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -19,9 +21,9 @@ class LinesViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @param array $arguments
      * @param integer $expected
-     * @test
-     * @dataProvider getRenderTestValues
      */
+    #[Test]
+    #[DataProvider('getRenderTestValues')]
     public function testRender(array $arguments, int $expected): void
     {
         $this->assertEquals($expected, $this->executeViewHelper($arguments));

@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,18 +18,14 @@ class UnlessViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEmpty($this->executeViewHelper());
     }
 
-    /**
-     * @dataProvider getBehaviorTestValues
-     */
+    #[DataProvider('getBehaviorTestValues')]
     public function testBehavior(?string $expected, bool $condition): void
     {
         $output = $this->executeViewHelperUsingTagContent('matched', ['condition' => $condition]);
         self::assertSame($expected, $output);
     }
 
-    /**
-     * @dataProvider getBehaviorTestValues
-     */
+    #[DataProvider('getBehaviorTestValues')]
     public function testStaticBehavior(?string $expected, bool $condition): void
     {
         $closure = function () {

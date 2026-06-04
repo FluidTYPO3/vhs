@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -64,9 +65,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         return $instance;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatesPageLinks(): void
     {
         $this->pageService->expects($this->once())->method('getPage')->willReturn(['uid' => '1', 'title' => 'test']);
@@ -75,9 +74,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNotEmpty($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatesNullLinkOnZeroPageUid(): void
     {
         $arguments = ['pageUid' => 0];
@@ -86,9 +83,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usesRenderingContextRequestWhenResolvingCurrentPageUid(): void
     {
         $globalPageInformation = new PageInformation();
@@ -114,9 +109,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame(222, $seenPageUids[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passesRenderingContextRequestToPageService(): void
     {
         $globalPageInformation = new PageInformation();

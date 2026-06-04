@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -44,9 +45,7 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
         parent::setUp();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testRenderFailsWhenUnableToResolveExtensionName(): void
     {
         $language = $this->getMockBuilder(SiteLanguage::class)
@@ -68,9 +67,7 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame([], $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializedLanguageFallsBackToDefaultWithoutRenderingContextRequest(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -82,9 +79,7 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame('default', $this->callInaccessibleMethod($viewHelper, 'getInitializedLanguage'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usesRenderingContextRequestWhenResolvingInitializedLanguage(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())

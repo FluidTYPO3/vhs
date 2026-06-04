@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -20,10 +21,10 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class InstanceViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @dataProvider getIdentifierTestValues
      * @param string|NULL $identifierArgument
      * @param string $expectedIdentifier
      */
+    #[DataProvider('getIdentifierTestValues')]
     public function testGetIdentifier($identifierArgument, $expectedIdentifier): void
     {
         $extbaseParameters = (new ExtbaseRequestParameters())

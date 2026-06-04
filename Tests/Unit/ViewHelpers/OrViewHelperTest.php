@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -64,11 +66,11 @@ class OrViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getRenderTestValues
      * @param array $arguments
      * @param mixed $expected
      */
+    #[Test]
+    #[DataProvider('getRenderTestValues')]
     public function testRender(array $arguments, mixed $expected): void
     {
         $result = $this->executeViewHelper($arguments);

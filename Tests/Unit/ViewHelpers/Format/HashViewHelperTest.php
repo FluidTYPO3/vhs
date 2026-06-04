@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,27 +17,21 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class HashViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canHashWithMd5(): void
     {
         $test = $this->executeViewHelperUsingTagContent('please hash me', ['algorithm' => 'md5']);
         $this->assertSame('50f6980d1002ddfdeb3d8e40bc634d43', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canHashWithSha1(): void
     {
         $test = $this->executeViewHelperUsingTagContent('please hash me', ['algorithm' => 'sha1']);
         $this->assertSame('8355145bb9c38cf4d829ca3e183f1092313dd55c', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canHashWithSha256(): void
     {
         $test = $this->executeViewHelperUsingTagContent('please hash me', ['algorithm' => 'sha256']);

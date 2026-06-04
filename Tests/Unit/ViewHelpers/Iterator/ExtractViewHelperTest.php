@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -53,10 +55,8 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
         };
     }
 
-    /**
-     * @test
-     * @dataProvider nestedStructures
-     */
+    #[Test]
+    #[DataProvider('nestedStructures')]
     public function recursivelyExtractKey(mixed $structure, string $key, mixed $expected): void
     {
         $recursive = true;
@@ -149,10 +149,8 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
         return $structures;
     }
 
-    /**
-     * @test
-     * @dataProvider simpleStructures
-     */
+    #[Test]
+    #[DataProvider('simpleStructures')]
     public function extractByKeyExtractsKeyByPath(mixed $structure, string $key, mixed $expected): void
     {
         $this->assertEquals(
@@ -161,10 +159,8 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider simpleStructures
-     */
+    #[Test]
+    #[DataProvider('simpleStructures')]
     public function extractByKeyExtractsKeyByPathWithSingle(mixed $structure, string $key, mixed $expected): void
     {
         if (is_array($expected)) {

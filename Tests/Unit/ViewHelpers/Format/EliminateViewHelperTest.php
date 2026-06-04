@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -32,9 +33,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         'nonAscii' => false
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesNonAscii(): void
     {
         $arguments = $this->arguments;
@@ -43,9 +42,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('foobar', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesLetters(): void
     {
         $arguments = $this->arguments;
@@ -54,9 +51,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('123', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesLettersRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
@@ -66,9 +61,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('123', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesDigits(): void
     {
         $arguments = $this->arguments;
@@ -77,9 +70,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('foobar', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesWindowsCarriageReturns(): void
     {
         $arguments = $this->arguments;
@@ -88,9 +79,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('breaksbreaks', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesUnixBreaks(): void
     {
         $arguments = $this->arguments;
@@ -99,9 +88,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('breaksbreaks', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesTabs(): void
     {
         $arguments = $this->arguments;
@@ -110,9 +97,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('tabstabs', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesWhitespace(): void
     {
         $arguments = $this->arguments;
@@ -121,9 +106,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('trimmed', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesWhitespaceBetweenHtmlTags(): void
     {
         $arguments = $this->arguments;
@@ -132,9 +115,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('<p> Foo </p><p> Bar </p>', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesCharactersRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
@@ -144,9 +125,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('def', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesCharactersAsString(): void
     {
         $arguments = $this->arguments;
@@ -155,9 +134,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('def', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesMultibyteCharactersAsString(): void
     {
         $arguments = $this->arguments;
@@ -166,9 +143,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('aäåbc', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesCharactersAsArray(): void
     {
         $arguments = $this->arguments;
@@ -177,9 +152,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('def', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesStringsRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
@@ -189,9 +162,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('jkl', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesStringsAsString(): void
     {
         $arguments = $this->arguments;
@@ -200,9 +171,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('jkl', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesStringsAsArray(): void
     {
         $arguments = $this->arguments;

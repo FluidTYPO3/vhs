@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class SubstringViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderUsingArguments(): void
     {
         $arguments = [
@@ -30,9 +29,7 @@ class SubstringViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('bar', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderWithLengthArgument(): void
     {
         $arguments = [

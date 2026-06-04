@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Page\Header;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -24,9 +25,7 @@ use TYPO3\CMS\Frontend\Page\PageInformation;
  */
 class CanonicalViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyStringWithoutRequest(): void
     {
         unset($GLOBALS['TYPO3_REQUEST']);
@@ -37,9 +36,7 @@ class CanonicalViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame('', $viewHelper->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usesRenderingContextRequestWhenResolvingCurrentPageUid(): void
     {
         $globalRequest = $this->createExtbaseRequestForPage(111);

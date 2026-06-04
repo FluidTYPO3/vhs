@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -42,17 +43,13 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
         parent::setUp();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfPathIsNull(): void
     {
         $this->assertNull($this->executeViewHelper(['path' => null]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsArrayIfPathContainsArray(): void
     {
         $this->assertThat(
@@ -61,17 +58,13 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canGetPathUsingArgument(): void
     {
         $this->assertNotEmpty($this->executeViewHelper(['path' => 'config.tx_extbase.features']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canGetPathUsingTagContent(): void
     {
         $this->assertNotEmpty($this->executeViewHelperUsingTagContent('config.tx_extbase.features'));

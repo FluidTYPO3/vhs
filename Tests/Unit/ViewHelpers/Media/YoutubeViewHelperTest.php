@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Media;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -37,9 +38,7 @@ class YoutubeViewHelperTest extends AbstractViewHelperTestCase
         'videoQuality' => ''
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compareResult(): void
     {
         $this->arguments['videoId']  = 'M7lc1UVf-VE';

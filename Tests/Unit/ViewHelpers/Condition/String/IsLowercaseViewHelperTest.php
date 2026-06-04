@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\String;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -15,9 +16,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class IsLowercaseViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersThenChildIfFirstCharacterIsLowercase(): void
     {
         $arguments = [
@@ -30,9 +29,7 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('then', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersThenChildIfAllCharactersAreLowercase(): void
     {
         $arguments = [
@@ -45,9 +42,7 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('then', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersElseChildIfFirstCharacterIsNotLowercase(): void
     {
         $arguments = [
@@ -60,9 +55,7 @@ class IsLowercaseViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('else', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersElseChildIfAllCharactersAreNotLowercase(): void
     {
         $arguments = [

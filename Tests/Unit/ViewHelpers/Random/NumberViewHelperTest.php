@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Random;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class NumberViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function generatesRandomNumberWithoutDecimalsAsDefault(): void
     {
         $arguments = ['minimum' => 0, 'maximum' => 999999];
@@ -28,9 +27,7 @@ class NumberViewHelperTest extends AbstractViewHelperTestCase
         self::assertLessThanOrEqual(999999, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatesRandomNumberWithoutDecimalsGivenArguments(): void
     {
         $arguments = [
@@ -45,9 +42,7 @@ class NumberViewHelperTest extends AbstractViewHelperTestCase
         self::assertLessThanOrEqual(999999, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatesRandomNumberWithDecimalsGivenArguments(): void
     {
         $arguments = [

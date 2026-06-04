@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable\Register;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -26,9 +27,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         $this->renderingContext = $this->createRenderingContextWithRequest($GLOBALS['TYPO3_REQUEST']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionWithoutRegisterStack(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
@@ -38,9 +37,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         $this->executeViewHelper(['name' => 'name', 'value' => 'value']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullWithoutRequest(): void
     {
         unset($GLOBALS['TYPO3_REQUEST']);
@@ -49,9 +46,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         self::assertNull($this->executeViewHelper(['name' => 'name', 'value' => 'value']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetRegister(): void
     {
         $name = uniqid();
@@ -60,9 +55,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($value, $this->getRegisterValue($this->registerStorage, $name));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetVariableWithValueFromTagContent(): void
     {
         $name = uniqid();
@@ -71,9 +64,7 @@ class SetViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($value, $this->getRegisterValue($this->registerStorage, $name));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writesRegisterStackFromRenderingContextRequest(): void
     {
         $name = uniqid();

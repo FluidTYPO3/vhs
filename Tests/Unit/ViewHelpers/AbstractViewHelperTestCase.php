@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -166,18 +167,14 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         unset($GLOBALS['TYPO3_REQUEST']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateViewHelperInstance(): void
     {
         $instance = $this->createInstance();
         self::assertInstanceOf($this->getViewHelperClassName(), $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canPrepareArguments(): void
     {
         $instance = $this->createInstance();

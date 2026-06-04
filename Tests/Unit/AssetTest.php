@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -51,9 +52,7 @@ class AssetTest extends AbstractTestCase
         parent::setUp();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setsMovableFalseWhenSettingTypeCss()
     {
         $asset = Asset::getInstance();
@@ -62,18 +61,14 @@ class AssetTest extends AbstractTestCase
         $this->assertFalse($asset->getMovable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateAssetInstanceFromStaticFactory()
     {
         $asset = Asset::getInstance();
         $this->assertInstanceOf(Asset::class, $asset);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateAssetInstanceFromStaticFileFactoryWithAbsoluteFile()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -82,9 +77,7 @@ class AssetTest extends AbstractTestCase
         $this->assertEquals($file, $asset->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateAssetInstanceFromStaticFileFactoryWithUrl()
     {
         $url = 'http://localhost';
@@ -95,9 +88,7 @@ class AssetTest extends AbstractTestCase
         $this->assertSame(true, $asset->getExternal());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateAssetInstanceFromStaticSettingsFactory()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -108,9 +99,7 @@ class AssetTest extends AbstractTestCase
         $this->assertInstanceOf(Asset::class, $asset);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cspSettingCanBeConfigured()
     {
         $asset = Asset::getInstance();
@@ -120,9 +109,7 @@ class AssetTest extends AbstractTestCase
         $this->assertTrue($asset->getAssetSettings()['csp']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function supportsChainingInAllSettersWithFakeNullArgument()
     {
         $asset = Asset::getInstance();
@@ -151,9 +138,7 @@ class AssetTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assetsCanBeAdded()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -162,9 +147,7 @@ class AssetTest extends AbstractTestCase
         $this->assertSame($asset, $GLOBALS['VhsAssets'][$name]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assetCanBeRemoved()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -176,9 +159,7 @@ class AssetTest extends AbstractTestCase
         $this->assertThat($asset->getSettings(), $constraint);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assetsAddedByFilenameUsesFileBasenameAsAssetName()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -192,9 +173,7 @@ class AssetTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assetBuildMethodReturnsExpectedContentComparedByTrimmedContent()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -206,9 +185,7 @@ class AssetTest extends AbstractTestCase
         $this->assertEquals($expectedTrimmedContent, trim($asset->build()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assetGetContentMethodReturnsExpectedContentComparedByTrimmedContent()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -217,9 +194,7 @@ class AssetTest extends AbstractTestCase
         $this->assertEquals($expectedTrimmedContent, trim($asset->getContent()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function specialGettersAndAssertionsReturnBooleans()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -233,9 +208,7 @@ class AssetTest extends AbstractTestCase
         $this->assertThat($asset->assertHasBeenRemoved(), $constraint);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function specialSupportGettersReturnExpectedTypes()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -264,9 +237,7 @@ class AssetTest extends AbstractTestCase
         $this->assertNotNull($asset->getContent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildMethodsReturnExpectedValues()
     {
         $file = $this->getAbsoluteAssetFixturePath();
@@ -279,9 +250,7 @@ class AssetTest extends AbstractTestCase
         $this->assertSame($asset, $asset->finalize());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assertSupportsRawContent()
     {
         $file = $this->getAbsoluteAssetFixturePath();

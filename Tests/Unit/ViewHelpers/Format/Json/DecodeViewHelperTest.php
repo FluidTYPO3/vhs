@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,9 +19,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class DecodeViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullForEmptyArguments(): void
     {
         self::assertInstanceOf(RenderingContextInterface::class, $this->renderingContext);
@@ -33,9 +32,7 @@ class DecodeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsExpectedValueForProvidedArguments(): void
     {
 
@@ -52,9 +49,7 @@ class DecodeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionForInvalidArgument(): void
     {
         $invalidJson = "{'foo': 'bar'}";

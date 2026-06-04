@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -13,17 +14,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 class RangeViewHelperTest extends AbstractMathViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function testSingleArgumentIteratorSingleValue(): void
     {
         $this->executeSingleArgumentTest([2], [2, 2]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSingleArgumentIteratorMultipleValues(): void
     {
         $this->executeSingleArgumentTest([2, 4, 6, 3, 8], [2, 8]);

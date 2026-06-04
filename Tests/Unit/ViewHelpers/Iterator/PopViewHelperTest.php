@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,11 +19,11 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 class PopViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getRenderTestValues
      * @param array $arguments
      * @param mixed $expectedValue
      */
+    #[Test]
+    #[DataProvider('getRenderTestValues')]
     public function testRender(array $arguments, mixed $expectedValue): void
     {
         $this->assertSame($expectedValue, $this->executeViewHelper($arguments));
@@ -40,10 +42,10 @@ class PopViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getErrorTestValues
      * @param mixed $subject
      */
+    #[Test]
+    #[DataProvider('getErrorTestValues')]
     public function testThrowsErrorsOnInvalidSubjectType(mixed $subject): void
     {
         $this->expectViewHelperException();

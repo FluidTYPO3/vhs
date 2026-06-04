@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Proxy;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -13,9 +14,7 @@ use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 
 class FileRepositoryProxyTest extends AbstractTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function findByRelationKeepsOptionalWorkspaceIdArgument(): void
     {
         $method = new \ReflectionMethod(FileRepositoryProxy::class, 'findByRelation');

@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -21,10 +22,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class ContainsViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @dataProvider getPositiveTestValues
      * @param mixed $haystack
      * @param mixed $needle
      */
+    #[DataProvider('getPositiveTestValues')]
     public function testRendersThen($haystack, $needle)
     {
         $arguments = [
@@ -57,10 +58,10 @@ class ContainsViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @dataProvider getNegativeTestValues
      * @param mixed $haystack
      * @param mixed $needle
      */
+    #[DataProvider('getNegativeTestValues')]
     public function testRendersElse($haystack, $needle)
     {
         $arguments = [

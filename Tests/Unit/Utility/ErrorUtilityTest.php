@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Utility;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -13,9 +14,7 @@ use Throwable;
 
 class ErrorUtilityTest extends AbstractTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function transfersPreviousException(): void
     {
         $exception = null;

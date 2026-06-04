@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class ImplodeViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implodesString(): void
     {
         $arguments = ['content' => ['1', '2', '3'], 'glue' => ','];
@@ -26,9 +25,7 @@ class ImplodeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('1,2,3', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function supportsCustomGlue(): void
     {
         $arguments = ['content' => ['1', '2', '3'], 'glue' => ';'];

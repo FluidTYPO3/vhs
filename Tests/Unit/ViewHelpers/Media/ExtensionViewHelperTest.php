@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Media;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -45,25 +46,19 @@ class ExtensionViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyStringForEmptyArguments(): void
     {
         $this->assertEquals('', $this->executeViewHelper());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsExpectedExtensionForProvidedPath(): void
     {
         $this->assertEquals('txt', $this->executeViewHelperUsingTagContent($this->fixturesPath . '/foo.txt'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyStringForFileWithoutExtension(): void
     {
         $this->assertEquals('', $this->executeViewHelperUsingTagContent($this->fixturesPath . '/noext'));

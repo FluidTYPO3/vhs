@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Traits;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -22,8 +23,8 @@ class SourceSetViewHelperTraitTest extends AbstractTestCase
 {
     /**
      * @param array|\Traversable|string $sourceSetsArgument
-     * @dataProvider getAddSourceSetTestValues
      */
+    #[DataProvider('getAddSourceSetTestValues')]
     public function testAddSourceSets($sourceSetsArgument): void
     {
         $contentObject = $this->getMockBuilder(ContentObjectRenderer::class)

@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
  */
 class IsDomainObjectViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersThenChildIfConditionMatched(): void
     {
         if (!class_exists(FrontendUser::class)) {
@@ -33,9 +32,7 @@ class IsDomainObjectViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('then', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersElseChildIfConditionNotMatched(): void
     {
         $arguments = [

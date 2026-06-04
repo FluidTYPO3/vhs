@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Media\Image;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -46,17 +47,13 @@ class MimetypeViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyStringForEmptyArguments(): void
     {
         $this->assertEquals('', $this->executeViewHelper());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsFileMimetypeAsString(): void
     {
         $this->assertEquals(
@@ -65,18 +62,14 @@ class MimetypeViewHelperTest extends AbstractViewHelperTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionWhenFileNotFound(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelperUsingTagContent('/this/path/hopefully/does/not/exist.txt');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory(): void
     {
         $this->expectViewHelperException();

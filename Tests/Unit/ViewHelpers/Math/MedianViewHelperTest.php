@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -13,25 +14,19 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
  */
 class MedianViewHelperTest extends AbstractMathViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function testSingleArgumentNotIteratorPassesThrough(): void
     {
         $this->executeSingleArgumentTest(1, 1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSingleArgumentThreeMembers(): void
     {
         $this->executeSingleArgumentTest([1, 2, 3], 2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSingleArgumentFourMembers(): void
     {
         $this->executeSingleArgumentTest([1, 2, 3, 4], 2.5);

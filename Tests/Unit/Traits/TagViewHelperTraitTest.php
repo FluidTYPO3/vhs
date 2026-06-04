@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Traits;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -13,9 +14,7 @@ use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 
 class TagViewHelperTraitTest extends AbstractTestCase
 {
-    /**
-     * @dataProvider getRenderTestValues
-     */
+    #[DataProvider('getRenderTestValues')]
     public function testRenderTag(
         string $expected,
         string $tagName,
@@ -65,9 +64,7 @@ class TagViewHelperTraitTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider getRenderChildTagTestValues
-     */
+    #[DataProvider('getRenderChildTagTestValues')]
     public function testRenderChildTag(
         string $expected,
         string $tagName,

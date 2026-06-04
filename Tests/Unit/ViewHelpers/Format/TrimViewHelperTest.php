@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class TrimViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canTrimSpecificCharacters(): void
     {
         $arguments = [
@@ -29,9 +28,7 @@ class TrimViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('trimmed', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canTrim(): void
     {
         $arguments = [

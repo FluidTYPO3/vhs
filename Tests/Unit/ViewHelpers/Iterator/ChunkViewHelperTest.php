@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,9 +17,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class ChunkViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsConfiguredItemNumberIfFixed(): void
     {
         $arguments = [
@@ -31,9 +30,7 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
         $this->assertCount(5, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsConfiguredItemNumberIfFixedAndSubjectIsEmpty(): void
     {
         $arguments = [
@@ -46,9 +43,7 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
         $this->assertCount(5, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsExpectedItemNumberIfNotFixed(): void
     {
         $arguments = [
@@ -60,9 +55,7 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
         $this->assertCount(2, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyResultForEmptySubjectAndNotFixed(): void
     {
         $arguments = [
@@ -74,9 +67,7 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
         $this->assertCount(0, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyResultForZeroCount(): void
     {
         $arguments = [
@@ -88,9 +79,7 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
         $this->assertCount(0, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function preservesArrayKeysIfRequested(): void
     {
         $arguments = [

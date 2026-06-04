@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Placeholder;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -26,9 +27,7 @@ class ImageViewHelperTest extends AbstractViewHelperTestCase
         'textColor' => 'FFFFFF'
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersImage(): void
     {
         $arguments = $this->arguments;
@@ -41,9 +40,7 @@ class ImageViewHelperTest extends AbstractViewHelperTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersImageWithText(): void
     {
         $arguments = $this->arguments;

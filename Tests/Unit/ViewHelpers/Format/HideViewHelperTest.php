@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,18 +17,14 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class HideViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function hidesTagContent(): void
     {
         $test = $this->executeViewHelperUsingTagContent('this is hidden');
         $this->assertNull($test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeDisabled(): void
     {
         $test = $this->executeViewHelperUsingTagContent('this is shown', ['disabled' => true]);

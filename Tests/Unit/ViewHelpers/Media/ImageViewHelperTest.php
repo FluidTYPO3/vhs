@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Media;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,9 +19,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
  */
 class ImageViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function preprocessSourceUriWithoutRequestKeepsSourceRelative(): void
     {
         self::assertNotSame(
@@ -29,9 +28,7 @@ class ImageViewHelperTest extends AbstractViewHelperTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usesRenderingContextRequestWhenPreprocessingSourceUri(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://outer.example/outer/page-111'))

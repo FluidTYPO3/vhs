@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -13,18 +14,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  */
 class CallViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsRuntimeExceptionIfObjectNotFound(): void
     {
         $this->expectExceptionCode(1356849652);
         $this->executeViewHelper(['method' => 'method', 'arguments' => []]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsRuntimeExceptionIfMethodNotFound(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);
@@ -32,9 +29,7 @@ class CallViewHelperTest extends AbstractViewHelperTestCase
         $this->executeViewHelper(['method' => 'notfound', 'object' => $object, 'arguments' => []]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executesMethodOnObjectFromArgument(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);
@@ -42,9 +37,7 @@ class CallViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals(2, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executesMethodOnObjectFromChildContent(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);

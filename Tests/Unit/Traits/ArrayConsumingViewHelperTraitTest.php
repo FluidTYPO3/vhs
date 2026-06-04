@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\Traits;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -15,9 +16,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 class ArrayConsumingViewHelperTraitTest extends AbstractTestCase
 {
-    /**
-     * @dataProvider getPositiveTestValues
-     */
+    #[DataProvider('getPositiveTestValues')]
     public function testGetArgumentFromArgumentsOrTagContentAndConvertToArrayWithArgument(
         array $expected,
         mixed $value
@@ -25,9 +24,7 @@ class ArrayConsumingViewHelperTraitTest extends AbstractTestCase
         self::assertSame($expected, $this->executeTest($value, false));
     }
 
-    /**
-     * @dataProvider getPositiveTestValues
-     */
+    #[DataProvider('getPositiveTestValues')]
     public function testGetArgumentFromArgumentsOrTagContentAndConvertToArrayWithTagContent(
         array $expected,
         mixed $value
@@ -89,9 +86,7 @@ class ArrayConsumingViewHelperTraitTest extends AbstractTestCase
         self::assertSame(['a' => 'a', 'b' => 'b', 'c' => 'c'], $output);
     }
 
-    /**
-     * @dataProvider getNegativeTestValues
-     */
+    #[DataProvider('getNegativeTestValues')]
     public function testThrowsErrorOnUnsupportedValues(mixed $value): void
     {
         self::expectException(Exception::class);

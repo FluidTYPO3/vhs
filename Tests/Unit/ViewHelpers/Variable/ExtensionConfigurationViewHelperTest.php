@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,54 +17,42 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class ExtensionConfigurationViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfVariableDoesNotExist(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs'] = $this->createExtensionConfiguration();
         $this->assertNull($this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'void']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfVariableDoesNotExistLegacyExtConf(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = $this->createExtensionConfiguration();
         $this->assertNull($this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'void']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsDirectValueIfExists(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs'] = $this->createExtensionConfiguration();
         $this->assertEquals('test', $this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'test']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsDirectValueIfExistsLegacyExtConf(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = $this->createExtensionConfiguration();
         $this->assertEquals('test', $this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'test']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNestedValueIfRootExists(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vhs'] = $this->createExtensionConfiguration();
         $this->assertEquals('value', $this->executeViewHelper(['extensionKey' => 'vhs', 'path' => 'array.value']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNestedValueIfRootExistsLegacyExtConf(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['vhs'] = $this->createExtensionConfiguration();

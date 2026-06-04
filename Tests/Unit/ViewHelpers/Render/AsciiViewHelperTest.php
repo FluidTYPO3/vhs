@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,11 +19,11 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 class AsciiViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getTestRenderValues
      * @param integer $ascii
      * @param string $expected
      */
+    #[Test]
+    #[DataProvider('getTestRenderValues')]
     public function testRender(mixed $ascii, string $expected): void
     {
         $result = $this->executeViewHelper(['ascii' => $ascii]);

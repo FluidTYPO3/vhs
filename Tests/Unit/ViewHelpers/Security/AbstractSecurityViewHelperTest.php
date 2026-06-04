@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -30,9 +32,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition;
 
 class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateViewHelperInstance(): void
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
@@ -50,9 +50,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         return $instance;
     }
 
-    /**
-     * @dataProvider getEvaluateArgumentsTestValues
-     */
+    #[DataProvider('getEvaluateArgumentsTestValues')]
     public function testEvaluateArguments(array $arguments, array $expectedMethods, bool $expectedReturn): void
     {
         if (!class_exists(FrontendUser::class)) {
@@ -183,8 +181,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @dataProvider getAssertFrontendUserLoggedInTestValues
      */
+        #[DataProvider('getAssertFrontendUserLoggedInTestValues')]
     public function testAssertFrontendUserLoggedIn(
         ?FrontendUser $user,
         ?FrontendUser $resolvedUser,
@@ -224,9 +222,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @dataProvider getAssertFrontendUserGroupLoggedInTestValues
      * @param FrontendUserGroup|ObjectStorage
      */
+    #[DataProvider('getAssertFrontendUserGroupLoggedInTestValues')]
     public function testAssertFrontendUserGroupLoggedIn(
         $group,
         ?FrontendUser $resolvedUser,
@@ -269,9 +267,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         ];
     }
 
-    /**
-     * @dataProvider getAssertFrontendUsersLoggedInTestValues
-     */
+    #[DataProvider('getAssertFrontendUsersLoggedInTestValues')]
     public function testAssertFrontendUsersLoggedIn(
         ObjectStorage $users,
         mixed $currentUser,
@@ -312,9 +308,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         ];
     }
 
-    /**
-     * @dataProvider getAssertBackendUserLoggedInTestValues
-     */
+    #[DataProvider('getAssertBackendUserLoggedInTestValues')]
     public function testAssertBackendUserLoggedIn(?int $user, ?int $currentUser, bool $expected): void
     {
         $GLOBALS['BE_USER'] = (object) ['user' => ['uid' => $currentUser]];
@@ -340,9 +334,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @dataProvider getAssertBackendUserGroupLoggedInTestValues
      * @param null|string|array $group
      */
+    #[DataProvider('getAssertBackendUserGroupLoggedInTestValues')]
     public function testAssertBackendUserGroupLoggedIn($group, ?array $currentUser, bool $expected): void
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
@@ -370,9 +364,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         ];
     }
 
-    /**
-     * @dataProvider getAssertAdminLoggedInTestValues
-     */
+    #[DataProvider('getAssertAdminLoggedInTestValues')]
     public function testAssertAdminLoggedIn(?array $currentUser, bool $expected): void
     {
         if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '>=')) {

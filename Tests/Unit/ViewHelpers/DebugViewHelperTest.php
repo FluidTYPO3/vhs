@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+use PHPUnit\Framework\Attributes\Test;
 
 /***************************************************************
  *  Copyright notice
@@ -30,9 +31,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  */
 class DebugViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsDebugOutput()
     {
         $viewHelper2 = $this->buildViewHelperInstance();
@@ -43,9 +42,7 @@ class DebugViewHelperTest extends AbstractViewHelperTestCase
         $this->assertStringContainsString('[RENDER METHOD DOC]', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function debugsChildNodeObjectAccessors()
     {
         $viewHelper = $this->buildViewHelperInstance([], ['test' => ['test' => 'test']], $this->createObjectAccessorNode('test.test'));

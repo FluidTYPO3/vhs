@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -19,9 +20,7 @@ use TYPO3\CMS\Frontend\Page\PageInformation;
  */
 class LanguageMenuViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function usesRenderingContextRequestForFallbackUriAndCurrentPageUid(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->createRequest('/outer/page-111', 111);

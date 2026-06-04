@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -38,9 +39,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
         return new Foo();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodesDateTime(): void
     {
         $dateTime = \DateTime::createFromFormat('U', '86400');
@@ -58,9 +57,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals(86400000, $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodesRecursiveDomainObject(): void
     {
         /** @var Foo $object */
@@ -81,8 +78,8 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @test
      */
+        #[Test]
     public function encodesDateTimeWithFormat(): void
     {
         $dateTime = \DateTime::createFromFormat('U', '86401');
@@ -96,9 +93,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('{"date":"1970-01-02"}', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodesTraversable(): void
     {
         $traversable = new ObjectStorage();
@@ -116,57 +111,43 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('[]', $test);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyObjectOnTopLevel(): void
     {
         $this->assertEquals('{}', $this->executeViewHelper(['value' => new \stdClass()]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyArrayOnTopLevel(): void
     {
         $this->assertEquals('[]', $this->executeViewHelper(['value' => []]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsFalseOnTopLevel(): void
     {
         $this->assertEquals('false', $this->executeViewHelper(['value' => false]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsTrueOnTopLevel(): void
     {
         $this->assertEquals('true', $this->executeViewHelper(['value' => true]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNumberOnTopLevel(): void
     {
         $this->assertSame(json_encode(1.0), $this->executeViewHelper(['value' => 1.0]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullOnTopLevel(): void
     {
         $this->assertEquals('null', $this->executeViewHelper(['value' => null]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsExpectedStringForProvidedArguments(): void
     {
 
@@ -185,18 +166,14 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $this->executeViewHelper(['value' => $fixture]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionForInvalidArgument(): void
     {
         $this->expectViewHelperException();
         $this->assertEquals('null', $this->executeViewHelper(['value' => "\xB1\x31"]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsJsConsumableTimestamps(): void
     {
         $date = new \DateTime('now');

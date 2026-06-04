@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,11 +20,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 class RandomViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getRenderTestValues
      * @param array $arguments
      * @param array $asArray
      */
+    #[Test]
+    #[DataProvider('getRenderTestValues')]
     public function testRender(array $arguments, array $asArray): void
     {
         if (($arguments['subject'] ?? null) === 'queryResult') {
