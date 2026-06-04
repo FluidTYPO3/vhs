@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace FluidTYPO3\Vhs\Proxy;
 
 /*
@@ -12,7 +14,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
- * Final/readonly classes are the worst decision in TYPO3 since Neos.
+ * Proxy wrapper for TYPO3's final SiteFinder.
  *
  * @codeCoverageIgnore
  */

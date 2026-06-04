@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace FluidTYPO3\Vhs\Proxy;
 
 /*
@@ -15,7 +17,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
- * Final/readonly class is unnecessary coercion - and using it in shared libraries is arrogant and very disrespectful.
+ * Proxy wrapper for TYPO3's final ResourceFactory.
  *
  * @codeCoverageIgnore
  */
@@ -28,24 +30,27 @@ class ResourceFactoryProxy implements SingletonInterface
         $this->resourceFactory = $resourceFactory;
     }
 
-    public function getFileReferenceObject(int $uid): FileReference
-    {
-        return $this->resourceFactory->getFileReferenceObject($uid);
+    public function getFileReferenceObject(
+        int|string $uid,
+        array $fileReferenceData = [],
+        bool $raw = false
+    ): FileReference {
+        return $this->resourceFactory->getFileReferenceObject((int) $uid, $fileReferenceData, $raw);
     }
 
     /**
      * @param int $uid
      */
-    public function getFileObject($uid, array $fileData = []): File
+    public function getFileObject(int|string $uid, array $fileData = []): File
     {
-        return $this->resourceFactory->getFileObject($uid, $fileData);
+        return $this->resourceFactory->getFileObject((int) $uid, $fileData);
     }
 
     /**
      * @param string $identifier
      * @return File|ProcessedFile|null
      */
-    public function getFileObjectFromCombinedIdentifier($identifier)
+    public function getFileObjectFromCombinedIdentifier(string $identifier): File|ProcessedFile|null
     {
         return $this->resourceFactory->getFileObjectFromCombinedIdentifier($identifier);
     }

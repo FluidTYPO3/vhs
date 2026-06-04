@@ -4,6 +4,7 @@ namespace FluidTYPO3\Vhs\Traits;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -118,7 +119,11 @@ trait SourceSetViewHelperTrait
         if (ContextUtility::isBackend() && '../' === substr($src, 0, 3)) {
             $src = substr($src, 3);
         }
-        return (array) $contentObject->getImgResource($src, $setup);
+        $imageResource = $contentObject->getImgResource($src, $setup);
+        if ($imageResource instanceof ImageResource) {
+            return $imageResource->getLegacyImageResourceInformation();
+        }
+        return (array) $imageResource;
     }
 
     /**

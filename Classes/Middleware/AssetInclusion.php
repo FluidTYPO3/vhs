@@ -9,10 +9,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AssetInclusion implements MiddlewareInterface
 {
+    public function __construct(private readonly AssetService $assetService)
+    {
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
@@ -22,9 +25,7 @@ class AssetInclusion implements MiddlewareInterface
         $contents = $body->getContents();
         $contentsBefore = $contents;
 
-        /** @var AssetService $assetService */
-        $assetService = GeneralUtility::makeInstance(AssetService::class);
-        $assetService->buildAllUncached([], $GLOBALS['TSFE'], $contents);
+        $this->assetService->buildAllUncached([], $request, $contents);
 
         if ($contentsBefore === $contents) {
             // Content is unchanged, return the original response since there is no need to modify it, or the

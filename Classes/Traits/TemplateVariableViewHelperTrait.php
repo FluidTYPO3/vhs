@@ -99,9 +99,17 @@ trait TemplateVariableViewHelperTrait
     {
         return static::renderChildrenWithVariablesStatic(
             $variables,
-            $this->templateVariableContainer,
+            $this->getTemplateVariableContainerOrFail(),
             $this->buildRenderChildrenClosure()
         );
+    }
+
+    private function getTemplateVariableContainerOrFail(): VariableProviderInterface
+    {
+        if (!$this->templateVariableContainer instanceof VariableProviderInterface) {
+            throw new \RuntimeException('Template variable container missing', 1737807861);
+        }
+        return $this->templateVariableContainer;
     }
 
     /**

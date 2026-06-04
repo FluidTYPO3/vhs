@@ -8,10 +8,20 @@ namespace FluidTYPO3\Vhs\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-
 trait ArgumentOverride
 {
+    /**
+     * TYPO3 13 / Fluid 4 compatibility: keep this signature untyped to remain
+     * compatible with Fluid 4's AbstractViewHelper::overrideArgument().
+     *
+     * @param string $name
+     * @param string $type
+     * @param string $description
+     * @param bool $required
+     * @param mixed $defaultValue
+     * @param bool|null $escape
+     * @return static
+     */
     protected function overrideArgument(
         $name,
         $type,
@@ -20,9 +30,7 @@ trait ArgumentOverride
         $defaultValue = null,
         $escape = null
     ) {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '13.4', '>=')) {
-            return parent::registerArgument($name, $type, $description, $required, $defaultValue, $escape);
-        }
-        return parent::overrideArgument($name, $type, $description, $required, $defaultValue, $escape);
+        parent::registerArgument($name, $type, $description, $required, $defaultValue, $escape);
+        return $this;
     }
 }
