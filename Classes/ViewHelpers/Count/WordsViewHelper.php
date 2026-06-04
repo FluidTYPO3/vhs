@@ -60,7 +60,7 @@ class WordsViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): int {
         return count(
             (array) preg_split(
                 '~[^\p{L}\p{N}\']+~u',

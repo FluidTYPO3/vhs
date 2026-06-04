@@ -20,8 +20,11 @@ class IndexOfViewHelper extends ContainsViewHelper
     /**
      * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            throw new \RuntimeException('Rendering context missing', 1737807860);
+        }
         return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 

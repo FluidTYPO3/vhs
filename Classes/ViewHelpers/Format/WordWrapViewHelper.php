@@ -33,27 +33,23 @@ class WordWrapViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var string $subject */
-        $subject = $renderChildrenClosure();
+        $subject = (string) $renderChildrenClosure();
         /** @var int $limit */
         $limit = $arguments['limit'];
         /** @var non-empty-string $break */
         $break = $arguments['break'];
         /** @var string $glue */
         $glue = $arguments['glue'];
-        /** @var string $subject */
-        $subject = preg_replace('/ +/', ' ', $subject);
+        $subject = (string) preg_replace('/ +/', ' ', $subject);
         $subject = str_replace(["\r\n", "\r"], PHP_EOL, $subject);
-        if (is_array($subject)) {
-            return $subject;
-        }
         $subject = wordwrap($subject, $limit, $break);
         $output = '';
         foreach (explode($break, $subject) as $line) {

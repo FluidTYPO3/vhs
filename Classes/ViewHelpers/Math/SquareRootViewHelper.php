@@ -23,7 +23,7 @@ class SquareRootViewHelper extends AbstractSingleMathViewHelper
      * @param integer|float|string|array $a
      * @return float|array
      */
-    protected static function calculateAction($a, array $arguments = [])
+    protected static function calculateAction($a, array $arguments = []): array|float|int
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map('sqrt', static::arrayFromArrayOrTraversableOrCSVStatic($a));

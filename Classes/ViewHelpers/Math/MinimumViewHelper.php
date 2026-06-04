@@ -36,7 +36,7 @@ class MinimumViewHelper extends AbstractMultipleMathViewHelper
      * @param mixed $b
      * @return mixed
      */
-    protected static function calculateAction($a, $b, array $arguments)
+    protected static function calculateAction($a, $b, array $arguments): mixed
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         if (!$aIsIterable && $b === null && $arguments['fail']) {

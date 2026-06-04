@@ -39,7 +39,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         /** @var int $width */
         $width = $this->arguments['width'];

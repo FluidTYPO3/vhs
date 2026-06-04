@@ -31,14 +31,11 @@ class PregReplaceViewHelper extends AbstractViewHelper
         $this->registerAsArgument();
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var string|null $as */
         $as = $arguments['as'];
         /** @var string $pattern */
@@ -50,7 +47,7 @@ class PregReplaceViewHelper extends AbstractViewHelper
             ? $arguments['subject']
             : ($arguments['subject'] ?? $renderChildrenClosure());
 
-        $value = preg_replace($pattern, $replacement, $subject);
+        $value = preg_replace($pattern, $replacement, (string) $subject);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $value,
             $as,

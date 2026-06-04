@@ -27,6 +27,6 @@ class IsIntegerViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        return is_array($arguments) && is_integer($arguments['value']);
+        return is_int($arguments['value']);
     }
 }

@@ -31,7 +31,7 @@ class EncodeViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        return rawurlencode($renderChildrenClosure());
+    ): string {
+        return rawurlencode((string) $renderChildrenClosure());
     }
 }

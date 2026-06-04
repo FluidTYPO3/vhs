@@ -28,7 +28,7 @@ class MedianViewHelper extends AbstractSingleMathViewHelper
      * @param mixed $a
      * @return mixed
      */
-    protected static function calculateAction($a, array $arguments = [])
+    protected static function calculateAction($a, array $arguments = []): mixed
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         if ($aIsIterable) {

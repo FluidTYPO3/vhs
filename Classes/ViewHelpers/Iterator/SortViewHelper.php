@@ -169,17 +169,17 @@ class SortViewHelper extends AbstractViewHelper
      *
      * @param ObjectStorage<object> $storage
      * @param array $arguments
-     * @return ObjectStorage
+     * @return ObjectStorage<object>
      */
     protected static function sortObjectStorage($storage, $arguments)
     {
-        /** @var ObjectStorage $temp */
+        /** @var ObjectStorage<object> $temp */
         $temp = GeneralUtility::makeInstance(ObjectStorage::class);
         foreach ($storage as $item) {
             $temp->attach($item);
         }
         $sorted = static::sortArray($storage, $arguments);
-        /** @var ObjectStorage $storage */
+        /** @var ObjectStorage<object> $storage */
         $storage = GeneralUtility::makeInstance(ObjectStorage::class);
         foreach ($sorted as $item) {
             $storage->attach($item);

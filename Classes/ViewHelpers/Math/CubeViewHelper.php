@@ -23,7 +23,7 @@ class CubeViewHelper extends AbstractSingleMathViewHelper
      * @param integer|float|string|array|iterable $a
      * @return float|array
      */
-    protected static function calculateAction($a, array $arguments = [])
+    protected static function calculateAction($a, array $arguments = []): array|float|int
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map([static::class, 'calculateAction'], static::arrayFromArrayOrTraversableOrCSVStatic($a));

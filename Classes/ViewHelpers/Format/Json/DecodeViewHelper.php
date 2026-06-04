@@ -32,8 +32,8 @@ class DecodeViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        $json = $renderChildrenClosure();
+    ): mixed {
+        $json = (string) $renderChildrenClosure();
         if (empty($json)) {
             return null;
         }

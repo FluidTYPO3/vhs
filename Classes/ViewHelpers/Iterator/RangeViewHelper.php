@@ -58,7 +58,7 @@ class RangeViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var int $low */
         $low = $arguments['low'];
         /** @var int $high */

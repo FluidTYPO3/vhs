@@ -71,7 +71,7 @@ class FilterViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var array|iterable $subject */
         $subject = $arguments['subject'] ?? $renderChildrenClosure();
         $filter = $arguments['filter'];

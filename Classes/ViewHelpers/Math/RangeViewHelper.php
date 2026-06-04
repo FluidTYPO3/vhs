@@ -28,7 +28,7 @@ class RangeViewHelper extends AbstractSingleMathViewHelper
      * @return array
      * @throw Exception
      */
-    protected static function calculateAction($a, array $arguments = [])
+    protected static function calculateAction($a, array $arguments = []): array
     {
         return [min($a), max($a)];
     }

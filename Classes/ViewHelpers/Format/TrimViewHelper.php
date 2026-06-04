@@ -29,13 +29,13 @@ class TrimViewHelper extends AbstractViewHelper
     /**
      * Trims content by stripping off $characters
      *
-     * @return mixed
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var string $characters */
         $characters = $arguments['characters'];
         $content = $renderChildrenClosure();

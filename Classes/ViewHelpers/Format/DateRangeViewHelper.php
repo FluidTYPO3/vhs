@@ -241,8 +241,55 @@ class DateRangeViewHelper extends AbstractViewHelper
     protected static function formatDate(\DateTime $date, string $format = 'Y-m-d'): string
     {
         if (false !== strpos($format, '%')) {
-            return (string) strftime($format, (int) $date->format('U'));
+            return $date->format(self::convertStrftimeToDateFormat($format));
         }
         return $date->format($format);
+    }
+
+    protected static function convertStrftimeToDateFormat(string $format): string
+    {
+        $formatMap = [
+            '%a' => 'D',
+            '%A' => 'l',
+            '%b' => 'M',
+            '%B' => 'F',
+            '%c' => 'r', // approximate, locale dependent fallback
+            '%d' => 'd',
+            '%e' => 'j',
+            '%H' => 'H',
+            '%I' => 'h',
+            '%j' => 'z',
+            '%m' => 'm',
+            '%M' => 'i',
+            '%n' => "\n",
+            '%p' => 'A',
+            '%S' => 's',
+            '%t' => "\t",
+            '%y' => 'y',
+            '%Y' => 'Y',
+            '%z' => 'O',
+            '%Z' => 'T',
+            '%h' => 'M',
+            '%%' => '%',
+        ];
+
+        $converted = '';
+        $length = strlen($format);
+        for ($index = 0; $index < $length; ++$index) {
+            $character = $format[$index];
+            if ($character === '%' && $index + 1 < $length) {
+                $directive = $character . $format[++$index];
+                $converted .= $formatMap[$directive] ?? self::escapeDateFormatLiteral($directive);
+                continue;
+            }
+            $converted .= self::escapeDateFormatLiteral($character);
+        }
+
+        return $converted;
+    }
+
+    private static function escapeDateFormatLiteral(string $literal): string
+    {
+        return preg_replace('/([dDjlNSwzWFmMntLoXxYyaABgGhHisuveIOPpTZcrU])/', '\\\\$1', $literal) ?? $literal;
     }
 }

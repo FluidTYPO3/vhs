@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Form;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Form Field Name View Helper
@@ -55,7 +56,8 @@ class FieldNameViewHelper extends AbstractViewHelper
         /** @var string $property */
         $property = $this->arguments['property'];
 
-        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        $renderingContext = $this->getRenderingContextOrFail();
+        $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         if ($this->isObjectAccessorMode()) {
             $formObjectName = $viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName');
             if (!empty($formObjectName)) {
@@ -103,10 +105,18 @@ class FieldNameViewHelper extends AbstractViewHelper
     {
         return (
             $this->hasArgument('property')
-            && $this->renderingContext->getViewHelperVariableContainer()->exists(
+            && $this->getRenderingContextOrFail()->getViewHelperVariableContainer()->exists(
                 FormViewHelper::class,
                 'formObjectName'
             )
         );
+    }
+
+    private function getRenderingContextOrFail(): RenderingContextInterface
+    {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            throw new \RuntimeException('Rendering context missing', 1774448252);
+        }
+        return $this->renderingContext;
     }
 }

@@ -30,14 +30,11 @@ class ForViewHelper extends AbstractLoopViewHelper
         );
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var int|string $to */
         $to = $arguments['to'];
         /** @var int|string $from */

@@ -33,14 +33,14 @@ class PlaintextViewHelper extends AbstractViewHelper
     /**
      * Trims content, then trims each line of content
      *
-     * @return mixed
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        $content = $renderChildrenClosure();
+    ): string {
+        $content = (string) $renderChildrenClosure();
         $content = trim($content);
         $lines = explode("\n", $content);
         $lines = array_map('trim', $lines);

@@ -27,6 +27,6 @@ class IsObjectViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        return is_array($arguments) && is_object($arguments['value']);
+        return is_object($arguments['value']);
     }
 }

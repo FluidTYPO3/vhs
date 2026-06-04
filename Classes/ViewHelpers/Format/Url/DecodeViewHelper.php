@@ -31,7 +31,7 @@ class DecodeViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        return rawurldecode($renderChildrenClosure());
+    ): string {
+        return rawurldecode((string) $renderChildrenClosure());
     }
 }

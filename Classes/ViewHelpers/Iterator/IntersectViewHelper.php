@@ -46,7 +46,7 @@ class IntersectViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): array {
         $a = $arguments['a'] ?? $renderChildrenClosure();
 
         $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);

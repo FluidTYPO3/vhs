@@ -31,9 +31,6 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
         $this->registerArgument('iteration', 'string', 'Variable name to insert result into, suppresses output');
     }
 
-    /**
-     * @return string
-     */
     protected static function renderIteration(
         int $i,
         int $from,
@@ -42,7 +39,7 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
         ?string $iterationArgument,
         RenderingContextInterface $renderingContext,
         \Closure $renderChildrenClosure
-    ) {
+    ): string {
         if (!empty($iterationArgument)) {
             $variableProvider = $renderingContext->getVariableProvider();
             $cycle = (int) (($i - $from) / $step) + 1;
@@ -61,7 +58,7 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
             $content = $renderChildrenClosure();
         }
 
-        return $content;
+        return (string) $content;
     }
 
     protected static function isLast(int $i, int $from, int $to, int $step): bool

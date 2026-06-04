@@ -22,7 +22,7 @@ class IsRequiredViewHelper extends HasValidatorViewHelper
     /**
      * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         $this->arguments['validatorName'] = 'NotEmpty';
         return parent::render();
@@ -37,7 +37,7 @@ class IsRequiredViewHelper extends HasValidatorViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         $arguments['validatorName'] = 'NotEmpty';
         return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }

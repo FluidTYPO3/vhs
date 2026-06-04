@@ -25,7 +25,7 @@ class CeilViewHelper extends AbstractSingleMathViewHelper
      * @param mixed $a
      * @return integer|array
      */
-    protected static function calculateAction($a, array $arguments = [])
+    protected static function calculateAction($a, array $arguments = []): array|int
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map('ceil', static::arrayFromArrayOrTraversableOrCSVStatic($a));

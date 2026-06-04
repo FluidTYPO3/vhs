@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension;
 
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -36,14 +35,10 @@ abstract class AbstractExtensionViewHelper extends AbstractViewHelper
         return GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
     }
 
-    /**
-     * @return mixed
-     */
-    protected static function getExtensionName(array $arguments, RenderingContextInterface $renderingContext)
+    protected static function getExtensionName(array $arguments, RenderingContextInterface $renderingContext): string
     {
-        /** @var RenderingContext $renderingContext */
         if (isset($arguments['extensionName']) && !empty($arguments['extensionName'])) {
-            return $arguments['extensionName'];
+            return (string) $arguments['extensionName'];
         }
         $extensionName = RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
         if (empty($extensionName)) {

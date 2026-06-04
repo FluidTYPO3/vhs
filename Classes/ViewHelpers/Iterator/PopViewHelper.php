@@ -39,14 +39,11 @@ class PopViewHelper extends AbstractViewHelper
         $this->registerAsArgument();
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var string|null $as */
         $as = $arguments['as'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(

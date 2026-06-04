@@ -60,7 +60,7 @@ class LinesViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): int {
         $value = $renderChildrenClosure();
         if ((string) $value === '') {
             return 0;

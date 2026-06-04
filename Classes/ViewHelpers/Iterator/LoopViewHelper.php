@@ -31,7 +31,7 @@ class LoopViewHelper extends AbstractLoopViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var int $count */
         $count = $arguments['count'];
         /** @var int $minimum */

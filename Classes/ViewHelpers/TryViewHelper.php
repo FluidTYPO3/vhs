@@ -120,15 +120,24 @@ class TryViewHelper extends AbstractConditionViewHelper
     /**
      * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         try {
             $content = $this->renderChildren();
         } catch (\Exception $error) {
-            $this->renderingContext->getVariableProvider()->add('exception', $error);
+            $renderingContext = $this->getRenderingContextOrFail();
+            $renderingContext->getVariableProvider()->add('exception', $error);
             $content = $this->renderElseChild();
-            $this->renderingContext->getVariableProvider()->remove('exception');
+            $renderingContext->getVariableProvider()->remove('exception');
         }
         return $content;
+    }
+
+    private function getRenderingContextOrFail(): RenderingContextInterface
+    {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            throw new \RuntimeException('Rendering context missing', 1774448254);
+        }
+        return $this->renderingContext;
     }
 }

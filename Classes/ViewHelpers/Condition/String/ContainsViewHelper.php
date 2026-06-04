@@ -32,6 +32,6 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         $haystack = $arguments['haystack'];
         /** @var string $needle */
         $needle = $arguments['needle'];
-        return is_array($arguments) && strpos((string) $haystack, (string) $needle) !== false;
+        return str_contains((string) $haystack, (string) $needle);
     }
 }

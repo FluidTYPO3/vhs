@@ -32,16 +32,16 @@ class HashViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var string $algorithm */
         $algorithm = $arguments['algorithm'];
-        $content = $renderChildrenClosure();
+        $content = (string) $renderChildrenClosure();
         $content = hash($algorithm, $content);
         return $content;
     }

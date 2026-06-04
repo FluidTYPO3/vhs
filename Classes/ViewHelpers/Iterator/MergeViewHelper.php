@@ -55,7 +55,7 @@ class MergeViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): array {
         $a = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['a'] ?? $renderChildrenClosure());
         $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b'], (bool) $arguments['useKeys']);
         return static::mergeArraysStatic($a, $b);

@@ -143,7 +143,7 @@ class ExtractViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var array $content */
         $content = $arguments['content'] ?? $renderChildrenClosure();
         /** @var string $key */
@@ -184,7 +184,7 @@ class ExtractViewHelper extends AbstractViewHelper
      * @return mixed NULL or whatever we found at $key
      * @throws \Exception
      */
-    protected static function extractByKey($iterator, string $key)
+    protected static function extractByKey($iterator, string $key): mixed
     {
         if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1361532490);
@@ -202,7 +202,7 @@ class ExtractViewHelper extends AbstractViewHelper
      * @return array
      * @throws \Exception
      */
-    protected static function recursivelyExtractKey($iterator, string $key)
+    protected static function recursivelyExtractKey($iterator, string $key): array
     {
         if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new \Exception('Traversable object or array expected but received ' . gettype($iterator), 1515498714);

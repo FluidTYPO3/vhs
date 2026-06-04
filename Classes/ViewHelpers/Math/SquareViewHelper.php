@@ -23,7 +23,7 @@ class SquareViewHelper extends AbstractSingleMathViewHelper
      * @param integer|float|string|iterable|array $a
      * @return integer|float|array
      */
-    protected static function calculateAction($a, array $arguments = [])
+    protected static function calculateAction($a, array $arguments = []): mixed
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map(

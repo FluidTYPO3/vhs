@@ -52,23 +52,25 @@ class MarkdownViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return mixed|null|string
+     * @return string|null
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): ?string {
         $trim = (bool) $arguments['trim'];
         $htmlentities = (bool) $arguments['htmlentities'];
         $text = $renderChildrenClosure();
         if (null === $text) {
             return null;
         }
+        $text = (string) $text;
 
         $cacheIdentifier = sha1($text);
         $fromCache = static::getCache()->get($cacheIdentifier);
         if (!empty($fromCache)) {
+            /** @var string $fromCache */
             return $fromCache;
         }
 

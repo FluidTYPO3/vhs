@@ -43,7 +43,7 @@ class StringViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var int $length */
         $length = $arguments['length'];
 

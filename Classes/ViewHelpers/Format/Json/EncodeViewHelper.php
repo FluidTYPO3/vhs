@@ -78,14 +78,11 @@ class EncodeViewHelper extends AbstractViewHelper
         $this->registerArgument('pretty', 'bool', 'If TRUE, outputs JSON with JSON_PRETTY_PRINT', false, false);
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         $value = $renderChildrenClosure();
         $useTraversableKeys = (bool) $arguments['useTraversableKeys'];
         $preventRecursion = (bool) $arguments['preventRecursion'];
@@ -112,7 +109,6 @@ class EncodeViewHelper extends AbstractViewHelper
 
     /**
      * @param mixed $value
-     * @return string|false
      */
     protected static function encodeValue(
         $value,
@@ -121,7 +117,7 @@ class EncodeViewHelper extends AbstractViewHelper
         ?string $recursionMarker,
         ?string $dateTimeFormat,
         int $options
-    ) {
+    ): string {
         if ($value instanceof \Traversable) {
             // Note: also converts ObjectStorage to \Vendor\Extname\Domain\Model\ObjectType[] which are each converted
             $value = iterator_to_array($value, $useTraversableKeys);
@@ -138,7 +134,7 @@ class EncodeViewHelper extends AbstractViewHelper
             $value = static::recursiveDateTimeToUnixtimeMiliseconds($value, $dateTimeFormat);
         }
         $json = json_encode($value, $options);
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if ($json === false || JSON_ERROR_NONE !== json_last_error()) {
             ErrorUtility::throwViewHelperException('The provided argument cannot be converted into JSON.', 1358440181);
         }
         return $json;
@@ -169,9 +165,8 @@ class EncodeViewHelper extends AbstractViewHelper
      * the format specified in $dateTimeFormat (DateTime::format syntax).
      * Default format is NULL a JS UNIXTIME (time()*1000) is produced.
      *
-     * @return integer|string
      */
-    protected static function dateTimeToUnixtimeMiliseconds(\DateTime $dateTime, ?string $dateTimeFormat)
+    protected static function dateTimeToUnixtimeMiliseconds(\DateTime $dateTime, ?string $dateTimeFormat): int|string
     {
         if (null === $dateTimeFormat) {
             return intval($dateTime->format('U')) * 1000;
@@ -222,13 +217,12 @@ class EncodeViewHelper extends AbstractViewHelper
      * @param DomainObjectInterface $domainObject
      * @param boolean $preventRecursion
      * @param string $recursionMarker
-     * @return array|string|null
      */
     protected static function recursiveDomainObjectToArray(
         DomainObjectInterface $domainObject,
         bool $preventRecursion,
         ?string $recursionMarker
-    ) {
+    ): array|string|null {
         $hash = spl_object_hash($domainObject);
         if ($preventRecursion && in_array($hash, static::$encounteredClasses)) {
             return $recursionMarker;
