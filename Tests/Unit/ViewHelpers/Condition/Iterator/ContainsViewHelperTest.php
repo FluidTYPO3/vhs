@@ -108,7 +108,6 @@ class ContainsViewHelperTest extends AbstractViewHelperTestCase
     private static function setObjectUid(object $object, int $uid): void
     {
         $property = new \ReflectionProperty($object, 'uid');
-        $property->setAccessible(true);
         $property->setValue($object, $uid);
     }
 
@@ -118,7 +117,6 @@ class ContainsViewHelperTest extends AbstractViewHelperTestCase
         /** @var LazyObjectStorage $lazyObjectStorage */
         $lazyObjectStorage = $reflection->newInstanceWithoutConstructor();
         $property = new \ReflectionProperty($lazyObjectStorage, 'isInitialized');
-        $property->setAccessible(true);
         $property->setValue($lazyObjectStorage, true);
         return $lazyObjectStorage;
     }

@@ -142,8 +142,7 @@ class AssetServiceTest extends AbstractTestCase
                     ],
                 ]
             );
-            $method->setAccessible(true);
-            $this->assertEquals($expectedIntegrity, $method->invokeArgs($instance, [$file, $request]));
+                $this->assertEquals($expectedIntegrity, $method->invokeArgs($instance, [$file, $request]));
         }
     }
 
@@ -314,7 +313,6 @@ class AssetServiceTest extends AbstractTestCase
     private function resetAssetServiceSettingsCache(): void
     {
         $property = new \ReflectionProperty(AssetService::class, 'settingsCache');
-        $property->setAccessible(true);
         $property->setValue(null, []);
     }
 
@@ -327,7 +325,6 @@ class AssetServiceTest extends AbstractTestCase
         $nonce = new ConsumableNonce(str_repeat('a', 40));
         $request = (new ServerRequest('https://example.local'))->withAttribute('nonce', $nonce);
         $method = (new \ReflectionClass(AssetService::class))->getMethod('generateTagForAssetType');
-        $method->setAccessible(true);
 
         $instance = $this->getMockBuilder(AssetService::class)
             ->onlyMethods(['getSettings', 'getTypoScript'])

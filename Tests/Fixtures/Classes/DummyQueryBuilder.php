@@ -56,7 +56,7 @@ class DummyQueryBuilder extends QueryBuilder
         return $this;
     }
 
-    public function from(string $from, string $alias = null): QueryBuilder
+    public function from(string $from, ?string $alias = null): QueryBuilder
     {
         return $this;
     }
@@ -71,7 +71,7 @@ class DummyQueryBuilder extends QueryBuilder
         return $this;
     }
 
-    public function orderBy(string $fieldName, string $order = null): QueryBuilder
+    public function orderBy(string $fieldName, ?string $order = null): QueryBuilder
     {
         return $this;
     }
@@ -89,7 +89,7 @@ class DummyQueryBuilder extends QueryBuilder
     public function createNamedParameter(
         mixed $value,
         mixed $type = Connection::PARAM_STR,
-        string $placeHolder = null
+        ?string $placeHolder = null
     ): string {
         return 'param';
     }

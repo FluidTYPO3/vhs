@@ -42,7 +42,6 @@ class RequestViewHelperTest extends AbstractViewHelperTestCase
         );
 
         $method = new \ReflectionMethod(RequestViewHelper::class, 'loadDefaultValues');
-        $method->setAccessible(true);
         $request = $method->invokeArgs(
             null,
             [$renderingContext, 'Extension', 'Plugin', 'Example', 'list', []]

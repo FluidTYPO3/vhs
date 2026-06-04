@@ -53,16 +53,13 @@ class DummyViewHelperNode
             'argumentDefinitions' => [],
         ] as $propertyName => $value) {
             $property = $viewHelperNodeReflection->getProperty($propertyName);
-            $property->setAccessible(true);
-            $property->setValue($viewHelperNode, $value);
+                $property->setValue($viewHelperNode, $value);
         }
 
         $property = $viewHelperNodeReflection->getProperty('childNodes');
-        $property->setAccessible(true);
         $property->setValue($viewHelperNode, []);
 
         $property = $viewHelperNodeReflection->getProperty('uninitializedViewHelper');
-        $property->setAccessible(true);
         $property->setValue($viewHelperNode, $viewHelper);
 
         return $viewHelperNode;

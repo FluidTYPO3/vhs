@@ -151,7 +151,6 @@ abstract class AbstractTestCase extends TestCase
     {
         $reflectionObject = new \ReflectionObject($object);
         $reflectionMethod = $reflectionObject->getMethod($name);
-        $reflectionMethod->setAccessible(true);
         return $reflectionMethod->invokeArgs($object, $arguments);
     }
 
@@ -164,7 +163,6 @@ abstract class AbstractTestCase extends TestCase
     protected function setInaccessiblePropertyValue(object $object, string $propertyName, $value): void
     {
         $reflectionProperty = new \ReflectionProperty($object, $propertyName);
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($object, $value);
     }
 
@@ -176,7 +174,6 @@ abstract class AbstractTestCase extends TestCase
     protected function getInaccessiblePropertyValue(object $object, string $propertyName)
     {
         $reflectionProperty = new \ReflectionProperty($object, $propertyName);
-        $reflectionProperty->setAccessible(true);
         return $reflectionProperty->getValue($object);
     }
 

@@ -209,11 +209,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         }
         $user1 = new FrontendUser();
         $property = new \ReflectionProperty($user1, 'uid');
-        $property->setAccessible(true);
         $property->setValue($user1, 1);
         $user2 = new FrontendUser();
         $property = new \ReflectionProperty($user2, 'uid');
-        $property->setAccessible(true);
         $property->setValue($user2, 2);
 
         return [
