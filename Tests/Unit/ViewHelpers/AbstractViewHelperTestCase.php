@@ -104,16 +104,16 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         $request->method('getControllerActionName')->willReturn('action');
 
         $this->viewHelperResolver = $this->getMockBuilder(ViewHelperResolver::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         $this->viewHelperVariableContainer = $this->getMockBuilder(ViewHelperVariableContainer::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->getMock();
         $this->templateVariableContainer = new StandardVariableProvider();
 
         $this->viewHelperInvoker = $this->getMockBuilder(ViewHelperInvoker::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
@@ -217,7 +217,7 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         /** @var class-string<AbstractViewHelper> $className */
         /** @var AbstractViewHelper $instance */
         $instance = $this->getMockBuilder($className)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         if (method_exists($instance, 'injectConfigurationManager')) {
@@ -233,12 +233,36 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
                 $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
                 $request->method('getAttribute')->willReturn($cObject);
 
-                /** @var ConfigurationManagerInterface&MockObject $configurationManager */
-                $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-                    ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
-                    ->addMethods(['getRequest'])
-                    ->getMock();
-                $configurationManager->method('getRequest')->willReturn($request);
+                $configurationManager = new class ($request) implements ConfigurationManagerInterface {
+                    private ServerRequestInterface $request;
+
+                    public function __construct(ServerRequestInterface $request)
+                    {
+                        $this->request = $request;
+                    }
+
+                    public function getConfiguration(
+                        string $configurationType,
+                        ?string $extensionName = null,
+                        ?string $pluginName = null
+                    ): array {
+                        return [];
+                    }
+
+                    public function setConfiguration(array $configuration = []): void
+                    {
+                    }
+
+                    public function setRequest(ServerRequestInterface $request): void
+                    {
+                        $this->request = $request;
+                    }
+
+                    public function getRequest(): ServerRequestInterface
+                    {
+                        return $this->request;
+                    }
+                };
             }
 
             $instance->injectConfigurationManager($configurationManager);
@@ -296,47 +320,112 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
 
     protected function createRenderingContextWithRequest(ServerRequestInterface $request): RenderingContextInterface
     {
-        $methods = [
-            'getViewHelperResolver',
-            'getViewHelperVariableContainer',
-            'getVariableProvider',
-            'getViewHelperInvoker',
-            'getErrorHandler',
-            'getTemplateParser',
-            'getTemplateProcessors',
-            'getExpressionNodeTypes',
-        ];
-        if (method_exists(RenderingContext::class, 'getRequest')) {
-            $methods[] = 'getRequest';
-        }
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')) {
-            $methods[] = 'getArgumentProcessor';
-        }
-        $mockBuilder = $this->getMockBuilder(RenderingContext::class)
-            ->onlyMethods($methods)
-            ->disableOriginalConstructor();
-        if (!method_exists(RenderingContext::class, 'getRequest')) {
-            $mockBuilder->addMethods(['getRequest']);
-        }
-        $renderingContext = $mockBuilder->getMock();
-        $renderingContext->method('getRequest')->willReturn($request);
-        $renderingContext->method('getViewHelperResolver')->willReturn($this->viewHelperResolver);
-        $renderingContext->method('getViewHelperVariableContainer')->willReturn($this->viewHelperVariableContainer);
-        $renderingContext->method('getVariableProvider')->willReturn($this->templateVariableContainer);
-        $renderingContext->method('getViewHelperInvoker')->willReturn($this->viewHelperInvoker);
-        $renderingContext->method('getErrorHandler')->willReturn($this->errorHandler);
-        $renderingContext->method('getTemplateParser')->willReturn($this->templateParser);
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')) {
-            $renderingContext->method('getArgumentProcessor')->willReturn(new StrictArgumentProcessor());
-        }
-        $renderingContext->method('getTemplateProcessors')->willReturn($this->templateProcessors);
-        $renderingContext->method('getExpressionNodeTypes')->willReturn($this->expressionTypes);
-
-        return $renderingContext;
+        return $this->getRequestAwareRenderingContextMock($request);
     }
 
     protected function createRenderingContextWithoutRequest(): RenderingContextInterface
     {
+        return $this->getRequestAwareRenderingContextMock(null);
+    }
+
+    protected function getRequestAwareRenderingContextMock(?ServerRequestInterface $request): RenderingContextInterface
+    {
+        if (!method_exists(RenderingContext::class, 'getRequest')) {
+            return new class (
+                $request,
+                $this->viewHelperResolver,
+                $this->viewHelperVariableContainer,
+                $this->templateVariableContainer,
+                $this->viewHelperInvoker,
+                $this->errorHandler,
+                $this->templateParser,
+                $this->templateProcessors,
+                $this->expressionTypes
+            ) extends RenderingContext {
+                private ?ServerRequestInterface $requestOverride;
+                private ViewHelperResolver $viewHelperResolverOverride;
+                private ViewHelperVariableContainer $viewHelperVariableContainerOverride;
+                private StandardVariableProvider $templateVariableContainerOverride;
+                private ViewHelperInvoker $viewHelperInvokerOverride;
+                private ErrorHandlerInterface $errorHandlerOverride;
+                private TemplateParser $templateParserOverride;
+                private array $templateProcessorsOverride;
+                private array $expressionTypesOverride;
+
+                public function __construct(
+                    ?ServerRequestInterface $request,
+                    ViewHelperResolver $viewHelperResolver,
+                    ViewHelperVariableContainer $viewHelperVariableContainer,
+                    StandardVariableProvider $templateVariableContainer,
+                    ViewHelperInvoker $viewHelperInvoker,
+                    ErrorHandlerInterface $errorHandler,
+                    TemplateParser $templateParser,
+                    array $templateProcessors,
+                    array $expressionTypes
+                ) {
+                    $this->requestOverride = $request;
+                    $this->viewHelperResolverOverride = $viewHelperResolver;
+                    $this->viewHelperVariableContainerOverride = $viewHelperVariableContainer;
+                    $this->templateVariableContainerOverride = $templateVariableContainer;
+                    $this->viewHelperInvokerOverride = $viewHelperInvoker;
+                    $this->errorHandlerOverride = $errorHandler;
+                    $this->templateParserOverride = $templateParser;
+                    $this->templateProcessorsOverride = $templateProcessors;
+                    $this->expressionTypesOverride = $expressionTypes;
+                }
+
+                public function getRequest(): ?ServerRequestInterface
+                {
+                    return $this->requestOverride;
+                }
+
+                public function getViewHelperResolver()
+                {
+                    return $this->viewHelperResolverOverride;
+                }
+
+                public function getViewHelperVariableContainer()
+                {
+                    return $this->viewHelperVariableContainerOverride;
+                }
+
+                public function getVariableProvider()
+                {
+                    return $this->templateVariableContainerOverride;
+                }
+
+                public function getViewHelperInvoker()
+                {
+                    return $this->viewHelperInvokerOverride;
+                }
+
+                public function getErrorHandler()
+                {
+                    return $this->errorHandlerOverride;
+                }
+
+                public function getTemplateParser()
+                {
+                    return $this->templateParserOverride;
+                }
+
+                public function getArgumentProcessor(): \TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentProcessorInterface
+                {
+                    return new StrictArgumentProcessor();
+                }
+
+                public function getTemplateProcessors()
+                {
+                    return $this->templateProcessorsOverride;
+                }
+
+                public function getExpressionNodeTypes()
+                {
+                    return $this->expressionTypesOverride;
+                }
+            };
+        }
+
         $methods = [
             'getViewHelperResolver',
             'getViewHelperVariableContainer',
@@ -346,21 +435,16 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
             'getTemplateParser',
             'getTemplateProcessors',
             'getExpressionNodeTypes',
+            'getRequest',
         ];
-        if (method_exists(RenderingContext::class, 'getRequest')) {
-            $methods[] = 'getRequest';
-        }
         if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')) {
             $methods[] = 'getArgumentProcessor';
         }
-        $mockBuilder = $this->getMockBuilder(RenderingContext::class)
+        $renderingContext = $this->getMockBuilder(RenderingContext::class)
             ->onlyMethods($methods)
-            ->disableOriginalConstructor();
-        if (!method_exists(RenderingContext::class, 'getRequest')) {
-            $mockBuilder->addMethods(['getRequest']);
-        }
-        $renderingContext = $mockBuilder->getMock();
-        $renderingContext->method('getRequest')->willReturn(null);
+            ->disableOriginalConstructor()
+            ->getMock();
+        $renderingContext->method('getRequest')->willReturn($request);
         $renderingContext->method('getViewHelperResolver')->willReturn($this->viewHelperResolver);
         $renderingContext->method('getViewHelperVariableContainer')->willReturn($this->viewHelperVariableContainer);
         $renderingContext->method('getVariableProvider')->willReturn($this->templateVariableContainer);
