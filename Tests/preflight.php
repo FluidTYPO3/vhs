@@ -1,6 +1,6 @@
 <?php
 
-$versions = ['13.4', '12.4', '11.5', '10.4'];
+$versions = ['14.3', '13.4'];
 
 $currentLockFile = null;
 if (file_exists('composer.lock')) {

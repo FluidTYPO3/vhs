@@ -4,7 +4,6 @@ includes:
 parameters:
     level: 9
     reportUnmatchedIgnoredErrors: false
-    checkGenericClassInNonGenericObjectType: false
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ControllerContext not found\\.$#"
