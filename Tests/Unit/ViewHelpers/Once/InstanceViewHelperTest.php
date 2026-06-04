@@ -13,7 +13,6 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Class InstanceViewHelperTest
@@ -33,10 +32,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTestCase
             ->setControllerExtensionName('Vhs')
             ->setPluginName('Plugin');
         $request = (new ServerRequest())->withAttribute('extbase', $extbaseParameters);
-        $renderingContext = $this->getMockBuilder(RenderingContextInterface::class)
-            ->addMethods(['getRequest'])
-            ->getMockForAbstractClass();
-        $renderingContext->method('getRequest')->willReturn($request);
+        $renderingContext = $this->createRenderingContextWithRequest($request);
 
         $instance = $this->createInstance();
         $this->setInaccessiblePropertyValue($instance, 'currentRenderingContext', $renderingContext);

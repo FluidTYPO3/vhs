@@ -24,8 +24,7 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
 
     protected function setUp(): void
     {
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-            ->getMockForAbstractClass();
+        $this->configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->configurationManager->method('getConfiguration')->willReturn(
             [
                 'config' => [

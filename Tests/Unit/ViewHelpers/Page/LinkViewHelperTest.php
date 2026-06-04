@@ -47,13 +47,10 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
         $this->renderingContext = $this->createRenderingContextWithRequest($GLOBALS['TYPO3_REQUEST']);
 
-        $uriBuilderMockBuilder = $this->getMockBuilder(UriBuilder::class)
+        $uriBuilder = $this->getMockBuilder(UriBuilder::class)
             ->onlyMethods(['buildFrontendUri', 'build'])
-            ->disableOriginalConstructor();
-        if (!method_exists(UriBuilder::class, 'setUseCacheHash')) {
-            $uriBuilderMockBuilder->addMethods(['setUseCacheHash']);
-        }
-        $uriBuilder = $uriBuilderMockBuilder->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         GeneralUtility::addInstance(UriBuilder::class, $uriBuilder);
     }
 

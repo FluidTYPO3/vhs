@@ -19,7 +19,7 @@ class IsCliViewHelperTest extends AbstractViewHelperTestCase
     public function testIsCliContext(): void
     {
         $instance = $this->createInstance();
-        $result = IsCliViewHelper::verdict([], $this->getMockBuilder(RenderingContextInterface::class)->getMock());
+        $result = IsCliViewHelper::verdict([], $this->createMock(RenderingContextInterface::class));
         $this->assertThat($result, new IsType(IsType::TYPE_BOOL));
     }
 

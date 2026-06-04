@@ -22,7 +22,7 @@ class RequestViewHelperTest extends AbstractViewHelperTestCase
 {
     public function testLoadDefaultValuesUsesRenderingContextRequest(): void
     {
-        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManager->method('getConfiguration')->willReturn(
             [
                 'controllerConfiguration' => [

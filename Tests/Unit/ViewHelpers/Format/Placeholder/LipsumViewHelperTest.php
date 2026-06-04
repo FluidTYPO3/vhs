@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
  */
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\RequestAwareConfigurationManager;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -54,17 +55,12 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
 
         if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
             /** @var ConfigurationManagerInterface&MockObject $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+            $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
             $configurationManager->method('getContentObject')->willReturn($mockContentObject);
         } else {
-            $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+            $request = $this->createMock(ServerRequestInterface::class);
             $request->method('getAttribute')->willReturn($mockContentObject);
-            /** @var ConfigurationManagerInterface&MockObject $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-                ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
-                ->addMethods(['getRequest'])
-                ->getMock();
-            $configurationManager->method('getRequest')->willReturn($request);
+            $configurationManager = new RequestAwareConfigurationManager($request);
         }
 
         $this->singletonInstances[ConfigurationManagerInterface::class] = $configurationManager;

@@ -57,7 +57,7 @@ class IsLanguageViewHelperTest extends AbstractViewHelperTestCase
 
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool);
 
-        $renderingContext = $this->getMockBuilder(RenderingContextInterface::class)->getMock();
+        $renderingContext = $this->createMock(RenderingContextInterface::class);
         self::assertTrue(
             IsLanguageViewHelper::verdict(['language' => 'en', 'defaultTitle' => 'en'], $renderingContext)
         );
@@ -65,7 +65,7 @@ class IsLanguageViewHelperTest extends AbstractViewHelperTestCase
 
     public function testWithLanguageAsUid(): void
     {
-        $renderingContext = $this->getMockBuilder(RenderingContextInterface::class)->getMock();
+        $renderingContext = $this->createMock(RenderingContextInterface::class);
         self::assertTrue(
             IsLanguageViewHelper::verdict(['language' => 123, 'defaultTitle' => 'en'], $renderingContext)
         );

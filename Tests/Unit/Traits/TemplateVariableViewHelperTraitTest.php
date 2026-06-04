@@ -20,7 +20,7 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
         $variableProvider = $this->getMockBuilder(StandardVariableProvider::class)
             ->onlyMethods(['add', 'get'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $variableProvider->expects(self::never())->method('add');
         $variableProvider->expects(self::never())->method('get');
 
@@ -36,7 +36,7 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
         $variableProvider = $this->getMockBuilder(StandardVariableProvider::class)
             ->onlyMethods(['add', 'get'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $variableProvider->expects(self::once())->method('add')->with('as', 'foobar');
         $variableProvider->expects(self::never())->method('get');
 
@@ -53,11 +53,11 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
         $variableProvider = $this->getMockBuilder(StandardVariableProvider::class)
             ->onlyMethods(['add', 'get'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $variableProvider->expects(self::never())->method('add');
         $variableProvider->expects(self::never())->method('get');
 
-        $context = $this->getMockBuilder(RenderingContextInterface::class)->getMockForAbstractClass();
+        $context = $this->createMock(RenderingContextInterface::class);
         $context->method('getVariableProvider')->willReturn($variableProvider);
 
         $closure = function () {
@@ -73,11 +73,11 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
         $variableProvider = $this->getMockBuilder(StandardVariableProvider::class)
             ->onlyMethods(['add', 'get'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $variableProvider->expects(self::once())->method('add')->with('as', 'foobar');
         $variableProvider->expects(self::never())->method('get');
 
-        $context = $this->getMockBuilder(RenderingContextInterface::class)->getMockForAbstractClass();
+        $context = $this->createMock(RenderingContextInterface::class);
         $context->method('getVariableProvider')->willReturn($variableProvider);
 
         $closure = function () {

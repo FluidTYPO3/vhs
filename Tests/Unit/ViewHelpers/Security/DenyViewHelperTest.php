@@ -22,7 +22,7 @@ class DenyViewHelperTest extends AbstractViewHelperTestCase
             'user' => ['uid' => 1],
         ];
         $viewHelper = $this->getMockBuilder(DenyViewHelper::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         $arguments = $this->buildViewHelperArguments($viewHelper, ['anyBackendUser' => true]);
@@ -30,7 +30,7 @@ class DenyViewHelperTest extends AbstractViewHelperTestCase
         $viewHelper->setArguments($arguments);
 
         $viewHelper->setRenderingContext(
-            $this->getMockBuilder(RenderingContextInterface::class)->getMock()
+            $this->createMock(RenderingContextInterface::class)
         );
 
         GeneralUtility::addInstance(get_class($viewHelper), $viewHelper);

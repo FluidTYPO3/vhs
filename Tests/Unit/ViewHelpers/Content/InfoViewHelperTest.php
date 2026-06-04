@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\RequestAwareConfigurationManager;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Content\InfoViewHelper;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,18 +35,13 @@ class InfoViewHelperTest extends AbstractViewHelperTestCase
 
         if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
             /** @var ConfigurationManagerInterface&MockObject $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+            $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
             $configurationManager->method('getContentObject')->willReturn($contentObject);
         } else {
             /** @var ServerRequestInterface&MockObject $request */
-            $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+            $request = $this->createMock(ServerRequestInterface::class);
             $request->method('getAttribute')->willReturn($contentObject);
-            /** @var ConfigurationManagerInterface&MockObject $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-                ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
-                ->addMethods(['getRequest'])
-                ->getMock();
-            $configurationManager->method('getRequest')->willReturn($request);
+            $configurationManager = new RequestAwareConfigurationManager($request);
         }
 
         $instance = $this->createInstance();

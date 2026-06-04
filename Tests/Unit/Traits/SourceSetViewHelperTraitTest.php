@@ -12,8 +12,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyConfigurationManagerWithContentObjectRenderer;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummySourceSetViewHelper;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyTypoScriptFrontendController;
 use TYPO3\CMS\Core\Imaging\ImageResource;
@@ -47,10 +47,10 @@ class SourceSetViewHelperTraitTest extends AbstractTestCase
             ->getMock();
         $tsfe->cObj = $contentObject;
 
-        $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequestInterface::class)
-            ->onlyMethods(['getAttribute'])
-            ->getMockForAbstractClass();
-        $GLOBALS['TYPO3_REQUEST']->method('getAttribute')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute(
+            'applicationType',
+            SystemEnvironmentBuilder::REQUESTTYPE_FE
+        );
 
         $tagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->onlyMethods(['addAttribute'])

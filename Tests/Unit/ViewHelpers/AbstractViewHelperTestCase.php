@@ -226,11 +226,11 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
 
             if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
                 /** @var ConfigurationManagerInterface&MockObject $configurationManager */
-                $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+                $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
                 $configurationManager->method('getContentObject')->willReturn($cObject);
             } else {
                 /** @var ServerRequestInterface&MockObject $request */
-                $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+                $request = $this->createMock(ServerRequestInterface::class);
                 $request->method('getAttribute')->willReturn($cObject);
 
                 $configurationManager = new class ($request) implements ConfigurationManagerInterface {
@@ -496,7 +496,7 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         ?string $extensionName = null,
         ?string $pluginName = null
     ): mixed {
-        $node = $this->getMockBuilder(NodeInterface::class)->getMockForAbstractClass();
+        $node = $this->createMock(NodeInterface::class);
         $node->method('evaluate')->willReturn($nodeValue);
         $instance = $this->buildViewHelperInstance($arguments, $variables, $node, $extensionName, $pluginName);
         self::assertInstanceOf(RenderingContextInterface::class, $this->renderingContext);

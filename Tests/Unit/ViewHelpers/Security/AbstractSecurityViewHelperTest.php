@@ -44,9 +44,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     protected function createInstance(): AbstractSecurityViewHelper
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         return $instance;
     }
 
@@ -59,7 +59,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->onlyMethods($expectedMethods)
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $node = new DummyViewHelperNode($instance);
         /** @var ArgumentDefinition[] $argumentDefinitions */
         $argumentDefinitions = $instance->prepareArguments();
@@ -194,7 +194,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->onlyMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $instance->expects($this->once())->method('getCurrentFrontendUser')->willReturn($resolvedUser);
         $result = $this->callInaccessibleMethod($instance, 'assertFrontendUserLoggedIn', $user);
         $this->assertEquals($expected, $result);
@@ -236,7 +236,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->onlyMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $instance->expects($this->once())->method('getCurrentFrontendUser')->willReturn($resolvedUser);
         $result = $this->callInaccessibleMethod($instance, 'assertFrontendUserGroupLoggedIn', $group);
         $this->assertEquals($expected, $result);
@@ -279,7 +279,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->onlyMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $instance->expects($this->exactly($users->count()))->method('getCurrentFrontendUser')->willReturn($currentUser);
         $result = $instance->assertFrontendUsersLoggedIn($users);
         $this->assertEquals($expected, $result);
@@ -313,9 +313,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     {
         $GLOBALS['BE_USER'] = (object) ['user' => ['uid' => $currentUser]];
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $result = $instance->assertBackendUserLoggedIn($user);
         unset($GLOBALS['BE_USER']->user);
         $this->assertEquals($expected, $result);
@@ -342,7 +342,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->onlyMethods(['getCurrentBackendUser'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $instance->method('getCurrentBackendUser')->willReturn($currentUser);
         $result = $instance->assertBackendUserGroupLoggedIn($group);
         $this->assertEquals($expected, $result);
@@ -373,7 +373,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->onlyMethods(['getCurrentBackendUser'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
 
         $instance->expects($this->atLeastOnce())->method('getCurrentBackendUser')->willReturn($currentUser);
         $result = $instance->assertAdminLoggedIn();
@@ -393,9 +393,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     {
         unset($GLOBALS['TYPO3_REQUEST']);
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $instance->setRenderingContext($this->createRenderingContextWithoutRequest());
 
         self::assertNull($instance->getCurrentFrontendUser());
@@ -406,9 +406,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     {
         $GLOBALS['TSFE'] = (object) ['loginUser' => ''];
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $instance->setRenderingContext($this->createRenderingContextWithRequest(new ServerRequest()));
         $result = $instance->getCurrentFrontendUser();
         $this->assertNull($result);
@@ -441,8 +441,8 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         GeneralUtility::setSingletonInstance(FrontendUserRepository::class, $repository);
 
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->addMethods(['dummy'])
-            ->getMockForAbstractClass();
+            ->onlyMethods([])
+            ->getMock();
 
         $result = $instance->getCurrentFrontendUser();
         $this->assertEquals($frontendUser, $result);
@@ -472,9 +472,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         );
 
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $instance->setRenderingContext($this->createRenderingContextWithRequest($subRequest));
 
         self::assertSame($frontendUser, $instance->getCurrentFrontendUser());
@@ -487,7 +487,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->onlyMethods(['isFrontendContext', 'renderChildren'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $node = new DummyViewHelperNode($instance);
         $instance->setViewHelperNode($node->getNode());
         $instance->setRenderingContext($this->createRenderingContextWithRequest($request));
@@ -510,7 +510,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->onlyMethods(['isFrontendContext', 'renderChildren'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $node = new DummyViewHelperNode($instance);
         $instance->setViewHelperNode($node->getNode());
         $instance->setRenderingContext($this->createRenderingContextWithRequest($subRequest));
@@ -535,9 +535,9 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         );
 
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $instance->setRenderingContext($this->createRenderingContextWithRequest($subRequest));
 
         self::assertTrue($this->callInaccessibleMethod($instance, 'isFrontendContext'));

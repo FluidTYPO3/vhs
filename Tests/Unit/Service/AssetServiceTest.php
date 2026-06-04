@@ -23,8 +23,7 @@ class AssetServiceTest extends AbstractTestCase
 
     protected function setUp(): void
     {
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-            ->getMockForAbstractClass();
+        $this->configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->configurationManager->method('getConfiguration')->willReturn([]);
         $this->singletonInstances[ConfigurationManagerInterface::class] = $this->configurationManager;
 

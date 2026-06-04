@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\RequestAwareConfigurationManager;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\AbstractImageViewHelper;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -46,8 +47,9 @@ class AbstractImageViewHelperTest extends AbstractTestCase
         );
 
         $this->subject = $this->getMockBuilder(AbstractImageViewHelper::class)
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $this->subject->setRenderingContext($this->createRenderingContextWithRequest($GLOBALS['TYPO3_REQUEST']));
         $this->contentObjectRenderer = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['getImgResource'])
@@ -56,17 +58,12 @@ class AbstractImageViewHelperTest extends AbstractTestCase
 
         if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
             /** @var ConfigurationManagerInterface&MockObject $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+            $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
             $configurationManager->method('getContentObject')->willReturn($this->contentObjectRenderer);
         } else {
-            $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+            $request = $this->createMock(ServerRequestInterface::class);
             $request->method('getAttribute')->willReturn($this->contentObjectRenderer);
-            /** @var ConfigurationManagerInterface&MockObject $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-                ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
-                ->addMethods(['getRequest'])
-                ->getMock();
-            $configurationManager->method('getRequest')->willReturn($request);
+            $configurationManager = new RequestAwareConfigurationManager($request);
         }
 
         $this->subject->injectConfigurationManager($configurationManager);
@@ -270,14 +267,26 @@ class AbstractImageViewHelperTest extends AbstractTestCase
 
     private function createRenderingContextWithRequest(ServerRequestInterface $request): RenderingContextInterface
     {
-        $mockBuilder = $this->getMockBuilder(RenderingContext::class)
-            ->disableOriginalConstructor();
-        if (method_exists(RenderingContext::class, 'getRequest')) {
-            $mockBuilder->onlyMethods(['getRequest']);
-        } else {
-            $mockBuilder->addMethods(['getRequest']);
+        if (!method_exists(RenderingContext::class, 'getRequest')) {
+            return new class ($request) extends RenderingContext {
+                private ServerRequestInterface $requestOverride;
+
+                public function __construct(ServerRequestInterface $request)
+                {
+                    $this->requestOverride = $request;
+                }
+
+                public function getRequest(): ServerRequestInterface
+                {
+                    return $this->requestOverride;
+                }
+            };
         }
-        $renderingContext = $mockBuilder->getMock();
+
+        $renderingContext = $this->getMockBuilder(RenderingContext::class)
+            ->onlyMethods(['getRequest'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $renderingContext->method('getRequest')->willReturn($request);
 
         return $renderingContext;

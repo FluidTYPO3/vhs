@@ -37,7 +37,7 @@ class DummyQueryBuilder extends QueryBuilder
         /** @var QueryRestrictionContainerInterface&MockObject $restrictions */
         $restrictions = (new MockBuilder($testCase, QueryRestrictionContainerInterface::class))
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $this->restrictions = $restrictions;
 
         /** @var ConnectionPool&MockObject $connectionPool */

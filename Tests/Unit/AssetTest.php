@@ -31,7 +31,7 @@ class AssetTest extends AbstractTestCase
     {
         $GLOBALS['VhsAssets'] = [];
 
-        $package = $this->getMockBuilder(Package::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $package = $this->getMockBuilder(Package::class)->onlyMethods([])->disableOriginalConstructor()->getMock();
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->onlyMethods(['getPackage', 'isPackageActive'])
@@ -40,7 +40,7 @@ class AssetTest extends AbstractTestCase
         $packageManager->method('isPackageActive')->willReturn(true);
         $packageManager->method('getPackage')->willReturn($package);
 
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        $this->configurationManager = $this->createMock(ConfigurationManagerInterface::class);
 
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
 

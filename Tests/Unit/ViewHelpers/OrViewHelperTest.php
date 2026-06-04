@@ -26,13 +26,13 @@ class OrViewHelperTest extends AbstractViewHelperTestCase
     {
         $languageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
 
-        $cache = $this->getMockBuilder(FrontendInterface::class)->getMockForAbstractClass();
+        $cache = $this->createMock(FrontendInterface::class);
         $cache->method('has')->willReturn(true);
         $cache->method('get')->willReturn($languageService);
 
         $this->singletonInstances[ConfigurationManagerInterface::class] = $this
             ->getMockBuilder(ConfigurationManagerInterface::class)
-            ->getMockForAbstractClass();
+            ->getMock();
         $this->singletonInstances[CacheManager::class] = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->disableOriginalConstructor()
@@ -44,7 +44,7 @@ class OrViewHelperTest extends AbstractViewHelperTestCase
                 ->disableOriginalConstructor()
                 ->getMock();
             $this->singletonInstances[ObjectManager::class]->method('get')->willReturn(
-                $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()
+                $this->createMock(ConfigurationManagerInterface::class)
             );
         }
 

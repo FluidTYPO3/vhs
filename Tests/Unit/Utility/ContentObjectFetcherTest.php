@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\RequestAwareConfigurationManager;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -29,10 +30,7 @@ class ContentObjectFetcherTest extends AbstractTestCase
             $globalContentObject
         );
 
-        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-            ->addMethods(['getRequest'])
-            ->getMockForAbstractClass();
-        $configurationManager->method('getRequest')->willReturn(
+        $configurationManager = new RequestAwareConfigurationManager(
             (new ServerRequest())->withAttribute('currentContentObject', $configurationContentObject)
         );
 

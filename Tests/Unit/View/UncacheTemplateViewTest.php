@@ -24,7 +24,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
     protected function setUp(): void
     {
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         $this->renderingContext->setTemplatePaths(
@@ -107,7 +107,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
             ->onlyMethods(['renderPartial', 'getCurrentParsedTemplate'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mock->expects($this->once())->method('renderPartial')->will($this->returnValue('test'));
+        $mock->expects($this->once())->method('renderPartial')->willReturn('test');
         $result = $this->callInaccessibleMethod($mock, 'renderPartialUncached', $this->renderingContext, 'dummy');
         $this->assertEquals('test', $result);
     }

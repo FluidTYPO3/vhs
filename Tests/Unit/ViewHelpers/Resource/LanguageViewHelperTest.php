@@ -55,7 +55,7 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
         $language->method('getLocale')->willReturn(new Locale());
 
         $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequest::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']

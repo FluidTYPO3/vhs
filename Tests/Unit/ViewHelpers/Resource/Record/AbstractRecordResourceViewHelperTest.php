@@ -22,8 +22,9 @@ class AbstractRecordResourceViewHelperTest extends AbstractTestCase
     protected function setUp(): void
     {
         $this->subject = $this->getMockBuilder(AbstractRecordResourceViewHelper::class)
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
 
         parent::setUp();
     }

@@ -25,7 +25,7 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTestCase
             ->onlyMethods(['getMenu'])
             ->disableOriginalConstructor()
             ->getMock();
-        $pageService->expects($this->any())->method('getMenu')->will($this->returnValue(['childpage']));
+        $pageService->expects($this->any())->method('getMenu')->willReturn(['childpage']);
 
         $arguments = [
             'then' => 'then',
@@ -80,7 +80,7 @@ class HasSubpagesViewHelperTest extends AbstractViewHelperTestCase
             ->onlyMethods(['getMenu'])
             ->disableOriginalConstructor()
             ->getMock();
-        $pageService->expects($this->any())->method('getMenu')->will($this->returnValue([]));
+        $pageService->expects($this->any())->method('getMenu')->willReturn([]);
 
         $arguments = [
             'then' => 'then',
