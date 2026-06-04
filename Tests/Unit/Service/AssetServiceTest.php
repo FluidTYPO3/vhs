@@ -203,7 +203,6 @@ class AssetServiceTest extends AbstractTestCase
             }
         );
         $method = (new \ReflectionClass(AssetService::class))->getMethod('placeAssetsInHeaderAndFooter');
-        $method->setAccessible(true);
         try {
             $method->invokeArgs($instance, [$assets, true, &$content, $request]);
         } finally {
