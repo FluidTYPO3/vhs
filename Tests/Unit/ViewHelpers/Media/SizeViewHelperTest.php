@@ -17,25 +17,26 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class SizeViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @var string
-     */
-    protected $fixturesPath;
+    protected string $fixturesPath;
 
     /**
      * Setup
      */
     public function setUp(): void
     {
-        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         parent::setUp();
-        $this->fixturesPath = realpath(__DIR__ . '/../../../../Tests/Fixtures/Files');
+        $fixturesPath = realpath(__DIR__ . '/../../../../Tests/Fixtures/Files');
+        self::assertIsString($fixturesPath);
+        $this->fixturesPath = $fixturesPath;
     }
 
     /**
      * @test
      */
-    public function returnsZeroForEmptyArguments()
+    public function returnsZeroForEmptyArguments(): void
     {
         $this->assertEquals(0, $this->executeViewHelper());
     }
@@ -43,7 +44,7 @@ class SizeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsFileSizeAsInteger()
+    public function returnsFileSizeAsInteger(): void
     {
         $this->assertEquals(7094, $this->executeViewHelperUsingTagContent($this->fixturesPath . '/typo3_logo.jpg'));
     }
@@ -51,7 +52,7 @@ class SizeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsExceptionWhenFileNotFound()
+    public function throwsExceptionWhenFileNotFound(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelperUsingTagContent('/this/path/hopefully/does/not/exist.txt');
@@ -60,7 +61,7 @@ class SizeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
+    public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelperUsingTagContent($this->fixturesPath);

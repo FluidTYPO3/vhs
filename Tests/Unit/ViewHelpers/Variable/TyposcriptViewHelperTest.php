@@ -45,7 +45,7 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNullIfPathIsNull()
+    public function returnsNullIfPathIsNull(): void
     {
         $this->assertNull($this->executeViewHelper(['path' => null]));
     }
@@ -53,15 +53,18 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsArrayIfPathContainsArray()
+    public function returnsArrayIfPathContainsArray(): void
     {
-        $this->assertThat($this->executeViewHelper(['path' => 'config.tx_extbase.features']), new IsType(IsType::TYPE_ARRAY));
+        $this->assertThat(
+            $this->executeViewHelper(['path' => 'config.tx_extbase.features']),
+            new IsType(IsType::TYPE_ARRAY)
+        );
     }
 
     /**
      * @test
      */
-    public function canGetPathUsingArgument()
+    public function canGetPathUsingArgument(): void
     {
         $this->assertNotEmpty($this->executeViewHelper(['path' => 'config.tx_extbase.features']));
     }
@@ -69,7 +72,7 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canGetPathUsingTagContent()
+    public function canGetPathUsingTagContent(): void
     {
         $this->assertNotEmpty($this->executeViewHelperUsingTagContent('config.tx_extbase.features'));
     }

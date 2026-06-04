@@ -29,7 +29,7 @@ class TagViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getRenderTagTestValues()
+    public static function getRenderTagTestValues()
     {
         return [
             [['name' => 'div'], 'test', '<div>test</div>'],

@@ -39,7 +39,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getExecuteConversionTestValues()
+    public static function getExecuteConversionTestValues()
     {
         $dummy = new Foo();
         $storage = new ObjectStorage();
@@ -65,7 +65,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsRuntimeExceptionIfTypeOfDefaultValueIsUnsupported()
+    public function throwsRuntimeExceptionIfTypeOfDefaultValueIsUnsupported(): void
     {
         $this->expectExceptionCode(1364542576);
         $this->executeViewHelper(['type' => 'foobar', 'value' => null, 'default' => '1']);
@@ -74,7 +74,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsRuntimeExceptionIfTypeIsUnsupportedAndNoDefaultProvided()
+    public function throwsRuntimeExceptionIfTypeIsUnsupportedAndNoDefaultProvided(): void
     {
         $this->expectExceptionCode(1364542884);
         $this->executeViewHelper(['type' => 'unsupported', 'value' => null]);
@@ -83,7 +83,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsRuntimeExceptionIfTypeOfDefaultIsNotSameAsType()
+    public function throwsRuntimeExceptionIfTypeOfDefaultIsNotSameAsType(): void
     {
         $this->expectExceptionCode(1364542576);
         $this->executeViewHelper(['type' => 'ObjectStorage', 'value' => null, 'default' => '1']);
@@ -92,7 +92,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsExpectedDefaultValue()
+    public function returnsExpectedDefaultValue(): void
     {
         $this->assertTrue($this->executeViewHelper(['type' => 'boolean', 'default' => true]));
     }

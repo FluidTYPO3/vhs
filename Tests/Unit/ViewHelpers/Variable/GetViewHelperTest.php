@@ -21,7 +21,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNullIfVariableDoesNotExist()
+    public function returnsNullIfVariableDoesNotExist(): void
     {
         $this->assertNull($this->executeViewHelper(['name' => 'void', []]));
     }
@@ -29,7 +29,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsDirectValueIfExists()
+    public function returnsDirectValueIfExists(): void
     {
         $this->assertEquals(1, $this->executeViewHelper(['name' => 'test'], ['test' => 1]));
     }
@@ -37,7 +37,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNestedValueIfRootExists()
+    public function returnsNestedValueIfRootExists(): void
     {
         $this->assertEquals(1, $this->executeViewHelper(['name' => 'test.test'], ['test' => ['test' => 1]]));
     }
@@ -45,15 +45,18 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNestedValueUsingRawKeysIfRootExists()
+    public function returnsNestedValueUsingRawKeysIfRootExists(): void
     {
-        $this->assertEquals(1, $this->executeViewHelper(['name' => 'test.test', 'useRawKeys' => true], ['test' => ['test' => 1]]));
+        $this->assertEquals(
+            1,
+            $this->executeViewHelper(['name' => 'test.test', 'useRawKeys' => true], ['test' => ['test' => 1]])
+        );
     }
 
     /**
      * @test
      */
-    public function returnsNestedValueIfRootExistsAndMembersAreNumeric()
+    public function returnsNestedValueIfRootExistsAndMembersAreNumeric(): void
     {
         $this->assertEquals(2, $this->executeViewHelper(['name' => 'test.1'], ['test' => [1, 2]]));
     }
@@ -61,7 +64,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNullAndSuppressesExceptionOnInvalidPropertyGetting()
+    public function returnsNullAndSuppressesExceptionOnInvalidPropertyGetting(): void
     {
         $user = new Foo();
         $this->assertEquals(null, $this->executeViewHelper(['name' => 'test.void'], ['test' => $user]));
@@ -70,7 +73,8 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNullOnNonExistingObjectStorageProperty() {
+    public function returnsNullOnNonExistingObjectStorageProperty(): void
+    {
         $objectStorage = new ObjectStorage();
         $this->assertNull($this->executeViewHelper(['name' => 'storage.15'], ['storage' => $objectStorage]));
     }

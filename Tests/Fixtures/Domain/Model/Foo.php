@@ -72,7 +72,7 @@ class Foo extends AbstractEntity
     /**
      * @param Foo $foo
      */
-    public function setFoo($foo)
+    public function setFoo($foo): void
     {
         $this->foo = $foo;
     }

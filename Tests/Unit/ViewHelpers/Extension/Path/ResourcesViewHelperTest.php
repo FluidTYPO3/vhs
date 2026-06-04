@@ -24,11 +24,14 @@ class ResourcesViewHelperTest extends AbstractViewHelperTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $package = $this->getMockBuilder(Package::class)->setMethods(['getPackagePath'])->disableOriginalConstructor()->getMock();
+        $package = $this->getMockBuilder(Package::class)
+            ->onlyMethods(['getPackagePath'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $package->method('getPackagePath')->willReturn('');
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['resolvePackagePath', 'isPackageActive', 'getPackage'])
+            ->onlyMethods(['resolvePackagePath', 'isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('resolvePackagePath')->willReturnMap(
@@ -49,7 +52,7 @@ class ResourcesViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersUsingArgument()
+    public function rendersUsingArgument(): void
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs', 'path' => 'ext_icon.gif']);
         $extPath = ExtensionManagementUtility::extPath('vhs', 'Resources/Public/ext_icon.gif');

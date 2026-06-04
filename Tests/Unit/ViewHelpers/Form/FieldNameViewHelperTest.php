@@ -44,7 +44,7 @@ class FieldNameViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues()
     {
         return [
             [[], null, null, null, ''],

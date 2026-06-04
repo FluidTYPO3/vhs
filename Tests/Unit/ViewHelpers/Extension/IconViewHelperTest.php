@@ -24,11 +24,14 @@ class IconViewHelperTest extends AbstractViewHelperTestCase
     {
         parent::setUp();
 
-        $package = $this->getMockBuilder(Package::class)->setMethods(['getPackagePath'])->disableOriginalConstructor()->getMock();
+        $package = $this->getMockBuilder(Package::class)
+            ->onlyMethods(['getPackagePath'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $package->method('getPackagePath')->willReturn('');
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['getPackage', 'isPackageActive'])
+            ->onlyMethods(['getPackage', 'isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('getPackage')->willReturn($package);
@@ -39,7 +42,7 @@ class IconViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersUsingArgument()
+    public function rendersUsingArgument(): void
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs']);
         $this->assertSame(ExtensionManagementUtility::extPath('vhs', 'ext_icon.gif'), $test);

@@ -16,7 +16,7 @@ class CallViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsRuntimeExceptionIfObjectNotFound()
+    public function throwsRuntimeExceptionIfObjectNotFound(): void
     {
         $this->expectExceptionCode(1356849652);
         $this->executeViewHelper(['method' => 'method', 'arguments' => []]);
@@ -25,7 +25,7 @@ class CallViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsRuntimeExceptionIfMethodNotFound()
+    public function throwsRuntimeExceptionIfMethodNotFound(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);
         $this->expectExceptionCode(1356834755);
@@ -35,7 +35,7 @@ class CallViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function executesMethodOnObjectFromArgument()
+    public function executesMethodOnObjectFromArgument(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);
         $result = $this->executeViewHelper(['method' => 'count', 'object' => $object, 'arguments' => []]);
@@ -45,7 +45,7 @@ class CallViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function executesMethodOnObjectFromChildContent()
+    public function executesMethodOnObjectFromChildContent(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);
         $result = $this->executeViewHelperUsingTagContent($object, ['method' => 'count', 'arguments' => []]);

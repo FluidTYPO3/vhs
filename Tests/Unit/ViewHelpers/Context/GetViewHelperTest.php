@@ -19,7 +19,7 @@ class GetViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsContext()
+    public function returnsContext(): void
     {
         $valid = ['Development', 'Testing', 'Production'];
         $result = $this->executeViewHelper([]);

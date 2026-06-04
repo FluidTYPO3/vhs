@@ -20,9 +20,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Web\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ErrorHandler\ErrorHandlerInterface;
@@ -33,7 +31,10 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper as FluidAbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\StrictArgumentProcessor;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
@@ -44,7 +45,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
  */
 abstract class AbstractViewHelperTestCase extends AbstractTestCase
 {
-    protected ?RenderingContext $renderingContext;
+    protected ?RenderingContextInterface $renderingContext;
     protected ?ViewHelperResolver $viewHelperResolver;
     protected ?ViewHelperInvoker $viewHelperInvoker;
     protected ?ViewHelperVariableContainer $viewHelperVariableContainer;
@@ -65,9 +66,9 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
             $extbaseParameters = new ExtbaseRequestParameters(DummyController::class);
         }
         $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['getAttribute'])
+            ->onlyMethods(['getAttribute'])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
         $GLOBALS['TYPO3_REQUEST']->method('getAttribute')->willReturnMap(
             [
                 ['applicationType', null, SystemEnvironmentBuilder::REQUESTTYPE_FE],
@@ -75,20 +76,24 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
             ]
         );
 
-        if (class_exists(Request::class)) {
-            $requestClassName = Request::class;
+        $legacyRequestClassName = 'TYPO3\\CMS\\Extbase\\Web\\Request';
+        if (class_exists($legacyRequestClassName)) {
+            $requestClassName = $legacyRequestClassName;
         } else {
             $requestClassName = \TYPO3\CMS\Extbase\Mvc\Request::class;
+        }
+        if (!class_exists($requestClassName)) {
+            throw new \RuntimeException('Unable to resolve Extbase request class name.', 1780000291);
         }
 
         if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.0', '<')) {
             $request = $this->getMockBuilder($requestClassName)
-                ->setMethods(['getControllerExtensionName', 'getControllerName', 'getControllerActionName'])
+                ->onlyMethods(['getControllerExtensionName', 'getControllerName', 'getControllerActionName'])
                 ->setConstructorArgs([DummyController::class])
                 ->getMock();
         } else {
             $request = $this->getMockBuilder($requestClassName)
-                ->setMethods(['getControllerExtensionName', 'getControllerName', 'getControllerActionName'])
+                ->onlyMethods(['getControllerExtensionName', 'getControllerName', 'getControllerActionName'])
                 ->setConstructorArgs([$GLOBALS['TYPO3_REQUEST']])
                 ->getMock();
         }
@@ -98,16 +103,16 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         $request->method('getControllerActionName')->willReturn('action');
 
         $this->viewHelperResolver = $this->getMockBuilder(ViewHelperResolver::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->viewHelperVariableContainer = $this->getMockBuilder(ViewHelperVariableContainer::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         $this->templateVariableContainer = new StandardVariableProvider();
 
         $this->viewHelperInvoker = $this->getMockBuilder(ViewHelperInvoker::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
@@ -125,14 +130,17 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         $this->renderingContext->method('getViewHelperInvoker')->willReturn($this->viewHelperInvoker);
         $this->renderingContext->method('getErrorHandler')->willReturn($this->errorHandler);
         $this->renderingContext->method('getTemplateParser')->willReturn($this->templateParser);
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')) {
+            $this->renderingContext->method('getArgumentProcessor')->willReturn(new StrictArgumentProcessor());
+        }
         $this->renderingContext->method('getTemplateProcessors')->willReturn($this->templateProcessors);
         $this->renderingContext->method('getExpressionNodeTypes')->willReturn($this->expressionTypes);
 
         if (method_exists($this->renderingContext, 'getRequest')) {
             $this->renderingContext->method('getRequest')->willReturn($request);
-        } else {
+        } elseif (method_exists($this->renderingContext, 'getControllerContext')) {
             $uriBuilder = $this->getMockBuilder(UriBuilder::class)
-                ->setMethods(['uriFor', 'buildFrontendUri', 'buildBackendUri', 'build'])
+                ->onlyMethods(['uriFor', 'buildFrontendUri', 'buildBackendUri', 'build'])
                 ->disableOriginalConstructor()
                 ->getMock();
             $uriBuilder->method('build')->willReturn('build');
@@ -141,7 +149,7 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
             $uriBuilder->method('buildBackendUri')->willReturn('backend');
 
             $this->controllerContext = $this->getMockBuilder(ControllerContext::class)
-                ->setMethods(['getRequest', 'getUriBuilder'])
+                ->onlyMethods(['getRequest', 'getUriBuilder'])
                 ->getMock();
             $this->controllerContext->method('getRequest')->willReturn($request);
             $this->controllerContext->method('getUriBuilder')->willReturn($uriBuilder);
@@ -161,27 +169,34 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     /**
      * @test
      */
-    public function canCreateViewHelperInstance()
+    public function canCreateViewHelperInstance(): void
     {
         $instance = $this->createInstance();
-        $this->assertInstanceOf($this->getViewHelperClassName(), $instance);
+        self::assertInstanceOf($this->getViewHelperClassName(), $instance);
     }
 
     /**
      * @test
      */
-    public function canPrepareArguments()
+    public function canPrepareArguments(): void
     {
         $instance = $this->createInstance();
         $arguments = $instance->prepareArguments();
         $this->assertIsArray($arguments);
     }
 
+    /**
+     * @return class-string<ViewHelperInterface>
+     */
     protected function getViewHelperClassName(): string
     {
         $class = get_class($this);
         $class = str_replace('Tests\\Unit\\', '', $class);
-        return substr($class, 0, -4);
+        $className = substr($class, 0, -4);
+        if (!is_subclass_of($className, ViewHelperInterface::class)) {
+            throw new \RuntimeException('Resolved class name is not a ViewHelper.', 1780000292);
+        }
+        return $className;
     }
 
     /**
@@ -189,30 +204,39 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
      */
     protected function createNode(string $type, $value): NodeInterface
     {
-        /** @var NodeInterface $node */
         $className = 'TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\' . $type . 'Node';
-        $node = new $className($value);
-        return $node;
+        if (!is_subclass_of($className, NodeInterface::class)) {
+            throw new \RuntimeException('Resolved class name is not a node.', 1780000293);
+        }
+        return new $className($value);
     }
 
     protected function createInstance(): ViewHelperInterface
     {
         $className = $this->getViewHelperClassName();
+        if (!is_subclass_of($className, AbstractViewHelper::class)) {
+            throw new \RuntimeException('Resolved class name is not an AbstractViewHelper.', 1780000294);
+        }
+        /** @var class-string<AbstractViewHelper> $className */
         /** @var AbstractViewHelper $instance */
-        $instance = $this->getMockBuilder($className)->setMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $instance = $this->getMockBuilder($className)
+            ->addMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
         if (method_exists($instance, 'injectConfigurationManager')) {
             $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
             $cObject->start(['uid' => 123], 'tt_content');
 
             if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
-                /** @var ConfigurationManagerInterface $configurationManager */
+                /** @var ConfigurationManagerInterface&MockObject $configurationManager */
                 $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
                 $configurationManager->method('getContentObject')->willReturn($cObject);
             } else {
+                /** @var ServerRequestInterface&MockObject $request */
                 $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
                 $request->method('getAttribute')->willReturn($cObject);
 
-                /** @var ConfigurationManagerInterface $configurationManager */
+                /** @var ConfigurationManagerInterface&MockObject $configurationManager */
                 $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
                     ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
                     ->addMethods(['getRequest'])
@@ -222,6 +246,7 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
 
             $instance->injectConfigurationManager($configurationManager);
         }
+        self::assertInstanceOf(RenderingContextInterface::class, $this->renderingContext);
         $instance->setRenderingContext($this->renderingContext);
         return $instance;
     }
@@ -235,16 +260,27 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     ): ViewHelperInterface {
         $instance = $this->createInstance();
         $arguments = $this->buildViewHelperArguments($instance, $arguments);
-        $node = $this->createViewHelperNode($instance, $arguments, $childNode instanceof NodeInterface ? [$childNode] : []);
+        $node = $this->createViewHelperNode(
+            $instance,
+            $arguments,
+            $childNode instanceof NodeInterface ? [$childNode] : []
+        );
+        self::assertInstanceOf(StandardVariableProvider::class, $this->templateVariableContainer);
         $this->templateVariableContainer->setSource($variables);
 
         $instance->setViewHelperNode($node);
         $instance->setArguments($arguments);
 
-        if ($instance instanceof AbstractTagBasedViewHelper || $instance instanceof \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper) {
-            $tagBuilder = new TagBuilder(
-                (string) $this->getInaccessiblePropertyValue($instance, 'tagName')
-            );
+        if (method_exists($instance, 'setChildNodes')) {
+            $instance->setChildNodes($node->getChildNodes());
+        }
+
+        $legacyTagBasedClassName = 'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractTagBasedViewHelper';
+        $isLegacyTagBasedViewHelper = class_exists($legacyTagBasedClassName)
+            && $instance instanceof $legacyTagBasedClassName;
+        if ($instance instanceof FluidAbstractTagBasedViewHelper || $isLegacyTagBasedViewHelper) {
+            $tagName = $this->getInaccessiblePropertyValue($instance, 'tagName');
+            $tagBuilder = new TagBuilder(is_string($tagName) ? $tagName : '');
             $this->setInaccessiblePropertyValue($instance, 'tag', $tagBuilder);
         }
 
@@ -261,6 +297,88 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         return $arguments;
     }
 
+    protected function createRenderingContextWithRequest(ServerRequestInterface $request): RenderingContextInterface
+    {
+        $methods = [
+            'getViewHelperResolver',
+            'getViewHelperVariableContainer',
+            'getVariableProvider',
+            'getViewHelperInvoker',
+            'getErrorHandler',
+            'getTemplateParser',
+            'getTemplateProcessors',
+            'getExpressionNodeTypes',
+        ];
+        if (method_exists(RenderingContext::class, 'getRequest')) {
+            $methods[] = 'getRequest';
+        }
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')) {
+            $methods[] = 'getArgumentProcessor';
+        }
+        $mockBuilder = $this->getMockBuilder(RenderingContext::class)
+            ->onlyMethods($methods)
+            ->disableOriginalConstructor();
+        if (!method_exists(RenderingContext::class, 'getRequest')) {
+            $mockBuilder->addMethods(['getRequest']);
+        }
+        $renderingContext = $mockBuilder->getMock();
+        $renderingContext->method('getRequest')->willReturn($request);
+        $renderingContext->method('getViewHelperResolver')->willReturn($this->viewHelperResolver);
+        $renderingContext->method('getViewHelperVariableContainer')->willReturn($this->viewHelperVariableContainer);
+        $renderingContext->method('getVariableProvider')->willReturn($this->templateVariableContainer);
+        $renderingContext->method('getViewHelperInvoker')->willReturn($this->viewHelperInvoker);
+        $renderingContext->method('getErrorHandler')->willReturn($this->errorHandler);
+        $renderingContext->method('getTemplateParser')->willReturn($this->templateParser);
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')) {
+            $renderingContext->method('getArgumentProcessor')->willReturn(new StrictArgumentProcessor());
+        }
+        $renderingContext->method('getTemplateProcessors')->willReturn($this->templateProcessors);
+        $renderingContext->method('getExpressionNodeTypes')->willReturn($this->expressionTypes);
+
+        return $renderingContext;
+    }
+
+    protected function createRenderingContextWithoutRequest(): RenderingContextInterface
+    {
+        $methods = [
+            'getViewHelperResolver',
+            'getViewHelperVariableContainer',
+            'getVariableProvider',
+            'getViewHelperInvoker',
+            'getErrorHandler',
+            'getTemplateParser',
+            'getTemplateProcessors',
+            'getExpressionNodeTypes',
+        ];
+        if (method_exists(RenderingContext::class, 'getRequest')) {
+            $methods[] = 'getRequest';
+        }
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')) {
+            $methods[] = 'getArgumentProcessor';
+        }
+        $mockBuilder = $this->getMockBuilder(RenderingContext::class)
+            ->onlyMethods($methods)
+            ->disableOriginalConstructor();
+        if (!method_exists(RenderingContext::class, 'getRequest')) {
+            $mockBuilder->addMethods(['getRequest']);
+        }
+        $renderingContext = $mockBuilder->getMock();
+        $renderingContext->method('getRequest')->willReturn(null);
+        $renderingContext->method('getViewHelperResolver')->willReturn($this->viewHelperResolver);
+        $renderingContext->method('getViewHelperVariableContainer')->willReturn($this->viewHelperVariableContainer);
+        $renderingContext->method('getVariableProvider')->willReturn($this->templateVariableContainer);
+        $renderingContext->method('getViewHelperInvoker')->willReturn($this->viewHelperInvoker);
+        $renderingContext->method('getErrorHandler')->willReturn($this->errorHandler);
+        $renderingContext->method('getTemplateParser')->willReturn($this->templateParser);
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')) {
+            $renderingContext->method('getArgumentProcessor')->willReturn(new StrictArgumentProcessor());
+        }
+        $renderingContext->method('getTemplateProcessors')->willReturn($this->templateProcessors);
+        $renderingContext->method('getExpressionNodeTypes')->willReturn($this->expressionTypes);
+
+        return $renderingContext;
+    }
+
     /**
      * @return mixed
      */
@@ -270,8 +388,9 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         ?NodeInterface $childNode = null,
         ?string $extensionName = null,
         ?string $pluginName = null
-    ) {
+    ): mixed {
         $instance = $this->buildViewHelperInstance($arguments, $variables, $childNode, $extensionName, $pluginName);
+        self::assertInstanceOf(RenderingContextInterface::class, $this->renderingContext);
         $this->renderingContext->getVariableProvider()->setSource($variables);
         return $this->executeInstance($instance, $arguments);
     }
@@ -279,8 +398,9 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     /**
      * @return mixed
      */
-    protected function executeInstance(ViewHelperInterface $instance, array $arguments = [])
+    protected function executeInstance(ViewHelperInterface $instance, array $arguments = []): mixed
     {
+        self::assertInstanceOf(RenderingContextInterface::class, $this->renderingContext);
         return $this->renderingContext->getViewHelperInvoker()->invoke($instance, $arguments, $this->renderingContext);
     }
 
@@ -294,23 +414,24 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
         array $variables = [],
         ?string $extensionName = null,
         ?string $pluginName = null
-    ) {
+    ): mixed {
         $node = $this->getMockBuilder(NodeInterface::class)->getMockForAbstractClass();
         $node->method('evaluate')->willReturn($nodeValue);
         $instance = $this->buildViewHelperInstance($arguments, $variables, $node, $extensionName, $pluginName);
+        self::assertInstanceOf(RenderingContextInterface::class, $this->renderingContext);
         return $this->renderingContext->getViewHelperInvoker()->invoke($instance, $arguments, $this->renderingContext);
     }
 
     /**
      * @param NodeInterface[] $childNNodes
-     * @return MockObject|ViewHelperNode
      */
     protected function createViewHelperNode(
         ViewHelperInterface $instance,
         array $arguments,
         array $childNNodes = []
     ): ViewHelperNode {
-        $node = new DummyViewHelperNode($instance);
+        $dummyNode = new DummyViewHelperNode($instance);
+        $node = $dummyNode->getNode();
         $node->setArguments($arguments);
 
         foreach ($childNNodes as $childNNode) {

@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 class IsBooleanViewHelperTest extends AbstractViewHelperTestCase
@@ -16,7 +15,7 @@ class IsBooleanViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfConditionMatched()
+    public function rendersThenChildIfConditionMatched(): void
     {
         $arguments = [
             'then' => 'then',
@@ -30,7 +29,7 @@ class IsBooleanViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfConditionNotMatched()
+    public function rendersElseChildIfConditionNotMatched(): void
     {
         $arguments = [
             'then' => 'then',

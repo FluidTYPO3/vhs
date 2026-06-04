@@ -22,7 +22,7 @@ class SplitViewHelperTest extends AbstractViewHelperTestCase
      * @param array $arguments
      * @param mixed $expectedValue
      */
-    public function testRender(array $arguments, $expectedValue)
+    public function testRender(array $arguments, mixed $expectedValue): void
     {
         $value = $this->executeViewHelper($arguments);
         $this->assertEquals($value, $expectedValue);
@@ -31,7 +31,7 @@ class SplitViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues(): array
     {
         return [
             'zero length empty string' => [['subject' => '', 'length' => 0], []],

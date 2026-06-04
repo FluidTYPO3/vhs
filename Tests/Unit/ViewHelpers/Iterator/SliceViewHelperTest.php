@@ -22,21 +22,37 @@ class SliceViewHelperTest extends AbstractViewHelperTestCase
      * @param array $arguments
      * @param mixed $expectedValue
      */
-    public function testRender(array $arguments, $expectedValue)
+    public function testRender(array $arguments, mixed $expectedValue): void
     {
-        $this->assertEquals($this->executeViewHelper($arguments), $expectedValue);
+        $this->assertSame($expectedValue, $this->executeViewHelper($arguments));
     }
 
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues(): array
     {
         return [
             [['haystack' => [], 'length' => 0, 'start' => 0], []],
             [['haystack' => ['foo', 'bar'], 'length' => 1, 'start' => 0], ['foo']],
-            [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1, 'preserveKeys' => true], [1 => 'bar']],
-            [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1, 'preserveKeys' => false], [0 => 'bar']],
+            [
+                [
+                    'haystack' => new \ArrayIterator(['foo', 'bar']),
+                    'start' => 1,
+                    'length' => 1,
+                    'preserveKeys' => true,
+                ],
+                [1 => 'bar'],
+            ],
+            [
+                [
+                    'haystack' => new \ArrayIterator(['foo', 'bar']),
+                    'start' => 1,
+                    'length' => 1,
+                    'preserveKeys' => false,
+                ],
+                [0 => 'bar'],
+            ],
         ];
     }
 }

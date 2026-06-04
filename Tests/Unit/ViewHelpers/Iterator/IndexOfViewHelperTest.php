@@ -19,7 +19,7 @@ class IndexOfViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsIndexOfElement()
+    public function returnsIndexOfElement(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [
@@ -33,7 +33,7 @@ class IndexOfViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNegativeOneIfNeedleDoesNotExist()
+    public function returnsNegativeOneIfNeedleDoesNotExist(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [

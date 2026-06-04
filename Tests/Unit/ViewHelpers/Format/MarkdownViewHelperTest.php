@@ -20,9 +20,9 @@ class MarkdownViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsHtmlEntities()
+    public function supportsHtmlEntities(): void
     {
-        if (trim(shell_exec('which markdown')) === '') {
+        if (trim((string) shell_exec('which markdown')) === '') {
             $this->expectException(NoSuchCacheException::class);
         }
         $this->executeViewHelper(['text' => 'test < test', 'trim' => true, 'htmlentities' => true]);
@@ -31,9 +31,9 @@ class MarkdownViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersMarkdown()
+    public function rendersMarkdown(): void
     {
-        if (trim(shell_exec('which markdown')) === '') {
+        if (trim((string) shell_exec('which markdown')) === '') {
             $this->expectException(NoSuchCacheException::class);
         }
         $this->executeViewHelper(['text' => 'test', 'trim' => true, 'htmlentities' => false]);

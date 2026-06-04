@@ -11,12 +11,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class MaximumViewHelperTest
  */
-class MaximumViewHelperTest extends AbstractMathViewHelperTest
+class MaximumViewHelperTest extends AbstractMathViewHelperTestCase
 {
     /**
      * @test
      */
-    public function testSingleArgument()
+    public function testSingleArgument(): void
     {
         $this->executeSingleArgumentTest([1, 3], 3);
     }
@@ -24,7 +24,7 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testDualArgument()
+    public function testDualArgument(): void
     {
         $this->executeDualArgumentTest(4, 2, 4);
     }
@@ -32,7 +32,7 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testDualArgumentBothIterators()
+    public function testDualArgumentBothIterators(): void
     {
         $this->executeDualArgumentTest([4, 8], [8, 8], [8, 8]);
     }
@@ -40,7 +40,7 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function executeMissingArgumentTest()
+    public function executeMissingArgumentTest(): void
     {
         $this->expectViewHelperException();
         $result = $this->executeViewHelper(['a' => 1, 'fail' => true]);
@@ -49,7 +49,7 @@ class MaximumViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function executeInvalidArgumentTypeTest()
+    public function executeInvalidArgumentTypeTest(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelper(['b' => 1, 'fail' => true]);

@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Format\TidyViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Class TidyViewHelperTest
@@ -20,15 +21,18 @@ class TidyViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsErrorWhenNoTidyIsInstalled()
+    public function throwsErrorWhenNoTidyIsInstalled(): void
     {
         if (!class_exists('tidy')) {
-            // Note: CI setup has tidy on some but not all variants. We can only test for exceptions on those that don't.
+            // CI setup has tidy on some but not all variants.
+            // We can only test for exceptions on those that don't.
             $this->expectExceptionCode(1352059753);
         }
+        self::assertInstanceOf(RenderingContextInterface::class, $this->renderingContext);
         $output = (string) TidyViewHelper::renderStatic(
             ['content' => 'test', 'encoding' => 'utf8'],
-            function () {},
+            function () {
+            },
             $this->renderingContext
         );
         self::assertNotSame('test', $output);
@@ -37,12 +41,10 @@ class TidyViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canTidySource()
+    public function canTidySource(): void
     {
-        $instance = $this->createInstance();
         if (!class_exists('tidy')) {
             $this->markTestSkipped('No tidy support');
-            return;
         }
         $source = '<foo> <bar>
 			</bar>			</foo>';

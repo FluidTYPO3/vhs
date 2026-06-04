@@ -29,21 +29,31 @@ class ImageViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersImage()
+    public function rendersImage(): void
     {
         $arguments = $this->arguments;
         $test = $this->executeViewHelper($arguments);
-        $this->assertSame('<img src="https://via.placeholder.com/100/333333/FFFFFF" alt="https://via.placeholder.com/100/333333/FFFFFF" width="100" height="100" />', $test);
+        $expected = '<img src="https://via.placeholder.com/100/333333/FFFFFF" '
+            . 'alt="https://via.placeholder.com/100/333333/FFFFFF" width="100" height="100" />';
+        $this->assertSame(
+            $expected,
+            $test
+        );
     }
 
     /**
      * @test
      */
-    public function rendersImageWithText()
+    public function rendersImageWithText(): void
     {
         $arguments = $this->arguments;
         $arguments['text'] = 'test';
         $test = $this->executeViewHelper($arguments);
-        $this->assertSame('<img src="https://via.placeholder.com/100/333333/FFFFFF/?text=test" alt="https://via.placeholder.com/100/333333/FFFFFF/?text=test" width="100" height="100" />', $test);
+        $expected = '<img src="https://via.placeholder.com/100/333333/FFFFFF/?text=test" '
+            . 'alt="https://via.placeholder.com/100/333333/FFFFFF/?text=test" width="100" height="100" />';
+        $this->assertSame(
+            $expected,
+            $test
+        );
     }
 }

@@ -31,12 +31,14 @@ class UnlessViewHelperTest extends AbstractViewHelperTestCase
      */
     public function testStaticBehavior(?string $expected, bool $condition): void
     {
-        $closure = function() { return 'matched'; };
+        $closure = function () {
+            return 'matched';
+        };
         $output = UnlessViewHelper::renderStatic(['condition' => $condition], $closure, $this->renderingContext);
         self::assertSame($expected, $output);
     }
 
-    public function getBehaviorTestValues(): array
+    public static function getBehaviorTestValues(): array
     {
         return [
             'Renders nothing if condition is true' => [null, true],

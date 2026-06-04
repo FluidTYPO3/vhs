@@ -19,7 +19,7 @@ class IntersectViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function intersectTest()
+    public function intersectTest(): void
     {
         $array1 = ['a' => 'green', 'red', 'blue'];
         $array2 = ['b' => 'green', 'yellow', 'red'];
@@ -31,7 +31,7 @@ class IntersectViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function intersectTestWithTagContent()
+    public function intersectTestWithTagContent(): void
     {
         $array1 = ['a' => 'green', 'red', 'blue'];
         $array2 = ['b' => 'green', 'yellow', 'red'];

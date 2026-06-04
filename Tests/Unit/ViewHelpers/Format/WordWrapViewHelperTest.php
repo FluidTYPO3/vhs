@@ -19,15 +19,18 @@ class WordWrapViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function willWrapStringAccordingToArguments()
+    public function willWrapStringAccordingToArguments(): void
     {
-        $content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, et id ipsum modi molestiae molestias numquam! Aperiam assumenda commodi ducimus harum iure nostrum odit, vel voluptatem! Beatae commodi qui rem!';
+        $content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, et id ipsum modi molestiae ' .
+            'molestias numquam! Aperiam assumenda commodi ducimus harum iure nostrum odit, vel voluptatem! ' .
+            'Beatae commodi qui rem!';
         $arguments = [
             'limit' => 25,
             'break' => PHP_EOL,
             'glue' => '|',
         ];
         $test = $this->executeViewHelperUsingTagContent($content, $arguments);
+        self::assertIsString($test);
         $this->assertMatchesRegularExpression('/.{0,25}\|/', $test);
     }
 }

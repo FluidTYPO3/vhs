@@ -11,12 +11,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class SumViewHelperTest
  */
-class SumViewHelperTest extends AbstractMathViewHelperTest
+class SumViewHelperTest extends AbstractMathViewHelperTestCase
 {
     /**
      * @test
      */
-    public function testSingleArgumentIterator()
+    public function testSingleArgumentIterator(): void
     {
         $this->executeSingleArgumentTest([8, 2], 10);
     }
@@ -24,7 +24,7 @@ class SumViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testDualArguments()
+    public function testDualArguments(): void
     {
         $this->executeDualArgumentTest(8, 2, 10);
     }

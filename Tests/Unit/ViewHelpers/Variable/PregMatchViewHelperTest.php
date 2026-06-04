@@ -19,25 +19,27 @@ class PregMatchViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canMatchValues()
+    public function canMatchValues(): void
     {
         $arguments = [
             'subject' => 'foo123bar',
             'pattern' => '/[0-9]{3}/',
         ];
         $test = $this->executeViewHelper($arguments);
+        self::assertIsArray($test);
         $this->assertSame(1, count($test));
     }
 
     /**
      * @test
      */
-    public function canTakeSubjectFromRenderChildren()
+    public function canTakeSubjectFromRenderChildren(): void
     {
         $arguments = [
             'pattern' => '/[0-9]{3}/',
         ];
         $test = $this->executeViewHelperUsingTagContent('foo123bar', $arguments);
+        self::assertIsArray($test);
         $this->assertSame(1, count($test));
     }
 }

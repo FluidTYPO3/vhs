@@ -14,21 +14,30 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 
 class ResourceUtilityTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
-    public function canGetFileInformationArrayFromFileObject()
+    public function canGetFileInformationArrayFromFileObject(): void
     {
         $propertiesFromFile = ['foo' => 123, 'bar' => 321];
         $propertiesFromStorage = ['foo' => 'abc', 'baz' => 123];
         $expectation = array_merge($propertiesFromFile, $propertiesFromStorage);
-        $mockStorage = $this->getMockBuilder(ResourceStorage::class)->setMethods(['getFileInfo'])->disableOriginalConstructor()->getMock();
-        $mockFile = $this->getMockBuilder(File::class)->setMethods(['getProperties', 'getStorage', 'toArray'])->disableOriginalConstructor()->getMock();
-        $mockFile->expects($this->once())->method('getProperties')->will($this->returnValue($propertiesFromFile));
-        $mockFile->expects($this->once())->method('getStorage')->will($this->returnValue($mockStorage));
-        $mockStorage->expects($this->once())->method('getFileInfo')->will($this->returnValue($propertiesFromStorage));
+
+        $mockStorage = $this->getMockBuilder(ResourceStorage::class)
+            ->onlyMethods(['getFileInfo'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockFile = $this->getMockBuilder(File::class)
+            ->onlyMethods(['getProperties', 'getStorage', 'toArray'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockFile->expects(self::once())->method('getProperties')->willReturn($propertiesFromFile);
+        $mockFile->expects(self::once())->method('getStorage')->willReturn($mockStorage);
+        $mockFile->expects(self::once())->method('toArray')->willReturn([]);
+        $mockStorage->expects(self::once())->method('getFileInfo')->willReturn($propertiesFromStorage);
+
         $result = ResourceUtility::getFileArray($mockFile);
-        $this->assertEquals($expectation, $result);
+        self::assertSame($expectation, $result);
     }
 }

@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -20,7 +19,7 @@ class IsTraversableViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfConditionMatched()
+    public function rendersThenChildIfConditionMatched(): void
     {
         $arguments = [
             'then' => 'then',
@@ -34,7 +33,7 @@ class IsTraversableViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfConditionNotMatched()
+    public function rendersElseChildIfConditionNotMatched(): void
     {
         $arguments = [
             'then' => 'then',

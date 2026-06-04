@@ -22,7 +22,7 @@ class SubstringViewHelperTest extends AbstractViewHelperTestCase
      * @test
      * @dataProvider getRenderTestValues
      */
-    public function testRender(array $arguments, $expected)
+    public function testRender(array $arguments, int $expected): void
     {
         $this->assertEquals($expected, $this->executeViewHelper($arguments));
     }
@@ -30,7 +30,7 @@ class SubstringViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues(): array
     {
         return [
             [
@@ -47,5 +47,4 @@ class SubstringViewHelperTest extends AbstractViewHelperTestCase
             ],
         ];
     }
-
 }

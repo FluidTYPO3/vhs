@@ -19,7 +19,7 @@ class FilterViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function nullSubjectCallsRenderChildrenToReadValue()
+    public function nullSubjectCallsRenderChildrenToReadValue(): void
     {
         $subject = ['test' => 'test'];
         $arguments = [
@@ -32,7 +32,7 @@ class FilterViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function filteringEmptySubjectReturnsEmptyArrayOnInvalidSubject()
+    public function filteringEmptySubjectReturnsEmptyArrayOnInvalidSubject(): void
     {
         $arguments = [
             'subject' => new \DateTime('now')
@@ -44,7 +44,7 @@ class FilterViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsIterators()
+    public function supportsIterators(): void
     {
         $array = ['test' => 'test'];
         $iterator = new \ArrayIterator($array);
@@ -60,7 +60,7 @@ class FilterViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsPropertyName()
+    public function supportsPropertyName(): void
     {
         $array = [['test' => 'test']];
         $iterator = new \ArrayIterator($array);

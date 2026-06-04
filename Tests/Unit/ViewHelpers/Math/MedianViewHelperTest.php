@@ -11,12 +11,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class MedianViewHelperTest
  */
-class MedianViewHelperTest extends AbstractMathViewHelperTest
+class MedianViewHelperTest extends AbstractMathViewHelperTestCase
 {
     /**
      * @test
      */
-    public function testSingleArgumentNotIteratorPassesThrough()
+    public function testSingleArgumentNotIteratorPassesThrough(): void
     {
         $this->executeSingleArgumentTest(1, 1);
     }
@@ -24,7 +24,7 @@ class MedianViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testSingleArgumentThreeMembers()
+    public function testSingleArgumentThreeMembers(): void
     {
         $this->executeSingleArgumentTest([1, 2, 3], 2);
     }
@@ -32,7 +32,7 @@ class MedianViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testSingleArgumentFourMembers()
+    public function testSingleArgumentFourMembers(): void
     {
         $this->executeSingleArgumentTest([1, 2, 3, 4], 2.5);
     }

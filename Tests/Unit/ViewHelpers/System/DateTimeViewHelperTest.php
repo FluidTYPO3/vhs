@@ -19,7 +19,7 @@ class DateTimeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsDateTimeInstance()
+    public function returnsDateTimeInstance(): void
     {
         $result = $this->executeViewHelper();
         $this->assertInstanceOf('DateTime', $result);

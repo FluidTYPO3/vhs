@@ -19,7 +19,7 @@ class PregReplaceViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canReplaceValues()
+    public function canReplaceValues(): void
     {
         $arguments = [
             'subject' => 'foo123bar',
@@ -28,5 +28,18 @@ class PregReplaceViewHelperTest extends AbstractViewHelperTestCase
         ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('foobazbar', $test);
+    }
+
+    /**
+     * @test
+     */
+    public function castsMissingSubjectToString(): void
+    {
+        $arguments = [
+            'pattern' => '/foo/',
+            'replacement' => 'bar',
+        ];
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('', $test);
     }
 }

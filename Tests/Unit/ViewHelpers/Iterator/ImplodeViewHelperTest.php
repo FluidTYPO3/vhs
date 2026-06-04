@@ -19,7 +19,7 @@ class ImplodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function implodesString()
+    public function implodesString(): void
     {
         $arguments = ['content' => ['1', '2', '3'], 'glue' => ','];
         $result = $this->executeViewHelper($arguments);
@@ -29,7 +29,7 @@ class ImplodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsCustomGlue()
+    public function supportsCustomGlue(): void
     {
         $arguments = ['content' => ['1', '2', '3'], 'glue' => ';'];
         $result = $this->executeViewHelper($arguments);

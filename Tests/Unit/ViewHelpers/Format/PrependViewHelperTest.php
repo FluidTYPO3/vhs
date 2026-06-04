@@ -19,13 +19,14 @@ class PrependViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canPrependValue()
+    public function canPrependValue(): void
     {
         $arguments = [
             'subject' => 'before',
             'add' => 'after'
         ];
         $test = $this->executeViewHelper($arguments);
+        self::assertIsString($test);
         $this->assertStringStartsWith($arguments['add'], $test);
     }
 }

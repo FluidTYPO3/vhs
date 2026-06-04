@@ -29,10 +29,19 @@ class WidthViewHelperTest extends AbstractViewHelperTestCase
      */
     public function setUp(): void
     {
-        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         parent::setUp();
-        $this->fixturesPath = realpath(__DIR__ . '/../../../../../Tests/Fixtures/Files');
-        $packageManager = $this->getMockBuilder(PackageManager::class)->setMethods(['resolvePackagePath'])->disableOriginalConstructor()->getMock();
+        $fixturesPath = realpath(__DIR__ . '/../../../../../Tests/Fixtures/Files');
+        if (!is_string($fixturesPath)) {
+            throw new \RuntimeException('Unable to resolve fixture path.', 1780000417);
+        }
+        $this->fixturesPath = $fixturesPath;
+        $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->onlyMethods(['resolvePackagePath'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $packageManager->method('resolvePackagePath')->willReturnMap(
             [
                 ['EXT:vhs/Tests/Fixtures/Files/typo3_logo.jpg', 'Tests/Fixtures/Files/typo3_logo.jpg'],
@@ -45,23 +54,23 @@ class WidthViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsZeroForEmptyArguments()
+    public function returnsZeroForEmptyArguments(): void
     {
-        $this->assertEquals(0, $this->executeViewHelper());
+        $this->assertSame(0, $this->executeViewHelper());
     }
 
     /**
      * @test
      */
-    public function returnsFileWidthAsInteger()
+    public function returnsFileWidthAsInteger(): void
     {
-        $this->assertEquals(385, $this->executeViewHelperUsingTagContent($this->fixturesPath . '/typo3_logo.jpg'));
+        $this->assertSame(385, $this->executeViewHelperUsingTagContent($this->fixturesPath . '/typo3_logo.jpg'));
     }
 
     /**
      * @test
      */
-    public function throwsExceptionWhenFileNotFound()
+    public function throwsExceptionWhenFileNotFound(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelperUsingTagContent('/this/path/hopefully/does/not/exist.txt');
@@ -70,7 +79,7 @@ class WidthViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
+    public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelperUsingTagContent($this->fixturesPath);

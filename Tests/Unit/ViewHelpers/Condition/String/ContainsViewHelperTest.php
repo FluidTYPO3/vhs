@@ -28,7 +28,7 @@ class ContainsViewHelperTest extends AbstractViewHelperTestCase
             'needle' => 'bar'
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
+        $this->assertSame('then', $result);
     }
 
     /**
@@ -43,6 +43,6 @@ class ContainsViewHelperTest extends AbstractViewHelperTestCase
             'needle' => 'baz'
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('else', $result);
+        $this->assertSame('else', $result);
     }
 }

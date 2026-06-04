@@ -19,7 +19,7 @@ class MergeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function testMergesArraysWithOverrule()
+    public function testMergesArraysWithOverrule(): void
     {
         $array1 = ['foo'];
         $array2 = ['bar'];

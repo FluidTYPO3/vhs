@@ -11,12 +11,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class CubeViewHelperTest
  */
-class CubeViewHelperTest extends AbstractMathViewHelperTest
+class CubeViewHelperTest extends AbstractMathViewHelperTestCase
 {
     /**
      * @test
      */
-    public function testSingleArgument()
+    public function testSingleArgument(): void
     {
         $this->executeSingleArgumentTest(2, 8);
     }
@@ -24,7 +24,7 @@ class CubeViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testSingleArgumentIteratorFirst()
+    public function testSingleArgumentIteratorFirst(): void
     {
         $this->executeSingleArgumentTest([2, 3], [8, 27]);
     }

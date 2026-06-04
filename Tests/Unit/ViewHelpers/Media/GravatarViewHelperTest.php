@@ -27,12 +27,15 @@ class GravatarViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function generatesExpectedImgForEmailAddress()
+    public function generatesExpectedImgForEmailAddress(): void
     {
         $expectedSource = 'http://www.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007';
-        preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
-        $this->assertSame($expectedSource, $actualSource[1]);
-        $expectedSource = 'https://secure.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007?s=160&amp;d=404&amp;r=pg';
+        $output = $this->executeViewHelper($this->arguments);
+        self::assertIsString($output);
+        preg_match('#src="([^"]*)"#', $output, $actualSource);
+        $this->assertSame($expectedSource, $actualSource[1] ?? null);
+        $expectedSource = 'https://secure.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007'
+            . '?s=160&amp;d=404&amp;r=pg';
         $this->arguments = [
             'email' => 'juanmanuel.vergessolanas@gmail.com',
             'size' => 160,
@@ -40,7 +43,9 @@ class GravatarViewHelperTest extends AbstractViewHelperTestCase
             'maximumRating' => 'pg',
             'secure' => true,
         ];
-        preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
-        $this->assertSame($expectedSource, $actualSource[1]);
+        $output = $this->executeViewHelper($this->arguments);
+        self::assertIsString($output);
+        preg_match('#src="([^"]*)"#', $output, $actualSource);
+        $this->assertSame($expectedSource, $actualSource[1] ?? null);
     }
 }

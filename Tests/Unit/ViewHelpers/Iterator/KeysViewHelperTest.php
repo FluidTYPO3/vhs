@@ -19,7 +19,7 @@ class KeysViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsKeys()
+    public function returnsKeys(): void
     {
         $array = ['a' => 'A', 'b' => 'B', 'c' => 'C'];
         $expected = ['a', 'b', 'c'];

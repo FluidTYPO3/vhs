@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Random;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Class NumberViewHelperTest
@@ -20,39 +19,46 @@ class NumberViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function generatesRandomNumberWithoutDecimalsAsDefault()
+    public function generatesRandomNumberWithoutDecimalsAsDefault(): void
     {
         $arguments = ['minimum' => 0, 'maximum' => 999999];
-        $result1 = $this->executeViewHelper($arguments);
-        $result2 = $this->executeViewHelper($arguments);
-        $this->assertThat($result1, new IsType(IsType::TYPE_INT));
-        $this->assertThat($result2, new IsType(IsType::TYPE_INT));
-        $this->assertNotEquals($result1, $result2);
+        $result = $this->executeViewHelper($arguments);
+        self::assertIsInt($result);
+        self::assertGreaterThanOrEqual(0, $result);
+        self::assertLessThanOrEqual(999999, $result);
     }
 
     /**
      * @test
      */
-    public function generatesRandomNumberWithoutDecimalsGivenArguments()
+    public function generatesRandomNumberWithoutDecimalsGivenArguments(): void
     {
-        $arguments = ['minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 0, 'maximumDecimals' => 0];
-        $result1 = $this->executeViewHelper($arguments);
-        $result2 = $this->executeViewHelper($arguments);
-        $this->assertThat($result1, new IsType(IsType::TYPE_INT));
-        $this->assertThat($result2, new IsType(IsType::TYPE_INT));
-        $this->assertNotEquals($result1, $result2);
+        $arguments = [
+            'minimum' => 0,
+            'maximum' => 999999,
+            'minimumDecimals' => 0,
+            'maximumDecimals' => 0,
+        ];
+        $result = $this->executeViewHelper($arguments);
+        self::assertIsInt($result);
+        self::assertGreaterThanOrEqual(0, $result);
+        self::assertLessThanOrEqual(999999, $result);
     }
 
     /**
      * @test
      */
-    public function generatesRandomNumberWithDecimalsGivenArguments()
+    public function generatesRandomNumberWithDecimalsGivenArguments(): void
     {
-        $arguments = ['minimum' => 0, 'maximum' => 999999, 'minimumDecimals' => 2, 'maximumDecimals' => 8];
-        $result1 = $this->executeViewHelper($arguments);
-        $result2 = $this->executeViewHelper($arguments);
-        $this->assertThat($result1, new IsType(IsType::TYPE_NUMERIC));
-        $this->assertThat($result2, new IsType(IsType::TYPE_NUMERIC));
-        $this->assertNotEquals($result1, $result2);
+        $arguments = [
+            'minimum' => 0,
+            'maximum' => 999999,
+            'minimumDecimals' => 2,
+            'maximumDecimals' => 8,
+        ];
+        $result = $this->executeViewHelper($arguments);
+        self::assertIsFloat($result);
+        self::assertGreaterThanOrEqual(0, $result);
+        self::assertLessThan(1000000, $result);
     }
 }

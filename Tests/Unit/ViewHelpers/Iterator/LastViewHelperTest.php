@@ -19,7 +19,7 @@ class LastViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsLastElement()
+    public function returnsLastElement(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [
@@ -32,7 +32,7 @@ class LastViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsIterators()
+    public function supportsIterators(): void
     {
         $array = new \ArrayIterator(['a', 'b', 'c']);
         $arguments = [
@@ -45,7 +45,7 @@ class LastViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsTagContent()
+    public function supportsTagContent(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [
@@ -58,7 +58,7 @@ class LastViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNullIfHaystackIsEmptyArray()
+    public function returnsNullIfHaystackIsEmptyArray(): void
     {
         $arguments = [
             'haystack' => []

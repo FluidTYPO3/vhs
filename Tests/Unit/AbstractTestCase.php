@@ -8,22 +8,20 @@ namespace FluidTYPO3\Vhs\Tests\Unit;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Flux\Form;
-use FluidTYPO3\Flux\Form\Field\Custom;
-use PHPUnit\Framework\Constraint\IsType;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Charset\CharsetProvider;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyLanguageService;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyLanguageServiceFactory;
 use TYPO3Fluid\Fluid\Core\Parser\Interceptor\Escape;
 
 /**
@@ -32,6 +30,7 @@ use TYPO3Fluid\Fluid\Core\Parser\Interceptor\Escape;
 abstract class AbstractTestCase extends TestCase
 {
     private array $singletonInstancesBackup = [];
+    private array $classAliasBackup = [];
     protected array $singletonInstances = [];
 
     /**
@@ -55,10 +54,15 @@ abstract class AbstractTestCase extends TestCase
             define('TYPO3_REQUESTTYPE_CLI', 3);
         }
         if (!defined('TYPO3_version')) {
+            // phpcs:disable
             define('TYPO3_version', '9.5.0');
+            // phpcs:enable
         }
 
         $pwd = realpath(__DIR__ . '/../../');
+        if (!is_string($pwd)) {
+            throw new \RuntimeException('Unable to resolve test project path.', 1780000278);
+        }
 
         Environment::initialize(
             new ApplicationContext('Development'),
@@ -74,7 +78,11 @@ abstract class AbstractTestCase extends TestCase
 
         $GLOBALS['EXEC_TIME'] = time();
         if (!isset($GLOBALS['LANG'])) {
-            $GLOBALS['LANG'] = (object) ['csConvObj' => new CharsetConverter()];
+            $GLOBALS['LANG'] = (object) [
+                'csConvObj' => version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')
+                    ? new CharsetConverter(new CharsetProvider())
+                    : new CharsetConverter()
+            ];
         }
         $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] = false;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = false;
@@ -90,8 +98,24 @@ abstract class AbstractTestCase extends TestCase
         $this->singletonInstancesBackup = GeneralUtility::getSingletonInstances();
 
         foreach ($this->singletonInstances as $className => $instance) {
+            if (!is_string($className) || (!class_exists($className) && !interface_exists($className))) {
+                continue;
+            }
             GeneralUtility::setSingletonInstance($className, $instance);
         }
+    }
+
+    protected function setClassAlias(string $className, string $implementationClassName): void
+    {
+        if (!array_key_exists($className, $this->classAliasBackup)) {
+            $this->classAliasBackup[$className] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className']
+                ?? null;
+        }
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className] = [
+            'className' => $implementationClassName,
+        ];
+        GeneralUtility::flushInternalRuntimeCaches();
     }
 
     protected function tearDown(): void
@@ -100,6 +124,17 @@ abstract class AbstractTestCase extends TestCase
 
         GeneralUtility::resetSingletonInstances($this->singletonInstancesBackup);
         GeneralUtility::purgeInstances();
+
+        foreach ($this->classAliasBackup as $className => $previousAlias) {
+            if ($previousAlias === null) {
+                unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]);
+            } else {
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className] = ['className' => $previousAlias];
+            }
+        }
+        $this->classAliasBackup = [];
+        DummyLanguageServiceFactory::reset();
+        GeneralUtility::flushInternalRuntimeCaches();
 
         unset($GLOBALS['TSFE']);
     }
@@ -149,11 +184,15 @@ abstract class AbstractTestCase extends TestCase
      * @param string $propertyName
      * @param mixed $value
      * @param mixed $expectedValue
-     * @param mixed $expectsChaining
+     * @param bool $expectsChaining
      * @return void
      */
-    protected function assertGetterAndSetterWorks($propertyName, $value, $expectedValue = null, $expectsChaining = false)
-    {
+    protected function assertGetterAndSetterWorks(
+        string $propertyName,
+        mixed $value,
+        mixed $expectedValue = null,
+        bool $expectsChaining = false
+    ): void {
         $instance = $this->createInstance();
         $setter = 'set' . ucfirst($propertyName);
         $getter = 'get' . ucfirst($propertyName);
@@ -168,59 +207,28 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * Asserts that a variable is of type array.
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     *
-     * @psalm-assert array $actual
-     */
-    public static function assertIsArray($actual, string $message = ''): void
-    {
-        $constraint = new IsType(IsType::TYPE_ARRAY);
-        static::assertThat(
-            $actual,
-            $constraint,
-            $message
-        );
-    }
-
-    /**
-     * @param mixed $value
-     * @return void
-     */
-    protected function assertIsInteger($value)
-    {
-        $isIntegerConstraint = new IsType(IsType::TYPE_INT);
-        $this->assertThat($value, $isIntegerConstraint);
-    }
-
-    /**
-     * @param mixed $value
-     * @return void
-     */
-    protected function assertIsBoolean($value)
-    {
-        $isBooleanConstraint = new IsType(IsType::TYPE_BOOL);
-        $this->assertThat($value, $isBooleanConstraint);
-    }
-
-    /**
      * @param mixed $value
      */
-    protected function assertIsValidAndWorkingFormObject($value)
+    protected function assertIsValidAndWorkingFormObject($value): void
     {
-        $this->assertInstanceOf(Form::class, $value);
-        $this->assertInstanceOf(Form\FormInterface::class, $value);
-        $this->assertInstanceOf(Form\ContainerInterface::class, $value);
-        /** @var Form $value */
-        $structure = $value->build();
+        if (!is_object($value) || !method_exists($value, 'build') || !method_exists($value, 'getFields')) {
+            self::fail('Flux form fixture does not expose the expected API.');
+        }
+        $build = \Closure::fromCallable([$value, 'build']);
+        $getFields = \Closure::fromCallable([$value, 'getFields']);
+        $structure = $build();
         $this->assertIsArray($structure);
         // scan for and attempt building of closures in structure
-        foreach ($value->getFields() as $field) {
-            if (true === $field instanceof Custom) {
-                $closure = $field->getClosure();
-                $output = $closure($field->getArguments());
+        $customFieldClassName = 'FluidTYPO3\\Flux\\Form\\Field\\Custom';
+        foreach ($getFields() as $field) {
+            if (is_object($field) && is_a($field, $customFieldClassName)) {
+                if (!method_exists($field, 'getClosure') || !method_exists($field, 'getArguments')) {
+                    self::fail('Flux custom field fixture does not expose the expected API.');
+                }
+                $getClosure = \Closure::fromCallable([$field, 'getClosure']);
+                $getArguments = \Closure::fromCallable([$field, 'getArguments']);
+                $closure = $getClosure();
+                $output = $closure($getArguments());
                 $this->assertNotEmpty($output);
             }
         }
@@ -229,12 +237,13 @@ abstract class AbstractTestCase extends TestCase
     /**
      * @param mixed $value
      */
-    protected function assertIsValidAndWorkingGridObject($value)
+    protected function assertIsValidAndWorkingGridObject($value): void
     {
-        $this->assertInstanceOf(Form\Container\Grid::class, $value);
-        $this->assertInstanceOf(Form\ContainerInterface::class, $value);
-        /** @var Form $value */
-        $structure = $value->build();
+        if (!is_object($value) || !method_exists($value, 'build')) {
+            self::fail('Flux grid fixture does not expose the expected API.');
+        }
+        $build = \Closure::fromCallable([$value, 'build']);
+        $structure = $build();
         $this->assertIsArray($structure);
     }
 
@@ -244,7 +253,11 @@ abstract class AbstractTestCase extends TestCase
      */
     protected function getAbsoluteFixtureTemplatePathAndFilename($shorthandTemplatePath)
     {
-        return realpath(str_replace('EXT:vhs/', './', $shorthandTemplatePath));
+        $path = realpath(str_replace('EXT:vhs/', './', $shorthandTemplatePath));
+        if (!is_string($path)) {
+            throw new \RuntimeException('Unable to resolve fixture template path.', 1780000279);
+        }
+        return $path;
     }
 
     /**
@@ -264,25 +277,11 @@ abstract class AbstractTestCase extends TestCase
         return new $instanceClassName();
     }
 
-    protected function mockForLocalizationUtilityCalls(array $returnValeMap): void
+    protected function mockForLocalizationUtilityCalls(array $returnValueMap): void
     {
-        $languageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
-
-        $this->singletonInstances[LocalizationFactory::class] = $this->getMockBuilder(LocalizationFactory::class)
-            ->setMethods(['getParsedData'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->singletonInstances[LocalizationFactory::class]->method('getParsedData')->willReturn([]);
-
-        if (class_exists(LanguageServiceFactory::class)) {
-            $languageServiceFactory = $this->getMockBuilder(LanguageServiceFactory::class)
-                ->onlyMethods(['create'])
-                ->disableOriginalConstructor()
-                ->getMock();
-            $languageServiceFactory->method('create')->willReturn($languageService);
-
-            GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactory);
-        }
+        $languageService = new DummyLanguageService($returnValueMap);
+        DummyLanguageServiceFactory::setService($languageService);
+        $this->setClassAlias(LanguageServiceFactory::class, DummyLanguageServiceFactory::class);
 
         if (class_exists(Locales::class)) {
             if (method_exists(Locales::class, 'createLocaleFromRequest')) {

@@ -19,25 +19,27 @@ class AppendViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canAppendValueToArgument()
+    public function canAppendValueToArgument(): void
     {
         $arguments = [
             'subject' => 'before',
             'add' => 'after'
         ];
         $test = $this->executeViewHelper($arguments);
+        self::assertIsString($test);
         $this->assertStringEndsWith($arguments['add'], $test);
     }
 
     /**
      * @test
      */
-    public function canAppendValueToChildContent()
+    public function canAppendValueToChildContent(): void
     {
         $arguments = [
             'add' => 'after'
         ];
         $test = $this->executeViewHelperUsingTagContent('before', $arguments);
+        self::assertIsString($test);
         $this->assertStringEndsWith($arguments['add'], $test);
     }
 }

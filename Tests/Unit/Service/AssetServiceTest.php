@@ -4,31 +4,32 @@ namespace FluidTYPO3\Vhs\Tests\Unit\Service;
 use FluidTYPO3\Vhs\Asset;
 use FluidTYPO3\Vhs\Service\AssetService;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class AssetServiceTest
  */
 class AssetServiceTest extends AbstractTestCase
 {
+    public string $content = '';
+
     private ?ConfigurationManagerInterface $configurationManager = null;
-
-    public function __construct(?string $name = null, array $data = [], $dataName = '')
-    {
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
-        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $this->configurationManager);
-
-        parent::__construct($name, $data, $dataName);
-    }
 
     protected function setUp(): void
     {
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
+            ->getMockForAbstractClass();
+        $this->configurationManager->method('getConfiguration')->willReturn([]);
         $this->singletonInstances[ConfigurationManagerInterface::class] = $this->configurationManager;
 
         // Required for TYPO3v10
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] = 'en_US';
+
+        $this->resetAssetServiceSettingsCache();
 
         parent::setUp();
     }
@@ -41,11 +42,10 @@ class AssetServiceTest extends AbstractTestCase
      */
     public function testBuildAll(array $assets, $cached, $expectedFiles)
     {
+        $request = new ServerRequest('https://example.local');
+        $assets = $this->buildAssets($assets);
+
         $GLOBALS['VhsAssets'] = $assets;
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $GLOBALS['TSFE']->content = 'content';
         $instance = $this->getMockBuilder(AssetService::class)
             ->onlyMethods(
                 [
@@ -64,35 +64,23 @@ class AssetServiceTest extends AbstractTestCase
         $instance->method('getTypoScript')->willReturn([]);
         $instance->method('resolveAbsolutePathForFile')->willReturnArgument(0);
         if (true === $cached) {
-            $instance->buildAll([], $this, $cached);
+            $instance->buildAll([], $request, $cached);
         } else {
-            $instance->buildAllUncached([], $this);
+            $instance->buildAllUncached([], $request);
         }
-        unset($GLOBALS['VhsAssets'], $GLOBALS['TSFE']);
+        unset($GLOBALS['VhsAssets']);
     }
 
     /**
      * @return array
      */
-    public function getBuildAllTestValues()
+    public static function getBuildAllTestValues(): array
     {
-        /** @var Asset $asset1 */
-        $asset1 = new Asset();
-        $asset1->setContent('asset');
-        $asset1->setName('asset1');
-        $asset1->setType('js');
-        $asset2 = clone $asset1;
-        $asset2->setName('asset2');
-        $asset2->setType('css');
-        $asset3 = clone $asset1;
-        $asset3->setName('asset3');
-        $asset3->setType('css');
-        $asset3standalone = clone $asset3;
-        $asset3standalone->setName('asset3standalone');
-        $asset3standalone->setStandalone(true);
-        $fluidAsset = clone $asset1;
-        $fluidAsset->setName('fluid');
-        $fluidAsset->setFluid(true);
+        $asset1 = ['content' => 'asset', 'name' => 'asset1', 'type' => 'js'];
+        $asset2 = ['content' => 'asset', 'name' => 'asset2', 'type' => 'css'];
+        $asset3 = ['content' => 'asset', 'name' => 'asset3', 'type' => 'css'];
+        $asset3standalone = ['content' => 'asset', 'name' => 'asset3standalone', 'type' => 'css', 'standalone' => true];
+        $fluidAsset = ['content' => 'asset', 'name' => 'fluid', 'type' => 'js', 'fluid' => true];
         return [
             [[], true, 0, []],
             [[], false, 0, []],
@@ -102,6 +90,19 @@ class AssetServiceTest extends AbstractTestCase
             [['asset1' => $asset1, 'asset2' => $asset2, 'asset3standalone' => $asset3standalone], true, 2],
             [['fluid' => $fluidAsset], true, 1]
         ];
+    }
+
+    private function buildAssets(array $assetSettings): array
+    {
+        $assets = [];
+        foreach ($assetSettings as $name => $settings) {
+            $asset = new Asset();
+            foreach ($settings as $property => $value) {
+                $asset->{'set' . ucfirst($property)}($value);
+            }
+            $assets[$name] = $asset;
+        }
+        return $assets;
     }
 
     /**
@@ -118,8 +119,6 @@ class AssetServiceTest extends AbstractTestCase
             $this->markTestSkipped('No hash or openssl support');
         }
 
-        $GLOBALS['TSFE'] = unserialize('O:8:"stdClass":1:{s:4:"tmpl";O:8:"stdClass":1:{s:5:"setup";a:1:{s:7:"plugin.";a:1:{s:7:"tx_vhs.";a:1:{s:7:"assets.";a:0:{}}}}}}');
-
         // This represents the setting levels, from 0=off over 1 as the weakest to 3 as the strongest
         $expectedIntegrities = [
            '', // This makes sense, cause on 0, the generation should be disabled
@@ -129,10 +128,13 @@ class AssetServiceTest extends AbstractTestCase
         ];
 
         $file = 'Tests/Fixtures/Files/dummy.js';
+        $request = new ServerRequest('https://example.local');
 
         foreach ($expectedIntegrities as $settingLevel => $expectedIntegrity) {
             $method = (new \ReflectionClass(AssetService::class))->getMethod('getFileIntegrity');
-            $instance = $this->getMockBuilder(AssetService::class)->onlyMethods(['writeFile', 'getTypoScript'])->getMock();
+            $instance = $this->getMockBuilder(AssetService::class)
+                ->onlyMethods(['writeFile', 'getTypoScript'])
+                ->getMock();
             $instance->method('getTypoScript')->willReturn(
                 [
                     'assets' => [
@@ -141,7 +143,204 @@ class AssetServiceTest extends AbstractTestCase
                 ]
             );
             $method->setAccessible(true);
-            $this->assertEquals($expectedIntegrity, $method->invokeArgs($instance, [$file]));
+            $this->assertEquals($expectedIntegrity, $method->invokeArgs($instance, [$file, $request]));
         }
+    }
+
+    /**
+     * @test
+     */
+    public function getSettingsKeepsRuntimeCacheSeparatedByRequestPageContext()
+    {
+        $request1 = (new ServerRequest('https://example.local/page-1'))
+            ->withAttribute('routing', new PageArguments(1, '0', []));
+        $request2 = (new ServerRequest('https://example.local/page-2'))
+            ->withAttribute('routing', new PageArguments(2, '0', []));
+
+        $instance = $this->getMockBuilder(AssetService::class)
+            ->onlyMethods(['getTypoScript'])
+            ->getMock();
+        $instance->expects($this->exactly(2))
+            ->method('getTypoScript')
+            ->willReturnOnConsecutiveCalls(
+                ['settings' => ['request' => 'first']],
+                ['settings' => ['request' => 'second']]
+            );
+
+        $this->assertSame(['request' => 'first'], $instance->getSettings($request1));
+        $this->assertSame(['request' => 'second'], $instance->getSettings($request2));
+        $this->assertSame(['request' => 'first'], $instance->getSettings($request1));
+    }
+
+    /**
+     * @test
+     */
+    public function enableFooterRelocationSettingWithoutRelocateToFooterKeepsAssetsInFooter()
+    {
+        $request = new ServerRequest('https://example.local');
+        $content = '<html><head></head><body></body></html>';
+        $assets = [
+            'footerAsset' => [
+                'type' => 'js',
+                'movable' => true,
+                'variables' => [],
+            ],
+        ];
+
+        $instance = $this->getMockBuilder(AssetService::class)
+            ->onlyMethods(['buildAssetsChunk', 'getSettings'])
+            ->getMock();
+        $instance->method('getSettings')->willReturn(['enableFooterRelocation' => 1]);
+        $instance->method('buildAssetsChunk')->willReturnCallback(
+            static function (array $assets): string {
+                return isset($assets['footerAsset']) ? 'footer-asset' : '';
+            }
+        );
+
+        set_error_handler(
+            static function (int $severity, string $message, string $file, int $line): bool {
+                throw new \ErrorException($message, 0, $severity, $file, $line);
+            }
+        );
+        $method = (new \ReflectionClass(AssetService::class))->getMethod('placeAssetsInHeaderAndFooter');
+        $method->setAccessible(true);
+        try {
+            $method->invokeArgs($instance, [$assets, true, &$content, $request]);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertStringContainsString('footer-asset</body>', $content);
+    }
+
+    /**
+     * @test
+     */
+    public function inlineJavaScriptTagConsumesCspNonceWhenEnabled()
+    {
+        [$tag, $nonce] = $this->generateAssetTagWithNonce(
+            'js',
+            'alert(1);',
+            null,
+            ['csp' => true, 'async' => false, 'defer' => false]
+        );
+
+        $this->assertStringContainsString('nonce="' . $nonce->value . '"', $tag);
+        $this->assertSame(1, $nonce->countInline(Directive::ScriptSrcElem));
+        $this->assertSame(0, $nonce->countStatic(Directive::ScriptSrcElem));
+    }
+
+    /**
+     * @test
+     */
+    public function inlineStyleTagConsumesCspNonceWhenEnabled()
+    {
+        [$tag, $nonce] = $this->generateAssetTagWithNonce('css', 'body { color: #000; }', null, ['csp' => true]);
+
+        $this->assertStringContainsString('nonce="' . $nonce->value . '"', $tag);
+        $this->assertSame(1, $nonce->countInline(Directive::StyleSrcElem));
+        $this->assertSame(0, $nonce->countStatic(Directive::StyleSrcElem));
+    }
+
+    /**
+     * @test
+     */
+    public function inlineTagsDoNotConsumeCspNonceByDefault()
+    {
+        [$tag, $nonce] = $this->generateAssetTagWithNonce('js', 'alert(1);');
+
+        $this->assertStringNotContainsString('nonce=', $tag);
+        $this->assertSame(0, $nonce->countInline(Directive::ScriptSrcElem));
+        $this->assertSame(0, $nonce->countStatic(Directive::ScriptSrcElem));
+    }
+
+    /**
+     * @test
+     */
+    public function fileTagsConsumeStaticCspNonceByDefault()
+    {
+        [$tag, $nonce] = $this->generateAssetTagWithNonce('js', null, 'fileadmin/test.js');
+
+        $this->assertStringContainsString('nonce="' . $nonce->value . '"', $tag);
+        $this->assertSame(0, $nonce->countInline(Directive::ScriptSrcElem));
+        $this->assertSame(1, $nonce->countStatic(Directive::ScriptSrcElem));
+    }
+
+    /**
+     * @test
+     */
+    public function fluidAssetRenderingReceivesActiveRequest()
+    {
+        $activeRequest = new ServerRequest('https://inner.example/request-222');
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://outer.example/request-111');
+
+        $asset = new Asset();
+        $asset->setName('fluid');
+        $asset->setType('js');
+        $asset->setStandalone(false);
+        $asset->setExternal(true);
+        $asset->setFluid(true);
+        $asset->setPath(__DIR__ . '/../../Fixtures/Files/dummy.js');
+        $GLOBALS['VhsAssets'] = ['fluid' => $asset];
+
+        $instance = $this->getMockBuilder(AssetService::class)
+            ->onlyMethods(
+                [
+                    'getSettings',
+                    'getTypoScript',
+                    'readCacheDisabledInstructionFromContext',
+                    'renderAssetAsFluidTemplate',
+                    'resolveAbsolutePathForFile',
+                    'writeFile',
+                ]
+            )
+            ->getMock();
+        $instance->method('getSettings')->willReturn([]);
+        $instance->method('getTypoScript')->willReturn([]);
+        $instance->method('readCacheDisabledInstructionFromContext')->willReturn(false);
+        $instance->method('resolveAbsolutePathForFile')->willReturnArgument(0);
+        $instance->expects($this->once())
+            ->method('renderAssetAsFluidTemplate')
+            ->with($this->identicalTo($asset), $this->identicalTo($activeRequest))
+            ->willReturn('alert("active request");');
+
+        $content = '<html><head></head><body></body></html>';
+        try {
+            $instance->buildAll([], $activeRequest, true, $content);
+        } finally {
+            unset($GLOBALS['VhsAssets'], $GLOBALS['TYPO3_REQUEST']);
+        }
+    }
+
+    private function resetAssetServiceSettingsCache(): void
+    {
+        $property = new \ReflectionProperty(AssetService::class, 'settingsCache');
+        $property->setAccessible(true);
+        $property->setValue(null, []);
+    }
+
+    private function generateAssetTagWithNonce(
+        string $type,
+        ?string $content,
+        ?string $file = null,
+        ?array $standaloneAssetSettings = null
+    ): array {
+        $nonce = new ConsumableNonce(str_repeat('a', 40));
+        $request = (new ServerRequest('https://example.local'))->withAttribute('nonce', $nonce);
+        $method = (new \ReflectionClass(AssetService::class))->getMethod('generateTagForAssetType');
+        $method->setAccessible(true);
+
+        $instance = $this->getMockBuilder(AssetService::class)
+            ->onlyMethods(['getSettings', 'getTypoScript'])
+            ->getMock();
+        $instance->method('getSettings')->willReturn([]);
+        $instance->method('getTypoScript')->willReturn([]);
+
+        $tag = $method->invokeArgs(
+            $instance,
+            [$type, $content, $file, null, $standaloneAssetSettings, $request]
+        );
+
+        return [$tag, $nonce];
     }
 }

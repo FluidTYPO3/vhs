@@ -35,7 +35,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesNonAscii()
+    public function removesNonAscii(): void
     {
         $arguments = $this->arguments;
         $arguments['nonAscii'] = true;
@@ -46,7 +46,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesLetters()
+    public function removesLetters(): void
     {
         $arguments = $this->arguments;
         $arguments['letters'] = true;
@@ -57,7 +57,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesLettersRespectsCaseSensitive()
+    public function removesLettersRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
         $arguments['letters'] = true;
@@ -69,7 +69,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesDigits()
+    public function removesDigits(): void
     {
         $arguments = $this->arguments;
         $arguments['digits'] = true;
@@ -80,7 +80,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesWindowsCarriageReturns()
+    public function removesWindowsCarriageReturns(): void
     {
         $arguments = $this->arguments;
         $arguments['windowsBreaks'] = true;
@@ -91,7 +91,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesUnixBreaks()
+    public function removesUnixBreaks(): void
     {
         $arguments = $this->arguments;
         $arguments['unixBreaks'] = true;
@@ -102,7 +102,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesTabs()
+    public function removesTabs(): void
     {
         $arguments = $this->arguments;
         $arguments['tabs'] = true;
@@ -113,7 +113,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesWhitespace()
+    public function removesWhitespace(): void
     {
         $arguments = $this->arguments;
         $arguments['whitespace'] = true;
@@ -124,7 +124,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesWhitespaceBetweenHtmlTags()
+    public function removesWhitespaceBetweenHtmlTags(): void
     {
         $arguments = $this->arguments;
         $arguments['whitespaceBetweenHtmlTags'] = true;
@@ -135,7 +135,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesCharactersRespectsCaseSensitive()
+    public function removesCharactersRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
         $arguments['characters'] = 'abc';
@@ -147,7 +147,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesCharactersAsString()
+    public function removesCharactersAsString(): void
     {
         $arguments = $this->arguments;
         $arguments['characters'] = 'abc';
@@ -158,7 +158,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesMultibyteCharactersAsString()
+    public function removesMultibyteCharactersAsString(): void
     {
         $arguments = $this->arguments;
         $arguments['characters'] = 'æ本';
@@ -169,7 +169,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesCharactersAsArray()
+    public function removesCharactersAsArray(): void
     {
         $arguments = $this->arguments;
         $arguments['characters'] = ['a', 'b', 'c'];
@@ -180,7 +180,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesStringsRespectsCaseSensitive()
+    public function removesStringsRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
         $arguments['strings'] = 'abc,def,ghi';
@@ -192,7 +192,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesStringsAsString()
+    public function removesStringsAsString(): void
     {
         $arguments = $this->arguments;
         $arguments['strings'] = 'abc,def,ghi';
@@ -203,7 +203,7 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function removesStringsAsArray()
+    public function removesStringsAsArray(): void
     {
         $arguments = $this->arguments;
         $arguments['strings'] = ['abc', 'def', 'ghi'];

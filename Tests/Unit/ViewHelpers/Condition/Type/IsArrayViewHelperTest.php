@@ -27,7 +27,7 @@ class IsArrayViewHelperTest extends AbstractViewHelperTestCase
             'value' => []
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
+        $this->assertSame('then', $result);
     }
 
     /**
@@ -41,6 +41,6 @@ class IsArrayViewHelperTest extends AbstractViewHelperTestCase
             'value' => new \stdClass()
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('else', $result);
+        $this->assertSame('else', $result);
     }
 }

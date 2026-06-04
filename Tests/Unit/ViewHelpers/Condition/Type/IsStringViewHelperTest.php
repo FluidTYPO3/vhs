@@ -27,7 +27,7 @@ class IsStringViewHelperTest extends AbstractViewHelperTestCase
             'value' => 'test'
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
+        $this->assertSame('then', $result);
     }
 
     /**
@@ -41,6 +41,6 @@ class IsStringViewHelperTest extends AbstractViewHelperTestCase
             'value' => 1
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('else', $result);
+        $this->assertSame('else', $result);
     }
 }

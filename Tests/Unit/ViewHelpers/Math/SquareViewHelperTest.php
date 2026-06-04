@@ -11,12 +11,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class SquareViewHelperTest
  */
-class SquareViewHelperTest extends AbstractMathViewHelperTest
+class SquareViewHelperTest extends AbstractMathViewHelperTestCase
 {
     /**
      * @test
      */
-    public function testSingleArgument()
+    public function testSingleArgument(): void
     {
         $this->executeSingleArgumentTest(3, 9);
     }
@@ -24,7 +24,7 @@ class SquareViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testSingleArgumentIteratorFirst()
+    public function testSingleArgumentIteratorFirst(): void
     {
         $this->executeSingleArgumentTest([2, 4], [4, 16]);
     }

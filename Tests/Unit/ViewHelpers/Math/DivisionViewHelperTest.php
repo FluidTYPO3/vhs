@@ -11,12 +11,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class DivisionViewHelperTest
  */
-class DivisionViewHelperTest extends AbstractMathViewHelperTest
+class DivisionViewHelperTest extends AbstractMathViewHelperTestCase
 {
     /**
      * @test
      */
-    public function testDualArgument()
+    public function testDualArgument(): void
     {
         $this->executeDualArgumentTest(4, 2, 2);
     }
@@ -24,7 +24,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testDualArgumentIteratorFirst()
+    public function testDualArgumentIteratorFirst(): void
     {
         $this->executeDualArgumentTest([4, 8], 2, [2, 4]);
     }
@@ -32,7 +32,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function executeMissingArgumentTest()
+    public function executeMissingArgumentTest(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelper(['a' => 1, 'fail' => true]);
@@ -41,7 +41,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function executeInvalidFirstArgumentTypeTest()
+    public function executeInvalidFirstArgumentTypeTest(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelper(['b' => 1, 'fail' => true]);
@@ -50,7 +50,7 @@ class DivisionViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function executeInvalidSecondArgumentTypeTest()
+    public function executeInvalidSecondArgumentTypeTest(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelper(['a' => 1, 'b' => [1], 'fail' => true]);

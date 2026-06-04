@@ -18,12 +18,14 @@ class UnsetViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canUnsetVariable()
+    public function canUnsetVariable(): void
     {
-        $variables = new \ArrayObject(['test' => 'test']);
         $instance = $this->buildViewHelperInstance(['name' => 'test']);
+        self::assertNotNull($this->templateVariableContainer);
         $this->templateVariableContainer->add('test', 'test');
         $instance->initializeArgumentsAndRender();
-        $this->assertNotContains('test', $this->templateVariableContainer->getAll());
+        $variables = $this->templateVariableContainer->getAll();
+        self::assertIsArray($variables);
+        $this->assertNotContains('test', array_keys($variables));
     }
 }

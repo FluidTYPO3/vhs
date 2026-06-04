@@ -22,16 +22,16 @@ class AsciiViewHelperTest extends AbstractViewHelperTestCase
      * @param integer $ascii
      * @param string $expected
      */
-    public function testRender($ascii, $expected)
+    public function testRender(mixed $ascii, string $expected): void
     {
         $result = $this->executeViewHelper(['ascii' => $ascii]);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
      * @return array
      */
-    public function getTestRenderValues()
+    public static function getTestRenderValues(): array
     {
         return [
             [10, "\n"],

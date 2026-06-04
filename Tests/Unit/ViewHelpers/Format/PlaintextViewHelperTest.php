@@ -19,7 +19,7 @@ class PlaintextViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function formatsToPlaintext()
+    public function formatsToPlaintext(): void
     {
         $input = "	This string\n	is plain-text formatted";
         $expected = "This string\nis plain-text formatted";

@@ -39,20 +39,13 @@ class ContainsViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getPositiveTestValues()
+    public static function getPositiveTestValues()
     {
-        $bar = new Bar();
-        $this->setInaccessiblePropertyValue($bar, 'uid', 1);
-        $foo = new Foo();
-        $this->setInaccessiblePropertyValue($foo, 'uid', 2);
+        $bar = self::createBar(1);
+        $foo = self::createFoo(2);
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($bar);
-        /** @var LazyObjectStorage $lazyObjectStorage */
-        $lazyObjectStorage = $this->getMockBuilder(LazyObjectStorage::class)
-            ->setMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->setInaccessiblePropertyValue($lazyObjectStorage, 'isInitialized', true);
+        $lazyObjectStorage = self::createInitializedLazyObjectStorage();
         $lazyObjectStorage->attach($foo);
         return [
             'with array and string' => [['foo'], 'foo'],
@@ -82,20 +75,13 @@ class ContainsViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getNegativeTestValues()
+    public static function getNegativeTestValues()
     {
-        $bar = new Bar();
-        $this->setInaccessiblePropertyValue($bar, 'uid', 1);
-        $foo = new Foo();
-        $this->setInaccessiblePropertyValue($foo, 'uid', 2);
+        $bar = self::createBar(1);
+        $foo = self::createFoo(2);
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($bar);
-        /** @var LazyObjectStorage $lazyObjectStorage */
-        $lazyObjectStorage = $this->getMockBuilder(LazyObjectStorage::class)
-            ->setMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->setInaccessiblePropertyValue($lazyObjectStorage, 'isInitialized', true);
+        $lazyObjectStorage = self::createInitializedLazyObjectStorage();
         $lazyObjectStorage->attach($foo);
         return [
             [['foo'], 'bar'],
@@ -103,5 +89,37 @@ class ContainsViewHelperTest extends AbstractViewHelperTestCase
             [$objectStorage, $foo],
             [$lazyObjectStorage, $bar]
         ];
+    }
+
+    private static function createBar(int $uid): Bar
+    {
+        $bar = new Bar();
+        self::setObjectUid($bar, $uid);
+        return $bar;
+    }
+
+    private static function createFoo(int $uid): Foo
+    {
+        $foo = new Foo();
+        self::setObjectUid($foo, $uid);
+        return $foo;
+    }
+
+    private static function setObjectUid(object $object, int $uid): void
+    {
+        $property = new \ReflectionProperty($object, 'uid');
+        $property->setAccessible(true);
+        $property->setValue($object, $uid);
+    }
+
+    private static function createInitializedLazyObjectStorage(): LazyObjectStorage
+    {
+        $reflection = new \ReflectionClass(LazyObjectStorage::class);
+        /** @var LazyObjectStorage $lazyObjectStorage */
+        $lazyObjectStorage = $reflection->newInstanceWithoutConstructor();
+        $property = new \ReflectionProperty($lazyObjectStorage, 'isInitialized');
+        $property->setAccessible(true);
+        $property->setValue($lazyObjectStorage, true);
+        return $lazyObjectStorage;
     }
 }

@@ -19,20 +19,22 @@ use TYPO3\CMS\Core\Package\PackageManager;
  */
 class ExtensionViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @var string
-     */
-    protected $fixturesPath;
+    protected string $fixturesPath;
 
     /**
      * Setup
      */
     public function setUp(): void
     {
-        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         parent::setUp();
         $this->fixturesPath = 'Tests/Fixtures/Files';
-        $packageManager = $this->getMockBuilder(PackageManager::class)->setMethods(['resolvePackagePath'])->disableOriginalConstructor()->getMock();
+        $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->onlyMethods(['resolvePackagePath'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $packageManager->method('resolvePackagePath')->willReturnMap(
             [
                 ['EXT:vhs/Tests/Fixtures/Files/foo.txt', 'Tests/Fixtures/Files/foo.txt'],
@@ -46,7 +48,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsEmptyStringForEmptyArguments()
+    public function returnsEmptyStringForEmptyArguments(): void
     {
         $this->assertEquals('', $this->executeViewHelper());
     }
@@ -54,7 +56,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsExpectedExtensionForProvidedPath()
+    public function returnsExpectedExtensionForProvidedPath(): void
     {
         $this->assertEquals('txt', $this->executeViewHelperUsingTagContent($this->fixturesPath . '/foo.txt'));
     }
@@ -62,7 +64,7 @@ class ExtensionViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsEmptyStringForFileWithoutExtension()
+    public function returnsEmptyStringForFileWithoutExtension(): void
     {
         $this->assertEquals('', $this->executeViewHelperUsingTagContent($this->fixturesPath . '/noext'));
     }

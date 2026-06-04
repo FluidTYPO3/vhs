@@ -22,7 +22,7 @@ class PushViewHelperTest extends AbstractViewHelperTestCase
      * @param array $arguments
      * @param mixed $expectedValue
      */
-    public function testRender(array $arguments, $expectedValue)
+    public function testRender(array $arguments, mixed $expectedValue): void
     {
         $this->assertEquals($this->executeViewHelper($arguments), $expectedValue);
     }
@@ -30,11 +30,14 @@ class PushViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues(): array
     {
         return [
             [['subject' => ['foo', 'bar'], 'add' => 'baz', 'key' => null], ['foo', 'bar', 'baz']],
-            [['subject' => ['f' => 'foo', 'b' => 'bar'], 'add' => 'baz', 'key' => 'c'], ['f' => 'foo', 'b' => 'bar', 'c' => 'baz']],
+            [
+                ['subject' => ['f' => 'foo', 'b' => 'bar'], 'add' => 'baz', 'key' => 'c'],
+                ['f' => 'foo', 'b' => 'bar', 'c' => 'baz'],
+            ],
             [['subject' => ['f' => 'foo', 'b' => 'bar'], 'add' => 'baz', 'key' => 'b'], ['f' => 'foo', 'b' => 'baz']],
         ];
     }

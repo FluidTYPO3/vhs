@@ -19,7 +19,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function encodesUrlDecodedStrings()
+    public function encodesUrlDecodedStrings(): void
     {
         $decoded = 'Url Decoded';
         $result = $this->executeViewHelper(['content' => $decoded]);

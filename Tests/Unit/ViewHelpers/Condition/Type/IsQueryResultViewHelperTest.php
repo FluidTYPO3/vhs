@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
@@ -20,9 +19,12 @@ class IsQueryResultViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfConditionMatched()
+    public function rendersThenChildIfConditionMatched(): void
     {
-        $queryResult = $this->getMockBuilder(QueryResult::class)->setMethods(['toArray', 'initialize', 'rewind', 'valid', 'count'])->disableOriginalConstructor()->getMock();
+        $queryResult = $this->getMockBuilder(QueryResult::class)
+            ->onlyMethods(['toArray', 'initialize', 'rewind', 'valid', 'count'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $arguments = [
             'then' => 'then',
             'else' => 'else',
@@ -35,7 +37,7 @@ class IsQueryResultViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfConditionNotMatched()
+    public function rendersElseChildIfConditionNotMatched(): void
     {
         $arguments = [
             'then' => 'then',

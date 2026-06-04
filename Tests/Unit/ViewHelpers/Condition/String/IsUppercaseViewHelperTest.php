@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\String;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
@@ -19,7 +18,7 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfFirstCharacterIsUppercase()
+    public function rendersThenChildIfFirstCharacterIsUppercase(): void
     {
         $arguments = [
             'then' => 'then',
@@ -34,7 +33,7 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfAllCharactersAreUppercase()
+    public function rendersThenChildIfAllCharactersAreUppercase(): void
     {
         $arguments = [
             'then' => 'then',
@@ -49,7 +48,7 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfFirstCharacterIsNotUppercase()
+    public function rendersElseChildIfFirstCharacterIsNotUppercase(): void
     {
         $arguments = [
             'then' => 'then',
@@ -64,7 +63,7 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfAllCharactersAreNotUppercase()
+    public function rendersElseChildIfAllCharactersAreNotUppercase(): void
     {
         $arguments = [
             'then' => 'then',

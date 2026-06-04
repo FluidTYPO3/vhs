@@ -19,10 +19,11 @@ class StringViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function generatesRandomStringWithDesiredCharactersOnlyAndOfDesiredLength()
+    public function generatesRandomStringWithDesiredCharactersOnlyAndOfDesiredLength(): void
     {
         $arguments = ['minimumLength' => 32, 'maximumLength' => 32, 'characters' => 'abcdef'];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsString($result);
         $this->assertEquals(32, strlen($result));
         $this->assertEquals(0, preg_match('/[^a-f]+/', $result), 'Random string contained unexpected characters');
     }

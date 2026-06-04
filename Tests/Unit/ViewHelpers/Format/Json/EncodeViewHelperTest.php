@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
@@ -27,15 +28,12 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
             self::markTestSkipped('Skipped: no ext-json PHP module is not installed');
         }
         $this->defaultOptions = JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_TAG;
-        $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
-            ->setMethods(['__destruct'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->singletonInstances[ReflectionService::class] = new ReflectionService(new NullFrontend('testing'), 'testing');
 
         parent::setUp();
     }
 
-    protected function getInstanceOfFoo()
+    protected function getInstanceOfFoo(): Foo
     {
         return new Foo();
     }
@@ -43,33 +41,51 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function encodesDateTime()
+    public function encodesDateTime(): void
     {
-        $dateTime = \DateTime::createFromFormat('U', 86400);
+        $dateTime = \DateTime::createFromFormat('U', '86400');
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $dateTime, false, true, null, null, $this->defaultOptions);
+        $test = $this->callInaccessibleMethod(
+            $instance,
+            'encodeValue',
+            $dateTime,
+            false,
+            true,
+            null,
+            null,
+            $this->defaultOptions
+        );
         $this->assertEquals(86400000, $test);
     }
 
     /**
      * @test
      */
-    public function encodesRecursiveDomainObject()
+    public function encodesRecursiveDomainObject(): void
     {
         /** @var Foo $object */
         $object = $this->getInstanceOfFoo();
         $object->setFoo($object);
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $object, true, true, null, null, $this->defaultOptions);
+        $test = $this->callInaccessibleMethod(
+            $instance,
+            'encodeValue',
+            $object,
+            true,
+            true,
+            null,
+            null,
+            $this->defaultOptions
+        );
         $this->assertEquals('{"bar":"baz","children":[],"foo":null,"name":null,"pid":null,"uid":null}', $test);
     }
 
     /**
      * @test
      */
-    public function encodesDateTimeWithFormat()
+    public function encodesDateTimeWithFormat(): void
     {
-        $dateTime = \DateTime::createFromFormat('U', 86401);
+        $dateTime = \DateTime::createFromFormat('U', '86401');
         $arguments = [
             'value' => [
                 'date' => $dateTime,
@@ -83,18 +99,27 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function encodesTraversable()
+    public function encodesTraversable(): void
     {
         $traversable = new ObjectStorage();
         $instance = $this->createInstance();
-        $test = $this->callInaccessibleMethod($instance, 'encodeValue', $traversable, false, true, null, null, $this->defaultOptions);
+        $test = $this->callInaccessibleMethod(
+            $instance,
+            'encodeValue',
+            $traversable,
+            false,
+            true,
+            null,
+            null,
+            $this->defaultOptions
+        );
         $this->assertEquals('[]', $test);
     }
 
     /**
      * @test
      */
-    public function returnsEmptyObjectOnTopLevel()
+    public function returnsEmptyObjectOnTopLevel(): void
     {
         $this->assertEquals('{}', $this->executeViewHelper(['value' => new \stdClass()]));
     }
@@ -102,7 +127,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsEmptyArrayOnTopLevel()
+    public function returnsEmptyArrayOnTopLevel(): void
     {
         $this->assertEquals('[]', $this->executeViewHelper(['value' => []]));
     }
@@ -110,7 +135,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsFalseOnTopLevel()
+    public function returnsFalseOnTopLevel(): void
     {
         $this->assertEquals('false', $this->executeViewHelper(['value' => false]));
     }
@@ -118,7 +143,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsTrueOnTopLevel()
+    public function returnsTrueOnTopLevel(): void
     {
         $this->assertEquals('true', $this->executeViewHelper(['value' => true]));
     }
@@ -126,7 +151,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNumberOnTopLevel()
+    public function returnsNumberOnTopLevel(): void
     {
         $this->assertSame(json_encode(1.0), $this->executeViewHelper(['value' => 1.0]));
     }
@@ -134,7 +159,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNullOnTopLevel()
+    public function returnsNullOnTopLevel(): void
     {
         $this->assertEquals('null', $this->executeViewHelper(['value' => null]));
     }
@@ -142,7 +167,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsExpectedStringForProvidedArguments()
+    public function returnsExpectedStringForProvidedArguments(): void
     {
 
         $storage = new ObjectStorage();
@@ -151,7 +176,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
             'bar' => true,
             'baz' => 1,
             'foobar' => null,
-            'date' => \DateTime::createFromFormat('U', 3216548),
+            'date' => \DateTime::createFromFormat('U', '3216548'),
             'traversable' => $storage
         ];
 
@@ -163,7 +188,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsExceptionForInvalidArgument()
+    public function throwsExceptionForInvalidArgument(): void
     {
         $this->expectViewHelperException();
         $this->assertEquals('null', $this->executeViewHelper(['value' => "\xB1\x31"]));
@@ -172,7 +197,7 @@ class EncodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsJsConsumableTimestamps()
+    public function returnsJsConsumableTimestamps(): void
     {
         $date = new \DateTime('now');
         $jsTimestamp = $date->getTimestamp() * 1000;

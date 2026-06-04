@@ -19,7 +19,7 @@ class RecordViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function testRenderFailsWithoutFieldArgument()
+    public function testRenderFailsWithoutFieldArgument(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelper();

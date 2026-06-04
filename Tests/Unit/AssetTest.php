@@ -30,10 +30,10 @@ class AssetTest extends AbstractTestCase
     {
         $GLOBALS['VhsAssets'] = [];
 
-        $package = $this->getMockBuilder(Package::class)->setMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $package = $this->getMockBuilder(Package::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['getPackage', 'isPackageActive'])
+            ->onlyMethods(['getPackage', 'isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('isPackageActive')->willReturn(true);
@@ -106,6 +106,18 @@ class AssetTest extends AbstractTestCase
         ];
         $asset = Asset::createFromSettings($settings);
         $this->assertInstanceOf(Asset::class, $asset);
+    }
+
+    /**
+     * @test
+     */
+    public function cspSettingCanBeConfigured()
+    {
+        $asset = Asset::getInstance();
+        $this->assertNull($asset->getCsp());
+        $asset->setCsp(true);
+        $this->assertTrue($asset->getCsp());
+        $this->assertTrue($asset->getAssetSettings()['csp']);
     }
 
     /**

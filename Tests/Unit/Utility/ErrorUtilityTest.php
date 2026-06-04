@@ -9,27 +9,34 @@ namespace FluidTYPO3\Vhs\Utility;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
-use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use Throwable;
 
 class ErrorUtilityTest extends AbstractTestCase
 {
     /**
      * @test
      */
-    public function transfersPreviousException()
+    public function transfersPreviousException(): void
     {
-        try {
-            $previous = new \Exception('a', 23);
+        $exception = null;
+        $previous = new \Exception('a', 23);
+        $throwException = static function () use ($previous): void {
             ErrorUtility::throwViewHelperException('b', 42, $previous);
-        } catch (\Exception $exception) {
-            $this->assertEquals('b', $exception->getMessage());
-            $this->assertEquals(42, $exception->getCode());
+        };
 
-            $this->assertEquals('a', $exception->getPrevious()->getMessage());
-            $this->assertEquals(23, $exception->getPrevious()->getCode());
-
-            return;
+        try {
+            $throwException();
+        } catch (Throwable $throwable) {
+            $exception = $throwable;
         }
-        $this->fail('No exception thrown');
+
+        self::assertInstanceOf(Throwable::class, $exception);
+        self::assertSame('b', $exception->getMessage());
+        self::assertSame(42, $exception->getCode());
+
+        $previousException = $exception->getPrevious();
+        self::assertInstanceOf(Throwable::class, $previousException);
+        self::assertSame('a', $previousException->getMessage());
+        self::assertSame(23, $previousException->getCode());
     }
 }

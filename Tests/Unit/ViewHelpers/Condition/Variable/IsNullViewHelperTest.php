@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
@@ -19,7 +18,7 @@ class IsNullViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfVariableIsNull()
+    public function rendersThenChildIfVariableIsNull(): void
     {
         $arguments = [
             'value' => null,
@@ -33,7 +32,7 @@ class IsNullViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfVariableIsNotNull()
+    public function rendersElseChildIfVariableIsNotNull(): void
     {
         $arguments = [
             'value' => true,

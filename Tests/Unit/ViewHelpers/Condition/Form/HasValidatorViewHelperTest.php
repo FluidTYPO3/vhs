@@ -12,8 +12,8 @@ use FluidTYPO3\Vhs\Proxy\FileRepositoryProxy;
 use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
@@ -21,27 +21,28 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
 
     protected function setUp(): void
     {
-        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)->disableOriginalConstructor()->getMock();
-        $this->singletonInstances[FileRepositoryProxy::class] = $this->getMockBuilder(FileRepositoryProxy::class)->disableOriginalConstructor()->getMock();
-        $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
-            ->setMethods(['__destruct'])
+        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $this->singletonInstances[FileRepositoryProxy::class] = $this->getMockBuilder(FileRepositoryProxy::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->singletonInstances[ReflectionService::class] = new ReflectionService(new NullFrontend('testing'), 'testing');
 
         parent::setUp();
     }
 
-    protected function getInstanceOfFoo()
+    protected function getInstanceOfFoo(): Foo
     {
         return new Foo();
     }
 
-    protected function getNestedPathToFoo()
+    protected function getNestedPathToFoo(): string
     {
         return 'foo';
     }
 
-    public function testRenderElseWithSingleProperty()
+    public function testRenderElseWithSingleProperty(): void
     {
         $domainObject = $this->getInstanceOfFoo();
         $arguments = [
@@ -54,7 +55,7 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('else', $result);
     }
 
-    public function testRenderElseWithNestedSingleProperty()
+    public function testRenderElseWithNestedSingleProperty(): void
     {
         $domainObject = new Bar();
         $prefix = $this->getNestedPathToFoo();
@@ -68,7 +69,7 @@ class HasValidatorViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('else', $result);
     }
 
-    public function testRenderElseWithNestedMultiProperty()
+    public function testRenderElseWithNestedMultiProperty(): void
     {
         $domainObject = new Bar();
         $prefix = $this->getNestedPathToFoo();

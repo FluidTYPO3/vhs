@@ -16,10 +16,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class GravatarViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @var array
-     */
-    protected $arguments = [
+    protected array $arguments = [
         'email' => 'juanmanuel.vergessolanas@gmail.com',
         'secure' => false,
     ];
@@ -27,7 +24,7 @@ class GravatarViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function generatesExpectedUriForEmailAddress()
+    public function generatesExpectedUriForEmailAddress(): void
     {
         $expectedSource = 'http://www.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007';
         $this->assertSame($expectedSource, $this->executeViewHelper($this->arguments));

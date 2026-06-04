@@ -11,12 +11,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class CeilViewHelperTest
  */
-class CeilViewHelperTest extends AbstractMathViewHelperTest
+class CeilViewHelperTest extends AbstractMathViewHelperTestCase
 {
     /**
      * @test
      */
-    public function testSingleArgument()
+    public function testSingleArgument(): void
     {
         $this->executeSingleArgumentTest(0.5, 1);
     }
@@ -24,7 +24,7 @@ class CeilViewHelperTest extends AbstractMathViewHelperTest
     /**
      * @test
      */
-    public function testSingleArgumentIteratorFirst()
+    public function testSingleArgumentIteratorFirst(): void
     {
         $this->executeSingleArgumentTest([0.5, 0.8], [1, 1]);
     }

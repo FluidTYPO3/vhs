@@ -9,6 +9,6 @@ class AccessibleExtensionManagementUtility extends ExtensionManagementUtility
 {
     public static function setPackageManager(PackageManager $packageManager): void
     {
-        static::$packageManager = $packageManager;
+        parent::setPackageManager($packageManager);
     }
 }

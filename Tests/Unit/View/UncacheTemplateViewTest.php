@@ -23,7 +23,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
     protected function setUp(): void
     {
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->renderingContext->setTemplatePaths(
@@ -31,7 +31,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
         );
         GeneralUtility::addInstance(RenderingContext::class, $this->renderingContext);
         $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['getAttribute', 'withAttribute'])
+            ->onlyMethods(['getAttribute', 'withAttribute'])
             ->disableOriginalConstructor()
             ->getMock();
         $GLOBALS['TYPO3_REQUEST']->method('withAttribute')->willReturnSelf();
@@ -47,7 +47,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
     public function callUserFunctionReturnsEarlyIfPartialEmpty()
     {
         $mock = $this->getMockBuilder($this->getClassName())
-            ->setMethods(['prepareContextsForUncachedRendering', 'createRenderingContextWithRenderingContextFactory'])
+            ->onlyMethods(['prepareContextsForUncachedRendering', 'createRenderingContextWithRenderingContextFactory'])
             ->disableOriginalConstructor()
             ->getMock();
         $mock->method('createRenderingContextWithRenderingContextFactory')->willReturn($this->renderingContext);
@@ -63,7 +63,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
     public function callUserFunctionReturnsCallsExpectedMethodSequence()
     {
         $mock = $this->getMockBuilder($this->getClassName())
-            ->setMethods(
+            ->onlyMethods(
                 [
                     'setRenderingContext',
                     'renderPartialUncached',
@@ -98,7 +98,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
     public function prepareContextsForUncachedRenderingCallsExpectedMethodSequence()
     {
         $mock = $this->getMockBuilder($this->getClassName())
-            ->setMethods(['setRenderingContext'])
+            ->onlyMethods(['setRenderingContext'])
             ->disableOriginalConstructor()
             ->getMock();
         $mock->expects($this->once())->method('setRenderingContext')->with($this->renderingContext);
@@ -111,7 +111,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
     public function renderPartialUncachedDelegatesToRenderPartial()
     {
         $mock = $this->getMockBuilder($this->getClassName())
-            ->setMethods(['renderPartial', 'getCurrentParsedTemplate'])
+            ->onlyMethods(['renderPartial', 'getCurrentParsedTemplate'])
             ->disableOriginalConstructor()
             ->getMock();
         $mock->expects($this->once())->method('renderPartial')->will($this->returnValue('test'));

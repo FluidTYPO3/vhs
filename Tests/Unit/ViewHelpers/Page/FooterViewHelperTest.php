@@ -28,7 +28,7 @@ class FooterViewHelperTest extends AbstractViewHelperTestCase
         parent::setUp();
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['resolvePackagePath'])
+            ->onlyMethods(['resolvePackagePath'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('resolvePackagePath')->willReturnMap(
@@ -39,7 +39,7 @@ class FooterViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    public function testRender()
+    public function testRender(): void
     {
         $result = $this->executeViewHelper();
         $this->assertEmpty($result);

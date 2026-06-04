@@ -11,14 +11,15 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Menu;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use FluidTYPO3\Vhs\ViewHelpers\Menu\DirectoryViewHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
 class DirectoryViewHelperTest extends AbstractViewHelperTestCase
 {
-    public function testReturnsNullWithoutPages(): void
+    public function testReturnsEmptyStringWithoutPages(): void
     {
         $output = $this->executeViewHelper();
-        self::assertNull($output);
+        self::assertSame('', $output);
     }
 
     public function testRendersMenu(): void
@@ -30,7 +31,7 @@ class DirectoryViewHelperTest extends AbstractViewHelperTestCase
         ];
 
         $pageService = $this->getMockBuilder(PageService::class)
-            ->setMethods(['getMenu', 'getRootLine', 'isCurrent', 'getItemLink'])
+            ->onlyMethods(['getMenu', 'getRootLine', 'isCurrent', 'getItemLink'])
             ->disableOriginalConstructor()
             ->getMock();
         $pageService->method('getMenu')->willReturn([$page]);
@@ -41,6 +42,7 @@ class DirectoryViewHelperTest extends AbstractViewHelperTestCase
         $arguments = ['pages' => [1]];
 
         $subject = $this->buildViewHelperInstance($arguments);
+        self::assertInstanceOf(DirectoryViewHelper::class, $subject);
         $subject->injectPageService($pageService);
 
         $output = $this->executeInstance($subject, $arguments);

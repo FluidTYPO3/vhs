@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 
@@ -20,7 +19,7 @@ class IsDomainObjectViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfConditionMatched()
+    public function rendersThenChildIfConditionMatched(): void
     {
         if (!class_exists(FrontendUser::class)) {
             self::markTestSkipped('Skipping test with FrontendUser dependency');
@@ -37,7 +36,7 @@ class IsDomainObjectViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfConditionNotMatched()
+    public function rendersElseChildIfConditionNotMatched(): void
     {
         $arguments = [
             'then' => 'then',

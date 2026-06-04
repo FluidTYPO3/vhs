@@ -19,7 +19,7 @@ class TrimViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canTrimSpecificCharacters()
+    public function canTrimSpecificCharacters(): void
     {
         $arguments = [
             'content' => 'ztrimmedy',
@@ -32,7 +32,7 @@ class TrimViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canTrim()
+    public function canTrim(): void
     {
         $arguments = [
             'content' => ' trimmed '

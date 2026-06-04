@@ -19,70 +19,70 @@ class FirstViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsFirstElement()
+    public function returnsFirstElement(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [
             'haystack' => $array
         ];
         $output = $this->executeViewHelper($arguments);
-        $this->assertEquals('a', $output);
+        $this->assertSame('a', $output);
     }
 
     /**
      * @test
      */
-    public function supportsIterators()
+    public function supportsIterators(): void
     {
         $array = new \ArrayIterator(['a', 'b', 'c']);
         $arguments = [
             'haystack' => $array
         ];
         $output = $this->executeViewHelper($arguments);
-        $this->assertEquals('a', $output);
+        $this->assertSame('a', $output);
     }
 
     /**
      * @test
      */
-    public function supportsTagContent()
+    public function supportsTagContent(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [
             'haystack' => null
         ];
         $output = $this->executeViewHelperUsingTagContent($array, $arguments);
-        $this->assertEquals('a', $output);
+        $this->assertSame('a', $output);
     }
 
     /**
      * @test
      */
-    public function returnsNullIfHaystackIsNull()
+    public function returnsNullIfHaystackIsNull(): void
     {
         $arguments = [
             'haystack' => null
         ];
         $output = $this->executeViewHelper($arguments);
-        $this->assertEquals(null, $output);
+        $this->assertNull($output);
     }
 
     /**
      * @test
      */
-    public function returnsNullIfHaystackIsEmptyArray()
+    public function returnsNullIfHaystackIsEmptyArray(): void
     {
         $arguments = [
             'haystack' => []
         ];
         $output = $this->executeViewHelper($arguments);
-        $this->assertEquals(null, $output);
+        $this->assertNull($output);
     }
 
     /**
      * @test
      */
-    public function throwsExceptionOnUnsupportedHaystacks()
+    public function throwsExceptionOnUnsupportedHaystacks(): void
     {
         $arguments = [
             'haystack' => new \DateTime('now')

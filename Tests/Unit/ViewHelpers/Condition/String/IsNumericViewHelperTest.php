@@ -27,7 +27,7 @@ class IsNumericViewHelperTest extends AbstractViewHelperTestCase
             'value' => '123'
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
+        $this->assertSame('then', $result);
     }
 
     /**
@@ -41,6 +41,6 @@ class IsNumericViewHelperTest extends AbstractViewHelperTestCase
             'value' => 'z123'
         ];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('else', $result);
+        $this->assertSame('else', $result);
     }
 }

@@ -22,16 +22,16 @@ class SanitizeStringViewHelperTest extends AbstractViewHelperTestCase
      * @param string $input
      * @param string $expectedOutput
      */
-    public function sanitizesString($input, $expectedOutput)
+    public function sanitizesString(string $input, string $expectedOutput): void
     {
         $result = $this->executeViewHelper(['string' => $input]);
-        $this->assertEquals($expectedOutput, $result);
+        $this->assertSame($expectedOutput, $result);
     }
 
     /**
      * @return array
      */
-    public function getInputsAndExpectedOutputs()
+    public static function getInputsAndExpectedOutputs(): array
     {
         return [
             ['this string needs dashes', 'this-string-needs-dashes'],

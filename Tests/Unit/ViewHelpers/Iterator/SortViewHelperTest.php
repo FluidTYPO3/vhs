@@ -19,7 +19,7 @@ class SortViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsExceptionOnUnsupportedSortFlag()
+    public function throwsExceptionOnUnsupportedSortFlag(): void
     {
         $arguments = ['sortFlags' => 'FOOBAR'];
         $this->expectViewHelperException();

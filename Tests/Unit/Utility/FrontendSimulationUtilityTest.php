@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class FrontendSimulationUtilityTest extends AbstractTestCase
 {
@@ -32,13 +32,13 @@ class FrontendSimulationUtilityTest extends AbstractTestCase
         $siteLanguage = $this->getMockBuilder(SiteLanguage::class)->disableOriginalConstructor()->getMock();
 
         $site = $this->getMockBuilder(Site::class)
-            ->setMethods(['getDefaultLanguage'])
+            ->onlyMethods(['getDefaultLanguage'])
             ->disableOriginalConstructor()
             ->getMock();
         $site->method('getDefaultLanguage')->willReturn($siteLanguage);
 
         $siteFinder = $this->getMockBuilder(SiteFinderProxy::class)
-            ->setMethods(['getAllSites'])
+            ->onlyMethods(['getAllSites'])
             ->disableOriginalConstructor()
             ->getMock();
         $siteFinder->method('getAllSites')->willReturn([$site]);
@@ -49,10 +49,6 @@ class FrontendSimulationUtilityTest extends AbstractTestCase
 
         GeneralUtility::addInstance(SiteFinderProxy::class, $siteFinder);
         GeneralUtility::addInstance(FrontendUserAuthentication::class, $frontendUserAuthentication);
-        GeneralUtility::addInstance(
-            TypoScriptFrontendController::class,
-            $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock()
-        );
     }
 
     protected function tearDown(): void
@@ -71,49 +67,48 @@ class FrontendSimulationUtilityTest extends AbstractTestCase
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->createRequestMock(SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
-        FrontendSimulationUtility::simulateFrontendEnvironment();
-        self::assertInstanceOf(TypoScriptFrontendController::class, $GLOBALS['TSFE']);
-
-        unset($GLOBALS['TSFE'], $GLOBALS['LANG']);
+        self::assertNull(FrontendSimulationUtility::simulateFrontendEnvironment());
+        self::assertIsObject($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.controller'));
+        self::assertInstanceOf(
+            ContentObjectRenderer::class,
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('currentContentObject')
+        );
     }
 
-    public function testResetDoesNotRemoveInstanceInFrontendContext(): void
+    public function testResetDoesNotChangeRequestInFrontendContext(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->createRequestMock(SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $GLOBALS['TYPO3_REQUEST'];
+
         FrontendSimulationUtility::resetFrontendEnvironment(null);
-        self::assertNotNull($GLOBALS['TSFE']);
+        self::assertSame($request, $GLOBALS['TYPO3_REQUEST']);
     }
 
-    public function testResetRemovesSimulatedInstanceInBackendContext(): void
+    public function testResetRestoresBackendRequest(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->createRequestMock(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        FrontendSimulationUtility::simulateFrontendEnvironment();
+
         FrontendSimulationUtility::resetFrontendEnvironment(null);
-        self::assertNull($GLOBALS['TSFE']);
+        self::assertSame($request, $GLOBALS['TYPO3_REQUEST']);
     }
 
-    public function testResetReestoresSimulatedInstanceInBackendContext(): void
+    public function testResetIgnoresLegacyTsfeBackupArgument(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->createRequestMock(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $toBeRestored = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        $toBeRestored = new \stdClass();
+
+        FrontendSimulationUtility::simulateFrontendEnvironment();
         FrontendSimulationUtility::resetFrontendEnvironment($toBeRestored);
-        self::assertSame($toBeRestored, $GLOBALS['TSFE']);
+
+        self::assertSame($request, $GLOBALS['TYPO3_REQUEST']);
+        self::assertArrayNotHasKey('TSFE', $GLOBALS);
     }
 
     private function createRequestMock(int $requestType): ServerRequest
     {
-        $request = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['getAttribute'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $request->method('getAttribute')->willReturn($requestType);
-        return $request;
+        return (new ServerRequest())->withAttribute('applicationType', $requestType);
     }
 }

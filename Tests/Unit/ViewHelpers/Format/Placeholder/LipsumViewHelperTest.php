@@ -15,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Class LipsumViewHelperTest
@@ -34,7 +35,7 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
     protected function setUp(): void
     {
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['resolvePackagePath'])
+            ->onlyMethods(['resolvePackagePath'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('resolvePackagePath')->willReturnMap(
@@ -45,19 +46,19 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
 
         $mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['parseFunc'])
+            ->onlyMethods(['parseFunc'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockContentObject->method('parseFunc')->willReturn('foobar');
 
         if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
-            /** @var ConfigurationManagerInterface $configurationManager */
+            /** @var ConfigurationManagerInterface&MockObject $configurationManager */
             $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
             $configurationManager->method('getContentObject')->willReturn($mockContentObject);
         } else {
             $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
             $request->method('getAttribute')->willReturn($mockContentObject);
-            /** @var ConfigurationManagerInterface $configurationManager */
+            /** @var ConfigurationManagerInterface&MockObject $configurationManager */
             $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
                 ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
                 ->addMethods(['getRequest'])
@@ -81,19 +82,21 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsParagraphCount()
+    public function supportsParagraphCount(): void
     {
         $arguments = $this->arguments;
         $firstRender = $this->executeViewHelper($arguments);
         $arguments['paragraphs'] = 6;
         $secondRender = $this->executeViewHelper($arguments);
+        self::assertIsString($firstRender);
+        self::assertIsString($secondRender);
         $this->assertLessThan(strlen($secondRender), strlen($firstRender));
     }
 
     /**
      * @test
      */
-    public function supportsHtmlArgument()
+    public function supportsHtmlArgument(): void
     {
         $arguments = $this->arguments;
         $arguments['html'] = true;
@@ -105,7 +108,7 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function detectsFileByShortPath()
+    public function detectsFileByShortPath(): void
     {
         $arguments = $this->arguments;
         $arguments['lipsum'] = 'EXT:vhs/Tests/Fixtures/Files/foo.txt';
@@ -116,7 +119,7 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canFallBackWhenUsingFileAndFileDoesNotExist()
+    public function canFallBackWhenUsingFileAndFileDoesNotExist(): void
     {
         $arguments = $this->arguments;
         $arguments['lipsum'] = 'None.txt';

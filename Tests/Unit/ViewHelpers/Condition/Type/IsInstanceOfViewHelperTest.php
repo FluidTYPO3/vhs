@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Type;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
@@ -19,7 +18,7 @@ class IsInstanceOfViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfConditionMatched()
+    public function rendersThenChildIfConditionMatched(): void
     {
         $dateTime = new \DateTime('now');
         $arguments = [
@@ -35,7 +34,7 @@ class IsInstanceOfViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfConditionNotMatched()
+    public function rendersElseChildIfConditionNotMatched(): void
     {
         $arguments = [
             'then' => 'then',

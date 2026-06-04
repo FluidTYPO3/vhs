@@ -23,7 +23,7 @@ class LoadedViewHelperTest extends AbstractViewHelperTestCase
         parent::setUp();
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive'])
+            ->onlyMethods(['isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('isPackageActive')->willReturnMap(
@@ -38,7 +38,7 @@ class LoadedViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersThenChildIfExtensionIsLoaded()
+    public function rendersThenChildIfExtensionIsLoaded(): void
     {
         $arguments = [
             'extensionName' => 'Vhs',
@@ -52,7 +52,7 @@ class LoadedViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersElseChildIfExtensionIsNotLoaded()
+    public function rendersElseChildIfExtensionIsNotLoaded(): void
     {
         $arguments = [
             'extensionName' => 'Void',

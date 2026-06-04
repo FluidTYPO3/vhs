@@ -19,7 +19,7 @@ class UniqIdViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsUniqueIds()
+    public function returnsUniqueIds(): void
     {
         $arguments = ['prefix' => '', 'moreEntropy' => false];
         $result1 = $this->executeViewHelper($arguments);

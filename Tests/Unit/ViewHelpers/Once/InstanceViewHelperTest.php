@@ -10,10 +10,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Class InstanceViewHelperTest
@@ -25,42 +24,17 @@ class InstanceViewHelperTest extends AbstractViewHelperTestCase
      * @param string|NULL $identifierArgument
      * @param string $expectedIdentifier
      */
-    public function testGetIdentifier($identifierArgument, $expectedIdentifier)
+    public function testGetIdentifier($identifierArgument, $expectedIdentifier): void
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '>=')) {
-            $request = $this->getMockBuilder(RequestInterface::class)->getMock();
-        } else {
-            $request = $this->getMockBuilder(Request::class)
-                ->disableOriginalConstructor()
-                ->onlyMethods(
-                    [
-                        'getControllerActionName',
-                        'getControllerName',
-                        'getControllerObjectName',
-                        'getControllerExtensionName',
-                        'getPluginName',
-                    ]
-                )
-                ->getMock();
-        }
-
-        $request->method('getControllerActionName')->willReturn('action');
-        $request->method('getControllerName')->willReturn('Controller');
-        $request->method('getControllerObjectName')->willReturn('Controller');
-        $request->method('getControllerExtensionName')->willReturn('Vhs');
-        $request->method('getPluginName')->willReturn('Plugin');
-        if (method_exists(RenderingContext::class, 'getRequest')) {
-            $renderingContext = $this->getMockBuilder(RenderingContext::class)
-                ->disableOriginalConstructor()
-                ->onlyMethods(['getRequest'])
-                ->getMock();
-        } else {
-            $renderingContext = $this->getMockBuilder(RenderingContext::class)
-                ->disableOriginalConstructor()
-                ->addMethods(['getRequest'])
-                ->getMock();
-        }
-
+        $extbaseParameters = (new ExtbaseRequestParameters())
+            ->setControllerActionName('action')
+            ->setControllerName('Controller')
+            ->setControllerExtensionName('Vhs')
+            ->setPluginName('Plugin');
+        $request = (new ServerRequest())->withAttribute('extbase', $extbaseParameters);
+        $renderingContext = $this->getMockBuilder(RenderingContextInterface::class)
+            ->addMethods(['getRequest'])
+            ->getMockForAbstractClass();
         $renderingContext->method('getRequest')->willReturn($request);
 
         $instance = $this->createInstance();
@@ -72,7 +46,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getIdentifierTestValues()
+    public static function getIdentifierTestValues(): array
     {
         return [
             [null, 'action_Controller_Plugin_Vhs'],
@@ -84,7 +58,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return void
      */
-    public function testStoreIdentifier()
+    public function testStoreIdentifier(): void
     {
         $instance = $this->createInstance();
         $instance->setArguments(['identifier' => 'test']);
@@ -96,7 +70,7 @@ class InstanceViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return void
      */
-    public function testAssertShouldSkip()
+    public function testAssertShouldSkip(): void
     {
         $instance = $this->createInstance();
         $instance->setArguments(['identifier' => 'test']);

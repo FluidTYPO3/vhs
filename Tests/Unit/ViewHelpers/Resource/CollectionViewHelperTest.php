@@ -16,7 +16,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class CollectionViewHelperTest extends AbstractViewHelperTestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
         $this->assertEmpty($this->executeViewHelper());
     }

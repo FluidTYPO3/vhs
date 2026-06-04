@@ -24,23 +24,33 @@ class TryViewHelperTest extends AbstractViewHelperTestCase
 
     public function testRenderStaticWithException(): void
     {
-        $arguments['__then'] = function() { throw new \Exception('test'); };
-        $arguments['__else'] = function() { return 'else case'; };
-        $output = TryViewHelper::renderStatic($arguments, function() { return ''; }, $this->renderingContext);
+        $arguments['__then'] = function () {
+            throw new \Exception('test');
+        };
+        $arguments['__else'] = function () {
+            return 'else case';
+        };
+        $output = TryViewHelper::renderStatic($arguments, function () {
+            return '';
+        }, $this->renderingContext);
         self::assertSame('else case', $output);
     }
 
     public function testRenderStaticWithExceptionAndElseArgument(): void
     {
-        $arguments['__then'] = function() { throw new \Exception('test'); };
+        $arguments['__then'] = function () {
+            throw new \Exception('test');
+        };
         $arguments['else'] = 'else case';
-        $output = TryViewHelper::renderStatic($arguments, function() { return ''; }, $this->renderingContext);
+        $output = TryViewHelper::renderStatic($arguments, function () {
+            return '';
+        }, $this->renderingContext);
         self::assertSame('else case', $output);
     }
 
     public function testRenderWithException(): void
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderElseChild', 'renderChildren'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->onlyMethods(['renderElseChild', 'renderChildren'])->getMock();
         $instance->setRenderingContext($this->renderingContext);
         $instance->setArguments([]);
         $instance->expects($this->once())->method('renderChildren')->willThrowException(new \RuntimeException('testerror'));
@@ -51,11 +61,12 @@ class TryViewHelperTest extends AbstractViewHelperTestCase
 
     public function testRenderWithExceptionAndElseArgument(): void
     {
-        $instance = $this->getMockBuilder($this->getViewHelperClassName())->setMethods(['renderChildren'])->getMock();
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->onlyMethods(['renderChildren'])->getMock();
         $instance->setRenderingContext($this->renderingContext);
         $instance->setArguments(['else' => 'else']);
 
         $node = new DummyViewHelperNode($instance);
+        $node = $node->getNode();
         $node->setArguments(['else' => 'else']);
         $instance->setViewHelperNode($node);
 

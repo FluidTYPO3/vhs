@@ -29,7 +29,7 @@ class Bar extends AbstractEntity
     /**
      * @var ObjectStorage<\FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar>
      */
-    protected $bars = [];
+    protected ObjectStorage $bars;
 
     /**
      * Constructor
@@ -84,7 +84,7 @@ class Bar extends AbstractEntity
     /**
      * @param ObjectStorage<Bar> $bars
      */
-    public function setbars($bars)
+    public function setbars($bars): void
     {
         $this->bars = $bars;
     }

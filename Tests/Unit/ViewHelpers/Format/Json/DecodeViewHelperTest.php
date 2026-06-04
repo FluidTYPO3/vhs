@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Json;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Format\Json\DecodeViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Class DecodeViewHelperTest
@@ -20,16 +21,22 @@ class DecodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsNullForEmptyArguments()
+    public function returnsNullForEmptyArguments(): void
     {
-        $result = DecodeViewHelper::renderStatic([], function () {}, $this->renderingContext);
+        self::assertInstanceOf(RenderingContextInterface::class, $this->renderingContext);
+        $result = DecodeViewHelper::renderStatic(
+            [],
+            function () {
+            },
+            $this->renderingContext
+        );
         $this->assertNull($result);
     }
 
     /**
      * @test
      */
-    public function returnsExpectedValueForProvidedArguments()
+    public function returnsExpectedValueForProvidedArguments(): void
     {
 
         $fixture = '{"foo":"bar","bar":true,"baz":1,"foobar":null}';
@@ -48,7 +55,7 @@ class DecodeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function throwsExceptionForInvalidArgument()
+    public function throwsExceptionForInvalidArgument(): void
     {
         $invalidJson = "{'foo': 'bar'}";
         $this->expectViewHelperException();

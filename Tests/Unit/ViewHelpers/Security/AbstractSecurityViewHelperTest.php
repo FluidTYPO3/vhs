@@ -10,7 +10,10 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyViewHelperNode;
 use FluidTYPO3\Vhs\ViewHelpers\Security\AbstractSecurityViewHelper;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
@@ -21,7 +24,8 @@ use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition;
 
 class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
@@ -29,7 +33,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canCreateViewHelperInstance()
+    public function canCreateViewHelperInstance(): void
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
             ->disableOriginalConstructor()
@@ -40,7 +44,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     protected function createInstance(): AbstractSecurityViewHelper
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         return $instance;
@@ -51,15 +55,14 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
      */
     public function testEvaluateArguments(array $arguments, array $expectedMethods, bool $expectedReturn): void
     {
-        $node = $this->getMockBuilder(ViewHelperNode::class)
-            ->setMethods(['getChildNodes'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $node->expects($this->any())->method('getChildNodes')->willReturn([]);
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods($expectedMethods)
+            ->onlyMethods($expectedMethods)
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
+        $node = new DummyViewHelperNode($instance);
         /** @var ArgumentDefinition[] $argumentDefinitions */
         $argumentDefinitions = $instance->prepareArguments();
         $preparedArguments = [];
@@ -69,7 +72,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         foreach ($arguments as $argumentName => $value) {
             $preparedArguments[$argumentName] = $value;
         }
-        $instance->setViewHelperNode($node);
+        $instance->setViewHelperNode($node->getNode());
         foreach ($expectedMethods as $expectedMethod) {
             $instance->expects($this->once())->method($expectedMethod)->willReturn(true);
         }
@@ -78,10 +81,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expectedReturn, $result);
     }
 
-    public function getEvaluateArgumentsTestValues(): array
+    public static function getEvaluateArgumentsTestValues(): array
     {
         if (!class_exists(FrontendUser::class)) {
-            self::markTestSkipped('Skipping test with FrontendUser dependency');
+            return [[[], [], false]];
         }
         $frontendUser = new FrontendUser();
         $frontendUser->_setProperty('uid', 1);
@@ -187,8 +190,11 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         ?FrontendUser $resolvedUser,
         bool $expected
     ): void {
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['getCurrentFrontendUser'])
+            ->onlyMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $instance->expects($this->once())->method('getCurrentFrontendUser')->willReturn($resolvedUser);
@@ -196,10 +202,10 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertFrontendUserLoggedInTestValues(): array
+    public static function getAssertFrontendUserLoggedInTestValues(): array
     {
         if (!class_exists(FrontendUser::class)) {
-            self::markTestSkipped('Skipping test with FrontendUser dependency');
+            return [[null, null, false]];
         }
         $user1 = new FrontendUser();
         $property = new \ReflectionProperty($user1, 'uid');
@@ -228,8 +234,11 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         ?FrontendUser $resolvedUser,
         bool $expected
     ): void {
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['getCurrentFrontendUser'])
+            ->onlyMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $instance->expects($this->once())->method('getCurrentFrontendUser')->willReturn($resolvedUser);
@@ -237,19 +246,19 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertFrontendUserGroupLoggedInTestValues(): array
+    public static function getAssertFrontendUserGroupLoggedInTestValues(): array
     {
         if (!class_exists(FrontendUser::class)) {
-            self::markTestSkipped('Skipping test with FrontendUser dependency');
+            return [[null, null, false]];
         }
         $frontendUserGroup = new FrontendUserGroup();
         $frontendUserGroups = new ObjectStorage();
         $frontendUserGroups->attach($frontendUserGroup);
         $user1 = new FrontendUser();
-        $this->setInaccessiblePropertyValue($user1, 'uid', 1);
+        $user1->_setProperty('uid', 1);
         $user2 = new FrontendUser();
         $user2->setUsergroup($frontendUserGroups);
-        $this->setInaccessiblePropertyValue($user2, 'uid', 2);
+        $user2->_setProperty('uid', 2);
         return [
             [null, null, false],
             [null, $user1, false],
@@ -267,11 +276,14 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
      */
     public function testAssertFrontendUsersLoggedIn(
         ObjectStorage $users,
-        FrontendUser $currentUser,
+        mixed $currentUser,
         bool $expected
     ): void {
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['getCurrentFrontendUser'])
+            ->onlyMethods(['getCurrentFrontendUser'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $instance->expects($this->exactly($users->count()))->method('getCurrentFrontendUser')->willReturn($currentUser);
@@ -279,17 +291,17 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertFrontendUsersLoggedInTestValues(): array
+    public static function getAssertFrontendUsersLoggedInTestValues(): array
     {
         if (!class_exists(FrontendUser::class)) {
-            self::markTestSkipped('Skipping test with FrontendUser dependency');
+            return [[new ObjectStorage(), null, false]];
         }
         $user1 = new FrontendUser();
-        $this->setInaccessiblePropertyValue($user1, 'uid', 1);
+        $user1->_setProperty('uid', 1);
         $user2 = new FrontendUser();
-        $this->setInaccessiblePropertyValue($user2, 'uid', 2);
+        $user2->_setProperty('uid', 2);
         $user3 = new FrontendUser();
-        $this->setInaccessiblePropertyValue($user3, 'uid', 3);
+        $user3->_setProperty('uid', 3);
 
         $users = new ObjectStorage();
         $users->attach($user1);
@@ -309,7 +321,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     {
         $GLOBALS['BE_USER'] = (object) ['user' => ['uid' => $currentUser]];
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $result = $instance->assertBackendUserLoggedIn($user);
@@ -317,7 +329,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertBackendUserLoggedInTestValues(): array
+    public static function getAssertBackendUserLoggedInTestValues(): array
     {
         return [
             [1, 0, false],
@@ -336,7 +348,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
     public function testAssertBackendUserGroupLoggedIn($group, ?array $currentUser, bool $expected): void
     {
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['getCurrentBackendUser'])
+            ->onlyMethods(['getCurrentBackendUser'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $instance->method('getCurrentBackendUser')->willReturn($currentUser);
@@ -344,7 +356,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertBackendUserGroupLoggedInTestValues(): array
+    public static function getAssertBackendUserGroupLoggedInTestValues(): array
     {
         return [
             [null, null, false],
@@ -369,7 +381,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
             $this->markTestSkipped('Aspects implementation is tested by the core');
         }
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['getCurrentBackendUser'])
+            ->onlyMethods(['getCurrentBackendUser'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
@@ -378,7 +390,7 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function getAssertAdminLoggedInTestValues(): array
+    public static function getAssertAdminLoggedInTestValues(): array
     {
         return [
             [null, false],
@@ -387,13 +399,27 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         ];
     }
 
+    public function testGetCurrentFrontendUserReturnsNullWithoutRequest(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())
+            ->addMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $instance->setRenderingContext($this->createRenderingContextWithoutRequest());
+
+        self::assertNull($instance->getCurrentFrontendUser());
+        self::assertFalse($this->callInaccessibleMethod($instance, 'isFrontendContext'));
+    }
+
     public function testGetCurrentFrontendUserReturnsNullIfNoFrontendUserRecordIsSetInFrontendController(): void
     {
         $GLOBALS['TSFE'] = (object) ['loginUser' => ''];
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
+        $instance->setRenderingContext($this->createRenderingContextWithRequest(new ServerRequest()));
         $result = $instance->getCurrentFrontendUser();
         $this->assertNull($result);
     }
@@ -410,13 +436,13 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         $querySettings = $this->getMockBuilder(Typo3QuerySettings::class)->disableOriginalConstructor()->getMock();
 
         $query = $this->getMockBuilder(Query::class)
-            ->setMethods(['getQuerySettings'])
+            ->onlyMethods(['getQuerySettings'])
             ->disableOriginalConstructor()
             ->getMock();
         $query->method('getQuerySettings')->willReturn($querySettings);
 
         $repository = $this->getMockBuilder(FrontendUserRepository::class)
-            ->setMethods(['findByUid', 'createQuery', 'setDefaultQuerySettings'])
+            ->onlyMethods(['findByUid', 'createQuery', 'setDefaultQuerySettings'])
             ->disableOriginalConstructor()
             ->getMock();
         $repository->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
@@ -425,29 +451,115 @@ class AbstractSecurityViewHelperTest extends AbstractViewHelperTestCase
         GeneralUtility::setSingletonInstance(FrontendUserRepository::class, $repository);
 
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMockForAbstractClass();
 
         $result = $instance->getCurrentFrontendUser();
         $this->assertEquals($frontendUser, $result);
     }
 
-    public function testRenderThenChildDisablesCacheInFrontendContext(): void
+    public function testGetCurrentFrontendUserUsesRenderingContextRequest(): void
     {
-        $GLOBALS['TSFE'] = (object) ['no_cache' => 0];
-        $node = $this->getMockBuilder(ViewHelperNode::class)
-            ->setMethods(['getChildNodes'])
+        if (!class_exists(FrontendUser::class)) {
+            self::markTestSkipped('Skipping test with FrontendUser dependency');
+        }
+
+        $frontendUser = new FrontendUser();
+        $repository = $this->getMockBuilder(FrontendUserRepository::class)
+            ->onlyMethods(['findByUid'])
             ->disableOriginalConstructor()
             ->getMock();
-        $node->expects($this->any())->method('getChildNodes')->willReturn([]);
+        $repository->expects($this->once())->method('findByUid')->with(222)->willReturn($frontendUser);
+        GeneralUtility::setSingletonInstance(FrontendUserRepository::class, $repository);
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute(
+            'frontend.user',
+            $this->createFrontendUserAuthentication(111)
+        );
+        $subRequest = (new ServerRequest())->withAttribute(
+            'frontend.user',
+            $this->createFrontendUserAuthentication(222)
+        );
+
         $instance = $this->getMockBuilder($this->getViewHelperClassName())
-            ->setMethods(['isFrontendContext', 'renderChildren'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $instance->setViewHelperNode($node);
+        $instance->setRenderingContext($this->createRenderingContextWithRequest($subRequest));
+
+        self::assertSame($frontendUser, $instance->getCurrentFrontendUser());
+    }
+
+    public function testRenderThenChildDisablesCacheInFrontendContext(): void
+    {
+        $cacheInstruction = new CacheInstruction();
+        $request = (new ServerRequest())->withAttribute('frontend.cache.instruction', $cacheInstruction);
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())
+            ->onlyMethods(['isFrontendContext', 'renderChildren'])
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $node = new DummyViewHelperNode($instance);
+        $instance->setViewHelperNode($node->getNode());
+        $instance->setRenderingContext($this->createRenderingContextWithRequest($request));
         $instance->method('renderChildren')->willReturn('test');
         $instance->method('isFrontendContext')->willReturn(true);
         $this->callInaccessibleMethod($instance, 'renderThenChild');
-        $this->assertEquals(1, $GLOBALS['TSFE']->no_cache);
+        $this->assertNotSame([], $cacheInstruction->getDisabledCacheReasons());
+    }
+
+    public function testRenderThenChildDisablesCacheOnRenderingContextRequest(): void
+    {
+        $globalCacheInstruction = new CacheInstruction();
+        $subRequestCacheInstruction = new CacheInstruction();
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute(
+            'frontend.cache.instruction',
+            $globalCacheInstruction
+        );
+        $subRequest = (new ServerRequest())->withAttribute('frontend.cache.instruction', $subRequestCacheInstruction);
+
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())
+            ->onlyMethods(['isFrontendContext', 'renderChildren'])
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $node = new DummyViewHelperNode($instance);
+        $instance->setViewHelperNode($node->getNode());
+        $instance->setRenderingContext($this->createRenderingContextWithRequest($subRequest));
+        $instance->method('renderChildren')->willReturn('test');
+        $instance->method('isFrontendContext')->willReturn(true);
+
+        $this->callInaccessibleMethod($instance, 'renderThenChild');
+
+        self::assertSame([], $globalCacheInstruction->getDisabledCacheReasons());
+        self::assertNotSame([], $subRequestCacheInstruction->getDisabledCacheReasons());
+    }
+
+    public function testFrontendContextUsesRenderingContextRequest(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute(
+            'applicationType',
+            SystemEnvironmentBuilder::REQUESTTYPE_BE
+        );
+        $subRequest = (new ServerRequest())->withAttribute(
+            'applicationType',
+            SystemEnvironmentBuilder::REQUESTTYPE_FE
+        );
+
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())
+            ->addMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $instance->setRenderingContext($this->createRenderingContextWithRequest($subRequest));
+
+        self::assertTrue($this->callInaccessibleMethod($instance, 'isFrontendContext'));
+    }
+
+    private function createFrontendUserAuthentication(int $uid): FrontendUserAuthentication
+    {
+        $frontendUserAuthentication = $this->getMockBuilder(FrontendUserAuthentication::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $frontendUserAuthentication->user = ['uid' => $uid];
+
+        return $frontendUserAuthentication;
     }
 }

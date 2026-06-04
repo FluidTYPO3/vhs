@@ -22,15 +22,15 @@ class PopViewHelperTest extends AbstractViewHelperTestCase
      * @param array $arguments
      * @param mixed $expectedValue
      */
-    public function testRender(array $arguments, $expectedValue)
+    public function testRender(array $arguments, mixed $expectedValue): void
     {
-        $this->assertEquals($this->executeViewHelper($arguments), $expectedValue);
+        $this->assertSame($expectedValue, $this->executeViewHelper($arguments));
     }
 
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues(): array
     {
         return [
             [['subject' => []], null],
@@ -44,7 +44,7 @@ class PopViewHelperTest extends AbstractViewHelperTestCase
      * @dataProvider getErrorTestValues
      * @param mixed $subject
      */
-    public function testThrowsErrorsOnInvalidSubjectType($subject)
+    public function testThrowsErrorsOnInvalidSubjectType(mixed $subject): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelper(['subject' => $subject]);
@@ -53,7 +53,7 @@ class PopViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getErrorTestValues()
+    public static function getErrorTestValues(): array
     {
         return [
             [0],

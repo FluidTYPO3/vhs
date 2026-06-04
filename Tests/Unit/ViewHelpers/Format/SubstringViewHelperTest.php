@@ -19,7 +19,7 @@ class SubstringViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canRenderUsingArguments()
+    public function canRenderUsingArguments(): void
     {
         $arguments = [
             'content' => 'foobar',
@@ -33,7 +33,7 @@ class SubstringViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canRenderWithLengthArgument()
+    public function canRenderWithLengthArgument(): void
     {
         $arguments = [
             'content' => 'foobar',

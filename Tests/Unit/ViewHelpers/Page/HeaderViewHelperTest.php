@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class HeaderViewHelperTest extends AbstractViewHelperTestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
         $singletons = GeneralUtility::getSingletonInstances();
         GeneralUtility::setSingletonInstance(

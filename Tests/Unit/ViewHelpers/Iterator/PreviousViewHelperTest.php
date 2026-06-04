@@ -19,7 +19,7 @@ class PreviousViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsPreviousElement()
+    public function returnsPreviousElement(): void
     {
         $array = ['a', 'b', 'c'];
         next($array);

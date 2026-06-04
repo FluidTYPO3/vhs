@@ -19,7 +19,7 @@ class ValuesViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsValuesUsingArgument()
+    public function returnsValuesUsingArgument(): void
     {
         $result = $this->executeViewHelper(['subject' => ['foo' => 'bar']]);
         $this->assertEquals(['bar'], $result);
@@ -28,7 +28,7 @@ class ValuesViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsIterators()
+    public function supportsIterators(): void
     {
         $result = $this->executeViewHelper(['subject' => new \ArrayIterator(['foo' => 'bar'])]);
         $this->assertEquals(['bar'], $result);

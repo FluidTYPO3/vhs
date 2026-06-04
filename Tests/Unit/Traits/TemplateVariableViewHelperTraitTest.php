@@ -18,7 +18,7 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
     public function testWithoutAsArgument(): void
     {
         $variableProvider = $this->getMockBuilder(StandardVariableProvider::class)
-            ->setMethods(['add', 'get'])
+            ->onlyMethods(['add', 'get'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $variableProvider->expects(self::never())->method('add');
@@ -34,7 +34,7 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
     public function testWithAsArgument(): void
     {
         $variableProvider = $this->getMockBuilder(StandardVariableProvider::class)
-            ->setMethods(['add', 'get'])
+            ->onlyMethods(['add', 'get'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $variableProvider->expects(self::once())->method('add')->with('as', 'foobar');
@@ -51,7 +51,7 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
     public function testWithoutAsArgumentStatic(): void
     {
         $variableProvider = $this->getMockBuilder(StandardVariableProvider::class)
-            ->setMethods(['add', 'get'])
+            ->onlyMethods(['add', 'get'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $variableProvider->expects(self::never())->method('add');
@@ -60,7 +60,9 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
         $context = $this->getMockBuilder(RenderingContextInterface::class)->getMockForAbstractClass();
         $context->method('getVariableProvider')->willReturn($variableProvider);
 
-        $closure = function () { return ''; };
+        $closure = function () {
+            return '';
+        };
 
         $output = DummyTemplateVariableViewHelper::testStatic('foobar', null, $context, $closure);
         self::assertSame('foobar', $output);
@@ -69,7 +71,7 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
     public function testWithAsArgumentStatic(): void
     {
         $variableProvider = $this->getMockBuilder(StandardVariableProvider::class)
-            ->setMethods(['add', 'get'])
+            ->onlyMethods(['add', 'get'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $variableProvider->expects(self::once())->method('add')->with('as', 'foobar');
@@ -78,7 +80,9 @@ class TemplateVariableViewHelperTraitTest extends AbstractTestCase
         $context = $this->getMockBuilder(RenderingContextInterface::class)->getMockForAbstractClass();
         $context->method('getVariableProvider')->willReturn($variableProvider);
 
-        $closure = function () { return ''; };
+        $closure = function () {
+            return '';
+        };
 
         $output = DummyTemplateVariableViewHelper::testStatic('foobar', 'as', $context, $closure);
         self::assertSame('', $output);

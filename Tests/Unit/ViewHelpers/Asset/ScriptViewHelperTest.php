@@ -16,5 +16,13 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class ScriptViewHelperTest extends AbstractViewHelperTestCase
 {
-
+    /**
+     * @test
+     */
+    public function exposesCspArgumentForDocumentation()
+    {
+        $arguments = $this->createInstance()->prepareArguments();
+        self::assertArrayHasKey('csp', $arguments);
+        self::assertNull($arguments['csp']->getDefaultValue());
+    }
 }

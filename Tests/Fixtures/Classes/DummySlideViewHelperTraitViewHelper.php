@@ -15,12 +15,12 @@ class DummySlideViewHelperTraitViewHelper
         return [];
     }
 
-    private function registerArgument(
+    public function registerArgument(
         string $name,
         string $type,
         string $description,
         bool $required = false,
-        $default = null
+        mixed $default = null
     ): void {
     }
 }

@@ -19,7 +19,7 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsConfiguredItemNumberIfFixed()
+    public function returnsConfiguredItemNumberIfFixed(): void
     {
         $arguments = [
             'count' => 5,
@@ -27,13 +27,14 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
             'subject' => ['a', 'b', 'c', 'd', 'e'],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(5, $result);
     }
 
     /**
      * @test
      */
-    public function returnsConfiguredItemNumberIfFixedAndSubjectIsEmpty()
+    public function returnsConfiguredItemNumberIfFixedAndSubjectIsEmpty(): void
     {
         $arguments = [
             'count' => 5,
@@ -41,52 +42,56 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
             'subject' => [],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(5, $result);
     }
 
     /**
      * @test
      */
-    public function returnsExpectedItemNumberIfNotFixed()
+    public function returnsExpectedItemNumberIfNotFixed(): void
     {
         $arguments = [
             'count' => 4,
             'subject' => ['a', 'b', 'c', 'd', 'e'],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(2, $result);
     }
 
     /**
      * @test
      */
-    public function returnsEmptyResultForEmptySubjectAndNotFixed()
+    public function returnsEmptyResultForEmptySubjectAndNotFixed(): void
     {
         $arguments = [
             'count' => 5,
             'subject' => [],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(0, $result);
     }
 
     /**
      * @test
      */
-    public function returnsEmptyResultForZeroCount()
+    public function returnsEmptyResultForZeroCount(): void
     {
         $arguments = [
             'count' => 0,
             'subject' => ['a', 'b', 'c', 'd', 'e'],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(0, $result);
     }
 
     /**
      * @test
      */
-    public function preservesArrayKeysIfRequested()
+    public function preservesArrayKeysIfRequested(): void
     {
         $arguments = [
             'count' => 2,

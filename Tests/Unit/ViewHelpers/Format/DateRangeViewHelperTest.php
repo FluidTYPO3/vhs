@@ -33,7 +33,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersWithDefaultArguments()
+    public function rendersWithDefaultArguments(): void
     {
         $test = $this->executeViewHelper($this->arguments);
         $this->assertSame('1970-01-01 - 1970-01-02', $test);
@@ -42,7 +42,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function usesNowAsStart()
+    public function usesNowAsStart(): void
     {
         $arguments = $this->arguments;
         unset($arguments['start']);
@@ -55,7 +55,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersStrftimeFormats()
+    public function rendersStrftimeFormats(): void
     {
         $arguments = $this->arguments;
         $arguments['startFormat'] = '%h';
@@ -66,7 +66,18 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canReturnDateTime()
+    public function rendersStrftimeFormatWithLiteralDateFormatCharacters(): void
+    {
+        $arguments = $this->arguments;
+        $arguments['startFormat'] = 'vom %d.%m.%Y';
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('vom 01.01.1970 - 1970-01-02', $test);
+    }
+
+    /**
+     * @test
+     */
+    public function canReturnDateTime(): void
     {
         $arguments = $this->arguments;
         $arguments['return'] = 'DateTime';
@@ -77,7 +88,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canReturnIntervalComponentArray()
+    public function canReturnIntervalComponentArray(): void
     {
         $arguments = $this->arguments;
         $arguments['return'] = ['d', 's'];
@@ -88,7 +99,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canReturnFormattedInterval()
+    public function canReturnFormattedInterval(): void
     {
         $arguments = $this->arguments;
         $arguments['return'] = 'd';
@@ -99,7 +110,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function canReturnFormattedStrftimeFormat()
+    public function canReturnFormattedStrftimeFormat(): void
     {
         $arguments = $this->arguments;
         $arguments['return'] = 'd';
@@ -110,7 +121,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function supportsIntervalFormat()
+    public function supportsIntervalFormat(): void
     {
         $arguments = $this->arguments;
         $arguments['intervalFormat'] = 'P3M';
@@ -122,7 +133,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsErrorIfMissingRequiredArgumentsEndAndIntervalFormat()
+    public function returnsErrorIfMissingRequiredArgumentsEndAndIntervalFormat(): void
     {
         $arguments = $this->arguments;
         unset($arguments['end'], $arguments['intervalFormat']);
@@ -133,7 +144,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsErrorOnInvalidDateInterval()
+    public function returnsErrorOnInvalidDateInterval(): void
     {
         $arguments = $this->arguments;
         $arguments['intervalFormat'] = 'what is this then';
@@ -145,7 +156,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsErrorOnInvalidStart()
+    public function returnsErrorOnInvalidStart(): void
     {
         $arguments = $this->arguments;
         $arguments['start'] = 'what is this then';
@@ -156,7 +167,7 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsErrorOnInvalidEnd()
+    public function returnsErrorOnInvalidEnd(): void
     {
         $arguments = $this->arguments;
         $arguments['end'] = 'what is this then';

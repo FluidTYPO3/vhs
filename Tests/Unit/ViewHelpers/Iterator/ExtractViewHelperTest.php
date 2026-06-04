@@ -11,8 +11,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Iterator\ExtractViewHelper;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -26,17 +24,14 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
     protected $fixture;
 
     /**
-     * @return ObjectStorage
+     * @return ObjectStorage<object>
      */
-    public function constructObjectStorageContainingFrontendUser()
+    private static function constructObjectStorageContainingFrontendUser(): ObjectStorage
     {
         $storage = new ObjectStorage();
-        $user1 = new FrontendUser();
-        $user2 = new FrontendUser();
-        $user3 = new FrontendUser();
-        $user1->setFirstName('Peter');
-        $user2->setFirstName('Paul');
-        $user3->setFirstName('Mary');
+        $user1 = self::createObjectWithFirstName('Peter');
+        $user2 = self::createObjectWithFirstName('Paul');
+        $user3 = self::createObjectWithFirstName('Mary');
         $storage->attach($user1);
         $storage->attach($user2);
         $storage->attach($user3);
@@ -44,29 +39,25 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
         return $storage;
     }
 
-    /**
-     * @return ObjectStorage
-     */
-    public function constructObjectStorageContainingFrontendUsersWithUserGroups()
+    private static function createObjectWithFirstName(string $firstName): object
     {
-        $storage = new ObjectStorage();
-        $userGroup1 = new FrontendUserGroup('my first group');
-        $userGroup2 = new FrontendUserGroup('my second group');
-        $user1 = new FrontendUser();
-        $user2 = new FrontendUser();
-        $user1->addUsergroup($userGroup1);
-        $user2->addUsergroup($userGroup2);
-        $storage->attach($user1);
-        $storage->attach($user2);
+        return new class ($firstName) {
+            public function __construct(private readonly string $firstName)
+            {
+            }
 
-        return $storage;
+            public function getFirstName(): string
+            {
+                return $this->firstName;
+            }
+        };
     }
 
     /**
      * @test
      * @dataProvider nestedStructures
      */
-    public function recursivelyExtractKey($structure, $key, $expected)
+    public function recursivelyExtractKey(mixed $structure, string $key, mixed $expected): void
     {
         $recursive = true;
         $this->assertEquals(
@@ -78,11 +69,8 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function nestedStructures()
+    public static function nestedStructures(): array
     {
-        if (!class_exists(FrontendUser::class)) {
-            self::markTestSkipped('Skipping test with FrontendUser dependency');
-        }
         $structures = [
             // structure, key, expected
             'simple indexed_search searchWords array' => [
@@ -143,7 +131,7 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
                 ]
             ],
             'ObjectStorage containing FrontendUser' => [
-                $this->constructObjectStorageContainingFrontendUser(),
+                self::constructObjectStorageContainingFrontendUser(),
                 'firstname',
                 [
                     'Peter',
@@ -165,7 +153,7 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
      * @test
      * @dataProvider simpleStructures
      */
-    public function extractByKeyExtractsKeyByPath($structure, $key, $expected)
+    public function extractByKeyExtractsKeyByPath(mixed $structure, string $key, mixed $expected): void
     {
         $this->assertEquals(
             $expected,
@@ -177,7 +165,7 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
      * @test
      * @dataProvider simpleStructures
      */
-    public function extractByKeyExtractsKeyByPathWithSingle($structure, $key, $expected)
+    public function extractByKeyExtractsKeyByPathWithSingle(mixed $structure, string $key, mixed $expected): void
     {
         if (is_array($expected)) {
             $expected = reset($expected);
@@ -191,7 +179,7 @@ class ExtractViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function simpleStructures()
+    public static function simpleStructures(): array
     {
         $structures = [
             // structure, key, expected

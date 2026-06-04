@@ -19,7 +19,7 @@ class TimestampViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function returnsIntegerAtOrAboveNowAsMeasuredInTest()
+    public function returnsIntegerAtOrAboveNowAsMeasuredInTest(): void
     {
         $now = time();
         $result = $this->executeViewHelper();

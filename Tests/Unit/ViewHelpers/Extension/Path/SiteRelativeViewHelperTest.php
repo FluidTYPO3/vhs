@@ -22,11 +22,14 @@ class SiteRelativeViewHelperTest extends AbstractViewHelperTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $package = $this->getMockBuilder(Package::class)->setMethods(['getPackagePath'])->disableOriginalConstructor()->getMock();
+        $package = $this->getMockBuilder(Package::class)
+            ->onlyMethods(['getPackagePath'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $package->method('getPackagePath')->willReturn(realpath(__DIR__ . '/../../../../../'));
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive', 'getPackage'])
+            ->onlyMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('isPackageActive')->willReturnMap(
@@ -42,7 +45,7 @@ class SiteRelativeViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @test
      */
-    public function rendersUsingArgument()
+    public function rendersUsingArgument(): void
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs']);
         $this->assertSame(realpath(__DIR__ . '/../../../../../'), $test);
