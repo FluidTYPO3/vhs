@@ -23,6 +23,7 @@ class ExtensionMetadataTest extends TestCase
 
         self::assertStringContainsString('phpunit-functional.xml.dist', $workflow);
         self::assertStringContainsString('typo3DatabaseDriver=pdo_sqlite', $workflow);
+        self::assertStringContainsString('--ignore-platform-req=php+', $workflow);
     }
 
     public function testTypo3SupportMetadataIsConsistent(): void
@@ -30,6 +31,8 @@ class ExtensionMetadataTest extends TestCase
         $composer = self::readJsonFile('composer.json');
         $composerMinors = self::extractComposerTypo3Minors($composer['require']['typo3/cms-core']);
 
+        self::assertSame('^8.2', $composer['require']['php']);
+        self::assertSame(['8.2', '8.3', '8.4', '8.5'], self::extractWorkflowPhpMinors());
         self::assertSame(['13.4', '14.3'], $composerMinors);
         foreach (['typo3/cms-extbase', 'typo3/cms-fluid', 'typo3/cms-frontend', 'typo3/cms-backend'] as $package) {
             self::assertSame($composerMinors, self::extractComposerTypo3Minors($composer['require'][$package]));
@@ -39,8 +42,12 @@ class ExtensionMetadataTest extends TestCase
         self::assertSame($composerMinors, self::extractWorkflowTypo3Minors());
 
         $emConf = self::readExtensionManagerConfiguration();
+        $emConfPhpConstraint = $emConf['constraints']['depends']['php'];
+        self::assertSame(['8.2', '8.5'], self::extractExtensionManagerVersionRangeMinors($emConfPhpConstraint));
+        self::assertSame('8.2.0-8.5.99', $emConfPhpConstraint);
+
         $emConfTypo3Constraint = $emConf['constraints']['depends']['typo3'];
-        self::assertSame($composerMinors, self::extractExtensionManagerTypo3Minors($emConfTypo3Constraint));
+        self::assertSame($composerMinors, self::extractExtensionManagerVersionRangeMinors($emConfTypo3Constraint));
         self::assertSame('13.4.0-14.3.99', $emConfTypo3Constraint);
     }
 
@@ -62,7 +69,7 @@ class ExtensionMetadataTest extends TestCase
         return self::sortUnique($matches[1]);
     }
 
-    private static function extractExtensionManagerTypo3Minors(string $constraint): array
+    private static function extractExtensionManagerVersionRangeMinors(string $constraint): array
     {
         self::assertMatchesRegularExpression('/^(\d+\.\d+)\.\d+-(\d+\.\d+)\.\d+$/', $constraint);
         preg_match('/^(\d+\.\d+)\.\d+-(\d+\.\d+)\.\d+$/', $constraint, $matches);
@@ -78,10 +85,22 @@ class ExtensionMetadataTest extends TestCase
         return self::sortUnique($matches[1]);
     }
 
+    private static function extractWorkflowPhpMinors(): array
+    {
+        return self::extractWorkflowMatrixMinors('php');
+    }
+
     private static function extractWorkflowTypo3Minors(): array
     {
+        return self::extractWorkflowMatrixMinors('typo3');
+    }
+
+    private static function extractWorkflowMatrixMinors(string $key): array
+    {
         $workflow = (string) file_get_contents(self::rootPath('.github/workflows/build.yml'));
-        preg_match_all('/typo3:\s*[\'\"]?\^?(\d+\.\d+)[\'\"]?/', $workflow, $matches);
+        preg_match_all('/^\s*' . preg_quote($key, '/') . ':\s*\[(.*?)\]\s*$/m', $workflow, $matrixLists);
+        self::assertNotEmpty($matrixLists[1]);
+        preg_match_all('/[\'\"]\^?(\d+\.\d+)[\'\"]/', implode(',', $matrixLists[1]), $matches);
         return self::sortUnique($matches[1]);
     }
 

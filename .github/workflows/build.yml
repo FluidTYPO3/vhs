@@ -16,11 +16,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php: "8.2"
-            typo3: "^13.4"
-          - php: "8.3"
-            typo3: "^14.3"
+        php: ["8.2", "8.3", "8.4", "8.5"]
+        typo3: ["^13.4", "^14.3"]
 
     runs-on: ubuntu-latest
 
@@ -48,6 +45,8 @@ jobs:
 
       - name: Composer install
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: --ignore-platform-req=php+
 
       - name: Run phpcs
         run: vendor/bin/phpcs Classes --standard=PSR2
@@ -59,11 +58,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php: "8.2"
-            typo3: "^13.4"
-          - php: "8.3"
-            typo3: "^14.3"
+        php: ["8.2", "8.3", "8.4", "8.5"]
+        typo3: ["^13.4", "^14.3"]
 
     runs-on: ubuntu-latest
 
@@ -91,6 +87,8 @@ jobs:
 
       - name: Composer install
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: --ignore-platform-req=php+
 
       - name: Run phpstan
         run: vendor/bin/phpstan analyze
@@ -102,11 +100,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php: "8.2"
-            typo3: "^13.4"
-          - php: "8.3"
-            typo3: "^14.3"
+        php: ["8.2", "8.3", "8.4", "8.5"]
+        typo3: ["^13.4", "^14.3"]
 
     runs-on: ubuntu-latest
 
@@ -134,6 +129,8 @@ jobs:
 
       - name: Composer install
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: --ignore-platform-req=php+
 
       - name: Restore source Composer manifest
         run: git checkout -- composer.json
