@@ -13,11 +13,14 @@ use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -137,10 +140,15 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render method
-     * @return string|null
+     * @return string
      */
-    public function render()
+    public function render(): string
     {
+        $activeRequest = RequestResolver::tryResolveRequestFromRenderingContext($this->renderingContext, false);
+        if (!$activeRequest instanceof ServerRequestInterface) {
+            return '';
+        }
+        $this->pageService->setRequest($activeRequest);
         // Check if link wizard link
         /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
@@ -150,20 +158,20 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             /** @var LogManager $logManager */
             $logManager = GeneralUtility::makeInstance(LogManager::class);
             $logManager->getLogger(__CLASS__)->warning("pageUid must be numeric, got " . $pageUid);
-            return null;
+            return '';
         }
 
         // Get page via pageUid argument or current id
         $pageUid = (int) $pageUid;
         if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+            $pageUid = $this->getCurrentPageUid($activeRequest);
         }
 
         $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
 
         $page = $this->pageService->getPage($pageUid, $showAccessProtected);
         if (empty($page)) {
-            return null;
+            return '';
         }
 
         $targetPage = $this->pageService->getShortcutTargetPage($page);
@@ -177,19 +185,15 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         // Do not render the link, if the page should be hidden
-        if (class_exists(LanguageAspect::class)) {
-            /** @var Context $context */
-            $context = GeneralUtility::makeInstance(Context::class);
-            /** @var LanguageAspect $languageAspect */
-            $languageAspect = $context->getAspect('language');
-            $currentLanguageUid = $languageAspect->getId();
-        } else {
-            $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-        }
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = $context->getAspect('language');
+        $currentLanguageUid = $languageAspect->getId();
 
         $hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
         if ($hidePage) {
-            return null;
+            return '';
         }
 
         // Get the title from the page or page overlay
@@ -233,7 +237,10 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
+        $request = RequestResolver::resolveExtbaseRequestFromRenderingContext($this->renderingContext);
+        if (null !== $request) {
+            $uriBuilder->setRequest($request);
+        }
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($pageType)
@@ -259,6 +266,21 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
         $this->tag->setContent(is_scalar($title) ? (string) $title : '');
         return $this->tag->render();
+    }
+
+    private function getCurrentPageUid(ServerRequestInterface $request): int
+    {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if ($pageInformation instanceof PageInformation) {
+            return $pageInformation->getId();
+        }
+
+        $routing = $request->getAttribute('routing');
+        if ($routing instanceof PageArguments) {
+            return $routing->getPageId();
+        }
+
+        throw new \RuntimeException('Unable to resolve current page uid from frontend request.', 1774448265);
     }
 
     private function getTitleValue(array $record): string

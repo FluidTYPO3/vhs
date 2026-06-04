@@ -13,10 +13,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 class WidthViewHelper extends AbstractImageInfoViewHelper
 {
-    /**
-     * @return int
-     */
-    public function render()
+    public function render(): int
     {
         $info = $this->getInfo();
         return $info['width'] ?? 0;

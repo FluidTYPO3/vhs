@@ -33,14 +33,15 @@ class ListViewHelper extends AbstractMenuViewHelper
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function render()
+    public function render(): string
     {
         $pages = $this->processPagesArgument();
         if (0 === count($pages)) {
-            return null;
+            return '';
         }
+        $this->setActiveRequestOnPageService();
         $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
         $menuData = [];
         foreach ($pages as $pageUid) {
@@ -51,7 +52,7 @@ class ListViewHelper extends AbstractMenuViewHelper
         }
         $menu = $this->parseMenu($menuData);
         $this->backupVariables();
-        $variableProvider = $this->renderingContext->getVariableProvider();
+        $variableProvider = $this->getRenderingContextOrFail()->getVariableProvider();
         /** @var string $as */
         $as = $this->arguments['as'];
         $variableProvider->add($as, $menu);

@@ -11,9 +11,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -29,10 +33,7 @@ class LanguageViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @var PageService
-     */
-    protected static $pageService;
+    protected static ?PageService $pageService = null;
 
     public function initializeArguments(): void
     {
@@ -54,7 +55,7 @@ class LanguageViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         if (ContextUtility::isBackend()) {
             return '';
         }
@@ -74,21 +75,22 @@ class LanguageViewHelper extends AbstractViewHelper
         $pageUid = (int) $pageUid;
         /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
+        $request = RequestResolver::tryResolveRequestFromRenderingContext($renderingContext, false);
 
         if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+            if (!$request instanceof ServerRequestInterface) {
+                return '';
+            }
+            $pageUid = self::resolveCurrentPageUid($request);
         }
 
         $pageService = static::getPageService();
-        if (class_exists(LanguageAspect::class)) {
-            /** @var Context $context */
-            $context = GeneralUtility::makeInstance(Context::class);
-            /** @var LanguageAspect $languageAspect */
-            $languageAspect = $context->getAspect('language');
-            $currentLanguageUid = $languageAspect->getId();
-        } else {
-            $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
-        }
+        $pageService->setRequest($request instanceof ServerRequestInterface ? $request : null);
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = $context->getAspect('language');
+        $currentLanguageUid = $languageAspect->getId();
         $languageUid = 0;
         if (!$pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {
             $languageUid = $currentLanguageUid;
@@ -110,5 +112,20 @@ class LanguageViewHelper extends AbstractViewHelper
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);
         return static::$pageService = $pageService;
+    }
+
+    private static function resolveCurrentPageUid(ServerRequestInterface $request): int
+    {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if ($pageInformation instanceof PageInformation) {
+            return $pageInformation->getId();
+        }
+
+        $routing = $request->getAttribute('routing');
+        if ($routing instanceof PageArguments) {
+            return $routing->getPageId();
+        }
+
+        throw new \RuntimeException('Unable to resolve current page uid from frontend request.', 1774448263);
     }
 }

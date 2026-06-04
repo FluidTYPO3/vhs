@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Proxy\FileRepositoryProxy;
 use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
+use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -49,15 +50,9 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class FalViewHelper extends AbstractRecordResourceViewHelper
 {
-    /**
-     * @var ResourceFactoryProxy
-     */
-    protected $resourceFactory;
+    protected ResourceFactoryProxy $resourceFactory;
 
-    /**
-     * @var FileRepositoryProxy
-     */
-    protected $fileRepository;
+    protected FileRepositoryProxy $fileRepository;
 
     /**
      * @var boolean
@@ -89,12 +84,11 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         );
     }
 
-    /**
-     * @param FileReference $fileReference
-     * @return array
-     */
-    public function getResource($fileReference)
+    public function getResource($fileReference): array
     {
+        if (!$fileReference instanceof FileReference) {
+            throw new \InvalidArgumentException('Expected TYPO3 FAL file reference.', 1780000239);
+        }
         $file = $fileReference->getOriginalFile();
         $fileReferenceProperties = $fileReference->getProperties();
         $fileProperties = ResourceUtility::getFileArray($file);
@@ -134,7 +128,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
         if (empty($record)) {
             return [];
         }
-        if (!empty($GLOBALS['TSFE']->sys_page)) {
+        if (ContextUtility::isFrontend()) {
             $fileReferences = $this->getFileReferences($this->getTable(), $this->getField(), $record);
         } else {
             if (isset($record['t3ver_oid']) && (int) $record['t3ver_oid'] !== 0) {
@@ -169,7 +163,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                     $queryBuilder->expr()->eq('fieldname', ':fieldname')
                 );
 
-            if ($GLOBALS['BE_USER'] && $GLOBALS['BE_USER']->workspaceRec['uid']) {
+            if (isset($GLOBALS['BE_USER']) && ($GLOBALS['BE_USER']->workspaceRec['uid'] ?? 0)) {
                 $queryBuilder->createNamedParameter(
                     $GLOBALS['BE_USER']->workspaceRec['uid'],
                     Connection::PARAM_INT,
@@ -230,7 +224,7 @@ class FalViewHelper extends AbstractRecordResourceViewHelper
                 try {
                     $resources[] = $this->arguments['asObjects'] ? $file : $this->getResource($file);
                 } catch (\InvalidArgumentException $error) {
-                    // Pokemon-style, catch-all and suppress. This exception type is thrown if a file gets removed.
+                    // Catch-all and suppress. This exception type is thrown if a file gets removed.
                 }
             }
         }

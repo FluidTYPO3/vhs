@@ -12,12 +12,16 @@ namespace FluidTYPO3\Vhs\Service;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * Page Service
@@ -33,6 +37,13 @@ class PageService implements SingletonInterface
 
     protected static array $cachedPages = [];
     protected static array $cachedMenus = [];
+    public const SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
+    protected ?ServerRequestInterface $request = null;
+
+    public function setRequest(?ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
 
     public function getMenu(
         int $pageUid,
@@ -43,14 +54,8 @@ class PageService implements SingletonInterface
     ): array {
         $pageRepository = $this->getPageRepository();
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
-        $cacheKey = md5($pageUid . $pageConstraints . (int) $disableGroupAccessCheck);
+        $cacheKey = $this->buildContextualCacheKey([$pageUid, $pageConstraints, $disableGroupAccessCheck]);
         if (!isset(static::$cachedMenus[$cacheKey])) {
-            if ($disableGroupAccessCheck
-                && version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.1', '<=')
-            ) {
-                $pageRepository->where_groupAccess = '';
-            }
-
             static::$cachedMenus[$cacheKey] = array_filter(
                 $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints, true, $disableGroupAccessCheck),
                 function ($page) use ($includeNotInMenu) {
@@ -65,7 +70,7 @@ class PageService implements SingletonInterface
 
     public function getPage(int $pageUid, bool $disableGroupAccessCheck = false): array
     {
-        $cacheKey = md5($pageUid . (int) $disableGroupAccessCheck);
+        $cacheKey = $this->buildContextualCacheKey([$pageUid, $disableGroupAccessCheck]);
         if (!isset(static::$cachedPages[$cacheKey])) {
             static::$cachedPages[$cacheKey] = $this->getPageRepository()->getPage($pageUid, $disableGroupAccessCheck);
         }
@@ -78,11 +83,7 @@ class PageService implements SingletonInterface
         bool $reverse = false
     ): array {
         if (null === $pageUid) {
-            if (isset($GLOBALS['TSFE'])) {
-                $pageUid = $GLOBALS['TSFE']->id;
-            } else {
-                $pageUid = $this->getRequest()->getQueryParams()['id'] ?? null;
-            }
+            $pageUid = $this->getCurrentPageUid();
         }
 
         if (!$pageUid) {
@@ -110,10 +111,6 @@ class PageService implements SingletonInterface
             PageRepository::DOKTYPE_SYSFOLDER
         ];
 
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '<=')) {
-            $types[] = PageRepository::DOKTYPE_RECYCLER;
-        }
-
         $constraints[] = 'doktype NOT IN (' . implode(',', $types) . ')';
 
         if ($includeNotInMenu === false) {
@@ -140,19 +137,15 @@ class PageService implements SingletonInterface
             $pageUid = $page['uid'];
             $pageRecord = $page;
         } else {
-            $pageUid = (0 === (int) $page) ? $GLOBALS['TSFE']->id : (int) $page;
+            $pageUid = (0 === (int) $page) ? (int) ($this->getCurrentPageUid() ?? 0) : (int) $page;
             $pageRecord = $this->getPage($pageUid);
         }
         if (-1 === $languageUid) {
-            if (class_exists(LanguageAspect::class)) {
-                /** @var Context $context */
-                $context = GeneralUtility::makeInstance(Context::class);
-                /** @var LanguageAspect $languageAspect */
-                $languageAspect = $context->getAspect('language');
-                $languageUid = $languageAspect->getId();
-            } else {
-                $languageUid = $GLOBALS['TSFE']->sys_language_uid;
-            }
+            /** @var Context $context */
+            $context = GeneralUtility::makeInstance(Context::class);
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $context->getAspect('language');
+            $languageUid = $languageAspect->getId();
         }
 
         $l18nCfg = $pageRecord['l18n_cfg'] ?? 0;
@@ -194,7 +187,7 @@ class PageService implements SingletonInterface
                     if (GeneralUtility::validEmail($redirectTo)) {
                         $redirectTo = 'mailto:' . $redirectTo;
                     } elseif ($redirectTo[0] !== '/') {
-                        $redirectTo = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
+                        $redirectTo = $this->readSiteUrlFromRequest() . $redirectTo;
                     }
                 }
                 $parameter = $redirectTo;
@@ -207,7 +200,7 @@ class PageService implements SingletonInterface
             'forceAbsoluteUrl' => $forceAbsoluteUrl,
         ];
 
-        return $GLOBALS['TSFE']->cObj->typoLink('', $config);
+        return $this->getContentObjectRenderer()->typoLink('', $config);
     }
 
     public function isAccessProtected(array $page): bool
@@ -226,8 +219,10 @@ class PageService implements SingletonInterface
         $hide = (in_array(-1, $groups));
         $show = (in_array(-2, $groups));
 
-        $userIsLoggedIn = (is_array($GLOBALS['TSFE']->fe_user->user));
-        $userGroups = $GLOBALS['TSFE']->fe_user->groupData['uid'];
+        $frontendUser = $this->getFrontendUserAuthentication();
+        $user = $frontendUser?->user;
+        $userGroups = (array) ($frontendUser?->groupData['uid'] ?? []);
+        $userIsLoggedIn = (is_array($user));
         $userIsInGrantedGroups = (0 < count(array_intersect($userGroups, $groups)));
 
         return (!$userIsLoggedIn && $hide) || ($userIsLoggedIn && $show) || ($userIsLoggedIn && $userIsInGrantedGroups);
@@ -235,7 +230,7 @@ class PageService implements SingletonInterface
 
     public function isCurrent(int $pageUid): bool
     {
-        return ($pageUid === (int) $GLOBALS['TSFE']->id);
+        return $pageUid === $this->getCurrentPageUid();
     }
 
     public function isActive(int $pageUid): bool
@@ -286,7 +281,7 @@ class PageService implements SingletonInterface
             case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
                 $targetPage = $this->getPage($page['pid']);
                 break;
-            case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
+            case self::SHORTCUT_MODE_RANDOM_SUBPAGE:
                 $menu = $this->getMenu($page['shortcut'] > 0 ? $page['shortcut'] : $originalPageUid);
                 $targetPage = (0 < count($menu)) ? $menu[array_rand($menu)] : $page;
                 break;
@@ -307,7 +302,7 @@ class PageService implements SingletonInterface
      */
     public function getPageRepository()
     {
-        return clone ($GLOBALS['TSFE']->sys_page ?? $this->getPageRepositoryForBackendContext());
+        return clone $this->getPageRepositoryForBackendContext();
     }
 
     /**
@@ -324,8 +319,120 @@ class PageService implements SingletonInterface
         return $instance;
     }
 
-    private function getRequest(): ServerRequestInterface
+    protected function getRequest(): ?ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        if ($this->request instanceof ServerRequestInterface) {
+            return $this->request;
+        }
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        return $request instanceof ServerRequestInterface ? $request : null;
+    }
+
+    protected function buildContextualCacheKey(array $parts): string
+    {
+        $request = $this->getRequest();
+        $contextParts = [
+            'request' => null,
+            'site' => null,
+            'language' => null,
+            'workspace' => null,
+            'frontendUser' => null,
+        ];
+        if ($request instanceof ServerRequestInterface) {
+            $site = $request->getAttribute('site');
+            $frontendUser = $request->getAttribute('frontend.user');
+            $contextParts['request'] = spl_object_id($request);
+            $contextParts['site'] = is_object($site) && method_exists($site, 'getIdentifier')
+                ? $site->getIdentifier()
+                : null;
+            if ($frontendUser instanceof FrontendUserAuthentication) {
+                $contextParts['frontendUser'] = [
+                    'user' => $frontendUser->user['uid'] ?? null,
+                    'groups' => $frontendUser->groupData['uid'] ?? [],
+                ];
+            }
+        }
+
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        try {
+            /** @var LanguageAspect $languageAspect */
+            $languageAspect = $context->getAspect('language');
+            $contextParts['language'] = $languageAspect->getId();
+        } catch (\Throwable) {
+        }
+        try {
+            $workspaceAspect = $context->getAspect('workspace');
+            $contextParts['workspace'] = method_exists($workspaceAspect, 'getId') ? $workspaceAspect->getId() : null;
+        } catch (\Throwable) {
+        }
+
+        return sha1(json_encode([$parts, $contextParts], JSON_THROW_ON_ERROR));
+    }
+
+    protected function getPageInformation(): ?PageInformation
+    {
+        $pageInformation = $this->getRequest()?->getAttribute('frontend.page.information');
+        return $pageInformation instanceof PageInformation ? $pageInformation : null;
+    }
+
+    protected function getCurrentPageUid(): ?int
+    {
+        $pageInformation = $this->getPageInformation();
+        if ($pageInformation instanceof PageInformation) {
+            return $pageInformation->getId();
+        }
+        $routing = $this->getRequest()?->getAttribute('routing');
+        if ($routing instanceof PageArguments) {
+            return $routing->getPageId();
+        }
+        return null;
+    }
+
+    protected function getFrontendUserAuthentication(): ?FrontendUserAuthentication
+    {
+        $frontendUser = $this->getRequest()?->getAttribute('frontend.user');
+        return $frontendUser instanceof FrontendUserAuthentication ? $frontendUser : null;
+    }
+
+    protected function getContentObjectRenderer(): ContentObjectRenderer
+    {
+        $request = $this->getRequest();
+        if (!$request instanceof ServerRequestInterface) {
+            throw new \UnexpectedValueException('PageService::getItemLink requires a frontend request', 1774448249);
+        }
+        /** @var ContentObjectRenderer $contentObjectRenderer */
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer->setRequest($request);
+        return $contentObjectRenderer;
+    }
+
+    protected function readSiteUrlFromRequest(): string
+    {
+        $request = $this->getRequest();
+        if (!$request instanceof ServerRequestInterface) {
+            throw new \UnexpectedValueException(
+                'PageService::readSiteUrlFromRequest requires a frontend request',
+                1774448250
+            );
+        }
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        if ($normalizedParams instanceof NormalizedParams) {
+            return $normalizedParams->getSiteUrl();
+        }
+
+        $uri = $request->getUri();
+        $path = (string) $uri->getPath();
+        if ('' === $path || '/' === $path) {
+            $path = '/';
+        }
+        $path = rtrim(dirname($path), '/');
+        return $uri->withPath($path . '/')->withQuery('')->withFragment('')->__toString();
+    }
+
+    public static function resetCaches(): void
+    {
+        static::$cachedPages = [];
+        static::$cachedMenus = [];
     }
 }

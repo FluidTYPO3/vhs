@@ -15,6 +15,10 @@ use FluidTYPO3\Vhs\Traits\ArgumentOverride;
  *
  * Allows inserting a `<link>` or `<style>` Asset. Settings
  * specify where to insert the Asset and how to treat it.
+ *
+ * New installations should prefer TYPO3's native `f:asset.css`
+ * ViewHelper unless VHS-specific merging, CSS URL rewriting or
+ * marker-based placement is required.
  */
 class StyleViewHelper extends AbstractAssetViewHelper
 {

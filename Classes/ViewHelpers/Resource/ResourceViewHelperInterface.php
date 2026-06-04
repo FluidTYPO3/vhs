@@ -17,5 +17,5 @@ interface ResourceViewHelperInterface
      * @param mixed $identity
      * @return mixed
      */
-    public function getResource($identity);
+    public function getResource($identity): mixed;
 }

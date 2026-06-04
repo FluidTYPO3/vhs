@@ -10,6 +10,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
@@ -77,7 +78,7 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
      * @return string
      * @throws Exception
      */
-    public function render()
+    public function render(): string
     {
         $src = $this->arguments['src'];
         $treatIdAsReference = (bool) $this->arguments['treatIdAsReference'];
@@ -86,7 +87,8 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
             $treatIdAsReference = true;
         }
 
-        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        $renderingContext = $this->getRenderingContextOrFail();
+        $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
         $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
         $content = $this->renderChildren();
@@ -127,5 +129,13 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
 
         $this->tag->setContent($content);
         return $this->tag->render();
+    }
+
+    private function getRenderingContextOrFail(): RenderingContextInterface
+    {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            throw new \RuntimeException('Rendering context missing', 1774448253);
+        }
+        return $this->renderingContext;
     }
 }

@@ -21,7 +21,7 @@ class ErrorUtility
         ?string $message = null,
         ?int $code = null,
         ?\Throwable $previous = null
-    ): void {
+    ): never {
         throw new Exception((string) $message, (int) $code, $previous);
     }
 }

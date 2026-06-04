@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IsDevelopmentViewHelper extends AbstractConditionViewHelper
 {
-    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         return class_exists(Environment::class)
             ? Environment::getContext()->isDevelopment()

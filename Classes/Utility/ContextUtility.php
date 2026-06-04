@@ -8,17 +8,26 @@ namespace FluidTYPO3\Vhs\Utility;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 
 class ContextUtility
 {
-    public static function isFrontend(): bool
+    public static function isFrontend(?ServerRequestInterface $request = null): bool
     {
-        return ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
+        $request ??= $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (!$request instanceof ServerRequestInterface) {
+            return false;
+        }
+        return ApplicationType::fromRequest($request)->isFrontend();
     }
 
-    public static function isBackend(): bool
+    public static function isBackend(?ServerRequestInterface $request = null): bool
     {
-        return ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
+        $request ??= $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (!$request instanceof ServerRequestInterface) {
+            return false;
+        }
+        return ApplicationType::fromRequest($request)->isBackend();
     }
 }

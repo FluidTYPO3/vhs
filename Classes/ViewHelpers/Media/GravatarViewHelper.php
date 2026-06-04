@@ -67,7 +67,7 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
      *
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         /** @var string $email */
         $email = $this->arguments['email'];

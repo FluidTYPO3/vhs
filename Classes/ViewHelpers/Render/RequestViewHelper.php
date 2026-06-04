@@ -64,13 +64,13 @@ class RequestViewHelper extends AbstractRenderViewHelper
     }
 
     /**
-     * @return string|ResponseInterface
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var RenderingContext $renderingContext */
         /** @var string|null $action */
         $action = $arguments['action'];
@@ -116,14 +116,9 @@ class RequestViewHelper extends AbstractRenderViewHelper
                 $requestArguments
             );
 
-            /** @var ResponseInterface|null $possibleResponse */
-            $possibleResponse = static::getDispatcher()->dispatch(
-                $request instanceof RequestInterface ? $request : new \TYPO3\CMS\Extbase\Mvc\Request($request),
-                $response instanceof Response ? $response : null
+            $response = static::getDispatcher()->dispatch(
+                $request instanceof RequestInterface ? $request : new \TYPO3\CMS\Extbase\Mvc\Request($request)
             );
-            if ($possibleResponse) {
-                $response = $possibleResponse;
-            }
             if ($contentObjectBackup !== null && method_exists($configurationManager, 'setContentObject')) {
                 $configurationManager->setContentObject($contentObjectBackup);
             }
@@ -174,7 +169,7 @@ class RequestViewHelper extends AbstractRenderViewHelper
         ?string $controllerName,
         ?string $actionName,
         array $arguments
-    ) {
+    ): RequestInterface|ServerRequestInterface {
         $configurationManager = static::getConfigurationManager();
         $configuration = $configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
@@ -215,10 +210,11 @@ class RequestViewHelper extends AbstractRenderViewHelper
                 $parameters->setArgument($argumentName, $argumentValue);
             }
 
-            return $GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters);
+            $request = RequestResolver::resolveRequestFromRenderingContext($renderingContext, false);
+            return $request->withAttribute('extbase', $parameters);
         }
 
-        $request = RequestResolver::resolveRequestFromRenderingContext($renderingContext);
+        $request = RequestResolver::resolveRequestFromRenderingContext($renderingContext, false);
 
         if (method_exists($request, 'setControllerAliasToClassNameMapping')) {
             $request->setControllerAliasToClassNameMapping($controllerAliasToClassMapping);

@@ -38,9 +38,10 @@ class DeferredViewHelper extends AbstractMenuViewHelper
      * @return string
      * @throws Exception
      */
-    public function render()
+    public function render(): string
     {
-        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        $renderingContext = $this->getRenderingContextOrFail();
+        $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         /** @var string $as */
         $as = $this->arguments['as'];
         if (!$viewHelperVariableContainer->exists(AbstractMenuViewHelper::class, 'deferredArray')) {
@@ -57,7 +58,7 @@ class DeferredViewHelper extends AbstractMenuViewHelper
             throw new Exception('An "as" attribute was used but was empty - use a proper string value', 1370096373);
         }
 
-        $variableProvider = $this->renderingContext->getVariableProvider();
+        $variableProvider = $renderingContext->getVariableProvider();
 
         if ($variableProvider->exists($as)) {
             $backupVariable = $variableProvider->get($as);

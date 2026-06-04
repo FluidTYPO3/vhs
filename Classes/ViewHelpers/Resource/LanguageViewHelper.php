@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -72,7 +71,7 @@ class LanguageViewHelper extends AbstractViewHelper
      *
      * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         $path = $this->getResolvedPath();
         $languageKey = $this->getLanguageKey();
@@ -93,8 +92,13 @@ class LanguageViewHelper extends AbstractViewHelper
         /** @var string|null $extensionName */
         $extensionName = $this->arguments['extensionName'];
 
+        $renderingContext = $this->renderingContext;
+        if ($renderingContext === null) {
+            return $extensionName;
+        }
+
         return $extensionName
-            ?? RequestResolver::resolveControllerExtensionNameFromRenderingContext($this->renderingContext);
+            ?? RequestResolver::resolveControllerExtensionNameFromRenderingContext($renderingContext);
     }
 
     /**
@@ -164,12 +168,19 @@ class LanguageViewHelper extends AbstractViewHelper
         $language = 'default';
 
         if (ContextUtility::isFrontend()) {
-            /** @var ServerRequestInterface $request */
-            $request = $GLOBALS['TYPO3_REQUEST'];
-            /** @var SiteLanguage $language */
-            $language = $request->getAttribute('language');
+            if ($this->renderingContext === null) {
+                return $language;
+            }
+            $request = RequestResolver::tryResolveRequestFromRenderingContext($this->renderingContext, false);
+            if ($request === null) {
+                return $language;
+            }
+            $siteLanguage = $request->getAttribute('language');
+            if (!$siteLanguage instanceof SiteLanguage) {
+                return $language;
+            }
             /** @var Locale|string $locale */
-            $locale = $language->getLocale();
+            $locale = $siteLanguage->getLocale();
             if (is_string($locale)) {
                 return $locale;
             }

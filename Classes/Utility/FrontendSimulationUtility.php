@@ -8,14 +8,14 @@ namespace FluidTYPO3\Vhs\Utility;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Proxy\SiteFinderProxy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Frontend Simulation Utility
@@ -25,59 +25,150 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class FrontendSimulationUtility
 {
     /**
-     * Sets the global variable $GLOBALS['TSFE'] in Backend mode.
+     * @var ServerRequestInterface[]
      */
-    public static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
+    protected static array $requestBackupStack = [];
+
+    /**
+     * Creates a backend-safe frontend-like request context and stores the
+     * previous frontend state so it can be restored with resetFrontendEnvironment().
+     *
+     * @return null Kept for compatibility with older callers that pass the return value to resetFrontendEnvironment().
+     */
+    public static function simulateFrontendEnvironment(): null
     {
-        if (!ContextUtility::isBackend()) {
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (!$request instanceof ServerRequestInterface || !ApplicationType::fromRequest($request)->isBackend()) {
             return null;
         }
-        $tsfeBackup = $GLOBALS['TSFE'] ?? null;
 
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] ?? 'fe_user';
+        $requestBackup = $request;
 
-        /** @var SiteFinderProxy $siteFinder */
-        $siteFinder = GeneralUtility::makeInstance(SiteFinderProxy::class);
-        $sites = $siteFinder->getAllSites();
-        /** @var Context $context */
+        $contentObjectRenderer = self::getContentObjectRenderer();
+        $routing = $request->getAttribute('routing');
+        $frontendPageId = 0;
+        if (is_object($routing) && method_exists($routing, 'getPageId')) {
+            $frontendPageId = (int) $routing->getPageId();
+        }
+        $frontendController = new \stdClass();
+        $frontendController->id = $frontendPageId;
+        $frontendController->cObj = $contentObjectRenderer;
+        $frontendController->fe_user = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
+        $frontendController->sys_page = self::getPageRepository();
+        $frontendController->sys_language_uid = 0;
+        $frontendController->sys_language_content = 0;
+        $frontendController->sys_language_contentOL = 0;
+        $frontendController->absRefPrefix = '/';
+        $frontendController->lastImageInfo = null;
+        $frontendController->imagesOnPage = [];
+        $frontendController->tmpl = (object) [
+            'setup' => [
+                'plugin.' => [
+                    'tx_vhs.' => [
+                        'settings.' => []
+                    ]
+                ]
+            ]
+        ];
+        $frontendController->currentRecord = '';
+
         $context = GeneralUtility::makeInstance(Context::class);
-        /** @var Site $site */
-        $site = reset($sites);
-        $siteLanguage = $site->getDefaultLanguage();
-        /** @var PageArguments $pageArguments */
-        $pageArguments = GeneralUtility::makeInstance(
-            PageArguments::class,
-            0,
-            (string) PageRepository::DOKTYPE_DEFAULT,
-            []
-        );
-        /** @var FrontendUserAuthentication $frontendUser */
-        $frontendUser = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
+        $languageAspect = $context->getAspect('language');
+        if (method_exists($languageAspect, 'getId')) {
+            $frontendController->sys_language_uid = (int) $languageAspect->getId();
+        }
 
-        $controller = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            $context,
-            $site,
-            $siteLanguage,
-            $pageArguments,
-            $frontendUser
-        );
+        if (method_exists($contentObjectRenderer, 'setRequest')) {
+            $contentObjectRenderer->setRequest($request);
+        }
 
-        $GLOBALS['TSFE'] = $controller;
+        $request = $request->withAttribute('currentContentObject', $contentObjectRenderer);
+        $request = $request->withAttribute('frontend.controller', $frontendController);
 
-        return $tsfeBackup;
+        self::$requestBackupStack[] = $requestBackup;
+
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        return null;
     }
 
     /**
-     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
-     *
-     * @see simulateFrontendEnvironment()
+     * Restores the previous frontend context created by simulateFrontendEnvironment().
      */
-    public static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
+    public static function resetFrontendEnvironment(mixed $tsfeBackup = null): void
     {
-        if (!ContextUtility::isBackend()) {
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $isBackendContext = $request instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($request)->isBackend();
+
+        $hasRequestBackup = !empty(self::$requestBackupStack);
+        $requestBackup = null;
+        if ($hasRequestBackup) {
+            $requestBackup = array_pop(self::$requestBackupStack);
+        }
+
+        if (!$isBackendContext || !$requestBackup instanceof ServerRequestInterface) {
             return;
         }
-        $GLOBALS['TSFE'] = $tsfeBackup;
+
+        $GLOBALS['TYPO3_REQUEST'] = $requestBackup;
+    }
+
+    /**
+     * @return ContentObjectRenderer
+     */
+    protected static function getContentObjectRenderer(): ContentObjectRenderer
+    {
+        try {
+            /** @var ContentObjectRenderer $contentObjectRenderer */
+            $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            return $contentObjectRenderer;
+        } catch (\Throwable) {
+            return new class () extends ContentObjectRenderer {
+                public function __construct()
+                {
+                }
+
+                /**
+                 * TYPO3 13.4 compatibility: keep $fileArray untyped because the
+                 * parent ContentObjectRenderer method accepts mixed there.
+                 */
+                public function getImgResource($file, $fileArray): ?ImageResource
+                {
+                    return null;
+                }
+            };
+        }
+    }
+
+    /**
+     * @return object
+     */
+    protected static function getPageRepository(): object
+    {
+        try {
+            return GeneralUtility::makeInstance(PageRepository::class);
+        } catch (\Throwable) {
+            return new class {
+                public function getRecordOverlay(
+                    string $table,
+                    array $record,
+                    int $languageUid,
+                    int $languageContentOL = 0
+                ): ?array {
+                    return null;
+                }
+
+                public function getPage(int $pageUid): ?array
+                {
+                    return null;
+                }
+
+                public function __call(string $name, array $arguments): mixed
+                {
+                    return null;
+                }
+            };
+        }
     }
 }

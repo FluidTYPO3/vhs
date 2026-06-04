@@ -14,18 +14,18 @@ use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Used in conjuntion with the `v:media.PictureViewHelper`.
  * Please take a look at the `v:media.PictureViewHelper` documentation for more
  * information.
  */
-class SourceViewHelper extends AbstractTagBasedViewHelper
+class SourceViewHelper extends AbstractMediaViewHelper
 {
     use TagViewHelperCompatibility;
 
@@ -96,8 +96,12 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      *
      * @return string
      */
-    public function render()
+    public function render(): string
     {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            throw new \RuntimeException('Rendering context missing', 1737807841);
+        }
+
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         /** @var FileReference|string $imageSource */
         $imageSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_SRC);
@@ -136,16 +140,19 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             throw new Exception('v:media.source requires a ContentObjectRenderer, none found', 1737807859);
         }
 
+        /** @var ImageResource|array<string, mixed>|null $result */
         $result = $contentObject->getImgResource($imageSource, $setup);
+        /** @var ProcessedFile|array<string, mixed>|null $processedFile */
+        $processedFile = null;
         if ($result instanceof ImageResource) {
             $processedFile = $result->getProcessedFile();
-        } else {
+        } elseif (is_array($result) && isset($result['processedFile'])) {
             $processedFile = $result['processedFile'] ?? null;
         }
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
 
-        if ($processedFile ?? false) {
+        if ($processedFile instanceof ProcessedFile) {
             /** @var string $imageUrl */
             $imageUrl = $processedFile->getPublicUrl();
         } else {
@@ -155,7 +162,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             /** @var string $imageUrl */
             $imageUrl = $result[3] ?? '';
         }
-        $src = $this->preprocessSourceUri(rawurldecode($imageUrl));
+        $src = static::preprocessSourceUri(rawurldecode($imageUrl), $this->arguments, $this->resolveRequest());
 
         /** @var string|null $media */
         $media = $this->arguments['media'];
@@ -168,27 +175,5 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
         $this->tag->addAttribute('srcset', $src);
         return $this->tag->render();
-    }
-
-    /**
-     * Turns a relative source URI into an absolute URL
-     * if required.
-     */
-    public function preprocessSourceUri(string $src): string
-    {
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
-            $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
-        } elseif (ContextUtility::isBackend() || !$this->arguments['relative']) {
-            if (GeneralUtility::isValidUrl($src)) {
-                $src = ltrim($src, '/');
-            } elseif (ContextUtility::isFrontend()) {
-                $src = $GLOBALS['TSFE']->absRefPrefix . ltrim($src, '/');
-            } else {
-                /** @var string $siteUrl */
-                $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-                $src = $siteUrl . ltrim($src, '/');
-            }
-        }
-        return $src;
     }
 }

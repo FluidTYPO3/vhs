@@ -34,13 +34,13 @@ class DirectoryViewHelper extends AbstractMenuViewHelper
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function render()
+    public function render(): string
     {
         $pages = $this->processPagesArgument();
         if (0 === count($pages)) {
-            return null;
+            return '';
         }
         $menuData = [];
         foreach ($pages as $pageUid) {
@@ -48,7 +48,7 @@ class DirectoryViewHelper extends AbstractMenuViewHelper
         }
         $menu = $this->parseMenu($menuData);
         $this->backupVariables();
-        $variableProvider = $this->renderingContext->getVariableProvider();
+        $variableProvider = $this->getRenderingContextOrFail()->getVariableProvider();
         /** @var string $as */
         $as = $this->arguments['as'];
         $variableProvider->add($as, $menu);

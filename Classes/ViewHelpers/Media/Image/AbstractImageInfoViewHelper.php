@@ -21,10 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var ResourceFactoryProxy
-     */
-    protected $resourceFactory;
+    protected ResourceFactoryProxy $resourceFactory;
 
     /**
      * @var boolean
@@ -103,10 +100,16 @@ abstract class AbstractImageInfoViewHelper extends AbstractViewHelper
                 );
             }
             $imageSize = getimagesize($file);
+            if (false === $imageSize) {
+                throw new Exception(
+                    'Cannot determine info for "' . $file . '". File is not a valid image.',
+                    1780000178
+                );
+            }
             $info = [
-                'width'  => $imageSize[0] ?? '',
-                'height' => $imageSize[1] ?? '',
-                'type'   => $imageSize['mime'] ?? '',
+                'width'  => $imageSize[0],
+                'height' => $imageSize[1],
+                'type'   => $imageSize['mime'],
             ];
         }
 

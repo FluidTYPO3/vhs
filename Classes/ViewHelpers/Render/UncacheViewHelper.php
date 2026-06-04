@@ -16,7 +16,6 @@ use FluidTYPO3\Vhs\View\UncacheTemplateView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
@@ -60,15 +59,11 @@ class UncacheViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        /** @var RenderingContext $renderingContext */
+    ): string {
         $templateVariableContainer = $renderingContext->getVariableProvider();
         $partialArguments = $arguments['arguments'];
         if (!is_array($partialArguments)) {
@@ -77,9 +72,6 @@ class UncacheViewHelper extends AbstractViewHelper
         if (!isset($partialArguments['settings']) && $templateVariableContainer->exists('settings')) {
             $partialArguments['settings'] = $templateVariableContainer->get('settings');
         }
-
-        $substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
-        $content = '<!--' . $substKey . '-->';
 
         $request = RequestResolver::resolveRequestFromRenderingContext($renderingContext);
 

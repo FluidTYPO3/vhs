@@ -30,10 +30,7 @@ class FileViewHelper extends AbstractResourceViewHelper
         );
     }
 
-    /**
-     * @return mixed
-     */
-    public function render()
+    public function render(): mixed
     {
         /** @var boolean $onlyProperties */
         $onlyProperties = $this->arguments['onlyProperties'];

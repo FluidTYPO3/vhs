@@ -9,10 +9,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\View\AbstractTemplateView;
+use TYPO3Fluid\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -65,22 +68,34 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return $namespaces;
     }
 
-    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): StandaloneView
+    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): AbstractTemplateView
     {
         $view = static::getPreparedView();
         $newRenderingContext = $view->getRenderingContext();
         if (method_exists($renderingContext, 'getControllerContext')) {
             $controllerContext = clone $renderingContext->getControllerContext();
 
-            $view->setFormat($controllerContext->getRequest()->getFormat());
+            if (method_exists($view, 'setFormat')) {
+                $view->setFormat($controllerContext->getRequest()->getFormat());
+            }
+            $templatePaths = $newRenderingContext->getTemplatePaths();
+            if ($templatePaths instanceof TemplatePaths && method_exists($templatePaths, 'setFormat')) {
+                $templatePaths->setFormat((string) $controllerContext->getRequest()->getFormat());
+            }
             $newRenderingContext->setViewHelperVariableContainer(
                 $renderingContext->getViewHelperVariableContainer()
             );
             if (method_exists($newRenderingContext, 'setControllerContext')) {
                 $newRenderingContext->setControllerContext($controllerContext);
             }
-        } elseif (method_exists($renderingContext, 'getRequest') && method_exists($newRenderingContext, 'setRequest')) {
-            $newRenderingContext->setRequest($renderingContext->getRequest());
+        } elseif (method_exists($renderingContext, 'getAttribute')
+            && method_exists($newRenderingContext, 'setAttribute')
+            && $renderingContext->hasAttribute(ServerRequestInterface::class)
+        ) {
+            $newRenderingContext->setAttribute(
+                ServerRequestInterface::class,
+                $renderingContext->getAttribute(ServerRequestInterface::class)
+            );
         }
         $variables = (array) $renderingContext->getVariableProvider()->getAll();
         $view->assignMultiple($variables);
@@ -104,10 +119,43 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return (string) $content;
     }
 
-    protected static function getPreparedView(): StandaloneView
+    protected static function getPreparedView(): AbstractTemplateView
     {
-        /** @var StandaloneView $view */
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        /** @var AbstractTemplateView $view */
+        $view = GeneralUtility::makeInstance(TemplateView::class);
         return $view;
+    }
+
+    protected static function configureTemplatePaths(
+        AbstractTemplateView $view,
+        string $file,
+        ?string $format,
+        array $paths
+    ): void {
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+        if (!($templatePaths instanceof TemplatePaths)) {
+            return;
+        }
+
+        $templatePaths->setTemplatePathAndFilename($file);
+        if (null !== $format) {
+            $templatePaths->setFormat($format);
+        }
+        if (isset($paths['layoutRootPaths']) && is_array($paths['layoutRootPaths'])) {
+            $templatePaths->setLayoutRootPaths($paths['layoutRootPaths']);
+        }
+        if (isset($paths['partialRootPaths']) && is_array($paths['partialRootPaths'])) {
+            $templatePaths->setPartialRootPaths($paths['partialRootPaths']);
+        }
+    }
+
+    protected static function configureTemplateSource(AbstractTemplateView $view, string $source): void
+    {
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+        if (!($templatePaths instanceof TemplatePaths)) {
+            return;
+        }
+
+        $templatePaths->setTemplateSource($source);
     }
 }

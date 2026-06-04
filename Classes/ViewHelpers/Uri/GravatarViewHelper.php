@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  * LICENSE.md file that was distributed with this source code.
  */
 
-
 use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
@@ -62,14 +61,11 @@ class GravatarViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var string $email */
         $email = $arguments['email'];
         $size = $arguments['size'];

@@ -8,21 +8,24 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
-use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
-use FluidTYPO3\Vhs\Utility\ResourceUtility;
+use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
+use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
+use FluidTYPO3\Vhs\Utility\ResourceUtility;
 
 /**
- * Base class for resource related view helpers.
+ * Base class for tag-based resource helpers.
  */
-abstract class AbstractResourceViewHelper extends AbstractViewHelper
+abstract class AbstractTagBasedResourceViewHelper extends AbstractTagBasedViewHelper
 {
+    use TagViewHelperCompatibility;
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -202,7 +205,7 @@ abstract class AbstractResourceViewHelper extends AbstractViewHelper
      * This is neccessary because it depends on the TYPO3 version and the state of the extension filemetadata if
      * 'sys_file' should be used or 'sys_file_metadata'.
      */
-    private function getTablenameForSystemConfiguration(): string
+    protected function getTablenameForSystemConfiguration(): string
     {
         return 'sys_file_metadata';
     }

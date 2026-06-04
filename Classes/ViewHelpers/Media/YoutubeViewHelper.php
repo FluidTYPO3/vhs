@@ -98,7 +98,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      *
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         /** @var string $videoId */
         $videoId = $this->arguments['videoId'];

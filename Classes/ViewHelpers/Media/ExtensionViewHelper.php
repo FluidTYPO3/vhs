@@ -42,14 +42,14 @@ class ExtensionViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         $filePath = $renderChildrenClosure();
 
         if (null === $filePath) {
             return '';
         }
 
-        $file = GeneralUtility::getFileAbsFileName($filePath);
+        $file = GeneralUtility::getFileAbsFileName((string) $filePath);
 
         $parts = explode('.', basename($file));
 

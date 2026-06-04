@@ -73,7 +73,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var string $identity */
         $identity = $arguments['identity'];
         if (!ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
@@ -116,7 +116,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
     /**
      * @return mixed
      */
-    protected static function retrieve(string $id)
+    protected static function retrieve(string $id): mixed
     {
         $cache = static::getCache();
         if ($cache->has(static::ID_PREFIX . static::ID_SEPARATOR . $id)) {

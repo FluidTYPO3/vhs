@@ -9,7 +9,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -32,13 +33,25 @@ class AbsoluteUrlViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $url */
-        $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        /** @var string $siteUrl */
-        $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        if (0 !== strpos($url, $siteUrl)) {
-            $url = $siteUrl . $url;
+        $request = RequestResolver::resolveRequestFromRenderingContext($renderingContext);
+        $normalizedParams = method_exists($request, 'getAttribute')
+            ? $request->getAttribute('normalizedParams')
+            : null;
+        if ($normalizedParams instanceof NormalizedParams) {
+            $url = $normalizedParams->getRequestUrl();
+            if (empty($url)) {
+                return '';
+            }
+            return $url;
         }
-        return $url;
+
+        if (method_exists($request, 'getUri')) {
+            try {
+                return (string) $request->getUri();
+            } catch (\Throwable $exception) {
+            }
+        }
+
+        return '';
     }
 }

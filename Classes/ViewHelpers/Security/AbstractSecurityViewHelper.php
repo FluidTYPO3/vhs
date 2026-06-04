@@ -9,19 +9,18 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  */
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
-use Psr\Http\Message\ServerRequestInterface;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -37,10 +36,8 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 
     public function __construct()
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.0', '>=')
-            && !ExtensionManagementUtility::isLoaded('feuserextrafields')
-        ) {
-            throw new \Exception('On TYPO3v12, v:security.* requires EXT:feuserextrafields', 1670521759);
+        if (!ExtensionManagementUtility::isLoaded('feuserextrafields')) {
+            throw new \Exception('On TYPO3 v13+, v:security.* requires EXT:feuserextrafields', 1670521759);
         }
         /** @var FrontendUserRepository $frontendUserRepository */
         $frontendUserRepository = GeneralUtility::makeInstance(FrontendUserRepository::class);
@@ -150,7 +147,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         /** @var FrontendUser|null $frontendUser */
         $frontendUser = $this->arguments['frontendUser'] ?? null;
 
-        /** @var ObjectStorage|null $frontendUsers */
+        /** @var ObjectStorage<FrontendUser>|null $frontendUsers */
         $frontendUsers = $this->arguments['frontendUsers'] ?? null;
 
         /** @var BackendUser|null $backendUser */
@@ -229,6 +226,8 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 
     /**
      * Returns TRUE only if currently logged in frontend user is in list.
+     *
+     * @param ObjectStorage<FrontendUser>|null $frontendUsers
      */
     public function assertFrontendUsersLoggedIn(?ObjectStorage $frontendUsers = null): bool
     {
@@ -323,13 +322,6 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function assertAdminLoggedIn(): bool
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '<')) {
-            if (!$this->assertBackendUserLoggedIn()) {
-                return false;
-            }
-            $currentBackendUser = $this->getCurrentBackendUser();
-            return is_array($currentBackendUser) && (bool) ($currentBackendUser['admin'] ?? false);
-        }
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         try {
@@ -344,21 +336,9 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function getCurrentFrontendUser(): ?FrontendUser
     {
-        if (empty($GLOBALS['TSFE']->loginUser)) {
-            return null;
-        }
-
-        $frontendUserAuthentication = null;
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            /** @var FrontendUserAuthentication|null $frontendUserAuthentication */
-            $frontendUserAuthentication = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
-        }
-
+        $frontendUserAuthentication = $this->resolveFrontendUserAuthentication();
         if ($frontendUserAuthentication === null) {
-            /** @var TypoScriptFrontendController $tsfe */
-            $tsfe = $GLOBALS['TSFE'];
-            /** @var FrontendUserAuthentication $frontendUserAuthentication */
-            $frontendUserAuthentication = $tsfe->fe_user;
+            return null;
         }
 
         /** @var FrontendUser|null $frontendUser */
@@ -386,12 +366,31 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      *
      * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
      */
-    protected function renderThenChild()
+    protected function renderThenChild(): mixed
     {
         if ($this->isFrontendContext()) {
-            $GLOBALS['TSFE']->no_cache = 1;
+            $request = RequestResolver::resolveRequestFromRenderingContext($this->renderingContext, false);
+            $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
+            if (!$cacheInstruction instanceof CacheInstruction) {
+                throw new \RuntimeException('Unable to disable frontend cache without cache instruction.', 1774619302);
+            }
+            $cacheInstruction->disableCache('EXT:vhs: security view helper rendered visitor-specific content.');
         }
         return parent::renderThenChild();
+    }
+
+    private function resolveFrontendUserAuthentication(): ?FrontendUserAuthentication
+    {
+        $request = RequestResolver::tryResolveRequestFromRenderingContext($this->renderingContext, false);
+        if ($request === null) {
+            return null;
+        }
+        /** @var FrontendUserAuthentication|null $frontendUserAuthentication */
+        $frontendUserAuthentication = $request->getAttribute('frontend.user');
+        if (!$frontendUserAuthentication instanceof FrontendUserAuthentication) {
+            return null;
+        }
+        return $frontendUserAuthentication;
     }
 
     /**
@@ -399,6 +398,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     protected function isFrontendContext(): bool
     {
-        return ContextUtility::isFrontend();
+        $request = RequestResolver::tryResolveRequestFromRenderingContext($this->renderingContext, false);
+        return ContextUtility::isFrontend($request);
     }
 }

@@ -88,26 +88,23 @@ class TemplateViewHelper extends AbstractRenderViewHelper
         if (method_exists($view, 'setRequest')) {
             $view->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
         }
-        $view->setTemplatePathAndFilename($file);
         if (is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
-        }
-        /** @var string|null $format */
-        $format = $this->arguments['format'];
-        if (null !== $format) {
-            $view->setFormat($format);
         }
         $paths = $this->arguments['paths'];
         if (is_array($paths)) {
             if (isset($paths['layoutRootPaths']) && is_array($paths['layoutRootPaths'])) {
-                $layoutRootPaths = $this->processPathsArray($paths['layoutRootPaths']);
-                $view->setLayoutRootPaths($layoutRootPaths);
+                $paths['layoutRootPaths'] = $this->processPathsArray($paths['layoutRootPaths']);
             }
             if (isset($paths['partialRootPaths']) && is_array($paths['partialRootPaths'])) {
-                $partialRootPaths = $this->processPathsArray($paths['partialRootPaths']);
-                $view->setPartialRootPaths($partialRootPaths);
+                $paths['partialRootPaths'] = $this->processPathsArray($paths['partialRootPaths']);
             }
         }
+        /** @var string|null $format */
+        $format = $this->arguments['format'];
+
+        static::configureTemplatePaths($view, $file, $format, is_array($paths) ? $paths : []);
+
         return static::renderView($view, $this->arguments);
     }
 

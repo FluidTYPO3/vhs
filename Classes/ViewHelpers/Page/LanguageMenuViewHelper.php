@@ -14,16 +14,20 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Site\Site;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
@@ -138,11 +142,8 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      *
      * @return string
      */
-    public function render()
+    public function render(): string
     {
-        if (!is_object($GLOBALS['TSFE']->sys_page)) {
-            return '';
-        }
         /** @var ContentObjectRenderer|null $contentObject */
         $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
         if ($contentObject === null) {
@@ -158,11 +159,15 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
         /** @var string $as */
         $as = $this->arguments['as'];
-        $this->renderingContext->getVariableProvider()->add($as, $this->languageMenu);
+        $renderingContext = $this->renderingContext;
+        if ($renderingContext === null) {
+            throw new Exception('v:page.languageMenu requires a RenderingContext, none found', 1737807860);
+        }
+        $renderingContext->getVariableProvider()->add($as, $this->languageMenu);
         /** @var string|null $content */
         $content = $this->renderChildren();
         $content = is_scalar($content) ? (string) $content : '';
-        $this->renderingContext->getVariableProvider()->remove($as);
+        $renderingContext->getVariableProvider()->remove($as);
         if (0 === mb_strlen(trim($content))) {
             $content = $this->autoRender();
         }
@@ -254,7 +259,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     {
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $iconFactory->getIcon($identifier, Icon::SIZE_SMALL);
+        $icon = $iconFactory->getIcon($identifier, IconSize::SMALL);
         return $icon->render();
     }
 
@@ -341,22 +346,14 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         // get the languages actually available on this page
         $languageUids = $this->getSystemLanguageUids();
 
-        if (class_exists(LanguageAspect::class)) {
-            /** @var Context $context */
-            $context = GeneralUtility::makeInstance(Context::class);
-            /** @var LanguageAspect $languageAspect */
-            $languageAspect = $context->getAspect('language');
-            $languageUid = $languageAspect->getId();
-        } else {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
-        }
+        $languageUid = $this->getCurrentLanguageUid();
 
         foreach ($languageMenu as $key => $value) {
             $current = $languageUid === (int) $key ? 1 : 0;
             $inactive = in_array($key, $languageUids) || (int) $key === $this->defaultLangUid ? 0 : 1;
             $url = $this->getLanguageUrl($key);
             if (empty($url)) {
-                $url = GeneralUtility::getIndpEnv('REQUEST_URI');
+                $url = $this->getFallbackRequestUri();
             }
             $languageMenu[$key]['current'] = $current;
             $languageMenu[$key]['inactive'] = $inactive;
@@ -382,6 +379,16 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         return $languageMenu;
     }
 
+    protected function getFallbackRequestUri(): string
+    {
+        $request = $this->getRequestOrFail();
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        if ($normalizedParams instanceof NormalizedParams) {
+            return $normalizedParams->getRequestUri();
+        }
+        return '';
+    }
+
     /**
      * Get the list of languages from the sys_language table.
      */
@@ -397,12 +404,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $from = 'sys_language';
 
         if (!empty($limitLanguages)) {
-            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords(
+            $sysLanguage = $this->cObj->getRecords(
                 $from,
                 ['selectFields' => $select, 'pidInList' => 'root', 'uidInList' => implode(',', $limitLanguages)]
             );
         } else {
-            $sysLanguage = $GLOBALS['TSFE']->cObj->getRecords(
+            $sysLanguage = $this->cObj->getRecords(
                 $from,
                 ['selectFields' => $select, 'pidInList' => 'root']
             );
@@ -440,11 +447,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                 $label = $this->arguments['defaultLanguageLabel'] ?? $label;
                 $flag = $this->arguments['defaultIsoFlag'] ?? $flag;
             }
-            if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '>=')) {
-                $isoCode = $language->getLocale()->getLanguageCode();
-            } else {
-                $isoCode = $language->getTwoLetterIsoCode();
-            }
+            $isoCode = $language->getLocale()->getLanguageCode();
             $result[$language->getLanguageId()] = [
                 'label' => $label,
                 'iso' => $isoCode,
@@ -490,10 +493,38 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         $pageUid = $this->arguments['pageUid'];
         $pageUid = (int) $pageUid;
         if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+            $pageUid = $this->getCurrentPageUid();
         }
 
         return (int) $pageUid;
+    }
+
+    protected function getCurrentPageUid(): int
+    {
+        $request = $this->getRequestOrFail();
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if ($pageInformation instanceof PageInformation) {
+            return $pageInformation->getId();
+        }
+        $routing = $request->getAttribute('routing');
+        if ($routing instanceof PageArguments) {
+            return $routing->getPageId();
+        }
+        throw new Exception('v:page.languageMenu requires a current page id', 1774532240);
+    }
+
+    protected function getCurrentLanguageUid(): int
+    {
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = $context->getAspect('language');
+        return $languageAspect->getId();
+    }
+
+    protected function getRequestOrFail(): ServerRequestInterface
+    {
+        return RequestResolver::resolveRequestFromRenderingContext($this->renderingContext, false);
     }
 
     /**

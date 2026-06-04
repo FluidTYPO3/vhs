@@ -22,14 +22,16 @@ class FooterViewHelper extends AbstractAssetViewHelper
     /**
      * Render method
      *
-     * @return void
+     * @return string
      */
-    public function render()
+    public function render(): string
     {
         if (ContextUtility::isBackend()) {
-            return;
+            return '';
         }
         $content = (string) $this->getContent();
         static::getPageRenderer()->addFooterData($content);
+
+        return '';
     }
 }
