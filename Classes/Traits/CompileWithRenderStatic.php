@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+
 /**
  * Class CompilableWithRenderStatic
  *
@@ -24,8 +26,12 @@ trait CompileWithRenderStatic
      * @return mixed Rendered result
      * @api
      */
-    public function render()
+    public function render(): mixed
     {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            throw new \RuntimeException('Unable to render ViewHelper without rendering context.', 1706067600);
+        }
+
         return static::renderStatic(
             $this->arguments,
             $this->buildRenderChildrenClosure(),
@@ -35,6 +41,8 @@ trait CompileWithRenderStatic
 
     /**
      * @return \Closure
+     * TYPO3 13 / Fluid 4 compatibility: keep this abstract signature untyped
+     * because Fluid 4's AbstractViewHelper method has no return type.
      */
     abstract protected function buildRenderChildrenClosure();
 }

@@ -27,6 +27,6 @@ class IsStringViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        return is_array($arguments) && is_string($arguments['value']);
+        return is_string($arguments['value']);
     }
 }

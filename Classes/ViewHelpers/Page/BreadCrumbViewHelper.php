@@ -46,14 +46,18 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
-        $pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
+        $pageUid = $this->arguments['pageUid'] ?? 0;
+        if (!is_int($pageUid)) {
+            $pageUid = is_numeric($pageUid) ? (int) (string) $pageUid : 0;
+        }
         /** @var int $entryLevel */
         $entryLevel = $this->arguments['entryLevel'];
         /** @var int|null $endLevel */
         $endLevel = $this->arguments['endLevel'];
-        $rawRootLineData = $this->pageService->getRootLine($pageUid);
+        $resolvedPageUid = $pageUid > 0 ? (int) $pageUid : null;
+        $rawRootLineData = $this->pageService->getRootLine($resolvedPageUid);
         $rawRootLineData = array_reverse($rawRootLineData);
         $rawRootLineData = array_slice($rawRootLineData, $entryLevel, $endLevel);
         $rootLineData = [];
@@ -79,9 +83,10 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
         $this->backupVariables();
         /** @var string $as */
         $as = $this->arguments['as'];
-        $this->renderingContext->getVariableProvider()->add($as, $rootLine);
+        $variableProvider = $this->getRenderingContextOrFail()->getVariableProvider();
+        $variableProvider->add($as, $rootLine);
         $output = $this->renderContent($rootLine);
-        $this->renderingContext->getVariableProvider()->remove($as);
+        $variableProvider->remove($as);
         $this->restoreVariables();
 
         return $output;

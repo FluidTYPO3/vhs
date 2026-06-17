@@ -39,7 +39,7 @@ class HideViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         $content = $renderChildrenClosure();
         if ($arguments['disabled']) {
             return $content;

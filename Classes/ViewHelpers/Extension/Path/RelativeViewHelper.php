@@ -30,7 +30,7 @@ class RelativeViewHelper extends AbstractExtensionViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         $extPath = ExtensionManagementUtility::extPath(static::getExtensionKey($arguments, $renderingContext));
         return PathUtility::stripPathSitePrefix($extPath);
     }

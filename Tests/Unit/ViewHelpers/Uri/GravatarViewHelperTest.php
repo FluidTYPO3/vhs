@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Uri;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,18 +17,13 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class GravatarViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @var array
-     */
-    protected $arguments = [
+    protected array $arguments = [
         'email' => 'juanmanuel.vergessolanas@gmail.com',
         'secure' => false,
     ];
 
-    /**
-     * @test
-     */
-    public function generatesExpectedUriForEmailAddress()
+    #[Test]
+    public function generatesExpectedUriForEmailAddress(): void
     {
         $expectedSource = 'http://www.gravatar.com/avatar/b1b0eddcbc4468db89f355ebb9cc3007';
         $this->assertSame($expectedSource, $this->executeViewHelper($this->arguments));

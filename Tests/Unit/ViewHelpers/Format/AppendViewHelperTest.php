@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,28 +17,26 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class AppendViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function canAppendValueToArgument()
+    #[Test]
+    public function canAppendValueToArgument(): void
     {
         $arguments = [
             'subject' => 'before',
             'add' => 'after'
         ];
         $test = $this->executeViewHelper($arguments);
+        self::assertIsString($test);
         $this->assertStringEndsWith($arguments['add'], $test);
     }
 
-    /**
-     * @test
-     */
-    public function canAppendValueToChildContent()
+    #[Test]
+    public function canAppendValueToChildContent(): void
     {
         $arguments = [
             'add' => 'after'
         ];
         $test = $this->executeViewHelperUsingTagContent('before', $arguments);
+        self::assertIsString($test);
         $this->assertStringEndsWith($arguments['add'], $test);
     }
 }

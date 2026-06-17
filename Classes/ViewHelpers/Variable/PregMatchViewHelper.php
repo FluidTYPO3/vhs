@@ -48,7 +48,7 @@ class PregMatchViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         if (!isset($arguments['subject']) && !isset($arguments['as'])) {
             $subject = (string) $renderChildrenClosure();
         } else {

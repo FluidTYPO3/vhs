@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [ master, development, '[0-9]+.[0-9]+', '[0-9]+.[0-9]+.[0-9]+' ]
+    branches: [ master, main, development, '[0-9]+.[0-9]+', '[0-9]+.[0-9]+.[0-9]+' ]
   pull_request:
-    branches: [ master, development, '[0-9]+.[0-9]', '[0-9]+.[0-9]+.[0-9]+' ]
+    branches: [ master, main, development, '[0-9]+.[0-9]+', '[0-9]+.[0-9]+.[0-9]+' ]
   schedule:
     - cron: '30 4 * * *'
 
@@ -16,9 +16,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php: "8.1"
-            typo3: "^11.5"
+        php: ["8.2", "8.3", "8.4", "8.5"]
+        typo3: ["^13.4", "^14.3"]
 
     runs-on: ubuntu-latest
 
@@ -35,10 +34,19 @@ jobs:
           tools: composer:v2.2
 
       - name: Select TYPO3 version
-        run: "composer require typo3/cms-core:${{ matrix.typo3 }} -W --no-update"
+        run: >
+          composer require
+          typo3/cms-core:${{ matrix.typo3 }}
+          typo3/cms-extbase:${{ matrix.typo3 }}
+          typo3/cms-fluid:${{ matrix.typo3 }}
+          typo3/cms-frontend:${{ matrix.typo3 }}
+          typo3/cms-backend:${{ matrix.typo3 }}
+          -W --no-update
 
       - name: Composer install
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: --ignore-platform-req=php+
 
       - name: Run phpcs
         run: vendor/bin/phpcs Classes --standard=PSR2
@@ -50,21 +58,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php: "7.4"
-            typo3: "^10.4"
-          - php: "8.0"
-            typo3: "^11.5"
-          - php: "8.1"
-            typo3: "^11.5"
-          - php: "8.1"
-            typo3: "^12.4"
-          - php: "8.2"
-            typo3: "^12.4"
-          - php: "8.3"
-            typo3: "^12.4"
-          - php: "8.3"
-            typo3: "^13.4"
+        php: ["8.2", "8.3", "8.4", "8.5"]
+        typo3: ["^13.4", "^14.3"]
 
     runs-on: ubuntu-latest
 
@@ -81,10 +76,19 @@ jobs:
           tools: composer:v2.2
 
       - name: Select TYPO3 version
-        run: "composer require typo3/cms-core:${{ matrix.typo3 }} -W --no-update"
+        run: >
+          composer require
+          typo3/cms-core:${{ matrix.typo3 }}
+          typo3/cms-extbase:${{ matrix.typo3 }}
+          typo3/cms-fluid:${{ matrix.typo3 }}
+          typo3/cms-frontend:${{ matrix.typo3 }}
+          typo3/cms-backend:${{ matrix.typo3 }}
+          -W --no-update
 
       - name: Composer install
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: --ignore-platform-req=php+
 
       - name: Run phpstan
         run: vendor/bin/phpstan analyze
@@ -96,21 +100,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php: "7.4"
-            typo3: "^10.4"
-          - php: "8.0"
-            typo3: "^11.5"
-          - php: "8.1"
-            typo3: "^11.5"
-          - php: "8.1"
-            typo3: "^12.4"
-          - php: "8.2"
-            typo3: "^12.4"
-          - php: "8.3"
-            typo3: "^12.4"
-          - php: "8.3"
-            typo3: "^13.4"
+        php: ["8.2", "8.3", "8.4", "8.5"]
+        typo3: ["^13.4", "^14.3"]
 
     runs-on: ubuntu-latest
 
@@ -122,18 +113,33 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, json
+          extensions: mbstring, json, pdo_sqlite
           ini-values: date.timezone="Europe/Copenhagen", opcache.fast_shutdown=0
           tools: composer:v2.2
 
       - name: Select TYPO3 version
-        run: "composer require typo3/cms-core:${{ matrix.typo3 }} --no-update"
+        run: >
+          composer require
+          typo3/cms-core:${{ matrix.typo3 }}
+          typo3/cms-extbase:${{ matrix.typo3 }}
+          typo3/cms-fluid:${{ matrix.typo3 }}
+          typo3/cms-frontend:${{ matrix.typo3 }}
+          typo3/cms-backend:${{ matrix.typo3 }}
+          -W --no-update
 
       - name: Composer install
         uses: ramsey/composer-install@v2
+        with:
+          composer-options: --ignore-platform-req=php+
+
+      - name: Restore source Composer manifest
+        run: git checkout -- composer.json
 
       - name: Run tests
         run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
+
+      - name: Run functional tests
+        run: typo3DatabaseDriver=pdo_sqlite vendor/bin/phpunit -c phpunit-functional.xml.dist
 
       - name: Upload test coverage
         run: |

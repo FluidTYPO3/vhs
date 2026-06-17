@@ -68,7 +68,7 @@ class ConvertViewHelper extends AbstractViewHelper
         }
         if (null !== $value) {
             if ('ObjectStorage' === $type && 'array' === gettype($value)) {
-                /** @var ObjectStorage $storage */
+                /** @var ObjectStorage<object> $storage */
                 $storage = GeneralUtility::makeInstance(ObjectStorage::class);
                 foreach ($value as $item) {
                     $storage->attach($item);

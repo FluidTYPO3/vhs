@@ -19,6 +19,11 @@ use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
  * basic possible version of an Asset has only the core
  * features shared by every Asset type:
  *
+ * New installations should prefer TYPO3's native `f:asset.*`
+ * ViewHelpers for regular CSS, JavaScript and JavaScript module
+ * registration. Use VHS assets when you need VHS-specific merging,
+ * CSS URL rewriting, named chunks or marker-based placement.
+ *
  * - a "name" attribute which is required, identifying the Asset
  *   by a lowerCamelCase or lowercase_underscored value, your
  *   preference (but lowerCamelCase recommended for consistency).

@@ -61,7 +61,7 @@ class ChunkViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var string|null $as */
         $as = $arguments['as'];
         /** @var int $count */

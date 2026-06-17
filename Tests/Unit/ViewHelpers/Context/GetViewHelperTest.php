@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Context;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,10 +17,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class GetViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function returnsContext()
+    #[Test]
+    public function returnsContext(): void
     {
         $valid = ['Development', 'Testing', 'Production'];
         $result = $this->executeViewHelper([]);

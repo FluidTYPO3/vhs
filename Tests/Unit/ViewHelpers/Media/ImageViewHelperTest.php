@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Media;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -10,11 +11,45 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
  * Class ImageViewHelperTest
  */
 class ImageViewHelperTest extends AbstractViewHelperTestCase
 {
+    #[Test]
+    public function preprocessSourceUriWithoutRequestKeepsSourceRelative(): void
+    {
+        self::assertNotSame(
+            '',
+            AbstractMediaViewHelper::preprocessSourceUri('fileadmin/test.mp4', ['relative' => false], null)
+        );
+    }
 
+    #[Test]
+    public function usesRenderingContextRequestWhenPreprocessingSourceUri(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://outer.example/outer/page-111'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $subRequest = (new ServerRequest('https://inner.example/sub/page-222'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        $viewHelper = $this->buildViewHelperInstance(
+            [
+                'src' => '/fileadmin/image.jpg',
+                'relative' => false,
+                'alt' => 'Example image',
+            ]
+        );
+        $viewHelper->setRenderingContext($this->createRenderingContextWithRequest($subRequest));
+        $this->setInaccessiblePropertyValue($viewHelper, 'mediaSource', '/fileadmin/image.jpg');
+        $this->setInaccessiblePropertyValue($viewHelper, 'imageInfo', [640, 480]);
+
+        self::assertStringContainsString(
+            'src="https://inner.example/sub/fileadmin/image.jpg"',
+            $viewHelper->renderTag()
+        );
+    }
 }

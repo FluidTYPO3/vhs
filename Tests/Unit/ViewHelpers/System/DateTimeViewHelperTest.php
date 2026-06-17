@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\System;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,10 +17,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class DateTimeViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function returnsDateTimeInstance()
+    #[Test]
+    public function returnsDateTimeInstance(): void
     {
         $result = $this->executeViewHelper();
         $this->assertInstanceOf('DateTime', $result);

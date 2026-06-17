@@ -70,7 +70,7 @@ class FilesViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): array|string {
         $path = (string) $renderChildrenClosure();
 
         /** @var string $extensionList */

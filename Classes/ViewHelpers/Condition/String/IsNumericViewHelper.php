@@ -27,6 +27,6 @@ class IsNumericViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        return is_array($arguments) && is_numeric($arguments['value']);
+        return is_numeric($arguments['value']);
     }
 }

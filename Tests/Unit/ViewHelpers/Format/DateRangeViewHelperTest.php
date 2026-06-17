@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -30,19 +31,15 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         'return' => null,
     ];
 
-    /**
-     * @test
-     */
-    public function rendersWithDefaultArguments()
+    #[Test]
+    public function rendersWithDefaultArguments(): void
     {
         $test = $this->executeViewHelper($this->arguments);
         $this->assertSame('1970-01-01 - 1970-01-02', $test);
     }
 
-    /**
-     * @test
-     */
-    public function usesNowAsStart()
+    #[Test]
+    public function usesNowAsStart(): void
     {
         $arguments = $this->arguments;
         unset($arguments['start']);
@@ -52,10 +49,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame($expected . ' - 1970-01-02', $test);
     }
 
-    /**
-     * @test
-     */
-    public function rendersStrftimeFormats()
+    #[Test]
+    public function rendersStrftimeFormats(): void
     {
         $arguments = $this->arguments;
         $arguments['startFormat'] = '%h';
@@ -63,10 +58,17 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('Jan - 1970-01-02', $test);
     }
 
-    /**
-     * @test
-     */
-    public function canReturnDateTime()
+    #[Test]
+    public function rendersStrftimeFormatWithLiteralDateFormatCharacters(): void
+    {
+        $arguments = $this->arguments;
+        $arguments['startFormat'] = 'vom %d.%m.%Y';
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('vom 01.01.1970 - 1970-01-02', $test);
+    }
+
+    #[Test]
+    public function canReturnDateTime(): void
     {
         $arguments = $this->arguments;
         $arguments['return'] = 'DateTime';
@@ -74,10 +76,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertInstanceOf('DateTime', $test);
     }
 
-    /**
-     * @test
-     */
-    public function canReturnIntervalComponentArray()
+    #[Test]
+    public function canReturnIntervalComponentArray(): void
     {
         $arguments = $this->arguments;
         $arguments['return'] = ['d', 's'];
@@ -85,10 +85,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame(['1', '0'], $test);
     }
 
-    /**
-     * @test
-     */
-    public function canReturnFormattedInterval()
+    #[Test]
+    public function canReturnFormattedInterval(): void
     {
         $arguments = $this->arguments;
         $arguments['return'] = 'd';
@@ -96,10 +94,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('1', $test);
     }
 
-    /**
-     * @test
-     */
-    public function canReturnFormattedStrftimeFormat()
+    #[Test]
+    public function canReturnFormattedStrftimeFormat(): void
     {
         $arguments = $this->arguments;
         $arguments['return'] = 'd';
@@ -107,10 +103,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('1', $test);
     }
 
-    /**
-     * @test
-     */
-    public function supportsIntervalFormat()
+    #[Test]
+    public function supportsIntervalFormat(): void
     {
         $arguments = $this->arguments;
         $arguments['intervalFormat'] = 'P3M';
@@ -119,10 +113,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('1970-01-01 - 1970-04-01', $test);
     }
 
-    /**
-     * @test
-     */
-    public function returnsErrorIfMissingRequiredArgumentsEndAndIntervalFormat()
+    #[Test]
+    public function returnsErrorIfMissingRequiredArgumentsEndAndIntervalFormat(): void
     {
         $arguments = $this->arguments;
         unset($arguments['end'], $arguments['intervalFormat']);
@@ -130,10 +122,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->executeViewHelper($arguments);
     }
 
-    /**
-     * @test
-     */
-    public function returnsErrorOnInvalidDateInterval()
+    #[Test]
+    public function returnsErrorOnInvalidDateInterval(): void
     {
         $arguments = $this->arguments;
         $arguments['intervalFormat'] = 'what is this then';
@@ -142,10 +132,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->executeViewHelper($arguments);
     }
 
-    /**
-     * @test
-     */
-    public function returnsErrorOnInvalidStart()
+    #[Test]
+    public function returnsErrorOnInvalidStart(): void
     {
         $arguments = $this->arguments;
         $arguments['start'] = 'what is this then';
@@ -153,10 +141,8 @@ class DateRangeViewHelperTest extends AbstractViewHelperTestCase
         $this->executeViewHelper($arguments);
     }
 
-    /**
-     * @test
-     */
-    public function returnsErrorOnInvalidEnd()
+    #[Test]
+    public function returnsErrorOnInvalidEnd(): void
     {
         $arguments = $this->arguments;
         $arguments['end'] = 'what is this then';

@@ -11,8 +11,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### ViewHelper used to override page title
@@ -69,9 +71,9 @@ class TitleViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         if (ContextUtility::isBackend()) {
-            return;
+            return null;
         }
         if (!empty($arguments['title'])) {
             /** @var string $title */
@@ -84,8 +86,18 @@ class TitleViewHelper extends AbstractViewHelper
         $whitespace = $arguments['whitespaceString'];
         $title = trim((string) preg_replace('/\s+/u', $whitespace, $title), $whitespace);
         static::getPageRenderer()->setTitle($title);
-        if ($arguments['setIndexedDocTitle']) {
-            $GLOBALS['TSFE']->indexedDocTitle = $title;
+        if ($arguments['setIndexedDocTitle']
+            && version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '>=')
+        ) {
+            $recordTitleProviderClassName = 'TYPO3\\CMS\\Core\\PageTitle\\RecordTitleProvider';
+            if (class_exists($recordTitleProviderClassName)) {
+                // @phpstan-ignore-next-line TYPO3 14-only class name, guarded for TYPO3 13.4.
+                $recordTitleProvider = GeneralUtility::makeInstance($recordTitleProviderClassName);
+                if (method_exists($recordTitleProvider, 'setTitle')) {
+                    $recordTitleProvider->setTitle($title);
+                }
+            }
         }
+        return null;
     }
 }

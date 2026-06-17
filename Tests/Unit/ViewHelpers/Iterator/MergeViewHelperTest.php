@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,10 +17,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class MergeViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function testMergesArraysWithOverrule()
+    #[Test]
+    public function testMergesArraysWithOverrule(): void
     {
         $array1 = ['foo'];
         $array2 = ['bar'];

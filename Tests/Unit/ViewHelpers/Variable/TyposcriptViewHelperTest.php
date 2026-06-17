@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -23,8 +24,7 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
 
     protected function setUp(): void
     {
-        $this->configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-            ->getMockForAbstractClass();
+        $this->configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->configurationManager->method('getConfiguration')->willReturn(
             [
                 'config' => [
@@ -42,34 +42,29 @@ class TyposcriptViewHelperTest extends AbstractViewHelperTestCase
         parent::setUp();
     }
 
-    /**
-     * @test
-     */
-    public function returnsNullIfPathIsNull()
+    #[Test]
+    public function returnsNullIfPathIsNull(): void
     {
         $this->assertNull($this->executeViewHelper(['path' => null]));
     }
 
-    /**
-     * @test
-     */
-    public function returnsArrayIfPathContainsArray()
+    #[Test]
+    public function returnsArrayIfPathContainsArray(): void
     {
-        $this->assertThat($this->executeViewHelper(['path' => 'config.tx_extbase.features']), new IsType(IsType::TYPE_ARRAY));
+        $this->assertThat(
+            $this->executeViewHelper(['path' => 'config.tx_extbase.features']),
+            new IsType(IsType::TYPE_ARRAY)
+        );
     }
 
-    /**
-     * @test
-     */
-    public function canGetPathUsingArgument()
+    #[Test]
+    public function canGetPathUsingArgument(): void
     {
         $this->assertNotEmpty($this->executeViewHelper(['path' => 'config.tx_extbase.features']));
     }
 
-    /**
-     * @test
-     */
-    public function canGetPathUsingTagContent()
+    #[Test]
+    public function canGetPathUsingTagContent(): void
     {
         $this->assertNotEmpty($this->executeViewHelperUsingTagContent('config.tx_extbase.features'));
     }

@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,28 +17,26 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class PregMatchViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function canMatchValues()
+    #[Test]
+    public function canMatchValues(): void
     {
         $arguments = [
             'subject' => 'foo123bar',
             'pattern' => '/[0-9]{3}/',
         ];
         $test = $this->executeViewHelper($arguments);
+        self::assertIsArray($test);
         $this->assertSame(1, count($test));
     }
 
-    /**
-     * @test
-     */
-    public function canTakeSubjectFromRenderChildren()
+    #[Test]
+    public function canTakeSubjectFromRenderChildren(): void
     {
         $arguments = [
             'pattern' => '/[0-9]{3}/',
         ];
         $test = $this->executeViewHelperUsingTagContent('foo123bar', $arguments);
+        self::assertIsArray($test);
         $this->assertSame(1, count($test));
     }
 }

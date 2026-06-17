@@ -16,7 +16,7 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class IsTestingViewHelperTest extends AbstractViewHelperTestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
         $arguments = ['then' => 'then', 'else' => 'else'];
         $result = $this->executeViewHelper($arguments);

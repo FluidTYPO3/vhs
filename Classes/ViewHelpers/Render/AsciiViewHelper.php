@@ -67,7 +67,7 @@ class AsciiViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         $ascii = $renderChildrenClosure();
         if (is_numeric($ascii)) {
             return chr((int) $ascii);
@@ -75,7 +75,7 @@ class AsciiViewHelper extends AbstractViewHelper
         if (is_array($ascii) || $ascii instanceof \Traversable) {
             $string = '';
             foreach ($ascii as $characterNumber) {
-                $string .= chr($characterNumber);
+                $string .= chr((int) $characterNumber);
             }
             return $string;
         }

@@ -43,14 +43,14 @@ class SizeViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): int {
         $path = $renderChildrenClosure();
 
         if (null === $path) {
             return 0;
         }
 
-        $file = GeneralUtility::getFileAbsFileName($path);
+        $file = GeneralUtility::getFileAbsFileName((string) $path);
 
         if (!file_exists($file) || is_dir($file)) {
             throw new Exception(

@@ -10,22 +10,19 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
 
 use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Proxy\ResourceFactoryProxy;
-use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class for resource related view helpers.
  */
-abstract class AbstractResourceViewHelper extends AbstractTagBasedViewHelper
+abstract class AbstractResourceViewHelper extends AbstractViewHelper
 {
-    use TagViewHelperCompatibility;
-
     public function initializeArguments(): void
     {
         parent::initializeArguments();

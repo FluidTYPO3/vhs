@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Asset;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,9 +18,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  */
 class PrefetchViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildReturnsMetaTag()
     {
         $instance = $this->buildViewHelperInstance(['domains' => 'test.com,test2.com', 'force' => true]);

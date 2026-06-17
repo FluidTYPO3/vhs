@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,20 +12,16 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class CubeViewHelperTest
  */
-class CubeViewHelperTest extends AbstractMathViewHelperTest
+class CubeViewHelperTest extends AbstractMathViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function testSingleArgument()
+    #[Test]
+    public function testSingleArgument(): void
     {
         $this->executeSingleArgumentTest(2, 8);
     }
 
-    /**
-     * @test
-     */
-    public function testSingleArgumentIteratorFirst()
+    #[Test]
+    public function testSingleArgumentIteratorFirst(): void
     {
         $this->executeSingleArgumentTest([2, 3], [8, 27]);
     }

@@ -33,10 +33,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
     protected string $field = '';
     protected string $idField = 'uid';
 
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected ConfigurationManagerInterface $configurationManager;
 
     /**
      * @var boolean
@@ -74,7 +71,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
      * @param mixed $identity
      * @return mixed
      */
-    public function getResource($identity)
+    public function getResource($identity): mixed
     {
         return $identity;
     }
@@ -177,7 +174,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
     /**
      * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         /** @var array|null $record */
         $record = $this->arguments['record'] ?? null;

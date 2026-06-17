@@ -20,6 +20,7 @@ class DummyConfigurationManagerWithContentObjectRenderer implements Configuratio
         ?string $extensionName = null,
         ?string $pluginName = null
     ): array {
+        return [];
     }
 
     public function setConfiguration(array $configuration = []): void

@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,10 +17,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class IndexOfViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function returnsIndexOfElement()
+    #[Test]
+    public function returnsIndexOfElement(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [
@@ -30,10 +29,8 @@ class IndexOfViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals(2, $result);
     }
 
-    /**
-     * @test
-     */
-    public function returnsNegativeOneIfNeedleDoesNotExist()
+    #[Test]
+    public function returnsNegativeOneIfNeedleDoesNotExist(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [

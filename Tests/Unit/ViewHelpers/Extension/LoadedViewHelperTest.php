@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Extension;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -23,7 +24,7 @@ class LoadedViewHelperTest extends AbstractViewHelperTestCase
         parent::setUp();
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive'])
+            ->onlyMethods(['isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('isPackageActive')->willReturnMap(
@@ -35,10 +36,8 @@ class LoadedViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    /**
-     * @test
-     */
-    public function rendersThenChildIfExtensionIsLoaded()
+    #[Test]
+    public function rendersThenChildIfExtensionIsLoaded(): void
     {
         $arguments = [
             'extensionName' => 'Vhs',
@@ -49,10 +48,8 @@ class LoadedViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame(1, $result);
     }
 
-    /**
-     * @test
-     */
-    public function rendersElseChildIfExtensionIsNotLoaded()
+    #[Test]
+    public function rendersElseChildIfExtensionIsNotLoaded(): void
     {
         $arguments = [
             'extensionName' => 'Void',

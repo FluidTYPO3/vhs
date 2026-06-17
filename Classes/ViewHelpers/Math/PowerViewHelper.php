@@ -25,7 +25,7 @@ class PowerViewHelper extends AbstractMultipleMathViewHelper
      * @param array $arguments
      * @return integer
      */
-    protected static function calculateAction($a, $b, array $arguments)
+    protected static function calculateAction($a, $b, array $arguments): mixed
     {
         return pow($a, $b);
     }

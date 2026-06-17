@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,13 +20,13 @@ use FluidTYPO3\Vhs\ViewHelpers\Format\CaseViewHelper;
 class CaseViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getInputsAndExpectedOutputs
      * @param string $input
      * @param string $case
      * @param string $expectedOutput
      */
-    public function convertsToExpectedFormat($input, $case, $expectedOutput)
+    #[Test]
+    #[DataProvider('getInputsAndExpectedOutputs')]
+    public function convertsToExpectedFormat(string $input, string $case, string $expectedOutput): void
     {
         $result = $this->executeViewHelper(['string' => $input, 'case' => $case]);
         $this->assertEquals($expectedOutput, $result);
@@ -33,15 +35,15 @@ class CaseViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getInputsAndExpectedOutputs()
+    public static function getInputsAndExpectedOutputs(): array
     {
         return [
             /*
-			array('lowerstring', CaseViewHelper::CASE_UPPER, 'LOWERSTRING'),
-			array('UPPERSTRING', CaseViewHelper::CASE_LOWER, 'upperstring'),
-			array('lowerstring', CaseViewHelper::CASE_UCFIRST, 'Lowerstring'),
-			array('UPPERSTRING', CaseViewHelper::CASE_LCFIRST, 'uPPERSTRING'),
-			*/
+            array('lowerstring', CaseViewHelper::CASE_UPPER, 'LOWERSTRING'),
+            array('UPPERSTRING', CaseViewHelper::CASE_LOWER, 'upperstring'),
+            array('lowerstring', CaseViewHelper::CASE_UCFIRST, 'Lowerstring'),
+            array('UPPERSTRING', CaseViewHelper::CASE_LCFIRST, 'uPPERSTRING'),
+            */
             ['lots of words', CaseViewHelper::CASE_UCWORDS, 'Lots Of Words'],
             ['lowercase_underscored', CaseViewHelper::CASE_CAMELCASE, 'LowercaseUnderscored'],
             ['lowercase_underscored', CaseViewHelper::CASE_LOWERCAMELCASE, 'lowercaseUnderscored'],

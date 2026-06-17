@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -32,10 +33,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         'nonAscii' => false
     ];
 
-    /**
-     * @test
-     */
-    public function removesNonAscii()
+    #[Test]
+    public function removesNonAscii(): void
     {
         $arguments = $this->arguments;
         $arguments['nonAscii'] = true;
@@ -43,10 +42,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('foobar', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesLetters()
+    #[Test]
+    public function removesLetters(): void
     {
         $arguments = $this->arguments;
         $arguments['letters'] = true;
@@ -54,10 +51,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('123', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesLettersRespectsCaseSensitive()
+    #[Test]
+    public function removesLettersRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
         $arguments['letters'] = true;
@@ -66,10 +61,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('123', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesDigits()
+    #[Test]
+    public function removesDigits(): void
     {
         $arguments = $this->arguments;
         $arguments['digits'] = true;
@@ -77,10 +70,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('foobar', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesWindowsCarriageReturns()
+    #[Test]
+    public function removesWindowsCarriageReturns(): void
     {
         $arguments = $this->arguments;
         $arguments['windowsBreaks'] = true;
@@ -88,10 +79,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('breaksbreaks', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesUnixBreaks()
+    #[Test]
+    public function removesUnixBreaks(): void
     {
         $arguments = $this->arguments;
         $arguments['unixBreaks'] = true;
@@ -99,10 +88,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('breaksbreaks', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesTabs()
+    #[Test]
+    public function removesTabs(): void
     {
         $arguments = $this->arguments;
         $arguments['tabs'] = true;
@@ -110,10 +97,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('tabstabs', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesWhitespace()
+    #[Test]
+    public function removesWhitespace(): void
     {
         $arguments = $this->arguments;
         $arguments['whitespace'] = true;
@@ -121,10 +106,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('trimmed', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesWhitespaceBetweenHtmlTags()
+    #[Test]
+    public function removesWhitespaceBetweenHtmlTags(): void
     {
         $arguments = $this->arguments;
         $arguments['whitespaceBetweenHtmlTags'] = true;
@@ -132,10 +115,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('<p> Foo </p><p> Bar </p>', $test);
     }
 
-    /**
-     * @test
-     */
-    public function removesCharactersRespectsCaseSensitive()
+    #[Test]
+    public function removesCharactersRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
         $arguments['characters'] = 'abc';
@@ -144,10 +125,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('def', $result);
     }
 
-    /**
-     * @test
-     */
-    public function removesCharactersAsString()
+    #[Test]
+    public function removesCharactersAsString(): void
     {
         $arguments = $this->arguments;
         $arguments['characters'] = 'abc';
@@ -155,10 +134,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('def', $result);
     }
 
-    /**
-     * @test
-     */
-    public function removesMultibyteCharactersAsString()
+    #[Test]
+    public function removesMultibyteCharactersAsString(): void
     {
         $arguments = $this->arguments;
         $arguments['characters'] = 'æ本';
@@ -166,10 +143,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('aäåbc', $result);
     }
 
-    /**
-     * @test
-     */
-    public function removesCharactersAsArray()
+    #[Test]
+    public function removesCharactersAsArray(): void
     {
         $arguments = $this->arguments;
         $arguments['characters'] = ['a', 'b', 'c'];
@@ -177,10 +152,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('def', $result);
     }
 
-    /**
-     * @test
-     */
-    public function removesStringsRespectsCaseSensitive()
+    #[Test]
+    public function removesStringsRespectsCaseSensitive(): void
     {
         $arguments = $this->arguments;
         $arguments['strings'] = 'abc,def,ghi';
@@ -189,10 +162,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('jkl', $result);
     }
 
-    /**
-     * @test
-     */
-    public function removesStringsAsString()
+    #[Test]
+    public function removesStringsAsString(): void
     {
         $arguments = $this->arguments;
         $arguments['strings'] = 'abc,def,ghi';
@@ -200,10 +171,8 @@ class EliminateViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame('jkl', $result);
     }
 
-    /**
-     * @test
-     */
-    public function removesStringsAsArray()
+    #[Test]
+    public function removesStringsAsArray(): void
     {
         $arguments = $this->arguments;
         $arguments['strings'] = ['abc', 'def', 'ghi'];

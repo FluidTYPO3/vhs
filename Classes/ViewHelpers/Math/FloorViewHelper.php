@@ -25,7 +25,7 @@ class FloorViewHelper extends AbstractSingleMathViewHelper
      * @param integer|float|string|array|iterable $a
      * @return integer|array
      */
-    protected static function calculateAction($a, array $arguments = [])
+    protected static function calculateAction($a, array $arguments = []): array|int
     {
         if (static::assertIsArrayOrIterator($a)) {
             return array_map('floor', static::arrayFromArrayOrTraversableOrCSVStatic($a));

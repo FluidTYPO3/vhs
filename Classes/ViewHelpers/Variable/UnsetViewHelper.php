@@ -54,7 +54,7 @@ class UnsetViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): null {
         /** @var string $name */
         $name = $arguments['name'];
         $variableProvider = $renderingContext->getVariableProvider();

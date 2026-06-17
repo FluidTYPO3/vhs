@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Placeholder;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -26,24 +27,30 @@ class ImageViewHelperTest extends AbstractViewHelperTestCase
         'textColor' => 'FFFFFF'
     ];
 
-    /**
-     * @test
-     */
-    public function rendersImage()
+    #[Test]
+    public function rendersImage(): void
     {
         $arguments = $this->arguments;
         $test = $this->executeViewHelper($arguments);
-        $this->assertSame('<img src="https://via.placeholder.com/100/333333/FFFFFF" alt="https://via.placeholder.com/100/333333/FFFFFF" width="100" height="100" />', $test);
+        $expected = '<img src="https://via.placeholder.com/100/333333/FFFFFF" '
+            . 'alt="https://via.placeholder.com/100/333333/FFFFFF" width="100" height="100" />';
+        $this->assertSame(
+            $expected,
+            $test
+        );
     }
 
-    /**
-     * @test
-     */
-    public function rendersImageWithText()
+    #[Test]
+    public function rendersImageWithText(): void
     {
         $arguments = $this->arguments;
         $arguments['text'] = 'test';
         $test = $this->executeViewHelper($arguments);
-        $this->assertSame('<img src="https://via.placeholder.com/100/333333/FFFFFF/?text=test" alt="https://via.placeholder.com/100/333333/FFFFFF/?text=test" width="100" height="100" />', $test);
+        $expected = '<img src="https://via.placeholder.com/100/333333/FFFFFF/?text=test" '
+            . 'alt="https://via.placeholder.com/100/333333/FFFFFF/?text=test" width="100" height="100" />';
+        $this->assertSame(
+            $expected,
+            $test
+        );
     }
 }

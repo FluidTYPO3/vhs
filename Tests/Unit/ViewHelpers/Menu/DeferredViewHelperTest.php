@@ -11,12 +11,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Menu;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 class DeferredViewHelperTest extends AbstractViewHelperTestCase
 {
     public function testOutputsEmptyStringWithoutDeferredStringContext(): void
     {
-        $this->viewHelperVariableContainer->addAll(
+        $this->getViewHelperVariableContainer()->addAll(
             AbstractMenuViewHelper::class,
             [
                 'deferredArray' => ['foo' => 'bar'],
@@ -28,7 +30,7 @@ class DeferredViewHelperTest extends AbstractViewHelperTestCase
 
     public function testOutputsEmptyStringWithoutDeferredArrayContext(): void
     {
-        $this->viewHelperVariableContainer->addAll(
+        $this->getViewHelperVariableContainer()->addAll(
             AbstractMenuViewHelper::class,
             [
                 'deferredString' => 'deferredString',
@@ -40,7 +42,7 @@ class DeferredViewHelperTest extends AbstractViewHelperTestCase
 
     public function testThrowsExceptionWithEmptyAsArgument(): void
     {
-        $this->viewHelperVariableContainer->addAll(
+        $this->getViewHelperVariableContainer()->addAll(
             AbstractMenuViewHelper::class,
             [
                 'deferredString' => 'deferredString',
@@ -53,7 +55,7 @@ class DeferredViewHelperTest extends AbstractViewHelperTestCase
 
     public function testOutputsDeferredStringWithoutAsArgument(): void
     {
-        $this->viewHelperVariableContainer->addAll(
+        $this->getViewHelperVariableContainer()->addAll(
             AbstractMenuViewHelper::class,
             [
                 'deferredString' => 'deferredString',
@@ -66,7 +68,7 @@ class DeferredViewHelperTest extends AbstractViewHelperTestCase
 
     public function testRendersContentWithDeferredArray(): void
     {
-        $this->viewHelperVariableContainer->addAll(
+        $this->getViewHelperVariableContainer()->addAll(
             AbstractMenuViewHelper::class,
             [
                 'deferredString' => 'deferredString',
@@ -79,7 +81,7 @@ class DeferredViewHelperTest extends AbstractViewHelperTestCase
 
     public function testBacksUpExistingVariableAndRendersContentWithDeferredArray(): void
     {
-        $this->viewHelperVariableContainer->addAll(
+        $this->getViewHelperVariableContainer()->addAll(
             AbstractMenuViewHelper::class,
             [
                 'deferredString' => 'deferredString',
@@ -92,6 +94,18 @@ class DeferredViewHelperTest extends AbstractViewHelperTestCase
             $this->createObjectAccessorNode('menu.foo')
         );
         self::assertSame('bar', $output);
-        self::assertSame('original', $this->templateVariableContainer->get('menu'));
+        self::assertSame('original', $this->getTemplateVariableContainer()->get('menu'));
+    }
+
+    private function getViewHelperVariableContainer(): ViewHelperVariableContainer
+    {
+        self::assertInstanceOf(ViewHelperVariableContainer::class, $this->viewHelperVariableContainer);
+        return $this->viewHelperVariableContainer;
+    }
+
+    private function getTemplateVariableContainer(): StandardVariableProvider
+    {
+        self::assertInstanceOf(StandardVariableProvider::class, $this->templateVariableContainer);
+        return $this->templateVariableContainer;
     }
 }

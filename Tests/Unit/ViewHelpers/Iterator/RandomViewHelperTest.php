@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,13 +20,16 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 class RandomViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getRenderTestValues
      * @param array $arguments
      * @param array $asArray
      */
-    public function testRender(array $arguments, array $asArray)
+    #[Test]
+    #[DataProvider('getRenderTestValues')]
+    public function testRender(array $arguments, array $asArray): void
     {
+        if (($arguments['subject'] ?? null) === 'queryResult') {
+            $arguments['subject'] = $this->createQueryResult(['foo', 'bar'], 0);
+        }
         $value = $this->executeViewHelper($arguments);
         if (null !== $value) {
             $this->assertContains($value, $asArray);
@@ -36,16 +41,24 @@ class RandomViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues(): array
     {
-        $queryResult = $this->getMockBuilder(QueryResult::class)->setMethods(['toArray', 'initialize', 'rewind', 'valid', 'count'])->disableOriginalConstructor()->getMock();
-        $queryResult->expects($this->any())->method('toArray')->will($this->returnValue(['foo', 'bar']));
-        $queryResult->expects($this->any())->method('count')->will($this->returnValue(0));
-        $queryResult->expects($this->any())->method('valid')->will($this->returnValue(false));
         return [
             [['subject' => ['foo', 'bar']], ['foo', 'bar']],
             [['subject' => new \ArrayIterator(['foo', 'bar'])], ['foo', 'bar']],
-            [['subject' => $queryResult], ['foo', 'bar']],
+            [['subject' => 'queryResult'], ['foo', 'bar']],
         ];
+    }
+
+    private function createQueryResult(array $values, int $count): QueryResult
+    {
+        $queryResult = $this->getMockBuilder(QueryResult::class)
+            ->onlyMethods(['toArray', 'initialize', 'rewind', 'valid', 'count'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $queryResult->method('toArray')->willReturn($values);
+        $queryResult->method('count')->willReturn($count);
+        $queryResult->method('valid')->willReturn(false);
+        return $queryResult;
     }
 }

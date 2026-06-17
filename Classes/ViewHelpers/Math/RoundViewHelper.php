@@ -31,7 +31,7 @@ class RoundViewHelper extends AbstractSingleMathViewHelper
      * @param float|integer|string|iterable|array $a
      * @return float|array
      */
-    protected static function calculateAction($a, array $arguments = [])
+    protected static function calculateAction($a, array $arguments = []): mixed
     {
         if (static::assertIsArrayOrIterator($a)) {
             /**

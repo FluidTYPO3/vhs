@@ -1,6 +1,11 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Frontend\Page\PageInformation;
+
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
  *
@@ -74,12 +79,21 @@ class BrowseViewHelper extends AbstractMenuViewHelper
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
-        $defaultUid = $GLOBALS['TSFE']->id;
         $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
-        $pageUid = (int) (null !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $defaultUid);
-        $currentUid = (int) ($this->arguments['currentPageUid'] ?: $defaultUid);
+        $pageUidArgument = $this->arguments['pageUid'];
+        $currentPageUidArgument = $this->arguments['currentPageUid'];
+        if (is_numeric($currentPageUidArgument) && (int) $currentPageUidArgument > 0) {
+            $defaultUid = (int) $currentPageUidArgument;
+        } else {
+            $request = RequestResolver::tryResolveRequestFromRenderingContext($this->renderingContext, false);
+            $defaultUid = $request instanceof ServerRequestInterface ? $this->getCurrentPageUid($request) : 0;
+        }
+        $pageUid = is_numeric($pageUidArgument) ? (int) $pageUidArgument : $defaultUid;
+        $currentUid = is_numeric($currentPageUidArgument) && (int) $currentPageUidArgument > 0
+            ? (int) $currentPageUidArgument
+            : $defaultUid;
         $currentPage = $this->pageService->getPage($currentUid, $showAccessProtected);
         $parentUid = (int) (null !== $this->arguments['pageUid'] ? $pageUid : ($currentPage['pid'] ?? 0));
         $parentPage = $this->pageService->getPage($parentUid, $showAccessProtected);
@@ -144,7 +158,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper
             $menu['last'] = $menuItems['last'];
             $menu['last']['linktext'] = $this->getCustomLabelOrPageTitle('labelLast', $menuItems['last']);
         }
-        $variableProvider = $this->renderingContext->getVariableProvider();
+        $variableProvider = $this->getRenderingContextOrFail()->getVariableProvider();
         $this->backupVariables();
         /** @var string $as */
         $as = $this->arguments['as'];
@@ -164,5 +178,20 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         }
 
         return $title;
+    }
+
+    private function getCurrentPageUid(ServerRequestInterface $request): int
+    {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if ($pageInformation instanceof PageInformation) {
+            return $pageInformation->getId();
+        }
+
+        $routing = $request->getAttribute('routing');
+        if ($routing instanceof PageArguments) {
+            return $routing->getPageId();
+        }
+
+        throw new \RuntimeException('Unable to resolve current page uid for browse menu.', 1774448251);
     }
 }

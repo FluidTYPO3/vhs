@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,10 +17,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class FilterViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function nullSubjectCallsRenderChildrenToReadValue()
+    #[Test]
+    public function nullSubjectCallsRenderChildrenToReadValue(): void
     {
         $subject = ['test' => 'test'];
         $arguments = [
@@ -29,10 +28,8 @@ class FilterViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame($subject, $result);
     }
 
-    /**
-     * @test
-     */
-    public function filteringEmptySubjectReturnsEmptyArrayOnInvalidSubject()
+    #[Test]
+    public function filteringEmptySubjectReturnsEmptyArrayOnInvalidSubject(): void
     {
         $arguments = [
             'subject' => new \DateTime('now')
@@ -41,10 +38,8 @@ class FilterViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame($result, []);
     }
 
-    /**
-     * @test
-     */
-    public function supportsIterators()
+    #[Test]
+    public function supportsIterators(): void
     {
         $array = ['test' => 'test'];
         $iterator = new \ArrayIterator($array);
@@ -57,10 +52,8 @@ class FilterViewHelperTest extends AbstractViewHelperTestCase
         $this->assertSame($result, $array);
     }
 
-    /**
-     * @test
-     */
-    public function supportsPropertyName()
+    #[Test]
+    public function supportsPropertyName(): void
     {
         $array = [['test' => 'test']];
         $iterator = new \ArrayIterator($array);

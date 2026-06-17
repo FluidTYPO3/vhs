@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Media;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -37,18 +38,18 @@ class YoutubeViewHelperTest extends AbstractViewHelperTestCase
         'videoQuality' => ''
     ];
 
-    /**
-     * @test
-     */
-    public function compareResult()
+    #[Test]
+    public function compareResult(): void
     {
         $this->arguments['videoId']  = 'M7lc1UVf-VE';
         $this->arguments['hideInfo'] = true;
         $this->arguments['start']    = 30;
 
-        preg_match('#src="([^"]*)"#', $this->executeViewHelper($this->arguments), $actualSource);
+        $output = $this->executeViewHelper($this->arguments);
+        self::assertIsString($output);
+        preg_match('#src="([^"]*)"#', $output, $actualSource);
         $expectedSource = '//www.youtube-nocookie.com/embed/M7lc1UVf-VE?rel=0&amp;showinfo=0&amp;start=30';
 
-        $this->assertSame($expectedSource, $actualSource[1]);
+        $this->assertSame($expectedSource, $actualSource[1] ?? null);
     }
 }

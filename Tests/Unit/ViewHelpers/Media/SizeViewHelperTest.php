@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\ViewHelpers\Media;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,50 +18,43 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class SizeViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @var string
-     */
-    protected $fixturesPath;
+    protected string $fixturesPath;
 
     /**
      * Setup
      */
     public function setUp(): void
     {
-        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)->disableOriginalConstructor()->getMock();
+        $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         parent::setUp();
-        $this->fixturesPath = realpath(__DIR__ . '/../../../../Tests/Fixtures/Files');
+        $fixturesPath = realpath(__DIR__ . '/../../../../Tests/Fixtures/Files');
+        self::assertIsString($fixturesPath);
+        $this->fixturesPath = $fixturesPath;
     }
 
-    /**
-     * @test
-     */
-    public function returnsZeroForEmptyArguments()
+    #[Test]
+    public function returnsZeroForEmptyArguments(): void
     {
         $this->assertEquals(0, $this->executeViewHelper());
     }
 
-    /**
-     * @test
-     */
-    public function returnsFileSizeAsInteger()
+    #[Test]
+    public function returnsFileSizeAsInteger(): void
     {
         $this->assertEquals(7094, $this->executeViewHelperUsingTagContent($this->fixturesPath . '/typo3_logo.jpg'));
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionWhenFileNotFound()
+    #[Test]
+    public function throwsExceptionWhenFileNotFound(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelperUsingTagContent('/this/path/hopefully/does/not/exist.txt');
     }
 
-    /**
-     * @test
-     */
-    public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory()
+    #[Test]
+    public function throwsExceptionWhenFileIsNotAccessibleOrIsADirectory(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelperUsingTagContent($this->fixturesPath);

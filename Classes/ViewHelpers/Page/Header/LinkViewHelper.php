@@ -43,7 +43,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      *
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         if (ContextUtility::isBackend()) {
             return '';

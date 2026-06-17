@@ -20,6 +20,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 /**
  * Base class for ViewHelpers capable of registering assets
  * which will be included when rendering the page.
+ * New installations should prefer TYPO3's native `f:asset.*`
+ * ViewHelpers for regular JavaScript, CSS and JavaScript module
+ * registration. Use VHS assets when you need VHS-specific behavior
+ * such as merging, CSS URL rewriting, named chunks or marker-based
+ * movable/standalone placement.
  *
  * Note: building of all Assets takes place in the class
  * FluidTYPO3\Vhs\Service\AssetService with two reasons:
@@ -186,28 +191,34 @@ abstract class AbstractAssetViewHelper extends AbstractViewHelper implements Ass
             false,
             false
         );
+        $this->registerArgument(
+            'csp',
+            'boolean',
+            'Controls TYPO3 Content Security Policy handling. Defaults to TYPO3 native asset behavior: TRUE for ' .
+            'file-based assets and FALSE for inline assets. Prefer TYPO3 native f:asset.* ViewHelpers for new ' .
+            'installations unless VHS-specific asset processing is required.',
+            false,
+            null
+        );
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->build();
     }
 
-    /**
-     * Render method
-     *
-     * @return void
-     */
-    public function render()
+    public function render(): mixed
     {
         if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling'])
             || !$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vhs']['setup']['disableAssetHandling']
         ) {
             $this->finalize();
         }
+
+        return null;
     }
 
     /**

@@ -15,6 +15,7 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### ViewHelper Debug ViewHelper (sic)
@@ -123,8 +124,9 @@ class DebugViewHelper extends AbstractViewHelper
         }
         if (0 < count($this->childObjectAccessorNodes)) {
             $nodes[] = '[VARIABLE ACCESSORS]';
+            $renderingContext = $this->getRenderingContextOrFail();
             /** @var array|object $templateVariables */
-            $templateVariables = $this->renderingContext->getVariableProvider()->getAll();
+            $templateVariables = $renderingContext->getVariableProvider()->getAll();
             foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
                 $path = $objectAccessorNode->getObjectPath();
                 $segments = explode('.', $path);
@@ -167,6 +169,14 @@ class DebugViewHelper extends AbstractViewHelper
             }
         }
         return '<pre>' . implode(LF . LF, $nodes) . '</pre>';
+    }
+
+    private function getRenderingContextOrFail(): RenderingContextInterface
+    {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            throw new \RuntimeException('Rendering context missing', 1774448251);
+        }
+        return $this->renderingContext;
     }
 
     /**

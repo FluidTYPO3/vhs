@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -13,39 +14,31 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
  */
 class CallViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function throwsRuntimeExceptionIfObjectNotFound()
+    #[Test]
+    public function throwsRuntimeExceptionIfObjectNotFound(): void
     {
         $this->expectExceptionCode(1356849652);
         $this->executeViewHelper(['method' => 'method', 'arguments' => []]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsRuntimeExceptionIfMethodNotFound()
+    #[Test]
+    public function throwsRuntimeExceptionIfMethodNotFound(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);
         $this->expectExceptionCode(1356834755);
         $this->executeViewHelper(['method' => 'notfound', 'object' => $object, 'arguments' => []]);
     }
 
-    /**
-     * @test
-     */
-    public function executesMethodOnObjectFromArgument()
+    #[Test]
+    public function executesMethodOnObjectFromArgument(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);
         $result = $this->executeViewHelper(['method' => 'count', 'object' => $object, 'arguments' => []]);
         $this->assertEquals(2, $result);
     }
 
-    /**
-     * @test
-     */
-    public function executesMethodOnObjectFromChildContent()
+    #[Test]
+    public function executesMethodOnObjectFromChildContent(): void
     {
         $object = new \ArrayIterator(['foo', 'bar']);
         $result = $this->executeViewHelperUsingTagContent($object, ['method' => 'count', 'arguments' => []]);

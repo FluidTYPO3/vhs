@@ -13,6 +13,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Asset;
  *
  * Allows inserting a `<script>` Asset. Settings specify
  * where to insert the Asset and how to treat it.
+ *
+ * New installations should prefer TYPO3's native
+ * `f:asset.script` ViewHelper unless VHS-specific merging,
+ * rewriting or movable/standalone placement is required.
  */
 class ScriptViewHelper extends AbstractAssetViewHelper
 {

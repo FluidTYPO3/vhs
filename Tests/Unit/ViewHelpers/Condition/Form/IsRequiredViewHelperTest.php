@@ -10,33 +10,30 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Form;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Bar;
 use FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model\Foo;
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 class IsRequiredViewHelperTest extends AbstractViewHelperTestCase
 {
     protected function setUp(): void
     {
-        $this->singletonInstances[ReflectionService::class] = $this->getMockBuilder(ReflectionService::class)
-            ->setMethods(['__destruct'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->singletonInstances[ReflectionService::class] = new ReflectionService(new NullFrontend('testing'), 'testing');
 
         parent::setUp();
     }
 
-    protected function getInstanceOfFoo()
+    protected function getInstanceOfFoo(): Foo
     {
         return new Foo();
     }
 
-    protected function getNestedPathToFoo()
+    protected function getNestedPathToFoo(): string
     {
         return 'foo';
     }
 
-    public function testRenderElseWithSingleProperty()
+    public function testRenderElseWithSingleProperty(): void
     {
         $domainObject = $this->getInstanceOfFoo();
         $arguments = [
@@ -48,7 +45,7 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('else', $result);
     }
 
-    public function testRenderElseWithNestedSingleProperty()
+    public function testRenderElseWithNestedSingleProperty(): void
     {
         $domainObject = new Bar();
         $prefix = $this->getNestedPathToFoo();
@@ -61,7 +58,7 @@ class IsRequiredViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('else', $result);
     }
 
-    public function testRenderElseWithNestedMultiProperty()
+    public function testRenderElseWithNestedMultiProperty(): void
     {
         $domainObject = new Bar();
         $prefix = $this->getNestedPathToFoo();

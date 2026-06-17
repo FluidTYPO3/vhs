@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\String;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -8,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\String;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
@@ -16,10 +16,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class IsUppercaseViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function rendersThenChildIfFirstCharacterIsUppercase()
+    #[Test]
+    public function rendersThenChildIfFirstCharacterIsUppercase(): void
     {
         $arguments = [
             'then' => 'then',
@@ -31,10 +29,8 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('then', $result);
     }
 
-    /**
-     * @test
-     */
-    public function rendersThenChildIfAllCharactersAreUppercase()
+    #[Test]
+    public function rendersThenChildIfAllCharactersAreUppercase(): void
     {
         $arguments = [
             'then' => 'then',
@@ -46,10 +42,8 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('then', $result);
     }
 
-    /**
-     * @test
-     */
-    public function rendersElseChildIfFirstCharacterIsNotUppercase()
+    #[Test]
+    public function rendersElseChildIfFirstCharacterIsNotUppercase(): void
     {
         $arguments = [
             'then' => 'then',
@@ -61,10 +55,8 @@ class IsUppercaseViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('else', $result);
     }
 
-    /**
-     * @test
-     */
-    public function rendersElseChildIfAllCharactersAreNotUppercase()
+    #[Test]
+    public function rendersElseChildIfAllCharactersAreNotUppercase(): void
     {
         $arguments = [
             'then' => 'then',

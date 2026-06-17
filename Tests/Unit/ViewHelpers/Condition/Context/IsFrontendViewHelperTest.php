@@ -19,7 +19,7 @@ class IsFrontendViewHelperTest extends AbstractViewHelperTestCase
     public function testIsFrontendContext(): void
     {
         $instance = $this->createInstance();
-        $result = IsFrontendViewHelper::verdict([], $this->getMockBuilder(RenderingContextInterface::class)->getMock());
+        $result = IsFrontendViewHelper::verdict([], $this->createMock(RenderingContextInterface::class));
         $this->assertThat($result, new IsType(IsType::TYPE_BOOL));
     }
 

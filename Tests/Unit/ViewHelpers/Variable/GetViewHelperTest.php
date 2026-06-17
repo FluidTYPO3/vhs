@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -18,59 +19,49 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class GetViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function returnsNullIfVariableDoesNotExist()
+    #[Test]
+    public function returnsNullIfVariableDoesNotExist(): void
     {
         $this->assertNull($this->executeViewHelper(['name' => 'void', []]));
     }
 
-    /**
-     * @test
-     */
-    public function returnsDirectValueIfExists()
+    #[Test]
+    public function returnsDirectValueIfExists(): void
     {
         $this->assertEquals(1, $this->executeViewHelper(['name' => 'test'], ['test' => 1]));
     }
 
-    /**
-     * @test
-     */
-    public function returnsNestedValueIfRootExists()
+    #[Test]
+    public function returnsNestedValueIfRootExists(): void
     {
         $this->assertEquals(1, $this->executeViewHelper(['name' => 'test.test'], ['test' => ['test' => 1]]));
     }
 
-    /**
-     * @test
-     */
-    public function returnsNestedValueUsingRawKeysIfRootExists()
+    #[Test]
+    public function returnsNestedValueUsingRawKeysIfRootExists(): void
     {
-        $this->assertEquals(1, $this->executeViewHelper(['name' => 'test.test', 'useRawKeys' => true], ['test' => ['test' => 1]]));
+        $this->assertEquals(
+            1,
+            $this->executeViewHelper(['name' => 'test.test', 'useRawKeys' => true], ['test' => ['test' => 1]])
+        );
     }
 
-    /**
-     * @test
-     */
-    public function returnsNestedValueIfRootExistsAndMembersAreNumeric()
+    #[Test]
+    public function returnsNestedValueIfRootExistsAndMembersAreNumeric(): void
     {
         $this->assertEquals(2, $this->executeViewHelper(['name' => 'test.1'], ['test' => [1, 2]]));
     }
 
-    /**
-     * @test
-     */
-    public function returnsNullAndSuppressesExceptionOnInvalidPropertyGetting()
+    #[Test]
+    public function returnsNullAndSuppressesExceptionOnInvalidPropertyGetting(): void
     {
         $user = new Foo();
         $this->assertEquals(null, $this->executeViewHelper(['name' => 'test.void'], ['test' => $user]));
     }
 
-    /**
-     * @test
-     */
-    public function returnsNullOnNonExistingObjectStorageProperty() {
+    #[Test]
+    public function returnsNullOnNonExistingObjectStorageProperty(): void
+    {
         $objectStorage = new ObjectStorage();
         $this->assertNull($this->executeViewHelper(['name' => 'storage.15'], ['storage' => $objectStorage]));
     }

@@ -10,12 +10,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
-use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
@@ -25,15 +28,9 @@ class AlternateViewHelper extends AbstractViewHelper
 {
     use PageRendererTrait;
 
-    /**
-     * @var PageService
-     */
-    protected $pageService;
+    protected PageService $pageService;
 
-    /**
-     * @var TagBuilder
-     */
-    protected $tagBuilder;
+    protected TagBuilder $tagBuilder;
 
     public function injectPageService(PageService $pageService): void
     {
@@ -72,12 +69,14 @@ class AlternateViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
-        if (ContextUtility::isBackend()) {
+        $request = RequestResolver::tryResolveRequestFromRenderingContext($this->renderingContext, false);
+        if (!$request instanceof ServerRequestInterface) {
+            return '';
+        }
+
+        if (ApplicationType::fromRequest($request)->isBackend()) {
             return '';
         }
 
@@ -95,7 +94,7 @@ class AlternateViewHelper extends AbstractViewHelper
         $pageUid = $this->arguments['pageUid'];
         $pageUid = (int) $pageUid;
         if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+            $pageUid = $this->getCurrentPageUid($request);
         }
 
         /** @var bool $normalWhenNoLanguage */
@@ -104,7 +103,7 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
+        $uriBuilder->setRequest($request);
 
         $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
@@ -117,7 +116,7 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $usePageRenderer = (1 !== (int) ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'] ?? 0));
+        $usePageRenderer = !$this->isAllHeaderCodeDisabled($request);
         $output = '';
 
         foreach ($languages as $languageUid => $languageName) {
@@ -144,5 +143,35 @@ class AlternateViewHelper extends AbstractViewHelper
         }
 
         return '';
+    }
+
+    private function getCurrentPageUid(ServerRequestInterface $request): int
+    {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if ($pageInformation instanceof PageInformation) {
+            return $pageInformation->getId();
+        }
+
+        $routing = $request->getAttribute('routing');
+        if ($routing instanceof PageArguments) {
+            return $routing->getPageId();
+        }
+
+        throw new \RuntimeException('Unable to resolve current page uid from frontend request.', 1774448272);
+    }
+
+    private function isAllHeaderCodeDisabled(ServerRequestInterface $request): bool
+    {
+        $frontendTypoScript = $request->getAttribute('frontend.typoscript');
+        if (!is_object($frontendTypoScript)
+            || !method_exists($frontendTypoScript, 'hasConfig')
+            || !method_exists($frontendTypoScript, 'getConfigArray')
+            || !$frontendTypoScript->hasConfig()
+        ) {
+            return false;
+        }
+
+        $config = $frontendTypoScript->getConfigArray();
+        return 1 === (int) ($config['disableAllHeaderCode'] ?? 0);
     }
 }

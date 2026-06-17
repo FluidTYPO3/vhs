@@ -8,9 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Page: Static Prefix
@@ -30,14 +31,25 @@ class StaticPrefixViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        return $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] ?? '';
+    ): string {
+        $request = RequestResolver::tryResolveRequestFromRenderingContext($renderingContext, false);
+        if ($request === null) {
+            return '';
+        }
+        $frontendTypoScript = $request->getAttribute('frontend.typoscript');
+        if (!is_object($frontendTypoScript)
+            || !method_exists($frontendTypoScript, 'hasSetup')
+            || !method_exists($frontendTypoScript, 'getSetupArray')
+            || !$frontendTypoScript->hasSetup()
+        ) {
+            return '';
+        }
+
+        $setup = $frontendTypoScript->getSetupArray();
+        return (string) ($setup['plugin.']['tx_vhs.']['settings.']['prependPath'] ?? '');
     }
 }

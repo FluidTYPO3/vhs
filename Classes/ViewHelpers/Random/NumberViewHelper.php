@@ -67,7 +67,7 @@ class NumberViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): int|float {
         /** @var int $minimum */
         $minimum = $arguments['minimum'];
         /** @var int $maximum */
@@ -82,7 +82,7 @@ class NumberViewHelper extends AbstractViewHelper
         }
         /** @var array $decimals */
         $decimals = array_fill(0, random_int($minimumDecimals, $maximumDecimals), 0);
-        $decimals = array_map(function () {
+        $decimals = array_map(static function (): int {
             return random_int(0, 9);
         }, $decimals);
         return (float) ($natural . '.' . implode('', $decimals));

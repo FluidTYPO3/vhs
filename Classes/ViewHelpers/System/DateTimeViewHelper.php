@@ -31,14 +31,11 @@ class DateTimeViewHelper extends AbstractViewHelper
         return time();
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): \DateTime|false {
         return \DateTime::createFromFormat('U', (string) static::getTimestamp());
     }
 }

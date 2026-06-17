@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Placeholder;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -9,12 +10,14 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format\Placeholder;
  */
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\RequestAwareConfigurationManager;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Class LipsumViewHelperTest
@@ -34,7 +37,7 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
     protected function setUp(): void
     {
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['resolvePackagePath'])
+            ->onlyMethods(['resolvePackagePath'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('resolvePackagePath')->willReturnMap(
@@ -45,24 +48,19 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
 
         $mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['parseFunc'])
+            ->onlyMethods(['parseFunc'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockContentObject->method('parseFunc')->willReturn('foobar');
 
         if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
-            /** @var ConfigurationManagerInterface $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
+            /** @var ConfigurationManagerInterface&MockObject $configurationManager */
+            $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
             $configurationManager->method('getContentObject')->willReturn($mockContentObject);
         } else {
-            $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+            $request = $this->createMock(ServerRequestInterface::class);
             $request->method('getAttribute')->willReturn($mockContentObject);
-            /** @var ConfigurationManagerInterface $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-                ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
-                ->addMethods(['getRequest'])
-                ->getMock();
-            $configurationManager->method('getRequest')->willReturn($request);
+            $configurationManager = new RequestAwareConfigurationManager($request);
         }
 
         $this->singletonInstances[ConfigurationManagerInterface::class] = $configurationManager;
@@ -79,21 +77,21 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
     }
 
     /**
-     * @test
      */
-    public function supportsParagraphCount()
+            #[Test]
+    public function supportsParagraphCount(): void
     {
         $arguments = $this->arguments;
         $firstRender = $this->executeViewHelper($arguments);
         $arguments['paragraphs'] = 6;
         $secondRender = $this->executeViewHelper($arguments);
+        self::assertIsString($firstRender);
+        self::assertIsString($secondRender);
         $this->assertLessThan(strlen($secondRender), strlen($firstRender));
     }
 
-    /**
-     * @test
-     */
-    public function supportsHtmlArgument()
+    #[Test]
+    public function supportsHtmlArgument(): void
     {
         $arguments = $this->arguments;
         $arguments['html'] = true;
@@ -102,10 +100,8 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNotEmpty($test);
     }
 
-    /**
-     * @test
-     */
-    public function detectsFileByShortPath()
+    #[Test]
+    public function detectsFileByShortPath(): void
     {
         $arguments = $this->arguments;
         $arguments['lipsum'] = 'EXT:vhs/Tests/Fixtures/Files/foo.txt';
@@ -113,10 +109,8 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
         $this->assertNotEmpty($test);
     }
 
-    /**
-     * @test
-     */
-    public function canFallBackWhenUsingFileAndFileDoesNotExist()
+    #[Test]
+    public function canFallBackWhenUsingFileAndFileDoesNotExist(): void
     {
         $arguments = $this->arguments;
         $arguments['lipsum'] = 'None.txt';

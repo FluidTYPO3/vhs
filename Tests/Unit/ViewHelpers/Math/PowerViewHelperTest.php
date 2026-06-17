@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,12 +12,10 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class PowerViewHelperTest
  */
-class PowerViewHelperTest extends AbstractMathViewHelperTest
+class PowerViewHelperTest extends AbstractMathViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function testDualArguments()
+    #[Test]
+    public function testDualArguments(): void
     {
         $this->executeDualArgumentTest(8, 2, 64);
     }

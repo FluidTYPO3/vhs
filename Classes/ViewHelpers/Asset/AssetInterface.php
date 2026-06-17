@@ -19,7 +19,7 @@ interface AssetInterface
      *
      * @return void
      */
-    public function render();
+    public function render(): mixed;
 
     /**
      * Build this asset. Override this method in the specific

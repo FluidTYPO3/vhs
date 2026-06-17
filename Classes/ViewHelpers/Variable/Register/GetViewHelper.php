@@ -9,9 +9,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  */
 
 use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Variable\Register: Get
@@ -51,10 +53,54 @@ class GetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $name = $renderChildrenClosure();
-        if (!($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
+        $name = (string) $renderChildrenClosure();
+        $request = RequestResolver::tryResolveRequestFromRenderingContext($renderingContext, false);
+        if (!$request instanceof ServerRequestInterface) {
             return null;
         }
-        return $GLOBALS['TSFE']->register[$name] ?? null;
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '14.0', '<')) {
+            return self::getLegacyRegister($request)[$name] ?? null;
+        }
+        $currentRegister = self::getRegisterStackCurrent($request);
+        return method_exists($currentRegister, 'get') ? $currentRegister->get($name) : null;
+    }
+
+    /**
+     * @return object
+     */
+    private static function getRegisterStack(ServerRequestInterface $request)
+    {
+        $registerStack = $request->getAttribute('frontend.register.stack');
+        if (!is_object($registerStack)
+            || !is_a($registerStack, 'TYPO3\\CMS\\Frontend\\ContentObject\\RegisterStack')
+        ) {
+            throw new \RuntimeException('Unable to read frontend register without register stack.', 1774448257);
+        }
+
+        return $registerStack;
+    }
+
+    private static function getRegisterStackCurrent(ServerRequestInterface $request): object
+    {
+        $registerStack = self::getRegisterStack($request);
+        if (!method_exists($registerStack, 'current')) {
+            throw new \RuntimeException('Unable to read frontend register without current register scope.', 1774619304);
+        }
+        $current = $registerStack->current();
+        if (!is_object($current)) {
+            throw new \RuntimeException('Unable to read frontend register without current register scope.', 1774619305);
+        }
+
+        return $current;
+    }
+
+    private static function getLegacyRegister(ServerRequestInterface $request): array
+    {
+        $controller = $request->getAttribute('frontend.controller');
+        if (!is_object($controller) || !isset($controller->register) || !is_array($controller->register)) {
+            throw new \RuntimeException('Unable to read frontend register without frontend controller.', 1774619302);
+        }
+
+        return $controller->register;
     }
 }

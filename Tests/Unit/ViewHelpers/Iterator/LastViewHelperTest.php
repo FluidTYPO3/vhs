@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,10 +17,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class LastViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function returnsLastElement()
+    #[Test]
+    public function returnsLastElement(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [
@@ -29,10 +28,8 @@ class LastViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('c', $output);
     }
 
-    /**
-     * @test
-     */
-    public function supportsIterators()
+    #[Test]
+    public function supportsIterators(): void
     {
         $array = new \ArrayIterator(['a', 'b', 'c']);
         $arguments = [
@@ -42,10 +39,8 @@ class LastViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('c', $output);
     }
 
-    /**
-     * @test
-     */
-    public function supportsTagContent()
+    #[Test]
+    public function supportsTagContent(): void
     {
         $array = ['a', 'b', 'c'];
         $arguments = [
@@ -55,10 +50,8 @@ class LastViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals('c', $output);
     }
 
-    /**
-     * @test
-     */
-    public function returnsNullIfHaystackIsEmptyArray()
+    #[Test]
+    public function returnsNullIfHaystackIsEmptyArray(): void
     {
         $arguments = [
             'haystack' => []

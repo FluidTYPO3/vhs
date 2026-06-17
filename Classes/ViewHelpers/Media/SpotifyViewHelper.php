@@ -67,7 +67,7 @@ class SpotifyViewHelper extends AbstractTagBasedViewHelper
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         $spotifyUri = $this->arguments['spotifyUri'];
         /** @var int $width */

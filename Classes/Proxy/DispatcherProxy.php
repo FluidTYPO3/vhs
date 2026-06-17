@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\Proxy;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class DispatcherProxy
 {
@@ -22,8 +21,8 @@ class DispatcherProxy
         $this->dispatcher = $dispatcher;
     }
 
-    public function dispatch(RequestInterface $request, ?Response $response = null): ?ResponseInterface
+    public function dispatch(RequestInterface $request): ResponseInterface
     {
-        return $this->dispatcher->dispatch($request, $response);
+        return $this->dispatcher->dispatch($request);
     }
 }

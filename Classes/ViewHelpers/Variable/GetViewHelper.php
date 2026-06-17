@@ -73,7 +73,7 @@ class GetViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         $variableProvider = $renderingContext->getVariableProvider();
         /** @var string $name */
         $name = $arguments['name'];

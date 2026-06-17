@@ -11,10 +11,13 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * Page FAL resource ViewHelper.
@@ -94,15 +97,11 @@ class FalViewHelper extends ResourcesFalViewHelper
 
     protected function getCurrentLanguageUid(): int
     {
-        if (class_exists(LanguageAspect::class)) {
-            /** @var Context $context */
-            $context = GeneralUtility::makeInstance(Context::class);
-            /** @var LanguageAspect $languageAspect */
-            $languageAspect = $context->getAspect('language');
-            $languageUid = $languageAspect->getId();
-        } else {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
-        }
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = $context->getAspect('language');
+        $languageUid = $languageAspect->getId();
 
         return (int) $languageUid;
     }
@@ -113,6 +112,12 @@ class FalViewHelper extends ResourcesFalViewHelper
      */
     public function getActiveRecord(): array
     {
-        return $GLOBALS['TSFE']->page;
+        $request = RequestResolver::resolveRequestFromRenderingContext($this->renderingContext, false);
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if (!$pageInformation instanceof PageInformation) {
+            throw new \RuntimeException('Unable to resolve active page record without page information.', 1774448267);
+        }
+
+        return $pageInformation->getPageRecord();
     }
 }

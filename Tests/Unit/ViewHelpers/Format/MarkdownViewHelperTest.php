@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,23 +18,19 @@ use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
  */
 class MarkdownViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function supportsHtmlEntities()
+    #[Test]
+    public function supportsHtmlEntities(): void
     {
-        if (trim(shell_exec('which markdown')) === '') {
+        if (trim((string) shell_exec('which markdown')) === '') {
             $this->expectException(NoSuchCacheException::class);
         }
         $this->executeViewHelper(['text' => 'test < test', 'trim' => true, 'htmlentities' => true]);
     }
 
-    /**
-     * @test
-     */
-    public function rendersMarkdown()
+    #[Test]
+    public function rendersMarkdown(): void
     {
-        if (trim(shell_exec('which markdown')) === '') {
+        if (trim((string) shell_exec('which markdown')) === '') {
             $this->expectException(NoSuchCacheException::class);
         }
         $this->executeViewHelper(['text' => 'test', 'trim' => true, 'htmlentities' => false]);

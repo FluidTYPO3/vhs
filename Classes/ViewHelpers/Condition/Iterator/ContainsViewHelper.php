@@ -43,7 +43,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        /** @var array|DomainObjectInterface[]|QueryResult|ObjectStorage|iterable $haystack */
+        /** @var array|DomainObjectInterface[]|QueryResult<DomainObjectInterface>|ObjectStorage<DomainObjectInterface>|iterable $haystack */
         $haystack = $arguments['haystack'];
         /** @var mixed $needle */
         $needle = $arguments['needle'];
@@ -59,7 +59,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
         if (0 > $index) {
             return null;
         }
-        /** @var array|DomainObjectInterface[]|QueryResult|ObjectStorage|iterable $haystack */
+        /** @var array|DomainObjectInterface[]|QueryResult<DomainObjectInterface>|ObjectStorage<DomainObjectInterface>|iterable $haystack */
         $haystack = $arguments['haystack'];
         $asArray = [];
         if (is_array($haystack)) {
@@ -75,7 +75,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param array|DomainObjectInterface[]|QueryResult|ObjectStorage|iterable $haystack
+     * @param array|iterable|QueryResult<DomainObjectInterface>|ObjectStorage<DomainObjectInterface> $haystack
      * @param mixed $needle
      * @return boolean|integer
      */
@@ -99,7 +99,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param QueryResult $haystack
+     * @param QueryResult<DomainObjectInterface> $haystack
      * @param int|DomainObjectInterface $needle
      * @return boolean|integer
      */
@@ -121,7 +121,7 @@ class ContainsViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param ObjectStorage $haystack
+     * @param iterable<mixed> $haystack
      * @param int|DomainObjectInterface $needle
      * @return boolean|integer
      */

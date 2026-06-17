@@ -57,14 +57,11 @@ class ExplodeViewHelper extends AbstractViewHelper
         $this->registerAsArgument();
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var string $content */
         $content = $arguments['content'];
         /** @var string|null $as */

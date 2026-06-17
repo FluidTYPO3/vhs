@@ -32,7 +32,7 @@ class SessionViewHelper extends AbstractOnceViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         if ('' === session_id()) {
             session_start();
         }

@@ -39,13 +39,13 @@ class PrependViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         return $arguments['add'] . $renderChildrenClosure();
     }
 }

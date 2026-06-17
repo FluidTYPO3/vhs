@@ -9,22 +9,27 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AssetInclusion implements MiddlewareInterface
 {
+    public function __construct(private readonly AssetService $assetService)
+    {
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
+
+        if (!$this->isHtmlResponse($response)) {
+            return $response;
+        }
 
         $body = $response->getBody();
         $body->rewind();
         $contents = $body->getContents();
         $contentsBefore = $contents;
 
-        /** @var AssetService $assetService */
-        $assetService = GeneralUtility::makeInstance(AssetService::class);
-        $assetService->buildAllUncached([], $GLOBALS['TSFE'], $contents);
+        $this->assetService->buildAllUncached([], $request, $contents);
 
         if ($contentsBefore === $contents) {
             // Content is unchanged, return the original response since there is no need to modify it, or the
@@ -37,5 +42,12 @@ class AssetInclusion implements MiddlewareInterface
         fputs($stream, $contents);
 
         return $response->withBody(new Stream($stream));
+    }
+
+    private function isHtmlResponse(ResponseInterface $response): bool
+    {
+        $contentType = strtolower($response->getHeaderLine('Content-Type'));
+
+        return $contentType === '' || str_contains($contentType, 'text/html');
     }
 }

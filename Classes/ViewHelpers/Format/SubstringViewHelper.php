@@ -31,14 +31,14 @@ class SubstringViewHelper extends AbstractViewHelper
     /**
      * Substrings a string or string-compatible value
      *
-     * @return mixed
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        $content = $renderChildrenClosure();
+    ): string {
+        $content = (string) $renderChildrenClosure();
         /** @var int $start */
         $start = $arguments['start'];
         /** @var int $length */

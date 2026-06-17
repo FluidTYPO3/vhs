@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,19 +17,15 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class ValuesViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function returnsValuesUsingArgument()
+    #[Test]
+    public function returnsValuesUsingArgument(): void
     {
         $result = $this->executeViewHelper(['subject' => ['foo' => 'bar']]);
         $this->assertEquals(['bar'], $result);
     }
 
-    /**
-     * @test
-     */
-    public function supportsIterators()
+    #[Test]
+    public function supportsIterators(): void
     {
         $result = $this->executeViewHelper(['subject' => new \ArrayIterator(['foo' => 'bar'])]);
         $this->assertEquals(['bar'], $result);

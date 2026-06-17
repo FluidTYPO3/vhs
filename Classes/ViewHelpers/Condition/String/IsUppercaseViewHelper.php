@@ -29,10 +29,10 @@ class IsUppercaseViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        $fullStrinng = (bool) $arguments['fullString'];
+        $fullString = (bool) $arguments['fullString'];
         /** @var string $string */
         $string = $arguments['string'];
-        if ($arguments['fullString']) {
+        if ($fullString) {
             $result = ctype_upper((string) $string);
         } else {
             $result = ctype_upper(substr((string) $string, 0, 1));

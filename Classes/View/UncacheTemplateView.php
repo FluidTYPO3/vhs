@@ -9,16 +9,16 @@ namespace FluidTYPO3\Vhs\View;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
-use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class UncacheTemplateView extends TemplateView
 {
@@ -37,18 +37,20 @@ class UncacheTemplateView extends TemplateView
         }
 
         if (class_exists(RenderingContextFactory::class)) {
-            $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
-            if (method_exists($renderingContext, 'setRequest')) {
-                $request = $parameters instanceof ExtbaseRequestParameters
-                    ? $GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters)
-                    : $GLOBALS['TYPO3_REQUEST'];
-                $renderingContext->setRequest(
-                    // TYPO3 v11.x needs the ServerRequest wrapped in an Extbase Request.
-                    version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.0', '<')
-                        ? new Request($request)
-                        : $request
-                );
+            $request = null;
+            if (property_exists($this, 'renderingContext')
+                && $this->renderingContext instanceof RenderingContextInterface
+                && method_exists($this->renderingContext, 'getRequest')
+            ) {
+                $request = $this->renderingContext->getRequest();
             }
+            if (!$request instanceof ServerRequestInterface && isset($GLOBALS['TYPO3_REQUEST'])) {
+                $request = $GLOBALS['TYPO3_REQUEST'];
+            }
+            if ($parameters instanceof ExtbaseRequestParameters && $request instanceof ServerRequestInterface) {
+                $request = $request->withAttribute('extbase', $parameters);
+            }
+            $renderingContext = $this->createRenderingContextWithRenderingContextFactory($request);
         } else {
             /** @var ControllerContext $controllerContext */
             $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
@@ -96,7 +98,9 @@ class UncacheTemplateView extends TemplateView
             $renderingContext->getTemplatePaths()->setPartialRootPaths($conf['partialRootPaths']);
         } elseif ($extensionName) {
             $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-            $renderingContext->getTemplatePaths()->fillDefaultsByPackageName($extensionKey);
+            $renderingContext->getTemplatePaths()->setPartialRootPaths([
+                ExtensionManagementUtility::extPath($extensionKey, 'Resources/Private/Partials/'),
+            ]);
         }
         return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
     }
@@ -112,24 +116,24 @@ class UncacheTemplateView extends TemplateView
         ?string $section = null,
         array $arguments = []
     ): string {
-        $this->renderingStack[] = [
-            'type' => static::RENDERING_TEMPLATE,
-            'parsedTemplate' => $this->getCurrentParsedTemplate(),
-            'renderingContext' => $renderingContext,
-        ];
-        /** @var string $rendered */
         $rendered = $this->renderPartial($partial, $section, $arguments);
-        array_pop($this->renderingStack);
-        return $rendered;
+        if ($rendered === null) {
+            return '';
+        }
+        if (is_scalar($rendered) || $rendered instanceof \Stringable) {
+            return (string) $rendered;
+        }
+        throw new \UnexpectedValueException('Rendered uncached partial must be string-compatible', 1774448258);
     }
 
     /**
      * @codeCoverageIgnore
      */
-    protected function createRenderingContextWithRenderingContextFactory(): RenderingContextInterface
-    {
+    protected function createRenderingContextWithRenderingContextFactory(
+        ?ServerRequestInterface $request = null
+    ): RenderingContextInterface {
         /** @var RenderingContextFactory $renderingContextFactory */
         $renderingContextFactory = GeneralUtility::makeInstance(RenderingContextFactory::class);
-        return $renderingContextFactory->create();
+        return $renderingContextFactory->create([], $request);
     }
 }

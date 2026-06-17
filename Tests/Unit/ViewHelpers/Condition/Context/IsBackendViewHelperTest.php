@@ -19,7 +19,7 @@ class IsBackendViewHelperTest extends AbstractViewHelperTestCase
     public function testIsBackendContext(): void
     {
         $instance = $this->createInstance();
-        $result = IsBackendViewHelper::verdict([], $this->getMockBuilder(RenderingContextInterface::class)->getMock());
+        $result = IsBackendViewHelper::verdict([], $this->createMock(RenderingContextInterface::class));
         $this->assertThat($result, new IsType(IsType::TYPE_BOOL));
     }
 

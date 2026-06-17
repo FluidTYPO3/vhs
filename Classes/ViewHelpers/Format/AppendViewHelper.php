@@ -58,7 +58,7 @@ class AppendViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         return $renderChildrenClosure() . $arguments['add'];
     }
 }

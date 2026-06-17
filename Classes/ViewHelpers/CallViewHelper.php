@@ -45,8 +45,8 @@ class CallViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('object', 'object', 'Instance to call method on');
-        $this->registerArgument('method', 'string', 'Name of method to call on instance', true);
+        $this->registerArgument('object', 'mixed', 'Instance to call method on', false, null);
+        $this->registerArgument('method', 'mixed', 'Name of method to call on instance', true);
         $this->registerArgument('arguments', 'array', 'Array of arguments if method requires arguments', false, []);
     }
 

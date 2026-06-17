@@ -28,7 +28,7 @@ class DummyArrayConsumingViewHelper
     public function buildRenderChildrenClosure(): \Closure
     {
         $value = $this->value;
-        return function() use ($value) {
+        return function () use ($value) {
             return $value;
         };
     }

@@ -46,7 +46,7 @@ class SplitViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var int<1, max> $length */
         $length = $arguments['length'];
         if ((int) $length === 0) {

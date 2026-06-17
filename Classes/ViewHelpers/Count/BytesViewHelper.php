@@ -67,7 +67,7 @@ class BytesViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): int {
         /** @var string $encoding */
         $encoding = $arguments['encoding'];
         return (int) mb_strlen($renderChildrenClosure(), $encoding);

@@ -88,7 +88,7 @@ class ImageViewHelper extends AbstractImageViewHelper
      * @return string
      * @throws Exception
      */
-    public function render()
+    public function render(): string
     {
         $this->preprocessImage();
         return $this->renderTag();
@@ -110,7 +110,7 @@ class ImageViewHelper extends AbstractImageViewHelper
             $width = $srcSetVariantDefault['width'];
             $height = $srcSetVariantDefault['height'];
         } else {
-            $src = static::preprocessSourceUri($this->mediaSource, $this->arguments);
+            $src = static::preprocessSourceUri($this->mediaSource, $this->arguments, $this->resolveRequest());
             $width = $this->imageInfo[0] ?? '';
             $height = $this->imageInfo[1] ?? '';
         }

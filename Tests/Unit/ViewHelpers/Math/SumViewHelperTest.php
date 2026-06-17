@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,20 +12,16 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class SumViewHelperTest
  */
-class SumViewHelperTest extends AbstractMathViewHelperTest
+class SumViewHelperTest extends AbstractMathViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function testSingleArgumentIterator()
+    #[Test]
+    public function testSingleArgumentIterator(): void
     {
         $this->executeSingleArgumentTest([8, 2], 10);
     }
 
-    /**
-     * @test
-     */
-    public function testDualArguments()
+    #[Test]
+    public function testDualArguments(): void
     {
         $this->executeDualArgumentTest(8, 2, 10);
     }

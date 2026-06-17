@@ -35,14 +35,11 @@ class FirstViewHelper extends AbstractViewHelper
         $this->registerArgument('haystack', 'mixed', 'Haystack in which to look for needle');
     }
 
-    /**
-     * @return null
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         $haystack = $arguments['haystack'] ?? $renderChildrenClosure();
         if (!is_array($haystack) && !$haystack instanceof \Iterator && null !== $haystack) {
             ErrorUtility::throwViewHelperException(

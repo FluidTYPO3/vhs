@@ -33,7 +33,7 @@ class ProductViewHelper extends AbstractMultipleMathViewHelper
      * @param array $arguments
      * @return mixed
      */
-    protected static function calculateAction($a, $b, array $arguments)
+    protected static function calculateAction($a, $b, array $arguments): mixed
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         if (!$aIsIterable && $b === null && $arguments['fail']) {

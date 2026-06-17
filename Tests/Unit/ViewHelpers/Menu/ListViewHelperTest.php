@@ -11,14 +11,16 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Menu;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use FluidTYPO3\Vhs\ViewHelpers\Menu\ListViewHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 
 class ListViewHelperTest extends AbstractViewHelperTestCase
 {
-    public function testReturnsNullWithoutPages(): void
+    public function testReturnsEmptyStringWithoutPages(): void
     {
         $output = $this->executeViewHelper();
-        self::assertNull($output);
+        self::assertSame('', $output);
     }
 
     public function testRendersMenu(): void
@@ -30,7 +32,7 @@ class ListViewHelperTest extends AbstractViewHelperTestCase
         ];
 
         $pageService = $this->getMockBuilder(PageService::class)
-            ->setMethods(['getMenu', 'getPage', 'getRootLine', 'isCurrent', 'getItemLink', 'getShortcutTargetPage'])
+            ->onlyMethods(['getMenu', 'getPage', 'getRootLine', 'isCurrent', 'getItemLink', 'getShortcutTargetPage'])
             ->disableOriginalConstructor()
             ->getMock();
         $pageService->method('getPage')->willReturn($page);
@@ -43,6 +45,7 @@ class ListViewHelperTest extends AbstractViewHelperTestCase
         $arguments = ['pages' => [1]];
 
         $subject = $this->buildViewHelperInstance($arguments);
+        self::assertInstanceOf(ListViewHelper::class, $subject);
         $subject->injectPageService($pageService);
 
         $output = $this->executeInstance($subject, $arguments);
@@ -52,5 +55,24 @@ class ListViewHelperTest extends AbstractViewHelperTestCase
             '</li></ul>',
             $output
         );
+    }
+
+    public function testPassesRenderingContextRequestToPageService(): void
+    {
+        $subRequest = new ServerRequest();
+        $this->renderingContext = $this->createRenderingContextWithRequest($subRequest);
+        $pageService = $this->getMockBuilder(PageService::class)
+            ->onlyMethods(['setRequest', 'getPage'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pageService->expects($this->once())->method('setRequest')->with($this->identicalTo($subRequest));
+        $pageService->method('getPage')->willReturn([]);
+
+        $arguments = ['pages' => [1]];
+        $subject = $this->buildViewHelperInstance($arguments);
+        self::assertInstanceOf(ListViewHelper::class, $subject);
+        $subject->injectPageService($pageService);
+
+        self::assertSame('', $this->executeInstance($subject, $arguments));
     }
 }

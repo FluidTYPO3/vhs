@@ -29,10 +29,7 @@ class TagViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('name', 'string', 'Tag name', true);
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         /** @var string|null $class */
         $class = $this->arguments['class'] ?? null;
@@ -42,8 +39,18 @@ class TagViewHelper extends AbstractTagBasedViewHelper
         $this->arguments['class'] = $class;
         /** @var string $tagName */
         $tagName = $this->arguments['name'];
-        /** @var string $content */
-        $content = $this->renderChildren();
+        $content = $this->renderOutputAsString($this->renderChildren());
         return $this->renderTag($tagName, $content);
+    }
+
+    private function renderOutputAsString(mixed $output): string
+    {
+        if ($output === null) {
+            return '';
+        }
+        if (is_scalar($output) || $output instanceof \Stringable) {
+            return (string) $output;
+        }
+        throw new \UnexpectedValueException('Rendered tag content must be string-compatible', 1774448257);
     }
 }

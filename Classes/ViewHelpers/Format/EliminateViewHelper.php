@@ -82,8 +82,8 @@ class EliminateViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        $content = $renderChildrenClosure();
+    ): string {
+        $content = (string) $renderChildrenClosure();
         if (isset($arguments['characters'])) {
             $content = static::eliminateCharacters(
                 $content,

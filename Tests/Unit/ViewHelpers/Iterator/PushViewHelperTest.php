@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,12 +19,12 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 class PushViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getRenderTestValues
      * @param array $arguments
      * @param mixed $expectedValue
      */
-    public function testRender(array $arguments, $expectedValue)
+    #[Test]
+    #[DataProvider('getRenderTestValues')]
+    public function testRender(array $arguments, mixed $expectedValue): void
     {
         $this->assertEquals($this->executeViewHelper($arguments), $expectedValue);
     }
@@ -30,11 +32,14 @@ class PushViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues(): array
     {
         return [
             [['subject' => ['foo', 'bar'], 'add' => 'baz', 'key' => null], ['foo', 'bar', 'baz']],
-            [['subject' => ['f' => 'foo', 'b' => 'bar'], 'add' => 'baz', 'key' => 'c'], ['f' => 'foo', 'b' => 'bar', 'c' => 'baz']],
+            [
+                ['subject' => ['f' => 'foo', 'b' => 'bar'], 'add' => 'baz', 'key' => 'c'],
+                ['f' => 'foo', 'b' => 'bar', 'c' => 'baz'],
+            ],
             [['subject' => ['f' => 'foo', 'b' => 'bar'], 'add' => 'baz', 'key' => 'b'], ['f' => 'foo', 'b' => 'baz']],
         ];
     }

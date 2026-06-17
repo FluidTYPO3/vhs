@@ -17,13 +17,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AbstractRecordResourceViewHelperTest extends AbstractTestCase
 {
-    private ?AbstractRecordResourceViewHelper $subject = null;
+    private AbstractRecordResourceViewHelper $subject;
 
     protected function setUp(): void
     {
         $this->subject = $this->getMockBuilder(AbstractRecordResourceViewHelper::class)
+            ->onlyMethods([])
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->getMock();
 
         parent::setUp();
     }
@@ -53,7 +54,7 @@ class AbstractRecordResourceViewHelperTest extends AbstractTestCase
         $record = ['uid' => 1];
 
         $context = $this->getMockBuilder(Context::class)
-            ->setMethods(['hasAspect', 'getPropertyFromAspect'])
+            ->onlyMethods(['hasAspect', 'getPropertyFromAspect'])
             ->disableOriginalConstructor()
             ->getMock();
         $context->method('hasAspect')->willReturn(true);

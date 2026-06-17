@@ -30,7 +30,7 @@ class SiteRelativeViewHelper extends AbstractExtensionViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         $extensionKey = static::getExtensionKey($arguments, $renderingContext);
         $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
         return PathUtility::getAbsoluteWebPath($extensionPath);

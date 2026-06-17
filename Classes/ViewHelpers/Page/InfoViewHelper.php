@@ -12,8 +12,10 @@ use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 
 /**
  * ViewHelper to access data of the current page record.
@@ -57,11 +59,29 @@ class InfoViewHelper extends AbstractViewHelper
     ) {
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);
-        $pageRepository = $pageService->getPageRepository();
         /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'];
+        $pageUid = (int) ($arguments['pageUid'] ?? 0);
+        $request = null;
+        try {
+            $request = RequestResolver::resolveRequestFromRenderingContext($renderingContext);
+            $pageService->setRequest($request);
+        } catch (\UnexpectedValueException) {
+        }
+        $pageRepository = $pageService->getPageRepository();
         if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+            if ($request instanceof \Psr\Http\Message\ServerRequestInterface
+                && $request->getAttribute('routing') instanceof PageArguments
+            ) {
+                $pageUid = (int) $request->getAttribute('routing')->getPageId();
+            } else {
+                try {
+                    $rootLine = $pageService->getRootLine();
+                } catch (\UnexpectedValueException) {
+                    $rootLine = [];
+                }
+                $page = $rootLine[0] ?? [];
+                $pageUid = (int) ($page['uid'] ?? 0);
+            }
         }
         $page = $pageRepository->getPage_noCheck((int) $pageUid);
         /** @var string|null $field */

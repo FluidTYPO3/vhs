@@ -16,10 +16,10 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class IsDevelopmentViewHelperTest extends AbstractViewHelperTestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
         $arguments = ['then' => 'then', 'else' => 'else'];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals('then', $result);
+        $this->assertSame('then', $result);
     }
 }

@@ -13,12 +13,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  */
 class MimetypeViewHelper extends AbstractImageInfoViewHelper
 {
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $info = $this->getInfo();
-        return $info['type'] ?? '';
+        return (string) ($info['type'] ?? '');
     }
 }

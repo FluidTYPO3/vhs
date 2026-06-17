@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Extension\Path;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -23,11 +24,14 @@ class AbsoluteViewHelperTest extends AbstractViewHelperTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $package = $this->getMockBuilder(Package::class)->setMethods(['getPackagePath'])->disableOriginalConstructor()->getMock();
+        $package = $this->getMockBuilder(Package::class)
+            ->onlyMethods(['getPackagePath'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $package->method('getPackagePath')->willReturn('');
 
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive', 'getPackage'])
+            ->onlyMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->method('isPackageActive')->willReturnMap(
@@ -40,10 +44,8 @@ class AbsoluteViewHelperTest extends AbstractViewHelperTestCase
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
     }
 
-    /**
-     * @test
-     */
-    public function rendersUsingArgument()
+    #[Test]
+    public function rendersUsingArgument(): void
     {
         $test = $this->executeViewHelper(['extensionName' => 'Vhs']);
         $this->assertSame(ExtensionManagementUtility::extPath('vhs'), $test);

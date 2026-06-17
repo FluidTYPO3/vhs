@@ -9,6 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Site;
  */
 
 use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -26,17 +29,36 @@ class NameViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        return $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? 'Uknonwn TYPO3 site';
+    ): string {
+        $request = RequestResolver::tryResolveRequestFromRenderingContext($renderingContext, false);
+        if ($request !== null) {
+            $language = $request->getAttribute('language');
+            if ($language instanceof SiteLanguage && $language->getWebsiteTitle() !== '') {
+                return $language->getWebsiteTitle();
+            }
+
+            $site = $request->getAttribute('site');
+            if ($site instanceof Site) {
+                $settings = $site->getSettings();
+                $settingsWebsiteTitle = $settings->get('websiteTitle');
+                if (is_string($settingsWebsiteTitle) && $settingsWebsiteTitle !== '') {
+                    return $settingsWebsiteTitle;
+                }
+
+                try {
+                    $siteWebsiteTitle = $site->getAttribute('websiteTitle');
+                    if (is_string($siteWebsiteTitle) && $siteWebsiteTitle !== '') {
+                        return $siteWebsiteTitle;
+                    }
+                } catch (\InvalidArgumentException) {
+                }
+            }
+        }
+
+        return $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? 'Unknown TYPO3 site';
     }
 }

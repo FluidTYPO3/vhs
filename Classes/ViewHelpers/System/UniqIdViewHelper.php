@@ -47,19 +47,15 @@ class UniqIdViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var string $prefix */
         $prefix = $arguments['prefix'];
         /** @var boolean $moreEntropy */
         $moreEntropy = $arguments['moreEntropy'];
-        $uniqueId = uniqid($prefix, $moreEntropy);
-        return $uniqueId;
+        return uniqid($prefix, $moreEntropy);
     }
 }

@@ -11,7 +11,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
 use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -65,14 +64,13 @@ class LViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        /** @var RenderingContext $renderingContext */
+    ): string {
         /** @var string|null $default */
         $default = $arguments['default'];
         $htmlEscape = (bool) $arguments['htmlEscape'];
@@ -98,6 +96,6 @@ class LViewHelper extends AbstractViewHelper
         } elseif ($htmlEscape) {
             $value = htmlspecialchars((string) $value);
         }
-        return $value;
+        return (string) $value;
     }
 }

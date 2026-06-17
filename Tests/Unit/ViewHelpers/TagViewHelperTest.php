@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -14,12 +16,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers;
 class TagViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getRenderTagTestValues
      * @param array $arguments
      * @param mixed $content
      * @param string $expected
      */
+    #[Test]
+    #[DataProvider('getRenderTagTestValues')]
     public function renderTag(array $arguments, $content, $expected)
     {
         $result = $this->executeViewHelperUsingTagContent($content, $arguments);
@@ -29,7 +31,7 @@ class TagViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getRenderTagTestValues()
+    public static function getRenderTagTestValues()
     {
         return [
             [['name' => 'div'], 'test', '<div>test</div>'],

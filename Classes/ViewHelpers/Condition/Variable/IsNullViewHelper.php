@@ -22,10 +22,10 @@ class IsNullViewHelper extends AbstractConditionViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('value', 'string', 'value to check', true);
+        $this->registerArgument('value', 'mixed', 'value to check', true);
     }
 
-    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         return null === $arguments['value'];
     }

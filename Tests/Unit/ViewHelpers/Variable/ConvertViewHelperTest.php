@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -23,9 +25,9 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
      * @param string $type
      * @param mixed $expected
      * @return void
-     * @test
-     * @dataProvider getExecuteConversionTestValues
      */
+    #[Test]
+    #[DataProvider('getExecuteConversionTestValues')]
     public function executeConversion($value, $type, $expected)
     {
         if (is_object($expected)) {
@@ -39,7 +41,7 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
     /**
      * @return array
      */
-    public function getExecuteConversionTestValues()
+    public static function getExecuteConversionTestValues()
     {
         $dummy = new Foo();
         $storage = new ObjectStorage();
@@ -62,37 +64,29 @@ class ConvertViewHelperTest extends AbstractViewHelperTestCase
         ];
     }
 
-    /**
-     * @test
-     */
-    public function throwsRuntimeExceptionIfTypeOfDefaultValueIsUnsupported()
+    #[Test]
+    public function throwsRuntimeExceptionIfTypeOfDefaultValueIsUnsupported(): void
     {
         $this->expectExceptionCode(1364542576);
         $this->executeViewHelper(['type' => 'foobar', 'value' => null, 'default' => '1']);
     }
 
-    /**
-     * @test
-     */
-    public function throwsRuntimeExceptionIfTypeIsUnsupportedAndNoDefaultProvided()
+    #[Test]
+    public function throwsRuntimeExceptionIfTypeIsUnsupportedAndNoDefaultProvided(): void
     {
         $this->expectExceptionCode(1364542884);
         $this->executeViewHelper(['type' => 'unsupported', 'value' => null]);
     }
 
-    /**
-     * @test
-     */
-    public function throwsRuntimeExceptionIfTypeOfDefaultIsNotSameAsType()
+    #[Test]
+    public function throwsRuntimeExceptionIfTypeOfDefaultIsNotSameAsType(): void
     {
         $this->expectExceptionCode(1364542576);
         $this->executeViewHelper(['type' => 'ObjectStorage', 'value' => null, 'default' => '1']);
     }
 
-    /**
-     * @test
-     */
-    public function returnsExpectedDefaultValue()
+    #[Test]
+    public function returnsExpectedDefaultValue(): void
     {
         $this->assertTrue($this->executeViewHelper(['type' => 'boolean', 'default' => true]));
     }

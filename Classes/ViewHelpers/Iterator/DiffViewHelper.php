@@ -45,7 +45,7 @@ class DiffViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): array {
         $a = $renderChildrenClosure();
 
         $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);

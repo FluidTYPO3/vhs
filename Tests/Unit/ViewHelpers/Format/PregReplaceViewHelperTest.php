@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Format;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,10 +17,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class PregReplaceViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function canReplaceValues()
+    #[Test]
+    public function canReplaceValues(): void
     {
         $arguments = [
             'subject' => 'foo123bar',
@@ -28,5 +27,16 @@ class PregReplaceViewHelperTest extends AbstractViewHelperTestCase
         ];
         $test = $this->executeViewHelper($arguments);
         $this->assertSame('foobazbar', $test);
+    }
+
+    #[Test]
+    public function castsMissingSubjectToString(): void
+    {
+        $arguments = [
+            'pattern' => '/foo/',
+            'replacement' => 'bar',
+        ];
+        $test = $this->executeViewHelper($arguments);
+        $this->assertSame('', $test);
     }
 }

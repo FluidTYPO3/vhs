@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -15,15 +16,15 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class UnsetViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function canUnsetVariable()
+    #[Test]
+    public function canUnsetVariable(): void
     {
-        $variables = new \ArrayObject(['test' => 'test']);
         $instance = $this->buildViewHelperInstance(['name' => 'test']);
+        self::assertNotNull($this->templateVariableContainer);
         $this->templateVariableContainer->add('test', 'test');
         $instance->initializeArgumentsAndRender();
-        $this->assertNotContains('test', $this->templateVariableContainer->getAll());
+        $variables = $this->templateVariableContainer->getAll();
+        self::assertIsArray($variables);
+        $this->assertNotContains('test', array_keys($variables));
     }
 }

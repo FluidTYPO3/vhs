@@ -23,25 +23,27 @@ class LViewHelperTest extends AbstractViewHelperTestCase
     {
         $languageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
 
-        $cache = $this->getMockBuilder(FrontendInterface::class)->getMockForAbstractClass();
+        $cache = $this->createMock(FrontendInterface::class);
         $cache->method('has')->willReturn(true);
         $cache->method('get')->willReturn($languageService);
 
-        $this->singletonInstances[ConfigurationManagerInterface::class] = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        $this->singletonInstances[ConfigurationManagerInterface::class] = $this
+            ->getMockBuilder(ConfigurationManagerInterface::class)
+            ->getMock();
 
         $this->singletonInstances[CacheManager::class] = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->singletonInstances[CacheManager::class]->method('getCache')->willReturn($cache);
 
         if (class_exists(ObjectManager::class)) {
             $this->singletonInstances[ObjectManager::class] = $this->getMockBuilder(ObjectManager::class)
-                ->setMethods(['get'])
+                ->onlyMethods(['get'])
                 ->disableOriginalConstructor()
                 ->getMock();
             $this->singletonInstances[ObjectManager::class]->method('get')->willReturn(
-                $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass()
+                $this->createMock(ConfigurationManagerInterface::class)
             );
         }
 
@@ -57,7 +59,7 @@ class LViewHelperTest extends AbstractViewHelperTestCase
         unset($GLOBALS['TSFE'], $GLOBALS['LANG']);
     }
 
-    public function testRender()
+    public function testRender(): void
     {
         $this->assertSame(
             'key',

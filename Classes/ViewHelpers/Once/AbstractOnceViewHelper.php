@@ -9,7 +9,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  */
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -32,7 +34,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      * which applied at the exact time that the ViewHelper was asked to
      * evaluate whether or not to render content.
      *
-     * @var RenderingContextInterface&RenderingContext
+     * @var RenderingContextInterface
      */
     protected static $currentRenderingContext;
 
@@ -69,8 +71,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        /** @var RenderingContext $renderingContext */
+    ): mixed {
         static::$currentRenderingContext = $renderingContext;
         return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
@@ -121,11 +122,22 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      *
      * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
      */
-    protected function renderThenChild()
+    protected function renderThenChild(): mixed
     {
         if (ContextUtility::isFrontend()) {
-            $GLOBALS['TSFE']->no_cache = 1;
+            $request = RequestResolver::resolveRequestFromRenderingContext($this->renderingContext, false);
+            $this->disableFrontendCache($request);
         }
         return parent::renderThenChild();
+    }
+
+    private function disableFrontendCache(ServerRequestInterface $request): void
+    {
+        $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
+        if (!$cacheInstruction instanceof CacheInstruction) {
+            throw new \RuntimeException('Unable to disable frontend cache without cache instruction.', 1774448269);
+        }
+
+        $cacheInstruction->disableCache('EXT:vhs: once view helper rendered visitor-specific content.');
     }
 }

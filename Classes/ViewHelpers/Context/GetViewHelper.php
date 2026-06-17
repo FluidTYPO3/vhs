@@ -49,7 +49,7 @@ class GetViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         $context = class_exists(Environment::class)
             ? Environment::getContext()
             : GeneralUtility::getApplicationContext();

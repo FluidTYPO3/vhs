@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Variable;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -8,7 +9,6 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Condition\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
@@ -16,10 +16,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class IsNullViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function rendersThenChildIfVariableIsNull()
+    #[Test]
+    public function rendersThenChildIfVariableIsNull(): void
     {
         $arguments = [
             'value' => null,
@@ -30,10 +28,8 @@ class IsNullViewHelperTest extends AbstractViewHelperTestCase
         $this->assertEquals($arguments['then'], $result);
     }
 
-    /**
-     * @test
-     */
-    public function rendersElseChildIfVariableIsNotNull()
+    #[Test]
+    public function rendersElseChildIfVariableIsNotNull(): void
     {
         $arguments = [
             'value' => true,

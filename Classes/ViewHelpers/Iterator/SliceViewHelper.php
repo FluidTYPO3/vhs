@@ -42,14 +42,11 @@ class SliceViewHelper extends AbstractViewHelper
         $this->registerAsArgument();
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var int $start */
         $start = $arguments['start'];
         /** @var int $length */

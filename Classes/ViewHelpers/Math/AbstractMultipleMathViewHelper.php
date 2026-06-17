@@ -46,7 +46,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         $value = $renderChildrenClosure();
         if (null === $value && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
@@ -63,7 +63,7 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
      * @return numeric|array
      * @throws Exception
      */
-    protected static function calculate($a, $b = null, array $arguments = [])
+    protected static function calculate($a, $b = null, array $arguments = []): mixed
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         $bIsIterable = static::assertIsArrayOrIterator($b);

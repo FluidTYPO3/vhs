@@ -7,9 +7,16 @@ services:
   FluidTYPO3\Vhs\ViewHelpers\:
     resource: '../Classes/ViewHelpers/*'
     public: true
+    exclude:
+      - '../Classes/ViewHelpers/**/*Abstract*.php'
+      - '../Classes/ViewHelpers/**/*Interface.php'
+      - '../Classes/Traits/*'
 
   FluidTYPO3\Vhs\:
     resource: '../Classes/*'
+    exclude:
+      - '../Classes/Traits/*'
+      - '../Classes/ViewHelpers/**/*'
 
   FluidTYPO3\Vhs\Proxy\DispatcherProxy:
     public: true
@@ -25,6 +32,11 @@ services:
 
   FluidTYPO3\Vhs\Service\AssetService:
     public: true
+    tags:
+      - name: event.listener
+        identifier: 'vhs-asset-cache-flush'
+        method: 'clearCacheByEvent'
+        event: TYPO3\CMS\Core\Cache\Event\CacheFlushEvent
 
   FluidTYPO3\Vhs\Service\PageService:
     public: true

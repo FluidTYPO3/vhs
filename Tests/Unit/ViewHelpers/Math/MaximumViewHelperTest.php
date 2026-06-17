@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,45 +12,35 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Math;
 /**
  * Class MaximumViewHelperTest
  */
-class MaximumViewHelperTest extends AbstractMathViewHelperTest
+class MaximumViewHelperTest extends AbstractMathViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function testSingleArgument()
+    #[Test]
+    public function testSingleArgument(): void
     {
         $this->executeSingleArgumentTest([1, 3], 3);
     }
 
-    /**
-     * @test
-     */
-    public function testDualArgument()
+    #[Test]
+    public function testDualArgument(): void
     {
         $this->executeDualArgumentTest(4, 2, 4);
     }
 
-    /**
-     * @test
-     */
-    public function testDualArgumentBothIterators()
+    #[Test]
+    public function testDualArgumentBothIterators(): void
     {
         $this->executeDualArgumentTest([4, 8], [8, 8], [8, 8]);
     }
 
-    /**
-     * @test
-     */
-    public function executeMissingArgumentTest()
+    #[Test]
+    public function executeMissingArgumentTest(): void
     {
         $this->expectViewHelperException();
         $result = $this->executeViewHelper(['a' => 1, 'fail' => true]);
     }
 
-    /**
-     * @test
-     */
-    public function executeInvalidArgumentTypeTest()
+    #[Test]
+    public function executeInvalidArgumentTypeTest(): void
     {
         $this->expectViewHelperException();
         $this->executeViewHelper(['b' => 1, 'fail' => true]);

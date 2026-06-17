@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,33 +17,27 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class ExplodeViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function explodesString()
+    #[Test]
+    public function explodesString(): void
     {
         $arguments = ['content' => '1,2,3', 'glue' => ','];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(['1', '2', '3'], $result);
+        $this->assertSame(['1', '2', '3'], $result);
     }
 
-    /**
-     * @test
-     */
-    public function supportsCustomGlue()
+    #[Test]
+    public function supportsCustomGlue(): void
     {
         $arguments = ['content' => '1;2;3', 'glue' => ';'];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(['1', '2', '3'], $result);
+        $this->assertSame(['1', '2', '3'], $result);
     }
 
-    /**
-     * @test
-     */
-    public function supportsLimitArgument()
+    #[Test]
+    public function supportsLimitArgument(): void
     {
         $arguments = ['content' => '1;2;3', 'glue' => ';', 'limit' => '2'];
         $result = $this->executeViewHelper($arguments);
-        $this->assertEquals(['1', '2;3'], $result);
+        $this->assertSame(['1', '2;3'], $result);
     }
 }

@@ -39,22 +39,23 @@
         }
     },
     "require": {
-        "php": "^7.4.0 || ^8",
+        "php": "^8.2",
         "ext-mbstring": "*",
-        "typo3/cms-core": "^10 || ^11 || ^12 || ^13 || dev-main",
-        "typo3/cms-extbase": "^10 || ^11 || ^12 || ^13 || dev-main",
-        "typo3/cms-fluid": "^10 || ^11 || ^12 || ^13 || dev-main",
-        "typo3/cms-frontend": "^10 || ^11 || ^12 || ^13 || dev-main",
-        "typo3/cms-backend": "^10 || ^11 || ^12 || ^13 || dev-main"
+        "typo3/cms-core": "^13.4 || ^14.3",
+        "typo3/cms-extbase": "^13.4 || ^14.3",
+        "typo3/cms-fluid": "^13.4 || ^14.3",
+        "typo3/cms-frontend": "^13.4 || ^14.3",
+        "typo3/cms-backend": "^13.4 || ^14.3"
     },
     "replace": {
         "typo3-ter/vhs": "self.version"
     },
     "require-dev": {
         "phpstan/phpstan": "1.12.1",
-        "phpunit/phpunit": "^5.7 || ^9.5",
+        "phpunit/phpunit": "^11.2.5",
         "squizlabs/php_codesniffer": "^3.7",
-        "mikey179/vfsstream": "^1.6"
+        "mikey179/vfsstream": "^1.6",
+        "typo3/testing-framework": "^9.5"
     },
     "suggest": {
         "ext-tidy": "Allows to make use of the tidy ViewHelper v:format.tidy",
@@ -63,7 +64,16 @@
     },
     "extra": {
         "typo3/cms": {
-          "extension-key": "vhs"
+          "extension-key": "vhs",
+          "version": "7.2.1",
+          "Package": {
+            "providesPackages": {
+              "fluidtypo3/vhs": ""
+            }
+          }
         }
+    },
+    "scripts": {
+        "test:functional": "typo3DatabaseDriver=pdo_sqlite phpunit -c phpunit-functional.xml.dist"
     }
 }

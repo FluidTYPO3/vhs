@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -16,10 +17,8 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class ChunkViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @test
-     */
-    public function returnsConfiguredItemNumberIfFixed()
+    #[Test]
+    public function returnsConfiguredItemNumberIfFixed(): void
     {
         $arguments = [
             'count' => 5,
@@ -27,13 +26,12 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
             'subject' => ['a', 'b', 'c', 'd', 'e'],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(5, $result);
     }
 
-    /**
-     * @test
-     */
-    public function returnsConfiguredItemNumberIfFixedAndSubjectIsEmpty()
+    #[Test]
+    public function returnsConfiguredItemNumberIfFixedAndSubjectIsEmpty(): void
     {
         $arguments = [
             'count' => 5,
@@ -41,52 +39,48 @@ class ChunkViewHelperTest extends AbstractViewHelperTestCase
             'subject' => [],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(5, $result);
     }
 
-    /**
-     * @test
-     */
-    public function returnsExpectedItemNumberIfNotFixed()
+    #[Test]
+    public function returnsExpectedItemNumberIfNotFixed(): void
     {
         $arguments = [
             'count' => 4,
             'subject' => ['a', 'b', 'c', 'd', 'e'],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(2, $result);
     }
 
-    /**
-     * @test
-     */
-    public function returnsEmptyResultForEmptySubjectAndNotFixed()
+    #[Test]
+    public function returnsEmptyResultForEmptySubjectAndNotFixed(): void
     {
         $arguments = [
             'count' => 5,
             'subject' => [],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(0, $result);
     }
 
-    /**
-     * @test
-     */
-    public function returnsEmptyResultForZeroCount()
+    #[Test]
+    public function returnsEmptyResultForZeroCount(): void
     {
         $arguments = [
             'count' => 0,
             'subject' => ['a', 'b', 'c', 'd', 'e'],
         ];
         $result = $this->executeViewHelper($arguments);
+        self::assertIsIterable($result);
         $this->assertCount(0, $result);
     }
 
-    /**
-     * @test
-     */
-    public function preservesArrayKeysIfRequested()
+    #[Test]
+    public function preservesArrayKeysIfRequested(): void
     {
         $arguments = [
             'count' => 2,

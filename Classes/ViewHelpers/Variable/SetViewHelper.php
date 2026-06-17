@@ -79,7 +79,7 @@ class SetViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         /** @var string $name */
         $name = $arguments['name'];
         /** @var mixed $value */

@@ -12,16 +12,16 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 
 /**
- * Class AbstractMathViewHelperTest
+ * Class AbstractMathViewHelperTestCase
  */
-abstract class AbstractMathViewHelperTest extends AbstractViewHelperTestCase
+abstract class AbstractMathViewHelperTestCase extends AbstractViewHelperTestCase
 {
     /**
      * @param mixed $a
      * @param mixed $expected
      * @return void
      */
-    protected function executeSingleArgumentTest($a, $expected)
+    protected function executeSingleArgumentTest(mixed $a, mixed $expected): void
     {
         $result = $this->executeViewHelper(['a' => $a, 'fail' => false]);
         $this->assertEquals($expected, $result);
@@ -33,7 +33,7 @@ abstract class AbstractMathViewHelperTest extends AbstractViewHelperTestCase
      * @param mixed $expected
      * @return void
      */
-    protected function executeDualArgumentTest($a, $b, $expected)
+    protected function executeDualArgumentTest(mixed $a, mixed $b, mixed $expected): void
     {
         $result = $this->executeViewHelper(['a' => $a, 'b' => $b, 'fail' => false]);
         $this->assertEquals($expected, $result);

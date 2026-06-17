@@ -29,7 +29,7 @@ class DivisionViewHelper extends AbstractMultipleMathViewHelper
      * @param array $arguments
      * @return mixed
      */
-    protected static function calculateAction($a, $b, array $arguments)
+    protected static function calculateAction($a, $b, array $arguments): mixed
     {
         $aIsIterable = static::assertIsArrayOrIterator($a);
         $bIsIterable = static::assertIsArrayOrIterator($b);

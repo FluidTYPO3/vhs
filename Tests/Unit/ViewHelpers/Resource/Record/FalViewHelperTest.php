@@ -1,5 +1,6 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource\Record;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -14,6 +15,8 @@ use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyQueryBuilder;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -23,11 +26,11 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
     protected function setUp(): void
     {
         $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)
-            ->setMethods(['getFileReferenceObject'])
+            ->onlyMethods(['getFileReferenceObject'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->singletonInstances[FileRepositoryProxy::class] = $this->getMockBuilder(FileRepositoryProxy::class)
-            ->setMethods(['findByRelation'])
+            ->onlyMethods(['findByRelation'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -43,13 +46,13 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
     public function testGetResource(): void
     {
         $storage = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(['getFileInfo'])
+            ->onlyMethods(['getFileInfo'])
             ->disableOriginalConstructor()
             ->getMock();
         $storage->method('getFileInfo')->willReturn(['foo' => 'bar']);
 
         $file = $this->getMockBuilder(File::class)
-            ->setMethods(['getProperties', 'getStorage', 'toArray'])
+            ->onlyMethods(['getProperties', 'getStorage', 'toArray'])
             ->disableOriginalConstructor()
             ->getMock();
         $file->method('getStorage')->willReturn($storage);
@@ -57,7 +60,7 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
         $file->method('toArray')->willReturn([]);
 
         $fileReference = $this->getMockBuilder(FileReference::class)
-            ->setMethods(['getOriginalFile', 'getProperties'])
+            ->onlyMethods(['getOriginalFile', 'getProperties'])
             ->disableOriginalConstructor()
             ->getMock();
         $fileReference->method('getOriginalFile')->willReturn($file);
@@ -73,7 +76,10 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
     {
         $this->singletonInstances[FileRepositoryProxy::class]->method('findByRelation')->willReturn([]);
 
-        $GLOBALS['TSFE'] = (object) ['sys_page' => 'foobar'];
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute(
+            'applicationType',
+            SystemEnvironmentBuilder::REQUESTTYPE_FE
+        );
 
         $arguments = ['table' => 'pages', 'field' => 'void'];
         $record = ['uid' => 1];
@@ -83,14 +89,17 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame([], $output);
     }
 
-    /**
-     * @dataProvider getGetResourcesInNonPageContextTestValues
-     */
+    #[DataProvider('getGetResourcesInNonPageContextTestValues')]
     public function testGetResourcesInNonPageContext(int $workspaceUid): void
     {
         $file = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
 
         $this->singletonInstances[ResourceFactoryProxy::class]->method('getFileReferenceObject')->willReturn($file);
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute(
+            'applicationType',
+            SystemEnvironmentBuilder::REQUESTTYPE_BE
+        );
 
         $mockQueryBuilder = new DummyQueryBuilder($this);
         $mockQueryBuilder->result->method('fetchAllAssociative')->willReturn([['uid' => 1]]);
@@ -105,7 +114,7 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
         self::assertSame([$file], $output);
     }
 
-    public function getGetResourcesInNonPageContextTestValues(): array
+    public static function getGetResourcesInNonPageContextTestValues(): array
     {
         return [
             'without active workspace' => [0],

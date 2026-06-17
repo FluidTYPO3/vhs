@@ -40,14 +40,14 @@ class CaseViewHelper extends AbstractViewHelper
 
 
     /**
-     * @return mixed
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        $string = $renderChildrenClosure();
+    ): string {
+        $string = (string) $renderChildrenClosure();
         $case = $arguments['case'];
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();

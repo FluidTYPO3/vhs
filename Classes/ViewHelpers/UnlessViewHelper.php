@@ -62,9 +62,10 @@ class UnlessViewHelper extends AbstractConditionViewHelper
      *
      * @return mixed|null
      */
-    public function render()
+    public function render(): mixed
     {
-        if (!static::verdict($this->arguments, $this->renderingContext)) {
+        $renderingContext = $this->getRenderingContextOrFail();
+        if (!static::verdict($this->arguments, $renderingContext)) {
             return $this->renderChildren();
         }
         return null;
@@ -84,5 +85,13 @@ class UnlessViewHelper extends AbstractConditionViewHelper
             return $renderChildrenClosure();
         }
         return null;
+    }
+
+    private function getRenderingContextOrFail(): RenderingContextInterface
+    {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            throw new \RuntimeException('Rendering context missing', 1774448255);
+        }
+        return $this->renderingContext;
     }
 }

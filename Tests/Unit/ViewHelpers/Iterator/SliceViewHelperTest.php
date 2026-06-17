@@ -1,5 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -17,26 +19,42 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 class SliceViewHelperTest extends AbstractViewHelperTestCase
 {
     /**
-     * @test
-     * @dataProvider getRenderTestValues
      * @param array $arguments
      * @param mixed $expectedValue
      */
-    public function testRender(array $arguments, $expectedValue)
+    #[Test]
+    #[DataProvider('getRenderTestValues')]
+    public function testRender(array $arguments, mixed $expectedValue): void
     {
-        $this->assertEquals($this->executeViewHelper($arguments), $expectedValue);
+        $this->assertSame($expectedValue, $this->executeViewHelper($arguments));
     }
 
     /**
      * @return array
      */
-    public function getRenderTestValues()
+    public static function getRenderTestValues(): array
     {
         return [
             [['haystack' => [], 'length' => 0, 'start' => 0], []],
             [['haystack' => ['foo', 'bar'], 'length' => 1, 'start' => 0], ['foo']],
-            [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1, 'preserveKeys' => true], [1 => 'bar']],
-            [['haystack' => new \ArrayIterator(['foo', 'bar']), 'start' => 1, 'length' => 1, 'preserveKeys' => false], [0 => 'bar']],
+            [
+                [
+                    'haystack' => new \ArrayIterator(['foo', 'bar']),
+                    'start' => 1,
+                    'length' => 1,
+                    'preserveKeys' => true,
+                ],
+                [1 => 'bar'],
+            ],
+            [
+                [
+                    'haystack' => new \ArrayIterator(['foo', 'bar']),
+                    'start' => 1,
+                    'length' => 1,
+                    'preserveKeys' => false,
+                ],
+                [0 => 'bar'],
+            ],
         ];
     }
 }

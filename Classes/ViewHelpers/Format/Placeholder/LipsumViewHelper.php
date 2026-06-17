@@ -49,15 +49,15 @@ class LipsumViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return mixed|string
+     * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var string $lipsum */
-        $lipsum = $arguments['lipsum'];
+        $lipsum = (string) $arguments['lipsum'];
         if (mb_strlen($lipsum) === 0) {
             $lipsum = static::getDefaultLoremIpsum();
         }
