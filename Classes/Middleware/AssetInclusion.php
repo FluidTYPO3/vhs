@@ -20,6 +20,10 @@ class AssetInclusion implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
+        if (!$this->isHtmlResponse($response)) {
+            return $response;
+        }
+
         $body = $response->getBody();
         $body->rewind();
         $contents = $body->getContents();
@@ -38,5 +42,12 @@ class AssetInclusion implements MiddlewareInterface
         fputs($stream, $contents);
 
         return $response->withBody(new Stream($stream));
+    }
+
+    private function isHtmlResponse(ResponseInterface $response): bool
+    {
+        $contentType = strtolower($response->getHeaderLine('Content-Type'));
+
+        return $contentType === '' || str_contains($contentType, 'text/html');
     }
 }
