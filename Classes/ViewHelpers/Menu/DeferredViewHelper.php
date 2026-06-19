@@ -34,11 +34,7 @@ class DeferredViewHelper extends AbstractMenuViewHelper
         );
     }
 
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function render()
+    public function render(): string
     {
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         /** @var string $as */

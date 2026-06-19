@@ -82,13 +82,7 @@ class ImageViewHelper extends AbstractImageViewHelper
         );
     }
 
-    /**
-     * Render method
-     *
-     * @return string
-     * @throws Exception
-     */
-    public function render()
+    public function render(): string
     {
         $this->preprocessImage();
         return $this->renderTag();

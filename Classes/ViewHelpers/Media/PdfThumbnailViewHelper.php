@@ -62,10 +62,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         );
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         /** @var string $srcArgument */
         $srcArgument = $this->arguments['src'];
