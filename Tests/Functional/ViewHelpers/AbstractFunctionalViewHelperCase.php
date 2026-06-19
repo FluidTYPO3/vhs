@@ -4,6 +4,7 @@ namespace FluidTYPO3\Vhs\Tests\Functional\ViewHelpers;
 
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\FunctionalTypoScriptFrontendController;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\RenderingContext;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\ApplicationContext;
@@ -87,7 +88,7 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
         if ($configureRenderingContext) {
             $configureRenderingContext($this->renderingContext);
         }
-        $this->renderingContext->getTemplatePaths()->setTemplateSource($source);
+        $this->renderingContext->templatePaths->setTemplateSource($source);
         $this->renderingContext->variableProvider->setSource($variables);
         return $view->render();
     }
@@ -179,8 +180,11 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
         int $applicationType,
         int $pageUid = 123
     ): ServerRequestInterface {
-        $pageInformation = new PageInformation();
-        $pageInformation->setId($pageUid);
+        $pageInformation = null;
+        if (VersionUtility::isCoreAtLeast13()) {
+            $pageInformation = new PageInformation();
+            $pageInformation->setId($pageUid);
+        }
 
         $request = (new ServerRequest($uri, 'GET'))
             ->withAttribute('applicationType', $applicationType)
