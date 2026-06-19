@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\View\UncacheContentObject;
@@ -30,8 +29,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class UncacheViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */

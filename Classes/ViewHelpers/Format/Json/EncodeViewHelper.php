@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -44,8 +43,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class EncodeViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     protected static array $encounteredClasses = [];
 
     public function initializeArguments(): void
@@ -86,7 +83,8 @@ class EncodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $value = $renderChildrenClosure();
+        /** @var array|object $value */
+        $value = $arguments['value'] ?? $renderChildrenClosure();
         $useTraversableKeys = (bool) $arguments['useTraversableKeys'];
         $preventRecursion = (bool) $arguments['preventRecursion'];
         /** @var string $recursionMarker */

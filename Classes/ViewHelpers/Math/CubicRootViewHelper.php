@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-
 /**
  * Math: CubicRoot
  *
@@ -17,8 +15,6 @@ use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
  */
 class CubicRootViewHelper extends AbstractSingleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @param integer|string|array|iterable $a
      * @return float|array

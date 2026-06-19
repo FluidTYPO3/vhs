@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -43,8 +42,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class AppendViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'string', 'String to append other string to');
@@ -59,6 +56,10 @@ class AppendViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return $renderChildrenClosure() . $arguments['add'];
+        /** @var string $content */
+        $content = $arguments['subject'] ?? $renderChildrenClosure();
+        /** @var string $add */
+        $add = $arguments['add'];
+        return $content . $add;
     }
 }

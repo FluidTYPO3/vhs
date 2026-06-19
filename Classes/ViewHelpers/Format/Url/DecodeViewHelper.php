@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Url;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -17,8 +16,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class DecodeViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content to decode from URI');
@@ -32,6 +29,8 @@ class DecodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return rawurldecode($renderChildrenClosure());
+        /** @var string $content */
+        $content = $arguments['content'] ?? $renderChildrenClosure();
+        return rawurldecode($content);
     }
 }

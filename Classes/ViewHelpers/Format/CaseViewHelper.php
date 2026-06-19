@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -21,8 +20,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class CaseViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     const CASE_UPPER = 'upper';
     const CASE_LOWER = 'lower';
     const CASE_UCWORDS = 'ucwords';
@@ -38,7 +35,6 @@ class CaseViewHelper extends AbstractViewHelper
         $this->registerArgument('case', 'string', 'Case to convert to');
     }
 
-
     /**
      * @return mixed
      */
@@ -47,7 +43,9 @@ class CaseViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $string = $renderChildrenClosure();
+        /** @var string $string */
+        $string = $arguments['string'] ?? $renderChildrenClosure();
+        /** @var string $case */
         $case = $arguments['case'];
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();

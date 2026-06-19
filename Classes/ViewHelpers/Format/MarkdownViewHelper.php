@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -37,8 +36,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class MarkdownViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -61,7 +58,8 @@ class MarkdownViewHelper extends AbstractViewHelper
     ) {
         $trim = (bool) $arguments['trim'];
         $htmlentities = (bool) $arguments['htmlentities'];
-        $text = $renderChildrenClosure();
+        /** @var string $text */
+        $text = $arguments['text'] ?? $renderChildrenClosure();
         if (null === $text) {
             return null;
         }

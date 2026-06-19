@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
@@ -65,8 +64,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class DateRangeViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -126,7 +123,7 @@ class DateRangeViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var string|null $start */
-        $start = $renderChildrenClosure();
+        $start = $renderChildrenClosure() ?? $arguments['start'] ?? 'now';
         if (empty($arguments['start'])) {
             $start = 'now';
         }

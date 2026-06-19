@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
@@ -21,7 +20,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     public function initializeArguments(): void
@@ -47,7 +45,8 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $value = $renderChildrenClosure();
+        /** @var array|int|float|string $value */
+        $value = $arguments['a'] ?? $renderChildrenClosure();
         if (null === $value && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }

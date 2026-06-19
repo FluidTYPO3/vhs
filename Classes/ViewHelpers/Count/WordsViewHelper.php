@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -35,8 +34,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class WordsViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -61,6 +58,8 @@ class WordsViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var string $string */
+        $string = $arguments['string'] ?? $renderChildrenClosure();
         return count(
             (array) preg_split(
                 '~[^\p{L}\p{N}\']+~u',
@@ -68,7 +67,7 @@ class WordsViewHelper extends AbstractViewHelper
                     str_replace(
                         '><',
                         '> <',
-                        $renderChildrenClosure()
+                        $string
                     )
                 )
             )

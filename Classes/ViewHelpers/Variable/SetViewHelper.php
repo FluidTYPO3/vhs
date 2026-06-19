@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
@@ -59,8 +58,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class SetViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -83,7 +80,7 @@ class SetViewHelper extends AbstractViewHelper
         /** @var string $name */
         $name = $arguments['name'];
         /** @var mixed $value */
-        $value = $renderChildrenClosure();
+        $value = $arguments['value'] ?? $renderChildrenClosure();
         $variableProvider = $renderingContext->getVariableProvider();
         if (false === strpos($name, '.')) {
             if ($variableProvider->exists($name)) {

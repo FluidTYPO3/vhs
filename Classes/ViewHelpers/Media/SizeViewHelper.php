@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
@@ -19,8 +18,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class SizeViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -44,7 +41,8 @@ class SizeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $path = $renderChildrenClosure();
+        /** @var string $path */
+        $path = $arguments['path'] ?? $renderChildrenClosure();
 
         if (null === $path) {
             return 0;

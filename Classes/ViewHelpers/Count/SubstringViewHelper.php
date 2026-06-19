@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -35,8 +34,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class SubstringViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -64,9 +61,8 @@ class SubstringViewHelper extends AbstractViewHelper
     ) {
         /** @var string $string */
         $string = $arguments['string'];
-        return mb_substr_count(
-            $renderChildrenClosure(),
-            $string
-        );
+        /** @var string $haystack */
+        $haystack = $arguments['haystack'] ?? $renderChildrenClosure();
+        return mb_substr_count($haystack, $string);
     }
 }

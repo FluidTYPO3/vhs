@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,8 +48,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class CacheViewHelper extends AbstractRenderViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     const ID_PREFIX = 'vhs-render-cache-viewhelper';
     const ID_SEPARATOR = '-';
 
@@ -95,7 +92,8 @@ class CacheViewHelper extends AbstractRenderViewHelper
         if (static::has($identity)) {
             return static::retrieve($identity);
         }
-        $content = $renderChildrenClosure();
+        /** @var mixed $content */
+        $content = $arguments['content'] ?? $renderChildrenClosure();
         static::store($content, $identity);
         return $content;
     }

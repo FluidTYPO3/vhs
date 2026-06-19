@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
@@ -31,8 +30,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class CallViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -59,7 +56,7 @@ class CallViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var object $object */
-        $object = $renderChildrenClosure();
+        $object = $arguments['object'] ?? $renderChildrenClosure();
         /** @var string $method */
         $method = $arguments['method'];
         /** @var array $methodArguments */

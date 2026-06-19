@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
@@ -34,8 +33,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class LViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -81,7 +78,7 @@ class LViewHelper extends AbstractViewHelper
         /** @var array|null $translationArguments */
         $translationArguments = $arguments['arguments'];
         /** @var string $id */
-        $id = $renderChildrenClosure();
+        $id = $arguments['key'] ?? $renderChildrenClosure();
         if (empty($default)) {
             $default = $id;
         }

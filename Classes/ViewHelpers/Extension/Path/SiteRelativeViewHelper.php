@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Extension\Path;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\ViewHelpers\Extension\AbstractExtensionViewHelper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -21,8 +20,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class SiteRelativeViewHelper extends AbstractExtensionViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @return string
      */
