@@ -111,8 +111,8 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
                     if (method_exists($renderingContext, 'setAttribute')) {
                         $renderingContext->setAttribute(ServerRequestInterface::class, $request);
                     }
-                    if (property_exists($renderingContext, 'request')) {
-                        $renderingContext->request = $request;
+                    if (method_exists($renderingContext, 'setRequest')) {
+                        $renderingContext->setRequest($request);
                     }
                     if ($configureRenderingContext) {
                         $configureRenderingContext($renderingContext);
