@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -225,6 +226,10 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.user', null)
             ->withAttribute('frontend.controller', null);
+
+        if (class_exists(ExtbaseRequestParameters::class)) {
+            $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        }
 
         foreach ($attributes as $name => $value) {
             $request = $request->withAttribute($name, $value);
