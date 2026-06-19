@@ -83,7 +83,7 @@ class FrameworkViewHelperTest extends AbstractFunctionalViewHelperCase
 
         $source = '<v:page.info pageUid="42" field="title" />'
             . '|<v:page.rootline pageUid="42" as="rootline">{rootline.0.uid}-{rootline.1.uid}</v:page.rootline>'
-            . '|<v:condition.page.isChildPage pageUid="0" respectSiteRoot="1" then="child" else="root" />';
+            . '|<v:condition.page.isChildPage pageUid="123" respectSiteRoot="1" then="child" else="root" />';
 
         self::assertSame('The Page|1-42|root', $this->executeTemplateWithRequest($source, $this->createFrontendRequest()));
     }

@@ -102,7 +102,23 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
     ): ?string {
         $hadGlobalRequest = isset($GLOBALS['TYPO3_REQUEST']);
         $globalRequestBackup = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $hadTypoScriptFrontendController = isset($GLOBALS['TSFE']);
+        $typoScriptFrontendControllerBackup = $GLOBALS['TSFE'] ?? null;
+        $serverBackup = [];
+        foreach (['HTTPS', 'HTTP_HOST', 'REQUEST_URI', 'SCRIPT_NAME', 'PHP_SELF'] as $serverKey) {
+            $serverBackup[$serverKey] = $_SERVER[$serverKey] ?? null;
+        }
+
+        $uri = $request->getUri();
+        $_SERVER['HTTPS'] = $uri->getScheme() === 'https' ? 'on' : 'off';
+        $_SERVER['HTTP_HOST'] = $uri->getAuthority();
+        $_SERVER['REQUEST_URI'] = $uri->getPath() . ($uri->getQuery() !== '' ? '?' . $uri->getQuery() : '');
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['PHP_SELF'] = '/index.php';
         $GLOBALS['TYPO3_REQUEST'] = $request;
+        if (is_object($request->getAttribute('frontend.controller'))) {
+            $GLOBALS['TSFE'] = $request->getAttribute('frontend.controller');
+        }
 
         try {
             return $this->executeTemplateWithRenderingContext(
@@ -124,6 +140,18 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
                 $GLOBALS['TYPO3_REQUEST'] = $globalRequestBackup;
             } else {
                 unset($GLOBALS['TYPO3_REQUEST']);
+            }
+            if ($hadTypoScriptFrontendController) {
+                $GLOBALS['TSFE'] = $typoScriptFrontendControllerBackup;
+            } else {
+                unset($GLOBALS['TSFE']);
+            }
+            foreach ($serverBackup as $serverKey => $serverValue) {
+                if ($serverValue === null) {
+                    unset($_SERVER[$serverKey]);
+                } else {
+                    $_SERVER[$serverKey] = $serverValue;
+                }
             }
         }
     }
