@@ -119,8 +119,4 @@ class RenderingContext extends \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
     {
         return $this->configuration ?? new Configuration();
     }
-
-    public function __clone()
-    {
-    }
 }
