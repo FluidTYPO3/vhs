@@ -214,7 +214,7 @@ class ConditionViewHelperTest extends AbstractFunctionalViewHelperCase
         $this->setInaccessibleProperty($object, 'uid', $uid);
     }
 
-    private function setInaccessibleProperty(object $object, string $propertyName, mixed $value): void
+    private function setInaccessibleProperty(object $object, string $propertyName, $value): void
     {
         $property = new \ReflectionProperty($object, $propertyName);
         $property->setAccessible(true);
