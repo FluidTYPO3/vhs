@@ -108,10 +108,9 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
                 $source,
                 $variables,
                 static function (RenderingContext $renderingContext) use ($request, $configureRenderingContext): void {
-                    if (method_exists($renderingContext, 'setAttribute')) {
+                    if (VersionUtility::isCoreAtLeast13()) {
                         $renderingContext->setAttribute(ServerRequestInterface::class, $request);
-                    }
-                    if (method_exists($renderingContext, 'setRequest')) {
+                    } elseif (method_exists($renderingContext, 'setRequest')) {
                         $renderingContext->setRequest($request);
                     }
                     if ($configureRenderingContext) {
