@@ -52,7 +52,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var array|string|int|float $value */
+        /** @var array|numeric-string|numeric|null $value */
         $value = $arguments['a'] ?? $renderChildrenClosure();
         if (null === $value && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
@@ -61,7 +61,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param numeric|array|iterable $a
+     * @param numeric|numeric-string|array|iterable|null $a
      * @return numeric|array
      */
     abstract protected static function calculateAction($a, array $arguments = []);

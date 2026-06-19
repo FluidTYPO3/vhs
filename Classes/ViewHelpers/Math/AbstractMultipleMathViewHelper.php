@@ -45,19 +45,19 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var array|int|float|string $value */
+        /** @var numeric|numeric-string|array|iterable|null $value */
         $value = $arguments['a'] ?? $renderChildrenClosure();
         if (null === $value && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
-        /** @var int|float|array|null $b */
+        /** @var numeric|numeric-string|array|iterable|null $b */
         $b = $arguments['b'];
         return static::calculate($value, $b, $arguments);
     }
 
     /**
-     * @param numeric|array|iterable $a
-     * @param numeric|array|iterable|null $b
+     * @param numeric|numeric-string|array|iterable|null $a
+     * @param numeric|numeric-string|array|iterable|null $b
      * @param array $arguments
      * @return numeric|array
      * @throws Exception
@@ -77,9 +77,9 @@ abstract class AbstractMultipleMathViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param numeric|array|iterable $a
-     * @param numeric|array|iterable|null $b
-     * @param array $arguments $b
+     * @param numeric|numeric-string|array|iterable|null $a
+     * @param numeric|numeric-string|array|iterable|null $b
+     * @param array $arguments
      * @return numeric|array
      */
     abstract protected static function calculateAction($a, $b, array $arguments);
