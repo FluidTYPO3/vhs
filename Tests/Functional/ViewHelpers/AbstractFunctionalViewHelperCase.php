@@ -109,9 +109,14 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
             $serverBackup[$serverKey] = $_SERVER[$serverKey] ?? null;
         }
 
+        GeneralUtility::flushInternalRuntimeCaches();
         $uri = $request->getUri();
+        $host = $uri->getHost();
+        if ($uri->getPort() !== null) {
+            $host .= ':' . $uri->getPort();
+        }
         $_SERVER['HTTPS'] = $uri->getScheme() === 'https' ? 'on' : 'off';
-        $_SERVER['HTTP_HOST'] = $uri->getAuthority();
+        $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['REQUEST_URI'] = $uri->getPath() . ($uri->getQuery() !== '' ? '?' . $uri->getQuery() : '');
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['PHP_SELF'] = '/index.php';
@@ -153,6 +158,7 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
                     $_SERVER[$serverKey] = $serverValue;
                 }
             }
+            GeneralUtility::flushInternalRuntimeCaches();
         }
     }
 
