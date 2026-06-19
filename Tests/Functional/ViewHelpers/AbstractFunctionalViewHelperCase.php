@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -111,7 +112,7 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
                     if (VersionUtility::isCoreAtLeast13()) {
                         $renderingContext->setAttribute(ServerRequestInterface::class, $request);
                     } elseif (method_exists($renderingContext, 'setRequest')) {
-                        $renderingContext->setRequest($request);
+                        $renderingContext->setRequest(new Request($request));
                     }
                     if ($configureRenderingContext) {
                         $configureRenderingContext($renderingContext);
