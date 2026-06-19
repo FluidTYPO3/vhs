@@ -71,10 +71,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper
         );
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $defaultUid = $GLOBALS['TSFE']->id;
         $showAccessProtected = (bool) $this->arguments['showAccessProtected'];

@@ -18,12 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class HeaderViewHelper extends AbstractAssetViewHelper
 {
-    /**
-     * Render method
-     *
-     * @return void
-     */
-    public function render()
+    public function render(): void
     {
         if (ContextUtility::isBackend()) {
             return;

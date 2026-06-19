@@ -52,18 +52,13 @@ class ImageViewHelper extends AbstractImageViewHelper
         );
     }
 
-    /**
-     * Render method
-     *
-     * @return mixed
-     */
-    public function render()
+    public function render(): string
     {
         $files = (array) $this->getFiles();
 
         $images = $this->preprocessImages($files, true);
         if (empty($images)) {
-            return null;
+            return '';
         }
 
         $info = [];
@@ -98,6 +93,8 @@ class ImageViewHelper extends AbstractImageViewHelper
         if (empty($as)) {
             return implode('', $tags);
         }
-        return $this->renderChildrenWithVariableOrReturnInput($info);
+        // @TODO: figure out how to allow a ViewHelper to both render tags or return objects
+        $output = $this->renderChildrenWithVariableOrReturnInput($info);
+        return is_scalar($output) ? (string) $output : '';
     }
 }

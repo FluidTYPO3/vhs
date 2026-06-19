@@ -19,12 +19,7 @@ class FooterViewHelper extends AbstractAssetViewHelper
 {
     use PageRendererTrait;
 
-    /**
-     * Render method
-     *
-     * @return void
-     */
-    public function render()
+    public function render(): void
     {
         if (ContextUtility::isBackend()) {
             return;

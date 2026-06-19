@@ -91,12 +91,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('relative', 'boolean', 'Produce a relative URL instead of absolute', false, false);
     }
 
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         /** @var FileReference|string $imageSource */

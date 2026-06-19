@@ -30,10 +30,7 @@ class FileViewHelper extends AbstractResourceViewHelper
         );
     }
 
-    /**
-     * @return mixed
-     */
-    public function render()
+    public function render(): string
     {
         /** @var boolean $onlyProperties */
         $onlyProperties = $this->arguments['onlyProperties'];
@@ -41,6 +38,8 @@ class FileViewHelper extends AbstractResourceViewHelper
         if (1 === count($files)) {
             $files = array_shift($files);
         }
-        return $this->renderChildrenWithVariableOrReturnInput($files);
+        // @TODO: figure out how to allow a ViewHelper to both render tags or return objects
+        $output = $this->renderChildrenWithVariableOrReturnInput($files);
+        return is_scalar($output) ? (string) $output : '';
     }
 }

@@ -133,12 +133,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         if (!is_object($GLOBALS['TSFE']->sys_page)) {
             return '';
