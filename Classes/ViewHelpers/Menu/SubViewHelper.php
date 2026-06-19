@@ -32,13 +32,13 @@ class SubViewHelper extends AbstractMenuViewHelper
         );
     }
 
-    public function render(): string
+    public function render(): ?string
     {
         /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
         $parentInstance = $this->retrieveReconfiguredParentMenuInstance($pageUid);
         if (!$parentInstance) {
-            return '';
+            return null;
         }
         $parentArguments = $parentInstance->getMenuArguments();
         $isActive = $this->pageService->isActive($pageUid);
@@ -50,7 +50,7 @@ class SubViewHelper extends AbstractMenuViewHelper
         $isExpanded = (bool) $parentArguments['expandAll'];
         $shouldRender = $isActive || $isCurrent || $isExpanded;
         if (!$shouldRender) {
-            return '';
+            return null;
         }
         // retrieve the set of template variables which were in play when the parent menu VH started rendering.
         /** @var array<string, mixed> $variables */

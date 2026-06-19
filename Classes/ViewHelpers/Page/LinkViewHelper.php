@@ -135,7 +135,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    public function render(): string
+    public function render(): ?string
     {
         // Check if link wizard link
         /** @var int $pageUid */
@@ -146,7 +146,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             /** @var LogManager $logManager */
             $logManager = GeneralUtility::makeInstance(LogManager::class);
             $logManager->getLogger(__CLASS__)->warning("pageUid must be numeric, got " . $pageUid);
-            return '';
+            return null;
         }
 
         // Get page via pageUid argument or current id
@@ -159,7 +159,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         $page = $this->pageService->getPage($pageUid, $showAccessProtected);
         if (empty($page)) {
-            return '';
+            return null;
         }
 
         $targetPage = $this->pageService->getShortcutTargetPage($page);
@@ -185,7 +185,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         $hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
         if ($hidePage) {
-            return '';
+            return null;
         }
 
         // Get the title from the page or page overlay
