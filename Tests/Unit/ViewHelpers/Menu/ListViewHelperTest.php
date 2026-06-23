@@ -18,7 +18,7 @@ class ListViewHelperTest extends AbstractViewHelperTestCase
     public function testReturnsNullWithoutPages(): void
     {
         $output = $this->executeViewHelper();
-        self::assertNull($output);
+        self::assertSame('', $output);
     }
 
     public function testRendersMenu(): void

@@ -74,7 +74,7 @@ class LinkViewHelperTest extends AbstractViewHelperTestCase
         $arguments = ['pageUid' => 0];
         $this->pageService->expects($this->once())->method('getPage')->willReturn([]);
         $result = $this->executeViewHelper($arguments, [], null, 'Vhs');
-        $this->assertNull($result);
+        $this->assertSame('', $result);
     }
 
     /**

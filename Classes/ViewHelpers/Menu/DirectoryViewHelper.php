@@ -37,7 +37,7 @@ class DirectoryViewHelper extends AbstractMenuViewHelper
     {
         $pages = $this->processPagesArgument();
         if (0 === count($pages)) {
-            return null;
+            return '';
         }
         $menuData = [];
         foreach ($pages as $pageUid) {

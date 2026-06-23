@@ -18,7 +18,7 @@ class SubViewHelperTest extends AbstractViewHelperTestCase
 {
     public function testReturnsNullWithoutParentInstance(): void
     {
-        self::assertNull($this->executeViewHelper(['pageUid' => 1]));
+        self::assertSame('', $this->executeViewHelper(['pageUid' => 1]));
     }
 
     public function testReturnsNullIfNotExpandedActiveOrCurrent(): void
@@ -46,7 +46,7 @@ class SubViewHelperTest extends AbstractViewHelperTestCase
 
         $output = $this->executeInstance($subject, $arguments);
 
-        self::assertNull($output);
+        self::assertSame('', $output);
     }
 
     public function testRendersMenu(): void
