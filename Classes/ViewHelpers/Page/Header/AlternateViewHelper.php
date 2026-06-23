@@ -75,7 +75,7 @@ class AlternateViewHelper extends AbstractViewHelper
     /**
      * @return string
      */
-    public function render()
+    public function render(): mixed
     {
         if (ContextUtility::isBackend()) {
             return '';
@@ -92,11 +92,7 @@ class AlternateViewHelper extends AbstractViewHelper
         }
 
         /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
-        $pageUid = (int) $pageUid;
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
+        $pageUid = (int) ($this->arguments['pageUid'] ?: RequestResolver::getPageInformation()->getId());
 
         /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
@@ -117,7 +113,7 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $usePageRenderer = (1 !== (int) ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'] ?? 0));
+        $usePageRenderer = (1 !== (int) (RequestResolver::getFrontendTypoScriptConfig()['disableAllHeaderCode'] ?? 0));
         $output = '';
 
         foreach ($languages as $languageUid => $languageName) {
