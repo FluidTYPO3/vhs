@@ -23,9 +23,6 @@ services:
   FluidTYPO3\Vhs\Proxy\FileRepositoryProxy:
     public: true
 
-  FluidTYPO3\Vhs\Service\AssetService:
-    public: true
-
   FluidTYPO3\Vhs\Service\PageService:
     public: true
 
@@ -33,10 +30,3 @@ services:
     autowire: true
     public: true
     shared: false
-
-  FluidTYPO3\Vhs\Events\AfterCacheableContentIsGeneratedEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'vhs-insertVhsAssetHeaderAndFooterCode'
-        method: 'insertVhsAssetHeaderAndFooterCode'
-        event: TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent
