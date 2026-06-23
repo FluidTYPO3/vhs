@@ -77,7 +77,7 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
 
         $arguments = ['table' => 'pages', 'field' => 'void'];
         $record = ['uid' => 1];
-        $subject = new FalViewHelper();
+        $subject = $this->getMockBuilder(FalViewHelper::class)->onlyMethods(['fetchFileReferences'])->getMock();
         $subject->setArguments($arguments);
         $output = $subject->getResources($record);
         self::assertSame([], $output);

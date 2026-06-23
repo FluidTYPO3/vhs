@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -25,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 /**
  * Base class: Record Resource ViewHelpers
  */
-abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper implements RecordResourceViewHelperInterface
+abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
 
@@ -68,15 +69,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
             'If specified, a template variable with this name containing the requested data will be inserted ' .
             'instead of returning it.'
         );
-    }
-
-    /**
-     * @param mixed $identity
-     * @return mixed
-     */
-    public function getResource($identity)
-    {
-        return $identity;
     }
 
     public function getResources(array $record): array
@@ -143,12 +135,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper imple
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
 
-        /** @var Context $context */
-        $context = GeneralUtility::makeInstance(Context::class);
-        $fePreview = $context->hasAspect('frontend.preview')
-            && $context->getPropertyFromAspect('frontend.preview', 'isPreview');
-
-        if ($fePreview) {
+        if (RequestResolver::isPreview()) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
