@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\Utility;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
-use FluidTYPO3\Vhs\Utility\ErrorUtility;
 
 class ErrorUtilityTest extends AbstractTestCase
 {
