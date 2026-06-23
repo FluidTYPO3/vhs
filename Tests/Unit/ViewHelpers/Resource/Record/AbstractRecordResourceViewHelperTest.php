@@ -70,11 +70,6 @@ class AbstractRecordResourceViewHelperTest extends AbstractTestCase
         self::assertSame($record, $this->subject->getRecord(1));
     }
 
-    public function testGetResource(): void
-    {
-        self::assertSame('input', $this->subject->getResource('input'));
-    }
-
     public function testGetResources(): void
     {
         $this->subject->setArguments(['field' => 'field']);

@@ -9,6 +9,9 @@ namespace FluidTYPO3\Vhs\Utility;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -109,6 +112,43 @@ class RequestResolver
     public static function resolveFormatFromRequest($request): ?string
     {
         return self::proxyCall($request, 'getFormat');
+    }
+
+    public static function getRequest(): ServerRequestInterface
+    {
+        /** @var ServerRequestInterface|null $request */
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (!$request) {
+            throw new \UnexpectedValueException('Request cannot be resolved', 1777024778);
+        }
+        return $request;
+    }
+
+    public static function getLanguage(): SiteLanguage
+    {
+        /** @var SiteLanguage $siteLanguage */
+        $siteLanguage = self::getRequest()->getAttribute('language');
+        return $siteLanguage;
+    }
+
+    public static function isPreview(): bool
+    {
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        return (bool) $context->hasAspect('frontend.preview')
+            && $context->getPropertyFromAspect('frontend.preview', 'isPreview');
+    }
+
+    public static function getWorkspaceId(): ?int
+    {
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        $workspaceId = $context->getPropertyFromAspect('workspace', 'id', 0) ?: null;
+        if (!is_numeric($workspaceId)) {
+            return null;
+        }
+        $workspaceId = (int) $workspaceId;
+        return $workspaceId > 0 ? $workspaceId : null;
     }
 
     /**
