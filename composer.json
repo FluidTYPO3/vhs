@@ -39,7 +39,7 @@
         }
     },
     "require": {
-        "php": "^7.4.0 || ^8",
+        "php": "^8.3",
         "ext-mbstring": "*",
         "typo3/cms-core": "^12 || ^13 || dev-main",
         "typo3/cms-extbase": "^12 || ^13 || dev-main",

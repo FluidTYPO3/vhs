@@ -9,13 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
     steps:
-      - name: Setup PHP 8.2
+      - name: Setup PHP 8.3
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
 
       - name: Checkout VHS project
         uses: actions/checkout@v3
@@ -37,6 +35,7 @@ jobs:
         if: ${{ contains(github.event.head_commit.message, '[TASK] Update XSD schema') }}
         working-directory: ./generator
         run: |
+          composer req "typo3fluid/fluid:~4.4.2"
           echo "${{steps.set_changedfile.outputs.changedfile}}"
           composer install --no-dev -n -o --no-progress
           mkdir -p schemas/fluidtypo3/vhs/development/
