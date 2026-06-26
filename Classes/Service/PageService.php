@@ -29,7 +29,8 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  */
 class PageService implements SingletonInterface
 {
-    const DOKTYPE_MOVE_TO_PLACEHOLDER = 0;
+    public const int DOKTYPE_MOVE_TO_PLACEHOLDER = 0;
+    public const int SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
 
     protected static array $cachedPages = [];
     protected static array $cachedMenus = [];

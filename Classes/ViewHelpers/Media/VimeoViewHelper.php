@@ -23,7 +23,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
     /**
      * Base URL for Vimeo video player
      */
-    const VIMEO_BASEURL = '//player.vimeo.com/video/';
+    private const string VIMEO_BASEURL = '//player.vimeo.com/video/';
 
     /**
      * @var string
@@ -102,7 +102,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
         /** @var int $height */
         $height = $this->arguments['height'];
 
-        $src = static::VIMEO_BASEURL . $videoId . '?';
+        $src = self::VIMEO_BASEURL . $videoId . '?';
 
         /** @var string $color */
         $color = $this->arguments['color'];

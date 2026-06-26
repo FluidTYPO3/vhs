@@ -23,14 +23,14 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      *
      * @var string
      */
-    const YOUTUBE_BASEURL = '//www.youtube.com';
+    private const string YOUTUBE_BASEURL = '//www.youtube.com';
 
     /**
      * Base url for extended privacy
      *
      * @var string
      */
-    const YOUTUBE_PRIVACY_BASEURL = '//www.youtube-nocookie.com';
+    private const string YOUTUBE_PRIVACY_BASEURL = '//www.youtube-nocookie.com';
 
     /**
      * @var string
@@ -147,7 +147,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     private function getSourceUrl(string $videoId): string
     {
-        $src = $this->arguments['extendedPrivacy'] ? static::YOUTUBE_PRIVACY_BASEURL : static::YOUTUBE_BASEURL;
+        $src = $this->arguments['extendedPrivacy'] ? self::YOUTUBE_PRIVACY_BASEURL : self::YOUTUBE_BASEURL;
 
         $params = [];
 

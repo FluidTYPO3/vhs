@@ -43,8 +43,8 @@ class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewH
 {
     use ArgumentOverride;
 
-    const DEFAULT_TABLE = 'tt_content';
-    const DEFAULT_FIELD = 'image';
+    public const string DEFAULT_TABLE = 'tt_content';
+    public const string DEFAULT_FIELD = 'image';
 
     protected string $table = self::DEFAULT_TABLE;
     protected string $field = self::DEFAULT_FIELD;

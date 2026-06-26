@@ -26,14 +26,14 @@ class GravatarViewHelper extends AbstractViewHelper
      *
      * @var string
      */
-    const GRAVATAR_BASEURL = 'http://www.gravatar.com/avatar/';
+    private const string GRAVATAR_BASEURL = 'http://www.gravatar.com/avatar/';
 
     /**
      * Base secure url
      *
      * @var string
      */
-    const GRAVATAR_SECURE_BASEURL = 'https://secure.gravatar.com/avatar/';
+    private const string GRAVATAR_SECURE_BASEURL = 'https://secure.gravatar.com/avatar/';
 
     /**
      * Initialize arguments.
@@ -73,7 +73,7 @@ class GravatarViewHelper extends AbstractViewHelper
         $maximumRating = $arguments['maximumRating'];
         $secure = (bool) $arguments['secure'];
 
-        $url = $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL;
+        $url = $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL;
         $url .= md5(strtolower(trim($email)));
         $query = http_build_query(['s' => $size, 'd' => $imageSet, 'r' => $maximumRating]);
         $url .= !empty($query) ? '?' . $query : '';

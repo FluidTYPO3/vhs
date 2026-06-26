@@ -28,10 +28,10 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 {
     use TagViewHelperCompatibility;
 
-    const SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
-    const SCOPE_VARIABLE_SRC = 'src';
-    const SCOPE_VARIABLE_ID = 'treatIdAsReference';
-    const SCOPE_VARIABLE_DEFAULT_SOURCE = 'default-source';
+    public const string SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
+    public const string SCOPE_VARIABLE_SRC = 'src';
+    public const string SCOPE_VARIABLE_ID = 'treatIdAsReference';
+    public const string SCOPE_VARIABLE_DEFAULT_SOURCE = 'default-source';
 
     /**
      * name of the tag to be created by this view helper

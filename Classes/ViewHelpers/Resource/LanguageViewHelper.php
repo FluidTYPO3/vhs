@@ -42,7 +42,7 @@ class LanguageViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
 
-    const LOCALLANG_DEFAULT = 'locallang.xlf';
+    private const string LOCALLANG_DEFAULT = 'locallang.xlf';
 
     /**
      * @var boolean
@@ -58,7 +58,7 @@ class LanguageViewHelper extends AbstractViewHelper
             'string',
             'Absolute or relative path to the locallang file',
             false,
-            static::LOCALLANG_DEFAULT
+            self::LOCALLANG_DEFAULT
         );
         $this->registerArgument(
             'languageKey',

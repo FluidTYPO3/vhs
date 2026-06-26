@@ -48,8 +48,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class CacheViewHelper extends AbstractRenderViewHelper
 {
-    const ID_PREFIX = 'vhs-render-cache-viewhelper';
-    const ID_SEPARATOR = '-';
+    private const string ID_PREFIX = 'vhs-render-cache-viewhelper';
+    private const string ID_SEPARATOR = '-';
 
     /**
      * @var boolean
@@ -75,7 +75,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
         $identity = $arguments['identity'];
         if (!ctype_alnum(preg_replace('/[\-_]/i', '', $identity))) {
             if ($identity instanceof DomainObjectInterface) {
-                $identity = get_class($identity) . static::ID_SEPARATOR . $identity->getUid();
+                $identity = get_class($identity) . self::ID_SEPARATOR . $identity->getUid();
             } elseif (method_exists($identity, '__toString')) {
                 $identity = (string) $identity;
             } else {
@@ -100,7 +100,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
 
     protected static function has(string $id): bool
     {
-        return static::getCache()->has(static::ID_PREFIX . static::ID_SEPARATOR . $id);
+        return static::getCache()->has(self::ID_PREFIX . self::ID_SEPARATOR . $id);
     }
 
     /**
@@ -108,7 +108,7 @@ class CacheViewHelper extends AbstractRenderViewHelper
      */
     protected static function store($value, string $id): void
     {
-        static::getCache()->set(static::ID_PREFIX . static::ID_SEPARATOR . $id, $value);
+        static::getCache()->set(self::ID_PREFIX . self::ID_SEPARATOR . $id, $value);
     }
 
     /**
@@ -117,8 +117,8 @@ class CacheViewHelper extends AbstractRenderViewHelper
     protected static function retrieve(string $id)
     {
         $cache = static::getCache();
-        if ($cache->has(static::ID_PREFIX . static::ID_SEPARATOR . $id)) {
-            return $cache->get(static::ID_PREFIX . static::ID_SEPARATOR . $id);
+        if ($cache->has(self::ID_PREFIX . self::ID_SEPARATOR . $id)) {
+            return $cache->get(self::ID_PREFIX . self::ID_SEPARATOR . $id);
         }
         return null;
     }
