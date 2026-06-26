@@ -52,7 +52,7 @@ in plain text:
     Path: {domainObject}
     Value type: object
     Accessible properties on {domainObject}:
-       {form.uid} (integer)
+       {form.uid} (int)
        {form.title} (string)
 
 The class itself can contain any number of protected

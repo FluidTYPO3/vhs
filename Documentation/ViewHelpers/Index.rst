@@ -4,15 +4,14 @@
 fluidtypo3/vhs
 ==============
 
-* 10 ViewHelpers documented
-* 22 Sub namespaces
+* 9 ViewHelpers documented
+* 21 Sub namespaces
 
 .. toctree::
    :titlesonly:
    :glob:
 
    */Index
-   Asset
    Call
    Const
    Debug

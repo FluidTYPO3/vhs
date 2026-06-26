@@ -56,126 +56,6 @@ aria
 :aspect:`Description`
    Additional aria-* attributes. They will each be added with a "aria-" prefix.
 
-.. _media.vimeo_class:
-
-class
------
-
-:aspect:`DataType`
-   string
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   CSS class(es) for this element
-
-.. _media.vimeo_dir:
-
-dir
----
-
-:aspect:`DataType`
-   string
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)
-
-.. _media.vimeo_id:
-
-id
---
-
-:aspect:`DataType`
-   string
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Unique (in this file) identifier for this HTML element.
-
-.. _media.vimeo_lang:
-
-lang
-----
-
-:aspect:`DataType`
-   string
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Language for this element. Use short names specified in RFC 1766
-
-.. _media.vimeo_style:
-
-style
------
-
-:aspect:`DataType`
-   string
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Individual CSS styles for this element
-
-.. _media.vimeo_title:
-
-title
------
-
-:aspect:`DataType`
-   boolean
-
-:aspect:`Default`
-   true
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Show the title on the video. Defaults to TRUE.
-
-.. _media.vimeo_accesskey:
-
-accesskey
----------
-
-:aspect:`DataType`
-   string
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Keyboard shortcut to access this element
-
-.. _media.vimeo_tabindex:
-
-tabindex
---------
-
-:aspect:`DataType`
-   integer
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   Specifies the tab order of this element
-
-.. _media.vimeo_onclick:
-
-onclick
--------
-
-:aspect:`DataType`
-   string
-
-:aspect:`Required`
-   false
-:aspect:`Description`
-   JavaScript evaluated for the onclick event
-
 .. _media.vimeo_videoid:
 
 videoId
@@ -220,6 +100,22 @@ height
    false
 :aspect:`Description`
    Height of the video in pixels. Defaults to 360 for 16:9 content.
+
+.. _media.vimeo_title:
+
+title
+-----
+
+:aspect:`DataType`
+   boolean
+
+:aspect:`Default`
+   true
+
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Show the title on the video. Defaults to TRUE.
 
 .. _media.vimeo_byline:
 
