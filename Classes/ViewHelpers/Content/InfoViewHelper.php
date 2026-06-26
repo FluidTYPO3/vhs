@@ -74,10 +74,6 @@ class InfoViewHelper extends AbstractViewHelper
         if (0 === $contentUid) {
             $cObj = ContentObjectFetcher::resolve($this->configurationManager);
 
-            if ($cObj === null) {
-                throw new Exception('v:content.info requires a ContentObjectRenderer, none found', 1737807859);
-            }
-
             if ($cObj->getCurrentTable() !== 'tt_content') {
                 throw new Exception(
                     'v:content.info must have contentUid argument outside tt_content context',
