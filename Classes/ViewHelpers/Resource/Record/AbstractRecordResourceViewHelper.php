@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Base class: Record Resource ViewHelpers
@@ -155,9 +154,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
     public function getActiveRecord(): array
     {
         $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
-        if ($contentObject === null) {
-            throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737807859);
-        }
         return $contentObject->data;
     }
 

@@ -6,7 +6,6 @@ use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /*
@@ -97,9 +96,6 @@ trait SourceSetViewHelperTrait
         ?string $crop = null
     ): array {
         $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
-        if ($contentObject === null) {
-            throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737808465);
-        }
 
         $setup = [
             'width' => $width,

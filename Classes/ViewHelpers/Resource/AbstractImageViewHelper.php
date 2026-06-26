@@ -96,9 +96,6 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
-        if ($contentObject === null) {
-            throw new Exception(static::class . ' requires a ContentObjectRenderer, none found', 1737807859);
-        }
 
         $setup = [
             'width' => $this->arguments['width'] ?? null,

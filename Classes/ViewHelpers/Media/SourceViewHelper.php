@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Used in conjuntion with the `v:media.PictureViewHelper`.
@@ -127,9 +126,6 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             $imageSource = mb_substr($imageSource, 3);
         }
         $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
-        if ($contentObject === null) {
-            throw new Exception('v:media.source requires a ContentObjectRenderer, none found', 1737807859);
-        }
 
         $result = $contentObject->getImgResource($imageSource, $setup);
         if ($result instanceof ImageResource) {

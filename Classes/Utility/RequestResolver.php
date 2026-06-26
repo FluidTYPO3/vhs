@@ -124,6 +124,15 @@ class RequestResolver
         return $request;
     }
 
+    public static function getTypoScriptFrontendController(): ?object
+    {
+        $controller = self::getRequest()->getAttribute('frontend.controller');
+        if (is_object($controller)) {
+            return $controller;
+        }
+        return is_object($GLOBALS['TSFE'] ?? null) ? $GLOBALS['TSFE'] : null;
+    }
+
     public static function getLanguage(): SiteLanguage
     {
         /** @var SiteLanguage $siteLanguage */
