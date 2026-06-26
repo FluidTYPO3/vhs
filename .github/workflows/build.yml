@@ -51,12 +51,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: "7.4"
-            typo3: "^10.4"
-          - php: "8.0"
-            typo3: "^11.5"
-          - php: "8.1"
-            typo3: "^11.5"
           - php: "8.1"
             typo3: "^12.4"
           - php: "8.2"
@@ -97,12 +91,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: "7.4"
-            typo3: "^10.4"
-          - php: "8.0"
-            typo3: "^11.5"
-          - php: "8.1"
-            typo3: "^11.5"
           - php: "8.1"
             typo3: "^12.4"
           - php: "8.2"
