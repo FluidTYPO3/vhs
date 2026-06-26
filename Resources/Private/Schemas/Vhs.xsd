@@ -2257,7 +2257,7 @@ scipt must:
 
 In other words, *NIX standard behavior must be used.
 
-See: http://daringfireball.net/projects/markdown/
+See: http://daringfireball.net/projects/markdown
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2285,7 +2285,7 @@ See: http://daringfireball.net/projects/markdown/
     <xsd:annotation>
       <xsd:documentation><![CDATA[Placeholder Image ViewHelper
 
-Inserts a placeholder image from http://placehold.it/
+Inserts a placeholder image from http://placehold.it
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2305,51 +2305,6 @@ Inserts a placeholder image from http://placehold.it/
       <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="text" default="NULL">
@@ -4581,51 +4536,6 @@ from the filename's extension.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="email" default="NULL" use="required">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Email address]]></xsd:documentation>
@@ -4676,7 +4586,7 @@ to use as a fallback to be shown when no srcset functionality is supported.
 ### Browser Support
 
 To have the widest Browser-Support you should consider using a polyfill like:
-http://scottjehl.github.io/picturefill/
+http://scottjehl.github.io/picturefill
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -4781,51 +4691,6 @@ http://scottjehl.github.io/picturefill/
       <xsd:attribute type="xsd:boolean" name="graceful" default="false">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="usemap" default="NULL">
@@ -5045,51 +4910,6 @@ pages the first page is rendered by default unless specified.
           <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="usemap" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[A hash-name reference to a map element with which to associate the image.]]></xsd:documentation>
@@ -5186,7 +5006,7 @@ media breakpoints
 ### Browser Support
 
 To have the widest Browser-Support you should consider using a polyfill like:
-http://scottjehl.github.io/picturefill/
+http://scottjehl.github.io/picturefill
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -5282,51 +5102,6 @@ information.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="media" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Media query for which breakpoint this sources applies]]></xsd:documentation>
@@ -5401,51 +5176,6 @@ information.
       <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="spotifyUri" default="NULL" use="required">
@@ -5683,51 +5413,6 @@ from the filename's extension.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="title" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Show the title on the video. Defaults to TRUE.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="videoId" default="NULL" use="required">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Vimeo ID of the video to embed.]]></xsd:documentation>
@@ -5741,6 +5426,11 @@ from the filename's extension.
       <xsd:attribute type="xsd:integer" name="height" default="360">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Height of the video in pixels. Defaults to 360 for 16:9 content.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="title" default="true">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Show the title on the video. Defaults to TRUE.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="byline" default="true">
@@ -5802,51 +5492,6 @@ from the filename's extension.
       <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="videoId" default="NULL" use="required">
@@ -7985,51 +7630,6 @@ well as the "then" and "else" arguments.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
         <xsd:annotation>
           <xsd:documentation><![CDATA[The page uid to check]]></xsd:documentation>
@@ -8270,51 +7870,6 @@ Require the extension static_info_table.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="tagName" default="'ul'">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Tag name to use for enclosing container, list and flags (not finished) only]]></xsd:documentation>
@@ -8467,51 +8022,6 @@ Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
       <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="showAccessProtected" default="false">
@@ -9386,51 +8896,6 @@ http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Inde
       <xsd:attribute type="xsd:boolean" name="graceful" default="false">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="usemap" default="NULL">
