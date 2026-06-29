@@ -12,7 +12,7 @@ Uri: Request
 ============
 
 Returns the Uri of the requested page (site_url + all the GET params)
-`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')`.
+`ServerRequest::$uri`, an instance of UriInterface.
 
 
 .. _fluidtypo3-vhs-uri-request_arguments:
