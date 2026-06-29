@@ -166,7 +166,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
         }
         $this->tag->addAttributes($tagAttributes);
         if ($this->arguments['unsupported']) {
-            $this->tag->setContent($this->tag->getContent() . LF . $this->arguments['unsupported']);
+            $this->tag->setContent($this->tag->getContent() . PHP_EOL . $this->arguments['unsupported']);
         }
         return $this->tag->render();
     }

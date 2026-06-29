@@ -207,7 +207,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                     $this->getLayout($var) . '</a></' . $tagName . '>';
             }
         }
-        return implode(LF, $html);
+        return implode(PHP_EOL, $html);
     }
 
     /**

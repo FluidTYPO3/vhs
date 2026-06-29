@@ -42,7 +42,7 @@ class RenderViewHelper extends AbstractContentViewHelper
 
         $content = $this->getContentRecords();
         if (!$this->hasArgument('as')) {
-            return implode(LF, $content);
+            return implode(PHP_EOL, $content);
         }
 
         /** @var string|array|null $output */

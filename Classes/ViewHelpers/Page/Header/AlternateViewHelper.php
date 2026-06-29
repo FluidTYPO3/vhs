@@ -131,7 +131,7 @@ class AlternateViewHelper extends AbstractViewHelper
                         $pageRenderer->addHeaderData($renderedTag);
                     }
                 } else {
-                    $output .= $renderedTag . LF;
+                    $output .= $renderedTag . PHP_EOL;
                 }
             }
         }

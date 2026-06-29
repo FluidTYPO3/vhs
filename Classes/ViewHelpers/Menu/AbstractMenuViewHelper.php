@@ -329,7 +329,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
             }
         }
 
-        return implode(LF, $html);
+        return implode(PHP_EOL, $html);
     }
 
     protected function renderItemLink(array $page): string

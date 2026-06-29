@@ -42,6 +42,6 @@ class PlaintextViewHelper extends AbstractViewHelper
         $content = trim($content);
         $lines = explode("\n", $content);
         $lines = array_map('trim', $lines);
-        return implode(LF, $lines);
+        return implode(PHP_EOL, $lines);
     }
 }

@@ -100,11 +100,11 @@ class DebugViewHelper extends AbstractViewHelper
             $viewHelperReflection = new \ReflectionClass($viewHelper);
             $viewHelperDescription = $viewHelperReflection->getDocComment();
             $viewHelperDescription = htmlentities((string) $viewHelperDescription);
-            $viewHelperDescription = '[CLASS DOC]' . LF . $viewHelperDescription . LF;
+            $viewHelperDescription = '[CLASS DOC]' . PHP_EOL . $viewHelperDescription . PHP_EOL;
             $renderMethodDescription = $viewHelperReflection->getMethod('render')->getDocComment();
             $renderMethodDescription = htmlentities((string) $renderMethodDescription);
-            $renderMethodDescription = implode(LF, array_map('trim', explode(LF, $renderMethodDescription)));
-            $renderMethodDescription = '[RENDER METHOD DOC]' . LF . $renderMethodDescription . LF;
+            $renderMethodDescription = implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $renderMethodDescription)));
+            $renderMethodDescription = '[RENDER METHOD DOC]' . PHP_EOL . $renderMethodDescription . PHP_EOL;
             $argumentDefinitions = [];
             foreach ($arguments as $argument) {
                 $name = $argument->getName();
@@ -116,7 +116,7 @@ class DebugViewHelper extends AbstractViewHelper
                 DebuggerUtility::var_dump($givenArguments, '[CURRENT ARGUMENTS]', 4, true, false, true),
                 $renderMethodDescription
             ];
-            $nodes[] = implode(LF, $sections);
+            $nodes[] = implode(PHP_EOL, $sections);
         }
         if (0 < count($this->childObjectAccessorNodes)) {
             $nodes[] = '[VARIABLE ACCESSORS]';
@@ -160,10 +160,10 @@ class DebugViewHelper extends AbstractViewHelper
                         true
                     );
                 }
-                $nodes[] = implode(LF, $sections);
+                $nodes[] = implode(PHP_EOL, $sections);
             }
         }
-        return '<pre>' . implode(LF . LF, $nodes) . '</pre>';
+        return '<pre>' . implode(PHP_EOL . PHP_EOL, $nodes) . '</pre>';
     }
 
     /**

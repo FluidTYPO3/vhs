@@ -53,7 +53,7 @@ class InlineViewHelper extends AbstractRenderViewHelper
         /** @var string $content */
         $content = $arguments['content'] ?? $renderChildrenClosure();
         $namespaces = static::getPreparedNamespaces($arguments);
-        $namespaceHeader = implode(LF, $namespaces);
+        $namespaceHeader = implode(PHP_EOL, $namespaces);
         foreach ($namespaces as $namespace) {
             $content = str_replace($namespace, '', $content);
         }

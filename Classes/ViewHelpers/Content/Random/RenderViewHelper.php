@@ -43,7 +43,7 @@ class RenderViewHelper extends AbstractContentViewHelper
             shuffle($contentRecords);
             $contentRecords = array_slice($contentRecords, 0, $limit);
             if ($this->arguments['render']) {
-                $contentRecords = implode(LF, $contentRecords);
+                $contentRecords = implode(PHP_EOL, $contentRecords);
             }
         }
         return $contentRecords;
