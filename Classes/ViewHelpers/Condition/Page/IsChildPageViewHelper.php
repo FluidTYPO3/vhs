@@ -30,10 +30,7 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('respectSiteRoot', 'boolean', 'value to check', false, false);
     }
 
-    /**
-     * @return bool
-     */
-    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];

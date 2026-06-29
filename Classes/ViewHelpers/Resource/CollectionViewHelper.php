@@ -32,9 +32,7 @@ class CollectionViewHelper extends AbstractResourceViewHelper
     }
 
     /**
-     * Returns a specific collection referenced by uid.
-     *
-     * @return mixed
+     * @return string|AbstractRecordCollection
      */
     public function render()
     {
@@ -53,6 +51,6 @@ class CollectionViewHelper extends AbstractResourceViewHelper
             }
             return $collection;
         }
-        return null;
+        return '';
     }
 }

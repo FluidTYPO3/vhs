@@ -90,10 +90,7 @@ class DebugViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $nodes = [];
         foreach ($this->childViewHelperNodes as $viewHelperNode) {

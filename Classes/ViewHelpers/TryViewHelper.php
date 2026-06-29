@@ -94,31 +94,7 @@ class TryViewHelper extends AbstractConditionViewHelper
     use TemplateVariableViewHelperTrait;
 
     /**
-     * @param callable[] $arguments
-     * @return mixed
-     */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        try {
-            $content = $arguments['__then']();
-        } catch (\Exception $error) {
-            $variableProvider = $renderingContext->getVariableProvider();
-            if (isset($arguments['__else'])) {
-                $variableProvider->add('exception', $error);
-                $content = $arguments['__else']();
-                $variableProvider->remove('exception');
-            } else {
-                $content = $arguments['else'] ?? null;
-            }
-        }
-        return $content;
-    }
-
-    /**
-     * @return mixed
+     * @return mixed|string
      */
     public function render()
     {
@@ -128,6 +104,30 @@ class TryViewHelper extends AbstractConditionViewHelper
             $this->renderingContext->getVariableProvider()->add('exception', $error);
             $content = $this->renderElseChild();
             $this->renderingContext->getVariableProvider()->remove('exception');
+        }
+        return $content;
+    }
+
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ): mixed {
+        try {
+            /** @var callable $thenArgumentClosure */
+            $thenArgumentClosure = $arguments['__then'];
+            $content = $thenArgumentClosure();
+        } catch (\Exception $error) {
+            $variableProvider = $renderingContext->getVariableProvider();
+            if (isset($arguments['__else'])) {
+                /** @var callable $elseArgumentClosure */
+                $elseArgumentClosure = $arguments['__else'];
+                $variableProvider->add('exception', $error);
+                $content = $elseArgumentClosure();
+                $variableProvider->remove('exception');
+            } else {
+                $content = $arguments['else'] ?? null;
+            }
         }
         return $content;
     }

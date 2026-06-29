@@ -190,7 +190,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    public function render(): ?string
+    public function render(): string
     {
         /** @var int|null $entryLevel */
         $entryLevel = $this->arguments['entryLevel'];

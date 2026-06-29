@@ -61,11 +61,7 @@ class InfoViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @return mixed
-     * @throws \Exception
-     */
-    public function render()
+    public function render(): mixed
     {
         /** @var int $contentUid */
         $contentUid = $this->arguments['contentUid'];

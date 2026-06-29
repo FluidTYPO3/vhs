@@ -26,17 +26,11 @@ class GetViewHelper extends AbstractContentViewHelper
         $this->overrideArgument('render', 'boolean', 'Return rendered result', false, false);
     }
 
-    /**
-     * Render method
-     *
-     * @return mixed
-     */
-    public function render()
+    public function render(): array
     {
         if (ContextUtility::isBackend()) {
-            return '';
+            return [];
         }
-        $contentRecords = $this->getContentRecords();
-        return $contentRecords;
+        return $this->getContentRecords();
     }
 }

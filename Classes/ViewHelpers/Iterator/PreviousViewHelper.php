@@ -24,20 +24,14 @@ class PreviousViewHelper extends ContainsViewHelper
         return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
-    /**
-     * Default implementation for use in compiled templates
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        $evaluation = static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+    ): mixed {
+        /** @var iterable $haystack */
+        $haystack = $arguments['haystack'];
+        $evaluation = static::assertHaystackHasNeedle($haystack, $arguments['needle'], $arguments);
         return static::getNeedleAtIndex($evaluation !== false ? $evaluation - 1 : -1, $arguments);
     }
 }

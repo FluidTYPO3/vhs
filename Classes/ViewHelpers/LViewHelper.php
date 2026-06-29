@@ -61,14 +61,11 @@ class LViewHelper extends AbstractViewHelper
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
     }
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         /** @var RenderingContext $renderingContext */
         /** @var string|null $default */
         $default = $arguments['default'];
@@ -95,6 +92,6 @@ class LViewHelper extends AbstractViewHelper
         } elseif ($htmlEscape) {
             $value = htmlspecialchars((string) $value);
         }
-        return $value;
+        return (string) $value;
     }
 }

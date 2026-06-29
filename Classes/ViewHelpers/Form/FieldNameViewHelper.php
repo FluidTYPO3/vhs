@@ -47,10 +47,7 @@ class FieldNameViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string|null
     {
         /** @var string $property */
         $property = $this->arguments['property'];

@@ -32,7 +32,7 @@ class SubViewHelper extends AbstractMenuViewHelper
         );
     }
 
-    public function render(): ?string
+    public function render(): string
     {
         /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];

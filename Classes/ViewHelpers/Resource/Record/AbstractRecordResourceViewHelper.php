@@ -149,7 +149,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
         return $result;
     }
 
-    public function render()
+    public function render(): string|array
     {
         /** @var int|null $uid */
         $uid = $this->arguments['uid'] ?? null;
@@ -169,6 +169,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
         $content = null;
         try {
             $resources = $this->getResources((array) $record);
+            /** @var string|array $content */
             $content = $this->renderChildrenWithVariableOrReturnInput($resources);
         } catch (\Exception $error) {
             // we are doing the pokemon-thing and catching the very top level
@@ -178,6 +179,6 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
             // we are forced to "catch them all" - but we also output them.
             ErrorUtility::throwViewHelperException($error->getMessage(), $error->getCode(), $error);
         }
-        return $content;
+        return $content ?? '';
     }
 }
