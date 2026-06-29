@@ -1395,12 +1395,12 @@ Loads FAL records associated with records of arbitrary types.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -1422,7 +1422,7 @@ We assume that the flux content element has an IRRE file field
 The file data can be loaded and displayed with:
 
 ```
-{v:content.resources.fal(field: 'settings.image')
+{v:content.resources.fal(field: 'settings.image', record: record)
   -> v:iterator.first()
   -> v:variable.set(name: 'image')}
 <f:if condition="{image}">
@@ -1457,12 +1457,12 @@ you have to pass the `record` attribute:
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -8142,12 +8142,12 @@ Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -8184,12 +8184,12 @@ resource ViewHelpers do if you only pass uid.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -8991,12 +8991,12 @@ but all the translated labels.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -9050,12 +9050,12 @@ Use the `uid` attribute if you don't have a `record`.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
