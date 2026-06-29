@@ -9778,7 +9778,7 @@ or it's derivate if differing dimesions are provided.
       <xsd:documentation><![CDATA[### Uri: Request
 
 Returns the Uri of the requested page (site_url + all the GET params)
-`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')`.
+`ServerRequest::$uri`, an instance of UriInterface.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
