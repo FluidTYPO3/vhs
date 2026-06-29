@@ -20,7 +20,7 @@ The file data can be loaded and displayed with:
 
 ::
 
-    {v:content.resources.fal(field: 'settings.image')
+    {v:content.resources.fal(field: 'settings.image', record: record)
       -> v:iterator.first()
       -> v:variable.set(name: 'image')}
     <f:if condition="{image}">
@@ -88,7 +88,7 @@ record
 :aspect:`Required`
    false
 :aspect:`Description`
-   The actual record. Alternatively you can use the "uid" argument.
+   The actual record. Alternatively you can use the "uid" argument; you must specify either one.
 
 .. _content.resources.fal_uid:
 
@@ -101,7 +101,7 @@ uid
 :aspect:`Required`
    false
 :aspect:`Description`
-   The uid of the record. Alternatively you can use the "record" argument.
+   The uid of the record. Alternatively you can use the "record" argument; you must specify either one.
 
 .. _content.resources.fal_as:
 
