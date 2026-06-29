@@ -57,6 +57,9 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     protected array $defaultArguments = [
         'name' => 'test',
     ];
+    protected array $defaultMockMethods = [
+        'dummy',
+    ];
 
     protected function setUp(): void
     {
@@ -199,7 +202,10 @@ abstract class AbstractViewHelperTestCase extends AbstractTestCase
     {
         $className = $this->getViewHelperClassName();
         /** @var AbstractViewHelper $instance */
-        $instance = $this->getMockBuilder($className)->setMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $instance = $this->getMockBuilder($className)
+            ->setMethods($this->defaultMockMethods)
+            ->disableOriginalConstructor()
+            ->getMock();
         if (method_exists($instance, 'injectConfigurationManager')) {
             $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
             $cObject->start(['uid' => 123], 'tt_content');

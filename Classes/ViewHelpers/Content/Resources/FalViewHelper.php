@@ -21,7 +21,7 @@ use FluidTYPO3\Vhs\Traits\ArgumentOverride;
  * The file data can be loaded and displayed with:
  *
  * ```
- * {v:content.resources.fal(field: 'settings.image')
+ * {v:content.resources.fal(field: 'settings.image', record: record)
  *   -> v:iterator.first()
  *   -> v:variable.set(name: 'image')}
  * <f:if condition="{image}">

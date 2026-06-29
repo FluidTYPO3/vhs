@@ -11,10 +11,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource\Record;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -55,12 +53,12 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'record',
             'array',
-            'The actual record. Alternatively you can use the "uid" argument.'
+            'The actual record. Alternatively you can use the "uid" argument; you must specify either one.'
         );
         $this->registerArgument(
             'uid',
             'integer',
-            'The uid of the record. Alternatively you can use the "record" argument.'
+            'The uid of the record. Alternatively you can use the "record" argument; you must specify either one.'
         );
         $this->registerArgument(
             'as',
@@ -76,7 +74,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
 
         if (!isset($record[$field])) {
             ErrorUtility::throwViewHelperException(
-                'The "field" argument was not found on the selected record.',
+                'The field "' . $field . '" was not found on the selected record.',
                 1384612728
             );
         }
@@ -151,31 +149,15 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
         return $result;
     }
 
-    public function getActiveRecord(): array
-    {
-        $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
-        return $contentObject->data;
-    }
-
-    /**
-     * @return mixed
-     */
     public function render()
     {
-        /** @var array|null $record */
-        $record = $this->arguments['record'] ?? null;
         /** @var int|null $uid */
         $uid = $this->arguments['uid'] ?? null;
 
-        if (null === $record) {
-            if (null === $uid) {
-                $record = $this->getActiveRecord();
-            } else {
-                $record = $this->getRecord($uid);
-            }
-        }
+        /** @var array|null $record */
+        $record = $this->arguments['record'] ?? $this->getRecord((int) $uid);
 
-        if (null === $record) {
+        if ($record === null) {
             ErrorUtility::throwViewHelperException(
                 'No record was found. The "record" or "uid" argument must be specified.',
                 1384611413
