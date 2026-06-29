@@ -22,6 +22,7 @@ class FooterViewHelperTest extends AbstractViewHelperTestCase
     protected function setUp(): void
     {
         $this->singletonInstances[PageRenderer::class] = $this->getMockBuilder(PageRenderer::class)
+            ->onlyMethods(['addFooterData'])
             ->disableOriginalConstructor()
             ->getMock();
 
