@@ -28,10 +28,6 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
     {
         parent::setUp();
 
-        if (!defined('LF')) {
-            define('LF', "\n");
-        }
-
         if (!defined('TYPO3_REQUESTTYPE')) {
             define('TYPO3_REQUESTTYPE', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         }
