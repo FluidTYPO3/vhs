@@ -25,12 +25,7 @@ class RenderViewHelper extends AbstractContentViewHelper
         $this->overrideArgument('limit', 'integer', 'Optional limit number of content elements to render', false, 1);
     }
 
-    /**
-     * Render method
-     *
-     * @return string|array
-     */
-    public function render()
+    public function render(): string|array
     {
         if (ContextUtility::isBackend()) {
             return '';

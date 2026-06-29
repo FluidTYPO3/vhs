@@ -34,12 +34,7 @@ class RenderViewHelper extends AbstractContentViewHelper
         $this->registerAsArgument();
     }
 
-    /**
-     * Render method
-     *
-     * @return mixed
-     */
-    public function render()
+    public function render(): string|array|null
     {
         if (ContextUtility::isBackend()) {
             return '';
@@ -50,6 +45,8 @@ class RenderViewHelper extends AbstractContentViewHelper
             return implode(LF, $content);
         }
 
-        return $this->renderChildrenWithVariableOrReturnInput($content);
+        /** @var string|array|null $output */
+        $output = $this->renderChildrenWithVariableOrReturnInput($content);
+        return $output;
     }
 }

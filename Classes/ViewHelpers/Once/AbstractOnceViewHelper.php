@@ -121,7 +121,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
      *
      * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
      */
-    protected function renderThenChild()
+    protected function renderThenChild(): mixed
     {
         if (ContextUtility::isFrontend()) {
             $GLOBALS['TSFE']->no_cache = 1;

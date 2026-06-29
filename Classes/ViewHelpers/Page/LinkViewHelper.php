@@ -135,7 +135,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    public function render(): ?string
+    public function render(): string
     {
         // Check if link wizard link
         /** @var int $pageUid */

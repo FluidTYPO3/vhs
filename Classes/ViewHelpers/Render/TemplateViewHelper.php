@@ -71,10 +71,7 @@ class TemplateViewHelper extends AbstractRenderViewHelper
         );
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         /** @var string|null $file */
         $file = $this->arguments['file'];
@@ -111,11 +108,7 @@ class TemplateViewHelper extends AbstractRenderViewHelper
         return static::renderView($view, $this->arguments);
     }
 
-    /**
-     * @param array $paths
-     * @return array
-     */
-    protected function processPathsArray(array $paths)
+    protected function processPathsArray(array $paths): array
     {
         $pathsArray = [];
         foreach ($paths as $key => $path) {

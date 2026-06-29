@@ -67,12 +67,7 @@ class LanguageViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * The main render method of this ViewHelper.
-     *
-     * @return mixed
-     */
-    public function render()
+    public function render(): mixed
     {
         $path = $this->getResolvedPath();
         $languageKey = $this->getLanguageKey();

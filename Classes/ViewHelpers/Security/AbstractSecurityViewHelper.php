@@ -386,7 +386,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      *
      * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
      */
-    protected function renderThenChild()
+    protected function renderThenChild(): mixed
     {
         if ($this->isFrontendContext()) {
             $GLOBALS['TSFE']->no_cache = 1;
