@@ -12,7 +12,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
@@ -71,16 +70,6 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 class DebugViewHelper extends AbstractViewHelper
 {
     /**
-     * @var ViewHelperNode[]
-     */
-    protected array $childViewHelperNodes = [];
-
-    /**
-     * @var ObjectAccessorNode[]
-     */
-    protected array $childObjectAccessorNodes = [];
-
-    /**
      * @var boolean
      */
     protected $escapeOutput = false;
@@ -93,10 +82,17 @@ class DebugViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $nodes = [];
-        foreach ($this->childViewHelperNodes as $viewHelperNode) {
-            $viewHelper = $viewHelperNode->getUninitializedViewHelper();
+        $objectAccessorNodes = [];
+        foreach (((array) $this->viewHelperNode?->getChildNodes()) as $node) {
+            if ($node instanceof ObjectAccessorNode) {
+                $objectAccessorNodes[] = $node;
+            }
+            if (!$node instanceof ViewHelperNode) {
+                continue;
+            }
+            $viewHelper = $node->getUninitializedViewHelper();
             $arguments = $viewHelper->prepareArguments();
-            $givenArguments = $viewHelperNode->getArguments();
+            $givenArguments = $node->getArguments();
             $viewHelperReflection = new \ReflectionClass($viewHelper);
             $viewHelperDescription = $viewHelperReflection->getDocComment();
             $viewHelperDescription = htmlentities((string) $viewHelperDescription);
@@ -118,11 +114,11 @@ class DebugViewHelper extends AbstractViewHelper
             ];
             $nodes[] = implode(PHP_EOL, $sections);
         }
-        if (0 < count($this->childObjectAccessorNodes)) {
+        if (0 < count($objectAccessorNodes)) {
             $nodes[] = '[VARIABLE ACCESSORS]';
             /** @var array|object $templateVariables */
             $templateVariables = $this->renderingContext->getVariableProvider()->getAll();
-            foreach ($this->childObjectAccessorNodes as $objectAccessorNode) {
+            foreach ($objectAccessorNodes as $objectAccessorNode) {
                 $path = $objectAccessorNode->getObjectPath();
                 $segments = explode('.', $path);
                 try {
@@ -164,21 +160,5 @@ class DebugViewHelper extends AbstractViewHelper
             }
         }
         return '<pre>' . implode(PHP_EOL . PHP_EOL, $nodes) . '</pre>';
-    }
-
-    /**
-     * Sets the direct child nodes of the current syntax tree node.
-     *
-     * @param NodeInterface[] $childNodes
-     */
-    public function setChildNodes(array $childNodes): void
-    {
-        foreach ($childNodes as $childNode) {
-            if ($childNode instanceof ViewHelperNode) {
-                $this->childViewHelperNodes[] = $childNode;
-            } elseif ($childNode instanceof ObjectAccessorNode) {
-                $this->childObjectAccessorNodes[] = $childNode;
-            }
-        }
     }
 }
