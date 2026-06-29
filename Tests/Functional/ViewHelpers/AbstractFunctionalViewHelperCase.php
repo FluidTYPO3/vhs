@@ -28,16 +28,6 @@ abstract class AbstractFunctionalViewHelperCase extends TestCase
     {
         parent::setUp();
 
-        if (!defined('TYPO3_REQUESTTYPE')) {
-            define('TYPO3_REQUESTTYPE', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        }
-        if (!defined('TYPO3_REQUESTTYPE_FE')) {
-            define('TYPO3_REQUESTTYPE_FE', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        }
-        if (!defined('TYPO3_REQUESTTYPE_CLI')) {
-            define('TYPO3_REQUESTTYPE_CLI', SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-        }
-
         $root = realpath(__DIR__ . '/../../../');
         Environment::initialize(
             new ApplicationContext('Development'),

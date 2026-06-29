@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Context;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -39,6 +40,6 @@ class IsCliViewHelper extends AbstractConditionViewHelper
 {
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        return (bool) (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
+        return Environment::isCli();
     }
 }
