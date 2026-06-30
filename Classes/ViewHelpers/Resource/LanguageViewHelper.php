@@ -9,12 +9,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Proxy\LocalizationFactoryProxy;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -71,8 +71,8 @@ class LanguageViewHelper extends AbstractViewHelper
     {
         $path = $this->getResolvedPath();
         $languageKey = $this->getLanguageKey();
-        /** @var LocalizationFactory $languageFactory */
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+        /** @var LocalizationFactoryProxy $languageFactory */
+        $languageFactory = GeneralUtility::makeInstance(LocalizationFactoryProxy::class);
         $locallang = (array) $languageFactory->getParsedData($path, $languageKey);
         $labels = $this->getLabelsByLanguageKey($locallang, $languageKey);
         $labels = $this->getLabelsFromTarget($labels);

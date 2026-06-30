@@ -69,4 +69,5 @@ parameters:
         - Configuration
     excludePaths:
         - Classes/Middleware/AssetInclusion.php
+        - Classes/Proxy/LocalizationFactoryProxy.php
         - Configuration/RequestMiddlewares.php

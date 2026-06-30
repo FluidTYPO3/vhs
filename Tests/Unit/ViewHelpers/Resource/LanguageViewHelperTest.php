@@ -8,13 +8,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\LocalizationFactoryProxy;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\AccessibleExtensionManagementUtility;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -39,7 +39,9 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
         $packageManager->method('isPackageActive')->willReturn(true);
         AccessibleExtensionManagementUtility::setPackageManager($packageManager);
 
-        $this->singletonInstances[LocalizationFactory::class] = $this->getMockBuilder(LocalizationFactory::class)
+        $this->singletonInstances[LocalizationFactoryProxy::class] = $this->getMockBuilder(
+            LocalizationFactoryProxy::class
+        )
             ->disableOriginalConstructor()
             ->getMock();
 
