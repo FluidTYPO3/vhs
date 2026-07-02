@@ -8,7 +8,7 @@ content.info ViewHelper `<vhs:content.info>`
 ============================================
 
 
-ViewHelper to access data of the current content element record.
+ViewHelper to access data of a content element record.
 
 
 .. _fluidtypo3-vhs-content-info_arguments:
@@ -39,9 +39,9 @@ contentUid
    integer
 
 :aspect:`Required`
-   false
+   true
 :aspect:`Description`
-   If specified, this UID will be used to fetch content element data instead of using the current content element.
+   This UID will be used to fetch content element data.
 
 .. _content.info_field:
 
