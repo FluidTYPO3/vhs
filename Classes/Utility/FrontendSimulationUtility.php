@@ -9,8 +9,10 @@ namespace FluidTYPO3\Vhs\Utility;
  */
 
 use FluidTYPO3\Vhs\Proxy\SiteFinderProxy;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,14 +27,14 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class FrontendSimulationUtility
 {
     /**
-     * Sets the global variable $GLOBALS['TSFE'] in Backend mode.
+     * Sets the global variable $GLOBALS['TYPO3_REQUEST'] with frontend.controller attribute in Backend mode.
      */
-    public static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
+    public static function simulateFrontendEnvironment(): ?ServerRequestInterface
     {
-        if (!ContextUtility::isBackend()) {
+        if (!ContextUtility::isBackend() || VersionUtility::isCoreAtLeast14()) {
             return null;
         }
-        $tsfeBackup = $GLOBALS['TSFE'] ?? null;
+        $requestBackup = $GLOBALS['TYPO3_REQUEST'] ?? null;
 
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] ?? 'fe_user';
 
@@ -54,8 +56,14 @@ class FrontendSimulationUtility
         /** @var FrontendUserAuthentication $frontendUser */
         $frontendUser = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
 
+        /** @var class-string $controllerClassName */
+        $controllerClassName = TypoScriptFrontendController::class;
+        if (!class_exists($controllerClassName)) {
+            return null;
+        }
+
         $controller = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
+            $controllerClassName, // @phpstan-ignore-line The legacy controller class does not exist on TYPO3 v14.
             $context,
             $site,
             $siteLanguage,
@@ -65,19 +73,32 @@ class FrontendSimulationUtility
 
         $GLOBALS['TSFE'] = $controller;
 
-        return $tsfeBackup;
+        $GLOBALS['TYPO3_REQUEST'] = ($GLOBALS['TYPO3_REQUEST'] ?? new ServerRequest())->withAttribute(
+            'frontend.controller',
+            $controller
+        );
+
+        return $requestBackup;
     }
 
     /**
-     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
+     * Resets the frontend request if it was previously changed by simulateFrontendEnvironment()
      *
      * @see simulateFrontendEnvironment()
      */
-    public static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
+    public static function resetFrontendEnvironment(?ServerRequestInterface $request): void
     {
-        if (!ContextUtility::isBackend()) {
+        if (!ContextUtility::isBackend() || VersionUtility::isCoreAtLeast14()) {
             return;
         }
-        $GLOBALS['TSFE'] = $tsfeBackup;
+
+        unset($GLOBALS['TSFE']);
+
+        if (!$request) {
+            unset($GLOBALS['TYPO3_REQUEST']);
+            return;
+        }
+
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 }
