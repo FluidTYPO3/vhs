@@ -23,14 +23,13 @@ class ContentObjectFetcher
             : ($GLOBALS['TYPO3_REQUEST'] ?? null)) ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
 
         if ($request instanceof ServerRequestInterface) {
+            /** @var ContentObjectRenderer|null $contentObject */
             $contentObject = $request->getAttribute('currentContentObject');
-            $contentObject = $contentObject instanceof ContentObjectRenderer ? $contentObject : null;
         }
 
-        if ($contentObject === null) {
+        if ($contentObject === null && VersionUtility::isCoreBelow14()) {
             $controller = RequestResolver::getTypoScriptFrontendController();
-            $contentObject = is_object($controller) ? ($controller->cObj ?? null) : null;
-            $contentObject = $contentObject instanceof ContentObjectRenderer ? $contentObject : null;
+            $contentObject = $controller?->cObj ?? null;
         }
 
         if ($contentObject === null
@@ -38,10 +37,9 @@ class ContentObjectFetcher
             && method_exists($configurationManager, 'getContentObject')
         ) {
             $contentObject = $configurationManager->getContentObject();
-            $contentObject = $contentObject instanceof ContentObjectRenderer ? $contentObject : null;
         }
 
-        if ($contentObject === null) {
+        if (!$contentObject) {
             /** @var ContentObjectRenderer $contentObject */
             $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         }
