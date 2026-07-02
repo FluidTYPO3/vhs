@@ -17,7 +17,6 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -43,11 +42,7 @@ class IsLanguageViewHelperTest extends AbstractViewHelperTestCase
     public function testWithLanguageAsStringLocale(): void
     {
         $queryBuilder = new DummyQueryBuilder($this);
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '10.4', '>=')) {
-            $queryBuilder->result->method('fetchAssociative')->willReturn(['uid' => 123]);
-        } else {
-            $queryBuilder->result->method('fetch')->willReturn(['uid' => 123]);
-        }
+        $queryBuilder->result->method('fetchAssociative')->willReturn(['uid' => 123]);
 
         $connectionPool = $this->getMockBuilder(ConnectionPool::class)
             ->onlyMethods(['getQueryBuilderForTable'])
