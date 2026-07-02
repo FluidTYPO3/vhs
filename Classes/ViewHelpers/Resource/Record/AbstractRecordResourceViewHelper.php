@@ -171,7 +171,7 @@ abstract class AbstractRecordResourceViewHelper extends AbstractViewHelper
             $resources = $this->getResources((array) $record);
             /** @var string|array $content */
             $content = $this->renderChildrenWithVariableOrReturnInput($resources);
-        } catch (\Exception $error) {
+        } catch (\Throwable $error) {
             // we are doing the pokemon-thing and catching the very top level
             // of Exception because the range of Exceptions that are possibly
             // thrown by the getResources() method in subclasses are not
