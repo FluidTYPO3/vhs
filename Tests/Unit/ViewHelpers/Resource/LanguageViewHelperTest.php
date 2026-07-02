@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Class LanguageViewHelperTest
@@ -57,11 +56,7 @@ class LanguageViewHelperTest extends AbstractViewHelperTestCase
             ->onlyMethods(['getLocale'])
             ->disableOriginalConstructor()
             ->getMock();
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '>=')) {
-            $language->method('getLocale')->willReturn(new Locale());
-        } else {
-            $language->method('getLocale')->willReturn('en');
-        }
+        $language->method('getLocale')->willReturn(new Locale());
 
         $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequest::class)
             ->addMethods(['dummy'])
