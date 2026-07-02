@@ -23,7 +23,7 @@ $EM_CONF['vhs'] = array (
   array (
     'depends' =>
     array (
-      'php' => '7.4.0-8.3.99',
+      'php' => '8.3.99-8.5.99',
       'typo3' => '12.4.0-13.4.99',
     ),
     'conflicts' =>
