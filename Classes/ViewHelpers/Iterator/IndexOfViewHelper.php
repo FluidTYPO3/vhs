@@ -17,12 +17,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class IndexOfViewHelper extends ContainsViewHelper
 {
-    /**
-     * @return int|string
-     */
-    public function render()
+    public function render(): int
     {
-        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+        return (int) static::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
     }
 
     public static function renderStatic(

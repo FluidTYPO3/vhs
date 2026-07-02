@@ -9,9 +9,19 @@ namespace FluidTYPO3\Vhs\Traits;
  */
 
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 trait ArgumentOverride
 {
+    /**
+     * @param string $name
+     * @param string $type
+     * @param string $description
+     * @param bool $required
+     * @param mixed $defaultValue
+     * @param bool $escape
+     * @return AbstractViewHelper
+     */
     protected function overrideArgument(
         $name,
         $type,

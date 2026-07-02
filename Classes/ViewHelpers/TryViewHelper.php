@@ -93,10 +93,7 @@ class TryViewHelper extends AbstractConditionViewHelper
 {
     use TemplateVariableViewHelperTrait;
 
-    /**
-     * @return mixed|string
-     */
-    public function render()
+    public function render(): mixed
     {
         try {
             $content = $this->renderChildren();

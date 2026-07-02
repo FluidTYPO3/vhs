@@ -41,11 +41,11 @@
     "require": {
         "php": "^8.3",
         "ext-mbstring": "*",
-        "typo3/cms-core": "^12 || ^13 || dev-main",
-        "typo3/cms-extbase": "^12 || ^13 || dev-main",
-        "typo3/cms-fluid": "^12 || ^13 || dev-main",
-        "typo3/cms-frontend": "^12 || ^13 || dev-main",
-        "typo3/cms-backend": "^12 || ^13 || dev-main"
+        "typo3/cms-core": "^12 || ^13 || ^14.3 || dev-main",
+        "typo3/cms-extbase": "^12 || ^13 || ^14.3 || dev-main",
+        "typo3/cms-fluid": "^12 || ^13 || ^14.3 || dev-main",
+        "typo3/cms-frontend": "^12 || ^13 || ^14.3 || dev-main",
+        "typo3/cms-backend": "^12 || ^13 || ^14.3 || dev-main"
     },
     "replace": {
         "typo3-ter/vhs": "self.version"
