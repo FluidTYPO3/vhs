@@ -15,6 +15,7 @@ use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -97,9 +98,14 @@ class AlternateViewHelper extends AbstractViewHelper
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];
         $addQueryString = (bool) $this->arguments['addQueryString'];
 
+        $request = RequestResolver::resolveRequestFromRenderingContext($this->renderingContext);
+        if (!$request instanceof Request) {
+            $request = new Request($request);
+        }
+
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
+        $uriBuilder->setRequest($request);
 
         $uriBuilder = $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
@@ -112,30 +118,18 @@ class AlternateViewHelper extends AbstractViewHelper
 
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $usePageRenderer = (1 !== (int) ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'] ?? 0));
-        $output = '';
 
         foreach ($languages as $languageUid => $languageName) {
-            if (!$this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
-                $uri = $uriBuilder->setArguments(['L' => $languageUid])->build();
-                $this->tagBuilder->addAttribute('href', $uri);
-                $this->tagBuilder->addAttribute('hreflang', $languageName);
-
-                $renderedTag = $this->tagBuilder->render();
-                if ($usePageRenderer) {
-                    if (method_exists($pageRenderer, 'addMetaTag')) {
-                        $pageRenderer->addMetaTag($renderedTag);
-                    } else {
-                        $pageRenderer->addHeaderData($renderedTag);
-                    }
-                } else {
-                    $output .= $renderedTag . PHP_EOL;
-                }
+            if ($this->pageService->hidePageForLanguageUid($pageUid, $languageUid, $normalWhenNoLanguage)) {
+                continue;
             }
-        }
 
-        if (!$usePageRenderer) {
-            return trim($output);
+            $uri = $uriBuilder->setArguments(['L' => $languageUid])->build();
+            $this->tagBuilder->addAttribute('href', $uri);
+            $this->tagBuilder->addAttribute('hreflang', $languageName);
+
+            $renderedTag = $this->tagBuilder->render();
+            $pageRenderer->addHeaderData($renderedTag);
         }
 
         return '';
