@@ -12,9 +12,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use FluidTYPO3\Vhs\Utility\VersionUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\AbstractImageViewHelper;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -34,6 +38,17 @@ class AbstractImageViewHelperTest extends AbstractTestCase
             ->getMock();
 
         parent::setUp();
+
+        if (VersionUtility::isCoreAtLeast13()) {
+            $this->frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+            $this->frontendTypoScript->setSetupArray(['config.' => ['absRefPrefix' => '', 'forceAbsoluteUrls' => 1]]);
+
+            $this->normalizedParams = $this->getMockBuilder(NormalizedParams::class)
+                ->onlyMethods(['getSiteUrl'])
+                ->disableOriginalConstructor()
+                ->getMock();
+            $this->normalizedParams->method('getSiteUrl')->willReturn('');
+        }
 
         $this->simulateRequestWithExtbaseParameters('', 123, $this->contentObjectRenderer);
     }
@@ -142,16 +157,17 @@ class AbstractImageViewHelperTest extends AbstractTestCase
 
     public function testPreProcessSourceUriWithPrependPath(): void
     {
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $tsfe->tmpl = (object) [
-            'setup' => ['plugin.' => ['tx_vhs.' => ['settings.' => ['prependPath' => 'prepend']]]],
-        ];
-        $this->simulateRequestWithExtbaseParameters('', 123, $this->contentObjectRenderer, $tsfe);
-
+        $expectedPrepend = 'prepend';
+        if (VersionUtility::isCoreAtLeast13()) {
+            $this->frontendTypoScript->setSetupArray(
+                ['plugin.' => ['tx_vhs.' => ['settings.' => ['prependPath' => $expectedPrepend]]]]
+            );
+        } else {
+            $expectedPrepend = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        }
+        $this->subject->setArguments(['relative' => false]);
         $output = $this->subject->preprocessSourceUri('source');
-        self::assertSame('prependsource', $output);
+        self::assertSame($expectedPrepend . 'source', $output);
     }
 
     public function testPreProcessSourceUriInBackendContext(): void

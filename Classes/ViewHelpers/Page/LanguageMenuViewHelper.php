@@ -15,11 +15,13 @@ use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Site\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -248,9 +250,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getLanguageFlagByIdentifier(string $identifier): string
     {
+        $iconEnum = VersionUtility::isCoreAtLeast14() ? IconSize::SMALL : Icon::SIZE_SMALL;
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $iconFactory->getIcon($identifier, Icon::SIZE_SMALL);
+        $icon = $iconFactory->getIcon($identifier, $iconEnum);
         return $icon->render();
     }
 

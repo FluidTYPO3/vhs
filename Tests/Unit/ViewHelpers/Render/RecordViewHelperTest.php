@@ -18,15 +18,16 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class RecordViewHelperTest extends AbstractViewHelperTestCase
 {
-    /**
-     * @return void
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $GLOBALS['TSFE']->cObj = $this->getMockBuilder(ContentObjectRenderer::class)->setMethods(['cObjGetSingle'])->disableOriginalConstructor()->getMock();
-        $GLOBALS['TSFE']->cObj->expects($this->any())->method('cObjGetSingle')->willReturnArgument(0);
+
+        $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->onlyMethods(['cObjGetSingle'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $cObj->method('cObjGetSingle')->willReturn('RECORDS');
+        $this->simulateRequestWithExtbaseParameters('Vhs', 123, $cObj);
     }
 
     /**

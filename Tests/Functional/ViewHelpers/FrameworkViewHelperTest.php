@@ -3,9 +3,13 @@
 namespace FluidTYPO3\Vhs\Tests\Functional\ViewHelpers;
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
+use FluidTYPO3\Vhs\ViewHelpers\Condition\Page\HasSubpagesViewHelper;
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FrameworkViewHelperTest extends AbstractFunctionalViewHelperCase
@@ -18,7 +22,20 @@ class FrameworkViewHelperTest extends AbstractFunctionalViewHelperCase
             ->getMock();
         $normalizedParams->method('getSiteUrl')->willReturn('https://example.test/');
 
-        $request = $this->createFrontendRequest(['normalizedParams' => $normalizedParams]);
+        $attributes = ['normalizedParams' => $normalizedParams];
+
+        if (VersionUtility::isCoreAtLeast14()) {
+            $attributes['frontend.typoscript'] = new FrontendTypoScript(new RootNode(), [], [], []);
+            $attributes['frontend.typoscript']->setSetupArray(['config.' => ['forceAbsoluteUrls' => true]]);
+
+            $attributes['normalizedParams'] = $this->getMockBuilder(NormalizedParams::class)
+                ->onlyMethods(['getSiteUrl'])
+                ->disableOriginalConstructor()
+                ->getMock();
+            $attributes['normalizedParams']->method('getSiteUrl')->willReturn('https://example.test/');
+        }
+
+        $request = $this->createFrontendRequest($attributes);
 
         self::assertSame(
             'https://example.test/path/?foo=bar|https://example.test/path/?foo=bar|https://example.test/',
@@ -95,7 +112,7 @@ class FrameworkViewHelperTest extends AbstractFunctionalViewHelperCase
             ->onlyMethods(['getMenu'])
             ->getMock();
         $pageService->method('getMenu')->willReturnOnConsecutiveCalls([['uid' => 2]], []);
-        \FluidTYPO3\Vhs\ViewHelpers\Condition\Page\HasSubpagesViewHelper::setPageService($pageService);
+        HasSubpagesViewHelper::setPageService($pageService);
 
         $source = '<v:condition.page.hasSubpages pageUid="1" then="has" else="empty" />'
             . '|<v:condition.page.hasSubpages pageUid="1" then="has" else="empty" />';

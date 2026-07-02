@@ -21,11 +21,13 @@ use TYPO3\CMS\Core\Charset\CharsetProvider;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -41,6 +43,8 @@ abstract class AbstractTestCase extends TestCase
 {
     private array $singletonInstancesBackup = [];
     protected array $singletonInstances = [];
+    protected ?FrontendTypoScript $frontendTypoScript = null;
+    protected ?NormalizedParams $normalizedParams = null;
 
     /**
      * @return void
@@ -140,7 +144,9 @@ abstract class AbstractTestCase extends TestCase
             ->withAttribute('extbase', $parameters)
             ->withAttribute('frontend.user', null)
             ->withAttribute('frontend.controller', $controller)
+            ->withAttribute('frontend.typoscript', $this->frontendTypoScript)
             ->withAttribute('language', $siteLanguage)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
             ->withAttribute('currentContentObject', $contentObjectRenderer);
 
         if (VersionUtility::isCoreAtLeast13()) {

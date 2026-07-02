@@ -10,25 +10,28 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Content;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use FluidTYPO3\Vhs\ViewHelpers\Content\RenderViewHelper;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 
 /**
  * Class RenderViewHelperTest
  */
 class RenderViewHelperTest extends AbstractViewHelperTestCase
 {
-    protected function setUp(): void
+    protected function createInstance(): ViewHelperInterface&MockObject
     {
-        parent::setUp();
-
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $GLOBALS['TSFE']->cObj = $this->getMockBuilder(ContentObjectRenderer::class)->setMethods(['getRecords'])->disableOriginalConstructor()->getMock();
-        $GLOBALS['TSFE']->cObj->method('getRecords')->willReturn([]);
+        return $this->getMockBuilder(RenderViewHelper::class)
+            ->onlyMethods(['getContentRecords'])
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
-    public function testRender()
+    public function testCallsGetcontentRecords(): void
     {
-        $this->assertEmpty($this->executeViewHelper());
+        $instance = $this->createInstance();
+        $instance->expects(self::once())->method('getContentRecords')->willReturn([]);
+        $instance->render();
     }
 }
