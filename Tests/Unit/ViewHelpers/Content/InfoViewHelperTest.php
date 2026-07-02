@@ -45,8 +45,9 @@ class InfoViewHelperTest extends AbstractViewHelperTestCase
             $configurationManager->method('getRequest')->willReturn($request);
         }
 
-        $instance = $this->createInstance();
-        $arguments = $this->buildViewHelperArguments($instance, []);
+        $instance = $this->getMockBuilder($this->getViewHelperClassName())->onlyMethods(['fetchRecord'])->getMock();
+        $instance->method('fetchRecord')->willReturn($record);
+        $arguments = $this->buildViewHelperArguments($instance, ['contentUid' => 123]);
         $instance->setArguments($arguments);
         $instance->injectConfigurationManager($configurationManager);
 
