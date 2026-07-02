@@ -10,25 +10,36 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Render;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Class TemplateViewHelperTest
  */
 class TemplateViewHelperTest extends AbstractViewHelperTestCase
 {
-    private ?ViewInterface $view;
+    private TemplateView $view;
 
     protected function setUp(): void
     {
-        $this->view = $this->getMockBuilder(StandaloneView::class)->disableOriginalConstructor()->getMock();
-        $this->view->method('render')->willThrowException(new InvalidTemplateResourceException('test'));
-        GeneralUtility::addInstance(StandaloneView::class, $this->view);
-
         parent::setUp();
+
+        $this->view = $this->getMockBuilder(TemplateView::class)
+            ->onlyMethods(['render', 'getRenderingContext'])
+            ->setConstructorArgs([$this->renderingContext])
+            ->getMock();
+        $this->view->method('render')->willThrowException(new InvalidTemplateResourceException('test', 0));
+        $this->view->method('getRenderingContext')->willReturn($this->renderingContext);
+
+        if (VersionUtility::isCoreAtLeast13()) {
+            GeneralUtility::addInstance(FluidViewAdapter::class, new FluidViewAdapter($this->view));
+        } else {
+            GeneralUtility::addInstance(TemplateView::class, $this->view);
+        }
     }
 
     public function testRenderThrowsExceptionWithoutTemplatePath()
