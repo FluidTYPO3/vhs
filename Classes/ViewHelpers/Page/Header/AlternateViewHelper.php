@@ -78,6 +78,9 @@ class AlternateViewHelper extends AbstractViewHelper
             return '';
         }
 
+        /** @var int|null|string $pageUid */
+        $pageUid = $this->arguments['pageUid'];
+
         /** @var array<int, string>|string $languages */
         $languages = $this->arguments['languages'];
         if ($languages instanceof \Traversable) {
@@ -88,12 +91,7 @@ class AlternateViewHelper extends AbstractViewHelper
             $languages = (array) $languages;
         }
 
-        /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
-        $pageUid = (int) $pageUid;
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
+        $pageUid = (int) ($pageUid ?: RequestResolver::getPageUid());
 
         /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $this->arguments['normalWhenNoLanguage'];

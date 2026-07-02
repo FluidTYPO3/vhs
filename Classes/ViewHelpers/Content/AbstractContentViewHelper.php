@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
@@ -121,7 +122,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
 
         $contentUids = $this->arguments['contentUids'];
         if (is_array($contentUids) && !empty($contentUids)) {
-            return $GLOBALS['TSFE']->cObj->getRecords(
+            return ContentObjectFetcher::resolve()->getRecords(
                 'tt_content',
                 [
                     'uidInList' => implode(',', $contentUids),
@@ -143,7 +144,7 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
             $conditions .= ' AND sectionIndex = 1';
         }
 
-        $rows = $GLOBALS['TSFE']->cObj->getRecords(
+        $rows = ContentObjectFetcher::resolve()->getRecords(
             'tt_content',
             [
                 'where' => $conditions,
@@ -173,14 +174,17 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
 
         /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
-
         $pageUid = (int) $pageUid;
-        if (1 > $pageUid) {
-            $pageUid = (int) ($GLOBALS['TSFE']->page['content_from_pid'] ?? 0);
+
+        $pageInformation = RequestResolver::getPageInformation();
+        if (!$pageInformation) {
+            return $pageUid;
         }
-        if (1 > $pageUid) {
-            $pageUid = (int) ($GLOBALS['TSFE']->id ?? 0);
+
+        if (!$pageUid && ($fromPid = $pageInformation->getContentFromPid())) {
+            $pageUid = $fromPid;
         }
+
         return $pageUid;
     }
 
@@ -194,14 +198,14 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
 
         /** @var array $loadRegister */
         $loadRegister = $this->arguments['loadRegister'];
-        if (!empty($loadRegister) && $contentObject !== null) {
+        if (!empty($loadRegister)) {
             $contentObject->cObjGetSingle('LOAD_REGISTER', $loadRegister);
         }
         $elements = [];
         foreach ($rows as $row) {
             $elements[] = static::renderRecord($row);
         }
-        if (!empty($loadRegister) && $contentObject !== null) {
+        if (!empty($loadRegister)) {
             $contentObject->cObjGetSingle('RESTORE_REGISTER', []);
         }
         return $elements;
@@ -215,52 +219,12 @@ abstract class AbstractContentViewHelper extends AbstractViewHelper
      */
     protected static function renderRecord(array $row): ?string
     {
-        if (0 < ($GLOBALS['TSFE']->recordRegister['tt_content:' . $row['uid']] ?? 0)) {
-            return null;
-        }
         $conf = [
             'tables' => 'tt_content',
             'source' => $row['uid'],
             'dontCheckPid' => 1
         ];
-        $parent = $GLOBALS['TSFE']->currentRecord;
-        // If the currentRecord is set, we register, that this record has invoked this function.
-        // It's should not be allowed to do this again then!!
-        if (!empty($parent)) {
-            if (isset($GLOBALS['TSFE']->recordRegister[$parent])) {
-                ++$GLOBALS['TSFE']->recordRegister[$parent];
-            } else {
-                $GLOBALS['TSFE']->recordRegister[$parent] = 1;
-            }
-        }
-        $html = $GLOBALS['TSFE']->cObj->cObjGetSingle('RECORDS', $conf);
-
-        $GLOBALS['TSFE']->currentRecord = $parent;
-        if (!empty($parent)) {
-            --$GLOBALS['TSFE']->recordRegister[$parent];
-        }
+        $html = ContentObjectFetcher::resolve()->cObjGetSingle('RECORDS', $conf);
         return $html;
-    }
-
-    protected function executeSelectQuery(string $fields, string $condition, string $order, int $limit): array
-    {
-        $queryBuilder = (new ConnectionPool())->getConnectionForTable('tt_content')->createQueryBuilder();
-        $queryBuilder->select($fields)->from('tt_content')->where($condition);
-        if ($order) {
-            $orderings = explode(' ', $order);
-            $queryBuilder->orderBy($orderings[0], $orderings[1]);
-        }
-        if ($limit) {
-            $queryBuilder->setMaxResults($limit);
-        }
-        $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-        return DoctrineQueryProxy::fetchAllAssociative($result);
-    }
-
-    protected function generateSelectQuery(string $fields, string $condition): string
-    {
-        $queryBuilder = (new ConnectionPool())->getConnectionForTable('tt_content')->createQueryBuilder();
-        $queryBuilder->select($fields)->from('tt_content')->where($condition);
-        return $queryBuilder->getSQL();
     }
 }

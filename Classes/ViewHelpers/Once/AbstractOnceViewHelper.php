@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Once;
  */
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
@@ -124,7 +125,7 @@ abstract class AbstractOnceViewHelper extends AbstractConditionViewHelper
     protected function renderThenChild(): mixed
     {
         if (ContextUtility::isFrontend()) {
-            $GLOBALS['TSFE']->no_cache = 1;
+            RequestResolver::disableFrontendCache('EXT:vhs: Once ViewHelper disables caches.');
         }
         return parent::renderThenChild();
     }

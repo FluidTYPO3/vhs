@@ -3,12 +3,15 @@ namespace FluidTYPO3\Vhs\Tests\Unit\Service;
 
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class PageServiceTest extends AbstractTestCase
 {
@@ -29,7 +32,13 @@ class PageServiceTest extends AbstractTestCase
     public function testGetMenu(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] = 1;
-        $GLOBALS['TSFE'] = (object) ['sys_language_uid' => 1];
+        if (!VersionUtility::isCoreAtLeast13()) {
+            $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+            $GLOBALS['TSFE']->id = 1;
+        }
+
 
         $pageRepository = $this->createPageRepositoryMock(['getPage', 'getMenu', 'getPageOverlay']);
         $pageRepository->method('getPage')->willReturn(['uid' => 2]);
@@ -59,7 +68,6 @@ class PageServiceTest extends AbstractTestCase
         $rootLineUtility->method('get')->willReturn([]);
 
         GeneralUtility::addInstance(RootlineUtility::class, $rootLineUtility);
-        $GLOBALS['TSFE'] = (object) ['id' => $pageUid ?? 123];
 
         self::assertSame([], $subject->getRootLine($pageUid, $reverse));
     }
@@ -86,8 +94,8 @@ class PageServiceTest extends AbstractTestCase
      */
     public function testIsAccessGranted(bool $expected, array $page, FrontendUserAuthentication $user): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.user', $user);
         $subject = new PageService();
-        $GLOBALS['TSFE'] = (object) ['fe_user' => $user];
         self::assertSame($expected, $subject->isAccessGranted($page));
     }
 
@@ -116,8 +124,8 @@ class PageServiceTest extends AbstractTestCase
 
     public function testIsCurrent(): void
     {
+        $this->simulateRequestWithExtbaseParameters('', 1);
         $subject = new PageService();
-        $GLOBALS['TSFE'] = (object) ['id' => 1];
         self::assertTrue($subject->isCurrent(1));
         self::assertFalse($subject->isCurrent(2));
     }
@@ -227,7 +235,7 @@ class PageServiceTest extends AbstractTestCase
                     'uid' => 1,
                     'pid' => 1,
                     'doktype' => PageRepository::DOKTYPE_SHORTCUT,
-                    'shortcut_mode' => PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE,
+                    'shortcut_mode' => PageService::SHORTCUT_MODE_RANDOM_SUBPAGE,
                     'shortcut' => 0,
                 ],
                 [],
@@ -239,7 +247,7 @@ class PageServiceTest extends AbstractTestCase
                     'uid' => 1,
                     'pid' => 1,
                     'doktype' => PageRepository::DOKTYPE_SHORTCUT,
-                    'shortcut_mode' => PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE,
+                    'shortcut_mode' => PageService::SHORTCUT_MODE_RANDOM_SUBPAGE,
                     'shortcut' => 12,
                 ],
                 [],
@@ -275,11 +283,11 @@ class PageServiceTest extends AbstractTestCase
     public function testGetItemLinkWithExternalUrl(): void
     {
         $contentObjectRenderer = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['typoLink'])
             ->disableOriginalConstructor()
+            ->setMethods(['typoLink_URL'])
             ->getMock();
-        $contentObjectRenderer->method('typoLink')->willReturn('link');
-        $GLOBALS['TSFE'] = (object) ['cObj' => $contentObjectRenderer];
+        $contentObjectRenderer->method('typoLink_URL')->willReturn('link');
+        $this->simulateRequestWithExtbaseParameters('', 123, $contentObjectRenderer);
 
         $pageRepository = $this->createPageRepositoryMock(['getExtURL']);
         $pageRepository->method('getExtURL')->willReturn('http://external');
@@ -297,11 +305,11 @@ class PageServiceTest extends AbstractTestCase
     public function testGetItemLinkWithInternalPage(): void
     {
         $contentObjectRenderer = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['typoLink'])
+            ->setMethods(['typoLink_URL'])
             ->disableOriginalConstructor()
             ->getMock();
-        $contentObjectRenderer->method('typoLink')->willReturn('link');
-        $GLOBALS['TSFE'] = (object) ['cObj' => $contentObjectRenderer];
+        $contentObjectRenderer->method('typoLink_URL')->willReturn('link');
+        $this->simulateRequestWithExtbaseParameters('', 123, $contentObjectRenderer);
 
         $subject = new PageService();
         // value "3" is PageRepositoty::DOKTYPE_DEFAULT

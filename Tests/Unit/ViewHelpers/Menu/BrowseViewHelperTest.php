@@ -12,6 +12,7 @@ use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class BrowseViewHelperTest extends AbstractViewHelperTestCase
 {
@@ -93,7 +94,10 @@ class BrowseViewHelperTest extends AbstractViewHelperTestCase
             'usePageTitles' => true,
         ];
 
-        $GLOBALS['TSFE'] = (object) ['id' => 2];
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $GLOBALS['TSFE']->id = 2;
 
         $subject = $this->buildViewHelperInstance($arguments);
         $subject->injectPageService($pageService);
