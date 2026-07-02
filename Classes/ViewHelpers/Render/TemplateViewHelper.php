@@ -85,26 +85,26 @@ class TemplateViewHelper extends AbstractRenderViewHelper
         if (method_exists($view, 'setRequest')) {
             $view->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
         }
-        $view->setTemplatePathAndFilename($file);
+        $view->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename($file);
         if (is_array($this->arguments['variables'])) {
             $view->assignMultiple($this->arguments['variables']);
         }
+
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+
         /** @var string|null $format */
         $format = $this->arguments['format'];
         if (null !== $format) {
-            $view->setFormat($format);
+            $templatePaths->setFormat($format);
         }
+
+        /** @var array|null $paths */
         $paths = $this->arguments['paths'];
-        if (is_array($paths)) {
-            if (isset($paths['layoutRootPaths']) && is_array($paths['layoutRootPaths'])) {
-                $layoutRootPaths = $this->processPathsArray($paths['layoutRootPaths']);
-                $view->setLayoutRootPaths($layoutRootPaths);
-            }
-            if (isset($paths['partialRootPaths']) && is_array($paths['partialRootPaths'])) {
-                $partialRootPaths = $this->processPathsArray($paths['partialRootPaths']);
-                $view->setPartialRootPaths($partialRootPaths);
-            }
-        }
+        $paths = (array) ($paths ?? []);
+
+        $templatePaths->setLayoutRootPaths($this->processPathsArray($paths['layoutRootPaths'] ?? []));
+        $templatePaths->setPartialRootPaths($this->processPathsArray($paths['partialRootPaths'] ?? []));
+
         return static::renderView($view, $this->arguments);
     }
 

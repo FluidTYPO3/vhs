@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -65,7 +66,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return $namespaces;
     }
 
-    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): StandaloneView
+    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): TemplateView
     {
         $view = static::getPreparedView();
         $newRenderingContext = $view->getRenderingContext();
@@ -94,10 +95,10 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return (string) $content;
     }
 
-    protected static function getPreparedView(): StandaloneView
+    protected static function getPreparedView(): TemplateView
     {
-        /** @var StandaloneView $view */
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        /** @var TemplateView $view */
+        $view = GeneralUtility::makeInstance(TemplateView::class);
         return $view;
     }
 }
