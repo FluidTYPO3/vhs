@@ -8,13 +8,9 @@ namespace FluidTYPO3\Vhs\Tests\Unit\Traits;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummyConfigurationManagerWithContentObjectRenderer;
+use FluidTYPO3\Vhs\Proxy\ImageResourceProxy;
 use FluidTYPO3\Vhs\Tests\Fixtures\Classes\DummySourceSetViewHelper;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 class SourceSetViewHelperTraitTest extends AbstractTestCase
@@ -25,27 +21,9 @@ class SourceSetViewHelperTraitTest extends AbstractTestCase
      */
     public function testAddSourceSets($sourceSetsArgument): void
     {
-        $contentObject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['getImgResource'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $contentObject->expects(self::atLeastOnce())
-            ->method('getImgResource')
-            ->willReturn(
-                [
-                    'name',
-                    100,
-                    200,
-                    'path',
-                ]
-            );
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $tsfe->cObj = $contentObject;
-
-        $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequestInterface::class)
-            ->onlyMethods(['getAttribute'])
-            ->getMockForAbstractClass();
-        $GLOBALS['TYPO3_REQUEST']->method('getAttribute')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $resourceMock = $this->getMockBuilder(ImageResourceProxy::class)->disableOriginalConstructor()->getMock();
+        $resourceMock->method('isValid')->willReturn(true);
+        $resourceMock->method('getPublicUrl')->willReturn('url');
 
         $tagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['addAttribute'])
@@ -53,14 +31,16 @@ class SourceSetViewHelperTraitTest extends AbstractTestCase
             ->getMock();
         $tagBuilder->expects(self::atLeastOnce())->method('addAttribute');
 
-        $subject = new DummySourceSetViewHelper();
+        $subject = $this->getMockBuilder(DummySourceSetViewHelper::class)
+            ->onlyMethods(['getImgResource'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $subject->method('getImgResource')->willReturn($resourceMock);
         $subject->arguments['treatIdAsReference'] = false;
         $subject->arguments['format'] = 'png';
         $subject->arguments['quality'] = 70;
         $subject->arguments['crop'] = null;
         $subject->arguments['srcset'] = $sourceSetsArgument;
-
-        $subject->configurationManager = new DummyConfigurationManagerWithContentObjectRenderer($contentObject);
 
         $output = $subject->addSourceSet($tagBuilder, 'source');
         self::assertNotEmpty($output);

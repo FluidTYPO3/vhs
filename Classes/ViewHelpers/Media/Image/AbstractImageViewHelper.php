@@ -8,11 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media\Image;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\ImageResourceProxy;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Media\AbstractMediaViewHelper;
-use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -33,8 +33,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
     protected $configurationManager;
 
     /**
-     * Result of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
-     * @var array|null
+     * @var ImageResourceProxy
      */
     protected $imageInfo;
 
@@ -157,24 +156,15 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
         if (ContextUtility::isBackend() && strpos($src, '../') === 0) {
             $src = mb_substr($src, 3);
         }
-        $imageInfo = $contentObject->getImgResource($src, $setup);
-        if ($imageInfo instanceof ImageResource) {
-            $this->imageInfo = $imageInfo->getLegacyImageResourceInformation();
-        } else {
-            $this->imageInfo = $imageInfo;
-        }
+        $this->imageInfo = new ImageResourceProxy($contentObject->getImgResource($src, $setup));
 
-        if (!is_array($this->imageInfo)) {
+        if (!$this->imageInfo->isValid()) {
             if ($this->arguments['graceful'] ?? false) {
                 $this->mediaSource = '';
                 FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
                 return;
             }
             throw new Exception('Could not get image resource for "' . htmlspecialchars($src) . '".', 1253191060);
-        }
-
-        if (property_exists($GLOBALS['TSFE'], 'lastImageInfo')) {
-            $GLOBALS['TSFE']->lastImageInfo = $this->imageInfo;
         }
 
         if ($this->hasArgument('canvasWidth') && $this->hasArgument('canvasHeight')) {
@@ -185,7 +175,7 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
             /** @var string $canvasColor */
             $canvasColor = $this->arguments['canvasColor'] ?? '';
             $canvasColor = str_replace('#', '', $canvasColor);
-            $originalFilename = $this->imageInfo[3];
+            $originalFilename = (string) $this->imageInfo->getOriginalFilename();
             $originalExtension = mb_substr($originalFilename, -3);
             $tempPath = 'typo3temp/assets/';
             $destinationFilename = $tempPath .
@@ -215,14 +205,8 @@ abstract class AbstractImageViewHelper extends AbstractMediaViewHelper
                 CommandUtility::exec($command);
             }
             $this->mediaSource = $destinationFilename;
-        } elseif ($this->imageInfo['processedFile'] ?? false) {
-            $this->mediaSource = $this->imageInfo['processedFile']->getPublicUrl();
         } else {
-            $this->mediaSource = rawurldecode($this->imageInfo[3]);
-        }
-
-        if (property_exists($GLOBALS['TSFE'], 'imagesOnPage')) {
-            $GLOBALS['TSFE']->imagesOnPage[] = $this->imageInfo[3];
+            $this->mediaSource = rawurldecode((string) $this->imageInfo->getPublicUrl());
         }
 
         FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);

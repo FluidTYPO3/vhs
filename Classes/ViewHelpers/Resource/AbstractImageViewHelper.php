@@ -8,9 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\ImageResourceProxy;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
+use FluidTYPO3\Vhs\Utility\ParameterUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\Utility\ResourceUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -110,9 +113,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
         $images = [];
 
         foreach ($files as $file) {
-            $imageInfo = $contentObject->getImgResource($file->getUid(), $setup);
+            $imageInfo = new ImageResourceProxy($contentObject->getImgResource($file->getUid(), $setup));
 
-            if (!is_array($imageInfo)) {
+            if (!$imageInfo->isValid() || !($imageSource = $imageInfo->getOriginalFilename())) {
                 if ($this->arguments['graceful'] ?? false) {
                     continue;
                 }
@@ -122,15 +125,9 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
                 );
             }
 
-            if (property_exists($GLOBALS['TSFE'], 'imagesOnPage')) {
-                $GLOBALS['TSFE']->lastImageInfo = $imageInfo;
-                $GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
-            }
-
-            if (GeneralUtility::isValidUrl($imageInfo[3])) {
-                $imageSource = $imageInfo[3];
-            } else {
-                $imageSource = $GLOBALS['TSFE']->absRefPrefix . str_replace('%2F', '/', rawurlencode($imageInfo[3]));
+            if (!GeneralUtility::isValidUrl($imageSource)) {
+                $imageSource = RequestResolver::getFrontendUrlPrefix()
+                    . str_replace('%2F', '/', rawurlencode($imageSource));
             }
 
             if ($onlyProperties) {
@@ -138,7 +135,7 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
             }
 
             $images[] = [
-                'info' => $imageInfo,
+                'info' => $imageInfo->toArray(),
                 'source' => $imageSource,
                 'file' => $file
             ];
@@ -155,11 +152,12 @@ abstract class AbstractImageViewHelper extends AbstractResourceViewHelper
      */
     public function preprocessSourceUri(string $source): string
     {
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
-            $source = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $source;
+        $staticPrefix = RequestResolver::getStaticPrefix();
+        if ($staticPrefix !== '') {
+            $source = $staticPrefix . $source;
         } elseif (ContextUtility::isBackend() || !$this->arguments['relative']) {
             /** @var string $siteUrl */
-            $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+            $siteUrl = ParameterUtility::resolveParameterValue('TYPO3_SITE_URL');
             $source = $siteUrl . $source;
         }
         return $source;

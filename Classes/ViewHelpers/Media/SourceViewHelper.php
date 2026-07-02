@@ -8,11 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Proxy\ImageResourceProxy;
 use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
-use TYPO3\CMS\Core\Imaging\ImageResource;
+use FluidTYPO3\Vhs\Utility\ParameterUtility;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -127,26 +128,9 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         }
         $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
 
-        $result = $contentObject->getImgResource($imageSource, $setup);
-        if ($result instanceof ImageResource) {
-            $processedFile = $result->getProcessedFile();
-        } else {
-            $processedFile = $result['processedFile'] ?? null;
-        }
-
-        FrontendSimulationUtility::resetFrontendEnvironment($tsfeBackup);
-
-        if ($processedFile ?? false) {
-            /** @var string $imageUrl */
-            $imageUrl = $processedFile->getPublicUrl();
-        } else {
-            if ($result instanceof ImageResource) {
-                $result = $result->getLegacyImageResourceInformation();
-            }
-            /** @var string $imageUrl */
-            $imageUrl = $result[3] ?? '';
-        }
-        $src = $this->preprocessSourceUri(rawurldecode($imageUrl));
+        $result = new ImageResourceProxy($contentObject->getImgResource($imageSource, $setup));
+        $imageUrl = $result->getPublicUrl();
+        $src = $this->preprocessSourceUri(rawurldecode((string) $imageUrl));
 
         /** @var string|null $media */
         $media = $this->arguments['media'];
@@ -176,7 +160,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
                 $src = $GLOBALS['TSFE']->absRefPrefix . ltrim($src, '/');
             } else {
                 /** @var string $siteUrl */
-                $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+                $siteUrl = ParameterUtility::resolveParameterValue('TYPO3_SITE_URL');
                 $src = $siteUrl . ltrim($src, '/');
             }
         }

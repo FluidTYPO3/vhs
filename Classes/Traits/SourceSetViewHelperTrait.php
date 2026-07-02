@@ -1,6 +1,7 @@
 <?php
 namespace FluidTYPO3\Vhs\Traits;
 
+use FluidTYPO3\Vhs\Proxy\ImageResourceProxy;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
@@ -47,24 +48,29 @@ trait SourceSetViewHelperTrait
 
         foreach ($srcsets as $width) {
             $srcsetVariant = $this->getImgResource($src, $width, $format, $quality, $treatIdAsReference, null, $crop);
-
-            if ($srcsetVariant['processedFile'] ?? false) {
-                $imageUrl = $srcsetVariant['processedFile']->getPublicUrl();
-            } else {
-                $imageUrl = $srcsetVariant[3] ?? '';
+            if (!$srcsetVariant->isValid()) {
+                continue;
             }
+
+            $imageUrl = $srcsetVariant->getPublicUrl();
+            if (!$imageUrl) {
+                continue;
+            }
+
             $srcsetVariantSrc = rawurldecode($imageUrl);
             $srcsetVariantSrc = static::preprocessSourceUri(
                 str_replace('%2F', '/', rawurlencode($srcsetVariantSrc)),
                 $this->arguments
             );
 
-            $imageSources[$srcsetVariant[0]] = [
+            $width = $srcsetVariant->getWidth();
+
+            $imageSources[$width] = [
                 'src' => $srcsetVariantSrc,
-                'width' => $srcsetVariant[0],
-                'height' => $srcsetVariant[1],
+                'width' => $width,
+                'height' => $srcsetVariant->getHeight(),
             ];
-            $srcsetVariants[$srcsetVariant[0]] = $srcsetVariantSrc . ' ' . $srcsetVariant[0] . 'w';
+            $srcsetVariants[$width] = $srcsetVariantSrc . ' ' . $width . 'w';
         }
 
         $tag->addAttribute('srcset', implode(',', $srcsetVariants));
@@ -84,7 +90,6 @@ trait SourceSetViewHelperTrait
      * @param bool $treatIdAsReference given src argument is a sys_file_reference record
      * @param string|null $params additional params for the image rendering
      * @param string|null $crop image editor cropping configuration
-     * @return array
      */
     public function getImgResource(
         string $src,
@@ -94,7 +99,7 @@ trait SourceSetViewHelperTrait
         bool $treatIdAsReference,
         ?string $params = null,
         ?string $crop = null
-    ): array {
+    ): ImageResourceProxy {
         $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
 
         $setup = [
@@ -114,7 +119,7 @@ trait SourceSetViewHelperTrait
         if (ContextUtility::isBackend() && '../' === substr($src, 0, 3)) {
             $src = substr($src, 3);
         }
-        return (array) $contentObject->getImgResource($src, $setup);
+        return new ImageResourceProxy($contentObject->getImgResource($src, $setup));
     }
 
     /**

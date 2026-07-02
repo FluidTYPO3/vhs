@@ -104,8 +104,8 @@ class ImageViewHelper extends AbstractImageViewHelper
             $height = $srcSetVariantDefault['height'];
         } else {
             $src = static::preprocessSourceUri($this->mediaSource, $this->arguments);
-            $width = $this->imageInfo[0] ?? '';
-            $height = $this->imageInfo[1] ?? '';
+            $width = $this->imageInfo->getWidth();
+            $height = $this->imageInfo->getHeight();
         }
 
         $this->tag->addAttribute('width', $width);

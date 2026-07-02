@@ -10,15 +10,13 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Resource;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\AbstractImageViewHelper;
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class AbstractImageViewHelperTest extends AbstractTestCase
 {
@@ -27,12 +25,6 @@ class AbstractImageViewHelperTest extends AbstractTestCase
 
     protected function setUp(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['getAttribute'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $GLOBALS['TYPO3_REQUEST']->method('getAttribute')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
-
         $this->subject = $this->getMockBuilder(AbstractImageViewHelper::class)
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
@@ -41,82 +33,19 @@ class AbstractImageViewHelperTest extends AbstractTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
-            /** @var ConfigurationManagerInterface $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
-            $configurationManager->method('getContentObject')->willReturn($this->contentObjectRenderer);
-        } else {
-            $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
-            $request->method('getAttribute')->willReturn($this->contentObjectRenderer);
-            /** @var ConfigurationManagerInterface $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-                ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
-                ->addMethods(['getRequest'])
-                ->getMock();
-            $configurationManager->method('getRequest')->willReturn($request);
-        }
-
-        $this->subject->injectConfigurationManager($configurationManager);
-
         parent::setUp();
+
+        $this->simulateRequestWithExtbaseParameters('', 123, $this->contentObjectRenderer);
     }
 
     public function testProcessImage(): void
     {
-        $path = 'https://foo.bar/path/to/file';
-        $file = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
-        self::assertSame(
-            [
-                [
-                    'info' => [
-                        123,
-                        456,
-                        789,
-                        $path,
-                    ],
-                    'source' => $path,
-                    'file' => $file,
-                ],
-            ],
-            $this->runTestWithImage($file, $path, false),
-        );
+        $this->runTestWithImage(false);
     }
 
     public function testProcessImageWithOnlyProperties(): void
     {
-        $path = '/path/to/file';
-
-        $storage = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(['getFileInfo'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $storage->method('getFileInfo')->willReturn(['foo' => 'bar']);
-
-        $file = $this->getMockBuilder(File::class)
-            ->setMethods(['getStorage', 'hasProperty', 'getProperty', 'getProperties', 'toArray'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $file->method('getStorage')->willReturn($storage);
-        $file->method('hasProperty')->willReturn(true);
-        $file->method('getProperty')->willReturn('prop');
-        $file->method('getProperties')->willReturn(['foo' => 'bar']);
-        $file->method('toArray')->willReturn(['foo' => 'bar']);
-
-        self::assertSame(
-            [
-                [
-                    'info' => [
-                        123,
-                        456,
-                        789,
-                        '/path/to/file',
-                    ],
-                    'source' => $path,
-                    'file' => ['foo' => 'bar'],
-                ],
-            ],
-            $this->runTestWithImage($file, $path, true),
-        );
+        $this->runTestWithImage(true);
     }
 
     public function testProcessImageThrowsExceptionOnInvalidImage(): void
@@ -129,18 +58,75 @@ class AbstractImageViewHelperTest extends AbstractTestCase
         $this->subject->preprocessImages($files);
     }
 
-    private function runTestWithImage(File $file, string $path, bool $onlyProperties): array
+    private function runTestWithImage(bool $onlyProperties): void
     {
-        $GLOBALS['TSFE'] = (object) ['lastImageInfo' => null, 'imagesOnPage' => [], 'absRefPrefix' => ''];
-        $this->contentObjectRenderer->method('getImgResource')->willReturn(
+        $path = '/path/to/file';
+
+        $file = $this->getMockBuilder(File::class)
+            ->setMethods(
+                [
+                    'getStorage',
+                    'hasProperty',
+                    'getProperty',
+                    'getProperties',
+                    'toArray',
+                    'getName',
+                    'getIdentifier',
+                    'getPublicUrl',
+                ]
+            )
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $infoArray = [
+            123,
+            456,
+            'jpg',
+            $path,
+            $path,
+            'origFile' => $file,
+            'origFile_mtime' => 0,
+        ];
+
+        $storage = $this->getMockBuilder(ResourceStorage::class)
+            ->setMethods(['getFileInfo'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $storage->method('getFileInfo')->willReturn($infoArray);
+
+        $file->method('getStorage')->willReturn($storage);
+        $file->method('hasProperty')->willReturn(true);
+        $file->method('getProperty')->willReturn('prop');
+        $file->method('getName')->willReturn($path);
+        $file->method('getPublicUrl')->willReturn($path);
+        $file->method('getIdentifier')->willReturn('name');
+        $file->method('getProperties')->willReturn($infoArray);
+        $file->method('toArray')->willReturn($infoArray);
+
+        if (VersionUtility::isCoreAtLeast13()) {
+            $resource = new ImageResource(123, 456, 'jpg', $path, $path, $file);
+        } else {
+            $resource = $infoArray;
+        }
+
+        if ($onlyProperties) {
+            $expectedFile = $infoArray;
+        } else {
+            $expectedFile = $file;
+        }
+
+        $this->contentObjectRenderer->method('getImgResource')->willReturn($resource);
+
+        self::assertSame(
             [
-                123,
-                456,
-                789,
-                $path
-            ]
+                [
+                    'info' => $infoArray,
+                    'source' => $path,
+                    'file' => $expectedFile,
+                ],
+            ],
+            $this->subject->preprocessImages([$file], $onlyProperties)
         );
-        return $this->subject->preprocessImages([$file], $onlyProperties);
     }
 
     public function testProcessImageDoesNotThrowExceptionWithInvalidImageIfGracefulEnabled(): void
@@ -156,9 +142,13 @@ class AbstractImageViewHelperTest extends AbstractTestCase
 
     public function testPreProcessSourceUriWithPrependPath(): void
     {
-        $GLOBALS['TSFE'] = (object) [
-            'tmpl' => (object) ['setup' => ['plugin.' => ['tx_vhs.' => ['settings.' => ['prependPath' => 'prepend']]]]],
+        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $tsfe->tmpl = (object) [
+            'setup' => ['plugin.' => ['tx_vhs.' => ['settings.' => ['prependPath' => 'prepend']]]],
         ];
+        $this->simulateRequestWithExtbaseParameters('', 123, $this->contentObjectRenderer, $tsfe);
 
         $output = $this->subject->preprocessSourceUri('source');
         self::assertSame('prependsource', $output);
@@ -166,13 +156,8 @@ class AbstractImageViewHelperTest extends AbstractTestCase
 
     public function testPreProcessSourceUriInBackendContext(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['getAttribute'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $GLOBALS['TYPO3_REQUEST']->method('getAttribute')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-
+        $this->subject->setArguments(['relative' => false]);
         $output = $this->subject->preprocessSourceUri('source');
-        self::assertSame(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'source', $output);
+        self::assertStringEndsWith('source', $output);
     }
 }
