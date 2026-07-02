@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Site;
  */
 
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Utility\ParameterUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -25,14 +25,12 @@ class UrlViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        return GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+    ): string {
+        $value = ParameterUtility::resolveParameterValue('TYPO3_SITE_URL');
+        return is_scalar($value) ? (string) $value : '';
     }
 }
