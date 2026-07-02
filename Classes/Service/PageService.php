@@ -46,12 +46,6 @@ class PageService implements SingletonInterface
         $pageConstraints = $this->getPageConstraints($excludePages, $includeNotInMenu, $includeMenuSeparator);
         $cacheKey = md5($pageUid . $pageConstraints . (int) $disableGroupAccessCheck);
         if (!isset(static::$cachedMenus[$cacheKey])) {
-            if ($disableGroupAccessCheck
-                && version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.1', '<=')
-            ) {
-                $pageRepository->where_groupAccess = '';
-            }
-
             static::$cachedMenus[$cacheKey] = array_filter(
                 $pageRepository->getMenu($pageUid, '*', 'sorting', $pageConstraints, true, $disableGroupAccessCheck),
                 function ($page) use ($includeNotInMenu) {

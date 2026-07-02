@@ -69,17 +69,7 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
     {
         $view = static::getPreparedView();
         $newRenderingContext = $view->getRenderingContext();
-        if (method_exists($renderingContext, 'getControllerContext')) {
-            $controllerContext = clone $renderingContext->getControllerContext();
-
-            $view->setFormat($controllerContext->getRequest()->getFormat());
-            $newRenderingContext->setViewHelperVariableContainer(
-                $renderingContext->getViewHelperVariableContainer()
-            );
-            if (method_exists($newRenderingContext, 'setControllerContext')) {
-                $newRenderingContext->setControllerContext($controllerContext);
-            }
-        } elseif (method_exists($renderingContext, 'getRequest') && method_exists($newRenderingContext, 'setRequest')) {
+        if (method_exists($renderingContext, 'getRequest') && method_exists($newRenderingContext, 'setRequest')) {
             $newRenderingContext->setRequest($renderingContext->getRequest());
         }
         $variables = (array) $renderingContext->getVariableProvider()->getAll();

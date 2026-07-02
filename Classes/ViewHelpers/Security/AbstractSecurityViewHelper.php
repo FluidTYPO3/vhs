@@ -37,9 +37,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 
     public function __construct()
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.0', '>=')
-            && !ExtensionManagementUtility::isLoaded('feuserextrafields')
-        ) {
+        if (!ExtensionManagementUtility::isLoaded('feuserextrafields')) {
             throw new \Exception('On TYPO3v12, v:security.* requires EXT:feuserextrafields', 1670521759);
         }
         /** @var FrontendUserRepository $frontendUserRepository */
@@ -323,13 +321,6 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function assertAdminLoggedIn(): bool
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '<')) {
-            if (!$this->assertBackendUserLoggedIn()) {
-                return false;
-            }
-            $currentBackendUser = $this->getCurrentBackendUser();
-            return is_array($currentBackendUser) && (bool) ($currentBackendUser['admin'] ?? false);
-        }
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         try {
