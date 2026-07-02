@@ -10,8 +10,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Once;
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Mvc\Request;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
@@ -27,41 +26,26 @@ class InstanceViewHelperTest extends AbstractViewHelperTestCase
      */
     public function testGetIdentifier($identifierArgument, $expectedIdentifier)
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.4', '>=')) {
-            $request = $this->getMockBuilder(RequestInterface::class)->getMock();
-        } else {
-            $request = $this->getMockBuilder(Request::class)
-                ->disableOriginalConstructor()
-                ->onlyMethods(
-                    [
-                        'getControllerActionName',
-                        'getControllerName',
-                        'getControllerObjectName',
-                        'getControllerExtensionName',
-                        'getPluginName',
-                    ]
-                )
-                ->getMock();
-        }
-
+        $request = $this->getMockBuilder(RequestInterface::class)->getMock();
         $request->method('getControllerActionName')->willReturn('action');
         $request->method('getControllerName')->willReturn('Controller');
         $request->method('getControllerObjectName')->willReturn('Controller');
         $request->method('getControllerExtensionName')->willReturn('Vhs');
         $request->method('getPluginName')->willReturn('Plugin');
-        if (method_exists(RenderingContext::class, 'getRequest')) {
+        if (VersionUtility::isCoreAtLeast13()) {
+            $renderingContext = $this->getMockBuilder(RenderingContext::class)
+                ->disableOriginalConstructor()
+                ->onlyMethods(['hasAttribute', 'getAttribute'])
+                ->getMock();
+            $renderingContext->method('hasAttribute')->willReturn(true);
+            $renderingContext->method('getAttribute')->willReturn($request);
+        } else {
             $renderingContext = $this->getMockBuilder(RenderingContext::class)
                 ->disableOriginalConstructor()
                 ->onlyMethods(['getRequest'])
                 ->getMock();
-        } else {
-            $renderingContext = $this->getMockBuilder(RenderingContext::class)
-                ->disableOriginalConstructor()
-                ->addMethods(['getRequest'])
-                ->getMock();
+            $renderingContext->method('getRequest')->willReturn($request);
         }
-
-        $renderingContext->method('getRequest')->willReturn($request);
 
         $instance = $this->createInstance();
         $this->setInaccessiblePropertyValue($instance, 'currentRenderingContext', $renderingContext);
