@@ -9,7 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -28,11 +28,9 @@ class AbsoluteUrlViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $url */
-        $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        /** @var string $siteUrl */
-        $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        if (0 !== strpos($url, $siteUrl)) {
+        $url = (string) RequestResolver::getRequest()->getUri();
+        $siteUrl = RequestResolver::getFrontendUrlPrefix();
+        if (!str_starts_with($url, $siteUrl)) {
             $url = $siteUrl . $url;
         }
         return $url;

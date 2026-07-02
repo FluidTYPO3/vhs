@@ -14,6 +14,7 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -351,7 +352,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $inactive = in_array($key, $languageUids) || (int) $key === $this->defaultLangUid ? 0 : 1;
             $url = $this->getLanguageUrl($key);
             if (empty($url)) {
-                $url = GeneralUtility::getIndpEnv('REQUEST_URI');
+                $url = (string) RequestResolver::getRequest()->getUri();
             }
             $languageMenu[$key]['current'] = $current;
             $languageMenu[$key]['inactive'] = $inactive;
