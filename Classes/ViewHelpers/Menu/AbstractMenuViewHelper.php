@@ -498,16 +498,8 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
         }
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         $variables = $this->renderingContext->getVariableProvider()->getAll();
-        $viewHelperVariableContainer->addOrUpdate(
-            'FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper',
-            'parentInstance',
-            $this
-        );
-        $viewHelperVariableContainer->addOrUpdate(
-            'FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper',
-            'variables',
-            $variables
-        );
+        $viewHelperVariableContainer->addOrUpdate(AbstractMenuViewHelper::class, 'parentInstance', $this);
+        $viewHelperVariableContainer->addOrUpdate(AbstractMenuViewHelper::class, 'variables', $variables);
     }
 
     public function setOriginal(bool $original): void
