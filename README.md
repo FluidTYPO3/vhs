@@ -1,4 +1,5 @@
 [![Latest Stable Version](https://poser.pugx.org/fluidtypo3/vhs/v/stable.svg?style=flat-square)](https://extensions.typo3.org/extension/vhs/)
+[![TYPO3 14](https://img.shields.io/badge/TYPO3-14-orange.svg?style=flat-square)](https://get.typo3.org/version/13)
 [![TYPO3 13](https://img.shields.io/badge/TYPO3-13-orange.svg?style=flat-square)](https://get.typo3.org/version/13)
 [![TYPO3 12](https://img.shields.io/badge/TYPO3-12-orange.svg?style=flat-square)](https://get.typo3.org/version/12)
 [![Total Downloads](https://poser.pugx.org/fluidtypo3/vhs/d/total?style=flat-square)](https://packagist.org/packages/fluidtypo3/vhs)
