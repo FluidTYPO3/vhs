@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-
 /**
  * Math: Round
  *
@@ -19,8 +17,6 @@ use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
  */
 class RoundViewHelper extends AbstractSingleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         parent::initializeArguments();

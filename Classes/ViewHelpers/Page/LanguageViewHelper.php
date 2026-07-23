@@ -8,22 +8,19 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Service\PageService;
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns the current language from languages depending on l18n settings.
  */
 class LanguageViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
@@ -71,7 +68,7 @@ class LanguageViewHelper extends AbstractViewHelper
 
         /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
-        $pageUid = (integer) $pageUid;
+        $pageUid = (int) $pageUid;
         /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
 

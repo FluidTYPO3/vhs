@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-
 /**
  * Math: Floor
  *
@@ -19,8 +17,6 @@ use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
  */
 class FloorViewHelper extends AbstractSingleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @param integer|float|string|array|iterable $a
      * @return integer|array
@@ -31,6 +27,6 @@ class FloorViewHelper extends AbstractSingleMathViewHelper
             return array_map('floor', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
         /** @var integer|float $a */
-        return (integer) floor($a);
+        return (int) floor($a);
     }
 }

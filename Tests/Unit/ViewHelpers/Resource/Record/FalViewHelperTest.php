@@ -20,6 +20,11 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 
 class FalViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected array $defaultMockMethods = [
+        'getRecord',
+        'getResources',
+    ];
+
     protected function setUp(): void
     {
         $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)
@@ -36,7 +41,7 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
 
     public function testFalViewhHelperWithoutWorkspaces(): void
     {
-        $output = $this->executeViewHelper(['table' => 'pages', 'field' => 'media']);
+        $output = $this->executeViewHelper(['table' => 'pages', 'field' => 'media', 'record' => ['uid' => 123]]);
         $this->assertSame([], $output);
     }
 
@@ -77,7 +82,7 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
 
         $arguments = ['table' => 'pages', 'field' => 'void'];
         $record = ['uid' => 1];
-        $subject = new FalViewHelper();
+        $subject = $this->getMockBuilder(FalViewHelper::class)->onlyMethods(['fetchFileReferences'])->getMock();
         $subject->setArguments($arguments);
         $output = $subject->getResources($record);
         self::assertSame([], $output);

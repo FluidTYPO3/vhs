@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
@@ -30,18 +31,15 @@ class IsChildPageViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('respectSiteRoot', 'boolean', 'value to check', false, false);
     }
 
-    /**
-     * @return bool
-     */
-    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
-        $respectSiteRoot = (boolean) $arguments['respectSiteRoot'];
+        $respectSiteRoot = (bool) $arguments['respectSiteRoot'];
 
         if (empty($pageUid)) {
             /** @var int $pageUid */
-            $pageUid = $GLOBALS['TSFE']->id;
+            $pageUid = RequestResolver::getPageUid();
         }
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);

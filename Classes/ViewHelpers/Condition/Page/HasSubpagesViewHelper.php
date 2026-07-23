@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Condition\Page;
  */
 
 use FluidTYPO3\Vhs\Service\PageService;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
@@ -47,11 +48,11 @@ class HasSubpagesViewHelper extends AbstractConditionViewHelper
     {
         /** @var int $pageUid */
         $pageUid = $arguments['pageUid'];
-        $includeHiddenInMenu = (boolean) $arguments['includeHiddenInMenu'];
-        $includeAccessProtected = (boolean) $arguments['includeAccessProtected'];
+        $includeHiddenInMenu = (bool) $arguments['includeHiddenInMenu'];
+        $includeAccessProtected = (bool) $arguments['includeAccessProtected'];
 
-        if (empty($pageUid) || 0 === (integer) $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+        if (empty($pageUid) || 0 === (int) $pageUid) {
+            $pageUid = RequestResolver::getPageUid();
         }
 
         if (static::$pageService === null) {

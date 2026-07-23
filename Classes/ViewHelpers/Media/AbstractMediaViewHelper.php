@@ -10,6 +10,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
+use FluidTYPO3\Vhs\Utility\ParameterUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -50,13 +52,14 @@ abstract class AbstractMediaViewHelper extends AbstractTagBasedViewHelper
     {
         $src = str_replace('%2F', '/', rawurlencode($src));
         if (substr($src, 0, 1) !== '/' && substr($src, 0, 4) !== 'http') {
-            $src = $GLOBALS['TSFE']->absRefPrefix . $src;
+            $src = RequestResolver::getFrontendUrlPrefix() . $src;
         }
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'])) {
-            $src = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vhs.']['settings.']['prependPath'] . $src;
+        $staticPrefix = RequestResolver::getStaticPrefix();
+        if ($staticPrefix !== '') {
+            $src = $staticPrefix . $src;
         } elseif (ContextUtility::isBackend() || !$arguments['relative']) {
             /** @var string $siteUrl */
-            $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+            $siteUrl = ParameterUtility::resolveParameterValue('TYPO3_SITE_URL');
             $src = $siteUrl . ltrim($src, '/');
         }
         if (empty($src)) {

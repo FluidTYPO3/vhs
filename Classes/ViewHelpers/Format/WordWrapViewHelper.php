@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Wordwrap: Wrap a string at provided character count
@@ -22,8 +21,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class WordWrapViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('subject', 'string', 'Text to wrap');
@@ -41,7 +38,7 @@ class WordWrapViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var string $subject */
-        $subject = $renderChildrenClosure();
+        $subject = $arguments['subject'] ?? $renderChildrenClosure();
         /** @var int $limit */
         $limit = $arguments['limit'];
         /** @var non-empty-string $break */

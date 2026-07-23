@@ -16,29 +16,20 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class NextViewHelper extends ContainsViewHelper
 {
-    /**
-     * @return mixed
-     */
-    public function render()
+    public function render(): mixed
     {
         return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
-    /**
-     * Default implementation for use in compiled templates
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
+        /** @var iterable $haystack */
+        $haystack = $arguments['haystack'];
         $evaluation = static::assertHaystackHasNeedle(
-            $arguments['haystack'],
+            $haystack,
             $arguments['needle'] ?? $renderChildrenClosure(),
             $arguments
         );

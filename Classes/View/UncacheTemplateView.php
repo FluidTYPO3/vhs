@@ -8,17 +8,16 @@ namespace FluidTYPO3\Vhs\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\VersionUtility;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
-use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
-use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class UncacheTemplateView extends TemplateView
 {
@@ -36,91 +35,39 @@ class UncacheTemplateView extends TemplateView
             return '';
         }
 
-        if (class_exists(RenderingContextFactory::class)) {
-            $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
-            if (method_exists($renderingContext, 'setRequest')) {
-                $request = $parameters instanceof ExtbaseRequestParameters
-                    ? $GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters)
-                    : $GLOBALS['TYPO3_REQUEST'];
-                $renderingContext->setRequest(
-                    // TYPO3 v11.x needs the ServerRequest wrapped in an Extbase Request.
-                    version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.0', '<')
-                        ? new Request($request)
-                        : $request
-                );
-            }
-        } else {
-            /** @var ControllerContext $controllerContext */
-            $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
-            /** @var Request $request */
-            $request = GeneralUtility::makeInstance(Request::class);
-            $controllerContext->setRequest($request);
+        $request = $parameters instanceof ExtbaseRequestParameters
+            ? $GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', $parameters)
+            : clone $GLOBALS['TYPO3_REQUEST'];
 
-            /** @var UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $uriBuilder->setRequest($request);
-            $controllerContext->setUriBuilder($uriBuilder);
+        $renderingContext = $this->createRenderingContextWithRenderingContextFactory();
+        if (VersionUtility::isCoreAtLeast13()) {
+            $renderingContext->setAttribute(ServerRequestInterface::class, $request);
+        } elseif (method_exists($renderingContext, 'setRequest')) {
+            $renderingContext->setRequest($request);
+        }
 
-            if ($parameters) {
-                if (method_exists($request, 'setControllerActionName')) {
-                    $request->setControllerActionName($parameters['actionName']);
-                }
+        $templatePaths = $renderingContext->getTemplatePaths();
 
-                if (method_exists($request, 'setControllerExtensionName')) {
-                    $request->setControllerExtensionName($parameters['extensionName']);
-                }
-
-                if (method_exists($request, 'setControllerName')) {
-                    $request->setControllerName($parameters['controllerName']);
-                }
-
-                if (method_exists($request, 'setControllerObjectName')) {
-                    $request->setControllerObjectName($parameters['controllerObjectName']);
-                }
-
-                if (method_exists($request, 'setPluginName')) {
-                    $request->setPluginName($parameters['pluginName']);
-                }
-
-                if (method_exists($request, 'setFormat')) {
-                    $request->setFormat($parameters['format']);
-                }
-            }
-
-            /** @var RenderingContext $renderingContext */
-            $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
+        if (!empty($conf['partialRootPaths'])) {
+            $templatePaths->setPartialRootPaths($conf['partialRootPaths']);
+        } elseif ($extensionName) {
+            $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+            $templatePaths->setTemplateRootPaths(['EXT:' . $extensionKey . '/Resources/Private/Templates/']);
+            $templatePaths->setPartialRootPaths(['EXT:' . $extensionKey . '/Resources/Private/Partials/']);
+            $templatePaths->setLayoutRootPaths(['EXT:' . $extensionKey . '/Resources/Private/Layouts/']);
         }
 
         $this->prepareContextsForUncachedRendering($renderingContext);
-        if (!empty($conf['partialRootPaths'])) {
-            $renderingContext->getTemplatePaths()->setPartialRootPaths($conf['partialRootPaths']);
-        } elseif ($extensionName) {
-            $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-            $renderingContext->getTemplatePaths()->fillDefaultsByPackageName($extensionKey);
-        }
-        return $this->renderPartialUncached($renderingContext, $partial, $section, $arguments);
+
+        /** @var mixed $output */
+        $output = $this->renderPartial($partial, $section, $arguments);
+
+        return is_scalar($output) ? (string) $output : '';
     }
 
     protected function prepareContextsForUncachedRendering(RenderingContextInterface $renderingContext): void
     {
         $this->setRenderingContext($renderingContext);
-    }
-
-    protected function renderPartialUncached(
-        RenderingContextInterface $renderingContext,
-        string $partial,
-        ?string $section = null,
-        array $arguments = []
-    ): string {
-        $this->renderingStack[] = [
-            'type' => static::RENDERING_TEMPLATE,
-            'parsedTemplate' => $this->getCurrentParsedTemplate(),
-            'renderingContext' => $renderingContext,
-        ];
-        /** @var string $rendered */
-        $rendered = $this->renderPartial($partial, $section, $arguments);
-        array_pop($this->renderingStack);
-        return $rendered;
     }
 
     /**

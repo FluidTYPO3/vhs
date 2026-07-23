@@ -8,17 +8,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Hashes a string.
  */
 class HashViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('content', 'mixed', 'Content to hash');
@@ -41,7 +38,8 @@ class HashViewHelper extends AbstractViewHelper
     ) {
         /** @var string $algorithm */
         $algorithm = $arguments['algorithm'];
-        $content = $renderChildrenClosure();
+        /** @var string $content */
+        $content = $arguments['content'] ?? $renderChildrenClosure();
         $content = hash($algorithm, $content);
         return $content;
     }

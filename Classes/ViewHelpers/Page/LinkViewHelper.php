@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -135,11 +136,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    /**
-     * Render method
-     * @return string|null
-     */
-    public function render()
+    public function render(): string
     {
         // Check if link wizard link
         /** @var int $pageUid */
@@ -150,20 +147,20 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             /** @var LogManager $logManager */
             $logManager = GeneralUtility::makeInstance(LogManager::class);
             $logManager->getLogger(__CLASS__)->warning("pageUid must be numeric, got " . $pageUid);
-            return null;
+            return '';
         }
 
         // Get page via pageUid argument or current id
-        $pageUid = (integer) $pageUid;
+        $pageUid = (int) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
-        $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+        $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
 
         $page = $this->pageService->getPage($pageUid, $showAccessProtected);
         if (empty($page)) {
-            return null;
+            return '';
         }
 
         $targetPage = $this->pageService->getShortcutTargetPage($page);
@@ -189,7 +186,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         $hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
         if ($hidePage) {
-            return null;
+            return '';
         }
 
         // Get the title from the page or page overlay
@@ -231,9 +228,11 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         /** @var array $excludedArguments */
         $excludedArguments = (array) $this->arguments['argumentsToBeExcludedFromQueryString'];
 
+        $request = new Request(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
+
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest(RequestResolver::resolveRequestFromRenderingContext($this->renderingContext));
+        $uriBuilder->setRequest($request);
         $uriBuilder->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($pageType)

@@ -8,7 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -25,8 +24,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class InlineViewHelper extends AbstractRenderViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -53,14 +50,15 @@ class InlineViewHelper extends AbstractRenderViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = $renderChildrenClosure();
+        /** @var string $content */
+        $content = $arguments['content'] ?? $renderChildrenClosure();
         $namespaces = static::getPreparedNamespaces($arguments);
-        $namespaceHeader = implode(LF, $namespaces);
+        $namespaceHeader = implode(PHP_EOL, $namespaces);
         foreach ($namespaces as $namespace) {
             $content = str_replace($namespace, '', $content);
         }
         $view = static::getPreparedClonedView($renderingContext);
-        $view->setTemplateSource($namespaceHeader . $content);
+        $view->getRenderingContext()->getTemplatePaths()->setTemplateSource($namespaceHeader . $content);
         return static::renderView($view, $arguments);
     }
 }

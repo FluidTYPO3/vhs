@@ -8,12 +8,12 @@ namespace FluidTYPO3\Vhs\Tests\Unit\View;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Tests\Fixtures\Classes\RenderingContext;
 use FluidTYPO3\Vhs\Tests\Unit\AbstractTestCase;
 use TYPO3\CMS\Backend\Controller\BackendController;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 
 class UncacheTemplateViewTest extends AbstractTestCase
@@ -66,7 +66,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
             ->setMethods(
                 [
                     'setRenderingContext',
-                    'renderPartialUncached',
+                    'renderPartial',
                     'createRenderingContextWithRenderingContextFactory'
                 ]
             )
@@ -88,7 +88,7 @@ class UncacheTemplateViewTest extends AbstractTestCase
             'partialRootPaths' => ['foo']
         ];
         $mock->expects($this->once())->method('setRenderingContext');
-        $mock->expects($this->once())->method('renderPartialUncached');
+        $mock->expects($this->once())->method('renderPartial');
         $mock->callUserFunction('', $configuration, '');
     }
 
@@ -112,10 +112,10 @@ class UncacheTemplateViewTest extends AbstractTestCase
     {
         $mock = $this->getMockBuilder($this->getClassName())
             ->setMethods(['renderPartial', 'getCurrentParsedTemplate'])
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([new RenderingContext()])
             ->getMock();
         $mock->expects($this->once())->method('renderPartial')->will($this->returnValue('test'));
-        $result = $this->callInaccessibleMethod($mock, 'renderPartialUncached', $this->renderingContext, 'dummy');
+        $result = $this->callInaccessibleMethod($mock, 'renderPartial', $this->renderingContext, 'dummy');
         $this->assertEquals('test', $result);
     }
 

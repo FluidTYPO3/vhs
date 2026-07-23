@@ -11,9 +11,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Resources;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\Traits\SlideViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewHelper as ResourcesFalViewHelper;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -30,8 +29,8 @@ class FalViewHelper extends ResourcesFalViewHelper
     use SlideViewHelperTrait;
     use ArgumentOverride;
 
-    const DEFAULT_TABLE = 'pages';
-    const DEFAULT_FIELD = 'media';
+    public const string DEFAULT_TABLE = 'pages';
+    public const string DEFAULT_FIELD = 'media';
 
     protected string $table = self::DEFAULT_TABLE;
     protected string $field = self::DEFAULT_FIELD;
@@ -94,25 +93,6 @@ class FalViewHelper extends ResourcesFalViewHelper
 
     protected function getCurrentLanguageUid(): int
     {
-        if (class_exists(LanguageAspect::class)) {
-            /** @var Context $context */
-            $context = GeneralUtility::makeInstance(Context::class);
-            /** @var LanguageAspect $languageAspect */
-            $languageAspect = $context->getAspect('language');
-            $languageUid = $languageAspect->getId();
-        } else {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
-        }
-
-        return (integer) $languageUid;
-    }
-
-    /**
-     * AbstractRecordResource usually uses the current cObj as reference,
-     * but the page is needed here
-     */
-    public function getActiveRecord(): array
-    {
-        return $GLOBALS['TSFE']->page;
+        return RequestResolver::getLanguage()->getLanguageId();
     }
 }

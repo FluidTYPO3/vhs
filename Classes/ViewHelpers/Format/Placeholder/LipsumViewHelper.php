@@ -8,13 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Placeholder;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -24,8 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class LipsumViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('lipsum', 'string', 'Optional, custom lipsum source');

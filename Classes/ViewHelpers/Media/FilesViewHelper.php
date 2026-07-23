@@ -8,18 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns an array of files found in the provided path.
  */
 class FilesViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -71,7 +68,11 @@ class FilesViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $path = (string) $renderChildrenClosure();
+        /** @var string $path */
+        $path = $arguments['path'] ?? $renderChildrenClosure();
+        if ($path === null) {
+            return [];
+        }
 
         /** @var string $extensionList */
         $extensionList = $arguments['extensionList'];

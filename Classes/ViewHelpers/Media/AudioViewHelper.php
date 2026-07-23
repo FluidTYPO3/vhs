@@ -101,13 +101,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
         );
     }
 
-    /**
-     * Render method
-     *
-     * @throws Exception
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $sources = static::getSourcesFromArgument($this->arguments);
         if (0 === count($sources)) {
@@ -172,7 +166,7 @@ class AudioViewHelper extends AbstractMediaViewHelper
         }
         $this->tag->addAttributes($tagAttributes);
         if ($this->arguments['unsupported']) {
-            $this->tag->setContent($this->tag->getContent() . LF . $this->arguments['unsupported']);
+            $this->tag->setContent($this->tag->getContent() . PHP_EOL . $this->arguments['unsupported']);
         }
         return $this->tag->render();
     }

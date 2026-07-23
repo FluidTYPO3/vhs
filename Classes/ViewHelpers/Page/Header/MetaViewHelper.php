@@ -41,12 +41,7 @@ class MetaViewHelper extends AbstractTagBasedViewHelper
         $this->registerTagAttribute('dir', 'string', 'Property: dir');
     }
 
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         if (ContextUtility::isBackend()) {
             return '';

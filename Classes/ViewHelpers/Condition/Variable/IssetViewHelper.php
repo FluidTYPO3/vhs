@@ -40,7 +40,7 @@ class IssetViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('name', 'string', 'name of the variable', true);
     }
 
-    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         /** @var string $name */
         $name = $arguments['name'];

@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Character/string/whitespace elimination ViewHelper
@@ -20,8 +19,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class EliminateViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'String in which to perform replacement');
@@ -83,16 +80,17 @@ class EliminateViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = $renderChildrenClosure();
+        /** @var string $content */
+        $content = $arguments['content'] ?? $renderChildrenClosure();
         if (isset($arguments['characters'])) {
             $content = static::eliminateCharacters(
                 $content,
                 $arguments['characters'],
-                (boolean) $arguments['caseSensitive']
+                (bool) $arguments['caseSensitive']
             );
         }
         if (isset($arguments['strings'])) {
-            $content = static::eliminateStrings($content, $arguments['strings'], (boolean) $arguments['caseSensitive']);
+            $content = static::eliminateStrings($content, $arguments['strings'], (bool) $arguments['caseSensitive']);
         }
         if ($arguments['whitespace']) {
             $content = static::eliminateWhitespace($content);
@@ -113,10 +111,10 @@ class EliminateViewHelper extends AbstractViewHelper
             $content = static::eliminateDigits($content);
         }
         if ($arguments['letters']) {
-            $content = static::eliminateLetters($content, (boolean) $arguments['caseSensitive']);
+            $content = static::eliminateLetters($content, (bool) $arguments['caseSensitive']);
         }
         if ($arguments['nonAscii']) {
-            $content = static::eliminateNonAscii($content, (boolean) $arguments['caseSensitive']);
+            $content = static::eliminateNonAscii($content, (bool) $arguments['caseSensitive']);
         }
         return $content;
     }

@@ -8,18 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Json;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Converts the JSON encoded argument into a PHP variable.
  */
 class DecodeViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('json', 'string', 'JSON string to decode');
@@ -33,7 +30,8 @@ class DecodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $json = $renderChildrenClosure();
+        /** @var string $json */
+        $json = $arguments['json'] ?? $renderChildrenClosure();
         if (empty($json)) {
             return null;
         }

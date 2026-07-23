@@ -18,12 +18,7 @@ use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
  */
 class ImageViewHelper extends AbstractImageViewHelper
 {
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $this->preprocessImage();
         if (substr($this->mediaSource, 0, 4) !== 'http') {

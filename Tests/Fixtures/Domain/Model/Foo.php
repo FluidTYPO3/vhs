@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\Tests\Fixtures\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * Class Foo
@@ -24,7 +23,7 @@ class Foo extends AbstractEntity
 
     /**
      * @var string
-     * @Extbase\Validate("NotEmpty")
+     * @\TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $bar;
 

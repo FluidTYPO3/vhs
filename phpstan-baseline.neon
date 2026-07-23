@@ -9,6 +9,10 @@ parameters:
             count: 1
             path: Classes/ViewHelpers/Render/RequestViewHelper.php
         -
+            message: "#^Using nullsafe method call on non-nullable type TYPO3Fluid\\\\Fluid\\\\Core\\\\Parser\\\\SyntaxTree\\\\ViewHelperNode\\. Use \\-\\> instead\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/DebugViewHelper.php
+        -
             message: "#^Parameter \\#2 \\$response of method FluidTYPO3\\\\Vhs\\\\Proxy\\\\DispatcherProxy\\:\\:dispatch\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Response\\|null, \\(TYPO3\\\\CMS\\\\Core\\\\Http\\\\Response\\&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response\\)\\|\\(TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface\\&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response\\)\\|null given\\.$#"
             count: 1
             path: Classes/Proxy/DispatcherProxy.php
@@ -164,3 +168,28 @@ parameters:
             message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
             count: 2
             path: Classes/ViewHelpers/Render/RequestViewHelper.php
+
+        -
+            message: "#^Return type \\(int\\) of method FluidTYPO3\\\\Vhs\\\\ViewHelpers\\\\Iterator\\\\IndexOfViewHelper\\:\\:render\\(\\) should be compatible with return type \\(string\\) of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\AbstractConditionViewHelper\\:\\:render\\(\\)$#"
+            count: 1
+            path: Classes/ViewHelpers/Iterator/IndexOfViewHelper.php
+
+        -
+            message: "#\\:\\:render\\(\\) should return string but returns mixed\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Iterator/NextViewHelper.php
+
+        -
+            message: "#\\:\\:render\\(\\) should return string but returns mixed\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/Iterator/PreviousViewHelper.php
+
+        -
+            message: "#\\:\\:render\\(\\) should return string but returns mixed\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/TryViewHelper.php
+
+        -
+            message: "#\\:\\:render\\(\\) should return string but returns mixed\\.$#"
+            count: 1
+            path: Classes/ViewHelpers/UnlessViewHelper.php

@@ -1,447 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers">
-  <xsd:element name="asset">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Basic Asset ViewHelper
-
-Places the contents of the asset (the tag body) directly
-in the additional header content of the page. This most
-basic possible version of an Asset has only the core
-features shared by every Asset type:
-
-- a "name" attribute which is required, identifying the Asset
-  by a lowerCamelCase or lowercase_underscored value, your
-  preference (but lowerCamelCase recommended for consistency).
-- a "dependencies" attribute with a CSV list of other named
-  Assets upon which the current Asset depends. When used, this
-  Asset will be included after every asset listed as dependency.
-- a "group" attribute which is optional and is used ty further
-  identify the Asset as belonging to a particular group which
-  can be suppressed or manipulated through TypoScript. For
-  example, the default value is "fluid" and if TypoScript is
-  used to exclude the group "fluid" then any Asset in that
-  group will simply not be loaded.
-- an "overwrite" attribute which if enabled causes any existing
-  asset with the same name to be overwritten with the current
-  Asset instead. If rendered in a loop only the last instance
-  is actually used (this allows Assets in Partials which are
-  rendered in an f:for loop).
-- a "debug" property which enables output of the information
-  used by the current Asset, with an option to force debug
-  mode through TypoScript.
-- additional properties which affect how the Asset is processed.
-  For a full list see the argument descriptions; the same
-  settings can be applied through TypoScript per-Asset, globally
-  or per-Asset-group.
-
-> Note: there are no static TypoScript templates for VHS but
-> you will find a complete list in the README.md file in the
-> root of the extension folder.
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:string" name="content" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Content to insert in header/footer]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="path" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If not using tag content, specify path to file here]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="external" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="name" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="overwrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dependencies" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="group" default="'fluid'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="debug" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="standalone" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, excludes this Asset from any concatenation which may be applied]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="rewrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, this Asset will be included as is without any processing of contained urls]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fluid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "variables" attribute or every available template variable if "variables" not specified]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="variables" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[An optional array of arguments which you use inside the Asset, be it standalone or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="movable" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="trim" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn't do anything.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="namedChunks" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="asset.prefetch">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Asset DNS Prefetching ViewHelper
-
-Enables the special `<link rel="dns-prefetch" />` tag
-which instructs the browser to start prefetching DNS
-records for every domain listed in the `domains` attribute
-of this ViewHelper. Prefetching starts as soon as the browser
-becomes aware of the tag - to optimise even further, you may
-wish to control the output buffer's size to deliver your site
-HTML in chunks, the first chunk being the one containing this
-ViewHelper.
-
-Note that the web server daemon may send headers which prevent
-this prefetching and that these headers can be added in many
-ways. If prefetching does not work, you will need to inspect
-the HTTP headers returned from the actual environment. Or you
-may prefer to simply add `force="TRUE"` to this tag - but
-beware that this will affect the entire document's behaviour,
-not just for this particular set of domain prefetches. Once
-force-enabled this setting cannot be disabled (unless done so
-by manually adding an additional meta header tag as examplified
-by the `build()` method.
-
-### Example usage:
-
-```
-<v:asset.prefetch domains="fedext.net,ajax.google.com" />
-```
-
-See: https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:string" name="content" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Content to insert in header/footer]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="path" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If not using tag content, specify path to file here]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="external" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="name" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="overwrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dependencies" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="group" default="'fluid'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="debug" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="standalone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, excludes this Asset from any concatenation which may be applied]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="rewrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, this Asset will be included as is without any processing of contained urls]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fluid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "variables" attribute or every available template variable if "variables" not specified]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="variables" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[An optional array of arguments which you use inside the Asset, be it standalone or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="movable" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="trim" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn't do anything.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="namedChunks" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="domains" default="NULL" use="required">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Domain DNS names to prefetch. By default will add all sys_domain record DNS names]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="protocol" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional value of protocol as inserted in the resulting HREF value. If you experience problems with a non-protocol link, try enforcing http/https here]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="protocolSeparator" default="'//'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If you do not enforce a particular protocol and wish to remove the double slashes from the hostname (your browser may not understand this!), set this attribute to an empty value (not-zero)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="force" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, adds an additional meta header tag which forces prefetching to be enabled even if otherwise requested by the http daemon]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="asset.script">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Basic Script ViewHelper
-
-Allows inserting a `<script>` Asset. Settings specify
-where to insert the Asset and how to treat it.
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:string" name="content" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Content to insert in header/footer]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="path" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If not using tag content, specify path to file here]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="external" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="name" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="overwrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dependencies" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="group" default="'fluid'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="debug" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="standalone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, excludes this Asset from any concatenation which may be applied]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="rewrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, this Asset will be included as is without any processing of contained urls]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fluid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "variables" attribute or every available template variable if "variables" not specified]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="variables" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[An optional array of arguments which you use inside the Asset, be it standalone or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="movable" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="trim" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn't do anything.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="namedChunks" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="async" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, adds "async" attribute to script tag (only works when standalone is set)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="defer" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, adds "defer" attribute to script tag (only works when standalone is set)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="asset.style">
-    <xsd:annotation>
-      <xsd:documentation><![CDATA[### Basic Style ViewHelper
-
-Allows inserting a `<link>` or `<style>` Asset. Settings
-specify where to insert the Asset and how to treat it.
-/]]></xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType mixed="true">
-      <xsd:sequence>
-        <xsd:any minOccurs="0" maxOccurs="1"/>
-      </xsd:sequence>
-      <xsd:attribute type="xsd:string" name="content" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Content to insert in header/footer]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="path" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If not using tag content, specify path to file here]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="external" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="name" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="overwrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dependencies" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="group" default="'fluid'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="debug" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="standalone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, excludes this Asset from any concatenation which may be applied]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="rewrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, this Asset will be included as is without any processing of contained urls]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fluid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "variables" attribute or every available template variable if "variables" not specified]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="variables" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[An optional array of arguments which you use inside the Asset, be it standalone or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="movable" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="trim" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn't do anything.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="namedChunks" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
   <xsd:element name="call">
     <xsd:annotation>
       <xsd:documentation><![CDATA[### Call ViewHelper
@@ -1547,7 +1105,7 @@ Does not work in the TYPO3 backend.
   </xsd:element>
   <xsd:element name="content.info">
     <xsd:annotation>
-      <xsd:documentation><![CDATA[ViewHelper to access data of the current content element record.
+      <xsd:documentation><![CDATA[ViewHelper to access data of a content element record.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -1559,9 +1117,9 @@ Does not work in the TYPO3 backend.
           <xsd:documentation><![CDATA[Template variable name to assign; if not specified the ViewHelper returns the variable instead.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="contentUid" default="0">
+      <xsd:attribute type="xsd:integer" name="contentUid" default="NULL" use="required">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[If specified, this UID will be used to fetch content element data instead of using the current content element.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[This UID will be used to fetch content element data.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="field" default="NULL">
@@ -1837,12 +1395,12 @@ Loads FAL records associated with records of arbitrary types.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -1864,7 +1422,7 @@ We assume that the flux content element has an IRRE file field
 The file data can be loaded and displayed with:
 
 ```
-{v:content.resources.fal(field: 'settings.image')
+{v:content.resources.fal(field: 'settings.image', record: record)
   -> v:iterator.first()
   -> v:variable.set(name: 'image')}
 <f:if condition="{image}">
@@ -1899,12 +1457,12 @@ you have to pass the `record` attribute:
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -2133,7 +1691,7 @@ in plain text:
 Path: {domainObject}
 Value type: object
 Accessible properties on {domainObject}:
-   {form.uid} (integer)
+   {form.uid} (int)
    {form.title} (string)
 ```
 
@@ -2699,7 +2257,7 @@ scipt must:
 
 In other words, *NIX standard behavior must be used.
 
-See: http://daringfireball.net/projects/markdown/
+See: http://daringfireball.net/projects/markdown
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2727,7 +2285,7 @@ See: http://daringfireball.net/projects/markdown/
     <xsd:annotation>
       <xsd:documentation><![CDATA[Placeholder Image ViewHelper
 
-Inserts a placeholder image from http://placehold.it/
+Inserts a placeholder image from http://placehold.it
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -2747,51 +2305,6 @@ Inserts a placeholder image from http://placehold.it/
       <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="text" default="NULL">
@@ -5023,51 +4536,6 @@ from the filename's extension.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="email" default="NULL" use="required">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Email address]]></xsd:documentation>
@@ -5118,7 +4586,7 @@ to use as a fallback to be shown when no srcset functionality is supported.
 ### Browser Support
 
 To have the widest Browser-Support you should consider using a polyfill like:
-http://scottjehl.github.io/picturefill/
+http://scottjehl.github.io/picturefill
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -5223,51 +4691,6 @@ http://scottjehl.github.io/picturefill/
       <xsd:attribute type="xsd:boolean" name="graceful" default="false">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="usemap" default="NULL">
@@ -5487,51 +4910,6 @@ pages the first page is rendered by default unless specified.
           <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="usemap" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[A hash-name reference to a map element with which to associate the image.]]></xsd:documentation>
@@ -5628,7 +5006,7 @@ media breakpoints
 ### Browser Support
 
 To have the widest Browser-Support you should consider using a polyfill like:
-http://scottjehl.github.io/picturefill/
+http://scottjehl.github.io/picturefill
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
@@ -5724,51 +5102,6 @@ information.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="media" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Media query for which breakpoint this sources applies]]></xsd:documentation>
@@ -5843,51 +5176,6 @@ information.
       <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="spotifyUri" default="NULL" use="required">
@@ -6125,51 +5413,6 @@ from the filename's extension.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="title" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Show the title on the video. Defaults to TRUE.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="videoId" default="NULL" use="required">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Vimeo ID of the video to embed.]]></xsd:documentation>
@@ -6183,6 +5426,11 @@ from the filename's extension.
       <xsd:attribute type="xsd:integer" name="height" default="360">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Height of the video in pixels. Defaults to 360 for 16:9 content.]]></xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute type="xsd:boolean" name="title" default="true">
+        <xsd:annotation>
+          <xsd:documentation><![CDATA[Show the title on the video. Defaults to TRUE.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="byline" default="true">
@@ -6244,51 +5492,6 @@ from the filename's extension.
       <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="videoId" default="NULL" use="required">
@@ -8359,81 +7562,6 @@ well as the "then" and "else" arguments.
       <xsd:sequence>
         <xsd:any minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
-      <xsd:attribute type="xsd:string" name="content" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Content to insert in header/footer]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="path" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If not using tag content, specify path to file here]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="external" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="name" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="overwrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dependencies" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="group" default="'fluid'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="debug" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="standalone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, excludes this Asset from any concatenation which may be applied]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="rewrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, this Asset will be included as is without any processing of contained urls]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fluid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "variables" attribute or every available template variable if "variables" not specified]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="variables" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[An optional array of arguments which you use inside the Asset, be it standalone or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="movable" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="trim" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn't do anything.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="namedChunks" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="page.header">
@@ -8445,81 +7573,6 @@ well as the "then" and "else" arguments.
       <xsd:sequence>
         <xsd:any minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
-      <xsd:attribute type="xsd:string" name="content" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Content to insert in header/footer]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="path" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If not using tag content, specify path to file here]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="external" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE and standalone, includes the file as raw URL. If TRUE and not standalone then downloads the file and merges it when building Assets]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="name" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of the content. If multiple occurrences of the same name happens, behavior is defined by argument "overwrite"]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="overwrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If set to FALSE and a relocated string with "name" already exists, does not overwrite the existing relocated string. Default behavior is to overwrite.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dependencies" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSV list of other named assets upon which this asset depends. When included, this asset will always load after its dependencies]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="group" default="'fluid'">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Optional name of a logical group (created dynamically just by using the name) to which this particular asset belongs.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="debug" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, outputs information about this ViewHelper when the tag is used. Two master debug switches exist in TypoScript; see documentation about Page / Asset ViewHelper]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="standalone" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, excludes this Asset from any concatenation which may be applied]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="rewrite" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, this Asset will be included as is without any processing of contained urls]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="fluid" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, renders this (standalone or external) Asset as if it were a Fluid template, passing along values of the "variables" attribute or every available template variable if "variables" not specified]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:anySimpleType" name="variables" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[An optional array of arguments which you use inside the Asset, be it standalone or inline. Use this argument to ensure your Asset filenames are only reused when all variables used in the Asset are the same]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="movable" default="true">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If TRUE, allows this Asset to be included in the document footer rather than the header. Should never be allowed for CSS.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="trim" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[DEPRECATED. Trim is no longer supported. Setting this to TRUE doesn't do anything.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:boolean" name="namedChunks" default="false">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[If FALSE, hides the comment containing the name of each of Assets which is merged in a merged file. Disable to avoid a bit more output at the cost of transparency]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="page.header.alternate">
@@ -8575,51 +7628,6 @@ well as the "then" and "else" arguments.
       <xsd:attribute type="xsd:anySimpleType" name="aria" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="pageUid" default="0">
@@ -8862,51 +7870,6 @@ Require the extension static_info_table.
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="tagName" default="'ul'">
         <xsd:annotation>
           <xsd:documentation><![CDATA[Tag name to use for enclosing container, list and flags (not finished) only]]></xsd:documentation>
@@ -9061,51 +8024,6 @@ Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
           <xsd:documentation><![CDATA[Additional aria-* attributes. They will each be added with a "aria-" prefix.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:boolean" name="showAccessProtected" default="false">
         <xsd:annotation>
           <xsd:documentation><![CDATA[If TRUE links to access protected pages are always rendered regardless of user login status]]></xsd:documentation>
@@ -9224,12 +8142,12 @@ Manual linktext:    <v:page.link pageUid="UID">linktext</v:page.link>
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -9266,12 +8184,12 @@ resource ViewHelpers do if you only pass uid.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -9980,51 +8898,6 @@ http://docs.typo3.org/typo3cms/CoreApiReference/6.2/ApiOverview/Collections/Inde
           <xsd:documentation><![CDATA[Set to TRUE to ignore files that cannot be loaded. Default behavior is to throw an Exception.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="class" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="dir" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="id" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="lang" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="style" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="title" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-      <xsd:attribute type="xsd:string" name="onclick" default="NULL">
-        <xsd:annotation>
-          <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
       <xsd:attribute type="xsd:string" name="usemap" default="NULL">
         <xsd:annotation>
           <xsd:documentation><![CDATA[A hash-name reference to a map element with which to associate the image.]]></xsd:documentation>
@@ -10118,12 +8991,12 @@ but all the translated labels.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -10177,12 +9050,12 @@ Use the `uid` attribute if you don't have a `record`.
       </xsd:attribute>
       <xsd:attribute type="xsd:anySimpleType" name="record" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The actual record. Alternatively you can use the "uid" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:integer" name="uid" default="NULL">
         <xsd:annotation>
-          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument.]]></xsd:documentation>
+          <xsd:documentation><![CDATA[The uid of the record. Alternatively you can use the "record" argument; you must specify either one.]]></xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
       <xsd:attribute type="xsd:string" name="as" default="NULL">
@@ -10905,7 +9778,7 @@ or it's derivate if differing dimesions are provided.
       <xsd:documentation><![CDATA[### Uri: Request
 
 Returns the Uri of the requested page (site_url + all the GET params)
-`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')`.
+`ServerRequest::$uri`, an instance of UriInterface.
 /]]></xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">

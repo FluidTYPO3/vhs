@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Date range calculation/formatting ViewHelper
@@ -65,8 +64,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class DateRangeViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -126,7 +123,7 @@ class DateRangeViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var string|null $start */
-        $start = $renderChildrenClosure();
+        $start = $renderChildrenClosure() ?? $arguments['start'] ?? 'now';
         if (empty($arguments['start'])) {
             $start = 'now';
         }
@@ -172,7 +169,7 @@ class DateRangeViewHelper extends AbstractViewHelper
         $output = null;
         $return = $arguments['return'];
         if (null === $return) {
-            $spaceGlue = (boolean) $arguments['spaceGlue'];
+            $spaceGlue = (bool) $arguments['spaceGlue'];
             /** @var string $glue */
             $glue = $arguments['glue'];
             /** @var string $startFormat */
@@ -241,7 +238,7 @@ class DateRangeViewHelper extends AbstractViewHelper
     protected static function formatDate(\DateTime $date, string $format = 'Y-m-d'): string
     {
         if (false !== strpos($format, '%')) {
-            return (string) strftime($format, (integer) $date->format('U'));
+            return (string) strftime($format, (int) $date->format('U'));
         }
         return $date->format($format);
     }

@@ -8,17 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Computes the difference of arrays.
  */
 class DiffViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -46,7 +44,8 @@ class DiffViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $a = $renderChildrenClosure();
+        /** @var array|string|\Iterator $a */
+        $a = $arguments['a'] ?? $renderChildrenClosure();
 
         $a = static::arrayFromArrayOrTraversableOrCSVStatic($a);
         $b = static::arrayFromArrayOrTraversableOrCSVStatic($arguments['b']);

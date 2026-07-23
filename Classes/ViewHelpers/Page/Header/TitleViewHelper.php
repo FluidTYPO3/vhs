@@ -8,11 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### ViewHelper used to override page title
@@ -46,7 +45,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class TitleViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
     use PageRendererTrait;
 
     public function initializeArguments(): void
@@ -73,13 +71,10 @@ class TitleViewHelper extends AbstractViewHelper
         if (ContextUtility::isBackend()) {
             return;
         }
-        if (!empty($arguments['title'])) {
-            /** @var string $title */
-            $title = $arguments['title'];
-        } else {
-            /** @var string $title */
-            $title = $renderChildrenClosure();
-        }
+
+        /** @var string $title */
+        $title = $arguments['title'] ?? $renderChildrenClosure();
+
         /** @var string $whitespace */
         $whitespace = $arguments['whitespaceString'];
         $title = trim((string) preg_replace('/\s+/u', $whitespace, $title), $whitespace);

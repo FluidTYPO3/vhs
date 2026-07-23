@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Converts a string to an array with $length number of bytes
@@ -20,7 +19,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 class SplitViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
-    use CompileWithRenderStatic;
 
     /**
      * @var boolean
@@ -49,7 +47,7 @@ class SplitViewHelper extends AbstractViewHelper
     ) {
         /** @var int<1, max> $length */
         $length = $arguments['length'];
-        if ((integer) $length === 0) {
+        if ((int) $length === 0) {
             // Difference from PHP str_split: return an empty array if (potentially dynamically defined) length
             // argument is zero for some reason. PHP would throw a warning; Fluid would logically just return empty.
             return [];

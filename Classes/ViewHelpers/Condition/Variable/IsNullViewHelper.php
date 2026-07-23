@@ -25,7 +25,7 @@ class IsNullViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('value', 'string', 'value to check', true);
     }
 
-    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         return null === $arguments['value'];
     }

@@ -18,8 +18,8 @@ class ResourcesViewHelper extends RecordViewHelper
 {
     use ArgumentOverride;
 
-    const DEFAULT_TABLE = 'pages';
-    const DEFAULT_FIELD = 'media';
+    public const string DEFAULT_TABLE = 'pages';
+    public const string DEFAULT_FIELD = 'media';
 
     protected string $table = self::DEFAULT_TABLE;
     protected string $field = self::DEFAULT_FIELD;

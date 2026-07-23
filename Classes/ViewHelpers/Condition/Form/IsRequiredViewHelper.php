@@ -19,25 +19,17 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class IsRequiredViewHelper extends HasValidatorViewHelper
 {
-    /**
-     * @return mixed
-     */
-    public function render()
+    public function render(): mixed
     {
         $this->arguments['validatorName'] = 'NotEmpty';
         return parent::render();
     }
 
-    /**
-     * Default implementation for use in compiled templates
-     *
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         $arguments['validatorName'] = 'NotEmpty';
         return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }

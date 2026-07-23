@@ -8,11 +8,12 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -65,21 +66,11 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return $namespaces;
     }
 
-    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): StandaloneView
+    protected static function getPreparedClonedView(RenderingContextInterface $renderingContext): TemplateView
     {
         $view = static::getPreparedView();
         $newRenderingContext = $view->getRenderingContext();
-        if (method_exists($renderingContext, 'getControllerContext')) {
-            $controllerContext = clone $renderingContext->getControllerContext();
-
-            $view->setFormat($controllerContext->getRequest()->getFormat());
-            $newRenderingContext->setViewHelperVariableContainer(
-                $renderingContext->getViewHelperVariableContainer()
-            );
-            if (method_exists($newRenderingContext, 'setControllerContext')) {
-                $newRenderingContext->setControllerContext($controllerContext);
-            }
-        } elseif (method_exists($renderingContext, 'getRequest') && method_exists($newRenderingContext, 'setRequest')) {
+        if (method_exists($renderingContext, 'getRequest') && method_exists($newRenderingContext, 'setRequest')) {
             $newRenderingContext->setRequest($renderingContext->getRequest());
         }
         $variables = (array) $renderingContext->getVariableProvider()->getAll();
@@ -104,10 +95,10 @@ abstract class AbstractRenderViewHelper extends AbstractViewHelper
         return (string) $content;
     }
 
-    protected static function getPreparedView(): StandaloneView
+    protected static function getPreparedView(): TemplateView
     {
-        /** @var StandaloneView $view */
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        /** @var TemplateView $view */
+        $view = GeneralUtility::makeInstance(TemplateView::class);
         return $view;
     }
 }

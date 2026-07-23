@@ -8,11 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Shifts the first value off $subject (but does not change $subject itself as array_shift would).
@@ -21,7 +20,6 @@ class ShiftViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
-    use CompileWithRenderStatic;
 
     /**
      * @var boolean

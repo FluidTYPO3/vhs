@@ -81,7 +81,7 @@ trait SlideViewHelperTrait
         $limit = $limit ?? $this->arguments['limit'];
         /** @var int $slide */
         $slide = $this->arguments['slide'];
-        $slideCollectReverse = (boolean) $this->arguments['slideCollectReverse'];
+        $slideCollectReverse = (bool) $this->arguments['slideCollectReverse'];
         /** @var int $slideCollect */
         $slideCollect = $this->arguments['slideCollect'];
 
@@ -106,14 +106,14 @@ trait SlideViewHelperTrait
 
         $storagePageUids = [];
         foreach ($rootLine as $page) {
-            $storagePageUids[] = (integer) $page['uid'];
+            $storagePageUids[] = (int) $page['uid'];
         }
 
         // select records, respecting slide and slideCollect.
         $records = [];
         $limitRemaining = $limit;
         while (!empty($storagePageUids) && ($limitRemaining > 0 || !$limit)) {
-            $storagePageUid = (integer) array_shift($storagePageUids);
+            $storagePageUid = (int) array_shift($storagePageUids);
             $recordsFromPageUid = $this->getSlideRecordsFromPage($storagePageUid, $limitRemaining);
             $numberOfReturnedRecords = count($recordsFromPageUid);
             if ($numberOfReturnedRecords > $limitRemaining && $limitRemaining !== null) {

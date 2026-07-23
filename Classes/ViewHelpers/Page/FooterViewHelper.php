@@ -8,28 +8,25 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\PageRendererTrait;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
-use FluidTYPO3\Vhs\ViewHelpers\Asset\AbstractAssetViewHelper;
 
 /**
  * ViewHelper used to place header blocks in document footer
  */
-class FooterViewHelper extends AbstractAssetViewHelper
+class FooterViewHelper extends AbstractViewHelper
 {
     use PageRendererTrait;
 
-    /**
-     * Render method
-     *
-     * @return void
-     */
-    public function render()
+    public function render(): string
     {
         if (ContextUtility::isBackend()) {
-            return;
+            return '';
         }
-        $content = (string) $this->getContent();
-        static::getPageRenderer()->addFooterData($content);
+        /** @var string|null $content */
+        $content = $this->renderChildren();
+        static::getPageRenderer()->addFooterData((string) $content);
+        return '';
     }
 }

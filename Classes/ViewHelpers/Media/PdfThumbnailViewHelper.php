@@ -62,10 +62,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         );
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         /** @var string $srcArgument */
         $srcArgument = $this->arguments['src'];
@@ -81,7 +78,7 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         $page = $this->arguments['page'];
         /** @var string|null $background */
         $background = $this->arguments['background'];
-        $forceOverwrite = (boolean) $this->arguments['forceOverwrite'];
+        $forceOverwrite = (bool) $this->arguments['forceOverwrite'];
         $filename = basename($src);
         $pageArgument = $page > 0 ? $page - 1 : 0;
         if (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_colorspace'])) {
@@ -104,10 +101,10 @@ class PdfThumbnailViewHelper extends ImageViewHelper
         );
         if (!file_exists($path) || $forceOverwrite) {
             $arguments = '-colorspace ' . $colorspace;
-            if (0 < (integer) $density) {
+            if (0 < (int) $density) {
                 $arguments .= ' -density ' . $density;
             }
-            if (0 !== (integer) $rotate) {
+            if (0 !== (int) $rotate) {
                 $arguments .= ' -rotate ' . $rotate;
             }
             $arguments .= ' "' . $src . '"[' . $pageArgument . ']';

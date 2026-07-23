@@ -17,31 +17,26 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class IndexOfViewHelper extends ContainsViewHelper
 {
-    /**
-     * @return mixed
-     */
-    public function render()
+    public function render(): int
     {
-        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+        return (int) static::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
     }
 
-    /**
-     * Default implementation for use in compiled templates
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        $evaluation = static::assertHaystackHasNeedle($arguments['haystack'], $arguments['needle'], $arguments);
+    ): int {
+        /** @var iterable $haystack */
+        $haystack = $arguments['haystack'];
+        $evaluation = static::assertHaystackHasNeedle($haystack, $arguments['needle'], $arguments);
 
         if (false !== $evaluation) {
-            return (integer) $evaluation;
+            return (int) $evaluation;
         }
         return -1;
     }

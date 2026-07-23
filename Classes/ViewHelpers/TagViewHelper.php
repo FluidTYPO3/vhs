@@ -32,7 +32,7 @@ class TagViewHelper extends AbstractTagBasedViewHelper
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         /** @var string|null $class */
         $class = $this->arguments['class'] ?? null;

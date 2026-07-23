@@ -8,21 +8,19 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Content;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Proxy\DoctrineQueryProxy;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
-use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
-use TYPO3\CMS\Core\Context\Context;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * ViewHelper to access data of the current content element record.
+ * ViewHelper to access data of a content element record.
  */
 class InfoViewHelper extends AbstractViewHelper
 {
@@ -38,9 +36,19 @@ class InfoViewHelper extends AbstractViewHelper
      */
     protected $configurationManager;
 
+    /**
+     * @var PageRepository
+     */
+    protected $pageRepository;
+
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
+    }
+
+    public function injectPageRepository(PageRepository $pageRepository): void
+    {
+        $this->pageRepository = $pageRepository;
     }
 
     public function initializeArguments(): void
@@ -49,10 +57,8 @@ class InfoViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'contentUid',
             'integer',
-            'If specified, this UID will be used to fetch content element data instead of using the current ' .
-            'content element.',
-            false,
-            0
+            'This UID will be used to fetch content element data.',
+            true
         );
         $this->registerArgument(
             'field',
@@ -61,103 +67,61 @@ class InfoViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @return mixed
-     * @throws \Exception
-     */
-    public function render()
+    public function render(): mixed
     {
         /** @var int $contentUid */
         $contentUid = $this->arguments['contentUid'];
-        $record = false;
 
-        if (0 === $contentUid) {
-            $cObj = ContentObjectFetcher::resolve($this->configurationManager);
-
-            if ($cObj === null) {
-                throw new Exception('v:content.info requires a ContentObjectRenderer, none found', 1737807859);
-            }
-
-            if ($cObj->getCurrentTable() !== 'tt_content') {
-                throw new Exception(
-                    'v:content.info must have contentUid argument outside tt_content context',
-                    1690035521
-                );
-            }
-            if (!empty($cObj->data)) {
-                $record = $cObj->data;
-            } else {
-                $tsfe = $GLOBALS['TSFE'] ?? null;
-                if (!$tsfe instanceof TypoScriptFrontendController) {
-                    throw new Exception(
-                        'v:content.info must have contentUid argument when no TypoScriptFrontendController exists',
-                        1690035521
-                    );
-                }
-                $recordReference = $tsfe->currentRecord;
-                $contentUid = (int) substr($recordReference, strpos($recordReference, ':') + 1);
-            }
-        }
-
-        /** @var string $field */
+        /** @var string|null $field */
         $field = $this->arguments['field'];
         $selectFields = $field;
 
-        if (!$record && 0 !== $contentUid) {
-            if (!isset($GLOBALS['TCA']['tt_content']['columns'][$field])) {
-                $selectFields = '*';
-            }
-
-            /** @var ConnectionPool $connectionPool */
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
-            $queryBuilder->createNamedParameter($contentUid, Connection::PARAM_INT, ':uid');
-
-            $queryBuilder
-                ->select($selectFields)
-                ->from('tt_content')
-                ->where(
-                    $queryBuilder->expr()->eq('uid', ':uid')
-                );
-            $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
-            $record = DoctrineQueryProxy::fetchAssociative($result);
-
-            // Add the page overlay
-            if (class_exists(LanguageAspect::class)) {
-                /** @var Context $context */
-                $context = GeneralUtility::makeInstance(Context::class);
-                /** @var LanguageAspect $languageAspect */
-                $languageAspect = $context->getAspect('language');
-                $languageUid = $languageAspect->getId();
-            } else {
-                $languageUid = $GLOBALS['TSFE']->sys_language_uid;
-            }
-
-            if (0 !== $languageUid && $GLOBALS['TSFE']->sys_language_contentOL) {
-                $record = $GLOBALS['TSFE']->sys_page->getRecordOverlay(
-                    'tt_content',
-                    $record,
-                    $GLOBALS['TSFE']->sys_language_content,
-                    $GLOBALS['TSFE']->sys_language_contentOL
-                );
-            }
+        if (!$field || !isset($GLOBALS['TCA']['tt_content']['columns'][$field])) {
+            $selectFields = '*';
         }
 
-        if ($record === false) {
+        $record = $this->fetchRecord($selectFields ?? '*', $contentUid);
+
+        $languageUid = RequestResolver::getLanguage()->getLanguageId();
+
+        if ($languageUid && $record && $record['sys_language_uid'] !== $languageUid) {
+            $languageAspect = new LanguageAspect(RequestResolver::getLanguage()->getLanguageId());
+            $record = $this->pageRepository->getLanguageOverlay('tt_content', $record, $languageAspect);
+        }
+
+        if (!$record) {
             throw new \Exception(
-                sprintf('Either record with uid %d or field %s do not exist.', $contentUid, $selectFields),
+                sprintf('Either record with uid %d or field %s does not exist.', $contentUid, $selectFields),
                 1358679983
             );
         }
 
         // Check if single field or whole record should be returned
         $content = null;
-        if (null === $field) {
+        if (!$field) {
             $content = $record;
         } elseif (isset($record[$field])) {
             $content = $record[$field];
         }
 
         return $this->renderChildrenWithVariableOrReturnInput($content);
+    }
+
+    protected function fetchRecord(string $field, int $uid): ?array
+    {
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
+        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT, ':uid');
+
+        $queryBuilder
+            ->select($field)
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('uid', ':uid')
+            );
+        $result = DoctrineQueryProxy::executeQueryOnQueryBuilder($queryBuilder);
+        $record = DoctrineQueryProxy::fetchAssociative($result);
+        return $record;
     }
 }

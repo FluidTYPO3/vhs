@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -17,7 +17,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
@@ -36,7 +35,6 @@ class SortViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
-    use CompileWithRenderStatic;
 
     /**
      * @var boolean
@@ -199,7 +197,7 @@ class SortViewHelper extends AbstractViewHelper
         $field = $arguments['sortBy'];
         $value = ObjectAccess::getPropertyPath($object, $field);
         if ($value instanceof \DateTimeInterface) {
-            $value = (integer) $value->format('U');
+            $value = (int) $value->format('U');
         } elseif ($value instanceof ObjectStorage || $value instanceof LazyObjectStorage) {
             $value = $value->count();
         } elseif (is_array($value)) {

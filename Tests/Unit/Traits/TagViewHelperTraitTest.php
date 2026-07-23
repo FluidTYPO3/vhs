@@ -23,7 +23,7 @@ class TagViewHelperTraitTest extends AbstractTestCase
         array $arguments
     ): void {
         $subject = new DummyTagViewHelper();
-        $subject->arguments = $arguments;
+        $this->setInaccessiblePropertyValue($subject, 'arguments', $arguments);
         $subject->registerArguments();
 
         self::assertSame($expected, $subject->testRenderTag($tagName, $value));
@@ -52,12 +52,12 @@ class TagViewHelperTraitTest extends AbstractTestCase
         bool $forceClosingTag
     ): void {
         $subject = new DummyTagViewHelper();
-        $subject->arguments = $arguments;
+        $this->setInaccessiblePropertyValue($subject, 'arguments', $arguments);
         $subject->registerArguments();
 
         $subject->testRenderTag($tagName, $value);
         $subject->testRenderChildTag($tagName, [], $forceClosingTag, $mode);
-        self::assertSame($expected, $subject->tag->render());
+        self::assertSame($expected, $this->getInaccessiblePropertyValue($subject, 'tag')->render());
     }
 
     public function getRenderChildTagTestValues(): array

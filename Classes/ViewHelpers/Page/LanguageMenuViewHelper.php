@@ -14,11 +14,14 @@ use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperCompatibility;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\CoreUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Site\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -133,12 +136,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         if (!is_object($GLOBALS['TSFE']->sys_page)) {
             return '';
@@ -212,7 +210,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
                     $this->getLayout($var) . '</a></' . $tagName . '>';
             }
         }
-        return implode(LF, $html);
+        return implode(PHP_EOL, $html);
     }
 
     /**
@@ -252,9 +250,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getLanguageFlagByIdentifier(string $identifier): string
     {
+        $iconEnum = VersionUtility::isCoreAtLeast14() ? IconSize::SMALL : Icon::SIZE_SMALL;
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $iconFactory->getIcon($identifier, Icon::SIZE_SMALL);
+        $icon = $iconFactory->getIcon($identifier, $iconEnum);
         return $icon->render();
     }
 
@@ -352,11 +351,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
         }
 
         foreach ($languageMenu as $key => $value) {
-            $current = $languageUid === (integer) $key ? 1 : 0;
-            $inactive = in_array($key, $languageUids) || (integer) $key === $this->defaultLangUid ? 0 : 1;
+            $current = $languageUid === (int) $key ? 1 : 0;
+            $inactive = in_array($key, $languageUids) || (int) $key === $this->defaultLangUid ? 0 : 1;
             $url = $this->getLanguageUrl($key);
             if (empty($url)) {
-                $url = GeneralUtility::getIndpEnv('REQUEST_URI');
+                $url = (string) RequestResolver::getRequest()->getUri();
             }
             $languageMenu[$key]['current'] = $current;
             $languageMenu[$key]['inactive'] = $inactive;
@@ -488,12 +487,12 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     {
         /** @var int $pageUid */
         $pageUid = $this->arguments['pageUid'];
-        $pageUid = (integer) $pageUid;
+        $pageUid = (int) $pageUid;
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
 
-        return (integer) $pageUid;
+        return (int) $pageUid;
     }
 
     /**

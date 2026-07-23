@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Random: Number Generator
@@ -21,8 +20,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class NumberViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
@@ -77,7 +74,7 @@ class NumberViewHelper extends AbstractViewHelper
         /** @var int $maximumDecimals */
         $maximumDecimals = $arguments['maximumDecimals'];
         $natural = random_int($minimum, $maximum);
-        if (0 === (integer) $minimumDecimals && 0 === (integer) $maximumDecimals) {
+        if (0 === (int) $minimumDecimals && 0 === (int) $maximumDecimals) {
             return $natural;
         }
         /** @var array $decimals */

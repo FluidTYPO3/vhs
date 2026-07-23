@@ -8,11 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Creates chunks from an input Array/Traversable with option to allocate items to a fixed number of chunks
@@ -21,7 +20,6 @@ class ChunkViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
-    use CompileWithRenderStatic;
 
     /**
      * @var boolean
@@ -66,8 +64,8 @@ class ChunkViewHelper extends AbstractViewHelper
         $as = $arguments['as'];
         /** @var int $count */
         $count = $arguments['count'];
-        $fixed = (boolean) $arguments['fixed'];
-        $preserveKeys = (boolean) $arguments['preserveKeys'];
+        $fixed = (bool) $arguments['fixed'];
+        $preserveKeys = (bool) $arguments['preserveKeys'];
         $subject = static::arrayFromArrayOrTraversableOrCSVStatic(
             empty($as) ? ($arguments['subject'] ?? $renderChildrenClosure()) : $arguments['subject'],
             $preserveKeys
@@ -80,7 +78,7 @@ class ChunkViewHelper extends AbstractViewHelper
             $subjectSize = count($subject);
             if (0 < $subjectSize) {
                 /** @var int<1, max> $chunkSize */
-                $chunkSize = (integer) ceil($subjectSize / $count);
+                $chunkSize = (int) ceil($subjectSize / $count);
                 $output = array_chunk($subject, $chunkSize, $preserveKeys);
             }
             // Fill the resulting array with empty items to get the desired element count

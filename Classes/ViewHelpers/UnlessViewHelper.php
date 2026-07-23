@@ -59,27 +59,20 @@ class UnlessViewHelper extends AbstractConditionViewHelper
 
     /**
      * Rendering with inversion and ignoring any f:then / f:else children.
-     *
-     * @return mixed|null
      */
-    public function render()
+    public function render(): mixed
     {
-        if (!static::verdict($this->arguments, $this->renderingContext)) {
-            return $this->renderChildren();
-        }
-        return null;
+        return self::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**
      * Static rendering with inversion and ignoring any f:then / f:else children.
-     *
-     * @return mixed
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): mixed {
         if (!static::verdict($arguments, $renderingContext)) {
             return $renderChildrenClosure();
         }

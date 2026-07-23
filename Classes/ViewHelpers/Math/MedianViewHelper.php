@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  */
 
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Math: Median
@@ -21,7 +20,6 @@ use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
  */
 class MedianViewHelper extends AbstractSingleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -42,9 +40,9 @@ class MedianViewHelper extends AbstractSingleMathViewHelper
                  * not everybody knows, let's make it explicit for everybody
                  * wondering.
                  */
-                return $a[(integer) $midpoint];
+                return $a[(int) $midpoint];
             }
-            $candidates = array_slice($a, (integer) (floor($midpoint) - 1), 2);
+            $candidates = array_slice($a, (int) (floor($midpoint) - 1), 2);
             return array_sum($candidates) / 2;
         }
         return $a;

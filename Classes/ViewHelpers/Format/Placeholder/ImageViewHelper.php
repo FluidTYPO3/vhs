@@ -36,10 +36,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('textColor', 'string', 'Text color', false, 'FFFFFF');
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         /** @var int $width */
         $width = $this->arguments['width'];

@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-
 /**
  * Math: Modulo
  * Perform modulo on $input. Returns the same type as $input,
@@ -28,8 +26,6 @@ use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
  */
 class ModuloViewHelper extends AbstractMultipleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @param mixed $a
      * @param mixed $b

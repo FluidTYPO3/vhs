@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Iterator Range ViewHelper
@@ -31,7 +30,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 class RangeViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
-    use CompileWithRenderStatic;
 
     /**
      * @var boolean

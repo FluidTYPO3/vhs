@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Media;
 
 use FluidTYPO3\Vhs\Traits\SourceSetViewHelperTrait;
 use FluidTYPO3\Vhs\ViewHelpers\Media\Image\AbstractImageViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Renders an image tag for the given resource including all valid
@@ -82,13 +81,7 @@ class ImageViewHelper extends AbstractImageViewHelper
         );
     }
 
-    /**
-     * Render method
-     *
-     * @return string
-     * @throws Exception
-     */
-    public function render()
+    public function render(): string
     {
         $this->preprocessImage();
         return $this->renderTag();
@@ -111,8 +104,8 @@ class ImageViewHelper extends AbstractImageViewHelper
             $height = $srcSetVariantDefault['height'];
         } else {
             $src = static::preprocessSourceUri($this->mediaSource, $this->arguments);
-            $width = $this->imageInfo[0] ?? '';
-            $height = $this->imageInfo[1] ?? '';
+            $width = $this->imageInfo->getWidth();
+            $height = $this->imageInfo->getHeight();
         }
 
         $this->tag->addAttribute('width', $width);

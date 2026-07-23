@@ -50,26 +50,16 @@ class LipsumViewHelperTest extends AbstractViewHelperTestCase
             ->getMock();
         $mockContentObject->method('parseFunc')->willReturn('foobar');
 
-        if (method_exists(ConfigurationManagerInterface::class, 'getContentObject')) {
-            /** @var ConfigurationManagerInterface $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
-            $configurationManager->method('getContentObject')->willReturn($mockContentObject);
-        } else {
-            $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
-            $request->method('getAttribute')->willReturn($mockContentObject);
-            /** @var ConfigurationManagerInterface $configurationManager */
-            $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)
-                ->onlyMethods(['getConfiguration', 'setConfiguration', 'setRequest'])
-                ->addMethods(['getRequest'])
-                ->getMock();
-            $configurationManager->method('getRequest')->willReturn($request);
-        }
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMock();
 
         $this->singletonInstances[ConfigurationManagerInterface::class] = $configurationManager;
 
         $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = [];
 
         parent::setUp();
+
+        $this->simulateRequestWithExtbaseParameters('Vhs', 123, $mockContentObject);
     }
 
     protected function tearDown(): void

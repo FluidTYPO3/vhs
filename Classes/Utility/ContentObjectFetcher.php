@@ -9,21 +9,27 @@ namespace FluidTYPO3\Vhs\Utility;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class ContentObjectFetcher
 {
-    public static function resolve(?ConfigurationManagerInterface $configurationManager = null): ?ContentObjectRenderer
+    public static function resolve(?ConfigurationManagerInterface $configurationManager = null): ContentObjectRenderer
     {
         $contentObject = null;
         $request = ($configurationManager !== null && method_exists($configurationManager, 'getRequest')
             ? $configurationManager->getRequest()
             : ($GLOBALS['TYPO3_REQUEST'] ?? null)) ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
 
-        if ($request) {
-            $contentObject = static::resolveFromRequest($request);
+        if ($request instanceof ServerRequestInterface) {
+            /** @var ContentObjectRenderer|null $contentObject */
+            $contentObject = $request->getAttribute('currentContentObject');
+        }
+
+        if ($contentObject === null && VersionUtility::isCoreBelow14()) {
+            $controller = RequestResolver::getTypoScriptFrontendController();
+            $contentObject = $controller?->cObj ?? null;
         }
 
         if ($contentObject === null
@@ -33,16 +39,11 @@ class ContentObjectFetcher
             $contentObject = $configurationManager->getContentObject();
         }
 
-        return $contentObject;
-    }
-
-    protected static function resolveFromRequest(ServerRequestInterface $request): ?ContentObjectRenderer
-    {
-        if (($cObject = $request->getAttribute('currentContentObject')) instanceof ContentObjectRenderer) {
-            return $cObject;
+        if (!$contentObject) {
+            /** @var ContentObjectRenderer $contentObject */
+            $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         }
-        /** @var TypoScriptFrontendController $controller */
-        $controller = $request->getAttribute('frontend.controller');
-        return $controller instanceof TypoScriptFrontendController ? $controller->cObj : null;
+
+        return $contentObject;
     }
 }

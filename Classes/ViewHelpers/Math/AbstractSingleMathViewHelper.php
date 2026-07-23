@@ -8,11 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: Math ViewHelpers operating on one number or an
@@ -20,7 +19,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
 
     /**
@@ -54,7 +52,8 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $value = $renderChildrenClosure();
+        /** @var array|numeric-string|numeric|null $value */
+        $value = $arguments['a'] ?? $renderChildrenClosure();
         if (null === $value && $arguments['fail']) {
             ErrorUtility::throwViewHelperException('Required argument "a" was not supplied', 1237823699);
         }
@@ -62,7 +61,7 @@ abstract class AbstractSingleMathViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param numeric|array|iterable $a
+     * @param numeric|numeric-string|array|iterable|null $a
      * @return numeric|array
      */
     abstract protected static function calculateAction($a, array $arguments = []);

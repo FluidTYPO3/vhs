@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
+use FluidTYPO3\Vhs\Utility\VersionUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -17,6 +18,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class HeaderViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected function setUp(): void
+    {
+        if (!VersionUtility::isCoreAtLeast13()) {
+            $this->markTestSkipped('Test skipped, broken on v12');
+        }
+
+        $this->singletonInstances[PageRenderer::class] = $this->getMockBuilder(PageRenderer::class)
+            ->onlyMethods(['addHeaderData'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        parent::setUp();
+    }
+
     public function testRender()
     {
         $singletons = GeneralUtility::getSingletonInstances();

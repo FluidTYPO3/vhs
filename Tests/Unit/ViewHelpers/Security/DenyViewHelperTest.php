@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\Security;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTest;
 use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
 use FluidTYPO3\Vhs\ViewHelpers\Security\DenyViewHelper;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -18,9 +19,10 @@ class DenyViewHelperTest extends AbstractViewHelperTestCase
 {
     public function testInvertsDecision(): void
     {
-        $GLOBALS['BE_USER'] = (object) [
-            'user' => ['uid' => 1],
-        ];
+        $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $GLOBALS['BE_USER']->user = ['uid' => 1];
         $viewHelper = $this->getMockBuilder(DenyViewHelper::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()

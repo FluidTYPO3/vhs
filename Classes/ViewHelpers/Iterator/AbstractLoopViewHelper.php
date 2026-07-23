@@ -8,8 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Abstract class with basic functionality for loop view helpers.
@@ -45,7 +45,7 @@ abstract class AbstractLoopViewHelper extends AbstractViewHelper
     ) {
         if (!empty($iterationArgument)) {
             $variableProvider = $renderingContext->getVariableProvider();
-            $cycle = (integer) (($i - $from) / $step) + 1;
+            $cycle = (int) (($i - $from) / $step) + 1;
             $iteration = [
                 'index' => $i,
                 'cycle' => $cycle,

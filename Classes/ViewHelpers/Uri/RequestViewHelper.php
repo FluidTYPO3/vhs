@@ -8,34 +8,29 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Uri;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use Psr\Http\Message\UriInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Uri: Request
  *
  * Returns the Uri of the requested page (site_url + all the GET params)
- * `\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')`.
+ * `ServerRequest::$uri`, an instance of UriInterface.
  */
 class RequestViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        return GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+    ): UriInterface {
+        return RequestResolver::getRequest()->getUri();
     }
 }

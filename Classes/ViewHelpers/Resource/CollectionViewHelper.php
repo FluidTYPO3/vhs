@@ -8,6 +8,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * {v:resource.collection(uid:'123') -> v:var.set(name: 'someCollection')}
  * ```
  */
-class CollectionViewHelper extends AbstractResourceViewHelper
+class CollectionViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void
     {
@@ -32,9 +33,7 @@ class CollectionViewHelper extends AbstractResourceViewHelper
     }
 
     /**
-     * Returns a specific collection referenced by uid.
-     *
-     * @return mixed
+     * @return string|AbstractRecordCollection
      */
     public function render()
     {
@@ -53,6 +52,6 @@ class CollectionViewHelper extends AbstractResourceViewHelper
             }
             return $collection;
         }
-        return null;
+        return '';
     }
 }

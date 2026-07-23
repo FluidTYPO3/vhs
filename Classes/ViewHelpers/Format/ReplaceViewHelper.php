@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Replaces $substring in $content with $replacement.
@@ -28,8 +27,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class ReplaceViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content in which to perform replacement. Array supported.');
@@ -52,7 +49,8 @@ class ReplaceViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $content = $renderChildrenClosure();
+        /** @var string $content */
+        $content = $arguments['content'] ?? $renderChildrenClosure();
         /** @var string|array $content */
         $content = is_scalar($content) || $content === null ? (string) $content : (array) $content;
 
@@ -65,7 +63,7 @@ class ReplaceViewHelper extends AbstractViewHelper
         $replacement = is_scalar($replacement) ? (string) $replacement : (array) $replacement;
 
         $count = 0;
-        $caseSensitive = (boolean) $arguments['caseSensitive'];
+        $caseSensitive = (bool) $arguments['caseSensitive'];
         $function = $caseSensitive ? 'str_replace' : 'str_ireplace';
         $replaced = $function($substring, $replacement, $content, $count);
         if ($arguments['returnCount'] ?? false) {

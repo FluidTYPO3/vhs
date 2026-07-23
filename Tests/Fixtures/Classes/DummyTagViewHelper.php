@@ -4,18 +4,10 @@ namespace FluidTYPO3\Vhs\Tests\Fixtures\Classes;
 
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 class DummyTagViewHelper extends AbstractTagBasedViewHelper
 {
     use TagViewHelperTrait;
-
-    public $arguments = [];
-
-    /**
-     * @var TagBuilder
-     */
-    public $tag;
 
     public function testRenderTag(
         string $tagName,

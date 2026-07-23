@@ -8,17 +8,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format\Url;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Urlencodes the provided string
  */
 class EncodeViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'Content to encode for URI');
@@ -32,6 +29,8 @@ class EncodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return rawurlencode($renderChildrenClosure());
+        /** @var string $content */
+        $content = $arguments['content'] ?? $renderChildrenClosure();
+        return rawurlencode($content);
     }
 }

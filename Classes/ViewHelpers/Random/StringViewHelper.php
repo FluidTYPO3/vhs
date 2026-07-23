@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Random;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Random: String Generator
@@ -21,8 +20,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class StringViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
@@ -49,10 +46,10 @@ class StringViewHelper extends AbstractViewHelper
 
         /** @var int $minimumLength */
         $minimumLength = $arguments['minimumLength'];
-        $minimumLength = (integer) $minimumLength;
+        $minimumLength = (int) $minimumLength;
         /** @var int $maximumLength */
         $maximumLength = $arguments['maximumLength'];
-        $maximumLength = (integer) $maximumLength;
+        $maximumLength = (int) $maximumLength;
         /** @var string $characters */
         $characters = $arguments['characters'];
         if ($minimumLength != $maximumLength) {

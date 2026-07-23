@@ -18,6 +18,15 @@ use FluidTYPO3\Vhs\Tests\Unit\ViewHelpers\AbstractViewHelperTestCase;
  */
 class FalViewHelperTest extends AbstractViewHelperTestCase
 {
+    protected array $defaultArguments = [
+        'record' => ['uid' => 123],
+    ];
+
+    protected array $defaultMockMethods = [
+        'getRecord',
+        'getResources',
+    ];
+
     protected function setUp(): void
     {
         $this->singletonInstances[ResourceFactoryProxy::class] = $this->getMockBuilder(ResourceFactoryProxy::class)->disableOriginalConstructor()->getMock();
@@ -28,6 +37,6 @@ class FalViewHelperTest extends AbstractViewHelperTestCase
 
     public function testRender()
     {
-        $this->assertEmpty($this->executeViewHelper());
+        $this->assertEmpty($this->executeViewHelper($this->defaultArguments));
     }
 }

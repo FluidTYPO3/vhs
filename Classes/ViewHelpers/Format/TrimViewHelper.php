@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Trims $content by stripping off $characters (string list
@@ -18,8 +17,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class TrimViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('content', 'string', 'String to trim');
@@ -38,7 +35,8 @@ class TrimViewHelper extends AbstractViewHelper
     ) {
         /** @var string $characters */
         $characters = $arguments['characters'];
-        $content = $renderChildrenClosure();
+        /** @var string $content */
+        $content = $arguments['content'] ?? $renderChildrenClosure();
         if (!empty($characters)) {
             $content = trim((string) $content, $characters);
         } else {

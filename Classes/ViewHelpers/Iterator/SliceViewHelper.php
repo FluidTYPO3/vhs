@@ -8,11 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Slice an Iterator by $start and $length.
@@ -21,7 +20,6 @@ class SliceViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
     use ArrayConsumingViewHelperTrait;
-    use CompileWithRenderStatic;
 
     /**
      * @var boolean
@@ -59,7 +57,7 @@ class SliceViewHelper extends AbstractViewHelper
         $haystack = static::arrayFromArrayOrTraversableOrCSVStatic(
             empty($as) ? ($arguments['haystack'] ?? $renderChildrenClosure()) : $arguments['haystack']
         );
-        $output = array_slice($haystack, $start, $length, (boolean) $arguments['preserveKeys']);
+        $output = array_slice($haystack, $start, $length, (bool) $arguments['preserveKeys']);
         return static::renderChildrenWithVariableOrReturnInputStatic(
             $output,
             $as,

@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 
 use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 use FluidTYPO3\Vhs\Utility\ErrorUtility;
 
 /**
@@ -21,7 +20,6 @@ use FluidTYPO3\Vhs\Utility\ErrorUtility;
  */
 class MinimumViewHelper extends AbstractMultipleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
     use ArgumentOverride;
 

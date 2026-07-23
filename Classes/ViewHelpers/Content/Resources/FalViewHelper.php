@@ -21,7 +21,7 @@ use FluidTYPO3\Vhs\Traits\ArgumentOverride;
  * The file data can be loaded and displayed with:
  *
  * ```
- * {v:content.resources.fal(field: 'settings.image')
+ * {v:content.resources.fal(field: 'settings.image', record: record)
  *   -> v:iterator.first()
  *   -> v:variable.set(name: 'image')}
  * <f:if condition="{image}">
@@ -43,8 +43,8 @@ class FalViewHelper extends \FluidTYPO3\Vhs\ViewHelpers\Resource\Record\FalViewH
 {
     use ArgumentOverride;
 
-    const DEFAULT_TABLE = 'tt_content';
-    const DEFAULT_FIELD = 'image';
+    public const string DEFAULT_TABLE = 'tt_content';
+    public const string DEFAULT_FIELD = 'image';
 
     protected string $table = self::DEFAULT_TABLE;
     protected string $field = self::DEFAULT_FIELD;

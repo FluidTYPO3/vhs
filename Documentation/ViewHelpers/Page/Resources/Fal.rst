@@ -66,7 +66,7 @@ record
 :aspect:`Required`
    false
 :aspect:`Description`
-   The actual record. Alternatively you can use the "uid" argument.
+   The actual record. Alternatively you can use the "uid" argument; you must specify either one.
 
 .. _page.resources.fal_uid:
 
@@ -79,7 +79,7 @@ uid
 :aspect:`Required`
    false
 :aspect:`Description`
-   The uid of the record. Alternatively you can use the "record" argument.
+   The uid of the record. Alternatively you can use the "record" argument; you must specify either one.
 
 .. _page.resources.fal_as:
 

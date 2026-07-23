@@ -9,7 +9,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Render;
  */
 
 use FluidTYPO3\Vhs\Proxy\DispatcherProxy;
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Utility\ContentObjectFetcher;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,8 +35,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class RequestViewHelper extends AbstractRenderViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var class-string
      */

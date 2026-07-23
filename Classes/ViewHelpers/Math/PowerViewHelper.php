@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-
 /**
  * Math: Power
  *
@@ -17,8 +15,6 @@ use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
  */
 class PowerViewHelper extends AbstractMultipleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @param float|integer $a
      * @param float|integer $b

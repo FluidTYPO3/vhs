@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Counts number of lines in a string.
@@ -35,8 +34,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class LinesViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -61,10 +58,11 @@ class LinesViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $value = $renderChildrenClosure();
+        /** @var string|int|float|bool $value */
+        $value = $arguments['string'] ?? $renderChildrenClosure();
         if ((string) $value === '') {
             return 0;
         }
-        return mb_substr_count($value, PHP_EOL) + 1;
+        return mb_substr_count((string) $value, PHP_EOL) + 1;
     }
 }

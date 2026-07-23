@@ -8,12 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Service\PageService;
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to access data of the current page record.
@@ -22,7 +21,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class InfoViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
     use TemplateVariableViewHelperTrait;
 
     /**
@@ -63,7 +61,7 @@ class InfoViewHelper extends AbstractViewHelper
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
-        $page = $pageRepository->getPage_noCheck((integer) $pageUid);
+        $page = $pageRepository->getPage_noCheck((int) $pageUid);
         /** @var string|null $field */
         $field = $arguments['field'];
         $content = null;

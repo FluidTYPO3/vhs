@@ -8,11 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Utility\FrontendSimulationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Case Formatting ViewHelper
@@ -21,23 +20,20 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class CaseViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
-    const CASE_UPPER = 'upper';
-    const CASE_LOWER = 'lower';
-    const CASE_UCWORDS = 'ucwords';
-    const CASE_UCFIRST = 'ucfirst';
-    const CASE_LCFIRST = 'lcfirst';
-    const CASE_CAMELCASE = 'CamelCase';
-    const CASE_LOWERCAMELCASE = 'lowerCamelCase';
-    const CASE_UNDERSCORED = 'lowercase_underscored';
+    private const string CASE_UPPER = 'upper';
+    private const string CASE_LOWER = 'lower';
+    private const string CASE_UCWORDS = 'ucwords';
+    private const string CASE_UCFIRST = 'ucfirst';
+    private const string CASE_LCFIRST = 'lcfirst';
+    private const string CASE_CAMELCASE = 'CamelCase';
+    private const string CASE_LOWERCAMELCASE = 'lowerCamelCase';
+    private const string CASE_UNDERSCORED = 'lowercase_underscored';
 
     public function initializeArguments(): void
     {
         $this->registerArgument('string', 'string', 'String to case format');
         $this->registerArgument('case', 'string', 'Case to convert to');
     }
-
 
     /**
      * @return mixed
@@ -47,40 +43,42 @@ class CaseViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $string = $renderChildrenClosure();
+        /** @var string $string */
+        $string = $arguments['string'] ?? $renderChildrenClosure();
+        /** @var string $case */
         $case = $arguments['case'];
 
         $tsfeBackup = FrontendSimulationUtility::simulateFrontendEnvironment();
 
         switch ($case) {
-            case static::CASE_LOWER:
+            case self::CASE_LOWER:
                 $string = mb_strtolower($string);
                 break;
-            case static::CASE_UPPER:
+            case self::CASE_UPPER:
                 $string = mb_strtoupper($string);
                 break;
-            case static::CASE_UCWORDS:
+            case self::CASE_UCWORDS:
                 $string = ucwords($string);
                 break;
-            case static::CASE_UCFIRST:
+            case self::CASE_UCFIRST:
                 $firstChar = mb_substr($string, 0, 1);
                 $firstChar = mb_strtoupper($firstChar);
                 $remainder = mb_substr($string, 1, null);
                 $string = $firstChar . $remainder;
                 break;
-            case static::CASE_LCFIRST:
+            case self::CASE_LCFIRST:
                 $firstChar = mb_substr($string, 0, 1);
                 $firstChar = mb_strtolower($firstChar);
                 $remainder = mb_substr($string, 1, null);
                 $string = $firstChar . $remainder;
                 break;
-            case static::CASE_CAMELCASE:
+            case self::CASE_CAMELCASE:
                 $string = GeneralUtility::underscoredToUpperCamelCase($string);
                 break;
-            case static::CASE_LOWERCAMELCASE:
+            case self::CASE_LOWERCAMELCASE:
                 $string = GeneralUtility::underscoredToLowerCamelCase($string);
                 break;
-            case static::CASE_UNDERSCORED:
+            case self::CASE_UNDERSCORED:
                 $string = GeneralUtility::camelCaseToLowerCaseUnderscored($string);
                 break;
             default:

@@ -11,16 +11,18 @@ parameters:
         - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Response not found\\.$#"
         - "#[cC]lass TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Request not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Core\\\\Context\\\\Context not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageResource not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder not found\\.$#"
-        - "#^Class TYPO3\\\\CMS\\\\Lang\\\\LanguageService not found\\.$#"
-        - "#^Class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ResponseInterface not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ExtbaseRequestParameters not found\\.$#"
-        - "#^Class TYPO3\\\\CMS\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextFactory not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Repository\\\\FrontendUserRepository not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\(Frontend|Backend)User(Group)? not found\\.$#"
-        - "#^Class TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageResource not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextFactory not found\\.$#"
         - "#^Class TYPO3\\\\CMS\\\\Frontend\\\\Cache\\\\CacheInstruction not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageInformation not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository not found\\.$#"
+        - "#^Class TYPO3\\\\CMS\\\\Lang\\\\LanguageService not found\\.$#"
         - "#^Class TYPO3Fluid\\\\Fluid\\\\Component\\\\Argument\\\\ArgumentCollection not found\\.$#"
         - "#(unknown class|invalid( return)? type) Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Frontend\\\\Event\\\\AfterCacheableContentIsGeneratedEvent#"
@@ -29,9 +31,14 @@ parameters:
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\ExtbaseRequestParameters#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Core\\\\Type\\\\Bitmask\\\\PageTranslationVisibility#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository#"
+        - "#(invalid (return )?type|unknown class) TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconSize#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageResource#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Core\\\\Site\\\\Site#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextFactory#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageInformation#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Frontend\\\\Imaging\\\\ImageResource#"
+        - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Repository\\\\FrontendUserRepository#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\FrontendUser(Group)?#"
         - "#(unknown class|invalid( return)? type) TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\BackendUser(Group)?#"
@@ -62,13 +69,18 @@ parameters:
         - "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:sysLog\\(\\)\\.$#"
         - "#^Call to an undefined static method FluidTYPO3\\\\Vhs\\\\Core\\\\ViewHelper\\\\AbstractViewHelper\\:\\:renderStatic\\(\\)\\.$#"
         - "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService\\:\\:init\\(\\)\\.$#"
+        - "#^Call to an undefined (static )?method .+ViewHelper\\:\\:overrideArgument\\(\\)\\.$#"
+        - "#^Call to an undefined (static )?method .+ViewHelper\\:\\:registerTagAttribute\\(\\)\\.$#"
         - "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder\\:\\:setUseCacheHash\\(\\) invoked with 1 parameter, 0 required\\.$#"
         - "#^Cannot call method evaluateChildNodes\\(\\) on TYPO3Fluid\\\\Fluid\\\\Core\\\\Parser\\\\SyntaxTree\\\\ViewHelperNode\\|null\\.$#"
-    bootstrapFiles:
-        - phpstan-bootstrap.php
+        - "#^Cannot call method .+\\(\\) on TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\|null\\.$#"
+        - "#expects TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\, TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\|null given#"
+        - "#expects TYPO3Fluid\\\\Fluid\\\\Core\\\\Variables\\\\VariableProviderInterface\\, TYPO3Fluid\\\\Fluid\\\\Core\\\\Variables\\\\VariableProviderInterface\\|null given#"
+        - "#Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\Icon\\:\\:SIZE_#"
     paths:
         - Classes
         - Configuration
     excludePaths:
         - Classes/Middleware/AssetInclusion.php
+        - Classes/Proxy/LocalizationFactoryProxy.php
         - Configuration/RequestMiddlewares.php

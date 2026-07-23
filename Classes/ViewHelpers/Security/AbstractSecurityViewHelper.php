@@ -9,19 +9,16 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Security;
  */
 
 use FluidTYPO3\Vhs\Utility\ContextUtility;
-use Psr\Http\Message\ServerRequestInterface;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -37,9 +34,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
 
     public function __construct()
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.0', '>=')
-            && !ExtensionManagementUtility::isLoaded('feuserextrafields')
-        ) {
+        if (!ExtensionManagementUtility::isLoaded('feuserextrafields')) {
             throw new \Exception('On TYPO3v12, v:security.* requires EXT:feuserextrafields', 1670521759);
         }
         /** @var FrontendUserRepository $frontendUserRepository */
@@ -281,7 +276,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
         }
         $currentBackendUser = $this->getCurrentBackendUser();
         if (null !== $backendUser) {
-            return ((integer) ($currentBackendUser['uid'] ?? 0) === $backendUser);
+            return ((int) ($currentBackendUser['uid'] ?? 0) === $backendUser);
         }
         return is_array($currentBackendUser);
     }
@@ -323,13 +318,6 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function assertAdminLoggedIn(): bool
     {
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '11.5', '<')) {
-            if (!$this->assertBackendUserLoggedIn()) {
-                return false;
-            }
-            $currentBackendUser = $this->getCurrentBackendUser();
-            return is_array($currentBackendUser) && (boolean) ($currentBackendUser['admin'] ?? false);
-        }
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         try {
@@ -344,25 +332,14 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function getCurrentFrontendUser(): ?FrontendUser
     {
-        if (empty($GLOBALS['TSFE']->loginUser)) {
+        $frontendUserAuthentication = RequestResolver::getFrontendUser();
+
+        if (!$frontendUserAuthentication) {
             return null;
         }
 
-        $frontendUserAuthentication = null;
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            /** @var FrontendUserAuthentication|null $frontendUserAuthentication */
-            $frontendUserAuthentication = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
-        }
-
-        if ($frontendUserAuthentication === null) {
-            /** @var TypoScriptFrontendController $tsfe */
-            $tsfe = $GLOBALS['TSFE'];
-            /** @var FrontendUserAuthentication $frontendUserAuthentication */
-            $frontendUserAuthentication = $tsfe->fe_user;
-        }
-
         /** @var FrontendUser|null $frontendUser */
-        $frontendUser = $this->frontendUserRepository->findByUid($frontendUserAuthentication->user['uid'] ?? 0);
+        $frontendUser = $this->frontendUserRepository->findByUid($frontendUserAuthentication?->user['uid'] ?? 0);
         return $frontendUser;
     }
 
@@ -372,7 +349,7 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      */
     public function getCurrentBackendUser(): ?array
     {
-        return $GLOBALS['BE_USER']->user;
+        return RequestResolver::getBackendUser()?->user;
     }
 
     /**
@@ -386,10 +363,10 @@ abstract class AbstractSecurityViewHelper extends AbstractConditionViewHelper
      *
      * @return mixed rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
      */
-    protected function renderThenChild()
+    protected function renderThenChild(): mixed
     {
         if ($this->isFrontendContext()) {
-            $GLOBALS['TSFE']->no_cache = 1;
+            RequestResolver::disableFrontendCache('EXT:vhs: Security ViewHelper disables caches.');
         }
         return parent::renderThenChild();
     }

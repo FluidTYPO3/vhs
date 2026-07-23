@@ -8,19 +8,15 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Returns a full, absolute URL to this page with all arguments.
  */
 class AbsoluteUrlViewHelper extends AbstractViewHelper
 {
-
-    use CompileWithRenderStatic;
-
     /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
@@ -32,11 +28,9 @@ class AbsoluteUrlViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        /** @var string $url */
-        $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        /** @var string $siteUrl */
-        $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        if (0 !== strpos($url, $siteUrl)) {
+        $url = (string) RequestResolver::getRequest()->getUri();
+        $siteUrl = RequestResolver::getFrontendUrlPrefix();
+        if (!str_starts_with($url, $siteUrl)) {
             $url = $siteUrl . $url;
         }
         return $url;

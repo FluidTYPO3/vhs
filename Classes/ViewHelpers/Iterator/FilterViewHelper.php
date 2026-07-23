@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Iterator: Filter ViewHelper
@@ -25,8 +24,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class FilterViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
@@ -77,9 +74,9 @@ class FilterViewHelper extends AbstractViewHelper
         $filter = $arguments['filter'];
         /** @var string $propertyName */
         $propertyName = $arguments['propertyName'];
-        $preserveKeys = (boolean) $arguments['preserveKeys'];
-        $invert = (boolean) $arguments['invert'];
-        $nullFilter = (boolean) $arguments['nullFilter'];
+        $preserveKeys = (bool) $arguments['preserveKeys'];
+        $invert = (bool) $arguments['invert'];
+        $nullFilter = (bool) $arguments['nullFilter'];
 
         if (!is_array($subject) && !$subject instanceof \Traversable) {
             return [];

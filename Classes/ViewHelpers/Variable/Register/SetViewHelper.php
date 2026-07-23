@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Variable\Register: Set
@@ -23,8 +22,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class SetViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -44,10 +41,12 @@ class SetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        /** @var mixed $value */
+        $value = $arguments['value'] ?? $renderChildrenClosure();
         if (!$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             return null;
         }
-        $GLOBALS['TSFE']->register[$arguments['name']] = $renderChildrenClosure();
+        $GLOBALS['TSFE']->register[$arguments['name']] = $value;
         return null;
     }
 }

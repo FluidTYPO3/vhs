@@ -8,8 +8,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-
 /**
  * Math: Ceil
  *
@@ -19,8 +17,6 @@ use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
  */
 class CeilViewHelper extends AbstractSingleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @param mixed $a
      * @return integer|array
@@ -31,6 +27,6 @@ class CeilViewHelper extends AbstractSingleMathViewHelper
             return array_map('ceil', static::arrayFromArrayOrTraversableOrCSVStatic($a));
         }
         /** @var integer|float $a */
-        return (integer) ceil($a);
+        return (int) ceil($a);
     }
 }

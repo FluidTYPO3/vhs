@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Variable\Register: Get
@@ -26,8 +25,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class GetViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -51,7 +48,8 @@ class GetViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $name = $renderChildrenClosure();
+        /** @var string $name */
+        $name = $arguments['name'] ?? $renderChildrenClosure();
         if (!($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             return null;
         }

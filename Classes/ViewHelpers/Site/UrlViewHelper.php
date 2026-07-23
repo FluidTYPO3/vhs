@@ -8,10 +8,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Site;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\ParameterUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Site: URL
@@ -21,21 +20,17 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class UrlViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return mixed
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        return GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+    ): string {
+        $value = ParameterUtility::resolveParameterValue('TYPO3_SITE_URL');
+        return is_scalar($value) ? (string) $value : '';
     }
 }

@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Format;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * URL text segment sanitizer. Sanitizes the content into a
@@ -41,8 +40,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class SanitizeStringViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     protected static array $characterMap = [
         '¹' => 1, '²' => 2, '³' => 3, '°' => 0, '€' => 'eur', 'æ' => 'ae', 'ǽ' => 'ae', 'À' => 'A',
         'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Å' => 'AA', 'Ǻ' => 'A', 'Ă' => 'A', 'Ǎ' => 'A', 'Æ' => 'AE',
@@ -125,7 +122,8 @@ class SanitizeStringViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $string = $renderChildrenClosure();
+        /** @var string $string */
+        $string = $arguments['string'] ?? $renderChildrenClosure();
 
         if (null === $string) {
             return null;

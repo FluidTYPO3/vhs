@@ -8,17 +8,17 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Resource;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Proxy\LocalizationFactoryProxy;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
 use FluidTYPO3\Vhs\Utility\RequestResolver;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Resource: Language
@@ -42,7 +42,7 @@ class LanguageViewHelper extends AbstractViewHelper
 {
     use TemplateVariableViewHelperTrait;
 
-    const LOCALLANG_DEFAULT = 'locallang.xlf';
+    private const string LOCALLANG_DEFAULT = 'locallang.xlf';
 
     /**
      * @var boolean
@@ -58,7 +58,7 @@ class LanguageViewHelper extends AbstractViewHelper
             'string',
             'Absolute or relative path to the locallang file',
             false,
-            static::LOCALLANG_DEFAULT
+            self::LOCALLANG_DEFAULT
         );
         $this->registerArgument(
             'languageKey',
@@ -67,17 +67,12 @@ class LanguageViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * The main render method of this ViewHelper.
-     *
-     * @return mixed
-     */
-    public function render()
+    public function render(): mixed
     {
         $path = $this->getResolvedPath();
         $languageKey = $this->getLanguageKey();
-        /** @var LocalizationFactory $languageFactory */
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+        /** @var LocalizationFactoryProxy $languageFactory */
+        $languageFactory = GeneralUtility::makeInstance(LocalizationFactoryProxy::class);
         $locallang = (array) $languageFactory->getParsedData($path, $languageKey);
         $labels = $this->getLabelsByLanguageKey($locallang, $languageKey);
         $labels = $this->getLabelsFromTarget($labels);

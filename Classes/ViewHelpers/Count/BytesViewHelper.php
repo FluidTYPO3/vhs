@@ -8,9 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Count;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Counts bytes (multibyte-safe) in a string.
@@ -35,8 +34,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class BytesViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -70,6 +67,8 @@ class BytesViewHelper extends AbstractViewHelper
     ) {
         /** @var string $encoding */
         $encoding = $arguments['encoding'];
-        return (integer) mb_strlen($renderChildrenClosure(), $encoding);
+        /** @var string $string */
+        $string = $arguments['string'] ?? $renderChildrenClosure();
+        return (int) mb_strlen($string, $encoding);
     }
 }

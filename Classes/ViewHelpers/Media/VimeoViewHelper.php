@@ -23,7 +23,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
     /**
      * Base URL for Vimeo video player
      */
-    const VIMEO_BASEURL = '//player.vimeo.com/video/';
+    private const string VIMEO_BASEURL = '//player.vimeo.com/video/';
 
     /**
      * @var string
@@ -93,12 +93,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         /** @var string $videoId */
         $videoId = $this->arguments['videoId'];
@@ -107,7 +102,7 @@ class VimeoViewHelper extends AbstractTagBasedViewHelper
         /** @var int $height */
         $height = $this->arguments['height'];
 
-        $src = static::VIMEO_BASEURL . $videoId . '?';
+        $src = self::VIMEO_BASEURL . $videoId . '?';
 
         /** @var string $color */
         $color = $this->arguments['color'];

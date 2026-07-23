@@ -23,14 +23,14 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
      *
      * @var string
      */
-    const GRAVATAR_BASEURL = 'http://www.gravatar.com/avatar/';
+    private const string GRAVATAR_BASEURL = 'http://www.gravatar.com/avatar/';
 
     /**
      * Base secure url
      *
      * @var string
      */
-    const GRAVATAR_SECURE_BASEURL = 'https://secure.gravatar.com/avatar/';
+    private const string GRAVATAR_SECURE_BASEURL = 'https://secure.gravatar.com/avatar/';
 
     /**
      * @var string
@@ -62,21 +62,16 @@ class GravatarViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    /**
-     * Render method
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         /** @var string $email */
         $email = $this->arguments['email'];
         $size = $this->checkArgument('size');
         $imageSet = $this->checkArgument('imageSet');
         $maximumRating = $this->checkArgument('maximumRating');
-        $secure = (boolean) $this->arguments['secure'];
+        $secure = (bool) $this->arguments['secure'];
 
-        $url = $secure ? static::GRAVATAR_SECURE_BASEURL : static::GRAVATAR_BASEURL;
+        $url = $secure ? self::GRAVATAR_SECURE_BASEURL : self::GRAVATAR_BASEURL;
         $url .= md5(strtolower(trim($email)));
         $query = http_build_query(['s' => $size, 'd' => $imageSet, 'r' => $maximumRating]);
         $url .= !empty($query) ? '?' . $query : '';

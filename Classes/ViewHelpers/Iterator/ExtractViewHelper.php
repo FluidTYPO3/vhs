@@ -8,12 +8,11 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Iterator;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Iterator / Extract VieWHelper
@@ -95,8 +94,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class ExtractViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
@@ -148,8 +145,8 @@ class ExtractViewHelper extends AbstractViewHelper
         $content = $arguments['content'] ?? $renderChildrenClosure();
         /** @var string $key */
         $key = $arguments['key'];
-        $recursive = (boolean) $arguments['recursive'];
-        $single = (boolean) $arguments['single'];
+        $recursive = (bool) $arguments['recursive'];
+        $single = (bool) $arguments['single'];
         try {
             // extraction from Iterators could potentially use a getter method which throws
             // exceptions - although this would be bad practice. Catch the exception here

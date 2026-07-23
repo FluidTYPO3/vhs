@@ -38,10 +38,10 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
 {
     use TagViewHelperCompatibility;
 
-    const SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
-    const SCOPE_VARIABLE_SRC = 'src';
-    const SCOPE_VARIABLE_ID = 'treatIdAsReference';
-    const SCOPE_VARIABLE_DEFAULT_SOURCE = 'default-source';
+    private const string SCOPE = 'FluidTYPO3\Vhs\ViewHelpers\Media\PictureViewHelper';
+    private const string SCOPE_VARIABLE_SRC = 'src';
+    private const string SCOPE_VARIABLE_ID = 'treatIdAsReference';
+    private const string SCOPE_VARIABLE_DEFAULT_SOURCE = 'default-source';
 
     /**
      * name of the tag to be created by this view helper
@@ -72,31 +72,26 @@ class PictureViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    /**
-     * Render method
-     * @return string
-     * @throws Exception
-     */
-    public function render()
+    public function render(): string
     {
         $src = $this->arguments['src'];
-        $treatIdAsReference = (boolean) $this->arguments['treatIdAsReference'];
+        $treatIdAsReference = (bool) $this->arguments['treatIdAsReference'];
         if ($src instanceof FileReference) {
             $src = $src->getUid();
             $treatIdAsReference = true;
         }
 
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-        $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_SRC, $src);
-        $viewHelperVariableContainer->addOrUpdate(static::SCOPE, static::SCOPE_VARIABLE_ID, $treatIdAsReference);
+        $viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_SRC, $src);
+        $viewHelperVariableContainer->addOrUpdate(self::SCOPE, self::SCOPE_VARIABLE_ID, $treatIdAsReference);
         $content = $this->renderChildren();
-        $viewHelperVariableContainer->remove(static::SCOPE, static::SCOPE_VARIABLE_SRC);
-        $viewHelperVariableContainer->remove(static::SCOPE, static::SCOPE_VARIABLE_ID);
+        $viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_SRC);
+        $viewHelperVariableContainer->remove(self::SCOPE, self::SCOPE_VARIABLE_ID);
 
-        if (!$viewHelperVariableContainer->exists(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
+        if (!$viewHelperVariableContainer->exists(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE)) {
             throw new Exception('Please add a source without a media query as a default.', 1438116616);
         }
-        $defaultSource = $viewHelperVariableContainer->get(static::SCOPE, static::SCOPE_VARIABLE_DEFAULT_SOURCE);
+        $defaultSource = $viewHelperVariableContainer->get(self::SCOPE, self::SCOPE_VARIABLE_DEFAULT_SOURCE);
 
         /** @var string $alt */
         $alt = $this->arguments['alt'];

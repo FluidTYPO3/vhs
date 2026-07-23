@@ -10,7 +10,6 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Math;
 
 use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\Traits\ArrayConsumingViewHelperTrait;
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Math: Average
@@ -25,7 +24,6 @@ use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
  */
 class AverageViewHelper extends AbstractMultipleMathViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
     use ArrayConsumingViewHelperTrait;
     use ArgumentOverride;
 

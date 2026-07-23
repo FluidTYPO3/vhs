@@ -32,16 +32,13 @@ class ListViewHelper extends AbstractMenuViewHelper
         );
     }
 
-    /**
-     * @return null|string
-     */
-    public function render()
+    public function render(): string
     {
         $pages = $this->processPagesArgument();
         if (0 === count($pages)) {
-            return null;
+            return '';
         }
-        $showAccessProtected = (boolean) $this->arguments['showAccessProtected'];
+        $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
         $menuData = [];
         foreach ($pages as $pageUid) {
             $row = $this->pageService->getPage($pageUid, $showAccessProtected);

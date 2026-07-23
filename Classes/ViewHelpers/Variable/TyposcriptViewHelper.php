@@ -8,11 +8,10 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use FluidTYPO3\Vhs\Traits\CompileWithContentArgumentAndRenderStatic;
+use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Variable: TypoScript
@@ -52,8 +51,6 @@ use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
  */
 class TyposcriptViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * @var boolean
      */
@@ -78,7 +75,7 @@ class TyposcriptViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var string|null $path */
-        $path = $renderChildrenClosure();
+        $path = $arguments['path'] ?? $renderChildrenClosure();
         if (empty($path)) {
             return null;
         }
