@@ -11,42 +11,42 @@ $EM_CONF['vhs'] = array (
   'conflicts' => '',
   'priority' => '',
   'module' => '',
-  'state' => 'beta',
+  'state' => 'stable',
   'internal' => '',
   'uploadfolder' => 0,
   'createDirs' => '',
   'modify_tables' => '',
   'clearCacheOnLoad' => 0,
   'lockType' => '',
-  'version' => '7.2.1',
-  'constraints' =>
+  'version' => '8.0.0',
+  'constraints' => 
   array (
-    'depends' =>
+    'depends' => 
     array (
       'php' => '8.3.99-8.5.99',
       'typo3' => '12.4.0-14.3.99',
     ),
-    'conflicts' =>
+    'conflicts' => 
     array (
     ),
-    'suggests' =>
+    'suggests' => 
     array (
     ),
   ),
-  'suggests' =>
+  'suggests' => 
   array (
   ),
   '_md5_values_when_last_written' => '',
-  'autoload' =>
+  'autoload' => 
   array (
-    'psr-4' =>
+    'psr-4' => 
     array (
       'FluidTYPO3\\Vhs\\' => 'Classes/',
     ),
   ),
-  'autoload-dev' =>
+  'autoload-dev' => 
   array (
-    'psr-4' =>
+    'psr-4' => 
     array (
       'FluidTYPO3\\Vhs\\Tests\\' => 'Tests/',
     ),
