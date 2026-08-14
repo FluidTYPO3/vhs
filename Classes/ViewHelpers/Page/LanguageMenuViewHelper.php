@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 /*
@@ -138,9 +139,6 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
 
     public function render(): string
     {
-        if (!is_object($GLOBALS['TSFE']->sys_page)) {
-            return '';
-        }
         /** @var ContentObjectRenderer|null $contentObject */
         $contentObject = ContentObjectFetcher::resolve($this->configurationManager);
         if ($contentObject === null) {
@@ -347,7 +345,9 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $languageAspect = $context->getAspect('language');
             $languageUid = $languageAspect->getId();
         } else {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+            $languageUid = (isset($GLOBALS['TSFE']) && is_array($GLOBALS['TSFE']))
+                ? (int) $GLOBALS['TSFE']->sys_language_uid
+                : self::RequestResolver::getLanguage()->getLanguageId();
         }
 
         foreach ($languageMenu as $key => $value) {
@@ -486,11 +486,11 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
     protected function getPageUid(): int
     {
         /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
-        $pageUid = (int) $pageUid;
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
+        $pageUid = (int) (
+            $this->arguments['pageUid'] > 0
+            ? $this->arguments['pageUid']
+            : RequestResolver::getPageUid()
+        );
 
         return (int) $pageUid;
     }

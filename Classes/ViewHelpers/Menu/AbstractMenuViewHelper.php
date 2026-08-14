@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
 
 /*
@@ -11,6 +12,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\PageRecordViewHelperTrait;
 use FluidTYPO3\Vhs\Traits\TagViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -378,7 +380,11 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                     $pageUid = $rootLineData[$entryLevel]['uid'] ?? null;
                 }
             } else {
-                $pageUid = $GLOBALS['TSFE']->id;
+                $pageUid = (int) (
+                    (isset($GLOBALS['TSFE']) && is_array($GLOBALS['TSFE']))
+                    ? $GLOBALS['TSFE']->id
+                    : RequestResolver::getPageUid()
+                );
             }
         }
 
@@ -447,7 +453,7 @@ abstract class AbstractMenuViewHelper extends AbstractTagBasedViewHelper
                 $pages[$index]['current'] = true;
                 $class[] = $this->arguments['classCurrent'];
             } else {
-                 $pages[$index]['current'] = false;
+                $pages[$index]['current'] = false;
             }
             $pages[$index]['hasSubPages'] = false;
             if (0 < count($this->getMenu($originalPageUid))) {

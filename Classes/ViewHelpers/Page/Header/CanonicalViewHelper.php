@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Page\Header;
 
 /*
@@ -56,11 +57,10 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
         }
 
         /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
-        $pageUid = (int) $pageUid;
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
+        $pageUid = (int) ($this->arguments['pageUid'] > 0
+            ? $this->arguments['pageUid']
+            : RequestResolver::getPageUid()
+        );
 
         /** @var string $queryStringMethod */
         $queryStringMethod = $this->arguments['queryStringMethod'];

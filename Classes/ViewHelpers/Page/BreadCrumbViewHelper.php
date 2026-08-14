@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 /*
@@ -10,7 +11,9 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 use FluidTYPO3\Vhs\Traits\ArgumentOverride;
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * ViewHelper to make a breadcrumb link set from a pageUid, automatic or manual.
@@ -45,7 +48,11 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
 
     public function render(): string
     {
-        $pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
+        $pageUid = (int) (
+            $this->arguments['pageUid'] > 0
+            ? $this->arguments['pageUid']
+            : RequestResolver::getPageUid()
+        );
         /** @var int $entryLevel */
         $entryLevel = $this->arguments['entryLevel'];
         /** @var int|null $endLevel */
@@ -82,5 +89,13 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
         $this->restoreVariables();
 
         return $output;
+    }
+
+    private function getRequest(): ServerRequestInterface|null
+    {
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            return $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        }
+        return null;
     }
 }

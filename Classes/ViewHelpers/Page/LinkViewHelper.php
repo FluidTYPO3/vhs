@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 /*
@@ -140,7 +141,10 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     {
         // Check if link wizard link
         /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
+        $pageUid = (int) ($this->arguments['pageUid'] > 0
+            ? $this->arguments['pageUid']
+            : RequestResolver::getPageUid()
+        );
         /** @var array $additionalParameters */
         $additionalParameters = (array) $this->arguments['additionalParams'];
         if (!is_numeric($pageUid)) {
@@ -148,12 +152,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $logManager = GeneralUtility::makeInstance(LogManager::class);
             $logManager->getLogger(__CLASS__)->warning("pageUid must be numeric, got " . $pageUid);
             return '';
-        }
-
-        // Get page via pageUid argument or current id
-        $pageUid = (int) $pageUid;
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
         }
 
         $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
@@ -181,7 +179,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $languageAspect = $context->getAspect('language');
             $currentLanguageUid = $languageAspect->getId();
         } else {
-            $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+            $currentLanguageUid = (isset($GLOBALS['TSFE']) && is_array($GLOBALS['TSFE']))
+                ? (int) $GLOBALS['TSFE']->sys_language_uid
+                : self::RequestResolver::getLanguage()->getLanguageId();
         }
 
         $hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
