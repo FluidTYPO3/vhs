@@ -21,6 +21,7 @@ use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Core\Http\Uri;
 
 class RequestResolver
 {
@@ -148,7 +149,7 @@ class RequestResolver
     public static function getLanguage(): SiteLanguage
     {
         /** @var SiteLanguage $siteLanguage */
-        $siteLanguage = self::getRequest()->getAttribute('language');
+        $siteLanguage = self::getRequest()->getAttribute('language') ?? new SiteLanguage(0, '', new Uri('/'), ['enabled' => true]);
         return $siteLanguage;
     }
 
