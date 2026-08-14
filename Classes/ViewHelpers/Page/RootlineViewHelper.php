@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 /*
@@ -11,6 +12,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -42,10 +44,10 @@ class RootlineViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'];
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
+        $pageUid = (int) ($arguments['pageUid'] > 0
+            ? $arguments['pageUid']
+            : RequestResolver::getPageUid()
+            );
         /** @var string $as */
         $as = $arguments['as'];
         return static::renderChildrenWithVariableOrReturnInputStatic(

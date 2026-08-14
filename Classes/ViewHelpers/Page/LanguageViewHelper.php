@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 /*
@@ -11,6 +12,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Utility\ContextUtility;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -67,14 +69,12 @@ class LanguageViewHelper extends AbstractViewHelper
         }
 
         /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'];
-        $pageUid = (int) $pageUid;
+        $pageUid = (int) ($arguments['pageUid'] > 0
+            ? $arguments['pageUid']
+            : RequestResolver::getPageUid()
+        );
         /** @var bool $normalWhenNoLanguage */
         $normalWhenNoLanguage = $arguments['normalWhenNoLanguage'];
-
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
 
         $pageService = static::getPageService();
         if (class_exists(LanguageAspect::class)) {
@@ -84,7 +84,9 @@ class LanguageViewHelper extends AbstractViewHelper
             $languageAspect = $context->getAspect('language');
             $currentLanguageUid = $languageAspect->getId();
         } else {
-            $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+            $currentLanguageUid = (isset($GLOBALS['TSFE']) && is_array($GLOBALS['TSFE']))
+                ? (int) $GLOBALS['TSFE']->sys_language_uid
+                : self::RequestResolver::getLanguage()->getLanguageId();
         }
         $languageUid = 0;
         if (!$pageService->hidePageForLanguageUid($pageUid, $currentLanguageUid, $normalWhenNoLanguage)) {

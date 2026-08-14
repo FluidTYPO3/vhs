@@ -1,4 +1,5 @@
 <?php
+
 namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 
 /*
@@ -57,10 +58,10 @@ class InfoViewHelper extends AbstractViewHelper
         $pageService = GeneralUtility::makeInstance(PageService::class);
         $pageRepository = $pageService->getPageRepository();
         /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'];
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
+        $pageUid = (int) ($arguments['pageUid'] > 0
+            ? $arguments['pageUid']
+            : RequestResolver::getPageUid()
+        );
         $page = $pageRepository->getPage_noCheck((int) $pageUid);
         /** @var string|null $field */
         $field = $arguments['field'];
