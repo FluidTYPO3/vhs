@@ -9,13 +9,14 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  */
 
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\VariableRegister;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Variable\Register: Get
  *
- * ViewHelper used to read the value of a TSFE-register
+ * ViewHelper used to read the value of a register set via `v:variable.register.set`.
  * Can be used to read names of variables which contain dynamic parts:
  *
  * ```
@@ -50,9 +51,11 @@ class GetViewHelper extends AbstractViewHelper
     ) {
         /** @var string $name */
         $name = $arguments['name'] ?? $renderChildrenClosure();
-        if (!($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
-            return null;
+        if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController
+            && isset($GLOBALS['TSFE']->register[$name])
+        ) {
+            return $GLOBALS['TSFE']->register[$name];
         }
-        return $GLOBALS['TSFE']->register[$name] ?? null;
+        return VariableRegister::get($name);
     }
 }
