@@ -9,16 +9,18 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Variable\Register;
  */
 
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
+use FluidTYPO3\Vhs\Utility\VariableRegister;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ### Variable\Register: Set
  *
- * Sets a single register in the TSFE-register.
+ * Sets a single register, readable across the current rendering with `v:variable.register.get`.
  *
- * Using as `{value -> v:variable.register.set(name: 'myVar')}` makes $GLOBALS["TSFE"]->register['myVar']
- * contain `{value}`.
+ * Using as `{value -> v:variable.register.set(name: 'myVar')}` makes `myVar`
+ * contain `{value}`. Mirrored into $GLOBALS["TSFE"]->register when TSFE is available
+ * (TYPO3 <14) for backwards compatibility with code reading that array directly.
  */
 class SetViewHelper extends AbstractViewHelper
 {
@@ -43,10 +45,10 @@ class SetViewHelper extends AbstractViewHelper
     ) {
         /** @var mixed $value */
         $value = $arguments['value'] ?? $renderChildrenClosure();
-        if (!$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            return null;
+        VariableRegister::set($arguments['name'], $value);
+        if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
+            $GLOBALS['TSFE']->register[$arguments['name']] = $value;
         }
-        $GLOBALS['TSFE']->register[$arguments['name']] = $value;
         return null;
     }
 }
