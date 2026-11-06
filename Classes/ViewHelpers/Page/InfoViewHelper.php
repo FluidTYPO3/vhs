@@ -11,6 +11,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
 use FluidTYPO3\Vhs\Core\ViewHelper\AbstractViewHelper;
 use FluidTYPO3\Vhs\Service\PageService;
 use FluidTYPO3\Vhs\Traits\TemplateVariableViewHelperTrait;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -56,12 +57,8 @@ class InfoViewHelper extends AbstractViewHelper
         /** @var PageService $pageService */
         $pageService = GeneralUtility::makeInstance(PageService::class);
         $pageRepository = $pageService->getPageRepository();
-        /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'];
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
-        $page = $pageRepository->getPage_noCheck((int) $pageUid);
+        $pageUid = (int) ($arguments['pageUid'] ?: RequestResolver::getPageUid());
+        $page = $pageRepository->getPage_noCheck($pageUid);
         /** @var string|null $field */
         $field = $arguments['field'];
         $content = null;

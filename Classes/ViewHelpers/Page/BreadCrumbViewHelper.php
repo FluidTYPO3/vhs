@@ -9,6 +9,7 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Page;
  */
 
 use FluidTYPO3\Vhs\Traits\ArgumentOverride;
+use FluidTYPO3\Vhs\Utility\RequestResolver;
 use FluidTYPO3\Vhs\ViewHelpers\Menu\AbstractMenuViewHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
@@ -45,7 +46,7 @@ class BreadCrumbViewHelper extends AbstractMenuViewHelper
 
     public function render(): string
     {
-        $pageUid = $this->arguments['pageUid'] > 0 ? $this->arguments['pageUid'] : $GLOBALS['TSFE']->id;
+        $pageUid = (int) ($this->arguments['pageUid'] ?: RequestResolver::getPageUid());
         /** @var int $entryLevel */
         $entryLevel = $this->arguments['entryLevel'];
         /** @var int|null $endLevel */
