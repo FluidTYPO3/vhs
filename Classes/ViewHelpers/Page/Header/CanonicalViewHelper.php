@@ -55,12 +55,7 @@ class CanonicalViewHelper extends AbstractTagBasedViewHelper
             return '';
         }
 
-        /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
-        $pageUid = (int) $pageUid;
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
+        $pageUid = (int) ($this->arguments['pageUid'] ?: RequestResolver::getPageUid());
 
         /** @var string $queryStringMethod */
         $queryStringMethod = $this->arguments['queryStringMethod'];

@@ -347,7 +347,7 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
             $languageAspect = $context->getAspect('language');
             $languageUid = $languageAspect->getId();
         } else {
-            $languageUid = $GLOBALS['TSFE']->sys_language_uid;
+            $languageUid = RequestResolver::getLanguage()->getLanguageId();
         }
 
         foreach ($languageMenu as $key => $value) {
@@ -485,14 +485,10 @@ class LanguageMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getPageUid(): int
     {
-        /** @var int $pageUid */
-        $pageUid = $this->arguments['pageUid'];
-        $pageUid = (int) $pageUid;
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
-
-        return (int) $pageUid;
+        return (int) ($this->arguments['pageUid'] > 0
+            ? $this->arguments['pageUid']
+            : RequestResolver::getPageUid()
+        );
     }
 
     /**

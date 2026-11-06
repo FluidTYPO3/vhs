@@ -8,6 +8,8 @@ namespace FluidTYPO3\Vhs\ViewHelpers\Menu;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Vhs\Utility\RequestResolver;
+
 /**
  * ### Page: Browse Menu ViewHelper
  *
@@ -73,7 +75,7 @@ class BrowseViewHelper extends AbstractMenuViewHelper
 
     public function render(): string
     {
-        $defaultUid = $GLOBALS['TSFE']->id;
+        $defaultUid = RequestResolver::getPageUid();
         $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
         $pageUid = (int) (null !== $this->arguments['pageUid'] ? $this->arguments['pageUid'] : $defaultUid);
         $currentUid = (int) ($this->arguments['currentPageUid'] ?: $defaultUid);

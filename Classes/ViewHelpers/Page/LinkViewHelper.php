@@ -151,10 +151,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         // Get page via pageUid argument or current id
-        $pageUid = (int) $pageUid;
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
-        }
+        $pageUid = (int) ($pageUid ?: RequestResolver::getPageUid());
 
         $showAccessProtected = (bool) $this->arguments['showAccessProtected'];
 
@@ -181,7 +178,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $languageAspect = $context->getAspect('language');
             $currentLanguageUid = $languageAspect->getId();
         } else {
-            $currentLanguageUid = $GLOBALS['TSFE']->sys_language_uid;
+            $currentLanguageUid = RequestResolver::getLanguage()->getLanguageId();
         }
 
         $hidePage = $this->pageService->hidePageForLanguageUid($page, $currentLanguageUid);
